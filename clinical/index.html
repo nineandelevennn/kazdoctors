@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Medical English Trainer - @doctors.speak</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        kazakh: {
+                            blue: '#00AFCA',
+                            darkblue: '#008399',
+                            lightblue: '#33C0D6',
+                            gold: '#FFC72C',
+                            darkgold: '#D9A300',
+                            lightgold: '#FFE07D'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar reset & touch optimizations */
+        * {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #009BB3 0%, #007A8F 50%, #005F70 100%);
+            height: 100dvh;
+            width: 100vw;
+            overflow: hidden;
+        }
+
+        /* Subtle Kazakh Sun Ornament Pattern Background */
+        .kazakh-bg-pattern {
+            background-color: #00AFCA;
+            background-image: radial-gradient(#FFC72C 0.75px, transparent 0.75px), radial-gradient(#FFC72C 0.75px, #00AFCA 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            background-opacity: 0.15;
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(180deg, #FFE885 0%, #FFC72C 60%, #D9A300 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-border-glow {
+            box-shadow: 0 0 15px rgba(255, 199, 44, 0.3);
+        }
+
+        @keyframes pulse-success {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .animate-success {
+            animation: pulse-success 0.3s ease-in-out;
+        }
+    </style>
+</head>
+
+<body class="text-slate-800 flex flex-col justify-between h-[100dvh] w-screen overflow-hidden p-2 sm:p-4">
+
+    <!-- PASSWORD MODAL OVERLAY -->
+    <div id="passwordModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md">
+        <div class="bg-white rounded-3xl shadow-2xl border-2 border-kazakh-gold w-full max-w-sm p-6 flex flex-col items-center text-center relative overflow-hidden">
+            <!-- Decorative Flag Bar -->
+            <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-kazakh-blue via-kazakh-gold to-kazakh-blue"></div>
+            
+            <div class="w-16 h-16 rounded-full bg-kazakh-blue/10 flex items-center justify-center mb-3 mt-2 text-kazakh-blue">
+                <i class="fa-solid fa-user-doctor text-3xl text-kazakh-blue"></i>
+            </div>
+
+            <span class="text-xs font-bold uppercase tracking-wider text-kazakh-darkblue bg-kazakh-blue/10 px-3 py-1 rounded-full mb-1">
+                @doctors.speak
+            </span>
+            <h2 class="text-xl font-extrabold text-slate-800 mb-1">Доступ к тренажеру</h2>
+            <p class="text-xs text-slate-500 mb-5">Введите пароль доступа к материалам курса</p>
+
+            <form id="passwordForm" onsubmit="handlePasswordSubmit(event)" class="w-full flex flex-col gap-3">
+                <div class="relative w-full">
+                    <input type="password" id="passwordInput" placeholder="Введите пароль..." 
+                        class="w-full px-4 py-3 text-center text-lg font-semibold border-2 border-slate-200 rounded-2xl focus:border-kazakh-blue focus:outline-none transition-all"
+                        autocomplete="off" required>
+                </div>
+                
+                <div id="passwordError" class="hidden text-xs font-semibold text-rose-500 flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-circle-exclamation"></i> Неверный пароль. Попробуйте еще раз!
+                </div>
+
+                <button type="submit" class="w-full py-3.5 px-6 bg-gradient-to-r from-kazakh-gold to-kazakh-darkgold text-slate-900 font-extrabold text-base rounded-2xl shadow-lg hover:brightness-105 active:scale-95 transition-all flex items-center justify-center gap-2">
+                    <span>Войти в тренажер</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN SCREEN CONTAINER (FITS 100vh) -->
+    <main class="w-full max-w-md mx-auto flex-1 flex flex-col justify-between h-full gap-2">
+
+        <!-- BRANDING HEADER (Prominently visible in mobile screenshots) -->
+        <header class="bg-slate-900/60 backdrop-blur-md rounded-2xl p-2.5 px-3 border border-kazakh-gold/40 flex items-center justify-between shadow-lg shrink-0">
+            <div class="flex items-center gap-2.5">
+                <!-- Kazakh Sun Symbol Badge -->
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-kazakh-gold to-amber-500 flex items-center justify-center text-slate-900 font-bold shadow-md shrink-0">
+                    <i class="fa-solid fa-caduceus text-lg"></i>
+                </div>
+                <div class="flex flex-col">
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-base font-black tracking-tight text-white">
+                            @doctors.speak
+                        </span>
+                        <span class="bg-kazakh-gold text-slate-950 text-[10px] font-black px-1.5 py-0.5 rounded-md uppercase">PRO</span>
+                    </div>
+                    <span class="text-[10px] font-medium text-kazakh-lightgold">
+                        Medical Terminology Simulator
+                    </span>
+                </div>
+            </div>
+
+            <!-- Flag Ornament Icon -->
+            <div class="text-kazakh-gold flex items-center justify-center text-xl pr-1">
+                <i class="fa-solid fa-sun animate-spin-slow"></i>
+            </div>
+        </header>
+
+        <!-- STATS BAR -->
+        <section class="grid grid-cols-3 gap-2 shrink-0">
+            <div class="bg-white/95 backdrop-blur-sm rounded-xl p-2 text-center shadow-md border border-slate-100 flex flex-col justify-center">
+                <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Пройдено</span>
+                <span id="statTotal" class="text-lg font-black text-slate-800">0</span>
+            </div>
+
+            <div class="bg-white/95 backdrop-blur-sm rounded-xl p-2 text-center shadow-md border border-slate-100 flex flex-col justify-center">
+                <span class="text-[10px] uppercase font-bold text-emerald-600 tracking-wider">Верно</span>
+                <span id="statCorrect" class="text-lg font-black text-emerald-600">0</span>
+            </div>
+
+            <div class="bg-white/95 backdrop-blur-sm rounded-xl p-2 text-center shadow-md border border-slate-100 flex flex-col justify-center">
+                <span class="text-[10px] uppercase font-bold text-kazakh-darkblue tracking-wider">Точность</span>
+                <span id="statAccuracy" class="text-lg font-black text-kazakh-darkblue">0%</span>
+            </div>
+        </section>
+
+        <!-- MODE SELECTOR TABS -->
+        <section class="bg-slate-900/40 p-1 rounded-2xl border border-white/10 shrink-0">
+            <div class="grid grid-cols-4 gap-1 text-center">
+                <button onclick="setMode('eng_kaz')" id="mode-eng_kaz" class="mode-btn py-1.5 px-1 rounded-xl text-xs font-bold transition-all bg-kazakh-gold text-slate-950 shadow-md">
+                    Eng ➔ Kaz
+                </button>
+                <button onclick="setMode('eng_rus')" id="mode-eng_rus" class="mode-btn py-1.5 px-1 rounded-xl text-xs font-bold transition-all text-white/80 hover:bg-white/10">
+                    Eng ➔ Rus
+                </button>
+                <button onclick="setMode('kaz_eng')" id="mode-kaz_eng" class="mode-btn py-1.5 px-1 rounded-xl text-xs font-bold transition-all text-white/80 hover:bg-white/10">
+                    Kaz ➔ Eng
+                </button>
+                <button onclick="setMode('rus_eng')" id="mode-rus_eng" class="mode-btn py-1.5 px-1 rounded-xl text-xs font-bold transition-all text-white/80 hover:bg-white/10">
+                    Rus ➔ Eng
+                </button>
+            </div>
+        </section>
+
+        <!-- QUIZ CARD -->
+        <section class="bg-white rounded-3xl p-4 shadow-2xl border-2 border-kazakh-gold/30 flex flex-col justify-between flex-1 min-h-0 relative overflow-hidden">
+            <!-- Top Card Header / Category Badge -->
+            <div class="flex items-center justify-between mb-2 shrink-0">
+                <span id="categoryBadge" class="text-[11px] font-extrabold uppercase tracking-wider text-kazakh-darkblue bg-kazakh-blue/10 px-2.5 py-1 rounded-lg">
+                    Respiratory system
+                </span>
+                <span id="modeLabelHint" class="text-[10px] font-bold text-slate-400 uppercase">
+                    Выберите перевод
+                </span>
+            </div>
+
+            <!-- Target Question Term -->
+            <div class="flex-1 flex flex-col items-center justify-center text-center py-2 my-auto">
+                <h1 id="questionTerm" class="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight leading-tight transition-all">
+                    Chest tightness
+                </h1>
+                <p id="phoneticText" class="text-xs font-medium text-slate-400 mt-1 italic">
+                    /tʃest 'taɪtnəs/
+                </p>
+            </div>
+
+            <!-- 4 Multiple Choice Options Grid -->
+            <div id="optionsGrid" class="grid grid-cols-1 gap-2 shrink-0 w-full">
+                <!-- Option buttons generated dynamically in JS -->
+            </div>
+        </section>
+
+        <!-- ACTION FOOTER / NEXT BUTTON -->
+        <footer class="shrink-0 pb-1">
+            <button id="nextBtn" onclick="nextQuestion()" disabled
+                class="w-full py-3 px-6 bg-gradient-to-r from-kazakh-gold via-amber-400 to-kazakh-gold text-slate-950 font-black text-base rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2 opacity-50 cursor-not-allowed">
+                <span>КЕЛЕСІ / СЛЕДУЮЩЕЕ</span>
+                <i class="fa-solid fa-arrow-right-long text-lg"></i>
+            </button>
+        </footer>
+
+    </main>
+
+    <script>
+        // Password configuration (easily editable in code)
+        const CORRECT_PASSWORD = "fever";
+
+        // COMPLETE VOCABULARY DATABASE extracted from course materials
+        const VOCABULARY = [
+            // Respiratory system
+            { eng: "Chest tightness", kaz: "Кеуде қысылуы", rus: "Сдавленность в груди", phone: "/tʃest 'taɪtnəs/", cat: "Respiratory system" },
+            { eng: "Clubbing", kaz: "Саусақтардың барабан таяқшасы тәрізді өзгеруі", rus: "Пальцевые барабанные палочки", phone: "/'klʌbɪŋ/", cat: "Respiratory system" },
+            { eng: "Cough", kaz: "Жөтел", rus: "Кашель", phone: "/kɒf/", cat: "Respiratory system" },
+            { eng: "Crackles", kaz: "Сықырлау", rus: "Крепитация", phone: "/'krækəlz/", cat: "Respiratory system" },
+            { eng: "Effusion", kaz: "Жалқаяқ", rus: "Выпот", phone: "/ɪ'fjuːʒən/", cat: "Respiratory system" },
+            { eng: "Hemoptysis", kaz: "Қан түкіру", rus: "Кровохарканье", phone: "/hɪ'mɒptɪsɪs/", cat: "Respiratory system" },
+            { eng: "Malaise", kaz: "Әлсіздік", rus: "Недомагание", phone: "/mə'leɪz/", cat: "Respiratory system" },
+            { eng: "Dyspnea", kaz: "Демікпе", rus: "Одышка", phone: "/dɪsp'niːə/", cat: "Respiratory system" },
+            { eng: "Sputum", kaz: "Қақырық", rus: "Мокрота", phone: "/'spjuːtəm/", cat: "Respiratory system" },
+            { eng: "Wheezing", kaz: "Ысқырықты тыныс", rus: "Свистящее дыхание", phone: "/'wiːzɪŋ/", cat: "Respiratory system" },
+            { eng: "Rhonchi", kaz: "Қоңыр дыбыстар", rus: "Хрипы", phone: "/'rɒŋkaɪ/", cat: "Respiratory system" },
+            { eng: "Stridor", kaz: "Қатты тыныс дыбысы", rus: "Стридор", phone: "/'straɪdər/", cat: "Respiratory system" },
+            { eng: "Pleural rub", kaz: "Плевра үйкеліс шуы", rus: "Шум трения плевры", phone: "/'plʊərəl rʌb/", cat: "Respiratory system" },
+            { eng: "Inhalation", kaz: "Дем алу", rus: "Вдох", phone: "/ɪnhə'leɪʃən/", cat: "Respiratory system" },
+            { eng: "Exhalation", kaz: "Дем шығару", rus: "Выдох", phone: "/ekshə'leɪʃən/", cat: "Respiratory system" },
+
+            // Renal system
+            { eng: "Costovertebral angle tenderness", kaz: "Қабырға-омыртқа бұрышының ауырсынуы", rus: "Болезненность в реберно-позвоночном углу", phone: "/'kɒstəʊ,vɜːrtɪbrəl/", cat: "Renal system" },
+            { eng: "Dehydration", kaz: "Сусыздану", rus: "Обезвоживание", phone: "/diːhaɪ'dreɪʃən/", cat: "Renal system" },
+            { eng: "Edema", kaz: "Ісіну", rus: "Отёк", phone: "/ɪ'diːmə/", cat: "Renal system" },
+            { eng: "Fatigue", kaz: "Шаршау", rus: "Усталость", phone: "/fə'tiːɡ/", cat: "Renal system" },
+            { eng: "Flank pain", kaz: "Бүйір ауырсынуы", rus: "Боль в боку", phone: "/flæŋk peɪn/", cat: "Renal system" },
+            { eng: "Fluid overload", kaz: "Сұйықтықтың артық жиналуы", rus: "Перегрузка жидкостью", phone: "/'fluːɪd 'əʊvərləʊd/", cat: "Renal system" },
+            { eng: "Foamy urine", kaz: "Көпіршікті зәр", rus: "Пенистая моча", phone: "/'fəʊmi 'jʊərɪn/", cat: "Renal system" },
+            { eng: "Frothy urine", kaz: "Көбікті зәр", rus: "Пузырчатая моча", phone: "/'frɒθi 'jʊərɪn/", cat: "Renal system" },
+            { eng: "GFR (glomerular filtration rate)", kaz: "Шумақтық сүзілу жылдамдығы", rus: "Скорость клубочковой фильтрации", phone: "/dʒiː ef 'ɑːr/", cat: "Renal system" },
+            { eng: "Hypertension", kaz: "Қан қысымының жоғарылауы", rus: "Гипертония", phone: "/haɪpər'tenʃən/", cat: "Renal system" },
+
+            // Neurology
+            { eng: "Altered level of consciousness", kaz: "Есінің өзгеруі", rus: "Нарушение сознания", phone: "/'ɔːltərd 'levəl əv 'kɒnʃəsnəs/", cat: "Neurology" },
+            { eng: "Blurred vision", kaz: "Көрудің бұлдырауы", rus: "Размытое зрение", phone: "/blɜːrd 'vɪʒən/", cat: "Neurology" },
+            { eng: "Disinhibition", kaz: "Тежеудің төмендеуі", rus: "Расторможенность", phone: "/dɪsɪnhɪ'bɪʃən/", cat: "Neurology" },
+            { eng: "Gait difficulty", kaz: "Жүру қиындығы", rus: "Нарушение походки", phone: "/ɡeɪt 'dɪfɪkəlti/", cat: "Neurology" },
+            { eng: "Gaze palsy", kaz: "Көзқарастың салдануы", rus: "Паралич взора", phone: "/ɡeɪz 'pɔːlzi/", cat: "Neurology" },
+            { eng: "Headache", kaz: "Бас ауруы", rus: "Головная боль", phone: "/'hedeɪk/", cat: "Neurology" },
+            { eng: "Limb ataxia", kaz: "Қол-аяқ атаксиясы", rus: "Атаксия конечностей", phone: "/lɪm æ'tæksiə/", cat: "Neurology" },
+            { eng: "Neck stiffness", kaz: "Мойынның қатаюы", rus: "Ригидность шеи", phone: "/nek 'stɪfnəs/", cat: "Neurology" },
+            { eng: "Neglect", kaz: "Елемеу синдромы", rus: "Неглект", phone: "/nɪ'ɡlekt/", cat: "Neurology" },
+            { eng: "Numbness", kaz: "Ұю", rus: "Онемение", phone: "/'nʌmnəs/", cat: "Neurology" },
+            { eng: "Palsy", kaz: "Салдану", rus: "Паралич", phone: "/'pɔːlzi/", cat: "Neurology" },
+            { eng: "Rigidity", kaz: "Қатаю", rus: "Ригидность", phone: "/rɪ'dʒɪdəti/", cat: "Neurology" },
+            { eng: "Salivation", kaz: "Сілекей бөліну", rus: "Слюноотделение", phone: "/sælɪ'veɪʃən/", cat: "Neurology" },
+            { eng: "Seizure", kaz: "Құрысу", rus: "Судорога", phone: "/'siːʒər/", cat: "Neurology" },
+            { eng: "Slurred speech", kaz: "Баяу/анық емес сөйлеу", rus: "Невнятная речь", phone: "/slɜːrd spiːtʃ/", cat: "Neurology" },
+            { eng: "Syncope", kaz: "Естен тану", rus: "Обморок", phone: "/'sɪŋkəpi/", cat: "Neurology" },
+            { eng: "Tingling", kaz: "Шаншу", rus: "Покалывание", phone: "/'tɪŋɡlɪŋ/", cat: "Neurology" },
+            { eng: "Vertigo", kaz: "Бас айналу", rus: "Головокружение", phone: "/'vɜːrtɪɡoʊ/", cat: "Neurology" },
+            { eng: "Visual disturbance", kaz: "Көру бұзылысы", rus: "Нарушение зрения", phone: "/'vɪʒuəl dɪ'stɜːrbəns/", cat: "Neurology" },
+            { eng: "Weakness", kaz: "Әлсіздік", rus: "Слабость", phone: "/'wiːknəs/", cat: "Neurology" },
+
+            // Cardiology
+            { eng: "Angina", kaz: "Стенокардия", rus: "Стенокардия", phone: "/æn'dʒaɪnə/", cat: "Cardiology" },
+            { eng: "Dizziness", kaz: "Бас айналу", rus: "Головокружение", phone: "/'dɪzɪnəs/", cat: "Cardiology" },
+            { eng: "Friction rub", kaz: "Үйкеліс шуы", rus: "Шум трения", phone: "/'frɪkʃən rʌb/", cat: "Cardiology" },
+            { eng: "Jugular vein distension", kaz: "Мойын көктамырының кернеуі", rus: "Набухание яремных вен", phone: "/'dʒʌɡjələr veɪn/", cat: "Cardiology" },
+            { eng: "Lightheadedness", kaz: "Бастың жеңіл айналуы", rus: "Предобморочное состояние", phone: "/'laɪt hedɪdnəs/", cat: "Cardiology" },
+            { eng: "Murmur", kaz: "Жүрек шуы", rus: "Шум в сердце", phone: "/'mɜːrmər/", cat: "Cardiology" },
+            { eng: "Pallor", kaz: "Бозару", rus: "Бледность", phone: "/'pælər/", cat: "Cardiology" },
+            { eng: "Palpitations", kaz: "Жүрек дірілдеуі", rus: "Трепетание сердца", phone: "/pælpr'teɪʃənz/", cat: "Cardiology" },
+            { eng: "Pressure-like", kaz: "Қысып ауырсыну", rus: "Давящая боль", phone: "/'preʃər laɪk/", cat: "Cardiology" },
+            { eng: "Radiating pain", kaz: "Таралатын ауырсыну", rus: "Иррадиирующая боль", phone: "/'reɪdieɪtɪŋ peɪn/", cat: "Cardiology" },
+            { eng: "Retrosternal pain", kaz: "Төс артындағы ауырсыну", rus: "Загрудинная боль", phone: "/retrəʊ'stɜːrnəl/", cat: "Cardiology" },
+            { eng: "Sharp pain", kaz: "Өткір ауырсыну", rus: "Острая боль", phone: "/ʃɑːrp peɪn/", cat: "Cardiology" },
+            { eng: "Tinnitus", kaz: "Құлақтағы шу", rus: "Шум в ушах", phone: "/'tɪnɪtəs/", cat: "Cardiology" },
+
+            // Rheumatology
+            { eng: "Deformity", kaz: "Деформация", rus: "Деформация", phone: "/dɪ'fɔːrməti/", cat: "Rheumatology" },
+            { eng: "Deviation", kaz: "Ауытқу", rus: "Отклонение", phone: "/diːvi'eɪʃən/", cat: "Rheumatology" },
+            { eng: "Dull pain", kaz: "Сыздап ауыру", rus: "Тупая боль", phone: "/dʌl peɪn/", cat: "Rheumatology" },
+            { eng: "Fever", kaz: "Қызба", rus: "Лихорадка", phone: "/'fiːvər/", cat: "Rheumatology" },
+            { eng: "Nodules", kaz: "Түйіндер", rus: "Узелки", phone: "/'nɒdjuːlz/", cat: "Rheumatology" },
+            { eng: "Rash", kaz: "Бөртпе", rus: "Сыпь", phone: "/ræʃ/", cat: "Rheumatology" },
+            { eng: "Stiffness", kaz: "Қатаю", rus: "Скованность", phone: "/'stɪfnəs/", cat: "Rheumatology" },
+            { eng: "Subluxation", kaz: "Жартылай шығу", rus: "Подвывих", phone: "/sʌblʌk'seɪʃən/", cat: "Rheumatology" },
+            { eng: "Swelling", kaz: "Ісіну", rus: "Отёк", phone: "/'swelɪŋ/", cat: "Rheumatology" },
+            { eng: "Tenderness", kaz: "Ауырсыну", rus: "Болезненность", phone: "/'tendərnəs/", cat: "Rheumatology" },
+
+            // Infectious diseases
+            { eng: "Coryza", kaz: "Мұрын бітелуі/тұмау", rus: "Насморк", phone: "/kə'raɪzə/", cat: "Infectious diseases" },
+            { eng: "Drooling", kaz: "Сілекей ағу", rus: "Слюнотечение", phone: "/'druːlɪŋ/", cat: "Infectious diseases" },
+            { eng: "Sore throat", kaz: "Тамақ ауруы", rus: "Боль в горле", phone: "/sɔːr θroʊt/", cat: "Infectious diseases" },
+            { eng: "Ulcer", kaz: "Жара", rus: "Язва", phone: "/'ʌlsər/", cat: "Infectious diseases" },
+
+            // Gastrointestinal
+            { eng: "Bleeding", kaz: "Қан кету", rus: "Кровотечение", phone: "/'bliːdɪŋ/", cat: "Gastrointestinal" },
+            { eng: "Bloating", kaz: "Іштің кебуі", rus: "Вздутие", phone: "/'bloʊtɪŋ/", cat: "Gastrointestinal" },
+            { eng: "Constipation", kaz: "Іш қату", rus: "Запор", phone: "/kɒnstɪ'peɪʃən/", cat: "Gastrointestinal" },
+            { eng: "Fistula", kaz: "Жыланкөз", rus: "Свищ", phone: "/'fɪstjʊlə/", cat: "Gastrointestinal" },
+            { eng: "Flatulence", kaz: "Іш кебу", rus: "Метеоризм", phone: "/'flætjuːləns/", cat: "Gastrointestinal" },
+            { eng: "Heartburn", kaz: "Қыжыл", rus: "Изжога", phone: "/'hɑːrtbɜːrn/", cat: "Gastrointestinal" },
+            { eng: "Itching", kaz: "Қышыну", rus: "Зуд", phone: "/'ɪtʃɪŋ/", cat: "Gastrointestinal" },
+            { eng: "Jaundice", kaz: "Сарғаю", rus: "Желтуха", phone: "/'dʒɔːndɪs/", cat: "Gastrointestinal" },
+            { eng: "Loose stools", kaz: "Сұйық нәжіс", rus: "Жидкий стул", phone: "/luːs stuːlz/", cat: "Gastrointestinal" },
+            { eng: "Nausea", kaz: "Жүрек айну", rus: "Тошнота", phone: "/'nɔːziə/", cat: "Gastrointestinal" },
+            { eng: "Postprandial fullness", kaz: "Тамақтан кейін толу сезімі", rus: "Чувство переполнения после еды", phone: "/poʊst'prændiəl/", cat: "Gastrointestinal" },
+            { eng: "Radiation to the back", kaz: "Арқаға таралу", rus: "Иррадиация в спину", phone: "/reɪdi'eɪʃən/", cat: "Gastrointestinal" },
+            { eng: "Satiety", kaz: "Тою сезімі", rus: "Насыщение", phone: "/sə'taɪəti/", cat: "Gastrointestinal" },
+            { eng: "Vomiting", kaz: "Құсу", rus: "Рвота", phone: "/'vɒmɪtɪŋ/", cat: "Gastrointestinal" },
+
+            // Neonatology & Ophthalmology
+            { eng: "Grunting", kaz: "Қорсылдау", rus: "Хрюканье", phone: "/'ɡrʌntɪŋ/", cat: "Neonatology" },
+            { eng: "Irritability", kaz: "Тітіркенгіштік", rus: "Раздражительность", phone: "/ɪrɪtə'bɪləti/", cat: "Neonatology" },
+            { eng: "Nasal flaring", kaz: "Мұрын қанаттарының керілуі", rus: "Раздувание крыльев носа", phone: "/'neɪzəl 'flerɪŋ/", cat: "Neonatology" },
+            { eng: "Prematurity", kaz: "Шала туу", rus: "Недоношенность", phone: "/priːmə'tʃʊərəti/", cat: "Neonatology" },
+            { eng: "Blindness", kaz: "Соқырлық", rus: "Слепота", phone: "/'blaɪndnəs/", cat: "Ophthalmology" },
+            { eng: "Diplopia", kaz: "Қосарланып көріну", rus: "Двоение", phone: "/dɪ'ploʊpiə/", cat: "Ophthalmology" },
+            { eng: "Eye redness", kaz: "Көздің қызаруы", rus: "Покраснение глаза", phone: "/aɪ 'rednəs/", cat: "Ophthalmology" },
+            { eng: "Flashes", kaz: "Жарқылдар", rus: "Вспышки", phone: "/'flæʃɪz/", cat: "Ophthalmology" },
+            { eng: "Foreign body sensation", kaz: "Бөгде зат сезімі", rus: "Ощущение инородного тела", phone: "/'fɒrən 'bɒdi/", cat: "Ophthalmology" },
+            { eng: "Purulent discharge", kaz: "Іріңді бөлінді", rus: "Гнойные выделения", phone: "/'pjʊərʊlənt/", cat: "Ophthalmology" },
+            { eng: "Tearing", kaz: "Жас ағу", rus: "Слезотечение", phone: "/'tɪərɪŋ/", cat: "Ophthalmology" },
+            { eng: "Visual acuity", kaz: "Көру өткірлігі", rus: "Острота зрения", phone: "/'vɪʒuəl ə'kjuːəti/", cat: "Ophthalmology" },
+
+            // Surgery & Endocrinology
+            { eng: "Bulging", kaz: "Томпаю", rus: "Выпячивание", phone: "/'bʌldʒɪŋ/", cat: "Abdominal surgery" },
+            { eng: "Guarding", kaz: "Қорғаныштық кернеу", rus: "Защитное напряжение", phone: "/'ɡɑːrdɪŋ/", cat: "Abdominal surgery" },
+            { eng: "Loss of appetite", kaz: "Тәбеттің төмендеуі", rus: "Потеря аппетита", phone: "/lɒs əv 'æpɪtaɪt/", cat: "Abdominal surgery" },
+            { eng: "Pain migration", kaz: "Ауырсынудың ауысуы", rus: "Миграция боли", phone: "/'maɪɡreɪʃən/", cat: "Abdominal surgery" },
+            { eng: "Postprandial", kaz: "Тамақтан кейін", rus: "После еды", phone: "/poʊst'prændiəl/", cat: "Abdominal surgery" },
+            { eng: "Anxiety", kaz: "Мазасыздық", rus: "Тревожность", phone: "/æŋ'zaɪəti/", cat: "Endocrinology" },
+            { eng: "Bruises", kaz: "Көгерулер", rus: "Синяки", phone: "/'bruːzɪz/", cat: "Endocrinology" },
+            { eng: "Cold intolerance", kaz: "Суыққа төзімсіздік", rus: "Непереносимость холода", phone: "/koʊld ɪn'tɒlərəns/", cat: "Endocrinology" },
+            { eng: "Cramps", kaz: "Түйілу", rus: "Судороги", phone: "/kræmps/", cat: "Endocrinology" },
+            { eng: "Flushing", kaz: "Қызару", rus: "Приливы", phone: "/'flʌʃɪŋ/", cat: "Endocrinology" },
+            { eng: "Heat intolerance", kaz: "Ыстыққа төзімсіздік", rus: "Непереносимость жары", phone: "/hiːt ɪn'tɒlərəns/", cat: "Endocrinology" },
+            { eng: "Hoarse voice", kaz: "Қарлыққан дауыс", rus: "Осипший голос", phone: "/hɔːrs vɔɪs/", cat: "Endocrinology" },
+            { eng: "Lid lag", kaz: "Қабақтың қалуы", rus: "Симптом отставания века", phone: "/lɪd læɡ/", cat: "Endocrinology" },
+            { eng: "Obesity", kaz: "Семіздік", rus: "Ожирение", phone: "/oʊ'biːsəti/", cat: "Endocrinology" },
+            { eng: "Polydipsia", kaz: "Шөлдеу", rus: "Частая жажда", phone: "/pɒli'dɪpsiə/", cat: "Endocrinology" },
+            { eng: "Polyuria", kaz: "Жиі зәр шығару", rus: "Частое мочеиспускание", phone: "/pɒli'jʊəriə/", cat: "Endocrinology" },
+            { eng: "Stretch marks", kaz: "Созылу іздері", rus: "Растяжки", phone: "/stretʃ mɑːrks/", cat: "Endocrinology" },
+            { eng: "Sweating", kaz: "Терлеу", rus: "Потливость", phone: "/'swetɪŋ/", cat: "Endocrinology" },
+            { eng: "Weight gain", kaz: "Салмақ қосу", rus: "Прибавка веса", phone: "/weɪt ɡeɪn/", cat: "Endocrinology" },
+            { eng: "Weight loss", kaz: "Салмақ жоғалту", rus: "Потеря веса", phone: "/weɪt lɒs/", cat: "Endocrinology" },
+
+            // Radiology & ENT
+            { eng: "Alignment", kaz: "Қалыпты орналасу", rus: "Выравнивание", phone: "/ə'laɪnmənt/", cat: "Radiology" },
+            { eng: "Calcification", kaz: "Кальцинация", rus: "Кальцинация", phone: "/kælsɪfɪ'keɪʃən/", cat: "Radiology" },
+            { eng: "Consolidation", kaz: "Тығыздалу", rus: "Уплотнение", phone: "/kənsɒlɪ'deɪʃən/", cat: "Radiology" },
+            { eng: "Contrast enhancement", kaz: "Контраст күшеюі", rus: "Контрастное усиление", phone: "/'kɒntræst ɪn'hænsmənt/", cat: "Radiology" },
+            { eng: "Displacement", kaz: "Ығысу", rus: "Смещение", phone: "/dɪs'pleɪsmənt/", cat: "Radiology" },
+            { eng: "Fracture", kaz: "Сыну", rus: "Перелом", phone: "/'fræktʃər/", cat: "Radiology" },
+            { eng: "Hyperdense", kaz: "Тығыз", rus: "Гиперденсный", phone: "/haɪpər'dens/", cat: "Radiology" },
+            { eng: "Hypodense", kaz: "Сирек", rus: "Гиподенсный", phone: "/haɪpoʊ'dens/", cat: "Radiology" },
+            { eng: "Lesion", kaz: "Зақым", rus: "Поражение", phone: "/'liːʒən/", cat: "Radiology" },
+            { eng: "Mass", kaz: "Ісік", rus: "Образование", phone: "/mæs/", cat: "Radiology" },
+            { eng: "Opacity", kaz: "Көлеңке (мөлдірсіздік)", rus: "Затемнение", phone: "/oʊ'pæsəti/", cat: "Radiology" },
+            { eng: "Radiolucency", kaz: "Мөлдірлік", rus: "Прозрачность", phone: "/reɪdioʊ'luːsənsi/", cat: "Radiology" },
+            { eng: "Shadowing", kaz: "Көлеңке", rus: "Тень", phone: "/'ʃædoʊɪŋ/", cat: "Radiology" },
+            { eng: "Blisters", kaz: "Көпіршіктер", rus: "Волдыри", phone: "/'blɪstərz/", cat: "ENT" },
+            { eng: "Bullae", kaz: "Үлкен көпіршіктер", rus: "Буллы", phone: "/'bʊliː/", cat: "ENT" },
+            { eng: "Earache", kaz: "Құлақ ауруы", rus: "Боль в ухе", phone: "/'ɪəreɪk/", cat: "ENT" },
+            { eng: "Hearing loss", kaz: "Есту қабілетінің төмендеуі", rus: "Потеря слуха", phone: "/'hɪərɪŋ lɒs/", cat: "ENT" },
+            { eng: "Muffled voice", kaz: "Қатаң дауыс", rus: "Глухой голос", phone: "/'mʌfəld vɔɪs/", cat: "ENT" },
+            { eng: "Nasal congestion", kaz: "Мұрын бітелуі", rus: "Заложенность носа", phone: "/'neɪzəl kən'dʒestʃən/", cat: "ENT" },
+            { eng: "Nasal discharge", kaz: "Мұрыннан бөлінді", rus: "Выделения из носа", phone: "/'neɪzəl dɪs'tʃɑːrdʒ/", cat: "ENT" },
+            { eng: "Sneezing", kaz: "Түшкіру", rus: "Чихание", phone: "/'sniːzɪŋ/", cat: "ENT" },
+            { eng: "Spinning", kaz: "Айналу", rus: "Вращение", phone: "/'spɪnɪŋ/", cat: "ENT" },
+
+            // Orthopedics & Gynecology
+            { eng: "Back pain", kaz: "Арқаның ауыруы", rus: "Боль в спине", phone: "/bæk peɪn/", cat: "Orthopedics" },
+            { eng: "Bone lesion", kaz: "Сүйек зақымдануы", rus: "Поражение кости", phone: "/boʊn 'liːʒən/", cat: "Orthopedics" },
+            { eng: "Crepitus", kaz: "Сықырлау дыбысы", rus: "Крепитация", phone: "/'krepɪtəs/", cat: "Orthopedics" },
+            { eng: "Dislocation", kaz: "Шығу", rus: "Вывих", phone: "/dɪsloʊ'keɪʃən/", cat: "Orthopedics" },
+            { eng: "Instability", kaz: "Тұрақсыздық", rus: "Нестабильность", phone: "/ɪnstə'bɪləti/", cat: "Orthopedics" },
+            { eng: "Joint pain", kaz: "Буын ауыруы", rus: "Боль в суставах", phone: "/dʒɔɪnt peɪn/", cat: "Orthopedics" },
+            { eng: "Limited range of motion", kaz: "Қозғалыс шектеуі", rus: "Ограничение движений", phone: "/'lɪmɪtɪd reɪndʒ/", cat: "Orthopedics" },
+            { eng: "Muscle weakness", kaz: "Бұлшықет әлсіздігі", rus: "Мышечная слабость", phone: "/'mʌsəl 'wiːknəs/", cat: "Orthopedics" },
+            { eng: "Sciatica", kaz: "Шонданай невралгиясы", rus: "Ишиас", phone: "/saɪ'ætɪkə/", cat: "Orthopedics" },
+            { eng: "Sprain", kaz: "Созылу", rus: "Растяжение", phone: "/spreɪn/", cat: "Orthopedics" },
+            { eng: "Strain", kaz: "Созылу", rus: "Растяжение мышц", phone: "/streɪn/", cat: "Orthopedics" },
+            { eng: "Adnexal mass", kaz: "Қосалқы ісігі", rus: "Образование придатков", phone: "/æd'neksəl mæs/", cat: "Obstetrics-gynecology" },
+            { eng: "Cervical dilation", kaz: "Жатыр мойны ашылуы", rus: "Раскрытие шейки матки", phone: "/'sɜːrvɪkəl daɪ'leɪʃən/", cat: "Obstetrics-gynecology" },
+            { eng: "Contractions", kaz: "Толғақ", rus: "Схватки", phone: "/kən'trækʃənz/", cat: "Obstetrics-gynecology" },
+            { eng: "Dryness", kaz: "Құрғақтық", rus: "Сухость", phone: "/'draɪnəs/", cat: "Obstetrics-gynecology" },
+            { eng: "Dyspareunia", kaz: "Жыныстық қатынастағы ауырсыну", rus: "Боли при половом акте", phone: "/dɪspə'ruːniə/", cat: "Obstetrics-gynecology" },
+            { eng: "Effacement", kaz: "Жұқару", rus: "Сглаживание шейки", phone: "/ɪ'feɪsmənt/", cat: "Obstetrics-gynecology" },
+            { eng: "Fetal movement", kaz: "Ұрық қимылы", rus: "Шевеление плода", phone: "/'fiːtəl 'muːvmənt/", cat: "Obstetrics-gynecology" },
+            { eng: "Hot flashes", kaz: "Ыстық толқындар", rus: "Приливы", phone: "/hɒt 'flæʃɪz/", cat: "Obstetrics-gynecology" },
+            { eng: "Infertility", kaz: "Бедеулік", rus: "Бесплодие", phone: "/ɪnfər'tɪləti/", cat: "Obstetrics-gynecology" },
+            { eng: "Mood swings", kaz: "Көңіл күй өзгеруі", rus: "Перепады настроения", phone: "/muːd swɪŋz/", cat: "Obstetrics-gynecology" },
+            { eng: "Oily skin", kaz: "Майлы тері", rus: "Жирная кожа", phone: "/'ɔɪli skɪn/", cat: "Obstetrics-gynecology" },
+            { eng: "Ovarian cyst", kaz: "Аналық без кистасы", rus: "Киста яичника", phone: "/oʊ'veəriən sɪst/", cat: "Obstetrics-gynecology" },
+            { eng: "Ovarian torsion", kaz: "Аналық без бұралуы", rus: "Перекрут яичника", phone: "/oʊ'veəriən 'tɔːrʃən/", cat: "Obstetrics-gynecology" },
+            { eng: "Pelvic pain", kaz: "Жамбас ауыруы", rus: "Тазовая боль", phone: "/'pelvɪk peɪn/", cat: "Obstetrics-gynecology" },
+            { eng: "Rupture of membranes", kaz: "Қағанақ жарылуы", rus: "Разрыв оболочек", phone: "/'rʌptʃər əv 'membreɪnz/", cat: "Obstetrics-gynecology" },
+            { eng: "Uterine fibroids", kaz: "Жатыр миомасы", rus: "Миома матки", phone: "/'juːtərɪn 'faɪbrɔɪdz/", cat: "Obstetrics-gynecology" },
+            { eng: "Vaginal bleeding", kaz: "Қынаптан қан кету", rus: "Вагинальное кровотечение", phone: "/və'dʒaɪnəl 'bliːdɪŋ/", cat: "Obstetrics-gynecology" },
+
+            // Urology & Dermatology
+            { eng: "Dribbling", kaz: "Таму", rus: "Подтекание мочи", phone: "/'drɪblɪŋ/", cat: "Urology" },
+            { eng: "Firm", kaz: "Қатты/тығыз", rus: "Плотный", phone: "/fɜːrm/", cat: "Urology" },
+            { eng: "Hesitancy", kaz: "Зәр шығарудың қиындауы", rus: "Задержка мочеиспускания", phone: "/'hezɪtənsi/", cat: "Urology" },
+            { eng: "Incontinence", kaz: "Зәр ұстай алмау", rus: "Недержание мочи", phone: "/ɪn'kɒntɪnəns/", cat: "Urology" },
+            { eng: "Nodular", kaz: "Түйінді", rus: "Узловой", phone: "/'nɒdjʊlər/", cat: "Urology" },
+            { eng: "Retention", kaz: "Зәр іркілуі, тоқтауы", rus: "Задержка мочи", phone: "/rɪ'tenʃən/", cat: "Urology" },
+            { eng: "Scrotal swelling", kaz: "Ұма ісінуі", rus: "Отёк мошонки", phone: "/'skroʊtəl 'swelɪŋ/", cat: "Urology" },
+            { eng: "Straining to urinate", kaz: "Зәр шығаруда күшену", rus: "Натуживание при мочеиспускании", phone: "/'streɪnɪŋ/", cat: "Urology" },
+            { eng: "Suprapubic pain", kaz: "Қасаға үсті ауыруы", rus: "Надлобковая боль", phone: "/suːprə'pjuːbɪk peɪn/", cat: "Urology" },
+            { eng: "Urgency", kaz: "Зәр шығаруға мәжбүрлеу", rus: "Императивный позыв к мочеиспусканию", phone: "/'ɜːrdʒənsi/", cat: "Urology" },
+            { eng: "Urinary frequency", kaz: "Жиі зәр шығару", rus: "Частое мочеиспускание", phone: "/'jʊərɪneri 'friːkwənsi/", cat: "Urology" },
+            { eng: "Voiding", kaz: "Зәр шығару", rus: "Мочеиспускание", phone: "/'vɔɪdɪŋ/", cat: "Urology" },
+            { eng: "Weak stream", kaz: "Әлсіз ағын", rus: "Слабая струя", phone: "/wiːk striːm/", cat: "Urology" },
+            { eng: "Boggy", kaz: "Жұмсақ, ісінген", rus: "Тестообразный", phone: "/'bɒɡi/", cat: "Urology" },
+            { eng: "Crusting", kaz: "Қабықтану", rus: "Образование корок", phone: "/'krʌstɪŋ/", cat: "Dermatology" },
+            { eng: "Excoriation", kaz: "Тырналу", rus: "Ссадины", phone: "/ekskɔːri'eɪʃən/", cat: "Dermatology" },
+            { eng: "Lichenification", kaz: "Сүйел", rus: "Лихенификация", phone: "/laɪkenɪfɪ'keɪʃən/", cat: "Dermatology" },
+            { eng: "Pustule", kaz: "Іріңді бөртпе", rus: "Пустула", phone: "/'pʌstjuːl/", cat: "Dermatology" },
+            { eng: "Scaling", kaz: "Қабыршақтану", rus: "Шелушение", phone: "/'skeɪlɪŋ/", cat: "Dermatology" },
+            { eng: "Vesicle", kaz: "Көпіршік", rus: "Везикула", phone: "/'vesɪkəl/", cat: "Dermatology" },
+
+            // Pediatrics & Emergency
+            { eng: "Developmental milestones", kaz: "Даму кезеңдері", rus: "Этапы развития", phone: "/dɪveləp'mentəl/", cat: "Pediatrics" },
+            { eng: "Developmental delay", kaz: "Даму тежелуі", rus: "Задержка развития", phone: "/dɪveləp'mentəl dɪ'leɪ/", cat: "Pediatrics" },
+            { eng: "Fontanelle bulging", kaz: "Еңбектің томпаюы", rus: "Выбухание родничка", phone: "/fɒntə'nel 'bʌldʒɪŋ/", cat: "Pediatrics" },
+            { eng: "Lethargy", kaz: "Ұйқышылдық", rus: "Сонливость", phone: "/'leθərdʒi/", cat: "Pediatrics" },
+            { eng: "Poor feeding", kaz: "Нашар тамақтану", rus: "Плохое кормление", phone: "/pʊər 'fiːdɪŋ/", cat: "Pediatrics" },
+            { eng: "Benign", kaz: "Қатерсіз", rus: "Доброкачественный", phone: "/bɪ'naɪn/", cat: "Oncology" },
+            { eng: "Brittle nails", kaz: "Сынғыш тырнақ", rus: "Ломкие ногти", phone: "/'brɪtəl neɪlz/", cat: "Hematology" },
+            { eng: "Extranodal", kaz: "Түйіннен тыс", rus: "Экстранодальный", phone: "/ekstrə'noʊdəl/", cat: "Oncology" },
+            { eng: "Hyperviscosity", kaz: "Жоғары қан тұтқырлығы", rus: "Гипервязкость", phone: "/haɪpərvɪs'kɒsəti/", cat: "Hematology" },
+            { eng: "Malignant", kaz: "Қатерлі", rus: "Злокачественный", phone: "/mə'lɪɡnənt/", cat: "Oncology" },
+            { eng: "Relapse", kaz: "Қайталану", rus: "Рецидив", phone: "/rɪ'læps/", cat: "Oncology" },
+            { eng: "Tumor", kaz: "Ісік", rus: "Опухоль", phone: "/'tuːmər/", cat: "Oncology" },
+            { eng: "Tumor lysis syndrome", kaz: "Ісік ыдырау синдромы", rus: "Синдром лизиса опухоли", phone: "/'tuːmər 'laɪsɪs/", cat: "Oncology" },
+            { eng: "Airway compromise", kaz: "Тыныс жолының бұзылуы", rus: "Нарушение дыхательных путей", phone: "/'erweɪ 'kɒmprəmaɪz/", cat: "Emergency medicine" },
+            { eng: "Altered mental status", kaz: "Сананың өзгеруі", rus: "Изменение сознания", phone: "/'ɔːltərd 'mentəl 'steɪtəs/", cat: "Emergency medicine" },
+            { eng: "Burn", kaz: "Күйік", rus: "Ожог", phone: "/bɜːrn/", cat: "Emergency medicine" },
+            { eng: "Hemorrhage", kaz: "Қан кету", rus: "Геморрагия", phone: "/'hemərɪdʒ/", cat: "Emergency medicine" },
+            { eng: "Laceration", kaz: "Жыртылу жарасы", rus: "Рваная рана", phone: "/læsə'reɪʃən/", cat: "Emergency medicine" },
+            { eng: "Loss of consciousness", kaz: "Есінен тану", rus: "Потеря сознания", phone: "/lɒs əv 'kɒnʃəsnəs/", cat: "Emergency medicine" },
+            { eng: "Poisoning", kaz: "Улану", rus: "Отравление", phone: "/'pɔɪzənɪŋ/", cat: "Emergency medicine" },
+            { eng: "Resuscitation", kaz: "Жансақтау", rus: "Реанимация", phone: "/rɪsʌsɪ'teɪʃən/", cat: "Emergency medicine" },
+            { eng: "Stroke", kaz: "Инсульт", rus: "Инсульт", phone: "/stroʊk/", cat: "Emergency medicine" },
+
+            // Intensive care, Geriatrics, Rehabilitation, Psychiatry & Allergy
+            { eng: "Acute pain", kaz: "Өткір ауырсыну", rus: "Острая боль", phone: "/ə'kjuːt peɪn/", cat: "Intensive care" },
+            { eng: "Continuous renal replacement therapy", kaz: "Бүйрек алмастыру терапиясы", rus: "Заместительная почечная терапия", phone: "/kən'tɪnjuəs 'riːnəl/", cat: "Intensive care" },
+            { eng: "Critical illness", kaz: "Ауыр жағдай", rus: "Критическое состояние", phone: "/'krɪtɪkəl 'ɪlnəs/", cat: "Intensive care" },
+            { eng: "Delirium", kaz: "Сандырақ", rus: "Делирий", phone: "/dɪ'lɪriəm/", cat: "Intensive care" },
+            { eng: "Fluid resuscitation", kaz: "Сұйықтық терапиясы", rus: "Инфузионная терапия", phone: "/'fluːɪd rɪsʌsɪ'teɪʃən/", cat: "Intensive care" },
+            { eng: "Multiorgan failure", kaz: "Көп ағзалық жетіспеушілік", rus: "Полиорганная недостаточность", phone: "/mʌlti'ɔːrɡən 'feɪljər/", cat: "Intensive care" },
+            { eng: "Painkiller", kaz: "Ауырсынуды басатын", rus: "Обезболивающее", phone: "/'peɪnkɪlər/", cat: "Intensive care" },
+            { eng: "Respiratory failure", kaz: "Тыныс жетіспеушілігі", rus: "Дыхательная недостаточность", phone: "/'respərətɔːri 'feɪljər/", cat: "Intensive care" },
+            { eng: "Weaning", kaz: "Аппараттан ажырату", rus: "Отлучение от вентиляции", phone: "/'wiːnɪŋ/", cat: "Intensive care" },
+            { eng: "Cognitive impairment", kaz: "Таным бұзылысы", rus: "Когнитивное нарушение", phone: "/'kɒɡnətɪv ɪm'permənt/", cat: "Geriatrics" },
+            { eng: "Deconditioning", kaz: "Әлсіреу", rus: "Декондиционирование", phone: "/diːkən'dɪʃənɪŋ/", cat: "Geriatrics" },
+            { eng: "Dependency", kaz: "Тәуелділік", rus: "Зависимость", phone: "/dɪ'pendənsi/", cat: "Geriatrics" },
+            { eng: "Falls", kaz: "Құлау", rus: "Падения", phone: "/fɔːlz/", cat: "Geriatrics" },
+            { eng: "Frailty", kaz: "Әлсіздік", rus: "Хрупкость", phone: "/'freɪlti/", cat: "Geriatrics" },
+            { eng: "Functional decline", kaz: "Қызметтің төмендеуі", rus: "Функциональное снижение", phone: "/'fʌŋkʃənəl dɪ'klaɪn/", cat: "Geriatrics" },
+            { eng: "Malnutrition", kaz: "Дұрыс тамақтанбау", rus: "Недоедание", phone: "/mælnuː'trɪʃən/", cat: "Geriatrics" },
+            { eng: "Osteoporosis", kaz: "Сүйек әлсіздігі", rus: "Остеопороз", phone: "/ɒstioʊpə'roʊsɪs/", cat: "Geriatrics" },
+            { eng: "Pressure ulcer", kaz: "Ойылу", rus: "Пролежень", phone: "/'preʃər 'ʌlsər/", cat: "Geriatrics" },
+            { eng: "Assistive device", kaz: "Көмекші құрал", rus: "Вспомогательное устройство", phone: "/ə'sɪstɪv dɪ'vaɪs/", cat: "Rehabilitation" },
+            { eng: "Contracture", kaz: "Буын қатаюы", rus: "Контрактура", phone: "/kən'træktʃər/", cat: "Rehabilitation" },
+            { eng: "Endurance", kaz: "Төзімділік", rus: "Выносливость", phone: "/ɪn'dʒʊərəns/", cat: "Rehabilitation" },
+            { eng: "Functional recovery", kaz: "Функцияның қалпына келуі", rus: "Функциональное восстановление", phone: "/'fʌŋkʃənəl rɪ'kʌvəri/", cat: "Rehabilitation" },
+            { eng: "Gait training", kaz: "Жүріс үйрету", rus: "Тренировка походки", phone: "/ɡeɪt 'treɪnɪŋ/", cat: "Rehabilitation" },
+            { eng: "Impairment", kaz: "Бұзылу", rus: "Нарушение", phone: "/ɪm'permənt/", cat: "Rehabilitation" },
+            { eng: "Independence", kaz: "Тәуелсіздік", rus: "Самостоятельность", phone: "/ɪndɪ'pendəns/", cat: "Rehabilitation" },
+            { eng: "Range of motion", kaz: "Қозғалыс ауқымы", rus: "Объём движений", phone: "/reɪndʒ əv 'moʊʃən/", cat: "Rehabilitation" },
+            { eng: "Spasticity", kaz: "Спастикалық", rus: "Спастичность", phone: "/spæ'stɪsəti/", cat: "Rehabilitation" },
+            { eng: "Speech therapy", kaz: "Логопедиялық терапия", rus: "Логопедическая терапия", phone: "/spiːtʃ 'θerəpi/", cat: "Rehabilitation" },
+            { eng: "Strength", kaz: "Күш", rus: "Сила", phone: "/streŋθ/", cat: "Rehabilitation" },
+            { eng: "Affect", kaz: "Сезім жоқтығы", rus: "Аффект", phone: "/'æfekt/", cat: "Psychiatry" },
+            { eng: "Disorganized thinking", kaz: "Ойдың бұзылуы", rus: "Дезорганизованное мышление", phone: "/dɪs'ɔːrɡənaɪzd/", cat: "Psychiatry" },
+            { eng: "Flight of ideas", kaz: "Ой ұшқырлығы", rus: "Скачка идей", phone: "/flaɪt əv aɪ'dɪəz/", cat: "Psychiatry" },
+            { eng: "Homicidal ideation", kaz: "Кісі өлтіру ойы", rus: "Идеи убийства", phone: "/hɒmɪ'saɪdəl/", cat: "Psychiatry" },
+            { eng: "Hypersomnia", kaz: "Шамадан тыс ұйқышылдық", rus: "Гиперсомния", phone: "/haɪpər'sɒmniə/", cat: "Psychiatry" },
+            { eng: "Insomnia", kaz: "Ұйқысыздық", rus: "Бессонница", phone: "/ɪn'sɒmniə/", cat: "Psychiatry" },
+            { eng: "Mood", kaz: "Көңіл күй", rus: "Настроение", phone: "/muːd/", cat: "Psychiatry" },
+            { eng: "Self-harm", kaz: "Өзіне зиян келтіру", rus: "Самоповреждение", phone: "/self hɑːrm/", cat: "Psychiatry" },
+            { eng: "Suicidal ideation", kaz: "Суицид ойы", rus: "Суицидальные мысли", phone: "/suːɪ'saɪdəl/", cat: "Psychiatry" },
+            { eng: "Thought disorder", kaz: "Ойлау бұзылысы", rus: "Расстройство мышления", phone: "/θɔːt dɪs'ɔːrdər/", cat: "Psychiatry" },
+            { eng: "Withdrawal", kaz: "Шығып кету", rus: "Отход/отказ", phone: "/wɪð'drɔːəl/", cat: "Psychiatry" },
+            { eng: "Itchy", kaz: "Қышитын", rus: "Зудящий", phone: "/'ɪtʃi/", cat: "Allergy/immunology" },
+            { eng: "Scratch", kaz: "Тырнау", rus: "Расчесывать", phone: "/skrætʃ/", cat: "Allergy/immunology" },
+            { eng: "Violaceous", kaz: "Күлгін түсті", rus: "Фиолетовый", phone: "/vaɪə'leɪʃəs/", cat: "Allergy/immunology" },
+            { eng: "Visible", kaz: "Көрінетін", rus: "Видимый", phone: "/'vɪzəbəl/", cat: "Allergy/immunology" },
+            { eng: "Fissure", kaz: "Жарық", rus: "Трещина", phone: "/'fɪʃər/", cat: "Allergy/immunology" },
+            { eng: "Hives", kaz: "Есекжем", rus: "Крапивница", phone: "/haɪvz/", cat: "Allergy/immunology" },
+            { eng: "Angioedema", kaz: "Ангиоісіну", rus: "Ангиоотёк", phone: "/ændʒioʊɪ'diːmə/", cat: "Allergy/immunology" },
+            { eng: "Hypersensitivity", kaz: "Жоғары сезімталдық", rus: "Гиперчувствительность", phone: "/haɪpərsensɪ'tɪvəti/", cat: "Allergy/immunology" },
+            { eng: "Delayed", kaz: "Кешігу", rus: "Замедленный", phone: "/dɪ'leɪd/", cat: "Allergy/immunology" }
+        ];
+
+        // STATE VARIABLES
+        let currentMode = 'eng_kaz'; // 'eng_kaz', 'eng_rus', 'kaz_eng', 'rus_eng'
+        let currentItem = null;
+        let currentCorrectAnswer = "";
+        let isAnswered = false;
+        
+        let statTotal = 0;
+        let statCorrect = 0;
+
+        // PASSWORD VERIFICATION LOGIC
+        function handlePasswordSubmit(event) {
+            event.preventDefault();
+            const input = document.getElementById('passwordInput').value.trim();
+            const errorEl = document.getElementById('passwordError');
+
+            if (input === CORRECT_PASSWORD) {
+                document.getElementById('passwordModal').classList.add('hidden');
+                initQuiz();
+            } else {
+                errorEl.classList.remove('hidden');
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordInput').focus();
+            }
+        }
+
+        // MODE CHANGE HANDLER
+        function setMode(mode) {
+            currentMode = mode;
+            
+            // Update active button styles
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.className = "mode-btn py-1.5 px-1 rounded-xl text-xs font-bold transition-all text-white/80 hover:bg-white/10";
+            });
+            const activeBtn = document.getElementById(`mode-${mode}`);
+            if (activeBtn) {
+                activeBtn.className = "mode-btn py-1.5 px-1 rounded-xl text-xs font-bold transition-all bg-kazakh-gold text-slate-950 shadow-md";
+            }
+
+            // Reload question with new mode
+            loadNextQuestion();
+        }
+
+        // QUIZ INITIALIZATION & RANDOMIZER
+        function initQuiz() {
+            statTotal = 0;
+            statCorrect = 0;
+            updateStats();
+            loadNextQuestion();
+        }
+
+        function loadNextQuestion() {
+            isAnswered = false;
+
+            // Pick random vocabulary item
+            const randomIndex = Math.floor(Math.random() * VOCABULARY.length);
+            currentItem = VOCABULARY[randomIndex];
+
+            // Setup Question & Correct Answer based on mode
+            let questionText = "";
+            let phonetic = "";
+            let category = currentItem.cat || "General Medical";
+
+            if (currentMode === 'eng_kaz') {
+                questionText = currentItem.eng;
+                phonetic = currentItem.phone || "";
+                currentCorrectAnswer = currentItem.kaz;
+                document.getElementById('modeLabelHint').innerText = "Аудармасын таңдаңыз (Қаз)";
+            } else if (currentMode === 'eng_rus') {
+                questionText = currentItem.eng;
+                phonetic = currentItem.phone || "";
+                currentCorrectAnswer = currentItem.rus;
+                document.getElementById('modeLabelHint').innerText = "Выберите перевод (Рус)";
+            } else if (currentMode === 'kaz_eng') {
+                questionText = currentItem.kaz;
+                phonetic = "Қазақша термин";
+                currentCorrectAnswer = currentItem.eng;
+                document.getElementById('modeLabelHint').innerText = "Select English Term";
+            } else if (currentMode === 'rus_eng') {
+                questionText = currentItem.rus;
+                phonetic = "Русский термин";
+                currentCorrectAnswer = currentItem.eng;
+                document.getElementById('modeLabelHint').innerText = "Select English Term";
+            }
+
+            // Update DOM Elements
+            document.getElementById('questionTerm').innerText = questionText;
+            document.getElementById('phoneticText').innerText = phonetic;
+            document.getElementById('categoryBadge').innerText = category;
+
+            // Generate 4 Answer Choices (1 Correct, 3 Wrong)
+            const choices = generateChoices(currentCorrectAnswer);
+
+            // Render Choices Grid
+            const optionsGrid = document.getElementById('optionsGrid');
+            optionsGrid.innerHTML = '';
+
+            choices.forEach((choice, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `option-btn w-full p-3 sm:p-3.5 text-left text-sm sm:text-base font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border-2 border-slate-200 rounded-2xl transition-all flex items-center justify-between group active:scale-[0.99]`;
+                btn.onclick = () => selectOption(choice, btn);
+                
+                btn.innerHTML = `
+                    <span class="flex-1 pr-2">${choice}</span>
+                    <span class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs font-bold text-slate-400 group-hover:border-kazakh-blue group-hover:text-kazakh-blue shrink-0">
+                        ${String.fromCharCode(65 + idx)}
+                    </span>
+                `;
+                optionsGrid.appendChild(btn);
+            });
+
+            // Disable Next Button until answer selected
+            const nextBtn = document.getElementById('nextBtn');
+            nextBtn.disabled = true;
+            nextBtn.className = "w-full py-3 px-6 bg-gradient-to-r from-kazakh-gold via-amber-400 to-kazakh-gold text-slate-950 font-black text-base rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2 opacity-50 cursor-not-allowed";
+        }
+
+        // GENERATE DISTRACTORS
+        function generateChoices(correct) {
+            const choices = [correct];
+            const keyToPull = (currentMode === 'eng_kaz') ? 'kaz' :
+                              (currentMode === 'eng_rus') ? 'rus' : 'eng';
+
+            // Extract all candidate wrong answers
+            const candidates = VOCABULARY
+                .map(item => item[keyToPull])
+                .filter(val => val && val !== correct);
+
+            // Shuffle candidates
+            shuffleArray(candidates);
+
+            // Pick first 3 distinct wrong answers
+            for (let i = 0; i < candidates.length && choices.length < 4; i++) {
+                if (!choices.includes(candidates[i])) {
+                    choices.push(candidates[i]);
+                }
+            }
+
+            // Shuffle final 4 options
+            shuffleArray(choices);
+            return choices;
+        }
+
+        // FISHER-YATES SHUFFLE
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // OPTION SELECTION & FEEDBACK LOGIC
+        function selectOption(selectedChoice, selectedBtn) {
+            if (isAnswered) return;
+            isAnswered = true;
+
+            statTotal++;
+            const allBtns = document.querySelectorAll('.option-btn');
+
+            if (selectedChoice === currentCorrectAnswer) {
+                // Correct Answer
+                statCorrect++;
+                selectedBtn.className = "option-btn w-full p-3 sm:p-3.5 text-left text-sm sm:text-base font-bold text-white bg-emerald-500 border-2 border-emerald-600 rounded-2xl shadow-lg animate-success flex items-center justify-between";
+                selectedBtn.querySelector('span:last-child').innerHTML = `<i class="fa-solid fa-check text-white"></i>`;
+                selectedBtn.querySelector('span:last-child').className = "w-6 h-6 rounded-full bg-emerald-600 flex items-center justify-center shrink-0";
+            } else {
+                // Wrong Answer selected
+                selectedBtn.className = "option-btn w-full p-3 sm:p-3.5 text-left text-sm sm:text-base font-bold text-white bg-rose-500 border-2 border-rose-600 rounded-2xl shadow-lg flex items-center justify-between";
+                selectedBtn.querySelector('span:last-child').innerHTML = `<i class="fa-solid fa-xmark text-white"></i>`;
+                selectedBtn.querySelector('span:last-child').className = "w-6 h-6 rounded-full bg-rose-600 flex items-center justify-center shrink-0";
+
+                // Highlight correct option in green
+                allBtns.forEach(btn => {
+                    if (btn.innerText.includes(currentCorrectAnswer)) {
+                        btn.className = "option-btn w-full p-3 sm:p-3.5 text-left text-sm sm:text-base font-bold text-white bg-emerald-500 border-2 border-emerald-600 rounded-2xl shadow-lg flex items-center justify-between animate-pulse";
+                        btn.querySelector('span:last-child').innerHTML = `<i class="fa-solid fa-check text-white"></i>`;
+                        btn.querySelector('span:last-child').className = "w-6 h-6 rounded-full bg-emerald-600 flex items-center justify-center shrink-0";
+                    }
+                });
+            }
+
+            // Disable all option buttons
+            allBtns.forEach(btn => {
+                btn.style.pointerEvents = 'none';
+            });
+
+            // Update stats
+            updateStats();
+
+            // Enable Next Button
+            const nextBtn = document.getElementById('nextBtn');
+            nextBtn.disabled = false;
+            nextBtn.className = "w-full py-3 px-6 bg-gradient-to-r from-kazakh-gold via-amber-400 to-kazakh-gold text-slate-950 font-black text-base rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2 hover:brightness-105 active:scale-98 cursor-pointer gold-border-glow";
+        }
+
+        // NEXT QUESTION TRIGGER
+        function nextQuestion() {
+            if (!isAnswered) return;
+            loadNextQuestion();
+        }
+
+        // STATS COUNTER UPDATE
+        function updateStats() {
+            document.getElementById('statTotal').innerText = statTotal;
+            document.getElementById('statCorrect').innerText = statCorrect;
+            
+            const accuracy = statTotal > 0 ? Math.round((statCorrect / statTotal) * 100) : 0;
+            document.getElementById('statAccuracy').innerText = `${accuracy}%`;
+        }
+
+        // Focus password field on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('passwordInput').focus();
+        });
+    </script>
+</body>
+</html>
