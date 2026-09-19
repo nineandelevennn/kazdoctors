@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Medical English - @doctors.speak</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kzBlue: '#00AFCA',
+                        kzCyan: '#0099B8',
+                        kzDarkBlue: '#007A94',
+                        kzGold: '#FEC500',
+                        kzLightGold: '#FFF3C4',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html, body {
+            height: 100%;
+            height: 100dvh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        .kz-sun-ornament {
+            background-image: radial-gradient(circle, #FEC500 20%, transparent 20%),
+                              radial-gradient(circle, #FEC500 20%, transparent 20%);
+            background-size: 15px 15px;
+            background-position: 0 0, 7.5px 7.5px;
+            opacity: 0.15;
+        }
+
+        .shadow-glow {
+            box-shadow: 0 4px 20px -2px rgba(0, 175, 202, 0.3);
+        }
+        
+        .card-pulse {
+            animation: pulse-border 2s infinite;
+        }
+
+        @keyframes pulse-border {
+            0%, 100% { border-color: rgba(254, 197, 0, 0.4); }
+            50% { border-color: rgba(254, 197, 0, 1); }
+        }
+
+        /* Custom transition effects */
+        .btn-option {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn-option:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-kzBlue to-kzDarkBlue text-slate-800 font-sans flex flex-col justify-between h-full w-full overflow-hidden antialiased">
+
+    <div class="flex flex-col justify-between h-full w-full max-w-md mx-auto p-3 sm:p-4 box-border relative">
+        
+        <!-- TOP BRANDING HEADER (Always Visible for Screenshots) -->
+        <header class="flex flex-col items-center justify-center bg-white/95 backdrop-blur-md rounded-2xl p-2.5 shadow-lg border-2 border-kzGold/60 shrink-0 mb-2">
+            <div class="flex items-center justify-between w-full px-2">
+                <div class="flex items-center space-x-1.5">
+                    <span class="text-xl">🇰🇿</span>
+                    <span class="font-extrabold text-xs sm:text-sm tracking-wide text-kzDarkBlue uppercase">Medical English</span>
+                </div>
+                <div class="bg-gradient-to-r from-kzGold to-amber-400 text-slate-900 px-3 py-1 rounded-full text-xs font-black shadow-sm flex items-center gap-1 border border-amber-300">
+                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                    @doctors.speak
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTROL TOOLBAR (Direction + Mini Stats) -->
+        <div class="flex items-center justify-between gap-2 bg-sky-900/40 backdrop-blur-md p-2 rounded-xl border border-white/20 shrink-0 mb-2">
+            <!-- Language Direction Selector -->
+            <div class="flex-1 min-w-0">
+                <select id="directionSelect" class="w-full bg-white text-slate-900 text-xs sm:text-sm font-bold py-1.5 px-2 rounded-lg border-2 border-kzGold focus:outline-none focus:ring-2 focus:ring-kzGold cursor-pointer shadow-sm truncate">
+                    <option value="eng-kaz">🇬🇧 Eng ➔ 🇰🇿 Kaz</option>
+                    <option value="eng-rus">🇬🇧 Eng ➔ 🇷🇺 Rus</option>
+                    <option value="kaz-eng">🇰🇿 Kaz ➔ 🇬🇧 Eng</option>
+                    <option value="rus-eng">🇷🇺 Rus ➔ 🇬🇧 Eng</option>
+                </select>
+            </div>
+
+            <!-- Stats Badge -->
+            <div class="flex items-center gap-1.5 bg-white/95 px-2.5 py-1.5 rounded-lg border border-kzGold/50 text-xs font-bold shrink-0">
+                <span class="text-slate-500">Пройдено:</span>
+                <span id="scoreText" class="text-kzDarkBlue text-sm font-black">0</span>
+                <span class="text-slate-300">|</span>
+                <span id="accuracyText" class="text-emerald-600 text-xs font-extrabold">0%</span>
+            </div>
+        </div>
+
+        <!-- MAIN QUESTION CARD -->
+        <div class="flex-1 flex flex-col justify-center items-center relative my-1 min-h-0">
+            <div class="w-full h-full bg-white rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-center text-center shadow-xl border-4 border-kzGold/70 relative overflow-hidden card-pulse">
+                
+                <!-- Background Kaz Pattern Accent -->
+                <div class="absolute -top-10 -right-10 w-28 h-28 bg-kzGold/15 rounded-full blur-xl pointer-events-none"></div>
+                <div class="absolute -bottom-10 -left-10 w-28 h-28 bg-kzBlue/15 rounded-full blur-xl pointer-events-none"></div>
+
+                <div class="inline-block bg-sky-100 text-kzDarkBlue text-[11px] font-bold px-3 py-0.5 rounded-full uppercase tracking-wider mb-2 border border-sky-200">
+                    Медицинский термин
+                </div>
+
+                <!-- Main Term Display -->
+                <h1 id="questionTerm" class="text-2xl sm:text-3xl font-extrabold text-slate-800 leading-snug my-auto px-1 max-h-full overflow-y-auto">
+                    Term Loading...
+                </h1>
+
+                <!-- Helper Hint / Subtitle -->
+                <p id="directionHint" class="text-xs font-medium text-slate-400 mt-1">
+                    Выберите правильный перевод
+                </p>
+            </div>
+        </div>
+
+        <!-- MULTIPLE CHOICE OPTIONS GRID -->
+        <div id="optionsContainer" class="grid grid-cols-1 gap-2 shrink-0 my-2">
+            <button onclick="checkAnswer(0)" class="btn-option w-full bg-white text-slate-800 text-sm sm:text-base font-bold py-3 px-4 rounded-xl shadow-md border-2 border-slate-200 text-left flex items-center justify-between hover:bg-slate-50 active:bg-slate-100">
+                <span class="option-text flex-1 pr-2">Option 1</span>
+                <span class="status-icon text-lg"></span>
+            </button>
+            <button onclick="checkAnswer(1)" class="btn-option w-full bg-white text-slate-800 text-sm sm:text-base font-bold py-3 px-4 rounded-xl shadow-md border-2 border-slate-200 text-left flex items-center justify-between hover:bg-slate-50 active:bg-slate-100">
+                <span class="option-text flex-1 pr-2">Option 2</span>
+                <span class="status-icon text-lg"></span>
+            </button>
+            <button onclick="checkAnswer(2)" class="btn-option w-full bg-white text-slate-800 text-sm sm:text-base font-bold py-3 px-4 rounded-xl shadow-md border-2 border-slate-200 text-left flex items-center justify-between hover:bg-slate-50 active:bg-slate-100">
+                <span class="option-text flex-1 pr-2">Option 3</span>
+                <span class="status-icon text-lg"></span>
+            </button>
+            <button onclick="checkAnswer(3)" class="btn-option w-full bg-white text-slate-800 text-sm sm:text-base font-bold py-3 px-4 rounded-xl shadow-md border-2 border-slate-200 text-left flex items-center justify-between hover:bg-slate-50 active:bg-slate-100">
+                <span class="option-text flex-1 pr-2">Option 4</span>
+                <span class="status-icon text-lg"></span>
+            </button>
+        </div>
+
+        <!-- ACTION FOOTER BUTTON (NEXT / KЕЛЕСІ) -->
+        <div class="shrink-0 mt-1">
+            <button id="nextBtn" onclick="nextQuestion()" disabled class="w-full bg-kzGold hover:bg-amber-400 text-slate-900 font-extrabold text-base sm:text-lg py-3 px-6 rounded-xl shadow-lg border-b-4 border-amber-600 disabled:opacity-40 disabled:cursor-not-allowed transition duration-150 flex items-center justify-center gap-2">
+                <span>КЕЛЕСІ / NEXT</span>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // VOCABULARY DATABASE (Derived strictly from Vocabulary ANATOMICAL.pdf)
+        const vocabulary = [
+            { eng: "Heart", kaz: "Жүрек", rus: "Сердце" },
+            { eng: "Connective tissue", kaz: "Дәнекер тін", rus: "Соединительная ткань" },
+            { eng: "Lung", kaz: "Өкпе", rus: "Лёгкое" },
+            { eng: "Ligament", kaz: "Байлам", rus: "Связка" },
+            { eng: "Liver", kaz: "Бауыр", rus: "Печень" },
+            { eng: "Tendon", kaz: "Сіңір", rus: "Сухожилие" },
+            { eng: "Stomach", kaz: "Асқазан", rus: "Желудок" },
+            { eng: "Cartilage", kaz: "Шеміршек", rus: "Хрящ" },
+            { eng: "Kidney", kaz: "Бүйрек", rus: "Почка" },
+            { eng: "Joint", kaz: "Буын", rus: "Сустав" },
+            { eng: "Intestine", kaz: "Ішек", rus: "Кишечник" },
+            { eng: "Bone marrow", kaz: "Сүйек кемігі", rus: "Костный мозг" },
+            { eng: "Bladder", kaz: "Қуық", rus: "Мочевой пузырь" },
+            { eng: "Fascia", kaz: "Фасция", rus: "Фасция" },
+            { eng: "Pancreas", kaz: "Ұйқыбез", rus: "Поджелудочная железа" },
+            { eng: "Synovial fluid", kaz: "Синовиальды сұйықтық", rus: "Синовиальная жидкость" },
+            { eng: "Spleen", kaz: "Көкбауыр", rus: "Селезёнка" },
+            { eng: "Meniscus", kaz: "Мениск", rus: "Мениск" },
+            { eng: "Esophagus", kaz: "Өңеш", rus: "Пищевод" },
+            { eng: "Bursa", kaz: "Бурса", rus: "Бурса" },
+            { eng: "Trachea", kaz: "Кеңірдек", rus: "Трахея" },
+            { eng: "Thyroid gland", kaz: "Қалқанша без", rus: "Щитовидная железа" },
+            { eng: "Gallbladder", kaz: "Өт қабы", rus: "Желчный пузырь" },
+            { eng: "Appendix", kaz: "Соқырішек өсіндісі", rus: "Аппендикс" },
+            { eng: "Brain", kaz: "Ми", rus: "Мозг" },
+            { eng: "Ureter", kaz: "Несепағар", rus: "Мочеточник" },
+            { eng: "Ovary", kaz: "Аналық без", rus: "Яичник" },
+            { eng: "Uterus", kaz: "Жатыр", rus: "Матка" },
+            { eng: "Cervix", kaz: "Жатыр мойны", rus: "Шейка матки" },
+            { eng: "Adrenal gland", kaz: "Бүйрек үсті безі", rus: "Надпочечник" },
+            { eng: "Retina", kaz: "Торлы қабық", rus: "Сетчатка" },
+            { eng: "Skull", kaz: "Бас сүйек", rus: "Череп" },
+            { eng: "Jaw", kaz: "Жақ", rus: "Челюсть" },
+            { eng: "Clavicle", kaz: "Бұғана", rus: "Ключица" },
+            { eng: "Scapula", kaz: "Жауырын", rus: "Лопатка" },
+            { eng: "Sternum", kaz: "Төс сүйек", rus: "Грудина" },
+            { eng: "Rib", kaz: "Қабырға", rus: "Ребро" },
+            { eng: "Spine", kaz: "Омыртқа", rus: "Позвоночник" },
+            { eng: "Vertebra", kaz: "Омыртқа", rus: "Позвонок" },
+            { eng: "Pelvis", kaz: "Жамбас", rus: "Таз" },
+            { eng: "Humerus", kaz: "Иық сүйегі", rus: "Плечевая кость" },
+            { eng: "Radius", kaz: "Кәрі жілік", rus: "Лучевая кость" },
+            { eng: "Ulna", kaz: "Шынтақ сүйек", rus: "Локтевая кость" },
+            { eng: "Femur", kaz: "Ортан жілік", rus: "Бедренная кость" },
+            { eng: "Patella", kaz: "Тізе тобығы", rus: "Надколенник" },
+            { eng: "Tibia", kaz: "Асық жілік", rus: "Большеберцовая кость" },
+            { eng: "Fibula", kaz: "Шыбық сүйек", rus: "Малоберцовая кость" },
+            { eng: "Muscle", kaz: "Бұлшықет", rus: "Мышца" },
+            { eng: "Biceps", kaz: "Бицепс", rus: "Бицепс" },
+            { eng: "Triceps", kaz: "Трицепс", rus: "Трицепс" },
+            { eng: "Deltoid", kaz: "Дельта тәрізді бұлшықет", rus: "Дельтовидная мышца" },
+            { eng: "Pectoral muscle", kaz: "Кеуде бұлшықеті", rus: "Грудная мышца" },
+            { eng: "Abdominal muscle", kaz: "Іш бұлшықеті", rus: "Брюшная мышца" },
+            { eng: "Latissimus dorsi", kaz: "Арқаның жалпақ бұлшықеті", rus: "Широчайшая мышца спины" },
+            { eng: "Trapezius", kaz: "Трапеция бұлшықеті", rus: "Трапециевидная мышца" },
+            { eng: "Gluteus", kaz: "Бөксе бұлшықеті", rus: "Ягодичная мышца" },
+            { eng: "Quadriceps", kaz: "Төртбасты бұлшықет", rus: "Четырёхглавая мышца" },
+            { eng: "Hamstring", kaz: "Санның артқы бұлшықеті", rus: "Подколенное сухожилие" },
+            { eng: "Calf muscle", kaz: "Балтыр бұлшықеті", rus: "Икроножная мышца" },
+            { eng: "Diaphragm", kaz: "Көкет", rus: "Диафрагма" }
+        ];
+
+        // GAME STATE STATE VARIABLES
+        let currentQuestion = null;
+        let correctOptionIndex = -1;
+        let totalAttempted = 0;
+        let totalCorrect = 0;
+        let isAnswered = false;
+
+        // DOM ELEMENTS
+        const directionSelect = document.getElementById('directionSelect');
+        const questionTerm = document.getElementById('questionTerm');
+        const directionHint = document.getElementById('directionHint');
+        const optionButtons = document.querySelectorAll('#optionsContainer .btn-option');
+        const nextBtn = document.getElementById('nextBtn');
+        const scoreText = document.getElementById('scoreText');
+        const accuracyText = document.getElementById('accuracyText');
+
+        // EVENT LISTENERS
+        directionSelect.addEventListener('change', () => {
+            nextQuestion();
+        });
+
+        // Shuffle array helper
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        // Get language key based on direction
+        function getLangKeys(dir) {
+            switch(dir) {
+                case 'eng-kaz': return { source: 'eng', target: 'kaz', label: 'Ағылшын ➔ Қазақша' };
+                case 'eng-rus': return { source: 'eng', target: 'rus', label: 'Английский ➔ Русский' };
+                case 'kaz-eng': return { source: 'kaz', target: 'eng', label: 'Қазақша ➔ English' };
+                case 'rus-eng': return { source: 'rus', target: 'eng', label: 'Русский ➔ English' };
+                default: return { source: 'eng', target: 'kaz', label: 'English ➔ Қазақша' };
+            }
+        }
+
+        // Generate dynamic question
+        function nextQuestion() {
+            isAnswered = false;
+            nextBtn.disabled = true;
+
+            const mode = directionSelect.value;
+            const { source, target, label } = getLangKeys(mode);
+            directionHint.textContent = label;
+
+            // Pick random target word
+            const randomIndex = Math.floor(Math.random() * vocabulary.length);
+            currentQuestion = vocabulary[randomIndex];
+
+            const promptText = currentQuestion[source];
+            const correctAnswer = currentQuestion[target];
+
+            questionTerm.textContent = promptText;
+
+            // Generate 3 unique wrong answers
+            let wrongOptions = [];
+            let pool = vocabulary.filter(item => item[target] !== correctAnswer);
+            
+            // Collect unique options
+            let usedTexts = new Set([correctAnswer]);
+            while (wrongOptions.length < 3 && pool.length > 0) {
+                let randIdx = Math.floor(Math.random() * pool.length);
+                let cand = pool[randIdx][target];
+                if (!usedTexts.has(cand)) {
+                    usedTexts.add(cand);
+                    wrongOptions.push(cand);
+                }
+                pool.splice(randIdx, 1);
+            }
+
+            // Mix correct answer with wrong ones
+            let options = [correctAnswer, ...wrongOptions];
+            options = shuffle(options);
+            correctOptionIndex = options.indexOf(correctAnswer);
+
+            // Render buttons
+            optionButtons.forEach((btn, idx) => {
+                const textEl = btn.querySelector('.option-text');
+                const iconEl = btn.querySelector('.status-icon');
+                
+                textEl.textContent = options[idx];
+                iconEl.textContent = '';
+                
+                // Reset styles
+                btn.disabled = false;
+                btn.className = "btn-option w-full bg-white text-slate-800 text-sm sm:text-base font-bold py-3 px-4 rounded-xl shadow-md border-2 border-slate-200 text-left flex items-center justify-between hover:bg-slate-50 active:bg-slate-100";
+            });
+        }
+
+        // Check user selection
+        function checkAnswer(selectedIndex) {
+            if (isAnswered) return;
+            isAnswered = true;
+
+            totalAttempted++;
+            const isCorrect = (selectedIndex === correctOptionIndex);
+
+            if (isCorrect) {
+                totalCorrect++;
+            }
+
+            // Update option styles
+            optionButtons.forEach((btn, idx) => {
+                btn.disabled = true;
+                const iconEl = btn.querySelector('.status-icon');
+
+                if (idx === correctOptionIndex) {
+                    btn.className = "btn-option w-full bg-emerald-500 text-white text-sm sm:text-base font-bold py-3 px-4 rounded-xl shadow-md border-2 border-emerald-600 text-left flex items-center justify-between";
+                    iconEl.textContent = '✓';
+                } else if (idx === selectedIndex && !isCorrect) {
+                    btn.className = "btn-option w-full bg-rose-500 text-white text-sm sm:text-base font-bold py-3 px-4 rounded-xl shadow-md border-2 border-rose-600 text-left flex items-center justify-between";
+                    iconEl.textContent = '✕';
+                } else {
+                    btn.className = "btn-option w-full bg-slate-100 text-slate-400 text-sm sm:text-base font-medium py-3 px-4 rounded-xl border-2 border-slate-200 text-left flex items-center justify-between opacity-60";
+                }
+            });
+
+            // Update stats counter
+            updateStats();
+
+            // Enable Next Button
+            nextBtn.disabled = false;
+        }
+
+        // Update score and percentage
+        function updateStats() {
+            scoreText.textContent = `${totalCorrect}/${totalAttempted}`;
+            const percentage = totalAttempted > 0 ? Math.round((totalCorrect / totalAttempted) * 100) : 0;
+            accuracyText.textContent = `${percentage}%`;
+        }
+
+        // START GAME ON LOAD
+        window.onload = function() {
+            nextQuestion();
+        };
+    </script>
+</body>
+</html>
