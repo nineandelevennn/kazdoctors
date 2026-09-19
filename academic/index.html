@@ -1,712 +1,598 @@
 <!DOCTYPE html>
-<html lang="ru" class="h-full">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Medical English Trainer | @doctors.speak</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        kazSky: '#00AFCA',
-                        kazSkyDark: '#008C02',
-                        kazSkyDeep: '#007A99',
-                        kazGold: '#FFC72C',
-                        kazGoldHover: '#E5AF19',
-                        kazGoldLight: '#FFF2C6',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        /* Custom scrollbar reset & screen fitting guardrails */
-        * {
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-            box-sizing: border-box;
-        }
-        
-        body, html {
-            height: 100%;
-            height: 100dvh;
-            overflow: hidden;
-            touch-action: manipulation;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>@doctors.speak — Academic & Clinical Vocabulary Trainer</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-        /* Kazakh Flag Pattern SVGs & Gradients */
-        .kaz-bg-gradient {
-            background: radial-gradient(circle at 50% 10%, #00C6E6 0%, #00AFCA 50%, #0087A3 100%);
-        }
+    body {
+      background: linear-gradient(135deg, #00afca 0%, #0081a7 100%);
+      color: #333;
+      height: 100vh;
+      height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      padding: 10px;
+    }
 
-        .gold-glow {
-            box-shadow: 0 0 15px rgba(255, 199, 44, 0.4);
-        }
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 400px;
+      height: 100%;
+      max-height: 680px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      border: 3px solid #fbc02d;
+      position: relative;
+    }
 
-        .gold-border {
-            border: 2px solid #FFC72C;
-        }
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #00afca;
+    }
 
-        /* Smooth pulse animation for screenshot banner */
-        @keyframes subtlePulse {
-            0%, 100% { opacity: 0.9; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.02); }
-        }
+    .home-btn {
+      background-color: #fbc02d;
+      color: #003366;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 5px 10px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+      transition: transform 0.1s, background-color 0.2s;
+    }
 
-        .brand-pulse {
-            animation: subtlePulse 3s infinite ease-in-out;
-        }
+    .home-btn:active {
+      transform: scale(0.95);
+      background-color: #fdd835;
+    }
 
-        .option-btn {
-            transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+    .brand {
+      color: #00afca;
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: 0.5px;
+    }
 
-        .option-btn:active:not(:disabled) {
-            transform: scale(0.97);
-        }
-    </style>
+    /* Password Screen */
+    .auth-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      flex-grow: 1;
+      text-align: center;
+    }
+
+    .auth-title {
+      font-size: 1.2rem;
+      color: #0081a7;
+      font-weight: 700;
+    }
+
+    .auth-input {
+      width: 80%;
+      padding: 12px;
+      border: 2px solid #00afca;
+      border-radius: 10px;
+      font-size: 1rem;
+      text-align: center;
+      outline: none;
+    }
+
+    .auth-btn, .next-btn {
+      background: #00afca;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      width: 80%;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .auth-btn:active, .next-btn:active {
+      transform: scale(0.98);
+    }
+
+    .error-msg {
+      color: #e53935;
+      font-size: 0.85rem;
+      display: none;
+    }
+
+    /* Controls & Stats */
+    .mode-select {
+      width: 100%;
+      padding: 8px;
+      border: 2px solid #00afca;
+      border-radius: 10px;
+      font-weight: bold;
+      color: #0081a7;
+      background: #f4fbfe;
+      margin-top: 8px;
+      outline: none;
+      font-size: 0.85rem;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #555;
+      margin-top: 6px;
+      background: #f0f9fc;
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+
+    /* Question & Term */
+    .term-box {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      margin: 10px 0;
+      background: #f9fbfd;
+      border-radius: 12px;
+      padding: 10px;
+      border: 1px dashed #00afca;
+    }
+
+    .term-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #0081a7;
+      margin-bottom: 4px;
+      word-break: break-word;
+    }
+
+    .term-sub {
+      font-size: 0.82rem;
+      color: #666;
+    }
+
+    /* Options */
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .option-btn {
+      background: #ffffff;
+      border: 2px solid #e0e0e0;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #333;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .option-btn.correct {
+      background-color: #d4edda !important;
+      border-color: #28a745 !important;
+      color: #155724 !important;
+    }
+
+    .option-btn.wrong {
+      background-color: #f8d7da !important;
+      border-color: #dc3545 !important;
+      color: #721c24 !important;
+    }
+
+    .next-btn {
+      width: 100%;
+      background: #fbc02d;
+      color: #003366;
+      display: none;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
 </head>
-<body class="kaz-bg-gradient text-slate-800 flex flex-col justify-between h-[100dvh] max-h-[100dvh] w-full max-w-md mx-auto p-2.5 sm:p-4 overflow-hidden relative font-sans">
+<body>
 
-    <!-- PASSWORD AUTHENTICATION SCREEN -->
-    <div id="auth-screen" class="flex-1 flex flex-col justify-between items-center w-full py-4 px-2 text-center my-auto">
-        <!-- Header with logo and branding -->
-        <div class="flex flex-col items-center justify-center my-auto w-full">
-            <div class="flex items-center justify-center space-x-2 mb-2">
-                <svg class="w-10 h-10 text-kazGold drop-shadow" viewBox="0 0 100 100" fill="currentColor">
-                    <circle cx="50" cy="50" r="22" fill="#FFC72C"/>
-                    <g stroke="#FFC72C" stroke-width="4">
-                        <line x1="50" y1="10" x2="50" y2="20" />
-                        <line x1="50" y1="80" x2="50" y2="90" />
-                        <line x1="10" y1="50" x2="20" y2="50" />
-                        <line x1="80" y1="50" x2="90" y2="50" />
-                        <line x1="22" y1="22" x2="29" y2="29" />
-                        <line x1="71" y1="71" x2="78" y2="78" />
-                        <line x1="22" y1="78" x2="29" y2="71" />
-                        <line x1="71" y1="29" x2="78" y2="22" />
-                    </g>
-                </svg>
-                <span class="text-kazGold font-black text-2xl sm:text-3xl tracking-wide drop-shadow-md brand-pulse">
-                    @doctors.speak
-                </span>
-            </div>
+  <div class="card">
+    <!-- Header -->
+    <header class="header">
+      <a href="https://kazdoctors.com" class="home-btn">🏠 Главная</a>
+      <div class="brand">@doctors.speak</div>
+    </header>
 
-            <h1 class="text-white text-lg sm:text-xl font-bold mb-1 drop-shadow">
-                Medical English Trainer
-            </h1>
-            <p class="text-sky-100 text-xs sm:text-sm font-medium mb-6">
-                Медициналық ағылшын терминдері • Vocabulary 2.0
-            </p>
-
-            <!-- Form container -->
-            <div class="bg-white/95 backdrop-blur-md p-5 rounded-2xl shadow-2xl border-2 border-kazGold/60 w-full max-w-xs flex flex-col gap-3">
-                <div class="text-left">
-                    <label for="password-input" class="block text-xs font-bold text-slate-700 mb-1">
-                        Пароль доступа / Кіру паролі
-                    </label>
-                    <input 
-                        type="password" 
-                        id="password-input" 
-                        placeholder="Введите пароль доступа" 
-                        onkeydown="if(event.key==='Enter') checkPassword()"
-                        class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-kazSky focus:border-kazSky transition-all text-slate-800"
-                    />
-                </div>
-
-                <!-- Error Banner -->
-                <div id="auth-error" class="hidden text-xs font-bold text-rose-600 bg-rose-50 border border-rose-200 p-2.5 rounded-xl text-center leading-snug">
-                    Неверный пароль. Обратитесь к @doctors.speak
-                </div>
-
-                <button 
-                    onclick="checkPassword()" 
-                    class="w-full bg-kazGold hover:bg-kazGoldHover active:scale-95 text-slate-900 font-extrabold text-sm py-2.5 rounded-xl transition-all shadow-md gold-glow flex items-center justify-center gap-2">
-                    <span>Войти / Кіру</span>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
-
-        <!-- Auth Footer Watermark -->
-        <div class="text-center pt-2 text-xs text-white/90 font-medium">
-            Пароль алу үшін: <span class="font-bold text-kazGold">@doctors.speak</span>
-        </div>
+    <!-- Screen 1: Password -->
+    <div id="authScreen" class="auth-container">
+      <div class="auth-title">Введите пароль для доступа</div>
+      <input type="password" id="passInput" class="auth-input" placeholder="Пароль">
+      <button onclick="checkPass()" class="auth-btn">Войти</button>
+      <div id="errorMsg" class="error-msg">Неверный пароль!</div>
     </div>
 
-    <!-- MAIN APPLICATION CONTAINER (Hidden until authenticated) -->
-    <div id="app-screen" class="hidden flex-col justify-between h-full w-full">
-        <!-- TOP HEADER WITH KAZAKH ORNAMENT & BRANDING -->
-        <header class="flex flex-col items-center justify-center shrink-0 pt-1 pb-1 text-center relative z-10">
-            <div class="flex items-center justify-center space-x-2 mb-0.5">
-                <svg class="w-6 h-6 text-kazGold drop-shadow" viewBox="0 0 100 100" fill="currentColor">
-                    <circle cx="50" cy="50" r="22" fill="#FFC72C"/>
-                    <g stroke="#FFC72C" stroke-width="4">
-                        <line x1="50" y1="10" x2="50" y2="20" />
-                        <line x1="50" y1="80" x2="50" y2="90" />
-                        <line x1="10" y1="50" x2="20" y2="50" />
-                        <line x1="80" y1="50" x2="90" y2="50" />
-                        <line x1="22" y1="22" x2="29" y2="29" />
-                        <line x1="71" y1="71" x2="78" y2="78" />
-                        <line x1="22" y1="78" x2="29" y2="71" />
-                        <line x1="71" y1="29" x2="78" y2="22" />
-                    </g>
-                </svg>
-                <span class="text-kazGold font-black text-xl sm:text-2xl tracking-wide drop-shadow-md brand-pulse">
-                    @doctors.speak
-                </span>
-                <span class="bg-kazGold text-slate-900 text-[10px] font-extrabold px-1.5 py-0.5 rounded-full uppercase tracking-wider">
-                    MED
-                </span>
-            </div>
-            <p class="text-white/90 text-[11px] sm:text-xs font-medium tracking-wide">
-                Медициналық ағылшын терминдері • Vocabulary 2.0
-            </p>
-        </header>
+    <!-- Screen 2: Game -->
+    <div id="gameScreen" class="hidden" style="display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;">
+      
+      <div>
+        <select id="modeSelect" class="mode-select" onchange="resetAndNext()">
+          <option value="eng-kaz">Eng ➔ Kaz</option>
+          <option value="eng-rus">Eng ➔ Rus</option>
+          <option value="kaz-eng">Kaz ➔ Eng</option>
+          <option value="rus-eng">Rus ➔ Eng</option>
+        </select>
 
-        <!-- TRANSLATION MODE SWITCHER (4 PILLS) -->
-        <nav class="shrink-0 my-1.5">
-            <div class="grid grid-cols-4 gap-1 bg-black/20 p-1 rounded-xl backdrop-blur-md border border-white/20">
-                <button onclick="setMode('eng-kaz')" id="mode-eng-kaz" class="mode-btn py-1 px-0.5 text-[10px] sm:text-xs font-bold rounded-lg text-center transition-all bg-kazGold text-slate-900 shadow">
-                    ENG ➔ KAZ
-                </button>
-                <button onclick="setMode('eng-rus')" id="mode-eng-rus" class="mode-btn py-1 px-0.5 text-[10px] sm:text-xs font-bold rounded-lg text-center transition-all text-white hover:bg-white/10">
-                    ENG ➔ RUS
-                </button>
-                <button onclick="setMode('kaz-eng')" id="mode-kaz-eng" class="mode-btn py-1 px-0.5 text-[10px] sm:text-xs font-bold rounded-lg text-center transition-all text-white hover:bg-white/10">
-                    KAZ ➔ ENG
-                </button>
-                <button onclick="setMode('rus-eng')" id="mode-rus-eng" class="mode-btn py-1 px-0.5 text-[10px] sm:text-xs font-bold rounded-lg text-center transition-all text-white hover:bg-white/10">
-                    RUS ➔ ENG
-                </button>
-            </div>
-        </nav>
+        <div class="stats">
+          <span>Пройдено: <strong id="totalCount">0</strong></span>
+          <span>Правильно: <strong id="correctCount" style="color:#28a745;">0</strong></span>
+        </div>
+      </div>
 
-        <!-- MAIN FLASHCARD & TEST AREA -->
-        <main class="flex-1 flex flex-col justify-between my-1 bg-white rounded-2xl p-3.5 sm:p-4 shadow-2xl relative border-2 border-kazGold/40 min-h-0 overflow-hidden">
-            
-            <!-- Category Badge & Audio Prompt -->
-            <div class="flex items-center justify-between shrink-0 mb-1">
-                <span id="category-badge" class="bg-sky-100 text-sky-800 text-[10px] font-semibold px-2 py-0.5 rounded-full truncate max-w-[75%] border border-sky-200">
-                    Change & Effect
-                </span>
-                <button id="speaker-btn" onclick="speakCurrentWord()" class="text-sky-600 hover:text-sky-800 p-1 rounded-full hover:bg-sky-50 transition" title="Listen Pronunciation">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
-                    </svg>
-                </button>
-            </div>
+      <div class="term-box">
+        <div id="termText" class="term-title">accelerate</div>
+        <div id="termSub" class="term-sub">/ak-sel-e-reit/ • акселерайт</div>
+      </div>
 
-            <!-- Target Word Prompt Section -->
-            <div class="flex-1 flex flex-col items-center justify-center text-center py-1 my-auto">
-                <h2 id="prompt-word" class="text-xl sm:text-2xl font-black text-slate-800 tracking-tight leading-tight mb-1">
-                    accelerate
-                </h2>
-                <div id="phonetic-container" class="flex flex-wrap items-center justify-center gap-1.5 text-xs text-slate-500 font-medium">
-                    <span id="latin-trans" class="bg-amber-50 text-amber-800 px-2 py-0.5 rounded border border-amber-200/60 font-mono text-[11px]">
-                        ak-sel-e-reit
-                    </span>
-                    <span id="cyrillic-trans" class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[11px]">
-                        акселерайт
-                    </span>
-                </div>
-            </div>
+      <div>
+        <div id="optionsGrid" class="options-grid"></div>
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Следующее слово ➔</button>
+      </div>
 
-            <!-- 4 Options Grid -->
-            <div id="options-container" class="grid grid-cols-1 gap-2 my-2 shrink-0">
-                <!-- Dynamic option buttons injected via JS -->
-            </div>
-
-            <!-- Feedback Banner & Next Button Row -->
-            <div class="shrink-0 flex items-center justify-between gap-2 mt-1 pt-1 border-t border-slate-100 min-h-[42px]">
-                <div id="feedback-message" class="text-xs sm:text-sm font-bold flex items-center gap-1">
-                    <!-- Displays "Дұрыс! ✨" or "Қате! ❌" -->
-                </div>
-                <button id="next-btn" onclick="nextQuestion()" disabled class="ml-auto bg-slate-200 text-slate-400 font-bold text-xs sm:text-sm px-4 py-2 rounded-xl flex items-center gap-1.5 transition-all shadow-sm">
-                    <span>Келесі / Next</span>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                    </svg>
-                </button>
-            </div>
-        </main>
-
-        <!-- SCOREBOARD & SCREENSHOT FOOTER -->
-        <footer class="shrink-0 mt-1">
-            <div class="grid grid-cols-3 gap-2 bg-black/25 backdrop-blur-md p-2 rounded-xl text-white text-center border border-white/15">
-                <div class="flex flex-col">
-                    <span class="text-[9px] uppercase tracking-wider text-kazGold font-bold">Пройдено</span>
-                    <span id="stat-total" class="text-sm font-extrabold leading-tight">0</span>
-                </div>
-                <div class="flex flex-col border-x border-white/10">
-                    <span class="text-[9px] uppercase tracking-wider text-green-300 font-bold">Верно</span>
-                    <span id="stat-correct" class="text-sm font-extrabold leading-tight">0</span>
-                </div>
-                <div class="flex flex-col">
-                    <span class="text-[9px] uppercase tracking-wider text-amber-300 font-bold">Точность</span>
-                    <span id="stat-accuracy" class="text-sm font-extrabold leading-tight">0%</span>
-                </div>
-            </div>
-
-            <div class="text-center pt-1 text-[10px] text-white/80 font-medium flex items-center justify-center gap-1">
-                <span>📸 Скриншот үшін:</span>
-                <span class="font-bold text-kazGold">@doctors.speak</span>
-            </div>
-        </footer>
     </div>
+  </div>
 
-    <script>
-        /* ==========================================================================
-           🔑 ИНСТРУКЦИЯ ДЛЯ ПРЕПОДАВАТЕЛЯ ПО СМЕНЕ ПАРОЛЯ:
-           Чтобы изменить пароль доступа к сайту, просто поменяйте текст в кавычках ниже.
-           Например: const ACCESS_PASSWORD = "doctors2026";
-           ========================================================================== */
-        const ACCESS_PASSWORD = "fever";
+  <script>
+    // Пароль для доступа
+    const SECRET_PASS = "fever";
 
-        // PASSWORD AUTHENTICATION LOGIC
-        function checkPassword() {
-            const inputField = document.getElementById('password-input');
-            const errorEl = document.getElementById('auth-error');
-            const enteredPassword = inputField.value.trim();
+    // Полная база академических и клинических терминов из Vocabulary ACADEMIC LIST 2.0.pdf
+    const vocabulary = [
+      // 1. Change and Effect
+      { eng: "accelerate", kaz: "жылдамдату", rus: "ускорять", pron: "/ak-sel-e-reit/ • акселерайт" },
+      { eng: "attenuate", kaz: "әлсірету", rus: "ослаблять", pron: "/a-ten-yu-eit/ • аттеньюэйт" },
+      { eng: "augment", kaz: "күшейту", rus: "усиливать", pron: "/og-ment/ • огмент" },
+      { eng: "consider", kaz: "қарастыру", rus: "рассматривать", pron: "/kon-si-der/ • консидэр" },
+      { eng: "decline", kaz: "төмендеу", rus: "снижение", pron: "/di-klain/ • деклайн" },
+      { eng: "decrease", kaz: "азаю", rus: "уменьшение", pron: "/di-kri:s/ • декриз" },
+      { eng: "deteriorate", kaz: "нашарлау", rus: "ухудшаться", pron: "/di-ti-ri-o-reit/ • детериорейт" },
+      { eng: "diminish", kaz: "азайту / төмендету", rus: "уменьшать", pron: "/di-mi-nish/ • диминиш" },
+      { eng: "drop", kaz: "түсу, құлау", rus: "падать", pron: "/drop/ • дроп" },
+      { eng: "elevate", kaz: "көтеру", rus: "повышать", pron: "/el-i-veit/ • эливейт" },
+      { eng: "enhance", kaz: "жақсарту", rus: "улучшать", pron: "/en-hans/ • энхэнс" },
+      { eng: "exacerbate", kaz: "нашарлату", rus: "ухудшать/ся", pron: "/ek-sa-rbi-eit/ • эксасербейт" },
+      { eng: "explain", kaz: "түсіндіру", rus: "объяснять", pron: "/ik-splein/ • иксплейн" },
+      { eng: "fall", kaz: "құлау", rus: "падение", pron: "/fol/ • фол" },
+      { eng: "fluctuate", kaz: "тербелу", rus: "колебаться", pron: "/flak-tfu-eit/ • флакчуэйт" },
+      { eng: "grow", kaz: "өсу", rus: "расти", pron: "/grou/ • гроу" },
+      { eng: "improve", kaz: "жақсару", rus: "улучшаться", pron: "/im-pru:v/ • импрув" },
+      { eng: "increase", kaz: "көбею", rus: "увеличиваться", pron: "/in-kri:s/ • инкрис" },
+      { eng: "mitigate", kaz: "жеңілдету", rus: "смягчать", pron: "/mi-ti-geit/ • митигейт" },
+      { eng: "narrow down", kaz: "нақтылау", rus: "сужать", pron: "/na-rou daun/ • нароу даун" },
+      { eng: "normalize", kaz: "қалыпқа келтіру", rus: "нормализовать", pron: "/nor-ma-laiz/ • нормалайз" },
+      { eng: "reduce", kaz: "азайту", rus: "уменьшать", pron: "/ri-dju:s/ • редьюс" },
+      { eng: "rise", kaz: "көтерілу", rus: "повышение", pron: "/raiz/ • райз" },
+      { eng: "stabilize", kaz: "тұрақтандыру", rus: "стабилизировать", pron: "/stei-bi-laiz/ • стабилайз" },
+      { eng: "substantiate", kaz: "дәлелдеу", rus: "подтверждать", pron: "/sab-stan-fi-eit/ • сабстаншиэйт" },
+      { eng: "worsen", kaz: "нашарлау", rus: "ухудшаться", pron: "/w3:-sən/ • уорсен" },
 
-            if (enteredPassword === ACCESS_PASSWORD) {
-                // Hide auth screen and show trainer app
-                document.getElementById('auth-screen').classList.add('hidden');
-                
-                const appScreen = document.getElementById('app-screen');
-                appScreen.classList.remove('hidden');
-                appScreen.classList.add('flex');
-                
-                // Start training game
-                nextQuestion();
-            } else {
-                // Display error message
-                errorEl.classList.remove('hidden');
-                inputField.classList.add('border-rose-400', 'bg-rose-50');
-                inputField.focus();
-            }
+      // 2. Evidence & Research Language
+      { eng: "analysis", kaz: "талдау", rus: "анализ", pron: "/a-na-li-sis/ • анализис" },
+      { eng: "blinding", kaz: "жасырын зерттеу", rus: "ослепление", pron: "/blain-din/ • блайндинг" },
+      { eng: "cohort", kaz: "топ", rus: "когорта", pron: "/ko-hort/ • когорт" },
+      { eng: "control group", kaz: "бақылау тобы", rus: "контрольная группа", pron: "/kon-trol grup/ • контроль групп" },
+      { eng: "data", kaz: "дерек", rus: "данные", pron: "/dei-ta/ • дейта" },
+      { eng: "endpoint", kaz: "соңғы нәтиже", rus: "конечная точка", pron: "/en-d-point/ • эндпойнт" },
+      { eng: "evidence", kaz: "дәлел", rus: "доказательство", pron: "/e-vi-dens/ • эвиденс" },
+      { eng: "findings", kaz: "нәтижелер", rus: "результаты", pron: "/fain-dinz/ • файндингз" },
+      { eng: "intervention", kaz: "араласу", rus: "вмешательство", pron: "/in-ter-ven-shən/ • интервеншн" },
+      { eng: "observation", kaz: "бақылау", rus: "наблюдение", pron: "/ob-zer-vei-shən/ • обзервейшн" },
+      { eng: "outcomes", kaz: "нәтижелер", rus: "исходы", pron: "/aut-kamz/ • ауткамз" },
+      { eng: "parameter", kaz: "көрсеткіш", rus: "параметр", pron: "/pa-ra-mi-ter/ • параметр" },
+      { eng: "population", kaz: "популяция", rus: "популяция", pron: "/po-pyu-lei-shən/ • попьюлейшн" },
+      { eng: "randomization", kaz: "кездейсоқ бөлу", rus: "рандомизация", pron: "/ran-do-mai-zei-shən/ • рандомайзейшн" },
+      { eng: "results", kaz: "нәтижелер", rus: "результаты", pron: "/ri-zalts/ • ризалц" },
+      { eng: "sample", kaz: "үлгі", rus: "выборка", pron: "/sam-pl/ • сампл" },
+      { eng: "statistical significance", kaz: "статистикалық маңыз", rus: "статистическая значимость", pron: "/sta-ti-sti-kal sig-ni-fi-kans/ • статистикал сигнификанс" },
+      { eng: "study", kaz: "зерттеу", rus: "исследование", pron: "/sta-di/ • стади" },
+      { eng: "trial", kaz: "сынақ", rus: "испытание", pron: "/trai-al/ • трайал" },
+      { eng: "variable", kaz: "айнымалы", rus: "переменная", pron: "/ve-ri-a-bl/ • вариабл" },
+
+      // 3. Comparison & Contrast
+      { eng: "alternatively", kaz: "балама ретінде", rus: "альтернативно", pron: "/ol-tə-na-ti-vli/ • альтернативли" },
+      { eng: "although", kaz: "болса-дағы", rus: "хотя", pron: "/ol-δου/ • олзоу" },
+      { eng: "as opposed to", kaz: "-тан гөрі", rus: "в отличие от", pron: "/az ə-pəuzd tu/ • аз опоузд ту" },
+      { eng: "compared to", kaz: "салыстырғанда", rus: "по сравнению с", pron: "/kəm-peərd tu/ • компэред ту" },
+      { eng: "conversely", kaz: "керісінше", rus: "наоборот", pron: "/kon-v3:s-li/ • конверсли" },
+      { eng: "despite", kaz: "қарамастан", rus: "несмотря на", pron: "/di-spait/ • диспайт" },
+      { eng: "however", kaz: "алайда", rus: "однако", pron: "/hau-ev-er/ • хауэвер" },
+      { eng: "in comparison", kaz: "салыстырғанда", rus: "в сравнении", pron: "/in kəm-pa-ri-sən/ • ин компэрисон" },
+      { eng: "in contrast", kaz: "керісінше", rus: "в отличие", pron: "/in kon-trast/ • ин контраст" },
+      { eng: "nevertheless", kaz: "соған қарамастан", rus: "тем не менее", pron: "/nev-er-də-les/ • неверзлес" },
+      { eng: "nonetheless", kaz: "соған қарамастан", rus: "тем не менее", pron: "/nan-də-les/ • нанзлес" },
+      { eng: "on the other hand", kaz: "ал екінші жағынан", rus: "с другой стороны", pron: "/on di ' hænd/ • он зи азер хенд" },
+      { eng: "whereas", kaz: "ал", rus: "тогда как", pron: "/weǝ'ræz/ • уэраз" },
+      { eng: "while", kaz: "ал", rus: "в то время как", pron: "/wail/ • ваил" },
+      { eng: "yet", kaz: "бірақ", rus: "но", pron: "/jet/ • йет" },
+
+      // 4. Cause, Effect & Interpretation
+      { eng: "accounts for", kaz: "құрайды", rus: "составляет", pron: "/-kaunts fo:/ • акаунтс фор" },
+      { eng: "as a result", kaz: "нәтижесінде", rus: "в результате", pron: "/az ə ri-zalt/ • аз а резалт" },
+      { eng: "causes", kaz: "тудырады", rus: "вызывает", pron: "/ko:-zız/ • козиз" },
+      { eng: "confirms", kaz: "растайды", rus: "подтверждает", pron: "/kən-f3:mz/ • конфирмс" },
+      { eng: "consequently", kaz: "сондықтан", rus: "следовательно", pron: "/kon-si-kwent-li/ • консеквентли" },
+      { eng: "contributes to", kaz: "үлес қосады", rus: "способствует", pron: "/kən-trib-yu:ts tu/ • контрибьютс ту" },
+      { eng: "correlates with", kaz: "байланысады", rus: "коррелирует", pron: "/kor-e-leits wið/ • коррелейтс" },
+      { eng: "demonstrates", kaz: "көрсетеді", rus: "демонстрирует", pron: "/dem-ən-streits/ • демонстрайтс" },
+      { eng: "explains", kaz: "түсіндіреді", rus: "объясняет", pron: "/ik-spleinz/ • иксплейнз" },
+      { eng: "implies", kaz: "тұспалдайды", rus: "подразумевает", pron: "/im-plais/ • имплайз" },
+      { eng: "indicates", kaz: "көрсетеді", rus: "указывает", pron: "/in-di-keits/ • индикейтс" },
+      { eng: "is associated with", kaz: "байланысты", rus: "связано с", pron: "/iz ə-sau-si-ei-tid wið/ • ассоусиэйтед" },
+      { eng: "is linked to", kaz: "байланысады", rus: "связано с", pron: "/iz liŋkt tu/ • линкт ту" },
+      { eng: "leads to", kaz: "әкеледі", rus: "приводит к", pron: "/li:dz tu/ • лидс ту" },
+      { eng: "predicts", kaz: "болжайды", rus: "предсказывает", pron: "/pri-dikts/ • предиктс" },
+      { eng: "proves", kaz: "дәлелдейді", rus: "доказывает", pron: "/pru:vz/ • прувз" },
+      { eng: "rejects", kaz: "жоққа шығарады", rus: "отвергает", pron: "/ri-dzekts/ • риджектс" },
+      { eng: "results in", kaz: "нәтижеге әкеледі", rus: "приводит к", pron: "/ri-zalts in/ • результате ин" },
+      { eng: "suggests", kaz: "ұсынады", rus: "предполагает", pron: "/sə-dzests/ • саджестс" },
+      { eng: "supports", kaz: "қолдайды", rus: "поддерживает", pron: "/sə-po:ts/ • сапортс" },
+      { eng: "therefore", kaz: "сондықтан", rus: "поэтому", pron: "/deə-fə:/ • зеэфор" },
+      { eng: "thus", kaz: "осылайша", rus: "таким образом", pron: "/das/ • даз" },
+
+      // 5. Uncertainty & Hedging
+      { eng: "appears to", kaz: "сияқты көрінеді", rus: "кажется", pron: "/ə-pıərz tu/ • апирс ту" },
+      { eng: "approximately", kaz: "шамамен", rus: "приблизительно", pron: "/-prok-si-mi-tli/ • апроксимитли" },
+      { eng: "could", kaz: "мүмкін", rus: "может", pron: "/kud/ • куд" },
+      { eng: "is likely to", kaz: "ықтимал", rus: "вероятно", pron: "/iz laik-li tu/ • лайкли ту" },
+      { eng: "is unlikely to", kaz: "ықтималдығы төмен", rus: "маловероятно", pron: "/iz an-laik-li tu/ • анлайкли ту" },
+      { eng: "may", kaz: "мүмкін", rus: "может", pron: "/mei/ • мэй" },
+      { eng: "might", kaz: "мүмкін", rus: "может", pron: "/mait/ • майт" },
+      { eng: "partially", kaz: "жарым-жартылай", rus: "частично", pron: "/paf-li/ • паршли" },
+      { eng: "possibly", kaz: "мүмкін", rus: "возможно", pron: "/pos-i-bli/ • посибл" },
+      { eng: "potentially", kaz: "ықтимал", rus: "потенциально", pron: "/po-ten-sha-li/ • потеншали" },
+      { eng: "presumably", kaz: "болжам бойынша", rus: "предположительно", pron: "/pri-zju:m-əb-li/ • презюмэбли" },
+      { eng: "relatively", kaz: "салыстырмалы түрде", rus: "относительно", pron: "/rel-a-ti-vli/ • рэлитивли" },
+      { eng: "seems to", kaz: "сияқты", rus: "кажется", pron: "/si:mz tu/ • симз ту" },
+      { eng: "suggests that", kaz: "көрсетеді/болжау", rus: "предполагает", pron: "/sə-dzests dæt/ • саджестс зэт" },
+      { eng: "to some extent", kaz: "белгілі бір дәрежеде", rus: "в некоторой степени", pron: "/tu sam ik-stent/ • ту сам экстент" },
+
+      // 6. Quantifiers & Frequency
+      { eng: "common", kaz: "жиі кездесетін", rus: "распространённый", pron: "/kom-ən/ • коммон" },
+      { eng: "frequent", kaz: "жиі қайталанатын", rus: "частый", pron: "/fri:kwənt/ • фриквент" },
+      { eng: "incidence", kaz: "жиілік", rus: "заболеваемость", pron: "/in-si-dens/ • инсиденс" },
+      { eng: "majority", kaz: "көпшілік", rus: "большинство", pron: "/mə-dzor-i-ti/ • маджорити" },
+      { eng: "marked", kaz: "айқын", rus: "выраженный", pron: "/ma:k-t/ • маркт" },
+      { eng: "minimal", kaz: "аз", rus: "минимальный", pron: "/mi-ni-məl/ • минимал" },
+      { eng: "minority", kaz: "азшылық", rus: "меньшинство", pron: "/mai-nor-i-ti/ • майнорити" },
+      { eng: "moderate", kaz: "орташа", rus: "умеренный", pron: "/mod-e-reit/ • модерейт" },
+      { eng: "percentage", kaz: "пайыздық", rus: "процент", pron: "/pə-sen-tidz/ • процентедж" },
+      { eng: "prevalent", kaz: "кең таралған", rus: "распространённый", pron: "/prev-a-lənt/ • превалент" },
+      { eng: "proportion", kaz: "үлес", rus: "доля", pron: "/pro-por-fən/ • пропоршн" },
+      { eng: "rare", kaz: "сирек", rus: "редкий", pron: "/reǝr/ • реар" },
+      { eng: "rate", kaz: "көрсеткіш", rus: "уровень", pron: "/reit/ • рейт" },
+      { eng: "significant", kaz: "маңызды", rus: "значимый", pron: "/sig-ni-fi-kənt/ • сигнификант" },
+      { eng: "slight", kaz: "жеңіл", rus: "незначительный", pron: "/slait/ • слайт" },
+      { eng: "substantial", kaz: "айтарлықтай", rus: "существенный", pron: "/sab-stan-shəl/ • сабстаншл" },
+
+      // 7. Methodology & Study Design
+      { eng: "adjustment", kaz: "түзету", rus: "корректировка", pron: "/a-dzast-mənt/ • аджастмент" },
+      { eng: "bias", kaz: "біржақтылық", rus: "предвзятость", pron: "/bai-as/ • байас" },
+      { eng: "confounding", kaz: "аралас фактор", rus: "смешивающий фактор", pron: "/kən-faun-din/ • конфаундинг" },
+      { eng: "controlled", kaz: "бақылаулы", rus: "контролируемый", pron: "/kən-trould/ • контроли" },
+      { eng: "cross-sectional", kaz: "көлденең зерттеу", rus: "поперечное исследование", pron: "/kros-sek-shə-nəl/ • кросс секшнл" },
+      { eng: "double-blind", kaz: "қос соқыр", rus: "двойное слепое", pron: "/dab-l blaind/ • дабл блайнд" },
+      { eng: "exclusion criteria", kaz: "алып тастау критерийі", rus: "критерии исключения", pron: "/ik-sklu-zən kri-ti-ri-a/ • эксклюжн критерия" },
+      { eng: "inclusion criteria", kaz: "қосу критерийі", rus: "критерии включения", pron: "/in-klu-zən kri-ti-ri-a/ • инклюжн критерия" },
+      { eng: "longitudinal", kaz: "ұзақ мерзімді", rus: "продольный", pron: "/lon-gi-tu-di-nal/ • лонгитудинал" },
+      { eng: "meta-analysis", kaz: "мета-талдау", rus: "мета-анализ", pron: "/me-ta a-na-li-sis/ • мета анализ" },
+      { eng: "observational", kaz: "бақылаулы", rus: "наблюдательный", pron: "/ob-zer-vei-shə-nəl/ • обзервационал" },
+      { eng: "placebo-controlled", kaz: "плацебо бақылаулы", rus: "плацебо-контролируемый", pron: "/pla-si-bo kən-trould/ • плацебо контролд" },
+      { eng: "prospective", kaz: "болашаққа бағытталған", rus: "проспективный", pron: "/pros-pek-tiv/ • проспектив" },
+      { eng: "randomized", kaz: "кездейсоқ", rus: "рандомизированный", pron: "/ran-də-maizd/ • рандомайзд" },
+      { eng: "retrospective", kaz: "артқа қарап зерттеу", rus: "ретроспективный", pron: "/ri-trous-pek-tiv/ • ретроспектив" },
+      { eng: "stratification", kaz: "топтарға бөлу", rus: "стратификация", pron: "/stra-ti-fi-kei-shən/ • стратификацион" },
+      { eng: "systematic review", kaz: "жүйелі шолу", rus: "систематический обзор", pron: "/sis-te-ma-tik ri-vyu/ • систематик ревью" },
+
+      // 8. Clinical/Outcome Language
+      { eng: "adverse event", kaz: "жағымсыз оқиға", rus: "нежелательное явление", pron: "/ad-v3:s i-vent/ • адверс ивент" },
+      { eng: "benefit", kaz: "пайда", rus: "польза", pron: "/ben-i-fit/ • бенефит" },
+      { eng: "complication", kaz: "асқыну", rus: "осложнение", pron: "/kom-pli-kei-shən/ • компликэйшн" },
+      { eng: "effectiveness", kaz: "тиімділік", rus: "эффективность", pron: "/i-fek-tiv-nes/ • эффектифнес" },
+      { eng: "efficacy", kaz: "әсер ету тиімділігі", rus: "эффективность (в исследованиях)", pron: "/ef-i-ka-si/ • эфикаси" },
+      { eng: "morbidity", kaz: "аурушаңдық", rus: "заболеваемость", pron: "/mor-bi-di-ti/ • морбидити" },
+      { eng: "mortality", kaz: "өлім-жітім", rus: "смертность", pron: "/mor-tal-i-ti/ • морталити" },
+      { eng: "prognosis", kaz: "болжам", rus: "прогноз", pron: "/prog-no-sis/ • прогносис" },
+      { eng: "progression", kaz: "үдеу", rus: "прогрессирование", pron: "/pro-gre-shən/ • прогрешн" },
+      { eng: "recurrence", kaz: "қайталану", rus: "рецидив", pron: "/ri-kar-əns/ • рикаренс" },
+      { eng: "remission", kaz: "ремиссия", rus: "ремиссия", pron: "/ri-mi-shən/ • ремишн" },
+      { eng: "response", kaz: "жауап", rus: "ответ", pron: "/ri-spons/ • респонс" },
+      { eng: "risk", kaz: "қауіп", rus: "риск", pron: "/risk/ • риск" },
+      { eng: "safety", kaz: "қауіпсіздік", rus: "безопасность", pron: "/sei-f-ti/ • сейфти" },
+      { eng: "side effect", kaz: "жанама әсер", rus: "побочный эффект", pron: "/said i-fekt/ • сайд эффект" },
+      { eng: "tolerability", kaz: "төзімділік", rus: "переносимость", pron: "/to-le-ra-bi-li-ti/ • толерабилити" },
+
+      // 9. Linking & Structuring Phrases
+      { eng: "finally", kaz: "ақыры", rus: "наконец", pron: "/fai-nə-li/ • файнали" },
+      { eng: "firstly/secondly", kaz: "біріншіден / екіншіден", rus: "во-первых / во-вторых", pron: "/f3:st-li / sek-ənd-li/ • фёрстли / секондли" },
+      { eng: "for example", kaz: "мысалы", rus: "например", pron: "/fɔ:r ig-zam-pl/ • фор игзампл" },
+      { eng: "for instance", kaz: "мысалы", rus: "например", pron: "/fɔ:r in-stəns/ • фор инстанс" },
+      { eng: "furthermore", kaz: "сонымен қатар", rus: "более того", pron: "/f3:r-ðər-mɔ:r/ • фёрдермор" },
+      { eng: "importantly", kaz: "маңыздысы", rus: "важно", pron: "/im-pɔ:t-ənt-li/ • импортантли" },
+      { eng: "in addition", kaz: "оған қоса", rus: "кроме того", pron: "/in ə-di-shən/ • ин адишн" },
+      { eng: "in conclusion", kaz: "қорытындылай келе", rus: "в заключение", pron: "/in kən-klu-zən/ • ин конклюжн" },
+      { eng: "in particular", kaz: "әсіресе", rus: "в частности", pron: "/in pə-tik-jə-lər/ • ин партикьюлар" },
+      { eng: "in summary", kaz: "қорытындысында", rus: "в заключение", pron: "/in sam-ə-ri/ • ин саммери" },
+      { eng: "moreover", kaz: "оған қоса", rus: "более того", pron: "/mor-ǝu-vər/ • мороувер" },
+      { eng: "notably", kaz: "әсіресе", rus: "особенно", pron: "/nou-tə-bli/ • ноутэбли" },
+      { eng: "overall", kaz: "жалпы", rus: "в целом", pron: "/ou-vər-ə:l/ • оувералл" },
+      { eng: "regarding", kaz: "қатысты", rus: "относительно", pron: "/ri-ga:r-din/ • ригардинг" },
+      { eng: "with respect to", kaz: "қатысты", rus: "в отношении", pron: "/wið ri-spekt tu/ • уид респект ту" },
+
+      // 10. Critical Appraisal / Evaluation
+      { eng: "biased", kaz: "біржақты", rus: "предвзятый", pron: "/bai-ast/ • байаст" },
+      { eng: "consistent", kaz: "дәйекті", rus: "последовательный", pron: "/kən-sis-tənt/ • консистент" },
+      { eng: "controversial", kaz: "даулы", rus: "спорный", pron: "/kon-trǝ-v3:-shəl/ • контровершл" },
+      { eng: "emerging", kaz: "жаңа пайда болған", rus: "возникающий", pron: "/i-m3:-dzin/ • имержинг" },
+      { eng: "generalizable", kaz: "жалпыланатын", rus: "обобщаемый", pron: "/dzen-ə-ra-lai-zə-bəl/ • дженералайзабл" },
+      { eng: "inconsistent", kaz: "дәйекті емес", rus: "несогласованный", pron: "/in-kən-sis-tənt/ • инконсистент" },
+      { eng: "limitation", kaz: "шектеу", rus: "ограничение", pron: "/lim-i-tei-shən/ • лимитэйшн" },
+      { eng: "reliable", kaz: "сенімді", rus: "надёжный", pron: "/ri-lai-ə-bəl/ • рилайабл" },
+      { eng: "reproducible", kaz: "қайталанан", rus: "воспроизводимый", pron: "/ri-prə-dju-sə-bəl/ • репродюсибл" },
+      { eng: "robust", kaz: "тұрақты", rus: "устойчивый", pron: "/rou-bast/ • робаст" },
+      { eng: "strength", kaz: "күшті жағы", rus: "сила", pron: "/strenθ/ • стрэнгс" },
+      { eng: "unclear", kaz: "түсініксіз", rus: "неясный", pron: "/an-kliər/ • анклиэр" },
+      { eng: "valid", kaz: "жарамды", rus: "действительный", pron: "/va-lid/ • валид" },
+      { eng: "weakness", kaz: "әлсіздік", rus: "слабость", pron: "/wi:k-nes/ • викнес" },
+      { eng: "well-established", kaz: "жақсы дәлелденген", rus: "хорошо установленный", pron: "/wel i-stab-lisht/ • вел эстэблишт" }
+    ];
+
+    let total = 0;
+    let correct = 0;
+    let currentItem = null;
+    let answered = false;
+
+    // Ввод пароля по Enter
+    document.getElementById('passInput').addEventListener('keyup', function(e) {
+      if (e.key === 'Enter') checkPass();
+    });
+
+    function checkPass() {
+      const val = document.getElementById('passInput').value.trim();
+      if (val === SECRET_PASS) {
+        document.getElementById('authScreen').classList.add('hidden');
+        document.getElementById('gameScreen').classList.remove('hidden');
+        nextQuestion();
+      } else {
+        document.getElementById('errorMsg').style.display = 'block';
+      }
+    }
+
+    function getRandomItem() {
+      return vocabulary[Math.floor(Math.random() * vocabulary.length)];
+    }
+
+    function shuffle(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function resetAndNext() {
+      nextQuestion();
+    }
+
+    function nextQuestion() {
+      answered = false;
+      document.getElementById('nextBtn').style.display = 'none';
+
+      const mode = document.getElementById('modeSelect').value;
+      currentItem = getRandomItem();
+
+      let questionText = "";
+      let subText = "";
+      let correctAnswer = "";
+      let answerKey = "";
+
+      if (mode === 'eng-kaz') {
+        questionText = currentItem.eng;
+        subText = currentItem.pron || "";
+        correctAnswer = currentItem.kaz;
+        answerKey = 'kaz';
+      } else if (mode === 'eng-rus') {
+        questionText = currentItem.eng;
+        subText = currentItem.pron || "";
+        correctAnswer = currentItem.rus;
+        answerKey = 'rus';
+      } else if (mode === 'kaz-eng') {
+        questionText = currentItem.kaz;
+        subText = "Қазақша ➔ English";
+        correctAnswer = currentItem.eng;
+        answerKey = 'eng';
+      } else if (mode === 'rus-eng') {
+        questionText = currentItem.rus;
+        subText = "Русский ➔ English";
+        correctAnswer = currentItem.eng;
+        answerKey = 'eng';
+      }
+
+      document.getElementById('termText').textContent = questionText;
+      document.getElementById('termSub').textContent = subText;
+
+      // Варианты ответов
+      let options = [correctAnswer];
+      while (options.length < 4) {
+        let rand = getRandomItem()[answerKey];
+        if (!options.includes(rand)) {
+          options.push(rand);
         }
+      }
+      options = shuffle(options);
 
-        // COMPLETE VOCABULARY DATABASE FROM PDF ACADEMIC LIST 2.0 @doctors.speak
-        const vocabulary = [
-            // Category: Change and Effect
-            { eng: "accelerate", kaz: "жылдамдату", rus: "ускорять", cyr: "акселерайт", lat: "ak-sel-e-reit", cat: "Change & Effect" },
-            { eng: "attenuate", kaz: "әлсірету", rus: "ослаблять", cyr: "аттеньюэйт", lat: "a-ten-yu-eit", cat: "Change & Effect" },
-            { eng: "augment", kaz: "күшейту", rus: "усиливать", cyr: "огмент", lat: "og-ment", cat: "Change & Effect" },
-            { eng: "consider", kaz: "қарастыру", rus: "рассматривать", cyr: "консидэр", lat: "kon-si-der", cat: "Change & Effect" },
-            { eng: "decline", kaz: "төмендеу", rus: "снижение", cyr: "деклайн", lat: "di-klain", cat: "Change & Effect" },
-            { eng: "decrease", kaz: "азаю", rus: "уменьшение", cyr: "декриз", lat: "di-kri:s", cat: "Change & Effect" },
-            { eng: "deteriorate", kaz: "нашарлау", rus: "ухудшаться", cyr: "детериорейт", lat: "di-ti-ri-o-reit", cat: "Change & Effect" },
-            { eng: "diminish", kaz: "азайту / төмендету", rus: "уменьшать", cyr: "диминиш", lat: "di-mi-nish", cat: "Change & Effect" },
-            { eng: "drop", kaz: "түсу, құлау", rus: "падать", cyr: "дроп", lat: "drop", cat: "Change & Effect" },
-            { eng: "elevate", kaz: "көтеру", rus: "повышать", cyr: "эливейт", lat: "el-i-veit", cat: "Change & Effect" },
-            { eng: "enhance", kaz: "жақсарту", rus: "улучшать", cyr: "энхэнс", lat: "en-hans", cat: "Change & Effect" },
-            { eng: "exacerbate", kaz: "нашарлату", rus: "ухудшать/ся", cyr: "эксасербейт", lat: "ek-sa-rbi-eit", cat: "Change & Effect" },
-            { eng: "explain", kaz: "түсіндіру", rus: "объяснять", cyr: "иксплейн", lat: "ik-splein", cat: "Change & Effect" },
-            { eng: "fall", kaz: "құлау", rus: "падение", cyr: "фол", lat: "fol", cat: "Change & Effect" },
-            { eng: "fluctuate", kaz: "тербелу", rus: "колебаться", cyr: "флакчуэйт", lat: "flak-tfu-eit", cat: "Change & Effect" },
-            { eng: "grow", kaz: "өсу", rus: "расти", cyr: "гроу", lat: "grou", cat: "Change & Effect" },
-            { eng: "improve", kaz: "жақсару", rus: "улучшаться", cyr: "импрув", lat: "im-pru:v", cat: "Change & Effect" },
-            { eng: "increase", kaz: "көбею", rus: "увеличиваться", cyr: "инкрис", lat: "in-kri:s", cat: "Change & Effect" },
-            { eng: "mitigate", kaz: "жеңілдету", rus: "смягчать", cyr: "митигейт", lat: "mi-ti-geit", cat: "Change & Effect" },
-            { eng: "narrow down", kaz: "нақтылау", rus: "сужать", cyr: "нароу даун", lat: "na-rou daun", cat: "Change & Effect" },
-            { eng: "normalize", kaz: "қалыпқа келтіру", rus: "нормализовать", cyr: "нормалайз", lat: "nor-ma-laiz", cat: "Change & Effect" },
-            { eng: "reduce", kaz: "азайту", rus: "уменьшать", cyr: "редьюс", lat: "ri-dju:s", cat: "Change & Effect" },
-            { eng: "rise", kaz: "көтерілу", rus: "повышение", cyr: "райз", lat: "raiz", cat: "Change & Effect" },
-            { eng: "stabilize", kaz: "тұрақтандыру", rus: "стабилизировать", cyr: "стабилайз", lat: "stei-bi-laiz", cat: "Change & Effect" },
-            { eng: "substantiate", kaz: "дәлелдеу", rus: "подтверждать", cyr: "сабстаншиэйт", lat: "sab-stan-fi-eit", cat: "Change & Effect" },
-            { eng: "worsen", kaz: "нашарлау", rus: "ухудшаться", cyr: "уорсен", lat: "w3:-sən", cat: "Change & Effect" },
+      const grid = document.getElementById('optionsGrid');
+      grid.innerHTML = '';
 
-            // Category: Evidence & Research Language
-            { eng: "analysis", kaz: "талдау", rus: "анализ", cyr: "анализис", lat: "a-na-li-sis", cat: "Evidence & Research" },
-            { eng: "blinding", kaz: "жасырын зерттеу", rus: "ослепление", cyr: "блайндинг", lat: "blain-din", cat: "Evidence & Research" },
-            { eng: "cohort", kaz: "топ", rus: "когорта", cyr: "когорт", lat: "ko-hort", cat: "Evidence & Research" },
-            { eng: "control group", kaz: "бақылау тобы", rus: "контрольная группа", cyr: "контроль групп", lat: "kon-trol grup", cat: "Evidence & Research" },
-            { eng: "data", kaz: "дерек", rus: "данные", cyr: "дейта", lat: "dei-ta", cat: "Evidence & Research" },
-            { eng: "endpoint", kaz: "соңғы нәтиже", rus: "конечная точка", cyr: "эндпойнт", lat: "en-d-point", cat: "Evidence & Research" },
-            { eng: "evidence", kaz: "дәлел", rus: "доказательство", cyr: "эвиденс", lat: "e-vi-dens", cat: "Evidence & Research" },
-            { eng: "findings", kaz: "нәтижелер", rus: "результаты", cyr: "файндингз", lat: "fain-dinz", cat: "Evidence & Research" },
-            { eng: "intervention", kaz: "араласу", rus: "вмешательство", cyr: "интервеншн", lat: "in-ter-ven-shən", cat: "Evidence & Research" },
-            { eng: "observation", kaz: "бақылау", rus: "наблюдение", cyr: "обзервейшн", lat: "ob-zer-vei-shən", cat: "Evidence & Research" },
-            { eng: "outcomes", kaz: "нәтижелер", rus: "исходы", cyr: "ауткамз", lat: "aut-kamz", cat: "Evidence & Research" },
-            { eng: "parameter", kaz: "көрсеткіш", rus: "параметр", cyr: "параметр", lat: "pa-ra-mi-ter", cat: "Evidence & Research" },
-            { eng: "population", kaz: "популяция", rus: "популяция", cyr: "попьюлейшн", lat: "po-pyu-lei-shən", cat: "Evidence & Research" },
-            { eng: "randomization", kaz: "кездейсоқ бөлу", rus: "рандомизация", cyr: "рандомайзейшн", lat: "ran-do-mai-zei-shən", cat: "Evidence & Research" },
-            { eng: "results", kaz: "нәтижелер", rus: "результаты", cyr: "ризалц", lat: "ri-zalts", cat: "Evidence & Research" },
-            { eng: "sample", kaz: "үлгі", rus: "выборка", cyr: "сампл", lat: "sam-pl", cat: "Evidence & Research" },
-            { eng: "statistical significance", kaz: "статистикалық маңыз", rus: "статистическая значимость", cyr: "статистикал сигнификанс", lat: "sta-ti-sti-kal sig-ni-fi-kans", cat: "Evidence & Research" },
-            { eng: "study", kaz: "зерттеу", rus: "исследование", cyr: "стади", lat: "sta-di", cat: "Evidence & Research" },
-            { eng: "trial", kaz: "сынақ", rus: "испытание", cyr: "трайал", lat: "trai-al", cat: "Evidence & Research" },
-            { eng: "variable", kaz: "айнымалы", rus: "переменная", cyr: "вариабл", lat: "ve-ri-a-bl", cat: "Evidence & Research" },
+      options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = opt;
+        btn.onclick = () => selectOption(btn, opt === correctAnswer);
+        grid.appendChild(btn);
+      });
+    }
 
-            // Category: Comparison & Contrast
-            { eng: "alternatively", kaz: "балама ретінде", rus: "альтернативно", cyr: "альтернативли", lat: "ol-tə-na-ti-vli", cat: "Comparison & Contrast" },
-            { eng: "although", kaz: "болса-дағы", rus: "хотя", cyr: "олзоу", lat: "ol-δου", cat: "Comparison & Contrast" },
-            { eng: "as opposed to", kaz: "-тан гөрі", rus: "в отличие от", cyr: "аз опоузд ту", lat: "az ə-pəuzd tu", cat: "Comparison & Contrast" },
-            { eng: "compared to", kaz: "салыстырғанда", rus: "по сравнению с", cyr: "компэред ту", lat: "kəm-peərd tu", cat: "Comparison & Contrast" },
-            { eng: "conversely", kaz: "керісінше", rus: "наоборот", cyr: "конверсли", lat: "kon-v3:s-li", cat: "Comparison & Contrast" },
-            { eng: "despite", kaz: "қарамастан", rus: "несмотря на", cyr: "диспайт", lat: "di-spait", cat: "Comparison & Contrast" },
-            { eng: "however", kaz: "алайда", rus: "однако", cyr: "хауэвер", lat: "hau-ev-er", cat: "Comparison & Contrast" },
-            { eng: "in comparison", kaz: "салыстырғанда", rus: "в сравнении", cyr: "ин компэрисон", lat: "in kəm-pa-ri-sən", cat: "Comparison & Contrast" },
-            { eng: "in contrast", kaz: "керісінше", rus: "в отличие", cyr: "ин контраст", lat: "in kon-trast", cat: "Comparison & Contrast" },
-            { eng: "nevertheless", kaz: "соған қарамастан", rus: "тем не менее", cyr: "неверзлес", lat: "nev-er-də-les", cat: "Comparison & Contrast" },
-            { eng: "nonetheless", kaz: "соған қарамастан", rus: "тем не менее", cyr: "нанзлес", lat: "nan-də-les", cat: "Comparison & Contrast" },
-            { eng: "on the other hand", kaz: "ал екінші жағынан", rus: "с другой стороны", cyr: "он зи азер хенд", lat: "on di ' hænd", cat: "Comparison & Contrast" },
-            { eng: "whereas", kaz: "ал", rus: "тогда как", cyr: "уэраз", lat: "weǝ'ræz", cat: "Comparison & Contrast" },
-            { eng: "while", kaz: "ал", rus: "в то время как", cyr: "ваил", lat: "wail", cat: "Comparison & Contrast" },
-            { eng: "yet", kaz: "бірақ", rus: "но", cyr: "йет", lat: "jet", cat: "Comparison & Contrast" },
+    function selectOption(selectedBtn, isCorrect) {
+      if (answered) return;
+      answered = true;
 
-            // Category: Cause, Effect & Interpretation
-            { eng: "accounts for", kaz: "құрайды", rus: "составляет", cyr: "акаунтс фор", lat: "a-kaunts fo:", cat: "Cause & Effect" },
-            { eng: "as a result", kaz: "нәтижесінде", rus: "в результате", cyr: "аз а резалт", lat: "az ə ri-zalt", cat: "Cause & Effect" },
-            { eng: "causes", kaz: "тудырады", rus: "вызывает", cyr: "козиз", lat: "ko:-zız", cat: "Cause & Effect" },
-            { eng: "confirms", kaz: "растайды", rus: "подтверждает", cyr: "конфирмс", lat: "kən-f3:mz", cat: "Cause & Effect" },
-            { eng: "consequently", kaz: "сондықтан", rus: "следовательно", cyr: "консеквентли", lat: "kon-si-kwent-li", cat: "Cause & Effect" },
-            { eng: "contributes to", kaz: "үлес қосады", rus: "способствует", cyr: "контрибьютс ту", lat: "kən-trib-yu:ts tu", cat: "Cause & Effect" },
-            { eng: "correlates with", kaz: "байланысады", rus: "коррелирует", cyr: "коррелейтс", lat: "kor-e-leits wið", cat: "Cause & Effect" },
-            { eng: "demonstrates", kaz: "көрсетеді", rus: "демонстрирует", cyr: "демонстрейтс", lat: "dem-ən-streits", cat: "Cause & Effect" },
-            { eng: "explains", kaz: "түсіндіреді", rus: "объясняет", cyr: "иксплейнз", lat: "ik-spleinz", cat: "Cause & Effect" },
-            { eng: "implies", kaz: "тұспалдайды", rus: "подразумевает", cyr: "имплайз", lat: "im-plais", cat: "Cause & Effect" },
-            { eng: "indicates", kaz: "көрсетеді", rus: "указывает", cyr: "индикейтс", lat: "in-di-keits", cat: "Cause & Effect" },
-            { eng: "is associated with", kaz: "байланысты", rus: "связано с", cyr: "ассоусиэйтед", lat: "iz ə-sau-si-ei-tid wið", cat: "Cause & Effect" },
-            { eng: "is linked to", kaz: "байланысады", rus: "связано с", cyr: "линкт ту", lat: "iz liŋkt tu", cat: "Cause & Effect" },
-            { eng: "leads to", kaz: "әкеледі", rus: "приводит к", cyr: "лидс ту", lat: "li:dz tu", cat: "Cause & Effect" },
-            { eng: "predicts", kaz: "болжайды", rus: "предсказывает", cyr: "предиктс", lat: "pri-dikts", cat: "Cause & Effect" },
-            { eng: "proves", kaz: "дәлелдейді", rus: "доказывает", cyr: "прувз", lat: "pru:vz", cat: "Cause & Effect" },
-            { eng: "rejects", kaz: "жоққа шығарады", rus: "отвергает", cyr: "риджектс", lat: "ri-dzekts", cat: "Cause & Effect" },
-            { eng: "results in", kaz: "нәтижеге әкеледі", rus: "приводит к", cyr: "результате ин", lat: "ri-zalts in", cat: "Cause & Effect" },
-            { eng: "suggests", kaz: "ұсынады", rus: "предполагает", cyr: "саджестс", lat: "sə-dzests", cat: "Cause & Effect" },
-            { eng: "supports", kaz: "қолдайды", rus: "поддерживает", cyr: "сапортс", lat: "sə-po:ts", cat: "Cause & Effect" },
-            { eng: "therefore", kaz: "сондықтан", rus: "поэтому", cyr: "зеэфор", lat: "deə-fə:", cat: "Cause & Effect" },
-            { eng: "thus", kaz: "осылайша", rus: "таким образом", cyr: "даз", lat: "das", cat: "Cause & Effect" },
+      total++;
+      if (isCorrect) {
+        correct++;
+        selectedBtn.classList.add('correct');
+      } else {
+        selectedBtn.classList.add('wrong');
+        // Показать правильный
+        const buttons = document.querySelectorAll('.option-btn');
+        const mode = document.getElementById('modeSelect').value;
+        let rightAns = (mode === 'eng-kaz') ? currentItem.kaz :
+                       (mode === 'eng-rus') ? currentItem.rus : currentItem.eng;
+        buttons.forEach(b => {
+          if (b.textContent === rightAns) b.classList.add('correct');
+        });
+      }
 
-            // Category: Uncertainty & Hedging
-            { eng: "appears to", kaz: "сияқты көрінеді", rus: "кажется", cyr: "апирс ту", lat: "ə-pıərz tu", cat: "Uncertainty" },
-            { eng: "approximately", kaz: "шамамен", rus: "приблизительно", cyr: "апроксимитли", lat: "a-prok-si-mi-tli", cat: "Uncertainty" },
-            { eng: "could", kaz: "мүмкін", rus: "может", cyr: "куд", lat: "kud", cat: "Uncertainty" },
-            { eng: "is likely to", kaz: "ықтимал", rus: "вероятно", cyr: "лайкли ту", lat: "iz laik-li tu", cat: "Uncertainty" },
-            { eng: "is unlikely to", kaz: "ықтималдығы төмен", rus: "маловероятно", cyr: "анлайкли ту", lat: "iz an-laik-li tu", cat: "Uncertainty" },
-            { eng: "may", kaz: "мүмкін", rus: "может", cyr: "мэй", lat: "mei", cat: "Uncertainty" },
-            { eng: "might", kaz: "мүмкін", rus: "может", cyr: "майт", lat: "mait", cat: "Uncertainty" },
-            { eng: "partially", kaz: "жарым-жартылай", rus: "частично", cyr: "паршли", lat: "paf-li", cat: "Uncertainty" },
-            { eng: "possibly", kaz: "мүмкін", rus: "возможно", cyr: "посибл", lat: "pos-i-bli", cat: "Uncertainty" },
-            { eng: "potentially", kaz: "ықтимал", rus: "потенциально", cyr: "потеншали", lat: "po-ten-sha-li", cat: "Uncertainty" },
-            { eng: "presumably", kaz: "болжам бойынша", rus: "предположительно", cyr: "презюмэбли", lat: "pri-zju:m-əb-li", cat: "Uncertainty" },
-            { eng: "relatively", kaz: "салыстырмалы түрде", rus: "относительно", cyr: "рэлитивли", lat: "rel-a-ti-vli", cat: "Uncertainty" },
-            { eng: "seems to", kaz: "сияқты", rus: "кажется", cyr: "симз ту", lat: "si:mz tu", cat: "Uncertainty" },
-            { eng: "suggests that", kaz: "көрсетеді/болжау", rus: "предполагает", cyr: "саджестс зэт", lat: "sə-dzests dæt", cat: "Uncertainty" },
-            { eng: "to some extent", kaz: "белгілі бір дәрежеде", rus: "в некоторой степени", cyr: "ту сам экстент", lat: "tu sam ik-stent", cat: "Uncertainty" },
-
-            // Category: Quantifiers & Frequency
-            { eng: "common", kaz: "жиі кездесетін", rus: "распространённый", cyr: "коммон", lat: "kom-ən", cat: "Quantifiers" },
-            { eng: "frequent", kaz: "жиі қайталанатын", rus: "частый", cyr: "фриквент", lat: "fri:kwənt", cat: "Quantifiers" },
-            { eng: "incidence", kaz: "жиілік", rus: "заболеваемость", cyr: "инсиденс", lat: "in-si-dens", cat: "Quantifiers" },
-            { eng: "majority", kaz: "көпшілік", rus: "большинство", cyr: "мажорити", lat: "mə-dzor-i-ti", cat: "Quantifiers" },
-            { eng: "marked", kaz: "айқын", rus: "выраженный", cyr: "маркт", lat: "ma:k-t", cat: "Quantifiers" },
-            { eng: "minimal", kaz: "аз", rus: "минимальный", cyr: "минимал", lat: "mi-ni-məl", cat: "Quantifiers" },
-            { eng: "minority", kaz: "азшылық", rus: "меньшинство", cyr: "майнорити", lat: "mai-nor-i-ti", cat: "Quantifiers" },
-            { eng: "moderate", kaz: "орташа", rus: "умеренный", cyr: "модерейт", lat: "mod-e-reit", cat: "Quantifiers" },
-            { eng: "percentage", kaz: "пайыз", rus: "процент", cyr: "процентедж", lat: "pə-sen-tidz", cat: "Quantifiers" },
-            { eng: "prevalent", kaz: "кең таралған", rus: "распространённый", cyr: "превалент", lat: "prev-a-lənt", cat: "Quantifiers" },
-            { eng: "proportion", kaz: "үлес", rus: "доля", cyr: "пропоршн", lat: "pro-por-fən", cat: "Quantifiers" },
-            { eng: "rare", kaz: "сирек", rus: "редкий", cyr: "реар", lat: "reǝr", cat: "Quantifiers" },
-            { eng: "rate", kaz: "көрсеткіш", rus: "уровень", cyr: "рейт", lat: "reit", cat: "Quantifiers" },
-            { eng: "significant", kaz: "маңызды", rus: "значимый", cyr: "сигнификант", lat: "sig-ni-fi-kənt", cat: "Quantifiers" },
-            { eng: "slight", kaz: "жеңіл", rus: "незначительный", cyr: "слайт", lat: "slait", cat: "Quantifiers" },
-            { eng: "substantial", kaz: "айтарлықтай", rus: "существенный", cyr: "сабстаншл", lat: "sab-stan-shəl", cat: "Quantifiers" },
-
-            // Category: Methodology & Study Design
-            { eng: "adjustment", kaz: "түзету", rus: "корректировка", cyr: "аджастмент", lat: "a-dzast-mənt", cat: "Methodology" },
-            { eng: "bias", kaz: "біржақтылық", rus: "предвзятость", cyr: "байас", lat: "bai-as", cat: "Methodology" },
-            { eng: "confounding", kaz: "аралас фактор", rus: "смешивающий фактор", cyr: "конфаундинг", lat: "kən-faun-din", cat: "Methodology" },
-            { eng: "controlled", kaz: "бақылаулы", rus: "контролируемый", cyr: "контрольд", lat: "kən-trould", cat: "Methodology" },
-            { eng: "cross-sectional", kaz: "көлденең зерттеу", rus: "поперечное исследование", cyr: "кросс секшнл", lat: "kros-sek-shə-nəl", cat: "Methodology" },
-            { eng: "double-blind", kaz: "қос соқыр", rus: "двойное слепое", cyr: "дабл блайнд", lat: "dab-l blaind", cat: "Methodology" },
-            { eng: "exclusion criteria", kaz: "алып тастау критерийі", rus: "критерии исключения", cyr: "эксклюжн критерия", lat: "ik-sklu-zən kri-ti-ri-a", cat: "Methodology" },
-            { eng: "inclusion criteria", kaz: "қосу критерийі", rus: "критерии включения", cyr: "инклюжн критерия", lat: "in-klu-zən kri-ti-ri-a", cat: "Methodology" },
-            { eng: "longitudinal", kaz: "ұзақ мерзімді", rus: "продольный", cyr: "лонгитудинал", lat: "lon-gi-tu-di-nal", cat: "Methodology" },
-            { eng: "meta-analysis", kaz: "мета-талдау", rus: "мета-анализ", cyr: "мета анализ", lat: "me-ta a-na-li-sis", cat: "Methodology" },
-            { eng: "observational", kaz: "бақылаулы", rus: "наблюдательный", cyr: "обзервационал", lat: "ob-zer-vei-shə-nəl", cat: "Methodology" },
-            { eng: "placebo-controlled", kaz: "плацебо бақылаулы", rus: "плацебо-контролируемый", cyr: "плацебо контролд", lat: "pla-si-bo kən-trould", cat: "Methodology" },
-            { eng: "prospective", kaz: "болашаққа бағытталған", rus: "проспективный", cyr: "проспектив", lat: "pros-pek-tiv", cat: "Methodology" },
-            { eng: "randomized", kaz: "кездейсоқ", rus: "рандомизированный", cyr: "рандомайзд", lat: "ran-də-maizd", cat: "Methodology" },
-            { eng: "retrospective", kaz: "артқа қарап зерттеу", rus: "ретроспективный", cyr: "ретроспектив", lat: "ri-trous-pek-tiv", cat: "Methodology" },
-            { eng: "stratification", kaz: "топтарға бөлу", rus: "стратификация", cyr: "стратификацион", lat: "stra-ti-fi-kei-shən", cat: "Methodology" },
-            { eng: "systematic review", kaz: "жүйелі шолу", rus: "систематический обзор", cyr: "систематик ревью", lat: "sis-te-ma-tik ri-vyu", cat: "Methodology" },
-
-            // Category: Clinical/Outcome Language
-            { eng: "adverse event", kaz: "жағымсыз оқиға", rus: "нежелательное явление", cyr: "адверс ивент", lat: "ad-v3:s i-vent", cat: "Clinical Language" },
-            { eng: "benefit", kaz: "пайда", rus: "польза", cyr: "бенефит", lat: "ben-i-fit", cat: "Clinical Language" },
-            { eng: "complication", kaz: "асқыну", rus: "осложнение", cyr: "компликэйшн", lat: "kom-pli-kei-shən", cat: "Clinical Language" },
-            { eng: "effectiveness", kaz: "тиімділік", rus: "эффективность", cyr: "эффектифнес", lat: "i-fek-tiv-nes", cat: "Clinical Language" },
-            { eng: "efficacy", kaz: "әсер ету тиімділігі", rus: "эффективность (в исследовании)", cyr: "эфикаси", lat: "ef-i-ka-si", cat: "Clinical Language" },
-            { eng: "morbidity", kaz: "аурушаңдық", rus: "заболеваемость", cyr: "морбидити", lat: "mor-bi-di-ti", cat: "Clinical Language" },
-            { eng: "mortality", kaz: "өлім-жітім", rus: "смертность", cyr: "морталити", lat: "mor-tal-i-ti", cat: "Clinical Language" },
-            { eng: "prognosis", kaz: "болжам", rus: "прогноз", cyr: "прогносис", lat: "prog-no-sis", cat: "Clinical Language" },
-            { eng: "progression", kaz: "үдеу", rus: "прогрессирование", cyr: "прогрешн", lat: "pro-gre-shən", cat: "Clinical Language" },
-            { eng: "recurrence", kaz: "қайталану", rus: "рецидив", cyr: "рикаренс", lat: "ri-kar-əns", cat: "Clinical Language" },
-            { eng: "remission", kaz: "ремиссия", rus: "ремиссия", cyr: "ремишн", lat: "ri-mi-shən", cat: "Clinical Language" },
-            { eng: "response", kaz: "жауап", rus: "ответ", cyr: "респонс", lat: "ri-spons", cat: "Clinical Language" },
-            { eng: "risk", kaz: "қауіп", rus: "риск", cyr: "риск", lat: "risk", cat: "Clinical Language" },
-            { eng: "safety", kaz: "қауіпсіздік", rus: "безопасность", cyr: "сейфти", lat: "sei-f-ti", cat: "Clinical Language" },
-            { eng: "side effect", kaz: "жанама әсер", rus: "побочный эффект", cyr: "сайд эффект", lat: "said i-fekt", cat: "Clinical Language" },
-            { eng: "tolerability", kaz: "төзімділік", rus: "переносимость", cyr: "толерабилити", lat: "to-le-ra-bi-li-ti", cat: "Clinical Language" },
-
-            // Category: Linking & Structuring Phrases
-            { eng: "finally", kaz: "ақыры", rus: "наконец", cyr: "файнали", lat: "fai-nə-li", cat: "Linking Phrases" },
-            { eng: "firstly/secondly", kaz: "біріншіден / екіншіден", rus: "во-первых / во-вторых", cyr: "фёрстли / секондли", lat: "f3:st-li / sek-ənd-li", cat: "Linking Phrases" },
-            { eng: "for example", kaz: "мысалы", rus: "например", cyr: "фор игзампл", lat: "fɔ:r ig-zam-pl", cat: "Linking Phrases" },
-            { eng: "for instance", kaz: "мысалы", rus: "например", cyr: "фор инстанс", lat: "fɔ:r in-stəns", cat: "Linking Phrases" },
-            { eng: "furthermore", kaz: "сонымен қатар", rus: "более того", cyr: "фёрдермор", lat: "f3:r-də-mɔ:r", cat: "Linking Phrases" },
-            { eng: "importantly", kaz: "маңыздысы", rus: "важно", cyr: "импортантли", lat: "im-pɔ:t-ənt-li", cat: "Linking Phrases" },
-            { eng: "in addition", kaz: "оған қоса", rus: "кроме того", cyr: "ин адишн", lat: "in ə-di-shən", cat: "Linking Phrases" },
-            { eng: "in conclusion", kaz: "қорытындылай келе", rus: "в заключение", cyr: "ин конклюжн", lat: "in kən-klu-zən", cat: "Linking Phrases" },
-            { eng: "in particular", kaz: "әсіресе", rus: "в частности", cyr: "ин партикьюлар", lat: "in pə-tik-jə-lər", cat: "Linking Phrases" },
-            { eng: "in summary", kaz: "қорытындысында", rus: "в заключение", cyr: "ин саммери", lat: "in sam-ə-ri", cat: "Linking Phrases" },
-            { eng: "moreover", kaz: "оған қоса", rus: "более того", cyr: "мороувер", lat: "mor-ǝu-vər", cat: "Linking Phrases" },
-            { eng: "notably", kaz: "әсіресе", rus: "особенно", cyr: "ноутэбли", lat: "nou-tə-bli", cat: "Linking Phrases" },
-            { eng: "overall", kaz: "жалпы", rus: "в целом", cyr: "оувералл", lat: "ou-vər-ɔ:l", cat: "Linking Phrases" },
-            { eng: "regarding", kaz: "қатысты", rus: "относительно", cyr: "ригардинг", lat: "ri-ga:r-din", cat: "Linking Phrases" },
-            { eng: "with respect to", kaz: "қатысты", rus: "в отношении", cyr: "уид респект ту", lat: "wið ri-spekt tu", cat: "Linking Phrases" },
-
-            // Category: Critical Appraisal / Evaluation
-            { eng: "biased", kaz: "біржақты", rus: "предвзятый", cyr: "байаст", lat: "bai-ast", cat: "Critical Appraisal" },
-            { eng: "consistent", kaz: "дәйекті", rus: "последовательный", cyr: "консистент", lat: "kən-sis-tənt", cat: "Critical Appraisal" },
-            { eng: "controversial", kaz: "даулы", rus: "спорный", cyr: "контровершл", lat: "kon-trǝ-v3:-shəl", cat: "Critical Appraisal" },
-            { eng: "emerging", kaz: "жаңа пайда болған", rus: "возникающий", cyr: "имержинг", lat: "i-m3:-dzin", cat: "Critical Appraisal" },
-            { eng: "generalizable", kaz: "жалпыланатын", rus: "обобщаемый", cyr: "дженералайзабл", lat: "dzen-ə-ra-lai-zə-bəl", cat: "Critical Appraisal" },
-            { eng: "inconsistent", kaz: "дәйекті емес", rus: "несогласованный", cyr: "инконсистент", lat: "in-kən-sis-tənt", cat: "Critical Appraisal" },
-            { eng: "limitation", kaz: "шектеу", rus: "ограничение", cyr: "лимитэйшн", lat: "lim-i-tei-shən", cat: "Critical Appraisal" },
-            { eng: "reliable", kaz: "сенімді", rus: "надёжный", cyr: "рилайабл", lat: "ri-lai-ə-bəl", cat: "Critical Appraisal" },
-            { eng: "reproducible", kaz: "қайталанатын", rus: "воспроизводимый", cyr: "репродюсибл", lat: "ri-prə-dju-sə-bəl", cat: "Critical Appraisal" },
-            { eng: "robust", kaz: "тұрақты", rus: "устойчивый", cyr: "робаст", lat: "rou-bast", cat: "Critical Appraisal" },
-            { eng: "strength", kaz: "күшті жағы", rus: "сила", cyr: "стрэнгс", lat: "streŋθ", cat: "Critical Appraisal" },
-            { eng: "unclear", kaz: "түсініксіз", rus: "неясный", cyr: "анклиэр", lat: "an-kliər", cat: "Critical Appraisal" },
-            { eng: "valid", kaz: "жарамды", rus: "действительный", cyr: "валид", lat: "va-lid", cat: "Critical Appraisal" },
-            { eng: "weakness", kaz: "әлсіздік", rus: "слабость", cyr: "викнес", lat: "wi:k-nes", cat: "Critical Appraisal" },
-            { eng: "well-established", kaz: "жақсы дәлелденген", rus: "хорошо установленный", cyr: "вел эстэблишт", lat: "wel i-stab-lisht", cat: "Critical Appraisal" }
-        ];
-
-        // Game state variables
-        let currentMode = 'eng-kaz'; // 'eng-kaz', 'eng-rus', 'kaz-eng', 'rus-eng'
-        let currentWordObj = null;
-        let currentOptions = [];
-        let totalAnswered = 0;
-        let totalCorrect = 0;
-        let isAnswered = false;
-
-        // Mode change handler
-        function setMode(mode) {
-            currentMode = mode;
-            
-            // Update active pill styling
-            const modes = ['eng-kaz', 'eng-rus', 'kaz-eng', 'rus-eng'];
-            modes.forEach(m => {
-                const btn = document.getElementById(`mode-${m}`);
-                if (m === mode) {
-                    btn.className = "mode-btn py-1 px-0.5 text-[10px] sm:text-xs font-bold rounded-lg text-center transition-all bg-kazGold text-slate-900 shadow gold-glow";
-                } else {
-                    btn.className = "mode-btn py-1 px-0.5 text-[10px] sm:text-xs font-bold rounded-lg text-center transition-all text-white hover:bg-white/10";
-                }
-            });
-
-            nextQuestion();
-        }
-
-        // Utility for random element selection
-        function getRandomIndex(max) {
-            return Math.floor(Math.random() * max);
-        }
-
-        // Generate next quiz flashcard question
-        function nextQuestion() {
-            isAnswered = false;
-            
-            // Clear feedback banner and reset Next button
-            const feedbackEl = document.getElementById('feedback-message');
-            feedbackEl.innerHTML = '';
-            
-            const nextBtn = document.getElementById('next-btn');
-            nextBtn.disabled = true;
-            nextBtn.className = "ml-auto bg-slate-200 text-slate-400 font-bold text-xs sm:text-sm px-4 py-2 rounded-xl flex items-center gap-1.5 transition-all shadow-sm";
-
-            // Pick a random term object from dataset
-            currentWordObj = vocabulary[getRandomIndex(vocabulary.length)];
-
-            // Extract prompt word and correct target answer based on current translation mode
-            let promptText = "";
-            let correctAnswer = "";
-            let showPhonetics = false;
-
-            if (currentMode === 'eng-kaz') {
-                promptText = currentWordObj.eng;
-                correctAnswer = currentWordObj.kaz;
-                showPhonetics = true;
-            } else if (currentMode === 'eng-rus') {
-                promptText = currentWordObj.eng;
-                correctAnswer = currentWordObj.rus;
-                showPhonetics = true;
-            } else if (currentMode === 'kaz-eng') {
-                promptText = currentWordObj.kaz;
-                correctAnswer = currentWordObj.eng;
-                showPhonetics = false;
-            } else if (currentMode === 'rus-eng') {
-                promptText = currentWordObj.rus;
-                correctAnswer = currentWordObj.eng;
-                showPhonetics = false;
-            }
-
-            // Update DOM Prompt Card
-            document.getElementById('prompt-word').textContent = promptText;
-            document.getElementById('category-badge').textContent = currentWordObj.cat || "Medical English";
-
-            // Handle Phonetic display & speaker button visibility
-            const phoneticContainer = document.getElementById('phonetic-container');
-            const speakerBtn = document.getElementById('speaker-btn');
-
-            if (showPhonetics && currentWordObj.lat && currentWordObj.cyr) {
-                phoneticContainer.style.display = 'flex';
-                document.getElementById('latin-trans').textContent = `[${currentWordObj.lat}]`;
-                document.getElementById('cyrillic-trans').textContent = currentWordObj.cyr;
-            } else {
-                phoneticContainer.style.display = 'none';
-            }
-
-            // Speaker active whenever English word is present
-            if (currentMode.startsWith('eng') || currentMode.endsWith('eng')) {
-                speakerBtn.style.visibility = 'visible';
-            } else {
-                speakerBtn.style.visibility = 'hidden';
-            }
-
-            // Generate 3 random distinct distractors
-            const optionsSet = new Set();
-            optionsSet.add(correctAnswer);
-
-            while (optionsSet.size < 4) {
-                const randomObj = vocabulary[getRandomIndex(vocabulary.length)];
-                let distractor = "";
-
-                if (currentMode === 'eng-kaz') distractor = randomObj.kaz;
-                else if (currentMode === 'eng-rus') distractor = randomObj.rus;
-                else distractor = randomObj.eng;
-
-                if (distractor && distractor !== correctAnswer) {
-                    optionsSet.add(distractor);
-                }
-            }
-
-            // Convert set to array and shuffle options randomly
-            currentOptions = Array.from(optionsSet).sort(() => Math.random() - 0.5);
-
-            // Render option buttons
-            renderOptions(correctAnswer);
-        }
-
-        function renderOptions(correctAnswer) {
-            const container = document.getElementById('options-container');
-            container.innerHTML = '';
-
-            currentOptions.forEach((optText) => {
-                const button = document.createElement('button');
-                button.type = 'button';
-                button.className = "option-btn w-full text-left p-2.5 sm:p-3 rounded-xl border-2 border-slate-200 bg-slate-50 hover:bg-sky-50 hover:border-sky-300 text-slate-800 text-xs sm:text-sm font-semibold flex items-center justify-between transition-all";
-                
-                button.innerHTML = `
-                    <span class="truncate pr-2">${optText}</span>
-                    <span class="status-icon shrink-0 text-transparent font-extrabold text-base">✓</span>
-                `;
-
-                button.onclick = () => handleOptionClick(button, optText, correctAnswer);
-                container.appendChild(button);
-            });
-        }
-
-        function handleOptionClick(selectedBtn, selectedText, correctAnswer) {
-            if (isAnswered) return;
-            isAnswered = true;
-
-            totalAnswered++;
-            const allOptionBtns = document.querySelectorAll('#options-container button');
-            const feedbackEl = document.getElementById('feedback-message');
-            const nextBtn = document.getElementById('next-btn');
-
-            // Check if user chosen option is correct
-            const isCorrect = (selectedText === correctAnswer);
-
-            if (isCorrect) {
-                totalCorrect++;
-                selectedBtn.className = "option-btn w-full text-left p-2.5 sm:p-3 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900 text-xs sm:text-sm font-bold flex items-center justify-between shadow-md";
-                selectedBtn.querySelector('.status-icon').className = "status-icon shrink-0 text-emerald-600 font-extrabold text-base";
-                selectedBtn.querySelector('.status-icon').textContent = "✓";
-
-                feedbackEl.innerHTML = `
-                    <span class="text-emerald-600 flex items-center gap-1">
-                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg>
-                        Жарайсың! / Отлично!
-                    </span>
-                `;
-            } else {
-                selectedBtn.className = "option-btn w-full text-left p-2.5 sm:p-3 rounded-xl border-2 border-rose-400 bg-rose-50 text-rose-900 text-xs sm:text-sm font-bold flex items-center justify-between";
-                selectedBtn.querySelector('.status-icon').className = "status-icon shrink-0 text-rose-600 font-extrabold text-base";
-                selectedBtn.querySelector('.status-icon').textContent = "✕";
-
-                allOptionBtns.forEach(btn => {
-                    if (btn.querySelector('span').textContent.trim() === correctAnswer) {
-                        btn.className = "option-btn w-full text-left p-2.5 sm:p-3 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900 text-xs sm:text-sm font-bold flex items-center justify-between";
-                        btn.querySelector('.status-icon').className = "status-icon shrink-0 text-emerald-600 font-extrabold text-base";
-                        btn.querySelector('.status-icon').textContent = "✓";
-                    }
-                });
-
-                feedbackEl.innerHTML = `
-                    <span class="text-rose-600 flex items-center gap-1">
-                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"/></svg>
-                        Қате! / Неверно
-                    </span>
-                `;
-            }
-
-            allOptionBtns.forEach(btn => btn.disabled = true);
-
-            nextBtn.disabled = false;
-            nextBtn.className = "ml-auto bg-kazGold hover:bg-kazGoldHover text-slate-900 font-extrabold text-xs sm:text-sm px-4 py-2 rounded-xl flex items-center gap-1.5 transition-all shadow-md gold-glow active:scale-95";
-
-            updateStats();
-        }
-
-        function updateStats() {
-            document.getElementById('stat-total').textContent = totalAnswered;
-            document.getElementById('stat-correct').textContent = totalCorrect;
-            
-            const accuracy = totalAnswered > 0 ? Math.round((totalCorrect / totalAnswered) * 100) : 0;
-            document.getElementById('stat-accuracy').textContent = `${accuracy}%`;
-        }
-
-        function speakCurrentWord() {
-            if (!('speechSynthesis' in window) || !currentWordObj) return;
-
-            let wordToSpeak = currentWordObj.eng;
-
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(wordToSpeak);
-            utterance.lang = 'en-US';
-            utterance.rate = 0.85;
-            window.speechSynthesis.speak(utterance);
-        }
-
-        window.onload = function() {
-            // Auto focus input on load
-            const passInput = document.getElementById('password-input');
-            if (passInput) passInput.focus();
-        };
-    </script>
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('correctCount').textContent = correct;
+      document.getElementById('nextBtn').style.display = 'block';
+    }
+  </script>
 </body>
 </html>
