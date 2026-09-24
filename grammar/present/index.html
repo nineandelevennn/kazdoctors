@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>@doctors.speak — Medical Grammar Trainer</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: linear-gradient(135deg, #00afca 0%, #0081a7 100%);
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 420px;
+      max-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      border: 3px solid #fbc02d;
+      position: relative;
+      overflow-y: auto;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #00afca;
+    }
+
+    .home-btn {
+      background-color: #fbc02d;
+      color: #003366;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 6px 12px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+      transition: transform 0.1s, background-color 0.2s;
+    }
+
+    .home-btn:active {
+      transform: scale(0.95);
+      background-color: #fdd835;
+    }
+
+    .brand {
+      color: #00afca;
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: 0.5px;
+    }
+
+    /* Password Screen */
+    .auth-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      padding: 40px 10px;
+      text-align: center;
+    }
+
+    .auth-title {
+      font-size: 1.25rem;
+      color: #0081a7;
+      font-weight: 700;
+    }
+
+    .auth-input {
+      width: 85%;
+      padding: 12px;
+      border: 2px solid #00afca;
+      border-radius: 10px;
+      font-size: 1rem;
+      text-align: center;
+      outline: none;
+    }
+
+    .auth-btn, .next-btn {
+      background: #00afca;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      width: 85%;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .auth-btn:active, .next-btn:active {
+      transform: scale(0.98);
+    }
+
+    .insta-link {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    .insta-link a {
+      color: #0081a7;
+      font-weight: 700;
+      text-decoration: underline;
+    }
+
+    .error-msg {
+      color: #e53935;
+      font-size: 0.85rem;
+      display: none;
+      font-weight: 600;
+    }
+
+    /* Controls & Stats */
+    .mode-select {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #00afca;
+      border-radius: 10px;
+      font-weight: 700;
+      color: #0081a7;
+      background: #f4fbfe;
+      margin-top: 10px;
+      outline: none;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #555;
+      margin-top: 8px;
+      background: #f0f9fc;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #d0edf5;
+    }
+
+    .stats span {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    /* Question Box */
+    .term-box {
+      margin: 12px 0;
+      background: #f9fbfd;
+      border-radius: 12px;
+      padding: 12px;
+      border: 1px dashed #00afca;
+      text-align: center;
+    }
+
+    .level-tag {
+      display: inline-block;
+      background: #00afca;
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .term-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #0081a7;
+      margin-bottom: 6px;
+      line-height: 1.35;
+    }
+
+    .chunks-box {
+      background: #fff;
+      border: 1px solid #dceef5;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: #d97706;
+      font-weight: 700;
+      margin-top: 6px;
+      word-break: break-word;
+    }
+
+    /* Options */
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .option-btn {
+      background: #ffffff;
+      border: 2px solid #e0e0e0;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #333;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+      line-height: 1.3;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: #00afca;
+      background-color: #f4fbfe;
+    }
+
+    .option-btn.correct {
+      background-color: #d4edda !important;
+      border-color: #28a745 !important;
+      color: #155724 !important;
+      font-weight: 700;
+    }
+
+    .option-btn.wrong {
+      background-color: #f8d7da !important;
+      border-color: #dc3545 !important;
+      color: #721c24 !important;
+    }
+
+    /* Explanation */
+    .explanation-box {
+      background-color: #e8f4f8;
+      border-left: 4px solid #00afca;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      color: #004d61;
+      margin-bottom: 10px;
+      line-height: 1.4;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .next-btn {
+      width: 100%;
+      background: #fbc02d;
+      color: #003366;
+      font-weight: 800;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .next-btn:hover {
+      background: #fdd835;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <!-- Header -->
+    <header class="header">
+      <a href="https://kazdoctors.com/grammar/" class="home-btn">⬅ Назад</a>
+      <div class="brand">@doctors.speak</div>
+    </header>
+
+    <!-- Screen 1: Password -->
+    <div id="authScreen" class="auth-container">
+      <div class="auth-title">Medical English Quiz</div>
+      <p style="font-size: 0.85rem; color: #666;">Введите пароль для доступа к тестам</p>
+      
+      <input type="password" id="passInput" class="auth-input" placeholder="Пароль" onkeyup="if(event.key === 'Enter') checkPass()">
+      <button onclick="checkPass()" class="auth-btn">Войти</button>
+      
+      <div id="errorMsg" class="error-msg">Неверный пароль! Попробуйте еще раз.</div>
+      
+      <div class="insta-link">
+        Нет пароля? <br>
+        <a href="https://instagram.com/doctors.speak" target="_blank">Получить пароль в Direct</a>
+      </div>
+    </div>
+
+    <!-- Screen 2: Game -->
+    <div id="gameScreen" class="hidden" style="display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;">
+      
+      <div>
+        <select id="levelSelect" class="mode-select" onchange="changeLevel()">
+          <option value="1">Level 1 — Recognition</option>
+          <option value="2">Level 2 — Choose verb form</option>
+          <option value="3">Level 3 — Sentence order</option>
+          <option value="mix">🔥 Mix</option>
+        </select>
+
+        <div class="stats">
+          <span>Total: <strong id="totalCount">0</strong></span>
+          <span>Correct: <strong id="correctCount" style="color:#28a745;">0</strong></span>
+          <span>Streak: <strong id="streakCount" style="color:#e67e22;">0 🔥</strong></span>
+        </div>
+      </div>
+
+      <div class="term-box">
+        <span id="levelTag" class="level-tag">Level 1</span>
+        <div id="questionText" class="term-title">Loading question...</div>
+        <div id="chunksBox" class="chunks-box hidden"></div>
+      </div>
+
+      <div>
+        <div id="optionsGrid" class="options-grid"></div>
+        
+        <div id="explanationBox" class="explanation-box hidden">
+          <strong>💡 Explanation:</strong> <span id="explanationText"></span>
+        </div>
+
+        <button id="nextBtn" class="next-btn hidden" onclick="nextQuestion()">Next ➔</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const SECRET_PASS = "fever";
+
+    // База вопросов по уровням
+    const questions = [
+      // ================= LEVEL 1 =================
+      {
+        level: 1,
+        question: "The patient is breathing heavily.'",
+        options: ["Present Simple", "Past Simple", "Present Continuous", "Future Simple"],
+        correct: 2,
+        explanation: "The action is happening right now."
+      },
+      {
+        level: 1,
+        question: "The heart pumps blood around the body.'",
+        options: ["Future Simple", "Present Continuous", "Past Simple", "Present Simple"],
+        correct: 3,
+        explanation: "This is a general biological fact."
+      },
+      {
+        level: 1,
+        question: "The doctor is examining the patient.'",
+        options: ["Present Simple", "Future Simple", "Past Simple", "Present Continuous"],
+        correct: 3,
+        explanation: "The examination is happening now."
+      },
+      {
+        level: 1,
+        question: "The kidneys remove waste from the blood.'",
+        options: ["Present Simple", "Present Continuous", "Past Simple", "Future Simple"],
+        correct: 0,
+        explanation: "This describes a general physiological function."
+      },
+      {
+        level: 1,
+        question: "The patient is complaining of chest pain.",
+        options: ["Present Simple", "Present Continuous", "Past Simple", "Future Simple"],
+        correct: 1,
+        explanation: "The patient is doing this at the moment."
+      },
+      {
+        level: 1,
+        question: "Inflammation leads to swelling and pain.",
+        options: ["Future Simple", "Present Continuous", "Past Simple", "Present Simple"],
+        correct: 3,
+        explanation: "This describes a general medical relationship."
+      },
+      {
+        level: 1,
+        question: "The nurse is checking the patient's blood pressure.",
+        options: ["Present Simple", "Present Continuous", "Past Simple", "Future Simple"],
+        correct: 1,
+        explanation: "The action is happening right now."
+      },
+      {
+        level: 1,
+        question: "Blood carries oxygen to the tissues.",
+        options: ["Present Simple", "Present Continuous", "Past Simple", "Future Simple"],
+        correct: 0,
+        explanation: "This is a general function of blood."
+      },
+      {
+        level: 1,
+        question: "The patient is receiving intravenous fluids.",
+        options: ["Present Continuous", "Present Simple", "Past Simple", "Future Simple"],
+        correct: 0,
+        explanation: "The treatment is happening now / at the present time."
+      },
+      {
+        level: 1,
+        question: "The liver produces several important proteins.",
+        options: ["Past Simple", "Present Continuous", "Present Simple", "Future Simple"],
+        correct: 2,
+        explanation: "This describes a general physiological function."
+      },
+      {
+        level: 1,
+        question: "The surgeon is operating on the patient.",
+        options: ["Present Simple", "Present Continuous", "Past Simple", "Future Simple"],
+        correct: 1,
+        explanation: "The operation is in progress now."
+      },
+      {
+        level: 1,
+        question: "Bacteria usually cause serious infections.",
+        options: ["Past Simple", "Future Simple", "Present Simple", "Present Continuous"],
+        correct: 2,
+        explanation: "This is a general medical fact."
+      },
+      {
+        level: 1,
+        question: "The patient is waiting for the test results.",
+        options: ["Present Simple", "Present Continuous", "Past Simple", "Future Simple"],
+        correct: 1,
+        explanation: "The patient is waiting at the moment."
+      },
+      {
+        level: 1,
+        question: "The lungs exchange oxygen and carbon dioxide.",
+        options: ["Future Simple", "Present Continuous", "Past Simple", "Present Simple"],
+        correct: 3,
+        explanation: "This is a general physiological process."
+      },
+      {
+        level: 1,
+        question: "The doctor is talking to the patient's family.",
+        options: ["Present Simple", "Present Continuous", "Past Simple", "Future Simple"],
+        correct: 1,
+        explanation: "The conversation is happening now."
+      },
+      {
+        level: 1,
+        question: "High blood pressure increases the risk of stroke.",
+        options: ["Present Simple", "Present Continuous", "Past Simple", "Future Simple"],
+        correct: 0,
+        explanation: "This describes a general medical relationship."
+      },
+      {
+        level: 1,
+        question: "The patient's condition is improving.",
+        options: ["Past Simple", "Future Simple", "Present Simple", "Present Continuous"],
+        correct: 3,
+        explanation: "The change is taking place at the present time."
+      },
+      {
+        level: 1,
+        question: "The stomach produces acid to help digest food.",
+        options: ["Present Simple", "Present Continuous", "Past Simple", "Future Simple"],
+        correct: 0,
+        explanation: "This is a general physiological fact."
+      },
+      {
+        level: 1,
+        question: "The nurses are preparing the patient for surgery.",
+        options: ["Present Simple", "Present Continuous", "Past Simple", "Future Simple"],
+        correct: 1,
+        explanation: "The preparation is in progress now."
+      },
+      {
+        level: 1,
+        question: "The immune system protects the body from infection.",
+        options: ["Present Simple", "Present Continuous", "Past Simple", "Future Simple"],
+        correct: 0,
+        explanation: "This describes a general function of the immune system."
+      },
+
+      // ================= LEVEL 2 =================
+      {
+        level: 2,
+        question: "Inflammation ____ necrosis.",
+        options: ["causes", "is causing", "caused", "will cause"],
+        correct: 0,
+        explanation: "This describes a general scientific relationship."
+      },
+      {
+        level: 2,
+        question: "The patient's temperature ____ at the moment.",
+        options: ["rises", "is rising", "rose", "will rise"],
+        correct: 1,
+        explanation: "The change is happening now."
+      },
+      {
+        level: 2,
+        question: "The kidneys ____ excess water from the body.",
+        options: ["removed", "are removing", "remove", "will remove"],
+        correct: 2,
+        explanation: "This is a general physiological function."
+      },
+      {
+        level: 2,
+        question: "The nurse ____ the patient's blood pressure now.",
+        options: ["is checking", "checks", "checked", "will check"],
+        correct: 0,
+        explanation: "The action is happening now."
+      },
+      {
+        level: 2,
+        question: "Smoking ____ the risk of lung cancer.",
+        options: ["will increase", "is increasing", "increased", "increases"],
+        correct: 3,
+        explanation: "This is a general medical fact."
+      },
+      {
+        level: 2,
+        question: "The patient ____ more slowly than usual today.",
+        options: ["breathes", "breathed", "is breathing", "will breathe"],
+        correct: 2,
+        explanation: "The patient's breathing is different at the present time."
+      },
+      {
+        level: 2,
+        question: "The liver ____ many important metabolic functions.",
+        options: ["will perform", "performed", "is performing", "performs"],
+        correct: 3,
+        explanation: "This describes a general function of the liver."
+      },
+      {
+        level: 2,
+        question: "The doctor ____ the patient's medical history at the moment.",
+        options: ["reviews", "is reviewing", "reviewed", "will review"],
+        correct: 1,
+        explanation: "The doctor is doing this now."
+      },
+      {
+        level: 2,
+        question: "A lack of oxygen ____ tissue damage.",
+        options: ["causes", "is causing", "caused", "will cause"],
+        correct: 0,
+        explanation: "This is a general scientific relationship."
+      },
+      {
+        level: 2,
+        question: "The patient's symptoms ____ rapidly today.",
+        options: ["are worsening", "worsen", "will worsen", "worsened"],
+        correct: 0,
+        explanation: "The symptoms are changing now / during the current period."
+      },
+      {
+        level: 2,
+        question: "The heart ____ blood to all parts of the body.",
+        options: ["will pump", "pumped", "is pumping", "pumps"],
+        correct: 3,
+        explanation: "This is a general biological fact."
+      },
+      {
+        level: 2,
+        question: "The surgeon ____ the procedure at the moment.",
+        options: ["performs", "is performing", "performed", "will perform"],
+        correct: 1,
+        explanation: "The procedure is in progress now."
+      },
+      {
+        level: 2,
+        question: "Regular exercise ____ cardiovascular health.",
+        options: ["improved", "is improving", "improves", "will improve"],
+        correct: 2,
+        explanation: "This describes a general effect of exercise."
+      },
+      {
+        level: 2,
+        question: "The patient ____ intravenous antibiotics today.",
+        options: ["receives", "will receive", "received", "is receiving"],
+        correct: 3,
+        explanation: "The treatment is taking place during the current period."
+      },
+      {
+        level: 2,
+        question: "The pancreas ____ insulin.",
+        options: ["produced", "is producing", "produces", "will produce"],
+        correct: 2,
+        explanation: "This is a general physiological function."
+      },
+      {
+        level: 2,
+        question: "The patient's heart rate ____ at present.",
+        options: ["increases", "will increase", "increased", "is increasing"],
+        correct: 3,
+        explanation: "The heart rate is changing now."
+      },
+      {
+        level: 2,
+        question: "Certain medications ____ blood pressure.",
+        options: ["reduce", "are reducing", "reduced", "will reduce"],
+        correct: 0,
+        explanation: "This describes a general effect of medications."
+      },
+      {
+        level: 2,
+        question: "The patient ____ unusually tired today.",
+        options: ["feels", "is feeling", "felt", "will feel"],
+        correct: 1,
+        explanation: "This describes the patient's current temporary condition."
+      },
+      {
+        level: 2,
+        question: "The immune system ____ the body against pathogens.",
+        options: ["protects", "is protecting", "protected", "will protect"],
+        correct: 0,
+        explanation: "This is a general function of the immune system."
+      },
+      {
+        level: 2,
+        question: "The infection ____ rapidly at the moment.",
+        options: ["spreads", "spread", "is spreading", "will spread"],
+        correct: 2,
+        explanation: "The process is happening now."
+      },
+
+      // ================= LEVEL 3 =================
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "inherits / a child / copies / two / of / gene / a changed",
+        options: [
+          "Inherits a child two copies of a changed gene.",
+          "A child two copies inherits of a changed gene.",
+          "A child inherits two copies of a changed gene.",
+          "A child inherits of two copies a changed gene."
+        ],
+        correct: 2,
+        explanation: "Order: Subject (A child) + Verb (inherits) + Object (two copies of a changed gene)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "the heart / the body / pumps / around / blood",
+        options: [
+          "The heart blood pumps around the body.",
+          "The heart pumps around blood the body.",
+          "Pumps the heart blood around the body.",
+          "The heart pumps blood around the body."
+        ],
+        correct: 3,
+        explanation: "Order: Subject (The heart) + Verb (pumps) + Object (blood) + Direction (around the body)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "the kidneys / the blood / waste products / remove / from",
+        options: [
+          "The kidneys remove waste products from the blood.",
+          "The kidneys waste products remove from the blood.",
+          "Remove the kidneys waste products from the blood.",
+          "The kidneys remove from the blood waste products."
+        ],
+        correct: 0,
+        explanation: "Order: Subject (The kidneys) + Verb (remove) + Object (waste products) + Source (from the blood)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "the patient / breathing / than usual / is / more rapidly",
+        options: [
+          "The patient breathing is more rapidly than usual.",
+          "The patient is breathing more rapidly than usual.",
+          "Is the patient breathing more rapidly than usual.",
+          "The patient is more rapidly breathing than usual."
+        ],
+        correct: 1,
+        explanation: "Present Continuous: Subject (The patient) + is + Verb-ing (breathing) + Adverbial phrase."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "and / inflammation / pain / swelling / causes",
+        options: [
+          "Inflammation causes and swelling pain.",
+          "Inflammation swelling causes and pain.",
+          "Causes inflammation swelling and pain.",
+          "Inflammation causes swelling and pain."
+        ],
+        correct: 3,
+        explanation: "Order: Subject (Inflammation) + Verb (causes) + Object (swelling and pain)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "is examining / the doctor / at the moment / the patient",
+        options: [
+          "The doctor is examining the patient at the moment.",
+          "The doctor examining is the patient at the moment.",
+          "Is the doctor examining the patient at the moment.",
+          "The doctor is at the moment examining the patient."
+        ],
+        correct: 0,
+        explanation: "Order: Subject (The doctor) + is examining + Object (the patient) + Time phrase (at the moment)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "oxygen / to / blood / the tissues / carries",
+        options: [
+          "Carries blood oxygen to the tissues.",
+          "Blood oxygen carries to the tissues.",
+          "Blood carries oxygen to the tissues.",
+          "Blood carries to the tissues oxygen."
+        ],
+        correct: 2,
+        explanation: "Order: Subject (Blood) + Verb (carries) + Object (oxygen) + Destination (to the tissues)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "intravenous / the patient / is receiving / fluids",
+        options: [
+          "The patient receiving is intravenous fluids.",
+          "The patient is receiving intravenous fluids.",
+          "The patient is intravenous receiving fluids.",
+          "Is the patient receiving intravenous fluids."
+        ],
+        correct: 1,
+        explanation: "Order: Subject (The patient) + is receiving + Object (intravenous fluids)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "high blood pressure / increases / the risk / of stroke",
+        options: [
+          "High blood pressure increases the risk of stroke.",
+          "High blood pressure the risk increases of stroke.",
+          "Increases high blood pressure the risk of stroke.",
+          "High blood pressure increases of the risk stroke."
+        ],
+        correct: 0,
+        explanation: "Order: Subject (High blood pressure) + Verb (increases) + Object (the risk of stroke)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "infection / the immune system / from / the body / protects",
+        options: [
+          "The immune system protects the body from infection.",
+          "The immune system the body protects from infection.",
+          "Protects the immune system the body from infection.",
+          "The immune system protects from infection the body."
+        ],
+        correct: 0,
+        explanation: "Order: Subject (The immune system) + Verb (protects) + Object (the body) + Prepositional phrase."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "is performing / now / the surgeon / the procedure",
+        options: [
+          "Is the surgeon performing the procedure now.",
+          "The surgeon performing is the procedure now.",
+          "The surgeon is the procedure performing now.",
+          "The surgeon is performing the procedure now."
+        ],
+        correct: 3,
+        explanation: "Order: Subject (The surgeon) + is performing + Object (the procedure) + Time (now)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "produces / the liver / important proteins / several",
+        options: [
+          "The liver produces important several proteins.",
+          "The liver several important proteins produces.",
+          "Produces the liver several important proteins.",
+          "The liver produces several important proteins."
+        ],
+        correct: 3,
+        explanation: "Order: Subject (The liver) + Verb (produces) + Object with adjective modifiers (several important proteins)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "are getting / worse / the patient's symptoms / today",
+        options: [
+          "Are the patient's symptoms getting worse today.",
+          "The patient's symptoms getting are worse today.",
+          "The patient's symptoms are worse getting today.",
+          "The patient's symptoms are getting worse today."
+        ],
+        correct: 3,
+        explanation: "Order: Subject (The patient's symptoms) + are getting + Adjective (worse) + Time (today)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "health / cardiovascular / regular exercise / improves",
+        options: [
+          "Improves regular exercise cardiovascular health.",
+          "Regular exercise cardiovascular improves health.",
+          "Regular exercise improves cardiovascular health.",
+          "Regular exercise improves health cardiovascular."
+        ],
+        correct: 2,
+        explanation: "Order: Subject (Regular exercise) + Verb (improves) + Direct Object (cardiovascular health)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "the nurse / the patient's / is checking / blood pressure",
+        options: [
+          "The nurse is the patient's checking blood pressure.",
+          "The nurse checking is the patient's blood pressure.",
+          "The nurse is checking the patient's blood pressure.",
+          "Is the nurse checking the patient's blood pressure."
+        ],
+        correct: 2,
+        explanation: "Order: Subject (The nurse) + is checking + Object (the patient's blood pressure)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "produces / in / the pancreas / insulin / the body",
+        options: [
+          "The pancreas produces insulin in the body.",
+          "The pancreas insulin produces in the body.",
+          "Produces the pancreas insulin in the body.",
+          "The pancreas produces in the body insulin."
+        ],
+        correct: 0,
+        explanation: "Order: Subject (The pancreas) + Verb (produces) + Object (insulin) + Place (in the body)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "the patient / chest pain / now / is complaining of",
+        options: [
+          "The patient complaining is of chest pain now.",
+          "The patient is complaining of chest pain now.",
+          "The patient is chest pain complaining of now.",
+          "Is the patient complaining of chest pain now."
+        ],
+        correct: 1,
+        explanation: "Order: Subject (The patient) + is complaining of + Object (chest pain) + Time (now)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "lack of / damage / causes / tissue / oxygen",
+        options: [
+          "Lack of oxygen tissue causes damage.",
+          "Lack of oxygen causes tissue damage.",
+          "Tissue oxygen causes lack of damage.",
+          "Lack of damage tissue causes oxygen."
+        ],
+        correct: 1,
+        explanation: "Order: Subject (Lack of oxygen) + Verb (causes) + Object (tissue damage)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "the lungs / oxygen / exchange / carbon dioxide / and",
+        options: [
+          "The lungs exchange and oxygen carbon dioxide.",
+          "The lungs oxygen exchange and carbon dioxide.",
+          "Exchange the lungs oxygen and carbon dioxide.",
+          "The lungs exchange oxygen and carbon dioxide."
+        ],
+        correct: 3,
+        explanation: "Order: Subject (The lungs) + Verb (exchange) + Compound Object (oxygen and carbon dioxide)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "treatment / the patient's condition / after / is improving",
+        options: [
+          "The patient's condition is improving after treatment.",
+          "The patient's condition improving is after treatment.",
+          "Is the patient's condition improving after treatment.",
+          "The patient's condition is after treatment improving."
+        ],
+        correct: 0,
+        explanation: "Order: Subject (The patient's condition) + is improving + Prepositional phrase (after treatment)."
+      }
+    ];
+
+    let total = 0;
+    let correct = 0;
+    let streak = 0;
+    let currentQuestion = null;
+    let answered = false;
+
+    function checkPass() {
+      const val = document.getElementById('passInput').value.trim().toLowerCase();
+      if (val === SECRET_PASS) {
+        document.getElementById('authScreen').classList.add('hidden');
+        document.getElementById('gameScreen').classList.remove('hidden');
+        nextQuestion();
+      } else {
+        document.getElementById('errorMsg').style.display = 'block';
+      }
+    }
+
+    function changeLevel() {
+      nextQuestion();
+    }
+
+    function getFilteredQuestions() {
+      const selectedLevel = document.getElementById('levelSelect').value;
+      if (selectedLevel === 'mix') {
+        return questions;
+      }
+      return questions.filter(q => q.level === parseInt(selectedLevel));
+    }
+
+    function nextQuestion() {
+      answered = false;
+      document.getElementById('nextBtn').classList.add('hidden');
+      document.getElementById('explanationBox').classList.add('hidden');
+
+      const pool = getFilteredQuestions();
+      currentQuestion = pool[Math.floor(Math.random() * pool.length)];
+
+      // Установка тега
+      const levelTag = document.getElementById('levelTag');
+      levelTag.textContent = `Level ${currentQuestion.level}`;
+
+      // Текст вопроса
+      document.getElementById('questionText').textContent = currentQuestion.question;
+
+      // Chunks if Level 3
+      const chunksBox = document.getElementById('chunksBox');
+      if (currentQuestion.chunks) {
+        chunksBox.textContent = currentQuestion.chunks;
+        chunksBox.classList.remove('hidden');
+      } else {
+        chunksBox.classList.add('hidden');
+      }
+
+      // Варианты ответов
+      const grid = document.getElementById('optionsGrid');
+      grid.innerHTML = '';
+
+      currentQuestion.options.forEach((optText, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = `${String.fromCharCode(65 + index)}) ${optText}`;
+        btn.onclick = () => selectOption(btn, index);
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedBtn, selectedIndex) {
+      if (answered) return;
+      answered = true;
+
+      total++;
+      const isCorrect = (selectedIndex === currentQuestion.correct);
+
+      if (isCorrect) {
+        correct++;
+        streak++;
+        selectedBtn.classList.add('correct');
+      } else {
+        streak = 0;
+        selectedBtn.classList.add('wrong');
+        
+        // Посветить правильный ответ
+        const allBtns = document.querySelectorAll('.option-btn');
+        if (allBtns[currentQuestion.correct]) {
+          allBtns[currentQuestion.correct].classList.add('correct');
+        }
+      }
+
+      // Заблокировать все кнопки
+      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+      // Обновить статистику
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('correctCount').textContent = correct;
+      document.getElementById('streakCount').textContent = `${streak} 🔥`;
+
+      // Показать объяснение
+      document.getElementById('explanationText').textContent = currentQuestion.explanation;
+      document.getElementById('explanationBox').classList.remove('hidden');
+
+      // Показать кнопку Next
+      document.getElementById('nextBtn').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
