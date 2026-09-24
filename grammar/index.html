@@ -55,6 +55,39 @@
             z-index: 1;
             text-align: center;
             margin-top: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Стили для кнопки "Назад" */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.8rem;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:active {
+            transform: scale(0.96);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .back-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--kz-gold);
         }
 
         .brand-badge {
@@ -167,6 +200,10 @@
             z-index: 1;
             text-align: center;
             margin-bottom: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
         }
 
         .instagram-link {
@@ -199,6 +236,12 @@
     <div class="sun-bg"></div>
 
     <header>
+        <!-- Верхняя кнопка "Назад" -->
+        <a href="https://kazdoctors.com" class="back-btn">
+            <svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
+            <span>Назад на kazdoctors.com</span>
+        </a>
+
         <div class="brand-badge">@doctors.speak</div>
         <h1>Медицинский Английский</h1>
         <p class="subtitle">Выучите medical English с нами!</p>
@@ -354,6 +397,12 @@
     <footer>
         <a href="https://instagram.com/doctors.speak" target="_blank" class="instagram-link">
             <span>@doctors.speak</span>
+        </a>
+
+        <!-- Нижняя кнопка "Назад" -->
+        <a href="https://kazdoctors.com" class="back-btn">
+            <svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
+            <span>Назад на kazdoctors.com</span>
         </a>
     </footer>
 
