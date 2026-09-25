@@ -333,7 +333,7 @@
   <div class="card">
     <!-- Header -->
     <header class="header">
-      <a href="https://kazdoctors.com/grammar/" class="home-btn">⬅ Назад</a>
+      <a href="https://kazdoctors.com/grammar/" class="home-btn">⬅ Go back</a>
       <div class="brand">@doctors.speak</div>
     </header>
 
@@ -980,7 +980,7 @@
 
       const expBox = document.getElementById('explanationBox');
       expBox.classList.remove('answered');
-      document.getElementById('explanationText').textContent = "Выберите вариант ответа, чтобы увидеть пояснение.";
+      document.getElementById('explanationText').textContent = "Choose the correct answer.";
 
       const pool = getFilteredQuestions();
       currentQuestion = pool[Math.floor(Math.random() * pool.length)];
