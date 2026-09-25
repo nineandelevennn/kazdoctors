@@ -25,20 +25,20 @@
 
         html, body {
             width: 100%;
-            height: 100vh;
-            height: 100dvh;
-            overflow: hidden;
+            min-height: 100vh;
+            min-height: 100dvh;
+            overflow-y: auto;
             background: linear-gradient(145deg, #00A1DE 0%, #006890 100%);
             color: var(--white);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 20px 16px;
+            padding: 16px;
         }
 
         /* Декоративный элемент солнышка на фоне */
         .sun-bg {
-            position: absolute;
+            position: fixed;
             top: -10%;
             right: -15%;
             width: 260px;
@@ -54,6 +54,7 @@
             z-index: 1;
             text-align: center;
             margin-top: 5px;
+            margin-bottom: 12px;
         }
 
         .brand-badge {
@@ -68,7 +69,7 @@
             letter-spacing: 1px;
             padding: 5px 14px;
             border-radius: 20px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         h1 {
@@ -82,7 +83,7 @@
         .subtitle {
             font-size: 0.8rem;
             opacity: 0.9;
-            margin-top: 6px;
+            margin-top: 4px;
             font-weight: 400;
         }
 
@@ -99,6 +100,119 @@
             justify-content: center;
         }
 
+        /* Word of the Hour Card */
+        .woth-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 14px;
+            padding: 14px 16px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .woth-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .woth-title {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--kz-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .woth-timer {
+            font-size: 0.68rem;
+            opacity: 0.85;
+            font-weight: 600;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .woth-term {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--white);
+            margin: 4px 0 10px 0;
+            letter-spacing: 0.2px;
+        }
+
+        .woth-btn {
+            background: var(--kz-gold);
+            color: #004d66;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .woth-btn:active {
+            transform: scale(0.95);
+            background: #ffe082;
+        }
+
+        .woth-translations {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.25);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            text-align: left;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .woth-translations.hidden {
+            display: none;
+        }
+
+        .trans-row {
+            display: flex;
+            align-items: center;
+            font-size: 0.82rem;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.12);
+            padding: 6px 10px;
+            border-radius: 8px;
+        }
+
+        .trans-flag {
+            font-size: 0.9rem;
+        }
+
+        .trans-lang {
+            font-size: 0.68rem;
+            font-weight: 700;
+            opacity: 0.8;
+            text-transform: uppercase;
+            width: 22px;
+        }
+
+        .trans-val {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Trainer Cards */
         .trainer-card {
             display: flex;
             align-items: center;
@@ -165,6 +279,7 @@
             position: relative;
             z-index: 1;
             text-align: center;
+            margin-top: 14px;
             margin-bottom: 5px;
         }
 
@@ -183,10 +298,11 @@
         }
 
         /* Корректировка под маленькие экраны */
-        @media (max-height: 640px) {
+        @media (max-height: 680px) {
             h1 { font-size: 1.15rem; }
             .subtitle { font-size: 0.75rem; }
             .trainer-card { padding: 12px; }
+            .woth-card { padding: 12px; }
             .card-icon { width: 38px; height: 38px; font-size: 1.1rem; }
             .card-text h2 { font-size: 0.9rem; }
             .card-text p { font-size: 0.68rem; }
@@ -204,6 +320,30 @@
     </header>
 
     <main>
+        <!-- Word of the Hour Box -->
+        <div class="woth-card">
+            <div class="woth-header">
+                <span class="woth-title">💡 Word of the hour</span>
+                <span class="woth-timer" id="wothTimer">Next in --:--</span>
+            </div>
+            <div class="woth-term" id="wothTerm">Loading...</div>
+            <button class="woth-btn" id="showTranslationBtn" onclick="toggleTranslation()">
+                Show Translation
+            </button>
+            <div class="woth-translations hidden" id="wothTranslations">
+                <div class="trans-row">
+                    <span class="trans-flag">🇰🇿</span>
+                    <span class="trans-lang">KZ</span>
+                    <span class="trans-val" id="wothKz"></span>
+                </div>
+                <div class="trans-row">
+                    <span class="trans-flag">🇷🇺</span>
+                    <span class="trans-lang">RU</span>
+                    <span class="trans-val" id="wothRu"></span>
+                </div>
+            </div>
+        </div>
+
         <!-- Анатомический тренажер -->
         <a href="./anatomic/" class="trainer-card">
             <div class="card-content">
@@ -261,6 +401,400 @@
             <span>Contact us in instagram!</span>
         </a>
     </footer>
+
+    <script>
+        const words = [
+            { en: "Heart", kz: "Жүрек", ru: "Сердце" },
+            { en: "Connective tissue", kz: "Дәнекер тін", ru: "Соединительная ткань" },
+            { en: "Lung", kz: "Өкпе", ru: "Лёгкое" },
+            { en: "Liver", kz: "Бауыр", ru: "Печень" },
+            { en: "Stomach", kz: "Асқазан", ru: "Желудок" },
+            { en: "Kidney", kz: "Бүйрек", ru: "Почка" },
+            { en: "Intestine", kz: "Ішек", ru: "Кишечник" },
+            { en: "Bladder", kz: "Қуық", ru: "Мочевой пузырь" },
+            { en: "Ligament", kz: "Байлам", ru: "Связка" },
+            { en: "Tendon", kz: "Сіңір", ru: "Сухожилие" },
+            { en: "Pancreas", kz: "Ұйқыбез", ru: "Поджелудочная железа" },
+            { en: "Cartilage", kz: "Шеміршек", ru: "Хрящ" },
+            { en: "Joint", kz: "Буын", ru: "Сустав" },
+            { en: "Bone marrow", kz: "Сүйек кемігі", ru: "Костный мозг" },
+            { en: "Fascia", kz: "Фасция", ru: "Фасция" },
+            { en: "Synovial fluid", kz: "Синовиальды сұйықтық", ru: "Синовиальная жидкость" },
+            { en: "Meniscus", kz: "Мениск", ru: "Мениск" },
+            { en: "Bursa", kz: "Бурса", ru: "Бурса" },
+            { en: "Spleen", kz: "Көкбауыр", ru: "Селезёнка" },
+            { en: "Esophagus", kz: "Өңеш", ru: "Пищевод" },
+            { en: "Trachea", kz: "Кеңірдек", ru: "Трахея" },
+            { en: "Thyroid gland", kz: "Қалқанша без", ru: "Щитовидная железа" },
+            { en: "Gallbladder", kz: "Өт қабы", ru: "Желчный пузырь" },
+            { en: "Appendix", kz: "Соқырішек өсіндісі", ru: "Аппендикс" },
+            { en: "Brain", kz: "Ми", ru: "Мозг" },
+            { en: "Ureter", kz: "Несепағар", ru: "Мочеточник" },
+            { en: "Ovary", kz: "Аналық без", ru: "Яичник" },
+            { en: "Uterus", kz: "Жатыр", ru: "Матка" },
+            { en: "Cervix", kz: "Жатыр мойны", ru: "Шейка матки" },
+            { en: "Adrenal gland", kz: "Бүйрек үсті безі", ru: "Надпочечник" },
+            { en: "Retina", kz: "Торлы қабық", ru: "Сетчатка" },
+            { en: "Skull", kz: "Бас сүйек", ru: "Череп" },
+            { en: "Jaw", kz: "Жақ", ru: "Челюсть" },
+            { en: "Clavicle", kz: "Бұғана", ru: "Ключица" },
+            { en: "Scapula", kz: "Жауырын", ru: "Лопатка" },
+            { en: "Sternum", kz: "Төс сүйек", ru: "Грудина" },
+            { en: "Rib", kz: "Қабырға", ru: "Ребро" },
+            { en: "Spine", kz: "Омыртқа", ru: "Позвоночник" },
+            { en: "Vertebra", kz: "Омыртқа", ru: "Позвонок" },
+            { en: "Pelvis", kz: "Жамбас", ru: "Таз" },
+            { en: "Humerus", kz: "Иық сүйегі", ru: "Плечевая кость" },
+            { en: "Radius", kz: "Кәрі жілік", ru: "Лучевая кость" },
+            { en: "Ulna", kz: "Шынтақ сүйек", ru: "Локтевая кость" },
+            { en: "Femur", kz: "Ортан жілік", ru: "Бедренная кость" },
+            { en: "Patella", kz: "Тізе тобығы", ru: "Надколенник" },
+            { en: "Tibia", kz: "Асық жілік", ru: "Большеберцовая кость" },
+            { en: "Fibula", kz: "Шыбық сүйек", ru: "Малоберцовая кость" },
+            { en: "Muscle", kz: "Бұлшықет", ru: "Мышца" },
+            { en: "Biceps", kz: "Бицепс", ru: "Бицепс" },
+            { en: "Triceps", kz: "Трицепс", ru: "Трицепс" },
+            { en: "Deltoid", kz: "Дельта тәрізді бұлшықет", ru: "Дельтовидная мышца" },
+            { en: "Pectoral muscle", kz: "Кеуде бұлшықеті", ru: "Грудная мышца" },
+            { en: "Abdominal muscle", kz: "Іш бұлшықеті", ru: "Брюшная мышца" },
+            { en: "Latissimus dorsi", kz: "Арқаның жалпақ бұлшықеті", ru: "Широчайшая мышца спины" },
+            { en: "Trapezius", kz: "Трапеция бұлшықеті", ru: "Трапециевидная мышца" },
+            { en: "Gluteus", kz: "Бөксе бұлшықеті", ru: "Ягодичная мышца" },
+            { en: "Quadriceps", kz: "Төртбасты бұлшықет", ru: "Четырёхглавая мышца" },
+            { en: "Hamstring", kz: "Санның артқы бұлшықеті", ru: "Подколенное сухожилие/хамстринг" },
+            { en: "Calf muscle", kz: "Балтыр бұлшықеті", ru: "Икроножная мышца" },
+            { en: "Diaphragm", kz: "Көкет", ru: "Диафрагма" },
+            { en: "Chest tightness", kz: "Кеуде қысылуы", ru: "Сдавленность в груди" },
+            { en: "Clubbing", kz: "Саусақтардың барабан таяқшасы тәрізді өзгеруі", ru: "Пальцевые барабанные палочки" },
+            { en: "Cough", kz: "Жөтел", ru: "Кашель" },
+            { en: "Crackles", kz: "Сықырлау", ru: "Крепитация" },
+            { en: "Effusion", kz: "Жалқаяқ", ru: "Выпот" },
+            { en: "Hemoptysis", kz: "Қан түкіру", ru: "Кровохарканье" },
+            { en: "Malaise", kz: "Әлсіздік", ru: "Недомогание" },
+            { en: "Dyspnea", kz: "Демікпе", ru: "Одышка" },
+            { en: "Sputum", kz: "Қақырық", ru: "Мокрота" },
+            { en: "Wheezing", kz: "Ысқырықты тыныс", ru: "Свистящее дыхание" },
+            { en: "Rhonchi", kz: "Қоңыр дыбыстар", ru: "Хрипы" },
+            { en: "Stridor", kz: "Қатты тыныс дыбысы", ru: "Стридор" },
+            { en: "Pleural rub", kz: "Плевра үйкеліс шуы", ru: "Шум трения плевры" },
+            { en: "Inhalation", kz: "Дем алу", ru: "Вдох" },
+            { en: "Exhalation", kz: "Дем шығару", ru: "Выдох" },
+            { en: "Costovertebral angle tenderness", kz: "Қабырға-омыртқа бұрышының айқын ауырсынуы", ru: "Болезненность в реберно-позвоночном углу" },
+            { en: "Dehydration", kz: "Сусыздану", ru: "Обезвоживание" },
+            { en: "Edema", kz: "Ісіну", ru: "Отёк" },
+            { en: "Fatigue", kz: "Шаршау", ru: "Усталость" },
+            { en: "Flank pain", kz: "Бүйір ауырсынуы", ru: "Боль в боку" },
+            { en: "Fluid overload", kz: "Сұйықтықтың артық жиналуы", ru: "Перегрузка жидкостью" },
+            { en: "Foamy urine", kz: "Көпіршікті зәр", ru: "Пенистая моча" },
+            { en: "Frothy urine", kz: "Көбікті зәр", ru: "Пузырчатая моча" },
+            { en: "GFR (glomerular filtration rate)", kz: "Шумақтық сүзілу жылдамдығы", ru: "Скорость клубочковой фильтрации" },
+            { en: "Hypertension", kz: "Қан қысымының жоғарылауы", ru: "Гипертония" },
+            { en: "Altered level of consciousness", kz: "Есінің өзгеруі", ru: "Нарушение сознания" },
+            { en: "Blurred vision", kz: "Көрудің бұлдырауы", ru: "Размытое зрение" },
+            { en: "Disinhibition", kz: "Тежеудің төмендеуі", ru: "Расторможенность" },
+            { en: "Gait difficulty", kz: "Жүру қиындығы", ru: "Нарушение походки" },
+            { en: "Gaze palsy", kz: "Көзқарастың салдануы", ru: "Паралич взора" },
+            { en: "Headache", kz: "Бас ауруы", ru: "Головная боль" },
+            { en: "Limb ataxia", kz: "Қол-аяқ атаксиясы", ru: "Атаксия конечностей" },
+            { en: "Neck stiffness", kz: "Мойынның қатаюы", ru: "Ригидность шеи" },
+            { en: "Neglect", kz: "Елемеу синдромы", ru: "Неглект" },
+            { en: "Numbness", kz: "Ұю", ru: "Онемение" },
+            { en: "Palsy", kz: "Салдану", ru: "Паралич" },
+            { en: "Rigidity", kz: "Қатаю", ru: "Ригидность" },
+            { en: "Salivation", kz: "Сілекей бөліну", ru: "Слюноотделение" },
+            { en: "Seizure", kz: "Құрысу", ru: "Судорога" },
+            { en: "Slurred speech", kz: "Баяу/анық емес сөйлеу", ru: "Невнятная речь" },
+            { en: "Syncope", kz: "Естен тану", ru: "Обморок" },
+            { en: "Tingling", kz: "Шаншу", ru: "Покалывание" },
+            { en: "Vertigo", kz: "Бас айналу", ru: "Головокружение" },
+            { en: "Visual disturbance", kz: "Көру бұзылысы", ru: "Нарушение зрения" },
+            { en: "Weakness", kz: "Әлсіздік", ru: "Слабость" },
+            { en: "Angina", kz: "Стенокардия", ru: "Стенокардия" },
+            { en: "Dizziness", kz: "Бас айналу", ru: "Головокружение" },
+            { en: "Friction rub", kz: "Үйкеліс шуы", ru: "Шум трения" },
+            { en: "Jugular vein distension", kz: "Мойын көктамырының кернеуі", ru: "Набухание яремных вен" },
+            { en: "Lightheadedness", kz: "Бастың жеңіл айналуы", ru: "Предобморочное состояние" },
+            { en: "Murmur", kz: "Жүрек шуы", ru: "Шум в сердце" },
+            { en: "Pallor", kz: "Бозару", ru: "Бледность" },
+            { en: "Palpitations", kz: "Жүрек дірілдеуі", ru: "Трепетание сердца" },
+            { en: "Pressure-like", kz: "Қысып ауырсыну", ru: "Давящая боль" },
+            { en: "Radiating pain", kz: "Таралатын ауырсыну", ru: "Иррадиирующая боль" },
+            { en: "Retrosternal pain", kz: "Төс артындағы ауырсыну", ru: "Загрудинная боль" },
+            { en: "Sharp pain", kz: "Өткір ауырсыну", ru: "Острая боль" },
+            { en: "Tinnitus", kz: "Құлақтағы шу", ru: "Шум в ушах" },
+            { en: "Deformity", kz: "Деформация", ru: "Деформация" },
+            { en: "Deviation", kz: "Ауытқу", ru: "Отклонение" },
+            { en: "Dull pain", kz: "Сыздап ауыру", ru: "Тупая боль" },
+            { en: "Fever", kz: "Қызба", ru: "Лихорадка" },
+            { en: "Nodules", kz: "Түйіндер", ru: "Узелки" },
+            { en: "Rash", kz: "Бөртпе", ru: "Сыпь" },
+            { en: "Stiffness", kz: "Қатаю", ru: "Скованность" },
+            { en: "Subluxation", kz: "Жартылай шығу", ru: "Подвывих" },
+            { en: "Swelling", kz: "Ісіну", ru: "Отёк" },
+            { en: "Tenderness", kz: "Ауырсыну", ru: "Болезненность" },
+            { en: "Coryza", kz: "Мұрын бітелуі/тұмау", ru: "Насморк" },
+            { en: "Drooling", kz: "Сілекей ағу", ru: "Слюнотечение" },
+            { en: "Pain", kz: "Ауырсыну", ru: "Боль" },
+            { en: "Sore throat", kz: "Тамақ ауруы", ru: "Боль в горле" },
+            { en: "Ulcer", kz: "Жара", ru: "Язва" },
+            { en: "Bleeding", kz: "Қан кету", ru: "Кровотечение" },
+            { en: "Bloating", kz: "Іштің кебуі", ru: "Вздутие" },
+            { en: "Constipation", kz: "Іш қату", ru: "Запор" },
+            { en: "Fistula", kz: "Жыланкөз", ru: "Свищ" },
+            { en: "Flatulence", kz: "Іш кебу", ru: "Метеоризм" },
+            { en: "Heartburn", kz: "Қыжыл", ru: "Изжога" },
+            { en: "Itching", kz: "Қышыну", ru: "Зуд" },
+            { en: "Jaundice", kz: "Сарғаю", ru: "Желтуха" },
+            { en: "Loose stools", kz: "Сұйық нәжіс", ru: "Жидкий стул" },
+            { en: "Nausea", kz: "Жүрек айну", ru: "Тошнота" },
+            { en: "Postprandial fullness", kz: "Тамақтан кейін толу сезімі", ru: "Чувство переполнения после еды" },
+            { en: "Radiation to the back", kz: "Арқаға таралу", ru: "Иррадиация в спину" },
+            { en: "Satiety", kz: "Тою сезімі", ru: "Насыщение" },
+            { en: "Vomiting", kz: "Құсу", ru: "Рвота" },
+            { en: "Distention", kz: "Кебу (іштің)", ru: "Вздутие" },
+            { en: "Failure to thrive", kz: "Даму тежелуі", ru: "Задержка развития" },
+            { en: "Grunting", kz: "Қорсылдау", ru: "Хрюканье" },
+            { en: "Irritability", kz: "Тітіркенгіштік", ru: "Раздражительность" },
+            { en: "Nasal flaring", kz: "Мұрын қанаттарының керілуі", ru: "Раздувание крыльев носа" },
+            { en: "No bowel sounds", kz: "Ішек дыбыстары жоқ", ru: "Отсутствие кишечных шумов" },
+            { en: "Prematurity", kz: "Шала туу", ru: "Недоношенность" },
+            { en: "Blindness", kz: "Соқырлық", ru: "Слепота" },
+            { en: "Blurry vision", kz: "Көру бұлдырауы", ru: "Размытое зрение" },
+            { en: "Diplopia", kz: "Қосарланып көріну", ru: "Двоение" },
+            { en: "Eye redness", kz: "Көздің қызаруы", ru: "Покраснение глаза" },
+            { en: "Flashes", kz: "Жарқылдар", ru: "Вспышки" },
+            { en: "Foreign body sensation", kz: "Бөгде зат сезімі", ru: "Ощущение инородного тела" },
+            { en: "Purulent discharge", kz: "Іріңді бөлінді", ru: "Гнойные выделения" },
+            { en: "Tearing", kz: "Жас ағу", ru: "Слезотечение" },
+            { en: "Visual acuity", kz: "Көру өткірлігі", ru: "Острота зрения" },
+            { en: "Bulging", kz: "Томпаю", ru: "Выпячивание" },
+            { en: "Early satiety", kz: "Тез тою", ru: "Раннее насыщение" },
+            { en: "Guarding", kz: "Қорғаныштық кернеу", ru: "Защитное напряжение" },
+            { en: "Loss of appetite", kz: "Тәбеттің төмендеуі", ru: "Потеря аппетита" },
+            { en: "Pain migration", kz: "Ауырсынудың ауысуы", ru: "Миграция боли" },
+            { en: "Postprandial", kz: "Тамақтан кейін", ru: "После еды" },
+            { en: "Pruritus", kz: "Қышыну", ru: "Зуд" },
+            { en: "Ulceration", kz: "Жаралану", ru: "Изъязвление" },
+            { en: "Anxiety", kz: "Мазасыздық", ru: "Тревожность" },
+            { en: "Bruises", kz: "Көгерулер", ru: "Синяки" },
+            { en: "Cold intolerance", kz: "Суыққа төзімсіздік", ru: "Непереносимость холода" },
+            { en: "Cramps", kz: "Түйілу", ru: "Судороги" },
+            { en: "Flushing", kz: "Қызару", ru: "Приливы" },
+            { en: "Heat intolerance", kz: "Ыстыққа төзімсіздік", ru: "Непереносимость жары" },
+            { en: "Hoarse voice", kz: "Қарлыққан дауыс", ru: "Осипший голос" },
+            { en: "Lid lag", kz: "Қабақтың қалуы", ru: "Симптом отставания века" },
+            { en: "Obesity", kz: "Семіздік", ru: "Ожирение" },
+            { en: "Polydipsia", kz: "Шөлдеу", ru: "Частая жажда" },
+            { en: "Polyuria", kz: "Жиі зәр шығару", ru: "Частое мочеиспускание" },
+            { en: "Stretch marks", kz: "Созылу іздері", ru: "Растяжки" },
+            { en: "Sweating", kz: "Терлеу", ru: "Потливость" },
+            { en: "Weight gain", kz: "Салмақ қосу", ru: "Прибавка веса" },
+            { en: "Weight loss", kz: "Салмақ жоғалту", ru: "Потеря веса" },
+            { en: "Alignment", kz: "Қалыпты орналасу", ru: "Выравнивание" },
+            { en: "Calcification", kz: "Кальцинация", ru: "Кальцинация" },
+            { en: "Consolidation", kz: "Тығыздалу", ru: "Уплотнение" },
+            { en: "Contrast enhancement", kz: "Контраст күшеюі", ru: "Контрастное усиление" },
+            { en: "Displacement", kz: "Ығысу", ru: "Смещение" },
+            { en: "Fracture", kz: "Сыну", ru: "Перелом" },
+            { en: "Hyperdense", kz: "Тығыз", ru: "Гиперденсный" },
+            { en: "Hypodense", kz: "Сирек", ru: "Гиподенсный" },
+            { en: "Lesion", kz: "Зақым", ru: "Поражение" },
+            { en: "Mass", kz: "Ісік", ru: "Образование" },
+            { en: "Nodule", kz: "Түйін", ru: "Узел" },
+            { en: "Opacity", kz: "Көлеңке (мөлдірсіздік)", ru: "Затемнение" },
+            { en: "Radiolucency", kz: "Мөлдірлік", ru: "Прозрачность" },
+            { en: "Shadowing", kz: "Көлеңке", ru: "Тень" },
+            { en: "Blisters", kz: "Көпіршіктер", ru: "Волдыри" },
+            { en: "Bulging membrane", kz: "Томпаю", ru: "Выпячивание перепонки" },
+            { en: "Bullae", kz: "Үлкен көпіршіктер", ru: "Буллы" },
+            { en: "Earache", kz: "Құлақ ауруы", ru: "Боль в ухе" },
+            { en: "Gait disturbance", kz: "Жүру бұзылысы", ru: "Нарушение походки" },
+            { en: "Hearing loss", kz: "Есту қабілетінің төмендеуі", ru: "Потеря слуха" },
+            { en: "Muffled voice", kz: "Қатаң дауыс", ru: "Глухой голос" },
+            { en: "Nasal congestion", kz: "Мұрын бітелуі", ru: "Заложенность носа" },
+            { en: "Nasal discharge", kz: "Мұрыннан бөлінді", ru: "Выделения из носа" },
+            { en: "Retracted membrane", kz: "Тартылған жарғақ", ru: "Втянутая перепонка" },
+            { en: "Spinning", kz: "Айналу", ru: "Вращение" },
+            { en: "back pain", kz: "арқаның ауыруы", ru: "боль в спине" },
+            { en: "bone lesion", kz: "сүйек зақымдануы", ru: "поражение кости" },
+            { en: "crepitus", kz: "сықырлау дыбысы", ru: "крепитация" },
+            { en: "dislocation", kz: "шығу", ru: "вывих" },
+            { en: "gait abnormality", kz: "жүріс бұзылысы", ru: "нарушение походки" },
+            { en: "instability", kz: "тұрақсыздық", ru: "нестабильность" },
+            { en: "joint pain", kz: "буын ауыруы", ru: "боль в суставах" },
+            { en: "limited range of motion", kz: "қозғалыс шектеуі", ru: "ограничение движений" },
+            { en: "muscle weakness", kz: "бұлшықет әлсіздігі", ru: "мышечная слабость" },
+            { en: "sciatica", kz: "шонданай невралгиясы", ru: "ишиас" },
+            { en: "sprain", kz: "созылу", ru: "растяжение" },
+            { en: "strain", kz: "созылу", ru: "растяжение мышц" },
+            { en: "adnexal mass", kz: "қосалқы ісігі", ru: "образование придатков" },
+            { en: "cervical dilation", kz: "жатыр мойны ашылуы", ru: "раскрытие шейки матки" },
+            { en: "contractions", kz: "толғақ", ru: "схватки" },
+            { en: "dryness", kz: "құрғақтық", ru: "сухость" },
+            { en: "dyspareunia", kz: "жыныстық қатынас кезіндегі ауырсыну", ru: "Боли при половом акте" },
+            { en: "effacement", kz: "жұқару", ru: "сглаживание шейки" },
+            { en: "fetal movement", kz: "ұрық қимылы", ru: "шевеление плода" },
+            { en: "hot flashes", kz: "ыстық толқындар", ru: "приливы" },
+            { en: "infertility", kz: "бедеулік", ru: "бесплодие" },
+            { en: "mood swings", kz: "көңіл күй өзгеруі", ru: "перепады настроения" },
+            { en: "oily skin", kz: "майлы тері", ru: "жирная кожа" },
+            { en: "ovarian cyst", kz: "аналық без кистасы", ru: "киста яичника" },
+            { en: "ovarian torsion", kz: "аналық без бұралуы", ru: "перекрут яичника" },
+            { en: "pelvic pain", kz: "жамбас ауыруы", ru: "тазовая боль" },
+            { en: "rupture of membranes", kz: "қағанақ жарылуы", ru: "разрыв оболочек" },
+            { en: "uterine fibroids", kz: "жатыр миомасы", ru: "миома матки" },
+            { en: "vaginal bleeding", kz: "қынаптан қан кету", ru: "вагинальное кровотечение" },
+            { en: "dribbling", kz: "таму", ru: "подтекание мочи" },
+            { en: "firm", kz: "қатты/тығыз", ru: "плотный" },
+            { en: "hesitancy", kz: "зәр шығарудың қиындауы", ru: "задержка мочеиспускания" },
+            { en: "incontinence", kz: "зәр ұстай алмау", ru: "недержание мочи" },
+            { en: "nodular", kz: "түйінді", ru: "узловой" },
+            { en: "retention", kz: "зәр іркілуі, тоқтауы", ru: "задержка мочи" },
+            { en: "scrotal swelling", kz: "ұма ісінуі", ru: "отёк мошонки" },
+            { en: "straining to urinate", kz: "зәр шығаруда күшену", ru: "натуживание при мочеиспускании" },
+            { en: "suprapubic pain", kz: "қасаға үсті ауыруы", ru: "надлобковая боль" },
+            { en: "urgency", kz: "зәр шығаруға мәжбүрлеу", ru: "императивный позыв к мочеиспусканию" },
+            { en: "urinary frequency", kz: "жиі зәр шығару", ru: "частое мочеиспускание" },
+            { en: "voiding", kz: "зәр шығару", ru: "мочеиспускание" },
+            { en: "weak stream", kz: "әлсіз ағын", ru: "слабая струя" },
+            { en: "boggy", kz: "жұмсақ, ісінген", ru: "тестообразный" },
+            { en: "blistering", kz: "күлдіреу", ru: "образование пузырей" },
+            { en: "crusting", kz: "қабықтану", ru: "образование корок" },
+            { en: "excoriation", kz: "тырналу", ru: "ссадины" },
+            { en: "lichenification", kz: "сүйел", ru: "лихенификация" },
+            { en: "plaque", kz: "бляшка", ru: "бляшка" },
+            { en: "pustule", kz: "іріңді бөртпе", ru: "пустула" },
+            { en: "scaling", kz: "қабыршақтану", ru: "шелушение" },
+            { en: "vesicle", kz: "көпіршік", ru: "везикула" },
+            { en: "developmental milestones", kz: "даму кезеңдері", ru: "этапы развития" },
+            { en: "fontanelle bulging", kz: "еңбектің томпаюы", ru: "выбухание родничка" },
+            { en: "growth delay", kz: "бой өсу кешеуілі", ru: "задержка роста" },
+            { en: "poor feeding", kz: "нашар тамақтану", ru: "плохое кормление" },
+            { en: "seizures", kz: "құрысу", ru: "судороги" },
+            { en: "benign", kz: "қатерсіз", ru: "доброкачественный" },
+            { en: "brittle nails", kz: "сынғыш тырнақ", ru: "ломкие ногти" },
+            { en: "easy bruising", kz: "жеңіл көгеру", ru: "лёгкие синяки" },
+            { en: "extranodal", kz: "түйіннен тыс", ru: "экстранодальный" },
+            { en: "hyperviscosity", kz: "жоғары қан тұтқырлығы", ru: "гипервязкость" },
+            { en: "malignant", kz: "қатерлі", ru: "злокачественный" },
+            { en: "night sweats", kz: "түңгі тершеңдік", ru: "ночная потливость" },
+            { en: "pale", kz: "бозарған", ru: "бледный" },
+            { en: "relapse", kz: "қайталану", ru: "рецидив" },
+            { en: "tumor", kz: "ісік", ru: "опухоль" },
+            { en: "tumor lysis syndrome", kz: "ісік ыдырау синдромы", ru: "синдром лизиса опухоли" },
+            { en: "webs", kz: "шырмалу", ru: "паутина" },
+            { en: "airway compromise", kz: "тыныс жолының бұзылуы", ru: "нарушение дыхательных путей" },
+            { en: "altered mental status", kz: "сананың өзгеруі", ru: "изменение сознания" },
+            { en: "burn", kz: "күйік", ru: "ожог" },
+            { en: "hemorrhage", kz: "қан кету", ru: "геморрагия" },
+            { en: "laceration", kz: "жыртылу жарасы", ru: "рваная рана" },
+            { en: "loss of consciousness", kz: "есінен тану", ru: "потеря сознания" },
+            { en: "poisoning", kz: "улану", ru: "отравление" },
+            { en: "resuscitation", kz: "жансақтау", ru: "реанимация" },
+            { en: "stroke", kz: "инсульт", ru: "инсульт" },
+            { en: "acute pain", kz: "өткір ауырсыну", ru: "острая боль" },
+            { en: "continuous renal replacement therapy", kz: "бүйрек алмастыру терапиясы", ru: "заместительная почечная терапия" },
+            { en: "critical illness", kz: "ауыр жағдай", ru: "критическое состояние" },
+            { en: "delirium", kz: "сандырақ", ru: "делирий" },
+            { en: "fluid resuscitation", kz: "сұйықтық терапиясы", ru: "инфузионная терапия" },
+            { en: "multiorgan failure", kz: "көп ағзалық жетіспеушілік", ru: "полиорганная недостаточность" },
+            { en: "painkiller", kz: "ауырсынуды басатын", ru: "обезболивающее" },
+            { en: "respiratory failure", kz: "тыныс жетіспеушілігі", ru: "дыхательная недостаточность" },
+            { en: "weaning", kz: "аппараттан ажырату", ru: "отлучение от вентиляции" },
+            { en: "cognitive impairment", kz: "таным бұзылысы", ru: "когнитивное нарушение" },
+            { en: "deconditioning", kz: "әлсіреу", ru: "декондиционирование" },
+            { en: "dependency", kz: "тәуелділік", ru: "зависимость" },
+            { en: "falls", kz: "құлау", ru: "падения" },
+            { en: "frailty", kz: "әлсіздік", ru: "хрупкость" },
+            { en: "functional decline", kz: "қызметтің төмендеуі", ru: "функциональное снижение" },
+            { en: "malnutrition", kz: "дұрыс тамақтанбау", ru: "недоедание" },
+            { en: "osteoporosis", kz: "сүйек әлсіздігі", ru: "остеопороз" },
+            { en: "pressure ulcer", kz: "ойылу", ru: "пролежень" },
+            { en: "assistive device", kz: "көмекші құрал", ru: "вспомогательное устройство" },
+            { en: "contracture", kz: "буын қатаюы", ru: "контрактура" },
+            { en: "endurance", kz: "төзімділік", ru: "выносливость" },
+            { en: "functional recovery", kz: "функцияның қалпына келуі", ru: "функциональное восстановление" },
+            { en: "gait training", kz: "жүріс үйрету", ru: "тренировка походки" },
+            { en: "impairment", kz: "бұзылу", ru: "нарушение" },
+            { en: "independence", kz: "тәуелсіздік", ru: "самостоятельность" },
+            { en: "range of motion", kz: "қозғалыс ауқымы", ru: "объём движений" },
+            { en: "spasticity", kz: "бұлшықет", ru: "спастичность" },
+            { en: "speech therapy", kz: "логопедиялық терапия", ru: "логопедическая терапия" },
+            { en: "strength", kz: "күш", ru: "сила" },
+            { en: "affect", kz: "сезім жоқтығы", ru: "аффект" },
+            { en: "depression", kz: "депрессия", ru: "депрессия" },
+            { en: "disorganized thinking", kz: "ойдың бұзылуы", ru: "дезорганизованное мышление" },
+            { en: "flight of ideas", kz: "ой ұшқырлығы", ru: "скачка идей" },
+            { en: "homicidal ideation", kz: "кісі өлтіру ойы", ru: "идеи убийства" },
+            { en: "hypersomnia", kz: "шамадан тыс ұйқышылдық", ru: "гиперсомния" },
+            { en: "insomnia", kz: "ұйқысыздық", ru: "бессонница" },
+            { en: "mood", kz: "көңіл күй", ru: "настроение" },
+            { en: "self-harm", kz: "өзіне зиян келтіру", ru: "самоповреждение" },
+            { en: "suicidal ideation", kz: "суицид ойы", ru: "суицидальные мысли" },
+            { en: "thought disorder", kz: "ойлау бұзылысы", ru: "расстройство мышления" },
+            { en: "withdrawal", kz: "шығып кету", ru: "отход/отказ" },
+            { en: "itchy", kz: "қышитын", ru: "зудящий" },
+            { en: "scratch", kz: "тырнау", ru: "расчесывать" },
+            { en: "plaques", kz: "бляшкалар", ru: "бляшки" },
+            { en: "violaceous", kz: "күлгін түсті", ru: "фиолетовый" },
+            { en: "visible", kz: "көрінетін", ru: "видимый" },
+            { en: "fissure", kz: "жарық", ru: "трещина" },
+            { en: "hives", kz: "есекжем", ru: "крапивница" },
+            { en: "angioedema", kz: "ангиоісіну", ru: "ангиоотёк" },
+            { en: "hypersensitivity", kz: "жоғары сезімталдық", ru: "гиперчувствительность" },
+            { en: "delayed", kz: "кешігу", ru: "замедленный" }
+        ];
+
+        let translationVisible = false;
+        let lastHourIndex = -1;
+
+        function updateWordOfTheHour() {
+            const now = new Date();
+            const currentHourEpoch = Math.floor(now.getTime() / (1000 * 60 * 60)); // Global UTC epoch hour
+            const wordIndex = currentHourEpoch % words.length;
+
+            if (wordIndex !== lastHourIndex) {
+                lastHourIndex = wordIndex;
+                const currentWord = words[wordIndex];
+                
+                document.getElementById('wothTerm').textContent = currentWord.en;
+                document.getElementById('wothKz').textContent = currentWord.kz;
+                document.getElementById('wothRu').textContent = currentWord.ru;
+
+                // Reset translation visibility on new hour
+                translationVisible = false;
+                document.getElementById('wothTranslations').classList.add('hidden');
+                document.getElementById('showTranslationBtn').textContent = 'Show Translation';
+            }
+
+            // Calculate remaining time until next hour
+            const nextHourEpochMs = (currentHourEpoch + 1) * 3600000;
+            const diffMs = Math.max(0, nextHourEpochMs - now.getTime());
+            const mins = Math.floor(diffMs / 60000);
+            const secs = Math.floor((diffMs % 60000) / 1000);
+
+            const pad = n => n.toString().padStart(2, '0');
+            document.getElementById('wothTimer').textContent = `Next in ${pad(mins)}:${pad(secs)}`;
+        }
+
+        function toggleTranslation() {
+            const transEl = document.getElementById('wothTranslations');
+            const btn = document.getElementById('showTranslationBtn');
+            translationVisible = !translationVisible;
+
+            if (translationVisible) {
+                transEl.classList.remove('hidden');
+                btn.textContent = 'Hide Translation';
+            } else {
+                transEl.classList.add('hidden');
+                btn.textContent = 'Show Translation';
+            }
+        }
+
+        // Initialize and update timer every second
+        updateWordOfTheHour();
+        setInterval(updateWordOfTheHour, 1000);
+    </script>
 
 </body>
 </html>
