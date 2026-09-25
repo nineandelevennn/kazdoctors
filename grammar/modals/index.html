@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>@doctors.speak — Page not ready yet</title>
+  <title>@doctors.speak — Medical Grammar Trainer (Modal Verbs)</title>
   <style>
     * {
       box-sizing: border-box;
@@ -76,73 +76,255 @@
       letter-spacing: 0.5px;
     }
 
-    .content-container {
+    .auth-container {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 18px;
-      padding: 20px 10px;
+      gap: 15px;
+      padding: 40px 10px;
       text-align: center;
       flex-grow: 1;
     }
 
-    .icon-box {
-      font-size: 4rem;
-      line-height: 1;
-      margin-bottom: 5px;
-    }
-
-    .title {
-      font-size: 1.35rem;
+    .auth-title {
+      font-size: 1.25rem;
       color: #0081a7;
-      font-weight: 800;
-      line-height: 1.3;
+      font-weight: 700;
     }
 
-    .description {
-      font-size: 0.95rem;
-      color: #555;
-      line-height: 1.5;
-      max-width: 320px;
+    .auth-input {
+      width: 85%;
+      padding: 12px;
+      border: 2px solid #00afca;
+      border-radius: 10px;
+      font-size: 1rem;
+      text-align: center;
+      outline: none;
     }
 
-    .action-btn {
-      background: #fbc02d;
-      color: #003366;
+    .auth-btn {
+      background: #00afca;
+      color: white;
       border: none;
-      padding: 14px 24px;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 800;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: bold;
       cursor: pointer;
-      width: 100%;
-      max-width: 300px;
+      width: 85%;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      text-decoration: none;
-      display: inline-block;
-      transition: transform 0.1s, background-color 0.2s;
-      margin-top: 10px;
     }
 
-    .action-btn:hover {
-      background: #fdd835;
-    }
-
-    .action-btn:active {
+    .auth-btn:active {
       transform: scale(0.98);
     }
 
     .insta-link {
+      margin-top: 10px;
       font-size: 0.85rem;
       color: #666;
-      margin-top: 10px;
     }
 
     .insta-link a {
       color: #0081a7;
       font-weight: 700;
       text-decoration: underline;
+    }
+
+    .error-msg {
+      color: #e53935;
+      font-size: 0.85rem;
+      display: none;
+      font-weight: 600;
+    }
+
+    .mode-select {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #00afca;
+      border-radius: 10px;
+      font-weight: 700;
+      color: #0081a7;
+      background: #f4fbfe;
+      margin-top: 6px;
+      outline: none;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #555;
+      margin-top: 8px;
+      background: #f0f9fc;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #d0edf5;
+    }
+
+    .stats span {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .term-box {
+      margin: 10px 0;
+      background: #f9fbfd;
+      border-radius: 12px;
+      padding: 12px;
+      border: 1px dashed #00afca;
+      text-align: center;
+      min-height: 125px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .level-tag {
+      display: inline-block;
+      background: #00afca;
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .term-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #0081a7;
+      margin-bottom: 4px;
+      line-height: 1.35;
+      min-height: 2.7em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chunks-box {
+      background: #fff;
+      border: 1px solid #dceef5;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      color: #d97706;
+      font-weight: 700;
+      margin-top: 4px;
+      word-break: break-word;
+      min-height: 36px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s, visibility 0.2s;
+    }
+
+    .chunks-box.invisible {
+      visibility: hidden;
+      border-color: transparent;
+      background: transparent;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .option-btn {
+      background: #ffffff;
+      border: 2px solid #e0e0e0;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #333;
+      text-align: left;
+      cursor: pointer;
+      transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+      line-height: 1.3;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: #00afca;
+      background-color: #f4fbfe;
+    }
+
+    .option-btn.correct {
+      background-color: #d4edda !important;
+      border-color: #28a745 !important;
+      color: #155724 !important;
+      font-weight: 700;
+    }
+
+    .option-btn.wrong {
+      background-color: #f8d7da !important;
+      border-color: #dc3545 !important;
+      color: #721c24 !important;
+    }
+
+    .explanation-box {
+      background-color: #e8f4f8;
+      border-left: 4px solid #00afca;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      color: #004d61;
+      margin-bottom: 10px;
+      line-height: 1.4;
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .explanation-box.answered {
+      background-color: #e2f3f9;
+      border-left-color: #0081a7;
+    }
+
+    .next-btn {
+      width: 100%;
+      background: #fbc02d;
+      color: #003366;
+      font-weight: 800;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      border: none;
+      cursor: pointer;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.2s ease, visibility 0.2s ease, background-color 0.2s ease;
+      min-height: 44px;
+    }
+
+    .next-btn.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .next-btn:hover {
+      background: #fdd835;
+    }
+
+    .hidden {
+      display: none !important;
     }
   </style>
 </head>
@@ -155,22 +337,722 @@
       <div class="brand">@doctors.speak</div>
     </header>
 
-    <!-- Content -->
-    <div class="content-container">
-      <div class="icon-box">🚧</div>
-      <h1 class="title">Page not ready yet :( </h1>
-      <p class="description">
-        We are working on the page, please check it later🙏
-      </p>
-
-      <a href="https://kazdoctors.com/grammar/" class="action-btn">Go back</a>
-
+    <!-- Screen 1: Password -->
+    <div id="authScreen" class="auth-container">
+      <div class="auth-title">Medical English Quiz</div>
+      <p style="font-size: 0.85rem; color: #666;">Password</p>
+      
+      <input type="password" id="passInput" class="auth-input" placeholder="Пароль" onkeyup="if(event.key === 'Enter') checkPass()">
+      <button onclick="checkPass()" class="auth-btn">Enter</button>
+      
+      <div id="errorMsg" class="error-msg">Incorrect! Try again</div>
+      
       <div class="insta-link">
-        Our updates:<br>
-        <a href="https://instagram.com/doctors.speak" target="_blank">@doctors.speak</a>
+        No password? <br>
+        <a href="https://instagram.com/doctors.speak" target="_blank">Contact us in Instagram!</a>
       </div>
+    </div>
+
+    <!-- Screen 2: Game -->
+    <div id="gameScreen" class="hidden" style="display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;">
+      
+      <div>
+        <select id="levelSelect" class="mode-select" onchange="changeLevel()">
+          <option value="1">Level 1 — Recognize the meaning</option>
+          <option value="2">Level 2 — Choose the correct modal</option>
+          <option value="3">Level 3 — Put the sentence in order</option>
+          <option value="mix">🔥 Mix</option>
+        </select>
+
+        <div class="stats">
+          <span>Total: <strong id="totalCount">0</strong></span>
+          <span>Correct: <strong id="correctCount" style="color:#28a745;">0</strong></span>
+          <span>Streak: <strong id="streakCount" style="color:#e67e22;">0 🔥</strong></span>
+        </div>
+      </div>
+
+      <div class="term-box">
+        <span id="levelTag" class="level-tag">Level 1</span>
+        <div id="questionText" class="term-title">Loading question...</div>
+        <div id="chunksBox" class="chunks-box invisible"></div>
+      </div>
+
+      <div>
+        <div id="optionsGrid" class="options-grid"></div>
+        
+        <div id="explanationBox" class="explanation-box">
+          <div><strong>💡 Explanation:</strong> <span id="explanationText">Choose the correct answer!</span></div>
+        </div>
+
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next ➔</button>
+      </div>
+
     </div>
   </div>
 
+  <script>
+    const SECRET_PASS = "fever";
+
+    // База вопросов по уровням из lesson 6.docx (Modal Verbs: can, may, must, should)
+    const questions = [
+      // ================= LEVEL 1 =================
+      {
+        level: 1,
+        question: "The patient can walk without assistance.",
+        options: ["Возможность", "Умение", "Обязанность", "Совет"],
+        correct: 1,
+        explanation: "can describes an ability."
+      },
+      {
+        level: 1,
+        question: "The patient may develop a fever after the procedure.",
+        options: ["Возможность", "Умение", "Обязанность", "Совет"],
+        correct: 0,
+        explanation: "may expresses a possibility."
+      },
+      {
+        level: 1,
+        question: "Patients must follow the instructions before the examination.",
+        options: ["Возможность", "Умение", "Обязанность", "Совет"],
+        correct: 2,
+        explanation: "must expresses obligation."
+      },
+      {
+        level: 1,
+        question: "The patient should drink more water.",
+        options: ["Возможность", "Умение", "Обязанность", "Совет"],
+        correct: 3,
+        explanation: "should gives advice."
+      },
+      {
+        level: 1,
+        question: "The nurse can measure the patient's blood pressure.",
+        options: ["Возможность", "Умение", "Обязанность", "Совет"],
+        correct: 1,
+        explanation: "can describes an ability."
+      },
+      {
+        level: 1,
+        question: "This medication may cause dizziness.",
+        options: ["Возможность", "Умение", "Обязанность", "Совет"],
+        correct: 0,
+        explanation: "may expresses a possibility."
+      },
+      {
+        level: 1,
+        question: "The patient must remain in bed after the operation.",
+        options: ["Возможность", "Умение", "Обязанность", "Совет"],
+        correct: 2,
+        explanation: "must expresses something the patient is required to do."
+      },
+      {
+        level: 1,
+        question: "The patient should avoid strenuous exercise.",
+        options: ["Возможность", "Умение", "Обязанность", "Совет"],
+        correct: 3,
+        explanation: "should gives advice."
+      },
+      {
+        level: 1,
+        question: "Doctors can detect some diseases at an early stage.",
+        options: ["Возможность", "Умение", "Обязанность", "Совет"],
+        correct: 1,
+        explanation: "can describes what doctors are able to do."
+      },
+      {
+        level: 1,
+        question: "The symptoms may disappear after treatment.",
+        options: ["Возможность", "Умение", "Обязанность", "Совет"],
+        correct: 0,
+        explanation: "may expresses a possible outcome."
+      },
+      {
+        level: 1,
+        question: "The patient must take the medication twice a day.",
+        options: ["Возможность", "Умение", "Обязанность", "Совет"],
+        correct: 2,
+        explanation: "must expresses obligation."
+      },
+      {
+        level: 1,
+        question: "The patient should contact the doctor if the pain gets worse.",
+        options: ["Возможность", "Умение", "Обязанность", "Совет"],
+        correct: 3,
+        explanation: "should gives advice."
+      },
+      {
+        level: 1,
+        question: "A healthy adult can usually tolerate this level of exercise.",
+        options: ["Возможность", "Умение", "Обязанность", "Совет"],
+        correct: 1,
+        explanation: "can refers to ability/capacity."
+      },
+      {
+        level: 1,
+        question: "The medication may interact with other drugs.",
+        options: ["Возможность", "Умение", "Обязанность", "Совет"],
+        correct: 0,
+        explanation: "may expresses a possibility."
+      },
+      {
+        level: 1,
+        question: "All patients must wear protective clothing in the laboratory.",
+        options: ["Возможность", "Умение", "Обязанность", "Совет"],
+        correct: 2,
+        explanation: "must expresses a requirement."
+      },
+      {
+        level: 1,
+        question: "Patients should get enough sleep during recovery.",
+        options: ["Возможность", "Умение", "Обязанность", "Совет"],
+        correct: 3,
+        explanation: "should gives advice."
+      },
+      {
+        level: 1,
+        question: "The device can detect small changes in heart rate.",
+        options: ["Возможность", "Умение", "Обязанность", "Совет"],
+        correct: 1,
+        explanation: "can expresses the ability/capability of the device."
+      },
+      {
+        level: 1,
+        question: "The patient may experience mild nausea after the injection.",
+        options: ["Возможность", "Умение", "Обязанность", "Совет"],
+        correct: 0,
+        explanation: "may expresses a possible effect."
+      },
+      {
+        level: 1,
+        question: "Patients must remove all metal objects before the MRI scan.",
+        options: ["Возможность", "Умение", "Обязанность", "Совет"],
+        correct: 2,
+        explanation: "must expresses a requirement."
+      },
+      {
+        level: 1,
+        question: "The patient should rest for several days after the procedure.",
+        options: ["Возможность", "Умение", "Обязанность", "Совет"],
+        correct: 3,
+        explanation: "should expresses advice."
+      },
+
+      // ================= LEVEL 2 =================
+      {
+        level: 2,
+        question: "The patient ____ walk without assistance after the operation.",
+        options: ["can", "may", "must", "should"],
+        correct: 0,
+        explanation: "can + infinitive expresses ability: can walk."
+      },
+      {
+        level: 2,
+        question: "This medication ____ cause drowsiness in some patients.",
+        options: ["can to", "may", "musts", "should to"],
+        correct: 1,
+        explanation: "may + infinitive expresses possibility: may cause."
+      },
+      {
+        level: 2,
+        question: "Patients ____ fast for eight hours before the procedure.",
+        options: ["may", "can to", "must", "shoulds"],
+        correct: 2,
+        explanation: "Fasting is a requirement: must fast."
+      },
+      {
+        level: 2,
+        question: "The patient ____ drink more water during recovery.",
+        options: ["can to", "may", "musts", "should"],
+        correct: 3,
+        explanation: "should + infinitive gives advice: should drink."
+      },
+      {
+        level: 2,
+        question: "The nurse ____ measure the patient's blood pressure.",
+        options: ["can", "mays", "must to", "shoulds"],
+        correct: 0,
+        explanation: "can + infinitive: can measure."
+      },
+      {
+        level: 2,
+        question: "The infection ____ spread to other organs.",
+        options: ["cans", "may", "must to", "shoulds"],
+        correct: 1,
+        explanation: "may + infinitive expresses possibility: may spread."
+      },
+      {
+        level: 2,
+        question: "Doctors ____ wear gloves when treating patients with this infection.",
+        options: ["may to", "can to", "must", "shoulds"],
+        correct: 2,
+        explanation: "Wearing gloves is an obligation: must wear."
+      },
+      {
+        level: 2,
+        question: "Patients with high blood pressure ____ avoid excessive salt.",
+        options: ["can to", "may", "musts", "should"],
+        correct: 3,
+        explanation: "should + infinitive gives advice: should avoid."
+      },
+      {
+        level: 2,
+        question: "The device ____ detect very small changes in heart rate.",
+        options: ["can", "mays", "must to", "should to"],
+        correct: 0,
+        explanation: "can detect expresses ability/capability."
+      },
+      {
+        level: 2,
+        question: "The patient ____ experience some pain after the procedure.",
+        options: ["cans", "may", "must to", "shoulds"],
+        correct: 1,
+        explanation: "may experience expresses possibility."
+      },
+      {
+        level: 2,
+        question: "All laboratory samples ____ be labeled correctly.",
+        options: ["may to", "can to", "must", "shoulds"],
+        correct: 2,
+        explanation: "Correct labeling is a requirement: must be labeled."
+      },
+      {
+        level: 2,
+        question: "The patient ____ avoid driving after taking this medication.",
+        options: ["can to", "may", "musts", "should"],
+        correct: 3,
+        explanation: "should avoid gives advice."
+      },
+      {
+        level: 2,
+        question: "Children ____ have difficulty swallowing large tablets.",
+        options: ["can", "mays", "must to", "shoulds"],
+        correct: 0,
+        explanation: "can have describes a possible ability/condition in this context."
+      },
+      {
+        level: 2,
+        question: "The symptoms ____ disappear within a few days.",
+        options: ["cans", "may", "must to", "shoulds"],
+        correct: 1,
+        explanation: "may disappear expresses possibility."
+      },
+      {
+        level: 2,
+        question: "The patient ____ remain in the hospital overnight.",
+        options: ["may to", "can to", "must", "shoulds"],
+        correct: 2,
+        explanation: "The patient is required to remain there: must remain."
+      },
+      {
+        level: 2,
+        question: "Patients ____ report any unusual symptoms to their doctor.",
+        options: ["can to", "may", "musts", "should"],
+        correct: 3,
+        explanation: "should report gives medical advice."
+      },
+      {
+        level: 2,
+        question: "The scanner ____ produce detailed images of the brain.",
+        options: ["can", "mays", "must to", "shoulds"],
+        correct: 0,
+        explanation: "can produce describes the scanner's capability."
+      },
+      {
+        level: 2,
+        question: "The treatment ____ reduce the patient's symptoms.",
+        options: ["cans", "may", "must to", "shoulds"],
+        correct: 1,
+        explanation: "may reduce expresses a possible effect."
+      },
+      {
+        level: 2,
+        question: "Patients ____ remove their jewelry before entering the MRI room.",
+        options: ["may to", "can to", "must", "shoulds"],
+        correct: 2,
+        explanation: "This is a safety requirement: must remove."
+      },
+      {
+        level: 2,
+        question: "The patient ____ eat a light meal before taking the medication.",
+        options: ["can to", "may", "musts", "should"],
+        correct: 3,
+        explanation: "should eat gives advice."
+      },
+
+      // ================= LEVEL 3 =================
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "without assistance / can / the patient / walk",
+        options: [
+          "The patient can walk without assistance.",
+          "The patient walk can without assistance.",
+          "Can the patient without assistance walk.",
+          "Without assistance can walk the patient."
+        ],
+        correct: 0,
+        explanation: "Correct order: Subject (The patient) + Modal (can) + Verb (walk) + Manner (without assistance)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "may / after the procedure / experience / the patient / mild pain",
+        options: [
+          "May the patient mild pain experience after the procedure.",
+          "The patient may experience mild pain after the procedure.",
+          "The patient experience may after the procedure mild pain.",
+          "After the procedure may mild pain the patient experience."
+        ],
+        correct: 1,
+        explanation: "Correct order: Subject (The patient) + Modal (may) + Verb (experience) + Object (mild pain) + Time (after the procedure)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "before the examination / must / patients / fast / for eight hours",
+        options: [
+          "Patients must fast for eight hours before the examination.",
+          "Patients fast must for eight hours before the examination.",
+          "Must patients fast before the examination for eight hours.",
+          "For eight hours patients before the examination must fast."
+        ],
+        correct: 0,
+        explanation: "Correct order: Subject (Patients) + Modal (must) + Verb (fast) + Duration (for eight hours) + Time (before the examination)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "should / the patient / during recovery / drink / more water",
+        options: [
+          "Should the patient drink more water during recovery.",
+          "The patient should drink more water during recovery.",
+          "The patient drink should more water during recovery.",
+          "During recovery should drink the patient more water."
+        ],
+        correct: 1,
+        explanation: "Correct order: Subject (The patient) + Modal (should) + Verb (drink) + Object (more water) + Time (during recovery)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "can / detect / the device / in heart rate / small changes",
+        options: [
+          "The device can detect small changes in heart rate.",
+          "The device detect can small changes in heart rate.",
+          "Can the device small changes detect in heart rate.",
+          "Small changes in heart rate can the device detect."
+        ],
+        correct: 0,
+        explanation: "Correct order: Subject (The device) + Modal (can) + Verb (detect) + Object (small changes in heart rate)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "dizziness / may / this medication / cause / in some patients",
+        options: [
+          "This medication cause may dizziness in some patients.",
+          "This medication may cause dizziness in some patients.",
+          "May this medication dizziness cause in some patients.",
+          "In some patients may cause this medication dizziness."
+        ],
+        correct: 1,
+        explanation: "Correct order: Subject (This medication) + Modal (may) + Verb (cause) + Object (dizziness) + Target (in some patients)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "must / all samples / be labeled / correctly / before analysis",
+        options: [
+          "Before analysis all samples correctly must be labeled.",
+          "All samples be labeled must correctly before analysis.",
+          "Must all samples be labeled before analysis correctly.",
+          "All samples must be labeled correctly before analysis."
+        ],
+        correct: 3,
+        explanation: "Correct order: Subject (All samples) + Modal (must) + Passive verb (be labeled) + Adverb (correctly) + Time (before analysis)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "should / patients / avoid / excessive salt / with hypertension",
+        options: [
+          "Patients avoid should excessive salt with hypertension.",
+          "Patients with hypertension should avoid excessive salt.",
+          "Should patients with hypertension excessive salt avoid.",
+          "With hypertension should avoid patients excessive salt."
+        ],
+        correct: 1,
+        explanation: "Correct order: Subject (Patients with hypertension) + Modal (should) + Verb (avoid) + Object (excessive salt)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "can / doctors / identify / at an early stage / some diseases",
+        options: [
+          "Doctors can identify some diseases at an early stage.",
+          "Doctors identify can some diseases at an early stage.",
+          "Can doctors some diseases identify at an early stage.",
+          "At an early stage doctors can some diseases identify."
+        ],
+        correct: 0,
+        explanation: "Correct order: Subject (Doctors) + Modal (can) + Verb (identify) + Object (some diseases) + Time (at an early stage)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "may / the symptoms / disappear / after treatment",
+        options: [
+          "The symptoms disappear may after treatment.",
+          "After treatment may disappear the symptoms.",
+          "The symptoms may disappear after treatment.",
+          "May the symptoms after treatment disappear."
+        ],
+        correct: 2,
+        explanation: "Correct order: Subject (The symptoms) + Modal (may) + Verb (disappear) + Time (after treatment)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "must / patients / all metal objects / remove / before the MRI scan",
+        options: [
+          "Before the MRI scan must remove patients all metal objects.",
+          "Patients remove must all metal objects before the MRI scan.",
+          "Must patients all metal objects remove before the MRI scan.",
+          "Patients must remove all metal objects before the MRI scan."
+        ],
+        correct: 3,
+        explanation: "Correct order: Subject (Patients) + Modal (must) + Verb (remove) + Object (all metal objects) + Time (before the MRI scan)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "strenuous exercise / should / the patient / avoid / after surgery",
+        options: [
+          "The patient avoid should strenuous exercise after surgery.",
+          "After surgery should avoid the patient strenuous exercise.",
+          "The patient should avoid strenuous exercise after surgery.",
+          "Should the patient strenuous exercise avoid after surgery."
+        ],
+        correct: 2,
+        explanation: "Correct order: Subject (The patient) + Modal (should) + Verb (avoid) + Object (strenuous exercise) + Time (after surgery)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "the nurse / measure / the patient's blood pressure / can",
+        options: [
+          "The nurse measure can the patient's blood pressure.",
+          "Can the nurse the patient's blood pressure measure.",
+          "The nurse can measure the patient's blood pressure.",
+          "The patient's blood pressure can measure the nurse."
+        ],
+        correct: 2,
+        explanation: "Correct order: Subject (The nurse) + Modal (can) + Verb (measure) + Object (the patient's blood pressure)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "cause / the infection / may / serious complications",
+        options: [
+          "Serious complications may the infection cause.",
+          "The infection cause may serious complications.",
+          "May the infection serious complications cause.",
+          "The infection may cause serious complications."
+        ],
+        correct: 3,
+        explanation: "Correct order: Subject (The infection) + Modal (may) + Verb (cause) + Object (serious complications)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "the patient / take must / the medication / twice a day",
+        options: [
+          "The patient take must the medication twice a day.",
+          "Twice a day must take the patient the medication.",
+          "The patient must take the medication twice a day.",
+          "Must the patient the medication take twice a day."
+        ],
+        correct: 2,
+        explanation: "Correct order: Subject (The patient) + Modal (must) + Verb (take) + Object (the medication) + Frequency (twice a day)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "report / should / patients / any unusual symptoms / to their doctor",
+        options: [
+          "To their doctor patients should any unusual symptoms report.",
+          "Patients report should any unusual symptoms to their doctor.",
+          "Should patients any unusual symptoms report to their doctor.",
+          "Patients should report any unusual symptoms to their doctor."
+        ],
+        correct: 3,
+        explanation: "Correct order: Subject (Patients) + Modal (should) + Verb (report) + Object (any unusual symptoms) + Indirect Object (to their doctor)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "of infection / this test / detect / can / early signs",
+        options: [
+          "This test detect can early signs of infection.",
+          "This test can detect early signs of infection.",
+          "Can this test early signs detect of infection.",
+          "Early signs of infection can this test detect."
+        ],
+        correct: 1,
+        explanation: "Correct order: Subject (This test) + Modal (can) + Verb (detect) + Object (early signs of infection)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "may / the treatment / reduce / the patient's symptoms",
+        options: [
+          "The treatment reduce may the patient's symptoms.",
+          "May the treatment the patient's symptoms reduce.",
+          "The treatment may reduce the patient's symptoms.",
+          "The patient's symptoms may the treatment reduce."
+        ],
+        correct: 2,
+        explanation: "Correct order: Subject (The treatment) + Modal (may) + Verb (reduce) + Object (the patient's symptoms)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "in the laboratory / must / doctors / wear / protective clothing",
+        options: [
+          "Doctors wear must protective clothing in the laboratory.",
+          "Doctors must wear protective clothing in the laboratory.",
+          "In the laboratory doctors protective clothing must wear.",
+          "Must doctors protective clothing wear in the laboratory."
+        ],
+        correct: 1,
+        explanation: "Correct order: Subject (Doctors) + Modal (must) + Verb (wear) + Object (protective clothing) + Place (in the laboratory)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "should / the patient / rest / for several days / after the procedure",
+        options: [
+          "Should the patient for several days rest after the procedure.",
+          "The patient rest should for several days after the procedure.",
+          "After the procedure should rest the patient for several days.",
+          "The patient should rest for several days after the procedure."
+        ],
+        correct: 3,
+        explanation: "Correct order: Subject (The patient) + Modal (should) + Verb (rest) + Duration (for several days) + Time (after the procedure)."
+      }
+    ];
+
+    let total = 0;
+    let correct = 0;
+    let streak = 0;
+    let currentQuestion = null;
+    let answered = false;
+
+    function checkPass() {
+      const val = document.getElementById('passInput').value.trim().toLowerCase();
+      if (val === SECRET_PASS) {
+        document.getElementById('authScreen').classList.add('hidden');
+        document.getElementById('gameScreen').classList.remove('hidden');
+        nextQuestion();
+      } else {
+        document.getElementById('errorMsg').style.display = 'block';
+      }
+    }
+
+    function changeLevel() {
+      nextQuestion();
+    }
+
+    function getFilteredQuestions() {
+      const selectedLevel = document.getElementById('levelSelect').value;
+      if (selectedLevel === 'mix') {
+        return questions;
+      }
+      return questions.filter(q => q.level === parseInt(selectedLevel));
+    }
+
+    function nextQuestion() {
+      answered = false;
+      
+      // Сброс состояния кнопки Next и блока объяснений
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.classList.remove('visible');
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.remove('answered');
+      document.getElementById('explanationText').textContent = "Choose the correct answer!";
+
+      const pool = getFilteredQuestions();
+      currentQuestion = pool[Math.floor(Math.random() * pool.length)];
+
+      // Установка тега
+      const levelTag = document.getElementById('levelTag');
+      levelTag.textContent = `Level ${currentQuestion.level}`;
+
+      // Текст вопроса
+      document.getElementById('questionText').textContent = currentQuestion.question;
+
+      // Chunks if Level 3
+      const chunksBox = document.getElementById('chunksBox');
+      if (currentQuestion.chunks) {
+        chunksBox.textContent = currentQuestion.chunks;
+        chunksBox.classList.remove('invisible');
+      } else {
+        chunksBox.textContent = '';
+        chunksBox.classList.add('invisible');
+      }
+
+      // Варианты ответов
+      const grid = document.getElementById('optionsGrid');
+      grid.innerHTML = '';
+
+      currentQuestion.options.forEach((optText, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = `${String.fromCharCode(65 + index)}) ${optText}`;
+        btn.onclick = () => selectOption(btn, index);
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedBtn, selectedIndex) {
+      if (answered) return;
+      answered = true;
+
+      total++;
+      const isCorrect = (selectedIndex === currentQuestion.correct);
+
+      if (isCorrect) {
+        correct++;
+        streak++;
+        selectedBtn.classList.add('correct');
+      } else {
+        streak = 0;
+        selectedBtn.classList.add('wrong');
+        
+        // Подсветить правильный ответ
+        const allBtns = document.querySelectorAll('.option-btn');
+        if (allBtns[currentQuestion.correct]) {
+          allBtns[currentQuestion.correct].classList.add('correct');
+        }
+      }
+
+      // Заблокировать все кнопки
+      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+      // Обновить статистику
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('correctCount').textContent = correct;
+      document.getElementById('streakCount').textContent = `${streak} 🔥`;
+
+      // Показать объяснение
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.add('answered');
+      document.getElementById('explanationText').textContent = currentQuestion.explanation;
+
+      // Показать кнопку Next
+      document.getElementById('nextBtn').classList.add('visible');
+    }
+  </script>
 </body>
 </html>
