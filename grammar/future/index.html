@@ -333,23 +333,23 @@
   <div class="card">
     <!-- Header -->
     <header class="header">
-      <a href="https://kazdoctors.com/grammar/" class="home-btn">⬅ Назад</a>
+      <a href="https://kazdoctors.com/grammar/" class="home-btn">⬅ Go back</a>
       <div class="brand">@doctors.speak</div>
     </header>
 
     <!-- Screen 1: Password -->
     <div id="authScreen" class="auth-container">
       <div class="auth-title">Medical English Quiz</div>
-      <p style="font-size: 0.85rem; color: #666;">Введите пароль для доступа к тестам</p>
+      <p style="font-size: 0.85rem; color: #666;">Password</p>
       
       <input type="password" id="passInput" class="auth-input" placeholder="Пароль" onkeyup="if(event.key === 'Enter') checkPass()">
-      <button onclick="checkPass()" class="auth-btn">Войти</button>
+      <button onclick="checkPass()" class="auth-btn">Enter</button>
       
       <div id="errorMsg" class="error-msg">Incorrect! Try again</div>
       
       <div class="insta-link">
         No password? <br>
-        <a href="https://instagram.com/doctors.speak" target="_blank">Получить пароль в Direct</a>
+        <a href="https://instagram.com/doctors.speak" target="_blank">Contact us in Instagram!</a>
       </div>
     </div>
 
@@ -381,7 +381,7 @@
         <div id="optionsGrid" class="options-grid"></div>
         
         <div id="explanationBox" class="explanation-box">
-          <div><strong>💡 Explanation:</strong> <span id="explanationText">Выберите вариант ответа...</span></div>
+          <div><strong>💡 Explanation:</strong> <span id="explanationText">Choose the correct answer!</span></div>
         </div>
 
         <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next ➔</button>
@@ -980,7 +980,7 @@
 
       const expBox = document.getElementById('explanationBox');
       expBox.classList.remove('answered');
-      document.getElementById('explanationText').textContent = "Выберите вариант ответа, чтобы увидеть пояснение.";
+      document.getElementById('explanationText').textContent = "Choose the correct answer";
 
       const pool = getFilteredQuestions();
       currentQuestion = pool[Math.floor(Math.random() * pool.length)];
