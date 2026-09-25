@@ -28,7 +28,8 @@
       border-radius: 20px;
       width: 100%;
       max-width: 420px;
-      max-height: 92vh;
+      height: 680px;
+      max-height: 95vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -39,13 +40,13 @@
       overflow-y: auto;
     }
 
-    /* Header */
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding-bottom: 10px;
       border-bottom: 2px solid #00afca;
+      flex-shrink: 0;
     }
 
     .home-btn {
@@ -75,7 +76,6 @@
       letter-spacing: 0.5px;
     }
 
-    /* Password Screen */
     .auth-container {
       display: flex;
       flex-direction: column;
@@ -84,6 +84,7 @@
       gap: 15px;
       padding: 40px 10px;
       text-align: center;
+      flex-grow: 1;
     }
 
     .auth-title {
@@ -102,7 +103,7 @@
       outline: none;
     }
 
-    .auth-btn, .next-btn {
+    .auth-btn {
       background: #00afca;
       color: white;
       border: none;
@@ -115,7 +116,7 @@
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
 
-    .auth-btn:active, .next-btn:active {
+    .auth-btn:active {
       transform: scale(0.98);
     }
 
@@ -138,7 +139,6 @@
       font-weight: 600;
     }
 
-    /* Controls & Stats */
     .mode-select {
       width: 100%;
       padding: 10px;
@@ -147,7 +147,7 @@
       font-weight: 700;
       color: #0081a7;
       background: #f4fbfe;
-      margin-top: 10px;
+      margin-top: 6px;
       outline: none;
       font-size: 0.9rem;
       cursor: pointer;
@@ -172,14 +172,18 @@
       gap: 3px;
     }
 
-    /* Question Box */
     .term-box {
-      margin: 12px 0;
+      margin: 10px 0;
       background: #f9fbfd;
       border-radius: 12px;
       padding: 12px;
       border: 1px dashed #00afca;
       text-align: center;
+      min-height: 125px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
 
     .level-tag {
@@ -195,26 +199,41 @@
     }
 
     .term-title {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: #0081a7;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       line-height: 1.35;
+      min-height: 2.7em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .chunks-box {
       background: #fff;
       border: 1px solid #dceef5;
-      padding: 8px;
+      padding: 6px 10px;
       border-radius: 8px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: #d97706;
       font-weight: 700;
-      margin-top: 6px;
+      margin-top: 4px;
       word-break: break-word;
+      min-height: 36px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s, visibility 0.2s;
     }
 
-    /* Options */
+    .chunks-box.invisible {
+      visibility: hidden;
+      border-color: transparent;
+      background: transparent;
+    }
+
     .options-grid {
       display: flex;
       flex-direction: column;
@@ -225,15 +244,19 @@
     .option-btn {
       background: #ffffff;
       border: 2px solid #e0e0e0;
-      padding: 10px 12px;
+      padding: 8px 12px;
       border-radius: 10px;
       font-size: 0.88rem;
       font-weight: 600;
       color: #333;
       text-align: left;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: background-color 0.2s, border-color 0.2s, color 0.2s;
       line-height: 1.3;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      width: 100%;
     }
 
     .option-btn:hover:not(:disabled) {
@@ -254,22 +277,24 @@
       color: #721c24 !important;
     }
 
-    /* Explanation */
     .explanation-box {
       background-color: #e8f4f8;
       border-left: 4px solid #00afca;
-      padding: 10px 12px;
+      padding: 8px 12px;
       border-radius: 6px;
       font-size: 0.82rem;
       color: #004d61;
       margin-bottom: 10px;
       line-height: 1.4;
-      animation: fadeIn 0.3s ease-in-out;
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
+    .explanation-box.answered {
+      background-color: #e2f3f9;
+      border-left-color: #0081a7;
     }
 
     .next-btn {
@@ -281,6 +306,17 @@
       border-radius: 10px;
       font-size: 0.95rem;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      border: none;
+      cursor: pointer;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.2s ease, visibility 0.2s ease, background-color 0.2s ease;
+      min-height: 44px;
+    }
+
+    .next-btn.visible {
+      visibility: visible;
+      opacity: 1;
     }
 
     .next-btn:hover {
@@ -304,15 +340,15 @@
     <!-- Screen 1: Password -->
     <div id="authScreen" class="auth-container">
       <div class="auth-title">Medical English Quiz</div>
-      <p style="font-size: 0.85rem; color: #666;">Введите пароль для доступа к тестам</p>
+      <p style="font-size: 0.85rem; color: #666;">Password</p>
       
       <input type="password" id="passInput" class="auth-input" placeholder="Пароль" onkeyup="if(event.key === 'Enter') checkPass()">
       <button onclick="checkPass()" class="auth-btn">Войти</button>
       
-      <div id="errorMsg" class="error-msg">Неверный пароль! Попробуйте еще раз.</div>
+      <div id="errorMsg" class="error-msg">Incorrect! Try again</div>
       
       <div class="insta-link">
-        Нет пароля? <br>
+        No password? <br>
         <a href="https://instagram.com/doctors.speak" target="_blank">Получить пароль в Direct</a>
       </div>
     </div>
@@ -338,17 +374,17 @@
       <div class="term-box">
         <span id="levelTag" class="level-tag">Level 1</span>
         <div id="questionText" class="term-title">Loading question...</div>
-        <div id="chunksBox" class="chunks-box hidden"></div>
+        <div id="chunksBox" class="chunks-box invisible"></div>
       </div>
 
       <div>
         <div id="optionsGrid" class="options-grid"></div>
         
-        <div id="explanationBox" class="explanation-box hidden">
-          <strong>💡 Explanation:</strong> <span id="explanationText"></span>
+        <div id="explanationBox" class="explanation-box">
+          <div><strong>💡 Explanation:</strong> <span id="explanationText">Choose the correct option</span></div>
         </div>
 
-        <button id="nextBtn" class="next-btn hidden" onclick="nextQuestion()">Next ➔</button>
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next ➔</button>
       </div>
 
     </div>
@@ -362,28 +398,28 @@
       // ================= LEVEL 1 =================
       {
         level: 1,
-        question: "The patient is breathing heavily.'",
+        question: "The patient is breathing heavily.",
         options: ["Present Simple", "Past Simple", "Present Continuous", "Future Simple"],
         correct: 2,
         explanation: "The action is happening right now."
       },
       {
         level: 1,
-        question: "The heart pumps blood around the body.'",
+        question: "The heart pumps blood around the body.",
         options: ["Future Simple", "Present Continuous", "Past Simple", "Present Simple"],
         correct: 3,
         explanation: "This is a general biological fact."
       },
       {
         level: 1,
-        question: "The doctor is examining the patient.'",
+        question: "The doctor is examining the patient.",
         options: ["Present Simple", "Future Simple", "Past Simple", "Present Continuous"],
         correct: 3,
         explanation: "The examination is happening now."
       },
       {
         level: 1,
-        question: "The kidneys remove waste from the blood.'",
+        question: "The kidneys remove waste from the blood.",
         options: ["Present Simple", "Present Continuous", "Past Simple", "Future Simple"],
         correct: 0,
         explanation: "This describes a general physiological function."
@@ -937,8 +973,14 @@
 
     function nextQuestion() {
       answered = false;
-      document.getElementById('nextBtn').classList.add('hidden');
-      document.getElementById('explanationBox').classList.add('hidden');
+      
+      // Сброс состояния кнопки Next и блока объяснений
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.classList.remove('visible');
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.remove('answered');
+      document.getElementById('explanationText').textContent = "Выберите вариант ответа, чтобы увидеть пояснение.";
 
       const pool = getFilteredQuestions();
       currentQuestion = pool[Math.floor(Math.random() * pool.length)];
@@ -954,9 +996,10 @@
       const chunksBox = document.getElementById('chunksBox');
       if (currentQuestion.chunks) {
         chunksBox.textContent = currentQuestion.chunks;
-        chunksBox.classList.remove('hidden');
+        chunksBox.classList.remove('invisible');
       } else {
-        chunksBox.classList.add('hidden');
+        chunksBox.textContent = '';
+        chunksBox.classList.add('invisible');
       }
 
       // Варианты ответов
@@ -1003,11 +1046,12 @@
       document.getElementById('streakCount').textContent = `${streak} 🔥`;
 
       // Показать объяснение
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.add('answered');
       document.getElementById('explanationText').textContent = currentQuestion.explanation;
-      document.getElementById('explanationBox').classList.remove('hidden');
 
       // Показать кнопку Next
-      document.getElementById('nextBtn').classList.remove('hidden');
+      document.getElementById('nextBtn').classList.add('visible');
     }
   </script>
 </body>
