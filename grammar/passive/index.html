@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>@doctors.speak — Page not ready yet</title>
+  <title>@doctors.speak — Medical Grammar Trainer</title>
   <style>
     * {
       box-sizing: border-box;
@@ -76,73 +76,255 @@
       letter-spacing: 0.5px;
     }
 
-    .content-container {
+    .auth-container {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 18px;
-      padding: 20px 10px;
+      gap: 15px;
+      padding: 40px 10px;
       text-align: center;
       flex-grow: 1;
     }
 
-    .icon-box {
-      font-size: 4rem;
-      line-height: 1;
-      margin-bottom: 5px;
-    }
-
-    .title {
-      font-size: 1.35rem;
+    .auth-title {
+      font-size: 1.25rem;
       color: #0081a7;
-      font-weight: 800;
-      line-height: 1.3;
+      font-weight: 700;
     }
 
-    .description {
-      font-size: 0.95rem;
-      color: #555;
-      line-height: 1.5;
-      max-width: 320px;
+    .auth-input {
+      width: 85%;
+      padding: 12px;
+      border: 2px solid #00afca;
+      border-radius: 10px;
+      font-size: 1rem;
+      text-align: center;
+      outline: none;
     }
 
-    .action-btn {
-      background: #fbc02d;
-      color: #003366;
+    .auth-btn {
+      background: #00afca;
+      color: white;
       border: none;
-      padding: 14px 24px;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 800;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: bold;
       cursor: pointer;
-      width: 100%;
-      max-width: 300px;
+      width: 85%;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      text-decoration: none;
-      display: inline-block;
-      transition: transform 0.1s, background-color 0.2s;
-      margin-top: 10px;
     }
 
-    .action-btn:hover {
-      background: #fdd835;
-    }
-
-    .action-btn:active {
+    .auth-btn:active {
       transform: scale(0.98);
     }
 
     .insta-link {
+      margin-top: 10px;
       font-size: 0.85rem;
       color: #666;
-      margin-top: 10px;
     }
 
     .insta-link a {
       color: #0081a7;
       font-weight: 700;
       text-decoration: underline;
+    }
+
+    .error-msg {
+      color: #e53935;
+      font-size: 0.85rem;
+      display: none;
+      font-weight: 600;
+    }
+
+    .mode-select {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #00afca;
+      border-radius: 10px;
+      font-weight: 700;
+      color: #0081a7;
+      background: #f4fbfe;
+      margin-top: 6px;
+      outline: none;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #555;
+      margin-top: 8px;
+      background: #f0f9fc;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #d0edf5;
+    }
+
+    .stats span {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .term-box {
+      margin: 10px 0;
+      background: #f9fbfd;
+      border-radius: 12px;
+      padding: 12px;
+      border: 1px dashed #00afca;
+      text-align: center;
+      min-height: 125px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .level-tag {
+      display: inline-block;
+      background: #00afca;
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .term-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #0081a7;
+      margin-bottom: 4px;
+      line-height: 1.35;
+      min-height: 2.7em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chunks-box {
+      background: #fff;
+      border: 1px solid #dceef5;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      color: #d97706;
+      font-weight: 700;
+      margin-top: 4px;
+      word-break: break-word;
+      min-height: 36px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s, visibility 0.2s;
+    }
+
+    .chunks-box.invisible {
+      visibility: hidden;
+      border-color: transparent;
+      background: transparent;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .option-btn {
+      background: #ffffff;
+      border: 2px solid #e0e0e0;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #333;
+      text-align: left;
+      cursor: pointer;
+      transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+      line-height: 1.3;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: #00afca;
+      background-color: #f4fbfe;
+    }
+
+    .option-btn.correct {
+      background-color: #d4edda !important;
+      border-color: #28a745 !important;
+      color: #155724 !important;
+      font-weight: 700;
+    }
+
+    .option-btn.wrong {
+      background-color: #f8d7da !important;
+      border-color: #dc3545 !important;
+      color: #721c24 !important;
+    }
+
+    .explanation-box {
+      background-color: #e8f4f8;
+      border-left: 4px solid #00afca;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      color: #004d61;
+      margin-bottom: 10px;
+      line-height: 1.4;
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .explanation-box.answered {
+      background-color: #e2f3f9;
+      border-left-color: #0081a7;
+    }
+
+    .next-btn {
+      width: 100%;
+      background: #fbc02d;
+      color: #003366;
+      font-weight: 800;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      border: none;
+      cursor: pointer;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.2s ease, visibility 0.2s ease, background-color 0.2s ease;
+      min-height: 44px;
+    }
+
+    .next-btn.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .next-btn:hover {
+      background: #fdd835;
+    }
+
+    .hidden {
+      display: none !important;
     }
   </style>
 </head>
@@ -155,22 +337,723 @@
       <div class="brand">@doctors.speak</div>
     </header>
 
-    <!-- Content -->
-    <div class="content-container">
-      <div class="icon-box">🚧</div>
-      <h1 class="title">Page not ready yet :( </h1>
-      <p class="description">
-        We are working on the page, please check it later🙏
-      </p>
-
-      <a href="https://kazdoctors.com/grammar/" class="action-btn">Go back</a>
-
+    <!-- Screen 1: Password -->
+    <div id="authScreen" class="auth-container">
+      <div class="auth-title">Medical English Quiz</div>
+      <p style="font-size: 0.85rem; color: #666;">Password</p>
+      
+      <input type="password" id="passInput" class="auth-input" placeholder="Пароль" onkeyup="if(event.key === 'Enter') checkPass()">
+      <button onclick="checkPass()" class="auth-btn">Enter</button>
+      
+      <div id="errorMsg" class="error-msg">Incorrect! Try again</div>
+      
       <div class="insta-link">
-        Our updates:<br>
-        <a href="https://instagram.com/doctors.speak" target="_blank">@doctors.speak</a>
+        No password? <br>
+        <a href="https://instagram.com/doctors.speak" target="_blank">Contact us in Instagram!</a>
       </div>
+    </div>
+
+    <!-- Screen 2: Game -->
+    <div id="gameScreen" class="hidden" style="display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;">
+      
+      <div>
+        <select id="levelSelect" class="mode-select" onchange="changeLevel()">
+          <option value="1">Level 1 — Recognition</option>
+          <option value="2">Level 2 — Choose verb form</option>
+          <option value="3">Level 3 — Sentence order</option>
+          <option value="mix">🔥 Mix</option>
+        </select>
+
+        <div class="stats">
+          <span>Total: <strong id="totalCount">0</strong></span>
+          <span>Correct: <strong id="correctCount" style="color:#28a745;">0</strong></span>
+          <span>Streak: <strong id="streakCount" style="color:#e67e22;">0 🔥</strong></span>
+        </div>
+      </div>
+
+      <div class="term-box">
+        <span id="levelTag" class="level-tag">Level 1</span>
+        <div id="questionText" class="term-title">Loading question...</div>
+        <div id="chunksBox" class="chunks-box invisible"></div>
+      </div>
+
+      <div>
+        <div id="optionsGrid" class="options-grid"></div>
+        
+        <div id="explanationBox" class="explanation-box">
+          <div><strong>💡 Explanation:</strong> <span id="explanationText">Choose the correct answer!</span></div>
+        </div>
+
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next ➔</button>
+      </div>
+
     </div>
   </div>
 
+  <script>
+    const SECRET_PASS = "fever";
+
+    // Question bank from lesson 5.docx (Past Simple & Present Perfect)
+    // Equalized options across A, B, C, D (5 of each per level)
+    const questions = [
+      // ================= LEVEL 1 =================
+      {
+        level: 1,
+        question: "The patient was admitted yesterday.",
+        options: ["Past Simple", "Present Perfect", "Present Continuous", "Future Simple"],
+        correct: 0,
+        explanation: "The action happened at a specific finished time in the past: yesterday."
+      },
+      {
+        level: 1,
+        question: "The doctor examined the patient last night.",
+        options: ["Past Simple", "Present Perfect", "Present Continuous", "Future Simple"],
+        correct: 0,
+        explanation: "Last night is a finished time in the past."
+      },
+      {
+        level: 1,
+        question: "The patient developed a fever two days ago.",
+        options: ["Past Simple", "Present Perfect", "Present Continuous", "Future Simple"],
+        correct: 0,
+        explanation: "Two days ago refers to a definite finished time."
+      },
+      {
+        level: 1,
+        question: "The researchers published the results in 2022.",
+        options: ["Past Simple", "Present Perfect", "Present Continuous", "Future Simple"],
+        correct: 0,
+        explanation: "In 2022 is a finished time in the past."
+      },
+      {
+        level: 1,
+        question: "The patient took the medication this morning.",
+        options: ["Past Simple", "Present Perfect", "Present Continuous", "Future Simple"],
+        correct: 0,
+        explanation: "This morning is presented as a completed time period."
+      },
+      {
+        level: 1,
+        question: "The patient has been admitted to hospital.",
+        options: ["Past Simple", "Present Perfect", "Present Continuous", "Future Simple"],
+        correct: 1,
+        explanation: "The admission is connected with the present situation. No finished past time is given."
+      },
+      {
+        level: 1,
+        question: "The doctor has examined the patient.",
+        options: ["Past Simple", "Present Perfect", "Present Continuous", "Future Simple"],
+        correct: 1,
+        explanation: "The examination has been completed, and the result is relevant now."
+      },
+      {
+        level: 1,
+        question: "The patient has developed a fever.",
+        options: ["Past Simple", "Present Perfect", "Present Continuous", "Future Simple"],
+        correct: 1,
+        explanation: "The new fever is relevant to the current situation."
+      },
+      {
+        level: 1,
+        question: "The researchers have published the results.",
+        options: ["Past Simple", "Present Perfect", "Present Continuous", "Future Simple"],
+        correct: 1,
+        explanation: "The publication is relevant to the present. No finished time is mentioned."
+      },
+      {
+        level: 1,
+        question: "The patient has taken the medication.",
+        options: ["Past Simple", "Present Perfect", "Present Continuous", "Future Simple"],
+        correct: 1,
+        explanation: "The action is completed and its result is relevant now."
+      },
+      {
+        level: 1,
+        question: "The patient has never had surgery.",
+        options: ["Past Simple", "Present Continuous", "Present Perfect", "Future Simple"],
+        correct: 2,
+        explanation: "Never describes experience up to the present."
+      },
+      {
+        level: 1,
+        question: "The symptoms have improved.",
+        options: ["Past Simple", "Future Simple", "Present Perfect", "Present Continuous"],
+        correct: 2,
+        explanation: "The improvement has a present result."
+      },
+      {
+        level: 1,
+        question: "The patient has already received the treatment.",
+        options: ["Present Continuous", "Past Simple", "Present Perfect", "Future Simple"],
+        correct: 2,
+        explanation: "Already commonly indicates a completed action connected with the present."
+      },
+      {
+        level: 1,
+        question: "Researchers have identified a new genetic variant.",
+        options: ["Future Simple", "Past Simple", "Present Perfect", "Present Continuous"],
+        correct: 2,
+        explanation: "The discovery is relevant to the present; no finished past time is given."
+      },
+      {
+        level: 1,
+        question: "The patient has experienced severe pain since Monday.",
+        options: ["Past Simple", "Present Continuous", "Present Perfect", "Future Simple"],
+        correct: 2,
+        explanation: "Since Monday connects the past with the present."
+      },
+      {
+        level: 1,
+        question: "The patient had surgery in 2019.",
+        options: ["Present Perfect", "Present Continuous", "Future Simple", "Past Simple"],
+        correct: 3,
+        explanation: "In 2019 is a definite finished time."
+      },
+      {
+        level: 1,
+        question: "The symptoms improved after treatment.",
+        options: ["Present Perfect", "Future Simple", "Present Continuous", "Past Simple"],
+        correct: 3,
+        explanation: "This describes a completed event in the past."
+      },
+      {
+        level: 1,
+        question: "The patient received the treatment last week.",
+        options: ["Present Continuous", "Present Perfect", "Future Simple", "Past Simple"],
+        correct: 3,
+        explanation: "Last week is a finished past time."
+      },
+      {
+        level: 1,
+        question: "Researchers identified the variant in 2018.",
+        options: ["Present Perfect", "Future Simple", "Present Continuous", "Past Simple"],
+        correct: 3,
+        explanation: "In 2018 gives a definite past time."
+      },
+      {
+        level: 1,
+        question: "The patient experienced severe pain during the night.",
+        options: ["Present Continuous", "Present Perfect", "Future Simple", "Past Simple"],
+        correct: 3,
+        explanation: "During the night refers to a completed past period."
+      },
+
+      // ================= LEVEL 2 =================
+      {
+        level: 2,
+        question: "The patient ____ the hospital yesterday.",
+        options: ["left", "has left", "leaves", "is leaving"],
+        correct: 0,
+        explanation: "Yesterday → Past Simple."
+      },
+      {
+        level: 2,
+        question: "The patient ____ the hospital.",
+        options: ["has left", "left", "leaves", "was leaving"],
+        correct: 0,
+        explanation: "The completed action is relevant to the present; no finished time is given."
+      },
+      {
+        level: 2,
+        question: "The doctor ____ the patient two hours ago.",
+        options: ["examined", "has examined", "examines", "is examining"],
+        correct: 0,
+        explanation: "Two hours ago → Past Simple."
+      },
+      {
+        level: 2,
+        question: "The doctor ____ the patient already.",
+        options: ["has examined", "examined", "examines", "was examining"],
+        correct: 0,
+        explanation: "Already → Present Perfect."
+      },
+      {
+        level: 2,
+        question: "The patient ____ this medication last year.",
+        options: ["started", "has started", "starts", "is starting"],
+        correct: 0,
+        explanation: "Last year is a finished past time."
+      },
+      {
+        level: 2,
+        question: "The patient ____ this medication recently.",
+        options: ["started", "has started", "starts", "was starting"],
+        correct: 1,
+        explanation: "Recently commonly describes an action connected with the present."
+      },
+      {
+        level: 2,
+        question: "Researchers ____ the disease in 1985.",
+        options: ["have discovered", "discovered", "discover", "are discovering"],
+        correct: 1,
+        explanation: "In 1985 → Past Simple."
+      },
+      {
+        level: 2,
+        question: "Researchers ____ several new treatment options.",
+        options: ["discovered", "have discovered", "discover", "were discovering"],
+        correct: 1,
+        explanation: "The discovery is relevant to the present, with no definite past time."
+      },
+      {
+        level: 2,
+        question: "The patient ____ chest pain three days ago.",
+        options: ["has developed", "developed", "develops", "is developing"],
+        correct: 1,
+        explanation: "Three days ago → Past Simple."
+      },
+      {
+        level: 2,
+        question: "The patient ____ chest pain.",
+        options: ["developed", "has developed", "develops", "was developing"],
+        correct: 1,
+        explanation: "The new symptom is relevant to the patient's current condition."
+      },
+      {
+        level: 2,
+        question: "The researchers ____ the study last month.",
+        options: ["have completed", "complete", "completed", "are completing"],
+        correct: 2,
+        explanation: "Last month → Past Simple."
+      },
+      {
+        level: 2,
+        question: "The researchers ____ the study.",
+        options: ["completed", "complete", "have completed", "were completing"],
+        correct: 2,
+        explanation: "The study is now completed; no finished past time is given."
+      },
+      {
+        level: 2,
+        question: "The patient ____ the medication two days ago.",
+        options: ["has stopped", "stops", "stopped", "is stopping"],
+        correct: 2,
+        explanation: "Two days ago → Past Simple."
+      },
+      {
+        level: 2,
+        question: "The patient ____ taking the medication.",
+        options: ["stopped", "stops", "has stopped", "was stopping"],
+        correct: 2,
+        explanation: "The patient has stopped, and this is relevant now."
+      },
+      {
+        level: 2,
+        question: "The surgeon ____ the operation last night.",
+        options: ["has completed", "completes", "completed", "is completing"],
+        correct: 2,
+        explanation: "Last night → Past Simple."
+      },
+      {
+        level: 2,
+        question: "The surgeon ____ the operation successfully.",
+        options: ["completed", "completes", "was completing", "has completed"],
+        correct: 3,
+        explanation: "The completed operation has a present result."
+      },
+      {
+        level: 2,
+        question: "The patient ____ this condition since childhood.",
+        options: ["had", "has", "was having", "has had"],
+        correct: 3,
+        explanation: "Since childhood connects the past with the present."
+      },
+      {
+        level: 2,
+        question: "The patient ____ this condition when he was a child.",
+        options: ["has had", "has", "is having", "had"],
+        correct: 3,
+        explanation: "When he was a child refers to a completed past period."
+      },
+      {
+        level: 2,
+        question: "The laboratory ____ the blood sample yesterday.",
+        options: ["has analyzed", "analyzes", "is analyzing", "analyzed"],
+        correct: 3,
+        explanation: "Yesterday → Past Simple."
+      },
+      {
+        level: 2,
+        question: "The laboratory ____ the blood sample, and the results are now available.",
+        options: ["analyzed", "analyzes", "was analyzing", "has analyzed"],
+        correct: 3,
+        explanation: "The action has a present result: the results are now available."
+      },
+
+      // ================= LEVEL 3 =================
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "yesterday / to hospital / the patient / was admitted",
+        options: [
+          "The patient was admitted to hospital yesterday.",
+          "The patient yesterday was admitted to hospital.",
+          "Was the patient admitted to hospital yesterday.",
+          "The patient was to hospital admitted yesterday."
+        ],
+        correct: 0,
+        explanation: "Order: Subject (The patient) + Verb (was admitted) + Place (to hospital) + Time (yesterday)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "a high fever / has developed / the patient",
+        options: [
+          "The patient has developed a high fever.",
+          "The patient developed has a high fever.",
+          "Has the patient developed a high fever.",
+          "The patient has a high fever developed."
+        ],
+        correct: 0,
+        explanation: "Order: Subject (The patient) + Verb (has developed) + Object (a high fever)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "in 2019 / the mutation / researchers / identified",
+        options: [
+          "Researchers identified the mutation in 2019.",
+          "Researchers the mutation identified in 2019.",
+          "Identified researchers the mutation in 2019.",
+          "Researchers identified in 2019 the mutation."
+        ],
+        correct: 0,
+        explanation: "Order: Subject (Researchers) + Verb (identified) + Object (the mutation) + Time (in 2019)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "genetic variants / researchers / several / have identified",
+        options: [
+          "Researchers have identified several genetic variants.",
+          "Researchers several genetic variants have identified.",
+          "Have researchers identified several genetic variants.",
+          "Researchers have several genetic variants identified."
+        ],
+        correct: 0,
+        explanation: "Order: Subject (Researchers) + Verb (have identified) + Object (several genetic variants)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "last week / treatment / the patient / received",
+        options: [
+          "The patient received treatment last week.",
+          "The patient treatment received last week.",
+          "Received the patient treatment last week.",
+          "The patient received last week treatment."
+        ],
+        correct: 0,
+        explanation: "Order: Subject (The patient) + Verb (received) + Object (treatment) + Time (last week)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "already / treatment / has received / the patient",
+        options: [
+          "The patient received has treatment already.",
+          "The patient has received treatment already.",
+          "Already the patient has treatment received.",
+          "The patient has treatment already received."
+        ],
+        correct: 1,
+        explanation: "Order: Subject (The patient) + Verb (has received) + Object (treatment) + Time (already)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "in 2021 / in a medical journal / the study / was published",
+        options: [
+          "The study in a medical journal was published in 2021.",
+          "The study was published in a medical journal in 2021.",
+          "Was the study published in a medical journal in 2021.",
+          "The study was in 2021 published in a medical journal."
+        ],
+        correct: 1,
+        explanation: "Order: Subject (The study) + Verb (was published) + Place (in a medical journal) + Time (in 2021)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "promising / results / has shown / the study",
+        options: [
+          "The study promising results has shown.",
+          "The study has shown promising results.",
+          "Has the study shown promising results.",
+          "The study has promising results shown."
+        ],
+        correct: 1,
+        explanation: "Order: Subject (The study) + Verb (has shown) + Object (promising results)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "the trial / last year / the researchers / completed",
+        options: [
+          "The researchers the trial completed last year.",
+          "The researchers completed the trial last year.",
+          "Completed the researchers the trial last year.",
+          "The researchers completed last year the trial."
+        ],
+        correct: 1,
+        explanation: "Order: Subject (The researchers) + Verb (completed) + Object (the trial) + Time (last year)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "the trial / have completed / the researchers",
+        options: [
+          "The researchers the trial have completed.",
+          "The researchers have completed the trial.",
+          "Have completed the researchers the trial.",
+          "The researchers have the trial completed."
+        ],
+        correct: 1,
+        explanation: "Order: Subject (The researchers) + Verb (have completed) + Object (the trial)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "since Monday / severe pain / the patient / has experienced",
+        options: [
+          "The patient severe pain has experienced since Monday.",
+          "Has the patient experienced severe pain since Monday.",
+          "The patient has experienced severe pain since Monday.",
+          "The patient has since Monday severe pain experienced."
+        ],
+        correct: 2,
+        explanation: "Order: Subject (The patient) + Verb (has experienced) + Object (severe pain) + Time (since Monday)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "during the night / severe pain / experienced / the patient",
+        options: [
+          "The patient severe pain experienced during the night.",
+          "Experienced the patient severe pain during the night.",
+          "The patient experienced severe pain during the night.",
+          "The patient experienced during the night severe pain."
+        ],
+        correct: 2,
+        explanation: "Order: Subject (The patient) + Verb (experienced) + Object (severe pain) + Time (during the night)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "in 2020 / a new treatment / the researchers / discovered",
+        options: [
+          "The researchers a new treatment discovered in 2020.",
+          "Discovered the researchers a new treatment in 2020.",
+          "The researchers discovered a new treatment in 2020.",
+          "The researchers discovered in 2020 a new treatment."
+        ],
+        correct: 2,
+        explanation: "Order: Subject (The researchers) + Verb (discovered) + Object (a new treatment) + Time (in 2020)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "for diagnosis / a new method / researchers / have developed",
+        options: [
+          "Researchers a new method have developed for diagnosis.",
+          "Have researchers developed a new method for diagnosis.",
+          "Researchers have developed a new method for diagnosis.",
+          "Researchers have for diagnosis a new method developed."
+        ],
+        correct: 2,
+        explanation: "Order: Subject (Researchers) + Verb (have developed) + Object (a new method) + Purpose (for diagnosis)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "after treatment / have improved / the patient's symptoms",
+        options: [
+          "The patient's symptoms improved have after treatment.",
+          "Have the patient's symptoms improved after treatment.",
+          "The patient's symptoms have improved after treatment.",
+          "The patient's symptoms have after treatment improved."
+        ],
+        correct: 2,
+        explanation: "Order: Subject (The patient's symptoms) + Verb (have improved) + Time (after treatment)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "after the operation / the patient's symptoms / improved",
+        options: [
+          "The patient's symptoms after the operation improved.",
+          "Improved the patient's symptoms after the operation.",
+          "The patient's symptoms improved the operation after.",
+          "The patient's symptoms improved after the operation."
+        ],
+        correct: 3,
+        explanation: "Order: Subject (The patient's symptoms) + Verb (improved) + Time (after the operation)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "surgery / undergone / the patient / has never",
+        options: [
+          "The patient never has undergone surgery.",
+          "Has the patient never undergone surgery.",
+          "The patient has undergone never surgery.",
+          "The patient has never undergone surgery."
+        ],
+        correct: 3,
+        explanation: "Order: Subject (The patient) + Verb (has never undergone) + Object (surgery)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "in 2018 / surgery / the patient / underwent",
+        options: [
+          "The patient surgery underwent in 2018.",
+          "Underwent the patient surgery in 2018.",
+          "The patient underwent in 2018 surgery.",
+          "The patient underwent surgery in 2018."
+        ],
+        correct: 3,
+        explanation: "Order: Subject (The patient) + Verb (underwent) + Object (surgery) + Time (in 2018)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "the patient's symptoms / has reduced / the treatment",
+        options: [
+          "The treatment the patient's symptoms has reduced.",
+          "Has the treatment reduced the patient's symptoms.",
+          "The treatment has the patient's symptoms reduced.",
+          "The treatment has reduced the patient's symptoms."
+        ],
+        correct: 3,
+        explanation: "Order: Subject (The treatment) + Verb (has reduced) + Object (the patient's symptoms)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "last month / the treatment / the patient's symptoms / reduced",
+        options: [
+          "The treatment the patient's symptoms reduced last month.",
+          "Reduced the treatment the patient's symptoms last month.",
+          "The treatment reduced last month the patient's symptoms.",
+          "The treatment reduced the patient's symptoms last month."
+        ],
+        correct: 3,
+        explanation: "Order: Subject (The treatment) + Verb (reduced) + Object (the patient's symptoms) + Time (last month)."
+      }
+    ];
+
+    let total = 0;
+    let correct = 0;
+    let streak = 0;
+    let currentQuestion = null;
+    let answered = false;
+
+    function checkPass() {
+      const val = document.getElementById('passInput').value.trim().toLowerCase();
+      if (val === SECRET_PASS) {
+        document.getElementById('authScreen').classList.add('hidden');
+        document.getElementById('gameScreen').classList.remove('hidden');
+        nextQuestion();
+      } else {
+        document.getElementById('errorMsg').style.display = 'block';
+      }
+    }
+
+    function changeLevel() {
+      nextQuestion();
+    }
+
+    function getFilteredQuestions() {
+      const selectedLevel = document.getElementById('levelSelect').value;
+      if (selectedLevel === 'mix') {
+        return questions;
+      }
+      return questions.filter(q => q.level === parseInt(selectedLevel));
+    }
+
+    function nextQuestion() {
+      answered = false;
+      
+      // Reset Next button state and explanation box
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.classList.remove('visible');
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.remove('answered');
+      document.getElementById('explanationText').textContent = "Choose the correct answer";
+
+      const pool = getFilteredQuestions();
+      currentQuestion = pool[Math.floor(Math.random() * pool.length)];
+
+      // Set level tag
+      const levelTag = document.getElementById('levelTag');
+      levelTag.textContent = `Level ${currentQuestion.level}`;
+
+      // Question text
+      document.getElementById('questionText').textContent = currentQuestion.question;
+
+      // Chunks for Level 3
+      const chunksBox = document.getElementById('chunksBox');
+      if (currentQuestion.chunks) {
+        chunksBox.textContent = currentQuestion.chunks;
+        chunksBox.classList.remove('invisible');
+      } else {
+        chunksBox.textContent = '';
+        chunksBox.classList.add('invisible');
+      }
+
+      // Options grid
+      const grid = document.getElementById('optionsGrid');
+      grid.innerHTML = '';
+
+      currentQuestion.options.forEach((optText, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = `${String.fromCharCode(65 + index)}) ${optText}`;
+        btn.onclick = () => selectOption(btn, index);
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedBtn, selectedIndex) {
+      if (answered) return;
+      answered = true;
+
+      total++;
+      const isCorrect = (selectedIndex === currentQuestion.correct);
+
+      if (isCorrect) {
+        correct++;
+        streak++;
+        selectedBtn.classList.add('correct');
+      } else {
+        streak = 0;
+        selectedBtn.classList.add('wrong');
+        
+        // Highlight correct answer
+        const allBtns = document.querySelectorAll('.option-btn');
+        if (allBtns[currentQuestion.correct]) {
+          allBtns[currentQuestion.correct].classList.add('correct');
+        }
+      }
+
+      // Disable all buttons
+      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+      // Update statistics
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('correctCount').textContent = correct;
+      document.getElementById('streakCount').textContent = `${streak} 🔥`;
+
+      // Show explanation
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.add('answered');
+      document.getElementById('explanationText').textContent = currentQuestion.explanation;
+
+      // Show Next button
+      document.getElementById('nextBtn').classList.add('visible');
+    }
+  </script>
 </body>
 </html>
