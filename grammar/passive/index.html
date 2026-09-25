@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>@doctors.speak — Medical Grammar Trainer</title>
+  <title>@doctors.speak — Medical Grammar Trainer (Passive Voice)</title>
   <style>
     * {
       box-sizing: border-box;
@@ -393,553 +393,552 @@
   <script>
     const SECRET_PASS = "fever";
 
-    // Question bank from lesson 5.docx (Past Simple & Present Perfect)
-    // Equalized options across A, B, C, D (5 of each per level)
+    // База вопросов по уровням из lesson 5-3.docx (Passive Voice)
     const questions = [
       // ================= LEVEL 1 =================
       {
         level: 1,
-        question: "The patient was admitted yesterday.",
-        options: ["Past Simple", "Present Perfect", "Present Continuous", "Future Simple"],
-        correct: 0,
-        explanation: "The action happened at a specific finished time in the past: yesterday."
-      },
-      {
-        level: 1,
-        question: "The doctor examined the patient last night.",
-        options: ["Past Simple", "Present Perfect", "Present Continuous", "Future Simple"],
-        correct: 0,
-        explanation: "Last night is a finished time in the past."
-      },
-      {
-        level: 1,
-        question: "The patient developed a fever two days ago.",
-        options: ["Past Simple", "Present Perfect", "Present Continuous", "Future Simple"],
-        correct: 0,
-        explanation: "Two days ago refers to a definite finished time."
-      },
-      {
-        level: 1,
-        question: "The researchers published the results in 2022.",
-        options: ["Past Simple", "Present Perfect", "Present Continuous", "Future Simple"],
-        correct: 0,
-        explanation: "In 2022 is a finished time in the past."
-      },
-      {
-        level: 1,
-        question: "The patient took the medication this morning.",
-        options: ["Past Simple", "Present Perfect", "Present Continuous", "Future Simple"],
-        correct: 0,
-        explanation: "This morning is presented as a completed time period."
-      },
-      {
-        level: 1,
-        question: "The patient has been admitted to hospital.",
-        options: ["Past Simple", "Present Perfect", "Present Continuous", "Future Simple"],
+        question: "The patient is being monitored by the nurse.",
+        options: ["Active voice", "Passive voice", "Present Simple", "Future Simple"],
         correct: 1,
-        explanation: "The admission is connected with the present situation. No finished past time is given."
+        explanation: "The patient receives the action. Structure: is being + V3 (Present Continuous Passive)."
       },
       {
         level: 1,
-        question: "The doctor has examined the patient.",
-        options: ["Past Simple", "Present Perfect", "Present Continuous", "Future Simple"],
+        question: "The doctor prescribed the medication yesterday.",
+        options: ["Active voice", "Passive voice", "Past Continuous", "Present Perfect"],
+        correct: 0,
+        explanation: "The doctor performs the action."
+      },
+      {
+        level: 1,
+        question: "The patient will be transferred to intensive care tomorrow.",
+        options: ["Present Continuous", "Future Simple", "Passive voice", "Active voice"],
+        correct: 2,
+        explanation: "The patient receives the future action. Structure: will be + V3 (Future Simple Passive)."
+      },
+      {
+        level: 1,
+        question: "Laboratory staff analyze blood samples every afternoon.",
+        options: ["Present Simple", "Passive voice", "Continuous", "Active voice"],
+        correct: 3,
+        explanation: "Laboratory staff perform the action."
+      },
+      {
+        level: 1,
+        question: "The test results have been published in the medical journal.",
+        options: ["Passive voice", "Active voice", "Future Simple", "Present Continuous"],
+        correct: 0,
+        explanation: "The results receive the action. Structure: have been + V3 (Present Perfect Passive)."
+      },
+      {
+        level: 1,
+        question: "The surgeons were performing the operation at 10 AM.",
+        options: ["Passive voice", "Active voice", "Present Perfect", "Future Simple"],
         correct: 1,
-        explanation: "The examination has been completed, and the result is relevant now."
+        explanation: "The surgeons perform the action."
       },
       {
         level: 1,
-        question: "The patient has developed a fever.",
-        options: ["Past Simple", "Present Perfect", "Present Continuous", "Future Simple"],
+        question: "The prescription must be signed by the physician.",
+        options: ["Active voice", "Past Simple", "Passive voice", "Present Simple"],
+        correct: 2,
+        explanation: "The prescription receives the action. Structure: must be + V3 (Modal Passive)."
+      },
+      {
+        level: 1,
+        question: "The nurse is collecting blood samples right now.",
+        options: ["Passive voice", "Present Continuous", "Past Simple", "Active voice"],
+        correct: 3,
+        explanation: "The nurse performs the action."
+      },
+      {
+        level: 1,
+        question: "The patient was admitted to the hospital last night.",
+        options: ["Active voice", "Passive voice", "Future Simple", "Present Simple"],
         correct: 1,
-        explanation: "The new fever is relevant to the current situation."
+        explanation: "The patient receives the action. Structure: was + V3 (Past Simple Passive)."
       },
       {
         level: 1,
-        question: "The researchers have published the results.",
-        options: ["Past Simple", "Present Perfect", "Present Continuous", "Future Simple"],
+        question: "The medical team will review the case tomorrow.",
+        options: ["Active voice", "Passive voice", "Past Simple", "Present Continuous"],
+        correct: 0,
+        explanation: "The medical team performs the action."
+      },
+      {
+        level: 1,
+        question: "Tissue samples are stored at low temperatures.",
+        options: ["Present Simple", "Active voice", "Future Simple", "Passive voice"],
+        correct: 3,
+        explanation: "Tissue samples receive the action. Structure: are + V3 (Present Simple Passive)."
+      },
+      {
+        level: 1,
+        question: "Researchers have tested the new drug successfully.",
+        options: ["Passive voice", "Future Simple", "Active voice", "Past Simple"],
+        correct: 2,
+        explanation: "Researchers perform the action."
+      },
+      {
+        level: 1,
+        question: "The patient's heart rate was being recorded during surgery.",
+        options: ["Passive voice", "Active voice", "Present Simple", "Future Simple"],
+        correct: 0,
+        explanation: "The heart rate receives the action. Structure: was being + V3 (Past Continuous Passive)."
+      },
+      {
+        level: 1,
+        question: "The doctor can perform the check-up today.",
+        options: ["Passive voice", "Present Continuous", "Active voice", "Future Simple"],
+        correct: 2,
+        explanation: "The doctor performs the action."
+      },
+      {
+        level: 1,
+        question: "New guidelines are being implemented in the ward.",
+        options: ["Active voice", "Passive voice", "Past Simple", "Future Simple"],
         correct: 1,
-        explanation: "The publication is relevant to the present. No finished time is mentioned."
+        explanation: "New guidelines receive the action. Structure: are being + V3 (Present Continuous Passive)."
       },
       {
         level: 1,
-        question: "The patient has taken the medication.",
-        options: ["Past Simple", "Present Perfect", "Present Continuous", "Future Simple"],
+        question: "The cardiologist checks the ECG results regularly.",
+        options: ["Present Continuous", "Passive voice", "Past Simple", "Active voice"],
+        correct: 3,
+        explanation: "The cardiologist performs the action."
+      },
+      {
+        level: 1,
+        question: "Medication is administered by the nurse every morning.",
+        options: ["Passive voice", "Active voice", "Past Continuous", "Future Simple"],
+        correct: 0,
+        explanation: "Medication receives the action. Structure: is + V3 (Present Simple Passive)."
+      },
+      {
+        level: 1,
+        question: "The clinic will open a new department next year.",
+        options: ["Passive voice", "Active voice", "Present Continuous", "Past Simple"],
         correct: 1,
-        explanation: "The action is completed and its result is relevant now."
+        explanation: "The clinic performs the action."
       },
       {
         level: 1,
-        question: "The patient has never had surgery.",
-        options: ["Past Simple", "Present Continuous", "Present Perfect", "Future Simple"],
+        question: "The X-rays were taken by the radiology technician.",
+        options: ["Active voice", "Present Simple", "Passive voice", "Future Simple"],
         correct: 2,
-        explanation: "Never describes experience up to the present."
+        explanation: "The X-rays receive the action. Structure: were + V3 (Past Simple Passive)."
       },
       {
         level: 1,
-        question: "The symptoms have improved.",
-        options: ["Past Simple", "Future Simple", "Present Perfect", "Present Continuous"],
-        correct: 2,
-        explanation: "The improvement has a present result."
-      },
-      {
-        level: 1,
-        question: "The patient has already received the treatment.",
-        options: ["Present Continuous", "Past Simple", "Present Perfect", "Future Simple"],
-        correct: 2,
-        explanation: "Already commonly indicates a completed action connected with the present."
-      },
-      {
-        level: 1,
-        question: "Researchers have identified a new genetic variant.",
-        options: ["Future Simple", "Past Simple", "Present Perfect", "Present Continuous"],
-        correct: 2,
-        explanation: "The discovery is relevant to the present; no finished past time is given."
-      },
-      {
-        level: 1,
-        question: "The patient has experienced severe pain since Monday.",
-        options: ["Past Simple", "Present Continuous", "Present Perfect", "Future Simple"],
-        correct: 2,
-        explanation: "Since Monday connects the past with the present."
-      },
-      {
-        level: 1,
-        question: "The patient had surgery in 2019.",
-        options: ["Present Perfect", "Present Continuous", "Future Simple", "Past Simple"],
+        question: "The specialist has examined three patients today.",
+        options: ["Passive voice", "Future Simple", "Past Continuous", "Active voice"],
         correct: 3,
-        explanation: "In 2019 is a definite finished time."
-      },
-      {
-        level: 1,
-        question: "The symptoms improved after treatment.",
-        options: ["Present Perfect", "Future Simple", "Present Continuous", "Past Simple"],
-        correct: 3,
-        explanation: "This describes a completed event in the past."
-      },
-      {
-        level: 1,
-        question: "The patient received the treatment last week.",
-        options: ["Present Continuous", "Present Perfect", "Future Simple", "Past Simple"],
-        correct: 3,
-        explanation: "Last week is a finished past time."
-      },
-      {
-        level: 1,
-        question: "Researchers identified the variant in 2018.",
-        options: ["Present Perfect", "Future Simple", "Present Continuous", "Past Simple"],
-        correct: 3,
-        explanation: "In 2018 gives a definite past time."
-      },
-      {
-        level: 1,
-        question: "The patient experienced severe pain during the night.",
-        options: ["Present Continuous", "Present Perfect", "Future Simple", "Past Simple"],
-        correct: 3,
-        explanation: "During the night refers to a completed past period."
+        explanation: "The specialist performs the action."
       },
 
       // ================= LEVEL 2 =================
       {
         level: 2,
-        question: "The patient ____ the hospital yesterday.",
-        options: ["left", "has left", "leaves", "is leaving"],
-        correct: 0,
-        explanation: "Yesterday → Past Simple."
-      },
-      {
-        level: 2,
-        question: "The patient ____ the hospital.",
-        options: ["has left", "left", "leaves", "was leaving"],
-        correct: 0,
-        explanation: "The completed action is relevant to the present; no finished time is given."
-      },
-      {
-        level: 2,
-        question: "The doctor ____ the patient two hours ago.",
-        options: ["examined", "has examined", "examines", "is examining"],
-        correct: 0,
-        explanation: "Two hours ago → Past Simple."
-      },
-      {
-        level: 2,
-        question: "The doctor ____ the patient already.",
-        options: ["has examined", "examined", "examines", "was examining"],
-        correct: 0,
-        explanation: "Already → Present Perfect."
-      },
-      {
-        level: 2,
-        question: "The patient ____ this medication last year.",
-        options: ["started", "has started", "starts", "is starting"],
-        correct: 0,
-        explanation: "Last year is a finished past time."
-      },
-      {
-        level: 2,
-        question: "The patient ____ this medication recently.",
-        options: ["started", "has started", "starts", "was starting"],
+        question: "The patient ____ by the doctor every morning.",
+        options: ["examines", "is examined", "was examined", "is examining"],
         correct: 1,
-        explanation: "Recently commonly describes an action connected with the present."
+        explanation: "Present Simple Passive (is + V3)."
       },
       {
         level: 2,
-        question: "Researchers ____ the disease in 1985.",
-        options: ["have discovered", "discovered", "discover", "are discovering"],
+        question: "Yesterday, the emergency room team ____ three urgent operations.",
+        options: ["performed", "was performed", "is performed", "were performing"],
+        correct: 0,
+        explanation: "Active action completed in the past (Past Simple)."
+      },
+      {
+        level: 2,
+        question: "Blood samples ____ in the laboratory at this moment.",
+        options: ["were tested", "test", "are being tested", "will be tested"],
+        correct: 2,
+        explanation: "Present Continuous Passive (are being + V3)."
+      },
+      {
+        level: 2,
+        question: "The doctor ____ the patient's medical history tomorrow morning.",
+        options: ["is reviewed", "was reviewing", "has been reviewed", "will review"],
+        correct: 3,
+        explanation: "Active future action (will + V1)."
+      },
+      {
+        level: 2,
+        question: "The new medical report ____ by the head of department yesterday.",
+        options: ["was signed", "signs", "is signing", "has signed"],
+        correct: 0,
+        explanation: "Past Simple Passive (was + V3)."
+      },
+      {
+        level: 2,
+        question: "The nurse ____ the vital signs when the doctor entered the room.",
+        options: ["was checked", "was checking", "is checked", "checks"],
         correct: 1,
-        explanation: "In 1985 → Past Simple."
+        explanation: "Active action ongoing in the past (Past Continuous)."
       },
       {
         level: 2,
-        question: "Researchers ____ several new treatment options.",
-        options: ["discovered", "have discovered", "discover", "were discovering"],
+        question: "All surgical instruments ____ before every operation.",
+        options: ["must sterilize", "sterilizing", "must be sterilized", "sterilized"],
+        correct: 2,
+        explanation: "Modal Passive (must be + V3)."
+      },
+      {
+        level: 2,
+        question: "The medical team ____ five patients since this morning.",
+        options: ["was examined", "has being examined", "is examined", "has examined"],
+        correct: 3,
+        explanation: "Active action connected to the present (Present Perfect)."
+      },
+      {
+        level: 2,
+        question: "The patient ____ to another ward tomorrow morning.",
+        options: ["will transfer", "will be transferred", "was transferred", "transfers"],
         correct: 1,
-        explanation: "The discovery is relevant to the present, with no definite past time."
+        explanation: "Future Simple Passive (will be + V3)."
       },
       {
         level: 2,
-        question: "The patient ____ chest pain three days ago.",
-        options: ["has developed", "developed", "develops", "is developing"],
+        question: "The researchers ____ a new vaccine last year.",
+        options: ["were developed", "is developed", "developed", "was developing"],
+        correct: 2,
+        explanation: "Active past action (Past Simple)."
+      },
+      {
+        level: 2,
+        question: "While the operation was in progress, the patient's blood pressure ____ continuously.",
+        options: ["was monitoring", "monitored", "is monitored", "was being monitored"],
+        correct: 3,
+        explanation: "Past Continuous Passive (was being + V3)."
+      },
+      {
+        level: 2,
+        question: "The results of the clinical trial ____ in a major medical journal.",
+        options: ["have been published", "have published", "published", "are publishing"],
+        correct: 0,
+        explanation: "Present Perfect Passive (have been + V3)."
+      },
+      {
+        level: 2,
+        question: "Every day, the pharmacist ____ the ordered medications for the department.",
+        options: ["is prepared", "prepares", "was prepared", "be prepared"],
         correct: 1,
-        explanation: "Three days ago → Past Simple."
+        explanation: "Active routine action (Present Simple)."
       },
       {
         level: 2,
-        question: "The patient ____ chest pain.",
-        options: ["developed", "has developed", "develops", "was developing"],
+        question: "The tissue samples ____ in a special freezer at -80°C.",
+        options: ["store", "storing", "are stored", "were store"],
+        correct: 2,
+        explanation: "Present Simple Passive (are + V3)."
+      },
+      {
+        level: 2,
+        question: "Right now, the surgeon ____ a complex procedure in Operating Room 3.",
+        options: ["is being performed", "was performed", "perform", "is performing"],
+        correct: 3,
+        explanation: "Active ongoing action right now (Present Continuous)."
+      },
+      {
+        level: 2,
+        question: "The patient ____ with antibiotics for seven days last week.",
+        options: ["was treated", "treated", "is treating", "will treat"],
+        correct: 0,
+        explanation: "Past Simple Passive (was + V3)."
+      },
+      {
+        level: 2,
+        question: "The hospital ward ____ by a team of specialists at the moment.",
+        options: ["inspected", "is inspecting", "is being inspected", "will inspect"],
+        correct: 2,
+        explanation: "Present Continuous Passive (is being + V3)."
+      },
+      {
+        level: 2,
+        question: "The head physician ____ all junior doctors on duty tonight.",
+        options: ["will supervise", "will be supervised", "was supervised", "supervised"],
+        correct: 0,
+        explanation: "Active future action (will + V1)."
+      },
+      {
+        level: 2,
+        question: "Important updates ____ to all staff members by email tomorrow.",
+        options: ["will send", "sent", "were sending", "will be sent"],
+        correct: 3,
+        explanation: "Future Simple Passive (will be + V3)."
+      },
+      {
+        level: 2,
+        question: "The cardiology department ____ new diagnostic equipment this month.",
+        options: ["is received", "has received", "was received", "receive"],
         correct: 1,
-        explanation: "The new symptom is relevant to the patient's current condition."
-      },
-      {
-        level: 2,
-        question: "The researchers ____ the study last month.",
-        options: ["have completed", "complete", "completed", "are completing"],
-        correct: 2,
-        explanation: "Last month → Past Simple."
-      },
-      {
-        level: 2,
-        question: "The researchers ____ the study.",
-        options: ["completed", "complete", "have completed", "were completing"],
-        correct: 2,
-        explanation: "The study is now completed; no finished past time is given."
-      },
-      {
-        level: 2,
-        question: "The patient ____ the medication two days ago.",
-        options: ["has stopped", "stops", "stopped", "is stopping"],
-        correct: 2,
-        explanation: "Two days ago → Past Simple."
-      },
-      {
-        level: 2,
-        question: "The patient ____ taking the medication.",
-        options: ["stopped", "stops", "has stopped", "was stopping"],
-        correct: 2,
-        explanation: "The patient has stopped, and this is relevant now."
-      },
-      {
-        level: 2,
-        question: "The surgeon ____ the operation last night.",
-        options: ["has completed", "completes", "completed", "is completing"],
-        correct: 2,
-        explanation: "Last night → Past Simple."
-      },
-      {
-        level: 2,
-        question: "The surgeon ____ the operation successfully.",
-        options: ["completed", "completes", "was completing", "has completed"],
-        correct: 3,
-        explanation: "The completed operation has a present result."
-      },
-      {
-        level: 2,
-        question: "The patient ____ this condition since childhood.",
-        options: ["had", "has", "was having", "has had"],
-        correct: 3,
-        explanation: "Since childhood connects the past with the present."
-      },
-      {
-        level: 2,
-        question: "The patient ____ this condition when he was a child.",
-        options: ["has had", "has", "is having", "had"],
-        correct: 3,
-        explanation: "When he was a child refers to a completed past period."
-      },
-      {
-        level: 2,
-        question: "The laboratory ____ the blood sample yesterday.",
-        options: ["has analyzed", "analyzes", "is analyzing", "analyzed"],
-        correct: 3,
-        explanation: "Yesterday → Past Simple."
-      },
-      {
-        level: 2,
-        question: "The laboratory ____ the blood sample, and the results are now available.",
-        options: ["analyzed", "analyzes", "was analyzing", "has analyzed"],
-        correct: 3,
-        explanation: "The action has a present result: the results are now available."
+        explanation: "Active action completed within an ongoing time frame (Present Perfect)."
       },
 
       // ================= LEVEL 3 =================
       {
         level: 3,
         question: "Put the chunks in the correct order:",
-        chunks: "yesterday / to hospital / the patient / was admitted",
+        chunks: "by the doctor / every morning / the patient / is examined",
         options: [
-          "The patient was admitted to hospital yesterday.",
-          "The patient yesterday was admitted to hospital.",
-          "Was the patient admitted to hospital yesterday.",
-          "The patient was to hospital admitted yesterday."
-        ],
-        correct: 0,
-        explanation: "Order: Subject (The patient) + Verb (was admitted) + Place (to hospital) + Time (yesterday)."
-      },
-      {
-        level: 3,
-        question: "Put the chunks in the correct order:",
-        chunks: "a high fever / has developed / the patient",
-        options: [
-          "The patient has developed a high fever.",
-          "The patient developed has a high fever.",
-          "Has the patient developed a high fever.",
-          "The patient has a high fever developed."
-        ],
-        correct: 0,
-        explanation: "Order: Subject (The patient) + Verb (has developed) + Object (a high fever)."
-      },
-      {
-        level: 3,
-        question: "Put the chunks in the correct order:",
-        chunks: "in 2019 / the mutation / researchers / identified",
-        options: [
-          "Researchers identified the mutation in 2019.",
-          "Researchers the mutation identified in 2019.",
-          "Identified researchers the mutation in 2019.",
-          "Researchers identified in 2019 the mutation."
-        ],
-        correct: 0,
-        explanation: "Order: Subject (Researchers) + Verb (identified) + Object (the mutation) + Time (in 2019)."
-      },
-      {
-        level: 3,
-        question: "Put the chunks in the correct order:",
-        chunks: "genetic variants / researchers / several / have identified",
-        options: [
-          "Researchers have identified several genetic variants.",
-          "Researchers several genetic variants have identified.",
-          "Have researchers identified several genetic variants.",
-          "Researchers have several genetic variants identified."
-        ],
-        correct: 0,
-        explanation: "Order: Subject (Researchers) + Verb (have identified) + Object (several genetic variants)."
-      },
-      {
-        level: 3,
-        question: "Put the chunks in the correct order:",
-        chunks: "last week / treatment / the patient / received",
-        options: [
-          "The patient received treatment last week.",
-          "The patient treatment received last week.",
-          "Received the patient treatment last week.",
-          "The patient received last week treatment."
-        ],
-        correct: 0,
-        explanation: "Order: Subject (The patient) + Verb (received) + Object (treatment) + Time (last week)."
-      },
-      {
-        level: 3,
-        question: "Put the chunks in the correct order:",
-        chunks: "already / treatment / has received / the patient",
-        options: [
-          "The patient received has treatment already.",
-          "The patient has received treatment already.",
-          "Already the patient has treatment received.",
-          "The patient has treatment already received."
+          "The patient by the doctor is examined every morning.",
+          "The patient is examined by the doctor every morning.",
+          "Is examined the patient by the doctor every morning.",
+          "Every morning by the doctor is examined the patient."
         ],
         correct: 1,
-        explanation: "Order: Subject (The patient) + Verb (has received) + Object (treatment) + Time (already)."
+        explanation: "Correct order: Subject (The patient) + Verb (is examined) + Agent (by the doctor) + Time (every morning)."
       },
       {
         level: 3,
         question: "Put the chunks in the correct order:",
-        chunks: "in 2021 / in a medical journal / the study / was published",
+        chunks: "last night / was admitted / to the hospital / the patient",
         options: [
-          "The study in a medical journal was published in 2021.",
-          "The study was published in a medical journal in 2021.",
-          "Was the study published in a medical journal in 2021.",
-          "The study was in 2021 published in a medical journal."
+          "The patient was admitted to the hospital last night.",
+          "Last night was admitted the patient to the hospital.",
+          "The patient to the hospital was admitted last night.",
+          "Was admitted the patient last night to the hospital."
+        ],
+        correct: 0,
+        explanation: "Correct order: Subject (The patient) + Verb (was admitted) + Place (to the hospital) + Time (last night)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "tested / in the laboratory / are being / the blood samples / now",
+        options: [
+          "In the laboratory tested are being the blood samples now.",
+          "The blood samples tested are being in the laboratory now.",
+          "The blood samples are being tested in the laboratory now.",
+          "Are being tested the blood samples in the laboratory now."
+        ],
+        correct: 2,
+        explanation: "Correct order: Subject (The blood samples) + Verb (are being tested) + Place (in the laboratory) + Time (now)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "during the operation / recorded / was being / the patient's heart rate",
+        options: [
+          "During the operation recorded was being the patient's heart rate.",
+          "Was being recorded during the operation the patient's heart rate.",
+          "The patient's heart rate during the operation recorded was being.",
+          "The patient's heart rate was being recorded during the operation."
+        ],
+        correct: 3,
+        explanation: "Correct order: Subject (The patient's heart rate) + Verb (was being recorded) + Time (during the operation)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "in several medical journals / have been / the trial results / published",
+        options: [
+          "The trial results have been published in several medical journals.",
+          "Have been published the trial results in several medical journals.",
+          "The trial results in several medical journals have been published.",
+          "Published the trial results have been in several medical journals."
+        ],
+        correct: 0,
+        explanation: "Correct order: Subject (The trial results) + Verb (have been published) + Place (in several medical journals)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "tomorrow morning / to another hospital / will be transferred / the patient",
+        options: [
+          "Will be transferred the patient to another hospital tomorrow morning.",
+          "The patient will be transferred to another hospital tomorrow morning.",
+          "Tomorrow morning the patient to another hospital will be transferred.",
+          "To another hospital will be transferred the patient tomorrow morning."
         ],
         correct: 1,
-        explanation: "Order: Subject (The study) + Verb (was published) + Place (in a medical journal) + Time (in 2021)."
+        explanation: "Correct order: Subject (The patient) + Verb (will be transferred) + Place (to another hospital) + Time (tomorrow morning)."
       },
       {
         level: 3,
         question: "Put the chunks in the correct order:",
-        chunks: "promising / results / has shown / the study",
+        chunks: "at a low temperature / must be stored / tissue samples / in the freezer",
         options: [
-          "The study promising results has shown.",
-          "The study has shown promising results.",
-          "Has the study shown promising results.",
-          "The study has promising results shown."
+          "Tissue samples at a low temperature must be stored in the freezer.",
+          "Must be stored tissue samples in the freezer at a low temperature.",
+          "Tissue samples must be stored at a low temperature in the freezer.",
+          "In the freezer must be stored at a low temperature tissue samples."
+        ],
+        correct: 2,
+        explanation: "Correct order: Subject (Tissue samples) + Verb (must be stored) + Manner/Condition (at a low temperature) + Place (in the freezer)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "by the nurse / every four hours / is measured / the patient's blood pressure",
+        options: [
+          "The patient's blood pressure by the nurse is measured every four hours.",
+          "Every four hours is measured the patient's blood pressure by the nurse.",
+          "Is measured the patient's blood pressure by the nurse every four hours.",
+          "The patient's blood pressure is measured by the nurse every four hours."
+        ],
+        correct: 3,
+        explanation: "Correct order: Subject (The patient's blood pressure) + Verb (is measured) + Agent (by the nurse) + Frequency (every four hours)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "by the surgical team / yesterday / performed / was / the procedure",
+        options: [
+          "The procedure yesterday was performed by the surgical team.",
+          "The procedure was performed by the surgical team yesterday.",
+          "Performed was the procedure by the surgical team yesterday.",
+          "By the surgical team was performed the procedure yesterday."
         ],
         correct: 1,
-        explanation: "Order: Subject (The study) + Verb (has shown) + Object (promising results)."
+        explanation: "Correct order: Subject (The procedure) + Verb (was performed) + Agent (by the surgical team) + Time (yesterday)."
       },
       {
         level: 3,
         question: "Put the chunks in the correct order:",
-        chunks: "the trial / last year / the researchers / completed",
+        chunks: "in room 4 / closely / being monitored / is / the patient",
         options: [
-          "The researchers the trial completed last year.",
-          "The researchers completed the trial last year.",
-          "Completed the researchers the trial last year.",
-          "The researchers completed last year the trial."
+          "The patient is being monitored closely in room 4.",
+          "In room 4 is being monitored closely the patient.",
+          "Monitored is being the patient closely in room 4.",
+          "The patient monitored is being closely in room 4."
+        ],
+        correct: 0,
+        explanation: "Correct order: Subject (The patient) + Verb (is being monitored) + Adverb (closely) + Place (in room 4)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "by the specialist / before surgery / were being reviewed / the X-rays",
+        options: [
+          "Before surgery were being reviewed the X-rays by the specialist.",
+          "The X-rays were being reviewed by the specialist before surgery.",
+          "Were being reviewed the X-rays by the specialist before surgery.",
+          "By the specialist were being reviewed the X-rays before surgery."
         ],
         correct: 1,
-        explanation: "Order: Subject (The researchers) + Verb (completed) + Object (the trial) + Time (last year)."
+        explanation: "Correct order: Subject (The X-rays) + Verb (were being reviewed) + Agent (by the specialist) + Time (before surgery)."
       },
       {
         level: 3,
         question: "Put the chunks in the correct order:",
-        chunks: "the trial / have completed / the researchers",
+        chunks: "by the head physician / has been / the treatment plan / approved",
         options: [
-          "The researchers the trial have completed.",
-          "The researchers have completed the trial.",
-          "Have completed the researchers the trial.",
-          "The researchers have the trial completed."
+          "Has been approved the treatment plan by the head physician.",
+          "The treatment plan approved has been by the head physician.",
+          "The treatment plan has been approved by the head physician.",
+          "Approved has been the treatment plan by the head physician."
+        ],
+        correct: 2,
+        explanation: "Correct order: Subject (The treatment plan) + Verb (has been approved) + Agent (by the head physician)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "by the surgeon / next week / performed / will be / the operation",
+        options: [
+          "Will be performed the operation by the surgeon next week.",
+          "Next week performed will be the operation by the surgeon.",
+          "The operation by the surgeon will be performed next week.",
+          "The operation will be performed by the surgeon next week."
+        ],
+        correct: 3,
+        explanation: "Correct order: Subject (The operation) + Verb (will be performed) + Agent (by the surgeon) + Time (next week)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "by all medical staff / strictly / followed / must be / safety protocols",
+        options: [
+          "Safety protocols must be strictly followed by all medical staff.",
+          "Strictly safety protocols must be followed by all medical staff.",
+          "Must be followed safety protocols strictly by all medical staff.",
+          "By all medical staff safety protocols must be strictly followed."
+        ],
+        correct: 0,
+        explanation: "Correct order: Subject (Safety protocols) + Verb (must be strictly followed) + Agent (by all medical staff)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "prescribed / by the doctor / medication / is / for the pain",
+        options: [
+          "Medication is prescribed by the doctor for the pain.",
+          "For the pain is prescribed medication by the doctor.",
+          "Is prescribed medication by the doctor for the pain.",
+          "Medication by the doctor for the pain is prescribed."
+        ],
+        correct: 0,
+        explanation: "Correct order: Subject (Medication) + Verb (is prescribed) + Agent (by the doctor) + Purpose (for the pain)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "analyzed / in the laboratory / last week / were / the samples",
+        options: [
+          "Last week analyzed were the samples in the laboratory.",
+          "In the laboratory were analyzed the samples last week.",
+          "The samples were analyzed in the laboratory last week.",
+          "Were analyzed the samples in the laboratory last week."
+        ],
+        correct: 2,
+        explanation: "Correct order: Subject (The samples) + Verb (were analyzed) + Place (in the laboratory) + Time (last week)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "by the team / evaluated / are being / the new symptoms",
+        options: [
+          "Evaluated are being the new symptoms by the team.",
+          "The new symptoms are being evaluated by the team.",
+          "Are being evaluated the new symptoms by the team.",
+          "The new symptoms by the team evaluated are being."
         ],
         correct: 1,
-        explanation: "Order: Subject (The researchers) + Verb (have completed) + Object (the trial)."
+        explanation: "Correct order: Subject (The new symptoms) + Verb (are being evaluated) + Agent (by the team)."
       },
       {
         level: 3,
         question: "Put the chunks in the correct order:",
-        chunks: "since Monday / severe pain / the patient / has experienced",
+        chunks: "in three clinical trials / tested / has been / the new drug",
         options: [
-          "The patient severe pain has experienced since Monday.",
-          "Has the patient experienced severe pain since Monday.",
-          "The patient has experienced severe pain since Monday.",
-          "The patient has since Monday severe pain experienced."
+          "Has been tested the new drug in three clinical trials.",
+          "In three clinical trials tested has been the new drug.",
+          "The new drug has been tested in three clinical trials.",
+          "Tested has been the new drug in three clinical trials."
         ],
         correct: 2,
-        explanation: "Order: Subject (The patient) + Verb (has experienced) + Object (severe pain) + Time (since Monday)."
+        explanation: "Correct order: Subject (The new drug) + Verb (has been tested) + Context (in three clinical trials)."
       },
       {
         level: 3,
         question: "Put the chunks in the correct order:",
-        chunks: "during the night / severe pain / experienced / the patient",
+        chunks: "at 9 AM / discharged / the patient / tomorrow / will be",
         options: [
-          "The patient severe pain experienced during the night.",
-          "Experienced the patient severe pain during the night.",
-          "The patient experienced severe pain during the night.",
-          "The patient experienced during the night severe pain."
-        ],
-        correct: 2,
-        explanation: "Order: Subject (The patient) + Verb (experienced) + Object (severe pain) + Time (during the night)."
-      },
-      {
-        level: 3,
-        question: "Put the chunks in the correct order:",
-        chunks: "in 2020 / a new treatment / the researchers / discovered",
-        options: [
-          "The researchers a new treatment discovered in 2020.",
-          "Discovered the researchers a new treatment in 2020.",
-          "The researchers discovered a new treatment in 2020.",
-          "The researchers discovered in 2020 a new treatment."
-        ],
-        correct: 2,
-        explanation: "Order: Subject (The researchers) + Verb (discovered) + Object (a new treatment) + Time (in 2020)."
-      },
-      {
-        level: 3,
-        question: "Put the chunks in the correct order:",
-        chunks: "for diagnosis / a new method / researchers / have developed",
-        options: [
-          "Researchers a new method have developed for diagnosis.",
-          "Have researchers developed a new method for diagnosis.",
-          "Researchers have developed a new method for diagnosis.",
-          "Researchers have for diagnosis a new method developed."
-        ],
-        correct: 2,
-        explanation: "Order: Subject (Researchers) + Verb (have developed) + Object (a new method) + Purpose (for diagnosis)."
-      },
-      {
-        level: 3,
-        question: "Put the chunks in the correct order:",
-        chunks: "after treatment / have improved / the patient's symptoms",
-        options: [
-          "The patient's symptoms improved have after treatment.",
-          "Have the patient's symptoms improved after treatment.",
-          "The patient's symptoms have improved after treatment.",
-          "The patient's symptoms have after treatment improved."
-        ],
-        correct: 2,
-        explanation: "Order: Subject (The patient's symptoms) + Verb (have improved) + Time (after treatment)."
-      },
-      {
-        level: 3,
-        question: "Put the chunks in the correct order:",
-        chunks: "after the operation / the patient's symptoms / improved",
-        options: [
-          "The patient's symptoms after the operation improved.",
-          "Improved the patient's symptoms after the operation.",
-          "The patient's symptoms improved the operation after.",
-          "The patient's symptoms improved after the operation."
+          "Discharge the patient will be at 9 AM tomorrow.",
+          "At 9 AM tomorrow will be discharged the patient.",
+          "The patient at 9 AM tomorrow will be discharged.",
+          "The patient will be discharged tomorrow at 9 AM."
         ],
         correct: 3,
-        explanation: "Order: Subject (The patient's symptoms) + Verb (improved) + Time (after the operation)."
+        explanation: "Correct order: Subject (The patient) + Verb (will be discharged) + Time (tomorrow at 9 AM)."
       },
       {
         level: 3,
         question: "Put the chunks in the correct order:",
-        chunks: "surgery / undergone / the patient / has never",
+        chunks: "after surgery / given / should be / to the patient / oxygen",
         options: [
-          "The patient never has undergone surgery.",
-          "Has the patient never undergone surgery.",
-          "The patient has undergone never surgery.",
-          "The patient has never undergone surgery."
+          "Given should be oxygen to the patient after surgery.",
+          "Should be given oxygen to the patient after surgery.",
+          "After surgery oxygen given should be to the patient.",
+          "Oxygen should be given to the patient after surgery."
         ],
         correct: 3,
-        explanation: "Order: Subject (The patient) + Verb (has never undergone) + Object (surgery)."
-      },
-      {
-        level: 3,
-        question: "Put the chunks in the correct order:",
-        chunks: "in 2018 / surgery / the patient / underwent",
-        options: [
-          "The patient surgery underwent in 2018.",
-          "Underwent the patient surgery in 2018.",
-          "The patient underwent in 2018 surgery.",
-          "The patient underwent surgery in 2018."
-        ],
-        correct: 3,
-        explanation: "Order: Subject (The patient) + Verb (underwent) + Object (surgery) + Time (in 2018)."
-      },
-      {
-        level: 3,
-        question: "Put the chunks in the correct order:",
-        chunks: "the patient's symptoms / has reduced / the treatment",
-        options: [
-          "The treatment the patient's symptoms has reduced.",
-          "Has the treatment reduced the patient's symptoms.",
-          "The treatment has the patient's symptoms reduced.",
-          "The treatment has reduced the patient's symptoms."
-        ],
-        correct: 3,
-        explanation: "Order: Subject (The treatment) + Verb (has reduced) + Object (the patient's symptoms)."
-      },
-      {
-        level: 3,
-        question: "Put the chunks in the correct order:",
-        chunks: "last month / the treatment / the patient's symptoms / reduced",
-        options: [
-          "The treatment the patient's symptoms reduced last month.",
-          "Reduced the treatment the patient's symptoms last month.",
-          "The treatment reduced last month the patient's symptoms.",
-          "The treatment reduced the patient's symptoms last month."
-        ],
-        correct: 3,
-        explanation: "Order: Subject (The treatment) + Verb (reduced) + Object (the patient's symptoms) + Time (last month)."
+        explanation: "Correct order: Subject (Oxygen) + Verb (should be given) + Indirect Object (to the patient) + Time (after surgery)."
       }
     ];
 
@@ -975,25 +974,25 @@
     function nextQuestion() {
       answered = false;
       
-      // Reset Next button state and explanation box
+      // Сброс состояния кнопки Next и блока объяснений
       const nextBtn = document.getElementById('nextBtn');
       nextBtn.classList.remove('visible');
 
       const expBox = document.getElementById('explanationBox');
       expBox.classList.remove('answered');
-      document.getElementById('explanationText').textContent = "Choose the correct answer";
+      document.getElementById('explanationText').textContent = "Choose the correct answer!";
 
       const pool = getFilteredQuestions();
       currentQuestion = pool[Math.floor(Math.random() * pool.length)];
 
-      // Set level tag
+      // Установка тега
       const levelTag = document.getElementById('levelTag');
       levelTag.textContent = `Level ${currentQuestion.level}`;
 
-      // Question text
+      // Текст вопроса
       document.getElementById('questionText').textContent = currentQuestion.question;
 
-      // Chunks for Level 3
+      // Chunks if Level 3
       const chunksBox = document.getElementById('chunksBox');
       if (currentQuestion.chunks) {
         chunksBox.textContent = currentQuestion.chunks;
@@ -1003,7 +1002,7 @@
         chunksBox.classList.add('invisible');
       }
 
-      // Options grid
+      // Варианты ответов
       const grid = document.getElementById('optionsGrid');
       grid.innerHTML = '';
 
@@ -1031,27 +1030,27 @@
         streak = 0;
         selectedBtn.classList.add('wrong');
         
-        // Highlight correct answer
+        // Подсветить правильный ответ
         const allBtns = document.querySelectorAll('.option-btn');
         if (allBtns[currentQuestion.correct]) {
           allBtns[currentQuestion.correct].classList.add('correct');
         }
       }
 
-      // Disable all buttons
+      // Заблокировать все кнопки
       document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
 
-      // Update statistics
+      // Обновить статистику
       document.getElementById('totalCount').textContent = total;
       document.getElementById('correctCount').textContent = correct;
       document.getElementById('streakCount').textContent = `${streak} 🔥`;
 
-      // Show explanation
+      // Показать объяснение
       const expBox = document.getElementById('explanationBox');
       expBox.classList.add('answered');
       document.getElementById('explanationText').textContent = currentQuestion.explanation;
 
-      // Show Next button
+      // Показать кнопку Next
       document.getElementById('nextBtn').classList.add('visible');
     }
   </script>
