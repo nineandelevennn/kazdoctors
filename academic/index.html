@@ -231,16 +231,16 @@
   <div class="card">
     <!-- Header -->
     <header class="header">
-      <a href="https://kazdoctors.com" class="home-btn">🏠 Главная</a>
+      <a href="https://kazdoctors.com" class="home-btn">🏠 Go back</a>
       <div class="brand">@doctors.speak</div>
     </header>
 
     <!-- Screen 1: Password -->
     <div id="authScreen" class="auth-container">
-      <div class="auth-title">Введите пароль для доступа</div>
+      <div class="auth-title">Password</div>
       <input type="password" id="passInput" class="auth-input" placeholder="Пароль">
-      <button onclick="checkPass()" class="auth-btn">Войти</button>
-      <div id="errorMsg" class="error-msg">Неверный пароль!</div>
+      <button onclick="checkPass()" class="auth-btn">Enter</button>
+      <div id="errorMsg" class="error-msg">Incorrect! Try again</div>
     </div>
 
     <!-- Screen 2: Game -->
@@ -255,8 +255,8 @@
         </select>
 
         <div class="stats">
-          <span>Пройдено: <strong id="totalCount">0</strong></span>
-          <span>Правильно: <strong id="correctCount" style="color:#28a745;">0</strong></span>
+          <span>Done: <strong id="totalCount">0</strong></span>
+          <span>Correct: <strong id="correctCount" style="color:#28a745;">0</strong></span>
         </div>
       </div>
 
@@ -267,7 +267,7 @@
 
       <div>
         <div id="optionsGrid" class="options-grid"></div>
-        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Следующее слово ➔</button>
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next word ➔</button>
       </div>
 
     </div>
