@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>@doctors.speak — Page not ready yet</title>
+  <title>@doctors.speak — Medical Grammar Trainer</title>
   <style>
     * {
       box-sizing: border-box;
@@ -76,73 +76,255 @@
       letter-spacing: 0.5px;
     }
 
-    .content-container {
+    .auth-container {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 18px;
-      padding: 20px 10px;
+      gap: 15px;
+      padding: 40px 10px;
       text-align: center;
       flex-grow: 1;
     }
 
-    .icon-box {
-      font-size: 4rem;
-      line-height: 1;
-      margin-bottom: 5px;
-    }
-
-    .title {
-      font-size: 1.35rem;
+    .auth-title {
+      font-size: 1.25rem;
       color: #0081a7;
-      font-weight: 800;
-      line-height: 1.3;
+      font-weight: 700;
     }
 
-    .description {
-      font-size: 0.95rem;
-      color: #555;
-      line-height: 1.5;
-      max-width: 320px;
+    .auth-input {
+      width: 85%;
+      padding: 12px;
+      border: 2px solid #00afca;
+      border-radius: 10px;
+      font-size: 1rem;
+      text-align: center;
+      outline: none;
     }
 
-    .action-btn {
-      background: #fbc02d;
-      color: #003366;
+    .auth-btn {
+      background: #00afca;
+      color: white;
       border: none;
-      padding: 14px 24px;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 800;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: bold;
       cursor: pointer;
-      width: 100%;
-      max-width: 300px;
+      width: 85%;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      text-decoration: none;
-      display: inline-block;
-      transition: transform 0.1s, background-color 0.2s;
-      margin-top: 10px;
     }
 
-    .action-btn:hover {
-      background: #fdd835;
-    }
-
-    .action-btn:active {
+    .auth-btn:active {
       transform: scale(0.98);
     }
 
     .insta-link {
+      margin-top: 10px;
       font-size: 0.85rem;
       color: #666;
-      margin-top: 10px;
     }
 
     .insta-link a {
       color: #0081a7;
       font-weight: 700;
       text-decoration: underline;
+    }
+
+    .error-msg {
+      color: #e53935;
+      font-size: 0.85rem;
+      display: none;
+      font-weight: 600;
+    }
+
+    .mode-select {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #00afca;
+      border-radius: 10px;
+      font-weight: 700;
+      color: #0081a7;
+      background: #f4fbfe;
+      margin-top: 6px;
+      outline: none;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #555;
+      margin-top: 8px;
+      background: #f0f9fc;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #d0edf5;
+    }
+
+    .stats span {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .term-box {
+      margin: 10px 0;
+      background: #f9fbfd;
+      border-radius: 12px;
+      padding: 12px;
+      border: 1px dashed #00afca;
+      text-align: center;
+      min-height: 125px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .level-tag {
+      display: inline-block;
+      background: #00afca;
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .term-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #0081a7;
+      margin-bottom: 4px;
+      line-height: 1.35;
+      min-height: 2.7em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chunks-box {
+      background: #fff;
+      border: 1px solid #dceef5;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      color: #d97706;
+      font-weight: 700;
+      margin-top: 4px;
+      word-break: break-word;
+      min-height: 36px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s, visibility 0.2s;
+    }
+
+    .chunks-box.invisible {
+      visibility: hidden;
+      border-color: transparent;
+      background: transparent;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .option-btn {
+      background: #ffffff;
+      border: 2px solid #e0e0e0;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #333;
+      text-align: left;
+      cursor: pointer;
+      transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+      line-height: 1.3;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: #00afca;
+      background-color: #f4fbfe;
+    }
+
+    .option-btn.correct {
+      background-color: #d4edda !important;
+      border-color: #28a745 !important;
+      color: #155724 !important;
+      font-weight: 700;
+    }
+
+    .option-btn.wrong {
+      background-color: #f8d7da !important;
+      border-color: #dc3545 !important;
+      color: #721c24 !important;
+    }
+
+    .explanation-box {
+      background-color: #e8f4f8;
+      border-left: 4px solid #00afca;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      color: #004d61;
+      margin-bottom: 10px;
+      line-height: 1.4;
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .explanation-box.answered {
+      background-color: #e2f3f9;
+      border-left-color: #0081a7;
+    }
+
+    .next-btn {
+      width: 100%;
+      background: #fbc02d;
+      color: #003366;
+      font-weight: 800;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      border: none;
+      cursor: pointer;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.2s ease, visibility 0.2s ease, background-color 0.2s ease;
+      min-height: 44px;
+    }
+
+    .next-btn.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .next-btn:hover {
+      background: #fdd835;
+    }
+
+    .hidden {
+      display: none !important;
     }
   </style>
 </head>
@@ -151,26 +333,726 @@
   <div class="card">
     <!-- Header -->
     <header class="header">
-      <a href="https://kazdoctors.com/grammar/" class="home-btn">⬅ Go back</a>
+      <a href="https://kazdoctors.com/grammar/" class="home-btn">⬅ Назад</a>
       <div class="brand">@doctors.speak</div>
     </header>
 
-    <!-- Content -->
-    <div class="content-container">
-      <div class="icon-box">🚧</div>
-      <h1 class="title">Page not ready yet :( </h1>
-      <p class="description">
-        We are working on the page, please check it later🙏
-      </p>
-
-      <a href="https://kazdoctors.com/grammar/" class="action-btn">Go back</a>
-
+    <!-- Screen 1: Password -->
+    <div id="authScreen" class="auth-container">
+      <div class="auth-title">Medical English Quiz</div>
+      <p style="font-size: 0.85rem; color: #666;">Введите пароль для доступа к тестам</p>
+      
+      <input type="password" id="passInput" class="auth-input" placeholder="Пароль" onkeyup="if(event.key === 'Enter') checkPass()">
+      <button onclick="checkPass()" class="auth-btn">Войти</button>
+      
+      <div id="errorMsg" class="error-msg">Incorrect! Try again</div>
+      
       <div class="insta-link">
-        Our updates:<br>
-        <a href="https://instagram.com/doctors.speak" target="_blank">@doctors.speak</a>
+        No password? <br>
+        <a href="https://instagram.com/doctors.speak" target="_blank">Получить пароль в Direct</a>
       </div>
+    </div>
+
+    <!-- Screen 2: Game -->
+    <div id="gameScreen" class="hidden" style="display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;">
+      
+      <div>
+        <select id="levelSelect" class="mode-select" onchange="changeLevel()">
+          <option value="1">Level 1 — Recognition</option>
+          <option value="2">Level 2 — Choose verb form</option>
+          <option value="3">Level 3 — Sentence order</option>
+          <option value="mix">🔥 Mix</option>
+        </select>
+
+        <div class="stats">
+          <span>Total: <strong id="totalCount">0</strong></span>
+          <span>Correct: <strong id="correctCount" style="color:#28a745;">0</strong></span>
+          <span>Streak: <strong id="streakCount" style="color:#e67e22;">0 🔥</strong></span>
+        </div>
+      </div>
+
+      <div class="term-box">
+        <span id="levelTag" class="level-tag">Level 1</span>
+        <div id="questionText" class="term-title">Loading question...</div>
+        <div id="chunksBox" class="chunks-box invisible"></div>
+      </div>
+
+      <div>
+        <div id="optionsGrid" class="options-grid"></div>
+        
+        <div id="explanationBox" class="explanation-box">
+          <div><strong>💡 Explanation:</strong> <span id="explanationText">Выберите вариант ответа...</span></div>
+        </div>
+
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next ➔</button>
+      </div>
+
     </div>
   </div>
 
+  <script>
+    const SECRET_PASS = "fever";
+
+    // База вопросов по уровням из lesson 4-2.docx (Future Simple & Future Continuous)
+    const questions = [
+      // ================= LEVEL 1 =================
+      {
+        level: 1,
+        question: "The patient will receive the results tomorrow.",
+        options: ["Present Simple", "Past Simple", "Future Continuous", "Future Simple"],
+        correct: 3,
+        explanation: "will + verb describes a future action."
+      },
+      {
+        level: 1,
+        question: "The patient will be waiting in the examination room at 10 a.m.",
+        options: ["Past Simple", "Future Simple", "Future Continuous", "Present Simple"],
+        correct: 2,
+        explanation: "will be + V-ing describes an action that will be in progress at a specific future time."
+      },
+      {
+        level: 1,
+        question: "The doctor will examine the patient later.",
+        options: ["Future Simple", "Future Continuous", "Present Simple", "Past Simple"],
+        correct: 0,
+        explanation: "This describes a future action with will + verb."
+      },
+      {
+        level: 1,
+        question: "The doctor will be examining the patient at noon.",
+        options: ["Future Simple", "Future Continuous", "Present Simple", "Past Simple"],
+        correct: 1,
+        explanation: "The examination will be in progress at a particular future time."
+      },
+      {
+        level: 1,
+        question: "The surgery will start at 8 a.m.",
+        options: ["Present Simple", "Future Continuous", "Past Simple", "Future Simple"],
+        correct: 3,
+        explanation: "will + start describes a future event."
+      },
+      {
+        level: 1,
+        question: "The surgeon will be operating at 8 a.m.",
+        options: ["Future Continuous", "Future Simple", "Present Simple", "Past Simple"],
+        correct: 0,
+        explanation: "The operation will be in progress at 8 a.m."
+      },
+      {
+        level: 1,
+        question: "The patient will take the medication tomorrow.",
+        options: ["Past Simple", "Future Simple", "Present Simple", "Future Continuous"],
+        correct: 1,
+        explanation: "This describes a future action."
+      },
+      {
+        level: 1,
+        question: "The patient will be taking the medication at this time tomorrow.",
+        options: ["Future Simple", "Present Simple", "Future Continuous", "Past Simple"],
+        correct: 2,
+        explanation: "The action will be in progress at a specific future time."
+      },
+      {
+        level: 1,
+        question: "The researchers will publish the results next month.",
+        options: ["Future Simple", "Past Simple", "Future Continuous", "Present Simple"],
+        correct: 0,
+        explanation: "This describes a future event."
+      },
+      {
+        level: 1,
+        question: "The researchers will be analyzing the data next week.",
+        options: ["Present Simple", "Future Simple", "Past Simple", "Future Continuous"],
+        correct: 3,
+        explanation: "The analysis will be ongoing during a future period."
+      },
+      {
+        level: 1,
+        question: "The nurse will check the patient's temperature later.",
+        options: ["Present Simple", "Future Simple", "Future Continuous", "Past Simple"],
+        correct: 1,
+        explanation: "This is a simple future action."
+      },
+      {
+        level: 1,
+        question: "The nurse will be checking the patient's temperature at 6 p.m.",
+        options: ["Future Continuous", "Past Simple", "Future Simple", "Present Simple"],
+        correct: 0,
+        explanation: "The action will be happening at a specific future time."
+      },
+      {
+        level: 1,
+        question: "The patient will recover after treatment.",
+        options: ["Present Simple", "Future Continuous", "Future Simple", "Past Simple"],
+        correct: 2,
+        explanation: "This is a prediction about the future."
+      },
+      {
+        level: 1,
+        question: "The patient will be recovering during the next few weeks.",
+        options: ["Future Simple", "Future Continuous", "Present Simple", "Past Simple"],
+        correct: 1,
+        explanation: "The recovery process will be ongoing during a future period."
+      },
+      {
+        level: 1,
+        question: "The laboratory will test the sample tomorrow.",
+        options: ["Future Simple", "Past Simple", "Future Continuous", "Present Simple"],
+        correct: 0,
+        explanation: "This describes a future action."
+      },
+      {
+        level: 1,
+        question: "The laboratory will be testing the samples throughout the day.",
+        options: ["Present Simple", "Past Simple", "Future Simple", "Future Continuous"],
+        correct: 3,
+        explanation: "The testing will be in progress over a future period."
+      },
+      {
+        level: 1,
+        question: "The doctor will discuss the treatment with the patient.",
+        options: ["Present Simple", "Past Simple", "Future Simple", "Future Continuous"],
+        correct: 2,
+        explanation: "will + discuss describes a future action."
+      },
+      {
+        level: 1,
+        question: "The doctor will be discussing the treatment with the patient at 3 p.m.",
+        options: ["Past Simple", "Future Continuous", "Present Simple", "Future Simple"],
+        correct: 1,
+        explanation: "The discussion will be in progress at 3 p.m."
+      },
+      {
+        level: 1,
+        question: "The researchers will collect blood samples tomorrow.",
+        options: ["Past Simple", "Future Continuous", "Present Simple", "Future Simple"],
+        correct: 3,
+        explanation: "This describes a future event."
+      },
+      {
+        level: 1,
+        question: "The researchers will be collecting blood samples at this time tomorrow.",
+        options: ["Future Simple", "Present Simple", "Future Continuous", "Past Simple"],
+        correct: 2,
+        explanation: "The collection will be in progress at a particular future time."
+      },
+
+      // ================= LEVEL 2 =================
+      {
+        level: 2,
+        question: "The patient ____ the medication tomorrow.",
+        options: ["takes", "took", "will be taking", "will take"],
+        correct: 3,
+        explanation: "This describes a future action."
+      },
+      {
+        level: 2,
+        question: "At 10 a.m. tomorrow, the patient ____ the medication.",
+        options: ["took", "will take", "will be taking", "takes"],
+        correct: 2,
+        explanation: "The action will be in progress at 10 a.m."
+      },
+      {
+        level: 2,
+        question: "The doctor ____ the patient later today.",
+        options: ["will examine", "examined", "will be examining", "examines"],
+        correct: 0,
+        explanation: "This is a future action without a focus on its duration."
+      },
+      {
+        level: 2,
+        question: "At 2 p.m., the doctor ____ the patient.",
+        options: ["examined", "will be examining", "will examine", "examines"],
+        correct: 1,
+        explanation: "The examination will be in progress at 2 p.m."
+      },
+      {
+        level: 2,
+        question: "The surgery ____ tomorrow morning.",
+        options: ["will start", "started", "will be starting", "starts"],
+        correct: 0,
+        explanation: "This describes a future event."
+      },
+      {
+        level: 2,
+        question: "At 8 a.m. tomorrow, the surgeon ____ the operation.",
+        options: ["performed", "will perform", "performs", "will be performing"],
+        correct: 3,
+        explanation: "The operation will be in progress at 8 a.m."
+      },
+      {
+        level: 2,
+        question: "The laboratory ____ the blood sample next week.",
+        options: ["analyzes", "will analyze", "will be analyzing", "analyzed"],
+        correct: 1,
+        explanation: "This describes a future action."
+      },
+      {
+        level: 2,
+        question: "This time next week, the laboratory ____ the samples.",
+        options: ["will analyze", "analyzed", "will be analyzing", "analyzes"],
+        correct: 2,
+        explanation: "The analysis will be in progress at a future time."
+      },
+      {
+        level: 2,
+        question: "The nurse ____ the patient's blood pressure later.",
+        options: ["checked", "will be checking", "checks", "will check"],
+        correct: 3,
+        explanation: "This is a future action."
+      },
+      {
+        level: 2,
+        question: "At 6 p.m., the nurse ____ the patient's blood pressure.",
+        options: ["checks", "will check", "will be checking", "checked"],
+        correct: 2,
+        explanation: "The action will be happening at 6 p.m."
+      },
+      {
+        level: 2,
+        question: "The researchers ____ the study results next month.",
+        options: ["will publish", "will be publishing", "published", "publish"],
+        correct: 0,
+        explanation: "This describes a future event."
+      },
+      {
+        level: 2,
+        question: "At this time next month, the researchers ____ the study results.",
+        options: ["publish", "will be publishing", "will publish", "published"],
+        correct: 1,
+        explanation: "The activity will be in progress at a future time."
+      },
+      {
+        level: 2,
+        question: "The patient ____ home tomorrow.",
+        options: ["went", "will go", "will be going", "goes"],
+        correct: 1,
+        explanation: "This is a simple future action."
+      },
+      {
+        level: 2,
+        question: "At noon tomorrow, the patient ____ home.",
+        options: ["will go", "goes", "went", "will be going"],
+        correct: 3,
+        explanation: "The action will be taking place at noon."
+      },
+      {
+        level: 2,
+        question: "The doctor ____ the test results tomorrow.",
+        options: ["will review", "reviewed", "will be reviewing", "reviews"],
+        correct: 0,
+        explanation: "This describes a future action."
+      },
+      {
+        level: 2,
+        question: "At 4 p.m., the doctor ____ the test results.",
+        options: ["reviews", "will review", "will be reviewing", "reviewed"],
+        correct: 2,
+        explanation: "The review will be in progress at 4 p.m."
+      },
+      {
+        level: 2,
+        question: "The patient ____ better after the treatment.",
+        options: ["felt", "will feel", "will be feeling", "feels"],
+        correct: 1,
+        explanation: "This is a prediction about a future state."
+      },
+      {
+        level: 2,
+        question: "During the next few days, the patient ____ better.",
+        options: ["will be feeling", "will feel", "feels", "felt"],
+        correct: 0,
+        explanation: "The improvement is presented as a process continuing during a future period."
+      },
+      {
+        level: 2,
+        question: "The researchers ____ more data tomorrow.",
+        options: ["collect", "collected", "will be collecting", "will collect"],
+        correct: 3,
+        explanation: "This describes a future action."
+      },
+      {
+        level: 2,
+        question: "At this time tomorrow, the researchers ____ more data.",
+        options: ["will collect", "will be collecting", "collected", "collect"],
+        correct: 1,
+        explanation: "The collection will be in progress at that future time."
+      },
+
+      // ================= LEVEL 3 =================
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "tomorrow / the results / will receive / the patient",
+        options: [
+          "The patient will the results receive tomorrow.",
+          "The patient the results will receive tomorrow.",
+          "Will the patient receive the results tomorrow.",
+          "The patient will receive the results tomorrow."
+        ],
+        correct: 3,
+        explanation: "Order: Subject (The patient) + Verb (will receive) + Object (the results) + Time (tomorrow)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "at 10 a.m. / in the examination room / will be waiting / the patient",
+        options: [
+          "The patient will waiting be in the examination room at 10 a.m.",
+          "The patient will be in the examination room waiting at 10 a.m.",
+          "The patient will be waiting in the examination room at 10 a.m.",
+          "Will the patient be waiting in the examination room at 10 a.m."
+        ],
+        correct: 2,
+        explanation: "Order: Subject (The patient) + Verb (will be waiting) + Place (in the examination room) + Time (at 10 a.m.)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "later today / the patient / will examine / the doctor",
+        options: [
+          "The doctor will examine the patient later today.",
+          "The doctor will the patient examine later today.",
+          "The doctor the patient will examine later today.",
+          "Will the doctor examine the patient later today."
+        ],
+        correct: 0,
+        explanation: "Order: Subject (The doctor) + Verb (will examine) + Object (the patient) + Time (later today)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "at noon / the patient / will be examining / the doctor",
+        options: [
+          "The doctor will examining be the patient at noon.",
+          "The doctor will be examining the patient at noon.",
+          "Will the doctor be examining the patient at noon.",
+          "The doctor will be the patient examining at noon."
+        ],
+        correct: 1,
+        explanation: "Order: Subject (The doctor) + Verb (will be examining) + Object (the patient) + Time (at noon)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "at 8 a.m. / tomorrow / will start / the surgery",
+        options: [
+          "The surgery will at 8 a.m. start tomorrow.",
+          "Will the surgery start at 8 a.m. tomorrow.",
+          "The surgery at 8 a.m. will start tomorrow.",
+          "The surgery will start at 8 a.m. tomorrow."
+        ],
+        correct: 3,
+        explanation: "Order: Subject (The surgery) + Verb (will start) + Time (at 8 a.m. tomorrow)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "will be performing / at 8 a.m. / the operation / the surgeon",
+        options: [
+          "The surgeon will performing be the operation at 8 a.m.",
+          "The surgeon will be performing the operation at 8 a.m.",
+          "Will the surgeon be performing the operation at 8 a.m.",
+          "The surgeon will be the operation performing at 8 a.m."
+        ],
+        correct: 1,
+        explanation: "Order: Subject (The surgeon) + Verb (will be performing) + Object (the operation) + Time (at 8 a.m.)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "the sample / will analyze / tomorrow / the laboratory",
+        options: [
+          "The laboratory will analyze the sample tomorrow.",
+          "The laboratory will the sample analyze tomorrow.",
+          "Will the laboratory analyze the sample tomorrow.",
+          "The laboratory the sample will analyze tomorrow."
+        ],
+        correct: 0,
+        explanation: "Order: Subject (The laboratory) + Verb (will analyze) + Object (the sample) + Time (tomorrow)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "next week / the laboratory / the samples / will be analyzing",
+        options: [
+          "The laboratory will analyzing be the samples next week.",
+          "Will the laboratory be analyzing the samples next week.",
+          "The laboratory will be analyzing the samples next week.",
+          "The laboratory will be the samples analyzing next week."
+        ],
+        correct: 2,
+        explanation: "Order: Subject (The laboratory) + Verb (will be analyzing) + Object (the samples) + Time (next week)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "later / will check / the nurse / the patient's temperature",
+        options: [
+          "The nurse will the patient's temperature check later.",
+          "The nurse will check the patient's temperature later.",
+          "Will the nurse check the patient's temperature later.",
+          "The nurse the patient's temperature will check later."
+        ],
+        correct: 1,
+        explanation: "Order: Subject (The nurse) + Verb (will check) + Object (the patient's temperature) + Time (later)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "at 6 p.m. / the patient's temperature / the nurse / will be checking",
+        options: [
+          "The nurse will checking be the patient's temperature at 6 p.m.",
+          "Will the nurse be checking the patient's temperature at 6 p.m.",
+          "The nurse will be the patient's temperature checking at 6 p.m.",
+          "The nurse will be checking the patient's temperature at 6 p.m."
+        ],
+        correct: 3,
+        explanation: "Order: Subject (The nurse) + Verb (will be checking) + Object (the patient's temperature) + Time (at 6 p.m.)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "next month / the results / the researchers / will publish",
+        options: [
+          "The researchers will publish the results next month.",
+          "The researchers will the results publish next month.",
+          "Will the researchers publish the results next month.",
+          "The researchers the results will publish next month."
+        ],
+        correct: 0,
+        explanation: "Order: Subject (The researchers) + Verb (will publish) + Object (the results) + Time (next month)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "the data / will be analyzing / next week / the researchers",
+        options: [
+          "The researchers will analyzing be the data next week.",
+          "The researchers will be analyzing the data next week.",
+          "Will the researchers be analyzing the data next week.",
+          "The researchers will be the data analyzing next week."
+        ],
+        correct: 1,
+        explanation: "Order: Subject (The researchers) + Verb (will be analyzing) + Object (the data) + Time (next week)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "to the clinic / will return / tomorrow / the patient",
+        options: [
+          "The patient will to the clinic return tomorrow.",
+          "Will the patient return to the clinic tomorrow.",
+          "The patient will return to the clinic tomorrow.",
+          "The patient to the clinic will return tomorrow."
+        ],
+        correct: 2,
+        explanation: "Order: Subject (The patient) + Verb (will return) + Place (to the clinic) + Time (tomorrow)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "next week / the patient / at home / will be recovering",
+        options: [
+          "The patient will recovering be at home next week.",
+          "Will the patient be recovering at home next week.",
+          "The patient will be at home recovering next week.",
+          "The patient will be recovering at home next week."
+        ],
+        correct: 3,
+        explanation: "Order: Subject (The patient) + Verb (will be recovering) + Place (at home) + Time (next week)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "with the patient / the doctor / the treatment / will discuss",
+        options: [
+          "The doctor will discuss the treatment with the patient.",
+          "The doctor will the treatment discuss with the patient.",
+          "Will the doctor discuss the treatment with the patient.",
+          "The doctor the treatment will discuss with the patient."
+        ],
+        correct: 0,
+        explanation: "Order: Subject (The doctor) + Verb (will discuss) + Object (the treatment) + Indirect Object (with the patient)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "at 3 p.m. / will be discussing / the treatment / the doctor",
+        options: [
+          "The doctor will discussing be the treatment at 3 p.m.",
+          "The doctor will be discussing the treatment at 3 p.m.",
+          "Will the doctor be discussing the treatment at 3 p.m.",
+          "The doctor will be the treatment discussing at 3 p.m."
+        ],
+        correct: 1,
+        explanation: "Order: Subject (The doctor) + Verb (will be discussing) + Object (the treatment) + Time (at 3 p.m.)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "blood samples / tomorrow / the researchers / will collect",
+        options: [
+          "The researchers will blood samples collect tomorrow.",
+          "Will the researchers collect blood samples tomorrow.",
+          "The researchers collect blood samples tomorrow.",
+          "The researchers will collect blood samples tomorrow."
+        ],
+        correct: 3,
+        explanation: "Order: Subject (The researchers) + Verb (will collect) + Object (blood samples) + Time (tomorrow)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "at this time tomorrow / will be collecting / the researchers / blood samples",
+        options: [
+          "The researchers will collecting be blood samples at this time tomorrow.",
+          "The researchers will be collecting blood samples at this time tomorrow.",
+          "Will the researchers be collecting blood samples at this time tomorrow.",
+          "The researchers will be blood samples collecting at this time tomorrow."
+        ],
+        correct: 1,
+        explanation: "Order: Subject (The researchers) + Verb (will be collecting) + Object (blood samples) + Time (at this time tomorrow)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "after the procedure / the medication / will take / the patient",
+        options: [
+          "The patient will the medication take after the procedure.",
+          "The patient will take the medication after the procedure.",
+          "Will the patient take the medication after the procedure.",
+          "The patient the medication will take after the procedure."
+        ],
+        correct: 1,
+        explanation: "Order: Subject (The patient) + Verb (will take) + Object (the medication) + Time (after the procedure)."
+      },
+      {
+        level: 3,
+        question: "Put the chunks in the correct order:",
+        chunks: "at this time tomorrow / the patient / the medication / will be taking",
+        options: [
+          "The patient will taking be the medication at this time tomorrow.",
+          "Will the patient be taking the medication at this time tomorrow.",
+          "The patient will be taking the medication at this time tomorrow.",
+          "The patient will be the medication taking at this time tomorrow."
+        ],
+        correct: 2,
+        explanation: "Order: Subject (The patient) + Verb (will be taking) + Object (the medication) + Time (at this time tomorrow)."
+      }
+    ];
+
+    let total = 0;
+    let correct = 0;
+    let streak = 0;
+    let currentQuestion = null;
+    let answered = false;
+
+    function checkPass() {
+      const val = document.getElementById('passInput').value.trim().toLowerCase();
+      if (val === SECRET_PASS) {
+        document.getElementById('authScreen').classList.add('hidden');
+        document.getElementById('gameScreen').classList.remove('hidden');
+        nextQuestion();
+      } else {
+        document.getElementById('errorMsg').style.display = 'block';
+      }
+    }
+
+    function changeLevel() {
+      nextQuestion();
+    }
+
+    function getFilteredQuestions() {
+      const selectedLevel = document.getElementById('levelSelect').value;
+      if (selectedLevel === 'mix') {
+        return questions;
+      }
+      return questions.filter(q => q.level === parseInt(selectedLevel));
+    }
+
+    function nextQuestion() {
+      answered = false;
+      
+      // Сброс состояния кнопки Next и блока объяснений
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.classList.remove('visible');
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.remove('answered');
+      document.getElementById('explanationText').textContent = "Выберите вариант ответа, чтобы увидеть пояснение.";
+
+      const pool = getFilteredQuestions();
+      currentQuestion = pool[Math.floor(Math.random() * pool.length)];
+
+      // Установка тега
+      const levelTag = document.getElementById('levelTag');
+      levelTag.textContent = `Level ${currentQuestion.level}`;
+
+      // Текст вопроса
+      document.getElementById('questionText').textContent = currentQuestion.question;
+
+      // Chunks if Level 3
+      const chunksBox = document.getElementById('chunksBox');
+      if (currentQuestion.chunks) {
+        chunksBox.textContent = currentQuestion.chunks;
+        chunksBox.classList.remove('invisible');
+      } else {
+        chunksBox.textContent = '';
+        chunksBox.classList.add('invisible');
+      }
+
+      // Варианты ответов
+      const grid = document.getElementById('optionsGrid');
+      grid.innerHTML = '';
+
+      currentQuestion.options.forEach((optText, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = `${String.fromCharCode(65 + index)}) ${optText}`;
+        btn.onclick = () => selectOption(btn, index);
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedBtn, selectedIndex) {
+      if (answered) return;
+      answered = true;
+
+      total++;
+      const isCorrect = (selectedIndex === currentQuestion.correct);
+
+      if (isCorrect) {
+        correct++;
+        streak++;
+        selectedBtn.classList.add('correct');
+      } else {
+        streak = 0;
+        selectedBtn.classList.add('wrong');
+        
+        // Подсветить правильный ответ
+        const allBtns = document.querySelectorAll('.option-btn');
+        if (allBtns[currentQuestion.correct]) {
+          allBtns[currentQuestion.correct].classList.add('correct');
+        }
+      }
+
+      // Заблокировать все кнопки
+      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+      // Обновить статистику
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('correctCount').textContent = correct;
+      document.getElementById('streakCount').textContent = `${streak} 🔥`;
+
+      // Показать объяснение
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.add('answered');
+      document.getElementById('explanationText').textContent = currentQuestion.explanation;
+
+      // Показать кнопку Next
+      document.getElementById('nextBtn').classList.add('visible');
+    }
+  </script>
 </body>
 </html>
