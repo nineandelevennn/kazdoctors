@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>@doctors.speak</title>
+    <title>KazDoctors — Вход в систему</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- 1. ПОДКЛЮЧЕНИЕ БИБЛИОТЕКИ SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
         :root {
             --kz-blue: #00A1DE;
@@ -37,7 +40,6 @@
             padding: 16px;
         }
 
-        /* Декоративный элемент солнышка на фоне */
         .sun-bg {
             position: fixed;
             top: -10%;
@@ -101,7 +103,6 @@
             justify-content: center;
         }
 
-        /* Карточка формы авторизации */
         .login-card {
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(12px);
@@ -175,41 +176,6 @@
             box-shadow: 0 0 0 3px rgba(255, 199, 44, 0.2);
         }
 
-        .form-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            font-size: 0.75rem;
-        }
-
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .remember-me input[type="checkbox"] {
-            accent-color: var(--kz-gold);
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-        }
-
-        .forgot-link {
-            color: var(--white);
-            opacity: 0.8;
-            text-decoration: none;
-            transition: opacity 0.2s ease;
-        }
-
-        .forgot-link:hover {
-            opacity: 1;
-            text-decoration: underline;
-        }
-
         .submit-btn {
             width: 100%;
             background: var(--kz-gold);
@@ -224,15 +190,11 @@
             cursor: pointer;
             transition: all 0.2s ease;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            margin-top: 10px;
         }
 
-        .submit-btn:hover {
-            background: #ffe082;
-        }
-
-        .submit-btn:active {
-            transform: scale(0.98);
-        }
+        .submit-btn:hover { background: #ffe082; }
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
         .back-link {
             display: block;
@@ -243,11 +205,6 @@
             opacity: 0.85;
             text-decoration: none;
             font-weight: 600;
-            transition: opacity 0.2s ease;
-        }
-
-        .back-link:hover {
-            opacity: 1;
         }
 
         footer {
@@ -271,17 +228,7 @@
             background: rgba(0, 0, 0, 0.15);
             border: 1px solid rgba(255, 199, 44, 0.3);
         }
-
-        /* Адаптация под небольшие экраны */
-        @media (max-height: 680px) {
-            h1 { font-size: 1.2rem; }
-            .subtitle { font-size: 0.75rem; }
-            .login-card { padding: 18px 16px; }
-            .card-title { margin-bottom: 14px; font-size: 1rem; }
-            .form-group { margin-bottom: 12px; }
-        }
     </style>
-    
 </head>
 <body>
 
@@ -289,43 +236,35 @@
 
     <header>
         <div class="brand-badge">kazdoctors.com</div>
-        <h1>@doctors.speak</h1>
-        <p class="subtitle">Authorize</p>
+        <h1>KazDoctors</h1>
+        <p class="subtitle">Вход в личный кабинет</p>
     </header>
 
     <main>
         <div class="login-card">
-            <div class="card-title">Authorization</div>
+            <div class="card-title">Авторизация</div>
             
             <form id="loginForm" onsubmit="handleLogin(event)">
                 <div class="form-group">
                     <label for="username">Email</label>
                     <div class="input-wrapper">
                         <span class="input-icon">👤</span>
-                        <input type="text" id="username" class="form-control" placeholder="type your email" required autocomplete="username">
+                        <input type="email" id="username" class="form-control" placeholder="example@mail.com" required autocomplete="username">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="password">Пароль</label>
                     <div class="input-wrapper">
                         <span class="input-icon">🔒</span>
-                        <input type="password" id="password" class="form-control" placeholder="type your password" required autocomplete="current-password">
+                        <input type="password" id="password" class="form-control" placeholder="Введите ваш пароль" required autocomplete="current-password">
                     </div>
                 </div>
 
-                <div class="form-options">
-                    <label class="remember-me">
-                        <input type="checkbox" id="remember">
-                        <span>remember me</span>
-                    </label>
-                    <a href="#" class="forgot-link">forgot your password?</a>
-                </div>
-
-                <button type="submit" class="submit-btn">Enter</button>
+                <button type="submit" class="submit-btn">Войти</button>
             </form>
 
-            <a href="index.html" class="back-link">← Go back</a>
+            <a href="index.html" class="back-link">← Вернуться на главную</a>
         </div>
     </main>
 
@@ -335,51 +274,48 @@
         </a>
     </footer>
 
-<script>
-    // 1. Инициализация Supabase
-    const SUPABASE_URL = 'https://jjfkiqmqoscnodcvdktf.supabase.co'; // Вставьте ваш URL
-    const SUPABASE_ANON_KEY = 'sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ';                 // Вставьте ваш anon-ключ
+    <!-- 2. ЛОГИКА JAVASCRIPT ДЛЯ SUPABASE -->
+    <script>
+        // Замените эти значения на ваши данные из Supabase
+        const SUPABASE_URL = 'https://jjfkiqmqoscnodcvdktf.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ';
 
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // Инициализация клиентом Supabase
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // 2. Функция авторизации
-    async function handleLogin(event) {
-        event.preventDefault();
+        // Функция входа
+        async function handleLogin(event) {
+            event.preventDefault();
 
-        const email = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-        const btn = document.querySelector('.submit-btn');
+            const email = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const btn = document.querySelector('.submit-btn');
 
-        // Блокируем кнопку на время запроса
-        btn.disabled = true;
-        btn.textContent = 'entering...';
+            btn.disabled = true;
+            btn.textContent = 'Вход...';
 
-        try {
-            // Запрос на вход через Supabase Auth
-            const { data, error } = await supabaseClient.auth.signInWithPassword({
-                email: email,
-                password: password,
-            });
+            try {
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password,
+                });
 
-            if (error) {
-                alert('Ошибка авторизации: ' + error.message);
+                if (error) {
+                    alert('Ошибка входа: ' + error.message);
+                    btn.disabled = false;
+                    btn.textContent = 'Войти';
+                } else {
+                    // Успешно вошли -> перенаправляем на главную страницу
+                    window.location.href = 'index.html';
+                }
+            } catch (err) {
+                console.error('Ошибка:', err);
+                alert('Не удалось подключиться к серверу');
                 btn.disabled = false;
-                btn.textContent = 'Enter';
-            } else {
-                // Успешный вход: сессия сохраняется автоматически
-                console.log('Пользователь вошел:', data.user);
-                
-                // Перенаправление на защищенную страницу или главную
-                window.location.href = 'index.html'; 
+                btn.textContent = 'Войти';
             }
-        } catch (err) {
-            console.error('Ошибка сети:', err);
-            alert('Error.');
-            btn.disabled = false;
-            btn.textContent = 'Enter';
         }
-    }
-</script>
+    </script>
 
 </body>
 </html>
