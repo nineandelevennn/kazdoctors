@@ -337,24 +337,9 @@
       <div class="brand">@doctors.speak</div>
     </header>
 
-    <!-- Screen 1: Password -->
-    <div id="authScreen" class="auth-container">
-      <div class="auth-title">Medical English Quiz</div>
-      <p style="font-size: 0.85rem; color: #666;">Password</p>
-      
-      <input type="password" id="passInput" class="auth-input" placeholder="Пароль" onkeyup="if(event.key === 'Enter') checkPass()">
-      <button onclick="checkPass()" class="auth-btn">Enter</button>
-      
-      <div id="errorMsg" class="error-msg">Incorrect! Try again</div>
-      
-      <div class="insta-link">
-        No password? <br>
-        <a href="https://instagram.com/doctors.speak" target="_blank">Contact us in Instagram!</a>
-      </div>
-    </div>
 
     <!-- Screen 2: Game -->
-    <div id="gameScreen" class="hidden" style="display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;">
+    <div id="gameScreen" style="display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;">
       
       <div>
         <select id="levelSelect" class="mode-select" onchange="changeLevel()">
@@ -391,7 +376,31 @@
   </div>
 
   <script>
-    const SECRET_PASS = "fever";
+
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+
+    const supabaseClient = supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+        // Проверяем авторизацию
+    async function checkAuth() {
+
+        const { data, error } =
+            await supabaseClient.auth.getSession();
+
+        if (error || !data.session) {
+            window.location.href = "/login.html";
+            return;
+        }
+
+        // Пользователь авторизован
+        nextQuestion();
+    }
+
+    checkAuth();
 
     // База вопросов по уровням
     const questions = [
@@ -948,16 +957,6 @@
     let currentQuestion = null;
     let answered = false;
 
-    function checkPass() {
-      const val = document.getElementById('passInput').value.trim().toLowerCase();
-      if (val === SECRET_PASS) {
-        document.getElementById('authScreen').classList.add('hidden');
-        document.getElementById('gameScreen').classList.remove('hidden');
-        nextQuestion();
-      } else {
-        document.getElementById('errorMsg').style.display = 'block';
-      }
-    }
 
     function changeLevel() {
       nextQuestion();
