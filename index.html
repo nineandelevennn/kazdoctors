@@ -309,6 +309,81 @@
         }
     </style>
 </head>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+
+    const supabaseClient = supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+async function checkAuth() {
+
+    const { data, error } =
+        await supabaseClient.auth.getSession();
+
+    if (error) {
+        console.error("Auth error:", error);
+        return;
+    }
+
+    if (data.session) {
+
+        // Пользователь авторизован
+        showLoggedIn(data.session.user);
+
+    } else {
+
+        // Пользователь НЕ авторизован
+        showLoggedOut();
+    }
+}
+
+
+function showLoggedIn(user) {
+
+    document.getElementById("loginButton").style.display = "none";
+
+    document.getElementById("userArea").style.display = "block";
+
+    document.getElementById("welcomeMessage").textContent =
+        "Welcome, " + (user.email || "student") + " 👋";
+
+}
+
+
+function showLoggedOut() {
+
+    document.getElementById("loginButton").style.display = "inline-block";
+
+    document.getElementById("userArea").style.display = "none";
+}
+
+
+async function logout() {
+
+    const { error } = await supabaseClient.auth.signOut();
+
+    if (error) {
+        console.error("Logout error:", error);
+        return;
+    }
+
+    // После выхода обновляем страницу
+    window.location.reload();
+}
+
+
+// Проверяем состояние при загрузке страницы
+checkAuth();
+    
+</script>
+
+    
 <body>
 
     <div class="sun-bg"></div>
@@ -319,9 +394,21 @@
         <p class="subtitle">Learn Medical English with us!</p>
         
 <!-- Добавляем кнопку Входа -->
-    <a href="login.html" class="woth-btn" style="text-decoration: none; display: inline-block; margin-top: 10px;">
-        🔑 Enter your account
+<div id="authArea">
+
+    <a href="login.html" id="loginButton">
+        🔐 LOGIN
     </a>
+
+    <div id="userArea" style="display: none;">
+        <span id="welcomeMessage"></span>
+
+        <button id="logoutButton" onclick="logout()">
+            🚪 LOG OUT
+        </button>
+    </div>
+
+</div>
         
     </header>
 
