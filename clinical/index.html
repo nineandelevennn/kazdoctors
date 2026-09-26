@@ -233,16 +233,8 @@
       <div class="brand">@doctors.speak</div>
     </header>
 
-    <!-- Screen 1: Password -->
-    <div id="authScreen" class="auth-container">
-      <div class="auth-title">Password</div>
-      <input type="password" id="passInput" class="auth-input" placeholder="Пароль">
-      <button onclick="checkPass()" class="auth-btn">Enter</button>
-      <div id="errorMsg" class="error-msg">Incorrect!</div>
-    </div>
-
     <!-- Screen 2: Game -->
-    <div id="gameScreen" class="hidden" style="display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;">
+    <div id="gameScreen" style="display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;">
       
       <div>
         <select id="modeSelect" class="mode-select" onchange="resetAndNext()">
@@ -271,11 +263,35 @@
     </div>
   </div>
 
-  <script>
-    // Пароль для входа
-    const SECRET_PASS = "fever";
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    // База терминов
+<script>
+
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+
+    const supabaseClient = supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+        // Проверяем авторизацию
+    async function checkAuth() {
+
+        const { data, error } =
+            await supabaseClient.auth.getSession();
+
+        if (error || !data.session) {
+            window.location.href = "/login.html";
+            return;
+        }
+
+        // Пользователь авторизован
+        nextQuestion();
+    }
+
+    checkAuth();
+
     const vocabulary = [
       { eng: "Chest tightness", kaz: "Кеуде қысылуы", rus: "Сдавленность в груди", pron: "/tfest 'tartnəs/ • чест тайтнес" },
       { eng: "Clubbing", kaz: "Саусақтардың барабан таяқшасы тәрізді өзгеруі", rus: "Пальцевые барабанные палочки", pron: "/'klabın/ • Клаббинг" },
@@ -316,17 +332,6 @@
     let correct = 0;
     let currentItem = null;
     let answered = false;
-
-    function checkPass() {
-      const val = document.getElementById('passInput').value.trim();
-      if (val === SECRET_PASS) {
-        document.getElementById('authScreen').classList.add('hidden');
-        document.getElementById('gameScreen').classList.remove('hidden');
-        nextQuestion();
-      } else {
-        document.getElementById('errorMsg').style.display = 'block';
-      }
-    }
 
     function getRandomItem() {
       return vocabulary[Math.floor(Math.random() * vocabulary.length)];
