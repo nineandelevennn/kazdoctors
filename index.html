@@ -307,86 +307,41 @@
             .card-text h2 { font-size: 0.9rem; }
             .card-text p { font-size: 0.68rem; }
         }
+
+#authArea {
+    margin-top: 12px;
+    text-align: center;
+}
+
+#loginButton,
+#logoutButton {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 199, 44, 0.4);
+    background: rgba(0, 0, 0, 0.15);
+    color: var(--kz-gold);
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#userArea {
+    display: none;
+}
+
+#welcomeMessage {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}      
+
+        
     </style>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    
 </head>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
-
-    const supabaseClient = supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
-
-async function checkAuth() {
-
-    const { data, error } =
-        await supabaseClient.auth.getSession();
-
-    if (error) {
-        console.error("Auth error:", error);
-        return;
-    }
-
-    if (data.session) {
-
-        // Пользователь авторизован
-        showLoggedIn(data.session.user);
-
-    } else {
-
-        // Пользователь НЕ авторизован
-        showLoggedOut();
-    }
-}
-
-
-function showLoggedIn(user) {
-
-    document.getElementById("loginButton").style.display = "none";
-
-    document.getElementById("userArea").style.display = "block";
-
-    document.getElementById("welcomeMessage").textContent =
-        "Welcome, " + (user.email || "student") + " 👋";
-
-}
-
-
-function showLoggedOut() {
-
-    document.getElementById("loginButton").style.display = "inline-block";
-
-    document.getElementById("userArea").style.display = "none";
-}
-
-
-async function logout() {
-
-    const { error } = await supabaseClient.auth.signOut();
-
-    if (error) {
-        console.error("Logout error:", error);
-        return;
-    }
-
-    // После выхода обновляем страницу
-    window.location.reload();
-}
-
-
-// Проверяем состояние при загрузке страницы
-checkAuth();
-    
-</script>
-
     
 <body>
 
@@ -454,30 +409,34 @@ checkAuth();
         </a>
         
         <!-- Клинический тренажер -->
-        <a href="./clinical" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🔒</div>
-                <div class="card-text">
-                    <h2>Clinical English</h2>
-                    <p>Subscription required</p>
-                </div>
-            </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+<a href="./clinical" class="trainer-card">
+    <div class="card-content">
+        <div class="card-icon" id="clinicalIcon">🔒</div>
+        <div class="card-text">
+            <h2>Clinical English</h2>
+            <p id="clinicalStatus">Subscription required</p>
+        </div>
+    </div>
+
+    <svg class="arrow-icon" viewBox="0 0 24 24">
+        <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
+    </svg>
+</a>
         
 
-        <!-- Академический тренажер -->
-        <a href="./academic/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🔒</div>
-                <div class="card-text">
-                    <h2>Academic English</h2>
-                    <p>Subscription required</p>
-                </div>
-            </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+<a href="./academic/" class="trainer-card">
+    <div class="card-content">
+        <div class="card-icon" id="academicIcon">🔒</div>
+        <div class="card-text">
+            <h2>Academic English</h2>
+            <p id="academicStatus">Subscription required</p>
+        </div>
+    </div>
 
+    <svg class="arrow-icon" viewBox="0 0 24 24">
+        <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
+    </svg>
+</a>
 
         <!-- Академический тренажер -->
         <a href="./grammar/thereis/" class="trainer-card">
@@ -493,16 +452,19 @@ checkAuth();
 
         
         <!-- Академический тренажер -->
-        <a href="./grammar/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🔒</div>
-                <div class="card-text">
-                    <h2>Grammar full access</h2>
-                    <p>Subscription required</p>
-                </div>
-            </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+<a href="./grammar/" class="trainer-card">
+    <div class="card-content">
+        <div class="card-icon" id="grammarIcon">🔒</div>
+        <div class="card-text">
+            <h2>Grammar full access</h2>
+            <p id="grammarStatus">Subscription required</p>
+        </div>
+    </div>
+
+    <svg class="arrow-icon" viewBox="0 0 24 24">
+        <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
+    </svg>
+</a>
         
     </main>
 
@@ -512,6 +474,118 @@ checkAuth();
         </a>
     </footer>
 
+<!-- AUTHENTICATION -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+
+    const supabaseClient = supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+    async function checkAuth() {
+
+        const { data, error } =
+            await supabaseClient.auth.getSession();
+
+        if (error) {
+            console.error("Auth error:", error);
+            return;
+        }
+
+        if (data.session) {
+
+            showLoggedIn(data.session.user);
+
+        } else {
+
+            showLoggedOut();
+
+        }
+    }
+
+
+    function showLoggedIn(user) {
+
+        // Убираем LOGIN
+        document.getElementById("loginButton").style.display = "none";
+
+        // Показываем Welcome + Logout
+        document.getElementById("userArea").style.display = "block";
+
+        document.getElementById("welcomeMessage").textContent =
+            "Welcome, " + (user.email || "student") + " 👋";
+
+
+        // Clinical
+        document.getElementById("clinicalIcon").textContent = "🩺";
+        document.getElementById("clinicalStatus").textContent =
+            "OPEN TRAINER";
+
+
+        // Academic
+        document.getElementById("academicIcon").textContent = "📚";
+        document.getElementById("academicStatus").textContent =
+            "OPEN TRAINER";
+
+
+        // Grammar
+        document.getElementById("grammarIcon").textContent = "📖";
+        document.getElementById("grammarStatus").textContent =
+            "OPEN TRAINER";
+    }
+
+
+    function showLoggedOut() {
+
+        // Показываем LOGIN
+        document.getElementById("loginButton").style.display = "inline-block";
+
+        // Скрываем Welcome + Logout
+        document.getElementById("userArea").style.display = "none";
+
+
+        // Возвращаем замки
+        document.getElementById("clinicalIcon").textContent = "🔒";
+        document.getElementById("clinicalStatus").textContent =
+            "Subscription required";
+
+        document.getElementById("academicIcon").textContent = "🔒";
+        document.getElementById("academicStatus").textContent =
+            "Subscription required";
+
+        document.getElementById("grammarIcon").textContent = "🔒";
+        document.getElementById("grammarStatus").textContent =
+            "Subscription required";
+    }
+
+
+    async function logout() {
+
+        const { error } =
+            await supabaseClient.auth.signOut();
+
+        if (error) {
+            console.error("Logout error:", error);
+            return;
+        }
+
+        window.location.reload();
+    }
+
+
+    checkAuth();
+
+</script>
+
+
+
+    
     <script>
         const words = [
             { en: "Heart", kz: "Жүрек", ru: "Сердце" },
