@@ -330,6 +330,8 @@
 </head>
 <body>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <div class="card">
     <!-- Header -->
     <header class="header">
@@ -339,7 +341,7 @@
 
 
     <!-- Screen 2: Game -->
-    <div id="gameScreen" style="display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;">
+    <div id="gameScreen" class="hidden" style="display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;">
       
       <div>
         <select id="levelSelect" class="mode-select" onchange="changeLevel()">
@@ -391,13 +393,15 @@
         const { data, error } =
             await supabaseClient.auth.getSession();
 
-        if (error || !data.session) {
-            window.location.href = "/login.html";
-            return;
-        }
+if (error || !data.session) {
+    window.location.href = "/login.html";
+    return;
+}
 
-        // Пользователь авторизован
-        nextQuestion();
+// Пользователь авторизован
+document.getElementById("gameScreen").classList.remove("hidden");
+
+nextQuestion();
     }
 
     checkAuth();
