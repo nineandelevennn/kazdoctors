@@ -5,6 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>@doctors.speak — Clinical Vocabulary Trainer</title>
   <style>
+    :root {
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --accent: #f59e0b;
+      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+      --card-bg: rgba(255, 255, 255, 0.98);
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --correct-bg: #dcfce7;
+      --correct-border: #22c55e;
+      --correct-text: #15803d;
+      --wrong-bg: #ffe4e6;
+      --wrong-border: #f43f5e;
+      --wrong-text: #be123c;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -14,145 +30,139 @@
     }
 
     body {
-      background: linear-gradient(135deg, #00afca 0%, #0081a7 100%);
-      color: #333;
+      background: var(--bg-gradient);
+      color: var(--text-main);
       height: 100vh;
+      height: 100dvh;
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 12px;
       overflow: hidden;
-      padding: 10px;
-    }
-
-    .card {
-      background: #ffffff;
-      border-radius: 20px;
-      width: 100%;
-      max-width: 400px;
-      height: 100%;
-      max-height: 680px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      border: 3px solid #fbc02d;
       position: relative;
     }
 
-    /* Header */
+    body::before {
+      content: '';
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      background: rgba(14, 165, 233, 0.25);
+      filter: blur(90px);
+      border-radius: 50%;
+      top: -40px;
+      left: -40px;
+    }
+
+    body::after {
+      content: '';
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      background: rgba(245, 158, 11, 0.15);
+      filter: blur(90px);
+      border-radius: 50%;
+      bottom: -40px;
+      right: -40px;
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 420px;
+      height: 100%;
+      max-height: 700px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 8px;
-      border-bottom: 2px solid #00afca;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e2e8f0;
     }
 
     .home-btn {
-      background-color: #fbc02d;
-      color: #003366;
+      background: #f1f5f9;
+      color: #334155;
       text-decoration: none;
-      font-weight: 700;
-      font-size: 0.75rem;
-      padding: 5px 10px;
-      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      padding: 6px 12px;
+      border-radius: 10px;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.12);
-      transition: transform 0.1s, background-color 0.2s;
+      gap: 6px;
+      transition: all 0.2s ease;
+      border: 1px solid #e2e8f0;
     }
 
-    .home-btn:active {
-      transform: scale(0.95);
-      background-color: #fdd835;
+    .home-btn:hover {
+      background: #e2e8f0;
     }
 
     .brand {
-      color: #00afca;
       font-weight: 800;
-      font-size: 1rem;
-      letter-spacing: 0.5px;
+      font-size: 0.95rem;
+      background: linear-gradient(135deg, #0284c7, #0d9488);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    /* Password Screen */
-    .auth-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 15px;
-      flex-grow: 1;
-      text-align: center;
-    }
-
-    .auth-title {
-      font-size: 1.2rem;
-      color: #0081a7;
-      font-weight: 700;
-    }
-
-    .auth-input {
-      width: 80%;
-      padding: 12px;
-      border: 2px solid #00afca;
-      border-radius: 10px;
-      font-size: 1rem;
-      text-align: center;
-      outline: none;
-    }
-
-    .auth-btn, .next-btn {
-      background: #00afca;
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      width: 80%;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-
-    .auth-btn:active, .next-btn:active {
-      transform: scale(0.98);
-    }
-
-    .error-msg {
-      color: #e53935;
-      font-size: 0.85rem;
-      display: none;
-    }
-
-    /* Controls & Stats */
     .mode-select {
       width: 100%;
-      padding: 8px;
-      border: 2px solid #00afca;
-      border-radius: 10px;
-      font-weight: bold;
-      color: #0081a7;
-      background: #f4fbfe;
-      margin-top: 8px;
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      font-weight: 600;
+      color: #0f172a;
+      background: #f8fafc;
       outline: none;
       font-size: 0.85rem;
+      margin-top: 10px;
+      cursor: pointer;
     }
 
-    .stats {
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .stat-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 8px 12px;
+      border-radius: 10px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
       font-size: 0.8rem;
-      font-weight: 600;
-      color: #555;
-      margin-top: 6px;
-      background: #f0f9fc;
-      padding: 6px 12px;
-      border-radius: 8px;
+      color: var(--text-muted);
+      font-weight: 500;
     }
 
-    /* Question & Term */
+    .stat-val {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #0f172a;
+    }
+
+    .stat-val.correct {
+      color: #16a34a;
+    }
+
     .term-box {
       flex-grow: 1;
       display: flex;
@@ -160,82 +170,119 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      margin: 10px 0;
-      background: #f9fbfd;
-      border-radius: 12px;
-      padding: 10px;
-      border: 1px dashed #00afca;
+      margin: 12px 0;
+      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid #e2e8f0;
     }
 
     .term-title {
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 800;
-      color: #0081a7;
-      margin-bottom: 4px;
+      color: #0f172a;
+      margin-bottom: 6px;
+      word-break: break-word;
     }
 
     .term-sub {
       font-size: 0.85rem;
-      color: #777;
+      color: #64748b;
     }
 
-    /* Options */
     .options-grid {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .option-btn {
       background: #ffffff;
-      border: 2px solid #e0e0e0;
-      padding: 10px 12px;
-      border-radius: 10px;
-      font-size: 0.9rem;
+      border: 1.5px solid #e2e8f0;
+      padding: 11px 14px;
+      border-radius: 12px;
+      font-size: 0.88rem;
       font-weight: 600;
-      color: #333;
+      color: #334155;
       text-align: left;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: #38bdf8;
+      background: #f0f9ff;
+    }
+
+    .option-badge {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: #f1f5f9;
+      color: #64748b;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
     .option-btn.correct {
-      background-color: #d4edda !important;
-      border-color: #28a745 !important;
-      color: #155724 !important;
+      background-color: var(--correct-bg) !important;
+      border-color: var(--correct-border) !important;
+      color: var(--correct-text) !important;
+    }
+
+    .option-btn.correct .option-badge {
+      background: var(--correct-border);
+      color: #fff;
     }
 
     .option-btn.wrong {
-      background-color: #f8d7da !important;
-      border-color: #dc3545 !important;
-      color: #721c24 !important;
+      background-color: var(--wrong-bg) !important;
+      border-color: var(--wrong-border) !important;
+      color: var(--wrong-text) !important;
+    }
+
+    .option-btn.wrong .option-badge {
+      background: var(--wrong-border);
+      color: #fff;
     }
 
     .next-btn {
       width: 100%;
-      background: #fbc02d;
-      color: #003366;
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #ffffff;
+      border: none;
+      padding: 13px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25);
+      transition: all 0.2s ease;
       display: none;
     }
 
-    .hidden {
-      display: none !important;
+    .next-btn:active {
+      transform: scale(0.98);
     }
   </style>
 </head>
 <body>
 
   <div class="card">
-    <!-- Header -->
     <header class="header">
       <a href="https://kazdoctors.com" class="home-btn">🏠 Go back</a>
       <div class="brand">@doctors.speak</div>
     </header>
 
-    <!-- Screen 2: Game -->
     <div id="gameScreen" style="display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;">
-      
       <div>
         <select id="modeSelect" class="mode-select" onchange="resetAndNext()">
           <option value="eng-kaz">Eng ➔ Kaz</option>
@@ -244,9 +291,15 @@
           <option value="rus-eng">Rus ➔ Eng</option>
         </select>
 
-        <div class="stats">
-          <span>Done: <strong id="totalCount">0</strong></span>
-          <span>Correct: <strong id="correctCount" style="color:#28a745;">0</strong></span>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span>Done</span>
+            <span class="stat-val" id="totalCount">0</span>
+          </div>
+          <div class="stat-card">
+            <span>Correct</span>
+            <span class="stat-val correct" id="correctCount">0</span>
+          </div>
         </div>
       </div>
 
@@ -259,35 +312,23 @@
         <div id="optionsGrid" class="options-grid"></div>
         <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next word ➔</button>
       </div>
-
     </div>
   </div>
 
- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
     const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
     const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
 
-    const supabaseClient = supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Проверяем авторизацию
     async function checkAuth() {
-
-        const { data, error } =
-            await supabaseClient.auth.getSession();
-
-        if (error || !data.session) {
-            window.location.href = "/login.html";
-            return;
-        }
-
-        // Пользователь авторизован
-        nextQuestion();
+      const { data, error } = await supabaseClient.auth.getSession();
+      if (error || !data.session) {
+        window.location.href = "/login.html";
+        return;
+      }
+      nextQuestion();
     }
 
     checkAuth();
@@ -382,7 +423,6 @@
       document.getElementById('termText').textContent = questionText;
       document.getElementById('termSub').textContent = subText;
 
-      // Варианты ответов
       let options = [correctAnswer];
       while (options.length < 4) {
         let rand = getRandomItem()[answerKey];
@@ -395,10 +435,22 @@
       const grid = document.getElementById('optionsGrid');
       grid.innerHTML = '';
 
-      options.forEach(opt => {
+      const letters = ['A', 'B', 'C', 'D'];
+      options.forEach((opt, idx) => {
         const btn = document.createElement('button');
         btn.className = 'option-btn';
-        btn.textContent = opt;
+        btn.dataset.val = opt;
+
+        const badge = document.createElement('span');
+        badge.className = 'option-badge';
+        badge.textContent = letters[idx];
+
+        const label = document.createElement('span');
+        label.textContent = opt;
+
+        btn.appendChild(badge);
+        btn.appendChild(label);
+
         btn.onclick = () => selectOption(btn, opt === correctAnswer);
         grid.appendChild(btn);
       });
@@ -414,13 +466,12 @@
         selectedBtn.classList.add('correct');
       } else {
         selectedBtn.classList.add('wrong');
-        // Показать правильный
-        const buttons = document.querySelectorAll('.option-btn');
         const mode = document.getElementById('modeSelect').value;
         let rightAns = (mode === 'eng-kaz') ? currentItem.kaz :
                        (mode === 'eng-rus') ? currentItem.rus : currentItem.eng;
-        buttons.forEach(b => {
-          if (b.textContent === rightAns) b.classList.add('correct');
+        
+        document.querySelectorAll('.option-btn').forEach(b => {
+          if (b.dataset.val === rightAns) b.classList.add('correct');
         });
       }
 
