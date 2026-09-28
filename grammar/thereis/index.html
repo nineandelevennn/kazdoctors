@@ -3,174 +3,832 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>@doctors.speak — Page not ready yet</title>
+  <title>@doctors.speak — Medical Grammar Trainer (There is / There are)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Montserrat', sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background: linear-gradient(135deg, #00afca 0%, #0081a7 100%);
-      color: #333;
+      background: var(--bg-main);
+      color: var(--text-dark);
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 10px;
+      padding: 12px 10px;
     }
 
     .card {
-      background: #ffffff;
+      background: var(--card-bg);
       border-radius: 20px;
       width: 100%;
-      max-width: 420px;
-      height: 680px;
+      max-width: 440px;
+      min-height: 680px;
       max-height: 95vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      border: 3px solid #fbc02d;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-color);
       position: relative;
-      overflow-y: auto;
+      overflow: hidden;
     }
 
     .header {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 16px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 10px;
-      border-bottom: 2px solid #00afca;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
       flex-shrink: 0;
     }
 
     .home-btn {
-      background-color: #fbc02d;
-      color: #003366;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #FFFFFF;
       text-decoration: none;
       font-weight: 700;
-      font-size: 0.8rem;
-      padding: 6px 12px;
-      border-radius: 12px;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.12);
-      transition: transform 0.1s, background-color 0.2s;
+      transition: all 0.2s ease;
     }
 
     .home-btn:active {
-      transform: scale(0.95);
-      background-color: #fdd835;
+      transform: scale(0.96);
+      background: rgba(255, 255, 255, 0.3);
     }
 
     .brand {
-      color: #00afca;
       font-weight: 800;
-      font-size: 1.05rem;
+      font-size: 0.82rem;
       letter-spacing: 0.5px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
     }
 
-    .content-container {
+    .auth-container {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 18px;
-      padding: 20px 10px;
+      gap: 15px;
+      padding: 40px 10px;
       text-align: center;
       flex-grow: 1;
     }
 
-    .icon-box {
-      font-size: 4rem;
-      line-height: 1;
-      margin-bottom: 5px;
+    .auth-title {
+      font-size: 1.25rem;
+      color: var(--kz-blue-dark);
+      font-weight: 700;
     }
 
-    .title {
-      font-size: 1.35rem;
-      color: #0081a7;
-      font-weight: 800;
-      line-height: 1.3;
-    }
-
-    .description {
-      font-size: 0.95rem;
-      color: #555;
-      line-height: 1.5;
-      max-width: 320px;
-    }
-
-    .action-btn {
-      background: #fbc02d;
-      color: #003366;
-      border: none;
-      padding: 14px 24px;
+    .auth-input {
+      width: 85%;
+      padding: 12px;
+      border: 1px solid var(--border-color);
       border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 800;
+      font-size: 1rem;
+      text-align: center;
+      outline: none;
+    }
+
+    .auth-btn {
+      background: var(--kz-blue);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: bold;
       cursor: pointer;
-      width: 100%;
-      max-width: 300px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      text-decoration: none;
-      display: inline-block;
-      transition: transform 0.1s, background-color 0.2s;
-      margin-top: 10px;
+      width: 85%;
+      box-shadow: 0 4px 12px rgba(0, 161, 222, 0.2);
     }
 
-    .action-btn:hover {
-      background: #fdd835;
-    }
-
-    .action-btn:active {
+    .auth-btn:active {
       transform: scale(0.98);
     }
 
     .insta-link {
-      font-size: 0.85rem;
-      color: #666;
       margin-top: 10px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
     }
 
     .insta-link a {
-      color: #0081a7;
+      color: var(--kz-blue-dark);
       font-weight: 700;
       text-decoration: underline;
+    }
+
+    .error-msg {
+      color: #EF4444;
+      font-size: 0.85rem;
+      display: none;
+      font-weight: 600;
+    }
+
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+      padding: 16px;
+      gap: 12px;
+      overflow-y: auto;
+    }
+
+    .mode-select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      border-radius: 12px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--kz-blue-dark);
+      background: var(--kz-blue-light);
+      outline: none;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 8px;
+      background: var(--bg-main);
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .stats span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .term-box {
+      margin: 4px 0;
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid var(--border-color);
+      border-left: 6px solid var(--kz-gold-dark);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      text-align: center;
+      min-height: 125px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .level-tag {
+      display: inline-block;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .term-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+      line-height: 1.35;
+      min-height: 2.7em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chunks-box {
+      background: var(--bg-main);
+      border: 1px dashed var(--kz-gold-dark);
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      color: var(--kz-gold-dark);
+      font-weight: 700;
+      margin-top: 6px;
+      word-break: break-word;
+      min-height: 36px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s, visibility 0.2s;
+    }
+
+    .chunks-box.invisible {
+      visibility: hidden;
+      border-color: transparent;
+      background: transparent;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .option-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      line-height: 1.3;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background-color: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+    }
+
+    .option-btn.correct {
+      background-color: #DCFCE7 !important;
+      border-color: #22C55E !important;
+      color: #15803D !important;
+      font-weight: 700;
+    }
+
+    .option-btn.wrong {
+      background-color: #FEE2E2 !important;
+      border-color: #EF4444 !important;
+      color: #B91C1C !important;
+      font-weight: 700;
+    }
+
+    .explanation-box {
+      background-color: var(--kz-blue-light);
+      border-left: 4px solid var(--kz-blue);
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      color: var(--kz-blue-dark);
+      margin-bottom: 10px;
+      line-height: 1.4;
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .explanation-box.answered {
+      background-color: #E0F2FE;
+      border-left-color: var(--kz-blue-dark);
+    }
+
+    .next-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      font-weight: 800;
+      padding: 12px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      border: 1px solid var(--kz-gold-dark);
+      cursor: pointer;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.2s ease, visibility 0.2s ease, background-color 0.2s ease, transform 0.1s ease;
+      min-height: 44px;
+    }
+
+    .next-btn.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .next-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    .next-btn:active {
+      transform: scale(0.98);
+    }
+
+    .hidden {
+      display: none !important;
     }
   </style>
 </head>
 <body>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <div class="card">
     <!-- Header -->
     <header class="header">
-      <a href="https://kazdoctors.com/" class="home-btn">⬅ Go back</a>
+      <a href="https://kazdoctors.com/grammar/" class="home-btn">⬅ Go back</a>
       <div class="brand">@doctors.speak</div>
     </header>
 
-    <!-- Content -->
-    <div class="content-container">
-      <div class="icon-box">🚧</div>
-      <h1 class="title">Page not ready yet :( </h1>
-      <p class="description">
-        We are working on the page, please check it later🙏
-      </p>
+    <!-- Screen 2: Game -->
+    <div id="gameScreen" class="game-container">
+      
+      <div>
+        <select id="levelSelect" class="mode-select" onchange="changeLevel()">
+          <option value="1">Level 1 — Present Tense (There is / are)</option>
+          <option value="2">Level 2 — Past Tense (There was / were)</option>
+          <option value="3">Level 3 — Mixed Tenses (Sentence Order)</option>
+          <option value="mix">🔥 Mix All Levels</option>
+        </select>
 
-      <a href="https://kazdoctors.com/" class="action-btn">Go back</a>
-
-      <div class="insta-link">
-        Our updates:<br>
-        <a href="https://instagram.com/doctors.speak" target="_blank">@doctors.speak</a>
+        <div class="stats">
+          <span>Total: <strong id="totalCount">0</strong></span>
+          <span>Correct: <strong id="correctCount" style="color:#16A34A;">0</strong></span>
+          <span>Streak: <strong id="streakCount" style="color:#D9A000;">0 🔥</strong></span>
+        </div>
       </div>
+
+      <div class="term-box">
+        <span id="levelTag" class="level-tag">Level 1</span>
+        <div id="questionText" class="term-title">Loading question...</div>
+        <div id="chunksBox" class="chunks-box invisible"></div>
+      </div>
+
+      <div>
+        <div id="optionsGrid" class="options-grid"></div>
+        
+        <div id="explanationBox" class="explanation-box">
+          <div><strong>💡 Explanation:</strong> <span id="explanationText">Choose the correct answer!</span></div>
+        </div>
+
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next ➔</button>
+      </div>
+
     </div>
   </div>
 
+  <script>
+
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+
+    const supabaseClient = supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+    // Проверяем авторизацию
+    async function checkAuth() {
+        const { data, error } = await supabaseClient.auth.getSession();
+
+        if (error || !data.session) {
+            window.location.href = "/login.html";
+            return;
+        }
+
+        // Пользователь авторизован
+        nextQuestion();
+    }
+
+    checkAuth();
+
+    // =========================================================================
+    // БАЗА ВОПРОСОВ (Lesson 8: There is / There are / Was / Were / Will be / etc.)
+    // Вы можете добавлять, удалять или редактировать элементы ниже.
+    // =========================================================================
+    const questions = [
+      // ================= LEVEL 1: Present Tense =================
+      {
+        level: 1,
+        question: "The trial cohort is relatively young. __________ any elderly patients in this group.",
+        options: ["There is", "There aren't", "Is there"],
+        correct: 1,
+        explanation: "'Patients' is plural, and the context requires a negative statement."
+      },
+      {
+        level: 1,
+        question: "Look! __________ a clear anomaly on the patient's chest X-ray.",
+        options: ["There is", "There are", "Is there"],
+        correct: 0,
+        explanation: "'A clear anomaly' is singular, so we use 'There is'."
+      },
+      {
+        level: 1,
+        question: "\"Excuse me, __________ an MRI scanner available in this building?\" — \"Yes, at the end of the hall.\"",
+        options: ["there is", "is there", "are there"],
+        correct: 1,
+        explanation: "In questions with singular nouns ('an MRI scanner'), we invert to 'Is there'."
+      },
+      {
+        level: 1,
+        question: "__________ five participants in the control group: three men and two women.",
+        options: ["There is", "There are", "Are there"],
+        correct: 1,
+        explanation: "'Five participants' is plural, so we use 'There are'."
+      },
+      {
+        level: 1,
+        question: "\"How many patients __________ in the clinical study?\" — \"Fifty.\"",
+        options: ["there are", "are there", "is there"],
+        correct: 1,
+        explanation: "Question word + 'are there' for plural subjects ('patients')."
+      },
+      {
+        level: 1,
+        question: "The clinic is usually very quiet today. __________ much patient traffic in the waiting area.",
+        options: ["There isn't", "There aren't", "Is there"],
+        correct: 0,
+        explanation: "'Traffic' is an uncountable noun, so we use 'There isn't'."
+      },
+      {
+        level: 1,
+        question: "\"__________ a specialist on duty at the hospital right now?\" — \"Yes, one comes every 20 minutes to check.\"",
+        options: ["There is", "Is there", "Are there"],
+        correct: 1,
+        explanation: "Question structure for a singular subject ('a specialist'): 'Is there'."
+      },
+      {
+        level: 1,
+        question: "\"__________ any complications after the surgery?\" — \"No, everything is OK.\"",
+        options: ["Is there", "Are there", "There are"],
+        correct: 1,
+        explanation: "Question structure for a plural subject ('any complications'): 'Are there'."
+      },
+      {
+        level: 1,
+        question: "__________ nowhere for the patient to rest. __________ any free beds in the ward.",
+        options: ["There is / There aren't", "There are / There isn't", "Is there / Are there"],
+        correct: 0,
+        explanation: "'Nowhere' is singular ('There is'), 'beds' is plural negative ('There aren't')."
+      },
+
+      // ================= LEVEL 2: Past Tense =================
+      {
+        level: 2,
+        question: "The patient was admitted yesterday, but __________ any signs of infection.",
+        options: ["were there", "there wasn't", "there weren't", "there was"],
+        correct: 2,
+        explanation: "Past tense negative with plural noun ('signs'): 'there weren't'."
+      },
+      {
+        level: 2,
+        question: "\"Did the surgeon finish the operation on time?\" — \"Yes, __________ no complications.\"",
+        options: ["there were", "there was", "was there", "were there"],
+        correct: 0,
+        explanation: "Past tense affirmative with plural noun ('complications'): 'there were'."
+      },
+      {
+        level: 2,
+        question: "I checked the syringe before the injection, but __________ any saline solution left in it.",
+        options: ["there was", "was there", "there wasn't", "there weren't"],
+        correct: 2,
+        explanation: "'Saline solution' is uncountable, negative past tense: 'there wasn't'."
+      },
+      {
+        level: 2,
+        question: "\"__________ any side effects observed during the clinical trial last month?\" — \"No, none at all.\"",
+        options: ["Was there", "Were there", "There were", "There wasn't"],
+        correct: 1,
+        explanation: "Past tense question for plural noun ('side effects'): 'Were there'."
+      },
+      {
+        level: 2,
+        question: "The medical report was brief. __________ only one short paragraph about the patient's history.",
+        options: ["There was", "There were", "Was there", "There weren't"],
+        correct: 0,
+        explanation: "Past tense affirmative for singular noun ('one short paragraph'): 'There was'."
+      },
+      {
+        level: 2,
+        question: "\"Why was the intensive care unit so quiet yesterday?\" — \"__________ many patients in critical condition.\"",
+        options: ["Were there", "There was", "Was there", "There weren't"],
+        correct: 3,
+        explanation: "Past tense negative statement for plural noun ('many patients'): 'There weren't'."
+      },
+      {
+        level: 2,
+        question: "\"__________ a radiologist available on shift last night?\" — \"Yes, Dr. Smith was on duty.\"",
+        options: ["Was there", "Were there", "There was", "There were"],
+        correct: 0,
+        explanation: "Past tense question for singular subject ('a radiologist'): 'Was there'."
+      },
+      {
+        level: 2,
+        question: "The researchers analyzed the blood samples, but __________ enough DNA to complete the test.",
+        options: ["there were", "there wasn't", "was there", "there weren't"],
+        correct: 1,
+        explanation: "'DNA' is uncountable, so in the past negative context we use 'there wasn't'."
+      },
+      {
+        level: 2,
+        question: "__________ severe inflammation around the incision site when the surgeon examined the wound.",
+        options: ["Were there", "There weren't", "Was there", "There was"],
+        correct: 3,
+        explanation: "'Inflammation' is uncountable, past affirmative: 'There was'."
+      },
+      {
+        level: 2,
+        question: "\"__________ any discrepancies in the clinical data collected last year?\" — \"Yes, a few minor errors.\"",
+        options: ["There were", "Was there", "Were there", "There wasn't"],
+        correct: 2,
+        explanation: "Past tense question with plural noun ('discrepancies'): 'Were there'."
+      },
+
+      // ================= LEVEL 3: Sentence Structure & Mixed Tenses =================
+      {
+        level: 3,
+        question: "Unscramble the sentence:",
+        chunks: "in the laboratory / a power outage / there was / during the analysis",
+        options: [
+          "During the analysis there was a power outage in the laboratory.",
+          "In the laboratory a power outage there was during the analysis.",
+          "There was during the analysis in the laboratory a power outage.",
+          "A power outage in the laboratory during the analysis there was."
+        ],
+        correct: 0,
+        explanation: "Correct word order: Time phrase + There was + Subject + Place."
+      },
+      {
+        level: 3,
+        question: "Unscramble the sentence:",
+        chunks: "there will be / for new participants / a safety briefing / tomorrow morning",
+        options: [
+          "Tomorrow morning a safety briefing for new participants there will be.",
+          "There will be a safety briefing for new participants tomorrow morning.",
+          "For new participants there will be tomorrow morning a safety briefing.",
+          "A safety briefing there will be for new participants tomorrow morning."
+        ],
+        correct: 1,
+        explanation: "Correct structure: There will be + Object + Target + Time."
+      },
+      {
+        level: 3,
+        question: "Unscramble the sentence:",
+        chunks: "significant progress / in cancer research / there has been / recently",
+        options: [
+          "In cancer research recently significant progress there has been.",
+          "There has been recently in cancer research significant progress.",
+          "Progress significant there has been in cancer research recently.",
+          "There has been significant progress in cancer research recently."
+        ],
+        correct: 3,
+        explanation: "Correct Present Perfect structure: There has been + Object + Field + Time."
+      },
+      {
+        level: 3,
+        question: "Unscramble the sentence:",
+        chunks: "any contraindications / were there / for this drug / in the trial",
+        options: [
+          "Were there any contraindications for this drug in the trial?",
+          "In the trial for this drug were there any contraindications?",
+          "Any contraindications for this drug were there in the trial?",
+          "Were there in the trial for this drug any contraindications?"
+        ],
+        correct: 0,
+        explanation: "Correct question order: Were there + Subject + Context/Purpose + Place/Time?"
+      },
+      {
+        level: 3,
+        question: "Unscramble the sentence:",
+        chunks: "in the human body / 206 bones / there are / normally",
+        options: [
+          "Normally 206 bones in the human body there are.",
+          "There are normally 206 bones in the human body.",
+          "In the human body 206 bones there are normally.",
+          "Normally there are in the human body 206 bones."
+        ],
+        correct: 1,
+        explanation: "Correct order: There are + Adverb + Quantity + Noun + Place."
+      },
+      {
+        level: 3,
+        question: "Unscramble the sentence:",
+        chunks: "no adverse reactions / there have been / among the patients / so far",
+        options: [
+          "Among the patients so far no adverse reactions there have been.",
+          "So far there have been among the patients no adverse reactions.",
+          "There have been no adverse reactions among the patients so far.",
+          "No adverse reactions there have been so far among the patients."
+        ],
+        correct: 2,
+        explanation: "Correct order: There have been + Subject + Location/Group + Time phrase."
+      },
+      {
+        level: 3,
+        question: "Unscramble the sentence:",
+        chunks: "at the clinic / there is / a consultation room / on the second floor",
+        options: [
+          "There is a consultation room on the second floor at the clinic.",
+          "On the second floor a consultation room there is at the clinic.",
+          "A consultation room at the clinic on the second floor there is.",
+          "At the clinic on the second floor there is a consultation room."
+        ],
+        correct: 0,
+        explanation: "Correct structure: There is + Noun + Location detail 1 + Location detail 2."
+      },
+      {
+        level: 3,
+        question: "Unscramble the sentence:",
+        chunks: "many severe cases / during the outbreak / there were / in the region",
+        options: [
+          "There were during the outbreak many severe cases in the region.",
+          "During the outbreak there were many severe cases in the region.",
+          "Many severe cases in the region there were during the outbreak.",
+          "In the region many severe cases there were during the outbreak."
+        ],
+        correct: 1,
+        explanation: "Correct structure: Time expression + There were + Subject + Location."
+      },
+      {
+        level: 3,
+        question: "Unscramble the sentence:",
+        chunks: "any sterile gloves / there aren't / in the cabinet / left",
+        options: [
+          "In the cabinet there aren't any sterile gloves left.",
+          "Left in the cabinet any sterile gloves there aren't.",
+          "Any sterile gloves left in the cabinet there aren't.",
+          "There aren't any sterile gloves left in the cabinet."
+        ],
+        correct: 3,
+        explanation: "Correct order: There aren't + Subject + Modifier + Place."
+      },
+      {
+        level: 3,
+        question: "Unscramble the sentence:",
+        chunks: "in the results / I don't think / any major errors / there will be",
+        options: [
+          "I don't think there will be any major errors in the results.",
+          "In the results I don't think any major errors there will be.",
+          "There will be any major errors in the results I don't think.",
+          "Any major errors in the results I don't think there will be."
+        ],
+        correct: 0,
+        explanation: "Correct order: Main clause (I don't think) + Subordinate clause (there will be + Subject + Place)."
+      }
+    ];
+
+    let total = 0;
+    let correct = 0;
+    let streak = 0;
+    let currentQuestion = null;
+    let answered = false;
+
+    function changeLevel() {
+      nextQuestion();
+    }
+
+    function getFilteredQuestions() {
+      const selectedLevel = document.getElementById('levelSelect').value;
+      if (selectedLevel === 'mix') {
+        return questions;
+      }
+      return questions.filter(q => q.level === parseInt(selectedLevel));
+    }
+
+    function nextQuestion() {
+      answered = false;
+      
+      // Сброс состояния кнопки Next и блока объяснений
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.classList.remove('visible');
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.remove('answered');
+      document.getElementById('explanationText').textContent = "Choose the correct answer!";
+
+      const pool = getFilteredQuestions();
+      if (!pool || pool.length === 0) {
+        document.getElementById('questionText').textContent = "No questions found for this level.";
+        document.getElementById('optionsGrid').innerHTML = '';
+        return;
+      }
+
+      currentQuestion = pool[Math.floor(Math.random() * pool.length)];
+
+      // Установка тега
+      const levelTag = document.getElementById('levelTag');
+      levelTag.textContent = `Level ${currentQuestion.level}`;
+
+      // Текст вопроса
+      document.getElementById('questionText').textContent = currentQuestion.question;
+
+      // Chunks if Level 3
+      const chunksBox = document.getElementById('chunksBox');
+      if (currentQuestion.chunks) {
+        chunksBox.textContent = currentQuestion.chunks;
+        chunksBox.classList.remove('invisible');
+      } else {
+        chunksBox.textContent = '';
+        chunksBox.classList.add('invisible');
+      }
+
+      // Варианты ответов
+      const grid = document.getElementById('optionsGrid');
+      grid.innerHTML = '';
+
+      currentQuestion.options.forEach((optText, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = `${String.fromCharCode(65 + index)}) ${optText}`;
+        btn.onclick = () => selectOption(btn, index);
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedBtn, selectedIndex) {
+      if (answered) return;
+      answered = true;
+
+      total++;
+      const isCorrect = (selectedIndex === currentQuestion.correct);
+
+      if (isCorrect) {
+        correct++;
+        streak++;
+        selectedBtn.classList.add('correct');
+      } else {
+        streak = 0;
+        selectedBtn.classList.add('wrong');
+        
+        // Подсветить правильный ответ
+        const allBtns = document.querySelectorAll('.option-btn');
+        if (allBtns[currentQuestion.correct]) {
+          allBtns[currentQuestion.correct].classList.add('correct');
+        }
+      }
+
+      // Заблокировать все кнопки
+      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+      // Обновить статистику
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('correctCount').textContent = correct;
+      document.getElementById('streakCount').textContent = `${streak} 🔥`;
+
+      // Показать объяснение
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.add('answered');
+      document.getElementById('explanationText').textContent = currentQuestion.explanation;
+
+      // Показать кнопку Next
+      document.getElementById('nextBtn').classList.add('visible');
+    }
+  </script>
 </body>
 </html>
