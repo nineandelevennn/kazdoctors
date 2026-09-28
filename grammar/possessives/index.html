@@ -3,150 +3,314 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>@doctors.speak — Page not ready yet</title>
+  <title>@doctors.speak — Medical Grammar Trainer (Possessives, 's / s', of, Noun Adjuncts)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Montserrat', sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background: linear-gradient(135deg, #00afca 0%, #0081a7 100%);
-      color: #333;
+      background: var(--bg-main);
+      color: var(--text-dark);
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 10px;
+      padding: 12px 10px;
     }
 
     .card {
-      background: #ffffff;
+      background: var(--card-bg);
       border-radius: 20px;
       width: 100%;
-      max-width: 420px;
-      height: 680px;
+      max-width: 440px;
+      min-height: 680px;
       max-height: 95vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      border: 3px solid #fbc02d;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-color);
       position: relative;
-      overflow-y: auto;
+      overflow: hidden;
     }
 
     .header {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 16px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 10px;
-      border-bottom: 2px solid #00afca;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
       flex-shrink: 0;
     }
 
     .home-btn {
-      background-color: #fbc02d;
-      color: #003366;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #FFFFFF;
       text-decoration: none;
       font-weight: 700;
-      font-size: 0.8rem;
-      padding: 6px 12px;
-      border-radius: 12px;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.12);
-      transition: transform 0.1s, background-color 0.2s;
+      transition: all 0.2s ease;
     }
 
     .home-btn:active {
-      transform: scale(0.95);
-      background-color: #fdd835;
+      transform: scale(0.96);
+      background: rgba(255, 255, 255, 0.3);
     }
 
     .brand {
-      color: #00afca;
       font-weight: 800;
-      font-size: 1.05rem;
+      font-size: 0.82rem;
       letter-spacing: 0.5px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
     }
 
-    .content-container {
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+      padding: 16px;
+      gap: 12px;
+      overflow-y: auto;
+    }
+
+    .mode-select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      border-radius: 12px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--kz-blue-dark);
+      background: var(--kz-blue-light);
+      outline: none;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 8px;
+      background: var(--bg-main);
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .stats span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .term-box {
+      margin: 4px 0;
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid var(--border-color);
+      border-left: 6px solid var(--kz-gold-dark);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      text-align: center;
+      min-height: 125px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 18px;
-      padding: 20px 10px;
-      text-align: center;
-      flex-grow: 1;
     }
 
-    .icon-box {
-      font-size: 4rem;
-      line-height: 1;
-      margin-bottom: 5px;
-    }
-
-    .title {
-      font-size: 1.35rem;
-      color: #0081a7;
-      font-weight: 800;
-      line-height: 1.3;
-    }
-
-    .description {
-      font-size: 0.95rem;
-      color: #555;
-      line-height: 1.5;
-      max-width: 320px;
-    }
-
-    .action-btn {
-      background: #fbc02d;
-      color: #003366;
-      border: none;
-      padding: 14px 24px;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 800;
-      cursor: pointer;
-      width: 100%;
-      max-width: 300px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      text-decoration: none;
+    .level-tag {
       display: inline-block;
-      transition: transform 0.1s, background-color 0.2s;
-      margin-top: 10px;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .action-btn:hover {
-      background: #fdd835;
+    .term-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+      line-height: 1.35;
+      min-height: 2.7em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .action-btn:active {
-      transform: scale(0.98);
-    }
-
-    .insta-link {
-      font-size: 0.85rem;
-      color: #666;
-      margin-top: 10px;
-    }
-
-    .insta-link a {
-      color: #0081a7;
+    .chunks-box {
+      background: var(--bg-main);
+      border: 1px dashed var(--kz-gold-dark);
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      color: var(--kz-gold-dark);
       font-weight: 700;
-      text-decoration: underline;
+      margin-top: 6px;
+      word-break: break-word;
+      min-height: 36px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s, visibility 0.2s;
+    }
+
+    .chunks-box.invisible {
+      visibility: hidden;
+      border-color: transparent;
+      background: transparent;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .option-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      line-height: 1.3;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background-color: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+    }
+
+    .option-btn.correct {
+      background-color: #DCFCE7 !important;
+      border-color: #22C55E !important;
+      color: #15803D !important;
+      font-weight: 700;
+    }
+
+    .option-btn.wrong {
+      background-color: #FEE2E2 !important;
+      border-color: #EF4444 !important;
+      color: #B91C1C !important;
+      font-weight: 700;
+    }
+
+    .explanation-box {
+      background-color: var(--kz-blue-light);
+      border-left: 4px solid var(--kz-blue);
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      color: var(--kz-blue-dark);
+      margin-bottom: 10px;
+      line-height: 1.4;
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .explanation-box.answered {
+      background-color: #E0F2FE;
+      border-left-color: var(--kz-blue-dark);
+    }
+
+    .next-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      font-weight: 800;
+      padding: 12px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      border: 1px solid var(--kz-gold-dark);
+      cursor: pointer;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.2s ease, visibility 0.2s ease, background-color 0.2s ease, transform 0.1s ease;
+      min-height: 44px;
+    }
+
+    .next-btn.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .next-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    .next-btn:active {
+      transform: scale(0.98);
     }
   </style>
 </head>
 <body>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <div class="card">
     <!-- Header -->
@@ -155,22 +319,525 @@
       <div class="brand">@doctors.speak</div>
     </header>
 
-    <!-- Content -->
-    <div class="content-container">
-      <div class="icon-box">🚧</div>
-      <h1 class="title">Page not ready yet :( </h1>
-      <p class="description">
-        We are working on the page, please check it later🙏
-      </p>
+    <!-- Game Screen -->
+    <div id="gameScreen" class="game-container">
+      
+      <div>
+        <select id="levelSelect" class="mode-select" onchange="changeLevel()">
+          <option value="1">Level 1 — Recognition & Identification</option>
+          <option value="2">Level 2 — Fill in the Blanks & Applied Grammar</option>
+          <option value="3">Level 3 — Sentence Unscrambling / Chunk Reordering</option>
+          <option value="mix">🔥 Mix All Levels</option>
+        </select>
 
-      <a href="https://kazdoctors.com/grammar/" class="action-btn">Go back</a>
-
-      <div class="insta-link">
-        Our updates:<br>
-        <a href="https://instagram.com/doctors.speak" target="_blank">@doctors.speak</a>
+        <div class="stats">
+          <span>Total: <strong id="totalCount">0</strong></span>
+          <span>Correct: <strong id="correctCount" style="color:#16A34A;">0</strong></span>
+          <span>Streak: <strong id="streakCount" style="color:#D9A000;">0 🔥</strong></span>
+        </div>
       </div>
+
+      <div class="term-box">
+        <span id="levelTag" class="level-tag">Level 1</span>
+        <div id="questionText" class="term-title">Loading question...</div>
+        <div id="chunksBox" class="chunks-box invisible"></div>
+      </div>
+
+      <div>
+        <div id="optionsGrid" class="options-grid"></div>
+        
+        <div id="explanationBox" class="explanation-box">
+          <div><strong>💡 Explanation:</strong> <span id="explanationText">Choose the correct answer!</span></div>
+        </div>
+
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next ➔</button>
+      </div>
+
     </div>
   </div>
 
+  <script>
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+
+    const supabaseClient = supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+    async function checkAuth() {
+        const { data, error } = await supabaseClient.auth.getSession();
+
+        if (error || !data.session) {
+            window.location.href = "/login.html";
+            return;
+        }
+
+        nextQuestion();
+    }
+
+    checkAuth();
+
+    const questions = [
+      // ================= LEVEL 1: Recognition & Identification =================
+      {
+        level: 1,
+        question: "Identify the possessive in the sentence:\n\"Dr. Aigerim congratulated all her colleagues.\"",
+        options: ["congratulated", "all", "her", "colleagues"],
+        correct: 2,
+        explanation: "'her' is the possessive pronoun."
+      },
+      {
+        level: 1,
+        question: "Identify the possessive in the sentence:\n\"Pediatricians usually work in children's hospitals.\"",
+        options: ["usually", "work", "in", "children’s hospitals"],
+        correct: 3,
+        explanation: "'children’s' is the possessive noun form."
+      },
+      {
+        level: 1,
+        question: "Identify the possessive in the sentence:\n\"The complications of chronic hypertension are serious.\"",
+        options: ["complications of", "chronic hypertension", "are", "serious"],
+        correct: 0,
+        explanation: "'complications of' uses the 'of' possessive structure for inanimate concepts."
+      },
+      {
+        level: 1,
+        question: "Identify the possessive in the sentence:\n\"The nurse recorded the patient's pressure.\"",
+        options: ["nurse", "recorded", "patient's", "the"],
+        correct: 2,
+        explanation: "'patient's' is the singular possessive noun form."
+      },
+      {
+        level: 1,
+        question: "Identify the possessive in the sentence:\n\"Researchers published their findings in a medical journal.\"",
+        options: ["Researchers", "published", "their", "findings"],
+        correct: 2,
+        explanation: "'their' is the possessive pronoun."
+      },
+      {
+        level: 1,
+        question: "Identify the noun adjunct modifier in the sentence:\n\"The clinic purchased a new ultrasound machine last week.\"",
+        options: ["purchased", "ultrasound machine", "new", "last week"],
+        correct: 1,
+        explanation: "'ultrasound machine' uses a noun adjunct as a modifier."
+      },
+      {
+        level: 1,
+        question: "Identify the possessive construction in the sentence:\n\"The symptoms of severe asthma require immediate treatment.\"",
+        options: ["symptoms of", "severe asthma", "require", "treatment"],
+        correct: 0,
+        explanation: "'symptoms of' uses the 'of' construction."
+      },
+      {
+        level: 1,
+        question: "Identify the possessive in the sentence:\n\"The surgeon prepared his equipment before the operation.\"",
+        options: ["surgeon", "prepared", "his", "equipment"],
+        correct: 2,
+        explanation: "'his' is the possessive pronoun."
+      },
+      {
+        level: 1,
+        question: "Identify the noun adjunct in the sentence:\n\"Surgeons carefully opened the heart valve during surgery.\"",
+        options: ["Surgeons", "carefully", "opened", "heart valve"],
+        correct: 3,
+        explanation: "'heart valve' is a noun adjunct / compound noun."
+      },
+      {
+        level: 1,
+        question: "Identify the possessive construction in the sentence:\n\"They analyzed the blood samples of all participants.\"",
+        options: ["analyzed", "blood samples of", "all", "participants"],
+        correct: 1,
+        explanation: "'blood samples of' uses the 'of' construction."
+      },
+      {
+        level: 1,
+        question: "Identify the possessive in the sentence:\n\"The laboratory technician tested the patients' samples.\"",
+        options: ["laboratory", "technician", "tested", "patients'"],
+        correct: 3,
+        explanation: "'patients'' is the plural possessive noun form for regular plural nouns ending in -s."
+      },
+      {
+        level: 1,
+        question: "Identify the noun adjunct phrase in the sentence:\n\"Cardiologists usually work in heart disease clinics.\"",
+        options: ["Cardiologists", "work in", "heart disease clinics", "usually"],
+        correct: 2,
+        explanation: "'heart disease clinics' uses noun adjuncts to modify the noun."
+      },
+      {
+        level: 1,
+        question: "Identify the possessive construction in the sentence:\n\"The main focus of this clinical trial is safety.\"",
+        options: ["focus of", "clinical trial", "drug safety", "main"],
+        correct: 0,
+        explanation: "'focus of' uses the 'of' possessive structure."
+      },
+      {
+        level: 1,
+        question: "Identify the possessive in the sentence:\n\"The doctor examined her medical records thoroughly.\"",
+        options: ["doctor", "examined", "her", "thoroughly"],
+        correct: 2,
+        explanation: "'her' is the possessive pronoun."
+      },
+      {
+        level: 1,
+        question: "Identify the noun adjunct in the sentence:\n\"The team checked the patient monitoring system.\"",
+        options: ["team", "checked", "patient monitoring system", "thoroughly"],
+        correct: 2,
+        explanation: "'patient monitoring system' uses noun adjuncts."
+      },
+      {
+        level: 1,
+        question: "Identify the possessive construction in the sentence:\n\"The side effects of the medication were minimal.\"",
+        options: ["side effects of", "medication", "were", "minimal"],
+        correct: 0,
+        explanation: "'side effects of' uses the 'of' possessive construction."
+      },
+      {
+        level: 1,
+        question: "Identify the possessive pronoun in the sentence:\n\"The radiologist carefully reviewed its results.\"",
+        options: ["radiologist", "carefully", "reviewed", "its"],
+        correct: 3,
+        explanation: "'its' is the possessive pronoun."
+      },
+      {
+        level: 1,
+        question: "Identify the noun adjunct in the sentence:\n\"Doctors prescribed an effective blood pressure treatment.\"",
+        options: ["Doctors", "prescribed", "blood pressure treatment", "effective"],
+        correct: 2,
+        explanation: "'blood pressure treatment' uses noun adjuncts."
+      },
+      {
+        level: 1,
+        question: "Identify the possessive noun in the sentence:\n\"The doctor updated the children's vaccination.\"",
+        options: ["doctor", "updated", "children's", "vaccination"],
+        correct: 2,
+        explanation: "'children's' is the irregular plural possessive noun."
+      },
+      {
+        level: 1,
+        question: "Identify the possessive construction in the sentence:\n\"The results of the scan were clear.\"",
+        options: ["results of", "scan", "were", "clear"],
+        correct: 0,
+        explanation: "'results of' uses the 'of' possessive construction."
+      },
+
+      // ================= LEVEL 2: Fill in the Blanks & Applied Grammar =================
+      {
+        level: 2,
+        question: "The head doctor examined __________ medical history before prescribing the treatment.",
+        options: ["the patient", "the patient's", "the patients's", "of the patient"],
+        correct: 1,
+        explanation: "'the patient's' is the singular possessive noun form."
+      },
+      {
+        level: 2,
+        question: "Which phrase correctly describes a clinic that treats children?",
+        options: ["A children's clinic", "A childrens' clinic", "A clinic of childrens", "A childs clinic"],
+        correct: 0,
+        explanation: "Irregular plural 'children' takes ''s' to form 'children's'."
+      },
+      {
+        level: 2,
+        question: "The trial results showed a significant decrease in __________ blood pressure after four weeks.",
+        options: ["the patients", "the patient", "the patients'", "the of patients"],
+        correct: 2,
+        explanation: "Regular plural nouns ending in -s take an apostrophe after the s: 'patients''."
+      },
+      {
+        level: 2,
+        question: "How would you correctly refer to a trial evaluating the safety of a drug?",
+        options: ["A drug's safety trial", "A trial's drug safety", "A drug safety trial", "A safety of drug trial"],
+        correct: 2,
+        explanation: "'A drug safety trial' uses noun adjuncts (nouns acting as adjectives)."
+      },
+      {
+        level: 2,
+        question: "The main objective __________ was to evaluate the efficacy of the new vaccine.",
+        options: ["of the study", "study's", "the study", "study of the"],
+        correct: 0,
+        explanation: "The 'of' phrase ('of the study') is preferred for inanimate objects."
+      },
+      {
+        level: 2,
+        question: "Dr. Adams reviewed the laboratory results, but she couldn't find __________ on the system.",
+        options: ["hers", "her", "hers'", "she's"],
+        correct: 0,
+        explanation: "'hers' is the absolute possessive pronoun standing alone without a noun."
+      },
+      {
+        level: 2,
+        question: "Which term correctly names a department that cares for patients after surgery?",
+        options: ["Surgical recovery ward", "Ward's surgical recovery", "Ward of surgical recovery", "Surgical ward's recovery"],
+        correct: 0,
+        explanation: "'Surgical recovery ward' uses a noun adjunct chain."
+      },
+      {
+        level: 2,
+        question: "The researchers published their findings, and the oncology department published __________.",
+        options: ["their", "theirs'", "them", "theirs"],
+        correct: 3,
+        explanation: "'theirs' is the absolute possessive pronoun standing alone."
+      },
+      {
+        level: 2,
+        question: "The primary cause __________ in this cohort was linked to systemic inflammation.",
+        options: ["the patient's disease", "of the patient's disease", "disease of patient's", "patient disease"],
+        correct: 1,
+        explanation: "Uses 'of' combined with possessive 'patient's disease'."
+      },
+      {
+        level: 2,
+        question: "Dr. Smith analyzed the EEG readings of the control group and compared them with __________ .",
+        options: ["Dr. Jones", "Dr. Jones's", "Dr. Jones's readings group", "the Dr. Jones"],
+        correct: 1,
+        explanation: "'Dr. Jones's' uses possessive ellipsis where 'readings' is implied."
+      },
+      {
+        level: 2,
+        question: "The hospital recently upgraded its __________ system to improve diagnosis accuracy.",
+        options: ["image processing heart", "heart's image processing", "cardiac imaging", "cardiac's imaging"],
+        correct: 2,
+        explanation: "'cardiac imaging' is the standard medical term."
+      },
+      {
+        level: 2,
+        question: "Both __________ lab reports indicated elevated liver enzymes following the therapy.",
+        options: ["patients", "patient's", "patients's", "patients'"],
+        correct: 3,
+        explanation: "'patients'' indicates plural possessive for both patients."
+      },
+      {
+        level: 2,
+        question: "The nurse carefully recorded the __________ symptoms during the night shift.",
+        options: ["women's", "womens'", "womens", "woman's patient"],
+        correct: 0,
+        explanation: "Irregular plural 'women' takes ''s' -> 'women's'."
+      },
+      {
+        level: 2,
+        question: "The team published a landmark study on __________ management in diabetic patients.",
+        options: ["blood pressure's high", "high blood pressure", "high pressure of blood", "blood's high pressure"],
+        correct: 1,
+        explanation: "'high blood pressure' is a standard compound medical noun adjunct."
+      },
+      {
+        level: 2,
+        question: "The pathology department sent the tissue samples to the lab, but the lab misplaced __________ .",
+        options: ["it's", "its", "theirs", "their's"],
+        correct: 2,
+        explanation: "'theirs' refers back to 'the pathology department's samples'."
+      },
+      {
+        level: 2,
+        question: "The chief surgeon explained the risks __________ to the family prior to the operation.",
+        options: ["of the surgical procedure", "surgical procedure's", "of surgical procedure's", "procedure of surgery"],
+        correct: 0,
+        explanation: "'of the surgical procedure' uses the 'of' structure for abstract procedures."
+      },
+
+      // ================= LEVEL 3: Sentence Unscrambling / Chunk Reordering =================
+      {
+        level: 3,
+        question: "Unscramble the sentence:",
+        chunks: "the patient's / sudden drop in / heart rate / alarmed the ICU team",
+        options: [
+          "Sudden drop in the patient's heart rate alarmed the ICU team.",
+          "The patient's sudden drop in heart rate alarmed the ICU team.",
+          "Heart rate alarmed the ICU team sudden drop in the patient's.",
+          "Alarmed the ICU team sudden drop in heart rate the patient's."
+        ],
+        correct: 1,
+        explanation: "Correct word order: The patient's + sudden drop in heart rate + alarmed the ICU team."
+      },
+      {
+        level: 3,
+        question: "Unscramble the sentence:",
+        chunks: "the study's / were published / primary outcomes / in a peer-reviewed journal",
+        options: [
+          "In a peer-reviewed journal were published the study's primary outcomes.",
+          "The study's primary outcomes were published in a peer-reviewed journal.",
+          "Primary outcomes were published the study's in a peer-reviewed journal.",
+          "Were published the study's primary outcomes in a peer-reviewed journal."
+        ],
+        correct: 1,
+        explanation: "Correct word order: Subject (The study's primary outcomes) + Verb (were published) + Prepositional phrase (in a peer-reviewed journal)."
+      },
+      {
+        level: 3,
+        question: "Unscramble the sentence:",
+        chunks: "side effects / the drug's / were carefully documented / during the clinical trial",
+        options: [
+          "During the clinical trial were carefully documented side effects the drug's.",
+          "Were carefully documented the drug's side effects during the clinical trial.",
+          "The drug's side effects were carefully documented during the clinical trial.",
+          "Side effects of the drug's were carefully documented during the clinical trial."
+        ],
+        correct: 2,
+        explanation: "Correct word order: Subject (The drug's side effects) + Verb (were carefully documented) + Time phrase."
+      },
+      {
+        level: 3,
+        question: "Unscramble the sentence:",
+        chunks: "a double-blind / conducted / placebo-controlled study / the research group",
+        options: [
+          "Conducted the research group a double-blind placebo-controlled study.",
+          "A double-blind placebo-controlled study conducted the research group.",
+          "Placebo-controlled study the research group conducted a double-blind.",
+          "The research group conducted a double-blind placebo-controlled study."
+        ],
+        correct: 3,
+        explanation: "Correct word order: Subject (The research group) + Verb (conducted) + Direct Object (a double-blind placebo-controlled study)."
+      },
+      {
+        level: 3,
+        question: "Unscramble the sentence:",
+        chunks: "blood sample / was sent / the patient's / to the central laboratory",
+        options: [
+          "Was sent the patient's blood sample to the central laboratory.",
+          "To the central laboratory was sent the patient's blood sample.",
+          "The patient's blood sample was sent to the central laboratory.",
+          "Blood sample the patient's was sent to the central laboratory."
+        ],
+        correct: 2,
+        explanation: "Correct word order: Subject (The patient's blood sample) + Verb (was sent) + Destination."
+      },
+      {
+        level: 3,
+        question: "Unscramble the sentence:",
+        chunks: "of the new therapy / the long-term benefits / are still being evaluated / by the team",
+        options: [
+          "The long-term benefits of the new therapy are still being evaluated by the team.",
+          "By the team are still being evaluated the long-term benefits of the new therapy.",
+          "Are still being evaluated the long-term benefits of the new therapy by the team.",
+          "Of the new therapy the long-term benefits are still being evaluated by the team."
+        ],
+        correct: 0,
+        explanation: "Correct word order: Subject phrase (The long-term benefits of the new therapy) + Passive verb phrase + Agent."
+      },
+      {
+        level: 3,
+        question: "Unscramble the sentence:",
+        chunks: "medical records / the clinic's / were updated / after every consultation",
+        options: [
+          "Were updated after every consultation the clinic's medical records.",
+          "Medical records were updated after every consultation the clinic's.",
+          "The clinic's medical records were updated after every consultation.",
+          "After every consultation were updated the clinic's medical records."
+        ],
+        correct: 2,
+        explanation: "Correct word order: Subject (The clinic's medical records) + Verb (were updated) + Time phrase."
+      },
+      {
+        level: 3,
+        question: "Unscramble the sentence:",
+        chunks: "the patients' responses / to the treatment / varied significantly / across age groups",
+        options: [
+          "To the treatment varied significantly the patients' responses across age groups.",
+          "Varied significantly across age groups the patients' responses to the treatment.",
+          "Across age groups the patients' responses to the treatment varied significantly.",
+          "The patients' responses to the treatment varied significantly across age groups."
+        ],
+        correct: 3,
+        explanation: "Correct word order: Subject (The patients' responses to the treatment) + Verb & Adverb (varied significantly) + Scope (across age groups)."
+      }
+    ];
+
+    let total = 0;
+    let correct = 0;
+    let streak = 0;
+    let currentQuestion = null;
+    let answered = false;
+
+    function changeLevel() {
+      nextQuestion();
+    }
+
+    function getFilteredQuestions() {
+      const selectedLevel = document.getElementById('levelSelect').value;
+      if (selectedLevel === 'mix') {
+        return questions;
+      }
+      return questions.filter(q => q.level === parseInt(selectedLevel));
+    }
+
+    function nextQuestion() {
+      answered = false;
+      
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.classList.remove('visible');
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.remove('answered');
+      document.getElementById('explanationText').textContent = "Choose the correct answer!";
+
+      const pool = getFilteredQuestions();
+      if (!pool || pool.length === 0) {
+        document.getElementById('questionText').textContent = "No questions found for this level.";
+        document.getElementById('optionsGrid').innerHTML = '';
+        return;
+      }
+
+      currentQuestion = pool[Math.floor(Math.random() * pool.length)];
+
+      const levelTag = document.getElementById('levelTag');
+      levelTag.textContent = `Level ${currentQuestion.level}`;
+
+      document.getElementById('questionText').textContent = currentQuestion.question;
+
+      const chunksBox = document.getElementById('chunksBox');
+      if (currentQuestion.chunks) {
+        chunksBox.textContent = currentQuestion.chunks;
+        chunksBox.classList.remove('invisible');
+      } else {
+        chunksBox.textContent = '';
+        chunksBox.classList.add('invisible');
+      }
+
+      const grid = document.getElementById('optionsGrid');
+      grid.innerHTML = '';
+
+      currentQuestion.options.forEach((optText, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = `${String.fromCharCode(65 + index)}) ${optText}`;
+        btn.onclick = () => selectOption(btn, index);
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedBtn, selectedIndex) {
+      if (answered) return;
+      answered = true;
+
+      total++;
+      const isCorrect = (selectedIndex === currentQuestion.correct);
+
+      if (isCorrect) {
+        correct++;
+        streak++;
+        selectedBtn.classList.add('correct');
+      } else {
+        streak = 0;
+        selectedBtn.classList.add('wrong');
+        
+        const allBtns = document.querySelectorAll('.option-btn');
+        if (allBtns[currentQuestion.correct]) {
+          allBtns[currentQuestion.correct].classList.add('correct');
+        }
+      }
+
+      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('correctCount').textContent = correct;
+      document.getElementById('streakCount').textContent = `${streak} 🔥`;
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.add('answered');
+      document.getElementById('explanationText').textContent = currentQuestion.explanation;
+
+      document.getElementById('nextBtn').classList.add('visible');
+    }
+  </script>
 </body>
 </html>
