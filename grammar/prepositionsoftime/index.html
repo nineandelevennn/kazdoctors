@@ -3,150 +3,314 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>@doctors.speak — Page not ready yet</title>
+  <title>@doctors.speak — Medical Grammar Trainer (Prepositions of Time)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Montserrat', sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background: linear-gradient(135deg, #00afca 0%, #0081a7 100%);
-      color: #333;
+      background: var(--bg-main);
+      color: var(--text-dark);
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 10px;
+      padding: 12px 10px;
     }
 
     .card {
-      background: #ffffff;
+      background: var(--card-bg);
       border-radius: 20px;
       width: 100%;
-      max-width: 420px;
-      height: 680px;
+      max-width: 440px;
+      min-height: 680px;
       max-height: 95vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      border: 3px solid #fbc02d;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-color);
       position: relative;
-      overflow-y: auto;
+      overflow: hidden;
     }
 
     .header {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 16px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 10px;
-      border-bottom: 2px solid #00afca;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
       flex-shrink: 0;
     }
 
     .home-btn {
-      background-color: #fbc02d;
-      color: #003366;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #FFFFFF;
       text-decoration: none;
       font-weight: 700;
-      font-size: 0.8rem;
-      padding: 6px 12px;
-      border-radius: 12px;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.12);
-      transition: transform 0.1s, background-color 0.2s;
+      transition: all 0.2s ease;
     }
 
     .home-btn:active {
-      transform: scale(0.95);
-      background-color: #fdd835;
+      transform: scale(0.96);
+      background: rgba(255, 255, 255, 0.3);
     }
 
     .brand {
-      color: #00afca;
       font-weight: 800;
-      font-size: 1.05rem;
+      font-size: 0.82rem;
       letter-spacing: 0.5px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
     }
 
-    .content-container {
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+      padding: 16px;
+      gap: 12px;
+      overflow-y: auto;
+    }
+
+    .mode-select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      border-radius: 12px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--kz-blue-dark);
+      background: var(--kz-blue-light);
+      outline: none;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 8px;
+      background: var(--bg-main);
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .stats span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .term-box {
+      margin: 4px 0;
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid var(--border-color);
+      border-left: 6px solid var(--kz-gold-dark);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      text-align: center;
+      min-height: 125px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 18px;
-      padding: 20px 10px;
-      text-align: center;
-      flex-grow: 1;
     }
 
-    .icon-box {
-      font-size: 4rem;
-      line-height: 1;
-      margin-bottom: 5px;
-    }
-
-    .title {
-      font-size: 1.35rem;
-      color: #0081a7;
-      font-weight: 800;
-      line-height: 1.3;
-    }
-
-    .description {
-      font-size: 0.95rem;
-      color: #555;
-      line-height: 1.5;
-      max-width: 320px;
-    }
-
-    .action-btn {
-      background: #fbc02d;
-      color: #003366;
-      border: none;
-      padding: 14px 24px;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 800;
-      cursor: pointer;
-      width: 100%;
-      max-width: 300px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      text-decoration: none;
+    .level-tag {
       display: inline-block;
-      transition: transform 0.1s, background-color 0.2s;
-      margin-top: 10px;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .action-btn:hover {
-      background: #fdd835;
+    .term-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+      line-height: 1.35;
+      min-height: 2.7em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .action-btn:active {
-      transform: scale(0.98);
-    }
-
-    .insta-link {
-      font-size: 0.85rem;
-      color: #666;
-      margin-top: 10px;
-    }
-
-    .insta-link a {
-      color: #0081a7;
+    .chunks-box {
+      background: var(--bg-main);
+      border: 1px dashed var(--kz-gold-dark);
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      color: var(--kz-gold-dark);
       font-weight: 700;
-      text-decoration: underline;
+      margin-top: 6px;
+      word-break: break-word;
+      min-height: 36px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s, visibility 0.2s;
+    }
+
+    .chunks-box.invisible {
+      visibility: hidden;
+      border-color: transparent;
+      background: transparent;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .option-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      line-height: 1.3;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background-color: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+    }
+
+    .option-btn.correct {
+      background-color: #DCFCE7 !important;
+      border-color: #22C55E !important;
+      color: #15803D !important;
+      font-weight: 700;
+    }
+
+    .option-btn.wrong {
+      background-color: #FEE2E2 !important;
+      border-color: #EF4444 !important;
+      color: #B91C1C !important;
+      font-weight: 700;
+    }
+
+    .explanation-box {
+      background-color: var(--kz-blue-light);
+      border-left: 4px solid var(--kz-blue);
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      color: var(--kz-blue-dark);
+      margin-bottom: 10px;
+      line-height: 1.4;
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .explanation-box.answered {
+      background-color: #E0F2FE;
+      border-left-color: var(--kz-blue-dark);
+    }
+
+    .next-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      font-weight: 800;
+      padding: 12px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      border: 1px solid var(--kz-gold-dark);
+      cursor: pointer;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.2s ease, visibility 0.2s ease, background-color 0.2s ease, transform 0.1s ease;
+      min-height: 44px;
+    }
+
+    .next-btn.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .next-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    .next-btn:active {
+      transform: scale(0.98);
     }
   </style>
 </head>
 <body>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <div class="card">
     <!-- Header -->
@@ -155,22 +319,712 @@
       <div class="brand">@doctors.speak</div>
     </header>
 
-    <!-- Content -->
-    <div class="content-container">
-      <div class="icon-box">🚧</div>
-      <h1 class="title">Page not ready yet :( </h1>
-      <p class="description">
-        We are working on the page, please check it later🙏
-      </p>
+    <!-- Game Screen -->
+    <div id="gameScreen" class="game-container">
+      
+      <div>
+        <select id="levelSelect" class="mode-select" onchange="changeLevel()">
+          <option value="1">Level 1 — Recognize the meaning</option>
+          <option value="2">Level 2 — Fill in the preposition</option>
+          <option value="3">Level 3 — Put the sentence in order</option>
+          <option value="mix">🔥 Mix</option>
+        </select>
 
-      <a href="https://kazdoctors.com/grammar/" class="action-btn">Go back</a>
-
-      <div class="insta-link">
-        Our updates:<br>
-        <a href="https://instagram.com/doctors.speak" target="_blank">@doctors.speak</a>
+        <div class="stats">
+          <span>Total: <strong id="totalCount">0</strong></span>
+          <span>Correct: <strong id="correctCount" style="color:#16A34A;">0</strong></span>
+          <span>Streak: <strong id="streakCount" style="color:#D9A000;">0 🔥</strong></span>
+        </div>
       </div>
+
+      <div class="term-box">
+        <span id="levelTag" class="level-tag">Level 1</span>
+        <div id="questionText" class="term-title">Loading question...</div>
+        <div id="chunksBox" class="chunks-box invisible"></div>
+      </div>
+
+      <div>
+        <div id="optionsGrid" class="options-grid"></div>
+        
+        <div id="explanationBox" class="explanation-box">
+          <div><strong>💡 Explanation:</strong> <span id="explanationText">Choose the correct answer!</span></div>
+        </div>
+
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next ➔</button>
+      </div>
+
     </div>
   </div>
 
+  <script>
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function checkAuth() {
+      const { data, error } = await supabaseClient.auth.getSession();
+      if (error || !data.session) {
+        window.location.href = "/login.html";
+        return;
+      }
+      nextQuestion();
+    }
+
+    checkAuth();
+
+    // Helper to shuffle array (Fisher-Yates)
+    function shuffleArray(array) {
+      let arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    // Questions database based on Lesson 9 (Prepositions of Time)
+    const questions = [
+      // ================= LEVEL 1: RECOGNIZE MEANING =================
+      {
+        level: 1,
+        question: "We examined the nodular lesion AT 9 a.m. yesterday.",
+        options: ["Точное конкретное время", "Длительность периода", "Предел («к какому-то времени»)", "С какого-то момента"],
+        correct: 0,
+        explanation: "'At' is used for a specific point in time (at 9 a.m.)."
+      },
+      {
+        level: 1,
+        question: "He stayed in the medical ward FOR three days.",
+        options: ["Предел («к какому-то времени»)", "Продолжительность (период времени)", "Точное конкретное время", "Начало действия во прошлом"],
+        correct: 1,
+        explanation: "'For' specifies a total period or duration of time (for three days)."
+      },
+      {
+        level: 1,
+        question: "The patient must receive the lab test results BY Friday.",
+        options: ["Продолжительность периода", "Действие во время другого процесса", "Дедлайн / к определенному моменту", "Период с начала и до конца"],
+        correct: 2,
+        explanation: "'By' indicates a deadline or 'no later than' a certain time (by Friday)."
+      },
+      {
+        level: 1,
+        question: "The patient has had mucous membrane dryness SINCE last week.",
+        options: ["Завершение процесса", "Точное время события", "В течение периода", "С определенного момента в прошлом"],
+        correct: 3,
+        explanation: "'Since' indicates the starting point of an action continuing to the present."
+      },
+      {
+        level: 1,
+        question: "Pale skin tone was observed DURING the physical examination.",
+        options: ["Во время определенного процесса/события", "Конкретное время на часах", "Предел по времени", "С определенной даты"],
+        correct: 0,
+        explanation: "'During' refers to an event happening throughout or within a period/process."
+      },
+      {
+        level: 1,
+        question: "Cognitive function declined WITHIN 24 hours after stroke onset.",
+        options: ["С определенного момента", "В пределах / в течение определенного срока", "Только в дни и даты", "После окончания периода"],
+        correct: 1,
+        explanation: "'Within' means inside the limit of a time period (within 24 hours)."
+      },
+      {
+        level: 1,
+        question: "The doctor sees patients FROM 9 to 5 every day.",
+        options: ["Точное время на часах", "Ограничение по дедлайну", "Временной диапазон (от ... до)", "Событие во время операции"],
+        correct: 2,
+        explanation: "'From... to' defines the starting and ending boundaries of a period."
+      },
+      {
+        level: 1,
+        question: "Mild deficits remained UNTIL the end of the observation period.",
+        options: ["С какого-то момента", "За определенное время до", "На протяжении периода", "До определенного момента в времени"],
+        correct: 3,
+        explanation: "'Until / till' shows how long a situation continues up to a specific point."
+      },
+      {
+        level: 1,
+        question: "We observed improvements THROUGHOUT the first month of rehabilitation.",
+        options: ["На протяжении всего периода (без перерыва)", "Конкретный час дня", "К определенной дате", "После завершения процедуры"],
+        correct: 0,
+        explanation: "'Throughout' emphasizes the entire duration from beginning to end."
+      },
+      {
+        level: 1,
+        question: "Wash your hands BEFORE surgery to maintain sterility.",
+        options: ["После завершения действия", "До / перед определенным моментом", "В течение всего времени", "С момента начала операции"],
+        correct: 1,
+        explanation: "'Before' indicates prior to a specific event or point in time."
+      },
+      {
+        level: 1,
+        question: "Follow-up evaluations were conducted AFTER discharge.",
+        options: ["До проведения процедуры", "На протяжении всего срока", "После определенного события", "С определенного года"],
+        correct: 2,
+        explanation: "'After' means following in time or subsequent to an event."
+      },
+      {
+        level: 1,
+        question: "The surgery will begin AT AROUND 7 a.m. tomorrow.",
+        options: ["Точно в секунду", "С конкретного дня", "До наступления утра", "Приблизительно / около определенного времени"],
+        correct: 3,
+        explanation: "'Around' indicates approximate time."
+      },
+      {
+        level: 1,
+        question: "The patient was born ON the 7th of May.",
+        options: ["Дни недели и точные даты", "Часы и минуты", "Года и века", "Период продолжительности"],
+        correct: 0,
+        explanation: "'On' is used specifically for days of the week and precise dates."
+      },
+      {
+        level: 1,
+        question: "She began to feel severe malaise DURING the night shift.",
+        options: ["Во время работы/процесса", "До момента смены", "Точно в 12 часов", "За пределами периода"],
+        correct: 0,
+        explanation: "'During' is used before a noun/noun phrase describing a time period or event."
+      },
+      {
+        level: 1,
+        question: "The numbness appeared IN five minutes after the injection.",
+        options: ["К определенному времени", "Через какой-то промежуток времени", "С момента укола", "До укола"],
+        correct: 1,
+        explanation: "'In' can mean 'after a specific duration of time' (через 5 минут)."
+      },
+      {
+        level: 1,
+        question: "A heart murmur was first detected AT the time of the routine check-up.",
+        options: ["Точка во времени / конкретный момент", "Диапазон дат", "Период в прошлом", "Дедлайн назначения"],
+        correct: 0,
+        explanation: "'At the time of' points to a specific juncture or moment."
+      },
+      {
+        level: 1,
+        question: "The patient has been vomiting SINCE morning.",
+        options: ["На протяжении двух часов", "К вечеру", "С определенного момента в прошлом", "До захода солнца"],
+        correct: 2,
+        explanation: "'Since' denotes a starting point that continues until now."
+      },
+      {
+        level: 1,
+        question: "The treatment will finish WITHIN 8 weeks in total.",
+        options: ["Точно через 8 недель", "Спустя 8 недель", "Не позже чем через 8 недель (в пределах)", "С первой недели до восьмой"],
+        correct: 2,
+        explanation: "'Within' specifies the time limit inside which something happens."
+      },
+      {
+        level: 1,
+        question: "Don't take alcohol AFTER taking antibiotics.",
+        options: ["Во время приема", "До приема", "Вместо приема", "После приема"],
+        correct: 3,
+        explanation: "'After' refers to time following an event."
+      },
+      {
+        level: 1,
+        question: "The nurse made a note of the malformation AT his first visit.",
+        options: ["Конкретное событие/визит", "В течение всего года", "С момента первого визита", "К концу недели"],
+        correct: 0,
+        explanation: "'At' is used for a precise occasion or time point."
+      },
+
+      // ================= LEVEL 2: FILL IN THE BLANK =================
+      {
+        level: 2,
+        question: "We examined the nodular lesion ____ 9 a.m. yesterday.",
+        options: ["at", "on", "in", "during"],
+        correct: 0,
+        explanation: "Use 'at' for specific times on the clock."
+      },
+      {
+        level: 2,
+        question: "The pale skin tone was observed ____ the physical examination.",
+        options: ["since", "during", "by", "for"],
+        correct: 1,
+        explanation: "Use 'during' to state that something happens within an event or process."
+      },
+      {
+        level: 2,
+        question: "He has had mucous membrane dryness ____ two weeks.",
+        options: ["since", "by", "for", "at"],
+        correct: 2,
+        explanation: "Use 'for' followed by a length/duration of time (two weeks)."
+      },
+      {
+        level: 2,
+        question: "The patient must receive test results ____ Friday.",
+        options: ["in", "during", "for", "by"],
+        correct: 3,
+        explanation: "Use 'by' to express deadline or completion before a time limit."
+      },
+      {
+        level: 2,
+        question: "The doctor made a note of the malformation ____ his first visit.",
+        options: ["at", "for", "within", "throughout"],
+        correct: 0,
+        explanation: "Use 'at' for a specific time or event point (at his first visit)."
+      },
+      {
+        level: 2,
+        question: "The patient reported mild muscle ache starting ____ the weekend.",
+        options: ["by", "during", "for", "since"],
+        correct: 1,
+        explanation: "'During' describes an event happening throughout the duration of the weekend."
+      },
+      {
+        level: 2,
+        question: "She began to feel malaise ____ the night shift.",
+        options: ["for", "at", "during", "by"],
+        correct: 2,
+        explanation: "Use 'during' for actions occurring while a shift or process takes place."
+      },
+      {
+        level: 2,
+        question: "A heart murmur was first noticed ____ the routine check-up.",
+        options: ["since", "for", "by", "at"],
+        correct: 3,
+        explanation: "Use 'at' to specify a point in time or clinical event."
+      },
+      {
+        level: 2,
+        question: "Patients were assessed ____ 24 hours after stroke onset.",
+        options: ["within", "for", "since", "from"],
+        correct: 0,
+        explanation: "Use 'within' to denote inside a time constraint (within 24 hours)."
+      },
+      {
+        level: 2,
+        question: "The patient has been showing improvement ____ the surgery.",
+        options: ["for", "since", "by", "at"],
+        correct: 1,
+        explanation: "Use 'since' when referring to a past moment that marks the start of an ongoing state."
+      },
+      {
+        level: 2,
+        question: "The medical staff monitored osteogenesis imperfecta ____ the year.",
+        options: ["at", "by", "throughout", "since"],
+        correct: 2,
+        explanation: "Use 'throughout' to emphasize the whole extent of the period."
+      },
+      {
+        level: 2,
+        question: "The child looked pale ____ the blood test was conducted.",
+        options: ["since", "for", "during", "before"],
+        correct: 3,
+        explanation: "Use 'before' to indicate prior to the procedure."
+      },
+      {
+        level: 2,
+        question: "The patient stayed in the medical ward ____ three days.",
+        options: ["for", "at", "since", "by"],
+        correct: 0,
+        explanation: "Use 'for' to indicate the duration of stay."
+      },
+      {
+        level: 2,
+        question: "The tumor became malignant ____ several months of rapid growth.",
+        options: ["since", "after", "by", "at"],
+        correct: 1,
+        explanation: "Use 'after' to specify the sequence following a timeframe."
+      },
+      {
+        level: 2,
+        question: "Screening tools were applied every day ____ the hospital stay.",
+        options: ["since", "for", "during", "by"],
+        correct: 2,
+        explanation: "Use 'during' for events happening inside the timeline of the hospital stay."
+      },
+      {
+        level: 2,
+        question: "The doctor sees patients ____ 9 a.m. to 5 p.m.",
+        options: ["since", "by", "within", "from"],
+        correct: 3,
+        explanation: "Use 'from... to' for time intervals."
+      },
+      {
+        level: 2,
+        question: "The patient was instructed to rest ____ several days after the vaccine.",
+        options: ["for", "since", "at", "by"],
+        correct: 0,
+        explanation: "Use 'for' with time spans like 'several days'."
+      },
+      {
+        level: 2,
+        question: "Follow-up evaluations were conducted once a week ____ discharge.",
+        options: ["for", "after", "during", "by"],
+        correct: 1,
+        explanation: "Use 'after' to mean following the patient's discharge."
+      },
+      {
+        level: 2,
+        question: "The swelling decreased significantly ____ the third week.",
+        options: ["since", "for", "by", "at"],
+        correct: 2,
+        explanation: "Use 'by' to mean not later than / upon reaching the third week."
+      },
+      {
+        level: 2,
+        question: "Please sanitize your hands ____ performing any invasive procedure.",
+        options: ["during", "since", "for", "before"],
+        correct: 3,
+        explanation: "Use 'before' for preventive measures prior to an procedure."
+      },
+
+      // ================= LEVEL 3: SENTENCE UNSCRAMBLE =================
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["at 9 a.m.", "we examined", "yesterday", "the nodular lesion"],
+        options: [
+          "We examined the nodular lesion at 9 a.m. yesterday.",
+          "We examined at 9 a.m. the nodular lesion yesterday.",
+          "The nodular lesion at 9 a.m. we examined yesterday.",
+          "Yesterday at 9 a.m. the nodular lesion we examined."
+        ],
+        correct: 0,
+        explanation: "Subject (We) + Verb (examined) + Object (the nodular lesion) + Time (at 9 a.m. yesterday)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["the physical examination", "was observed", "during", "the pale skin tone"],
+        options: [
+          "During the physical examination was observed the pale skin tone.",
+          "The pale skin tone was observed during the physical examination.",
+          "Was observed the pale skin tone during the physical examination.",
+          "The pale skin tone during the physical examination was observed."
+        ],
+        correct: 1,
+        explanation: "Subject (The pale skin tone) + Passive Verb (was observed) + Prepositional phrase (during the physical examination)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["dryness", "he has had", "mucous membrane", "for two weeks"],
+        options: [
+          "He has had dryness mucous membrane for two weeks.",
+          "Mucous membrane dryness he has had for two weeks.",
+          "He has had mucous membrane dryness for two weeks.",
+          "For two weeks mucous membrane he has had dryness."
+        ],
+        correct: 2,
+        explanation: "Subject (He) + Verb (has had) + Object (mucous membrane dryness) + Duration (for two weeks)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["receive test results", "by Friday", "the patient", "must"],
+        options: [
+          "The patient receive test results must by Friday.",
+          "By Friday must the patient receive test results.",
+          "Receive test results the patient must by Friday.",
+          "The patient must receive test results by Friday."
+        ],
+        correct: 3,
+        explanation: "Subject (The patient) + Modal (must) + Verb phrase (receive test results) + Deadline (by Friday)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["mild muscle ache", "the patient reported", "the weekend", "starting during"],
+        options: [
+          "The patient reported mild muscle ache starting during the weekend.",
+          "Starting during the weekend mild muscle ache the patient reported.",
+          "The patient reported starting during the weekend mild muscle ache.",
+          "Mild muscle ache reported the patient starting during the weekend."
+        ],
+        correct: 0,
+        explanation: "Subject (The patient) + Verb (reported) + Object (mild muscle ache) + Time condition (starting during the weekend)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["in the medical ward", "three days", "he stayed", "for"],
+        options: [
+          "He stayed for three days in the medical ward.",
+          "He stayed in the medical ward for three days.",
+          "In the medical ward he stayed three days for.",
+          "For three days in the medical ward he stayed."
+        ],
+        correct: 1,
+        explanation: "Subject (He) + Verb (stayed) + Place (in the medical ward) + Duration (for three days)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["after stroke onset", "within 24 hours", "patients were assessed", "by the team"],
+        options: [
+          "Within 24 hours after stroke onset patients were assessed by the team.",
+          "Patients were assessed after stroke onset by the team within 24 hours.",
+          "Patients were assessed within 24 hours after stroke onset.",
+          "By the team patients were assessed within 24 hours after stroke onset."
+        ],
+        correct: 2,
+        explanation: "Subject (Patients) + Passive Verb (were assessed) + Time frame (within 24 hours after stroke onset)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["the doctor", "at his first visit", "made a note of", "the malformation"],
+        options: [
+          "The doctor made a note of at his first visit the malformation.",
+          "At his first visit the doctor the malformation made a note of.",
+          "Made a note of the malformation the doctor at his first visit.",
+          "The doctor made a note of the malformation at his first visit."
+        ],
+        correct: 3,
+        explanation: "Subject (The doctor) + Verb phrase (made a note of) + Object (the malformation) + Time (at his first visit)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["a heart murmur", "at the time of", "was first detected", "the routine check-up"],
+        options: [
+          "A heart murmur was first detected at the time of the routine check-up.",
+          "At the time of the routine check-up was first detected a heart murmur.",
+          "A heart murmur at the time of the routine check-up was first detected.",
+          "Was first detected a heart murmur at the time of the routine check-up."
+        ],
+        correct: 0,
+        explanation: "Subject (A heart murmur) + Verb (was first detected) + Time phrase (at the time of the routine check-up)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["throughout the year", "we have been seeing", "imperfecta", "osteogenesis"],
+        options: [
+          "Osteogenesis imperfecta throughout the year we have been seeing.",
+          "We have been seeing osteogenesis imperfecta throughout the year.",
+          "We have been seeing throughout the year osteogenesis imperfecta.",
+          "Throughout the year osteogenesis imperfecta we have been seeing."
+        ],
+        correct: 1,
+        explanation: "Subject (We) + Verb (have been seeing) + Object (osteogenesis imperfecta) + Time phrase (throughout the year)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["the child looked pale", "and during the procedure", "before the blood test", "in the clinic"],
+        options: [
+          "Before the blood test and during the procedure the child looked pale.",
+          "In the clinic before the blood test the child looked pale and during the procedure.",
+          "The child looked pale before the blood test and during the procedure.",
+          "And during the procedure the child looked pale before the blood test."
+        ],
+        correct: 2,
+        explanation: "Subject + Predicate (The child looked pale) + Prepositional time sequence (before... and during...)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["until the end of", "mild deficits", "remained", "the observation period"],
+        options: [
+          "Until the end of the observation period remained mild deficits.",
+          "Mild deficits until the end of the observation period remained.",
+          "The observation period remained mild deficits until the end of.",
+          "Mild deficits remained until the end of the observation period."
+        ],
+        correct: 3,
+        explanation: "Subject (Mild deficits) + Verb (remained) + Time prepositional phrase (until the end of the observation period)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["during the hospital stay", "were applied", "every day", "screening tools"],
+        options: [
+          "Screening tools were applied every day during the hospital stay.",
+          "Every day screening tools during the hospital stay were applied.",
+          "Were applied screening tools every day during the hospital stay.",
+          "During the hospital stay were applied screening tools every day."
+        ],
+        correct: 0,
+        explanation: "Subject (Screening tools) + Passive verb (were applied) + Frequency (every day) + Duration (during the hospital stay)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["once a week", "follow-up evaluations", "after discharge", "were conducted"],
+        options: [
+          "Once a week after discharge follow-up evaluations were conducted.",
+          "Follow-up evaluations were conducted once a week after discharge.",
+          "After discharge were conducted follow-up evaluations once a week.",
+          "Were conducted follow-up evaluations once a week after discharge."
+        ],
+        correct: 1,
+        explanation: "Subject (Follow-up evaluations) + Verb (were conducted) + Frequency (once a week) + Time anchor (after discharge)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["after several months", "the tumor", "became malignant", "of rapid growth"],
+        options: [
+          "became malignant the tumor after several months of rapid growth.",
+          "After several months the tumor became malignant of rapid growth.",
+          "The tumor became malignant after several months of rapid growth.",
+          "Of rapid growth after several months the tumor became malignant."
+        ],
+        correct: 2,
+        explanation: "Subject (The tumor) + Verb phrase (became malignant) + Time phrase (after several months of rapid growth)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["from Monday to Friday", "she stayed", "in the medical ward", "for treatment"],
+        options: [
+          "She stayed in the medical ward from Monday to Friday.",
+          "In the medical ward from Monday to Friday she stayed.",
+          "From Monday to Friday in the medical ward she stayed.",
+          "She stayed from Monday to Friday in the medical ward."
+        ],
+        correct: 0,
+        explanation: "Subject (She) + Verb (stayed) + Location (in the medical ward) + Duration/Time range (from Monday to Friday)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["the nurse noticed", "at birth", "the malformation", "during examination"],
+        options: [
+          "At birth the malformation the nurse noticed during examination.",
+          "The nurse noticed the malformation at birth.",
+          "The malformation at birth the nurse noticed.",
+          "Noticed the nurse the malformation at birth."
+        ],
+        correct: 1,
+        explanation: "Subject (The nurse) + Verb (noticed) + Object (the malformation) + Time point (at birth)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["in the evening", "a general malaise", "the patient reported", "after chemotherapy"],
+        options: [
+          "In the evening after chemotherapy the patient reported a general malaise.",
+          "A general malaise the patient reported in the evening after chemotherapy.",
+          "The patient reported a general malaise in the evening after chemotherapy.",
+          "After chemotherapy reported the patient a general malaise in the evening."
+        ],
+        correct: 2,
+        explanation: "Subject (The patient) + Verb (reported) + Object (a general malaise) + Time expressions (in the evening after chemotherapy)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["in her fingers", "after sleeping on her arm", "she complained of", "numbness"],
+        options: [
+          "She complained of numbness in her fingers after sleeping on her arm.",
+          "After sleeping on her arm in her fingers she complained of numbness.",
+          "Numbness in her fingers she complained of after sleeping on her arm.",
+          "She complained of after sleeping on her arm numbness in her fingers."
+        ],
+        correct: 0,
+        explanation: "Subject (She) + Verb (complained of) + Symptom (numbness in her fingers) + Cause/Time (after sleeping on her arm)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["the surgery will begin", "tomorrow", "at around 7 a.m.", "in room 3"],
+        options: [
+          "In room 3 tomorrow at around 7 a.m. the surgery will begin.",
+          "The surgery will begin at around 7 a.m. tomorrow.",
+          "At around 7 a.m. tomorrow will begin the surgery.",
+          "Tomorrow the surgery will begin at around 7 a.m."
+        ],
+        correct: 1,
+        explanation: "Subject (The surgery) + Verb (will begin) + Specific time (at around 7 a.m.) + Date/Day (tomorrow)."
+      }
+    ];
+
+    let total = 0;
+    let correct = 0;
+    let streak = 0;
+    let currentQuestion = null;
+    let answered = false;
+
+    function changeLevel() {
+      nextQuestion();
+    }
+
+    function getFilteredQuestions() {
+      const selectedLevel = document.getElementById('levelSelect').value;
+      if (selectedLevel === 'mix') {
+        return questions;
+      }
+      return questions.filter(q => q.level === parseInt(selectedLevel));
+    }
+
+    function nextQuestion() {
+      answered = false;
+      
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.classList.remove('visible');
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.remove('answered');
+      document.getElementById('explanationText').textContent = "Choose the correct answer!";
+
+      const pool = getFilteredQuestions();
+      currentQuestion = pool[Math.floor(Math.random() * pool.length)];
+
+      const levelTag = document.getElementById('levelTag');
+      levelTag.textContent = `Level ${currentQuestion.level}`;
+
+      document.getElementById('questionText').textContent = currentQuestion.question;
+
+      // Handle Level 3 chunks shuffling dynamically
+      const chunksBox = document.getElementById('chunksBox');
+      if (currentQuestion.level === 3 && currentQuestion.rawChunks) {
+        const shuffled = shuffleArray(currentQuestion.rawChunks);
+        chunksBox.textContent = shuffled.join(" / ");
+        chunksBox.classList.remove('invisible');
+      } else {
+        chunksBox.textContent = '';
+        chunksBox.classList.add('invisible');
+      }
+
+      // Render answer options
+      const grid = document.getElementById('optionsGrid');
+      grid.innerHTML = '';
+
+      currentQuestion.options.forEach((optText, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = `${String.fromCharCode(65 + index)}) ${optText}`;
+        btn.onclick = () => selectOption(btn, index);
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedBtn, selectedIndex) {
+      if (answered) return;
+      answered = true;
+
+      total++;
+      const isCorrect = (selectedIndex === currentQuestion.correct);
+
+      if (isCorrect) {
+        correct++;
+        streak++;
+        selectedBtn.classList.add('correct');
+      } else {
+        streak = 0;
+        selectedBtn.classList.add('wrong');
+        
+        const allBtns = document.querySelectorAll('.option-btn');
+        if (allBtns[currentQuestion.correct]) {
+          allBtns[currentQuestion.correct].classList.add('correct');
+        }
+      }
+
+      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('correctCount').textContent = correct;
+      document.getElementById('streakCount').textContent = `${streak} 🔥`;
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.add('answered');
+      document.getElementById('explanationText').textContent = currentQuestion.explanation;
+
+      document.getElementById('nextBtn').classList.add('visible');
+    }
+  </script>
 </body>
 </html>
