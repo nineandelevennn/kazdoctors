@@ -3,150 +3,314 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>@doctors.speak — Page not ready yet</title>
+  <title>@doctors.speak — Medical Grammar Trainer (Prepositions of Place & Movement)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Montserrat', sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background: linear-gradient(135deg, #00afca 0%, #0081a7 100%);
-      color: #333;
+      background: var(--bg-main);
+      color: var(--text-dark);
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 10px;
+      padding: 12px 10px;
     }
 
     .card {
-      background: #ffffff;
+      background: var(--card-bg);
       border-radius: 20px;
       width: 100%;
-      max-width: 420px;
-      height: 680px;
+      max-width: 440px;
+      min-height: 680px;
       max-height: 95vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      border: 3px solid #fbc02d;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-color);
       position: relative;
-      overflow-y: auto;
+      overflow: hidden;
     }
 
     .header {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 16px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 10px;
-      border-bottom: 2px solid #00afca;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
       flex-shrink: 0;
     }
 
     .home-btn {
-      background-color: #fbc02d;
-      color: #003366;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #FFFFFF;
       text-decoration: none;
       font-weight: 700;
-      font-size: 0.8rem;
-      padding: 6px 12px;
-      border-radius: 12px;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.12);
-      transition: transform 0.1s, background-color 0.2s;
+      transition: all 0.2s ease;
     }
 
     .home-btn:active {
-      transform: scale(0.95);
-      background-color: #fdd835;
+      transform: scale(0.96);
+      background: rgba(255, 255, 255, 0.3);
     }
 
     .brand {
-      color: #00afca;
       font-weight: 800;
-      font-size: 1.05rem;
+      font-size: 0.82rem;
       letter-spacing: 0.5px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
     }
 
-    .content-container {
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+      padding: 16px;
+      gap: 12px;
+      overflow-y: auto;
+    }
+
+    .mode-select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      border-radius: 12px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--kz-blue-dark);
+      background: var(--kz-blue-light);
+      outline: none;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 8px;
+      background: var(--bg-main);
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .stats span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .term-box {
+      margin: 4px 0;
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid var(--border-color);
+      border-left: 6px solid var(--kz-gold-dark);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      text-align: center;
+      min-height: 125px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 18px;
-      padding: 20px 10px;
-      text-align: center;
-      flex-grow: 1;
     }
 
-    .icon-box {
-      font-size: 4rem;
-      line-height: 1;
-      margin-bottom: 5px;
-    }
-
-    .title {
-      font-size: 1.35rem;
-      color: #0081a7;
-      font-weight: 800;
-      line-height: 1.3;
-    }
-
-    .description {
-      font-size: 0.95rem;
-      color: #555;
-      line-height: 1.5;
-      max-width: 320px;
-    }
-
-    .action-btn {
-      background: #fbc02d;
-      color: #003366;
-      border: none;
-      padding: 14px 24px;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 800;
-      cursor: pointer;
-      width: 100%;
-      max-width: 300px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      text-decoration: none;
+    .level-tag {
       display: inline-block;
-      transition: transform 0.1s, background-color 0.2s;
-      margin-top: 10px;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .action-btn:hover {
-      background: #fdd835;
+    .term-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+      line-height: 1.35;
+      min-height: 2.7em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .action-btn:active {
-      transform: scale(0.98);
-    }
-
-    .insta-link {
-      font-size: 0.85rem;
-      color: #666;
-      margin-top: 10px;
-    }
-
-    .insta-link a {
-      color: #0081a7;
+    .chunks-box {
+      background: var(--bg-main);
+      border: 1px dashed var(--kz-gold-dark);
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      color: var(--kz-gold-dark);
       font-weight: 700;
-      text-decoration: underline;
+      margin-top: 6px;
+      word-break: break-word;
+      min-height: 36px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s, visibility 0.2s;
+    }
+
+    .chunks-box.invisible {
+      visibility: hidden;
+      border-color: transparent;
+      background: transparent;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .option-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      line-height: 1.3;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background-color: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+    }
+
+    .option-btn.correct {
+      background-color: #DCFCE7 !important;
+      border-color: #22C55E !important;
+      color: #15803D !important;
+      font-weight: 700;
+    }
+
+    .option-btn.wrong {
+      background-color: #FEE2E2 !important;
+      border-color: #EF4444 !important;
+      color: #B91C1C !important;
+      font-weight: 700;
+    }
+
+    .explanation-box {
+      background-color: var(--kz-blue-light);
+      border-left: 4px solid var(--kz-blue);
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      color: var(--kz-blue-dark);
+      margin-bottom: 10px;
+      line-height: 1.4;
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .explanation-box.answered {
+      background-color: #E0F2FE;
+      border-left-color: var(--kz-blue-dark);
+    }
+
+    .next-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      font-weight: 800;
+      padding: 12px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      border: 1px solid var(--kz-gold-dark);
+      cursor: pointer;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.2s ease, visibility 0.2s ease, background-color 0.2s ease, transform 0.1s ease;
+      min-height: 44px;
+    }
+
+    .next-btn.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .next-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    .next-btn:active {
+      transform: scale(0.98);
     }
   </style>
 </head>
 <body>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <div class="card">
     <!-- Header -->
@@ -155,22 +319,711 @@
       <div class="brand">@doctors.speak</div>
     </header>
 
-    <!-- Content -->
-    <div class="content-container">
-      <div class="icon-box">🚧</div>
-      <h1 class="title">Page not ready yet :( </h1>
-      <p class="description">
-        We are working on the page, please check it later🙏
-      </p>
+    <!-- Game Screen -->
+    <div id="gameScreen" class="game-container">
+      
+      <div>
+        <select id="levelSelect" class="mode-select" onchange="changeLevel()">
+          <option value="1">Level 1 — Recognize the meaning</option>
+          <option value="2">Level 2 — Fill in the preposition</option>
+          <option value="3">Level 3 — Put the sentence in order</option>
+          <option value="mix">🔥 Mix</option>
+        </select>
 
-      <a href="https://kazdoctors.com/grammar/" class="action-btn">Go back</a>
-
-      <div class="insta-link">
-        Our updates:<br>
-        <a href="https://instagram.com/doctors.speak" target="_blank">@doctors.speak</a>
+        <div class="stats">
+          <span>Total: <strong id="totalCount">0</strong></span>
+          <span>Correct: <strong id="correctCount" style="color:#16A34A;">0</strong></span>
+          <span>Streak: <strong id="streakCount" style="color:#D9A000;">0 🔥</strong></span>
+        </div>
       </div>
+
+      <div class="term-box">
+        <span id="levelTag" class="level-tag">Level 1</span>
+        <div id="questionText" class="term-title">Loading question...</div>
+        <div id="chunksBox" class="chunks-box invisible"></div>
+      </div>
+
+      <div>
+        <div id="optionsGrid" class="options-grid"></div>
+        
+        <div id="explanationBox" class="explanation-box">
+          <div><strong>💡 Explanation:</strong> <span id="explanationText">Choose the correct answer!</span></div>
+        </div>
+
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next ➔</button>
+      </div>
+
     </div>
   </div>
 
+  <script>
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function checkAuth() {
+      const { data, error } = await supabaseClient.auth.getSession();
+      if (error || !data.session) {
+        window.location.href = "/login.html";
+        return;
+      }
+      nextQuestion();
+    }
+
+    checkAuth();
+
+    // Helper to shuffle array (Fisher-Yates)
+    function shuffleArray(array) {
+      let arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    const questions = [
+      // ================= LEVEL 1: RECOGNIZE MEANING =================
+      {
+        level: 1,
+        question: "The pancreas lies BEHIND the stomach.",
+        options: ["Перед объектом", "Позади / за объектом", "Внутри объекта", "Сбоку от объекта"],
+        correct: 1,
+        explanation: "'Behind' indicates position at the back or rear of something."
+      },
+      {
+        level: 1,
+        question: "Intravitreal injections are delivered INTO the vitreous cavity.",
+        options: ["Внутрь (направление движения)", "Снаружи", "Поверх поверхности", "Рядом с местом"],
+        correct: 0,
+        explanation: "'Into' expresses movement or insertion towards the inside of a container/space."
+      },
+      {
+        level: 1,
+        question: "The nurse walked INTO the medical ward to check on the patient with seizures.",
+        options: ["Мимо палаты", "Внутрь палаты (направление)", "Вдоль коридора", "Вокруг палаты"],
+        correct: 1,
+        explanation: "'Into' signifies movement entering a room or enclosed area."
+      },
+      {
+        level: 1,
+        question: "During the physical exam, the doctor checked UNDER the arms.",
+        options: ["Над руками", "Сбоку от рук", "Под руками / в области подмышек", "Между руками"],
+        correct: 2,
+        explanation: "'Under' indicates a position directly below or beneath something."
+      },
+      {
+        level: 1,
+        question: "Fundus imaging revealed a marked thinning ALONG the outer retinal layers.",
+        options: ["Поперек слоев", "Сквозь слои", "Извне слоев", "Вдоль / по протяженности слоев"],
+        correct: 3,
+        explanation: "'Along' indicates movement or position following a line or length."
+      },
+      {
+        level: 1,
+        question: "Anti-VEGF therapy appeared to migrate TOWARD ischemic regions.",
+        options: ["В направлении / по направлению к", "Вдаль от региона", "Вокруг региона", "Сквозь регион"],
+        correct: 0,
+        explanation: "'Toward' indicates direction or movement in the direction of something."
+      },
+      {
+        level: 1,
+        question: "There was a sharp pain UNDER the left rib.",
+        options: ["Над ребром", "Под ребром", "Перед ребром", "Позади ребра"],
+        correct: 1,
+        explanation: "'Under' means below or beneath the rib bone."
+      },
+      {
+        level: 1,
+        question: "Therapeutic agents were injected THROUGH the pars plana.",
+        options: ["Вокруг pars plana", "Сквозь / через pars plana", "До pars plana", "Вдоль pars plana"],
+        correct: 1,
+        explanation: "'Through' means passing into one side and out of the other side of an anatomical structure."
+      },
+      {
+        level: 1,
+        question: "The swelling spread ACROSS the chest.",
+        options: ["Вдоль одной линии", "Под грудной клеткой", "По всей поверхности / поперек", "Внутрь легких"],
+        correct: 2,
+        explanation: "'Across' means from one side to another over a surface area."
+      },
+      {
+        level: 1,
+        question: "The nurse asked the patient to stand on the scale NEXT TO the wall.",
+        options: ["Позади стены", "Внутри стены", "Снаружи стены", "Рядом с / бок о бок со стеной"],
+        correct: 3,
+        explanation: "'Next to' denotes side-by-side or adjacent placement."
+      },
+      {
+        level: 1,
+        question: "The doctor placed the ice pack ONTO the swollen ankle.",
+        options: ["На поверхность (движение на)", "Под лодыжку", "Вокруг лодыжки", "Сквозь лодыжку"],
+        correct: 0,
+        explanation: "'Onto' indicates movement towards a position on a surface."
+      },
+      {
+        level: 1,
+        question: "Inflammation remained localized WITHIN the scleral boundaries.",
+        options: ["За пределами границам", "В пределах / внутри границ", "Вокруг границ", "Мимо границ"],
+        correct: 1,
+        explanation: "'Within' means inside the limits or interior of an enclosure/boundary."
+      },
+      {
+        level: 1,
+        question: "The patient felt a pounding pain IN the periumbilical region.",
+        options: ["Над областью", "В / внутри области", "Под областью", "За областью"],
+        correct: 1,
+        explanation: "'In' designates location inside an anatomical region."
+      },
+      {
+        level: 1,
+        question: "There is tenderness BETWEEN the ribs.",
+        options: ["Вокруг ребер", "Под ребрами", "Между ребрами (двумя и более)", "Сквозь ребра"],
+        correct: 2,
+        explanation: "'Between' indicates the space separating two or more objects/bones."
+      },
+      {
+        level: 1,
+        question: "Keep the injured limb AWAY FROM cold air.",
+        options: ["В направлении к воздуху", "Вдаль от / прочь от холодного воздуха", "Под холодным воздухом", "Внутри воздуха"],
+        correct: 1,
+        explanation: "'Away from' indicates movement or position increasing distance from something."
+      },
+      {
+        level: 1,
+        question: "The pain moved DOWN the left leg.",
+        options: ["Вверх по ноге", "Вокруг ноги", "Сквозь ногу", "Вниз по ноге"],
+        correct: 3,
+        explanation: "'Down' specifies movement in a lower direction along the body part."
+      },
+      {
+        level: 1,
+        question: "The child ran INTO the room during a seizure episode.",
+        options: ["Внутрь комнаты (направление)", "Вдоль комнаты", "Вокруг комнаты", "Снаружи комнаты"],
+        correct: 0,
+        explanation: "'Into' is a preposition of movement meaning entering the space."
+      },
+      {
+        level: 1,
+        question: "The pain was located BEHIND the left eye.",
+        options: ["Перед левым глазом", "Позади / за левым глазом", "Над левым глазом", "Под левым глазом"],
+        correct: 1,
+        explanation: "'Behind' means positioned at the back of the anatomical structure."
+      },
+      {
+        level: 1,
+        question: "The medication was AMONG the most effective treatments.",
+        options: ["Рядом с", "Позади", "Среди (в окружении многих)", "Внутри"],
+        correct: 2,
+        explanation: "'Among' indicates inclusion or placement surrounded by a group."
+      },
+      {
+        level: 1,
+        question: "She walked PAST the nurses' station to reach the room.",
+        options: ["Внутрь поста", "Мимо поста", "Вдоль поста", "До поста"],
+        correct: 1,
+        explanation: "'Past' means moving beyond a specific landmark or position."
+      },
+
+      // ================= LEVEL 2: FILL IN THE BLANK =================
+      {
+        level: 2,
+        question: "The pancreas lies ____ the stomach and is difficult to palpate.",
+        options: ["behind", "in front of", "over", "into"],
+        correct: 0,
+        explanation: "'Behind' describes the anatomical position of the pancreas relative to the stomach."
+      },
+      {
+        level: 2,
+        question: "The doctor placed the stethoscope ____ the left rib area.",
+        options: ["into", "on", "through", "behind"],
+        correct: 1,
+        explanation: "Use 'on' for contact with the surface of the body."
+      },
+      {
+        level: 2,
+        question: "The nurse walked ____ the medical ward to check on the patient with seizures.",
+        options: ["under", "between", "into", "across"],
+        correct: 2,
+        explanation: "Use 'into' to express movement from outside to inside the ward."
+      },
+      {
+        level: 2,
+        question: "The patient was referred ____ the cardiologist after experiencing palpitations.",
+        options: ["from", "at", "by", "to"],
+        correct: 3,
+        explanation: "The verb 'referred' takes the preposition 'to' for destination."
+      },
+      {
+        level: 2,
+        question: "Pallor was noticed especially ____ the face and lips.",
+        options: ["on", "into", "through", "under"],
+        correct: 0,
+        explanation: "Paleness is observed 'on' skin surfaces like the face and lips."
+      },
+      {
+        level: 2,
+        question: "The patient moved slowly ____ the scale for a weight check.",
+        options: ["away from", "to", "under", "through"],
+        correct: 1,
+        explanation: "'To' indicates direction/destination towards the scale."
+      },
+      {
+        level: 2,
+        question: "Medication was given to relieve pressure ____ the chest.",
+        options: ["into", "onto", "from", "towards"],
+        correct: 2,
+        explanation: "'From' indicates removal or relief of pressure originating in the chest."
+      },
+      {
+        level: 2,
+        question: "The child ran ____ the room during a seizure episode.",
+        options: ["under", "between", "off", "into"],
+        correct: 3,
+        explanation: "'Into' describes entering the room."
+      },
+      {
+        level: 2,
+        question: "A reduction ____ symptoms was seen after prolonged treatment.",
+        options: ["in", "on", "at", "through"],
+        correct: 0,
+        explanation: "'Reduction in' is the standard medical colocation for decrease of symptoms."
+      },
+      {
+        level: 2,
+        question: "Therapeutic agents were injected ____ the vitreous cavity.",
+        options: ["onto", "into", "along", "across"],
+        correct: 1,
+        explanation: "Injections into cavity spaces use 'into'."
+      },
+      {
+        level: 2,
+        question: "Thinning was observed ____ the outer retinal layers.",
+        options: ["across", "behind", "along", "under"],
+        correct: 2,
+        explanation: "'Along' describes longitudinal extension along retinal layers."
+      },
+      {
+        level: 2,
+        question: "Fluid accumulation was found ____ the retina in ophthalmology scans.",
+        options: ["into", "onto", "toward", "behind"],
+        correct: 3,
+        explanation: "'Behind' indicates fluid gathered at the posterior aspect of the retina."
+      },
+      {
+        level: 2,
+        question: "The patient fell ____ the examination table during dizziness.",
+        options: ["off", "into", "through", "toward"],
+        correct: 0,
+        explanation: "'Off' indicates separation and motion away from a surface."
+      },
+      {
+        level: 2,
+        question: "The doctor placed an ice pack ____ the swollen ankle.",
+        options: ["through", "onto", "into", "behind"],
+        correct: 1,
+        explanation: "'Onto' specifies placing something onto a surface."
+      },
+      {
+        level: 2,
+        question: "Anti-VEGF therapy appeared to migrate ____ ischemic regions.",
+        options: ["off", "away from", "toward", "under"],
+        correct: 2,
+        explanation: "'Toward' specifies directional movement towards the lesion."
+      },
+      {
+        level: 2,
+        question: "Inflammation remained localized ____ the scleral boundaries.",
+        options: ["outside", "across", "onto", "within"],
+        correct: 3,
+        explanation: "'Within' specifies contained inside defined anatomical boundaries."
+      },
+      {
+        level: 2,
+        question: "The catheter was inserted ____ the artery during cardiac catheterization.",
+        options: ["through", "over", "behind", "next to"],
+        correct: 0,
+        explanation: "'Through' indicates passing inside the length/lumen of the vessel."
+      },
+      {
+        level: 2,
+        question: "There was noticeable pallor around the lips and ____ the eyes.",
+        options: ["into", "under", "onto", "through"],
+        correct: 1,
+        explanation: "'Under' describes location beneath the infraorbital area."
+      },
+      {
+        level: 2,
+        question: "The monitor is placed ____ the patient for continuous observation.",
+        options: ["into", "off", "in front of", "through"],
+        correct: 2,
+        explanation: "'In front of' signifies position directly before the patient."
+      },
+      {
+        level: 2,
+        question: "She pointed ____ the direction of the discomfort during physical exam.",
+        options: ["on", "at", "into", "in"],
+        correct: 3,
+        explanation: "'In' is used in the set phrase 'in the direction of'."
+      },
+
+      // ================= LEVEL 3: SENTENCE UNSCRAMBLE =================
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["behind the stomach", "the pancreas", "is difficult to palpate", "lies"],
+        options: [
+          "The pancreas lies behind the stomach and is difficult to palpate.",
+          "Behind the stomach lies the pancreas and is difficult to palpate.",
+          "The pancreas is difficult to palpate lies behind the stomach.",
+          "Behind the stomach is difficult to palpate the pancreas lies."
+        ],
+        correct: 0,
+        explanation: "Subject (The pancreas) + Verb (lies) + Place (behind the stomach) + Coordinate clause (and is difficult to palpate)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["placed the stethoscope", "the doctor", "on the left rib area", "during the exam"],
+        options: [
+          "On the left rib area during the exam placed the stethoscope the doctor.",
+          "During the exam the doctor placed the stethoscope on the left rib area.",
+          "The doctor during the exam on the left rib area placed the stethoscope.",
+          "Placed the stethoscope the doctor on the left rib area during the exam."
+        ],
+        correct: 1,
+        explanation: "Time phrase (During the exam) + Subject (the doctor) + Verb phrase (placed the stethoscope) + Prepositional place (on the left rib area)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["into the medical ward", "walked", "the nurse", "to check on the patient"],
+        options: [
+          "Into the medical ward the nurse walked to check on the patient.",
+          "Walked the nurse into the medical ward to check on the patient.",
+          "The nurse walked into the medical ward to check on the patient.",
+          "To check on the patient into the medical ward walked the nurse."
+        ],
+        correct: 2,
+        explanation: "Subject (The nurse) + Verb (walked) + Direction (into the medical ward) + Purpose (to check on the patient)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["was referred", "after experiencing palpitations", "the patient", "to the cardiologist"],
+        options: [
+          "After experiencing palpitations to the cardiologist was referred the patient.",
+          "To the cardiologist the patient was referred after experiencing palpitations.",
+          "After experiencing palpitations the patient to the cardiologist was referred.",
+          "The patient was referred to the cardiologist after experiencing palpitations."
+        ],
+        correct: 3,
+        explanation: "Subject (The patient) + Passive verb (was referred) + Direction (to the cardiologist) + Time condition (after experiencing palpitations)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["especially on the face", "pallor", "was noticed", "and lips"],
+        options: [
+          "Pallor was noticed especially on the face and lips.",
+          "Was noticed pallor especially on the face and lips.",
+          "Especially on the face pallor and lips was noticed.",
+          "Pallor especially on the face and lips was noticed."
+        ],
+        correct: 0,
+        explanation: "Subject (Pallor) + Passive verb (was noticed) + Place phrase (especially on the face and lips)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["moved slowly", "for a weight check", "the patient", "to the scale"],
+        options: [
+          "For a weight check to the scale moved slowly the patient.",
+          "The patient moved slowly to the scale for a weight check.",
+          "To the scale moved slowly the patient for a weight check.",
+          "The patient for a weight check moved slowly to the scale."
+        ],
+        correct: 1,
+        explanation: "Subject (The patient) + Verb phrase (moved slowly) + Direction (to the scale) + Purpose (for a weight check)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["was given", "to relieve pressure", "medication", "from the chest"],
+        options: [
+          "Medication to relieve pressure was given from the chest.",
+          "From the chest medication was given to relieve pressure.",
+          "Medication was given to relieve pressure from the chest.",
+          "To relieve pressure from the chest was given medication."
+        ],
+        correct: 2,
+        explanation: "Subject (Medication) + Passive verb (was given) + Purpose clause (to relieve pressure from the chest)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["into the room", "the child ran", "during a seizure episode", "frantically"],
+        options: [
+          "During a seizure episode frantically into the room the child ran.",
+          "Into the room frantically ran the child during a seizure episode.",
+          "The child ran frantically during a seizure episode into the room.",
+          "The child ran into the room during a seizure episode."
+        ],
+        correct: 3,
+        explanation: "Subject (The child) + Verb (ran) + Direction (into the room) + Time context (during a seizure episode)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["in symptoms", "was seen", "a reduction", "after prolonged treatment"],
+        options: [
+          "A reduction in symptoms was seen after prolonged treatment.",
+          "In symptoms a reduction was seen after prolonged treatment.",
+          "Was seen a reduction in symptoms after prolonged treatment.",
+          "After prolonged treatment in symptoms was seen a reduction."
+        ],
+        correct: 0,
+        explanation: "Subject noun phrase (A reduction in symptoms) + Verb (was seen) + Time condition (after prolonged treatment)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["were delivered", "intravitreal injections", "into the vitreous cavity", "safely"],
+        options: [
+          "Into the vitreous cavity were delivered intravitreal injections safely.",
+          "Intravitreal injections were delivered into the vitreous cavity.",
+          "Safely intravitreal injections into the vitreous cavity were delivered.",
+          "Were delivered intravitreal injections into the vitreous cavity safely."
+        ],
+        correct: 1,
+        explanation: "Subject (Intravitreal injections) + Passive verb (were delivered) + Destination (into the vitreous cavity)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["along the outer retinal layers", "marked thinning", "fundus imaging", "revealed"],
+        options: [
+          "Fundus imaging revealed marked thinning along the outer retinal layers.",
+          "Marked thinning along the outer retinal layers fundus imaging revealed.",
+          "Along the outer retinal layers fundus imaging revealed marked thinning.",
+          "Revealed fundus imaging marked thinning along the outer retinal layers."
+        ],
+        correct: 0,
+        explanation: "Subject (Fundus imaging) + Verb (revealed) + Object (marked thinning) + Location (along the outer retinal layers)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["fluid accumulation", "behind the retina", "showed significant decline", "patients with"],
+        options: [
+          "Fluid accumulation behind the retina showed significant decline patients with.",
+          "Patients with fluid accumulation behind the retina showed significant decline.",
+          "Showed significant decline patients with fluid accumulation behind the retina.",
+          "Behind the retina patients with fluid accumulation showed significant decline."
+        ],
+        correct: 1,
+        explanation: "Complex subject (Patients with fluid accumulation behind the retina) + Verb (showed) + Object (significant decline)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["through the pars plana", "were injected", "therapeutic agents", "carefully"],
+        options: [
+          "Carefully through the pars plana therapeutic agents were injected.",
+          "Through the pars plana were injected therapeutic agents carefully.",
+          "Therapeutic agents were injected through the pars plana.",
+          "Were injected therapeutic agents through the pars plana carefully."
+        ],
+        correct: 2,
+        explanation: "Subject (Therapeutic agents) + Verb (were injected) + Path (through the pars plana)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["toward ischemic regions", "appeared to migrate", "anti-VEGF therapy", "rapidly"],
+        options: [
+          "Toward ischemic regions rapidly appeared to migrate anti-VEGF therapy.",
+          "Appeared to migrate anti-VEGF therapy toward ischemic regions rapidly.",
+          "Rapidly anti-VEGF therapy appeared to migrate toward ischemic regions.",
+          "Anti-VEGF therapy appeared to migrate toward ischemic regions."
+        ],
+        correct: 3,
+        explanation: "Subject (Anti-VEGF therapy) + Verb phrase (appeared to migrate) + Direction (toward ischemic regions)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["within the scleral boundaries", "remained localized", "inflammation", "near the injection site"],
+        options: [
+          "Inflammation near the injection site remained localized within the scleral boundaries.",
+          "Near the injection site remained localized within the scleral boundaries inflammation.",
+          "Within the scleral boundaries inflammation near the injection site remained localized.",
+          "Remained localized within the scleral boundaries inflammation near the injection site."
+        ],
+        correct: 0,
+        explanation: "Subject noun phrase (Inflammation near the injection site) + Verb (remained localized) + Place limit (within the scleral boundaries)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["onto the swollen ankle", "the doctor", "placed", "the ice pack"],
+        options: [
+          "Onto the swollen ankle the doctor placed the ice pack.",
+          "The doctor placed the ice pack onto the swollen ankle.",
+          "Placed the ice pack the doctor onto the swollen ankle.",
+          "The ice pack onto the swollen ankle placed the doctor."
+        ],
+        correct: 1,
+        explanation: "Subject (The doctor) + Verb (placed) + Direct object (the ice pack) + Prepositional destination (onto the swollen ankle)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["in the periumbilical region", "strong pounding pain", "the patient", "felt"],
+        options: [
+          "In the periumbilical region felt the patient strong pounding pain.",
+          "Strong pounding pain felt the patient in the periumbilical region.",
+          "The patient felt strong pounding pain in the periumbilical region.",
+          "Felt the patient in the periumbilical region strong pounding pain."
+        ],
+        correct: 2,
+        explanation: "Subject (The patient) + Verb (felt) + Object (strong pounding pain) + Place (in the periumbilical region)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["under the arm", "he has", "a severe rash", "that spreads"],
+        options: [
+          "He has under the arm a severe rash that spreads.",
+          "A severe rash under the arm he has that spreads.",
+          "Under the arm he has a severe rash that spreads.",
+          "He has a severe rash under the arm."
+        ],
+        correct: 3,
+        explanation: "Subject (He) + Verb (has) + Object (a severe rash) + Prepositional phrase (under the arm)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["across the posterior segment", "distributed", "the medication was", "evenly"],
+        options: [
+          "The medication was distributed across the posterior segment.",
+          "Distributed across the posterior segment the medication was.",
+          "Across the posterior segment distributed was the medication.",
+          "The medication across the posterior segment was distributed."
+        ],
+        correct: 0,
+        explanation: "Subject (The medication) + Verb (was distributed) + Prepositional location (across the posterior segment)."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["in the direction of", "pointed", "she", "the discomfort"],
+        options: [
+          "Pointed she in the direction of the discomfort.",
+          "She pointed in the direction of the discomfort.",
+          "In the direction of the discomfort pointed she.",
+          "The discomfort she pointed in the direction of."
+        ],
+        correct: 1,
+        explanation: "Subject (She) + Verb (pointed) + Prepositional direction (in the direction of the discomfort)."
+      }
+    ];
+
+    let total = 0;
+    let correct = 0;
+    let streak = 0;
+    let currentQuestion = null;
+    let answered = false;
+
+    function changeLevel() {
+      nextQuestion();
+    }
+
+    function getFilteredQuestions() {
+      const selectedLevel = document.getElementById('levelSelect').value;
+      if (selectedLevel === 'mix') {
+        return questions;
+      }
+      return questions.filter(q => q.level === parseInt(selectedLevel));
+    }
+
+    function nextQuestion() {
+      answered = false;
+      
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.classList.remove('visible');
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.remove('answered');
+      document.getElementById('explanationText').textContent = "Choose the correct answer!";
+
+      const pool = getFilteredQuestions();
+      currentQuestion = pool[Math.floor(Math.random() * pool.length)];
+
+      const levelTag = document.getElementById('levelTag');
+      levelTag.textContent = `Level ${currentQuestion.level}`;
+
+      document.getElementById('questionText').textContent = currentQuestion.question;
+
+      // Handle Level 3 chunks shuffling dynamically using Fisher-Yates shuffle
+      const chunksBox = document.getElementById('chunksBox');
+      if (currentQuestion.level === 3 && currentQuestion.rawChunks) {
+        const shuffled = shuffleArray(currentQuestion.rawChunks);
+        chunksBox.textContent = shuffled.join(" / ");
+        chunksBox.classList.remove('invisible');
+      } else {
+        chunksBox.textContent = '';
+        chunksBox.classList.add('invisible');
+      }
+
+      // Render answer options
+      const grid = document.getElementById('optionsGrid');
+      grid.innerHTML = '';
+
+      currentQuestion.options.forEach((optText, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = `${String.fromCharCode(65 + index)}) ${optText}`;
+        btn.onclick = () => selectOption(btn, index);
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedBtn, selectedIndex) {
+      if (answered) return;
+      answered = true;
+
+      total++;
+      const isCorrect = (selectedIndex === currentQuestion.correct);
+
+      if (isCorrect) {
+        correct++;
+        streak++;
+        selectedBtn.classList.add('correct');
+      } else {
+        streak = 0;
+        selectedBtn.classList.add('wrong');
+        
+        const allBtns = document.querySelectorAll('.option-btn');
+        if (allBtns[currentQuestion.correct]) {
+          allBtns[currentQuestion.correct].classList.add('correct');
+        }
+      }
+
+      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('correctCount').textContent = correct;
+      document.getElementById('streakCount').textContent = `${streak} 🔥`;
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.add('answered');
+      document.getElementById('explanationText').textContent = currentQuestion.explanation;
+
+      document.getElementById('nextBtn').classList.add('visible');
+    }
+  </script>
 </body>
 </html>
