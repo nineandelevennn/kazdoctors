@@ -373,7 +373,7 @@
 
     checkAuth();
 
-    // Utility function: Fisher-Yates shuffle
+    // Fisher-Yates shuffle algorithm
     function shuffleArray(array) {
       let arr = [...array];
       for (let i = arr.length - 1; i > 0; i--) {
@@ -408,84 +408,6 @@
         explanation: "First Conditional formula is [IF I DO, THEN YOU WILL DO]. It refers to realistic future possibilities based on clinical observations."
       },
       {
-        level: 1,
-        question: "If the tendon were torn, the patient wouldn't move the joint at all.",
-        correctOption: "Second Conditional (Unreal/hypothetical condition in present/future)",
-        distractors: [
-          "First Conditional (Real future condition)",
-          "Third Conditional (Unreal past condition)",
-          "Zero Conditional (Rule or general fact)"
-        ],
-        explanation: "Second Conditional formula is [IF I DID, THEN YOU WOULD DO]. It expresses hypothetical or unreal situations in the present."
-      },
-      {
-        level: 1,
-        question: "If she had received treatment earlier, the stroke effects would have been less significant.",
-        correctOption: "Third Conditional (Unreal condition in the past)",
-        distractors: [
-          "Second Conditional (Unreal condition in the present)",
-          "Mixed Conditional (Past condition + Present result)",
-          "First Conditional (Real future outcome)"
-        ],
-        explanation: "Third Conditional formula is [IF I HAD DONE, THEN YOU WOULD HAVE DONE]. It addresses past unreal events and their unfulfilled outcomes."
-      },
-      {
-        level: 1,
-        question: "If the spinal cord were damaged, he would have lost sensation.",
-        correctOption: "Mixed Conditional (Present/Past unreal mix)",
-        distractors: [
-          "Zero Conditional (General factual rule)",
-          "First Conditional (Realistic future probability)",
-          "Third Conditional (Pure past unreal)"
-        ],
-        explanation: "Mixed Conditional combines different time frames (e.g. past condition with present result, or persistent state with past consequence)."
-      },
-      {
-        level: 1,
-        question: "If the tumor spread to the spine, she would need urgent radiation.",
-        correctOption: "Second Conditional (Hypothetical present/future)",
-        distractors: [
-          "First Conditional (Real future)",
-          "Third Conditional (Past unreal)",
-          "Zero Conditional (General truth)"
-        ],
-        explanation: "Uses Past Simple in the IF-clause ('spread') and 'would' + verb in the main clause, signifying a hypothetical condition."
-      },
-      {
-        level: 1,
-        question: "If stiffness lasts more than a week, the joint may need medical attention.",
-        correctOption: "First Conditional (Realistic future action with modal)",
-        distractors: [
-          "Third Conditional (Past unreal)",
-          "Second Conditional (Present hypothetical)",
-          "Mixed Conditional (Mixed time frames)"
-        ],
-        explanation: "First Conditional can use modal verbs like 'may' or 'will' in the main clause for probable outcomes."
-      },
-      {
-        level: 1,
-        question: "If I were the attending physician, I would recommend surgery immediately.",
-        correctOption: "Second Conditional (Hypothetical scenario in present)",
-        distractors: [
-          "Zero Conditional (Fact/Rule)",
-          "First Conditional (Real future probability)",
-          "Third Conditional (Past unfulfilled outcome)"
-        ],
-        explanation: "Uses subjunctive 'were' for hypothetical present scenarios: [IF I DID/WERE, THEN YOU WOULD DO]."
-      },
-      {
-        level: 1,
-        question: "If thyrotoxicosis is left untreated, it can result in a thyroid storm.",
-        correctOption: "Zero / First Conditional (General medical rule/consequence)",
-        distractors: [
-          "Third Conditional (Past unreal)",
-          "Second Conditional (Pure hypothetical)",
-          "Mixed Conditional (Past unreal condition)"
-        ],
-        explanation: "Present simple in condition leads to standard medical consequence ('can result in')."
-      },
-
-{
         level: 1,
         question: "If the tendon were torn, the patient wouldn't move the joint at all.",
         correctOption: "Second Conditional (Unreal/hypothetical present condition)",
@@ -649,12 +571,18 @@
           "Third Conditional (Unreal past condition)"
         ],
         explanation: "Zero Conditional formula is [IF I DO, THEN YOU DO]. It reflects regular patient behavior and routine clinical observations."
-      }
-
-
-
-
-      
+      },
+      {
+        level: 1,
+        question: "If thyrotoxicosis is left untreated, it can result in a thyroid storm.",
+        correctOption: "Zero / First Conditional (General medical rule/consequence)",
+        distractors: [
+          "Third Conditional (Past unreal)",
+          "Second Conditional (Pure hypothetical)",
+          "Mixed Conditional (Past unreal condition)"
+        ],
+        explanation: "Present simple in condition leads to standard medical consequence ('can result in')."
+      },
 
       // ================= LEVEL 2: FILL IN THE BLANK =================
       {
@@ -710,8 +638,8 @@
         level: 2,
         question: "If she had received treatment earlier, the stroke effects ____ less significant.",
         correctOption: "would have been",
-        distractors: ["will be", "would be", "are"],
-        explanation: "Third conditional formula requires 'would have + past participle' ('would have been')."
+        distractors: ["will be", "would be", "were"],
+        explanation: "Third conditional uses 'would have + past participle' in the main clause for an unreal past outcome."
       },
       {
         level: 2,
@@ -740,14 +668,6 @@
         correctOption: "will order",
         distractors: ["ordered", "would order", "had ordered"],
         explanation: "First conditional real prediction uses 'will order'."
-      },
-
-    {
-        level: 2,
-        question: "If she had received treatment earlier, the stroke effects ____ less significant.",
-        correctOption: "would have been",
-        distractors: ["would be", "will be", "were"],
-        explanation: "Third conditional uses 'would have + past participle' in the main clause for an unreal past outcome."
       },
       {
         level: 2,
@@ -811,20 +731,20 @@
         correctOption: "would have lost",
         distractors: ["would lose", "will lose", "loses"],
         explanation: "Third conditional uses 'would have + past participle' in the result clause following a past perfect condition."
-      }
+      },
 
       // ================= LEVEL 3: PUT SENTENCE IN ORDER =================
       {
         level: 3,
         question: "Put the sentence in correct order:",
-        rawChunks: ["the doctor usually", "if the swelling is severe", "recommends surgery"],
+        rawChunks: ["if the swelling is severe", "the doctor usually recommends", "surgery"],
         correctOption: "If the swelling is severe, the doctor usually recommends surgery.",
         distractors: [
-          "The doctor usually if the swelling is severe recommends surgery.",
-          "Recommends surgery the doctor usually if the swelling is severe.",
-          "If the swelling is severe recommends surgery the doctor usually."
+          "The doctor usually recommends if the swelling is severe surgery.",
+          "Surgery recommends the doctor usually if the swelling is severe.",
+          "If the swelling is severe surgery the doctor usually recommends."
         ],
-        explanation: "Standard Zero Conditional structure: [If + clause, Subject + adverb + verb + object]."
+        explanation: "Zero Conditional: [If + Present Simple, Present Simple]. Explains standard clinical rules."
       },
       {
         level: 3,
@@ -898,19 +818,6 @@
         ],
         explanation: "First Conditional passive recommendation structure."
       },
-
-        {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["if the swelling is severe", "the doctor usually recommends", "surgery"],
-        correctOption: "If the swelling is severe, the doctor usually recommends surgery.",
-        distractors: [
-          "The doctor usually recommends if the swelling is severe surgery.",
-          "Surgery recommends the doctor usually if the swelling is severe.",
-          "If the swelling is severe surgery the doctor usually recommends."
-        ],
-        explanation: "Zero Conditional: [If + Present Simple, Present Simple]. Explains standard clinical rules."
-      },
       {
         level: 3,
         question: "Put the sentence in correct order:",
@@ -970,18 +877,6 @@
           "If the spinal cord is damaged below the injury loses function the patient."
         ],
         explanation: "Zero Conditional: [If + Present Simple, Present Simple]. Refers to medical and anatomical facts."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["I would recommend surgery", "if I were", "the attending physician"],
-        correctOption: "If I were the attending physician, I would recommend surgery.",
-        distractors: [
-          "I would recommend surgery if I were the attending physician.",
-          "The attending physician if I were I would recommend surgery.",
-          "If I were I would recommend surgery the attending physician."
-        ],
-        explanation: "Second Conditional: [If + Subjunctive 'were', Subject + would + base verb] for imaginary clinical scenarios."
       },
       {
         level: 3,
