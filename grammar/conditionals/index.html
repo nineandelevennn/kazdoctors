@@ -3,150 +3,314 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>@doctors.speak — Page not ready yet</title>
+  <title>@doctors.speak — Medical Grammar Trainer (Conditionals)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Montserrat', sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background: linear-gradient(135deg, #00afca 0%, #0081a7 100%);
-      color: #333;
+      background: var(--bg-main);
+      color: var(--text-dark);
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 10px;
+      padding: 12px 10px;
     }
 
     .card {
-      background: #ffffff;
+      background: var(--card-bg);
       border-radius: 20px;
       width: 100%;
-      max-width: 420px;
-      height: 680px;
+      max-width: 440px;
+      min-height: 680px;
       max-height: 95vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      border: 3px solid #fbc02d;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-color);
       position: relative;
-      overflow-y: auto;
+      overflow: hidden;
     }
 
     .header {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 16px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 10px;
-      border-bottom: 2px solid #00afca;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
       flex-shrink: 0;
     }
 
     .home-btn {
-      background-color: #fbc02d;
-      color: #003366;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #FFFFFF;
       text-decoration: none;
       font-weight: 700;
-      font-size: 0.8rem;
-      padding: 6px 12px;
-      border-radius: 12px;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.12);
-      transition: transform 0.1s, background-color 0.2s;
+      transition: all 0.2s ease;
     }
 
     .home-btn:active {
-      transform: scale(0.95);
-      background-color: #fdd835;
+      transform: scale(0.96);
+      background: rgba(255, 255, 255, 0.3);
     }
 
     .brand {
-      color: #00afca;
       font-weight: 800;
-      font-size: 1.05rem;
+      font-size: 0.82rem;
       letter-spacing: 0.5px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
     }
 
-    .content-container {
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+      padding: 16px;
+      gap: 12px;
+      overflow-y: auto;
+    }
+
+    .mode-select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      border-radius: 12px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--kz-blue-dark);
+      background: var(--kz-blue-light);
+      outline: none;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 8px;
+      background: var(--bg-main);
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .stats span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .term-box {
+      margin: 4px 0;
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid var(--border-color);
+      border-left: 6px solid var(--kz-gold-dark);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      text-align: center;
+      min-height: 125px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 18px;
-      padding: 20px 10px;
-      text-align: center;
-      flex-grow: 1;
     }
 
-    .icon-box {
-      font-size: 4rem;
-      line-height: 1;
-      margin-bottom: 5px;
-    }
-
-    .title {
-      font-size: 1.35rem;
-      color: #0081a7;
-      font-weight: 800;
-      line-height: 1.3;
-    }
-
-    .description {
-      font-size: 0.95rem;
-      color: #555;
-      line-height: 1.5;
-      max-width: 320px;
-    }
-
-    .action-btn {
-      background: #fbc02d;
-      color: #003366;
-      border: none;
-      padding: 14px 24px;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 800;
-      cursor: pointer;
-      width: 100%;
-      max-width: 300px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      text-decoration: none;
+    .level-tag {
       display: inline-block;
-      transition: transform 0.1s, background-color 0.2s;
-      margin-top: 10px;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .action-btn:hover {
-      background: #fdd835;
+    .term-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+      line-height: 1.35;
+      min-height: 2.7em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .action-btn:active {
-      transform: scale(0.98);
-    }
-
-    .insta-link {
-      font-size: 0.85rem;
-      color: #666;
-      margin-top: 10px;
-    }
-
-    .insta-link a {
-      color: #0081a7;
+    .chunks-box {
+      background: var(--bg-main);
+      border: 1px dashed var(--kz-gold-dark);
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      color: var(--kz-gold-dark);
       font-weight: 700;
-      text-decoration: underline;
+      margin-top: 6px;
+      word-break: break-word;
+      min-height: 36px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s, visibility 0.2s;
+    }
+
+    .chunks-box.invisible {
+      visibility: hidden;
+      border-color: transparent;
+      background: transparent;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .option-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      line-height: 1.3;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background-color: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+    }
+
+    .option-btn.correct {
+      background-color: #DCFCE7 !important;
+      border-color: #22C55E !important;
+      color: #15803D !important;
+      font-weight: 700;
+    }
+
+    .option-btn.wrong {
+      background-color: #FEE2E2 !important;
+      border-color: #EF4444 !important;
+      color: #B91C1C !important;
+      font-weight: 700;
+    }
+
+    .explanation-box {
+      background-color: var(--kz-blue-light);
+      border-left: 4px solid var(--kz-blue);
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      color: var(--kz-blue-dark);
+      margin-bottom: 10px;
+      line-height: 1.4;
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .explanation-box.answered {
+      background-color: #E0F2FE;
+      border-left-color: var(--kz-blue-dark);
+    }
+
+    .next-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      font-weight: 800;
+      padding: 12px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      border: 1px solid var(--kz-gold-dark);
+      cursor: pointer;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.2s ease, visibility 0.2s ease, background-color 0.2s ease, transform 0.1s ease;
+      min-height: 44px;
+    }
+
+    .next-btn.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .next-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    .next-btn:active {
+      transform: scale(0.98);
     }
   </style>
 </head>
 <body>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <div class="card">
     <!-- Header -->
@@ -155,22 +319,809 @@
       <div class="brand">@doctors.speak</div>
     </header>
 
-    <!-- Content -->
-    <div class="content-container">
-      <div class="icon-box">🚧</div>
-      <h1 class="title">Page not ready yet :( </h1>
-      <p class="description">
-        We are working on the page, please check it later🙏
-      </p>
+    <!-- Game Screen -->
+    <div id="gameScreen" class="game-container">
+      
+      <div>
+        <select id="levelSelect" class="mode-select" onchange="changeLevel()">
+          <option value="1">Level 1 — Recognize the grammar</option>
+          <option value="2">Level 2 — Fill in the conditional form</option>
+          <option value="3">Level 3 — Put the sentence in order</option>
+          <option value="mix">🔥 Mix</option>
+        </select>
 
-      <a href="https://kazdoctors.com/grammar/" class="action-btn">Go back</a>
-
-      <div class="insta-link">
-        Our updates:<br>
-        <a href="https://instagram.com/doctors.speak" target="_blank">@doctors.speak</a>
+        <div class="stats">
+          <span>Total: <strong id="totalCount">0</strong></span>
+          <span>Correct: <strong id="correctCount" style="color:#16A34A;">0</strong></span>
+          <span>Streak: <strong id="streakCount" style="color:#D9A000;">0 🔥</strong></span>
+        </div>
       </div>
+
+      <div class="term-box">
+        <span id="levelTag" class="level-tag">Level 1</span>
+        <div id="questionText" class="term-title">Loading question...</div>
+        <div id="chunksBox" class="chunks-box invisible"></div>
+      </div>
+
+      <div>
+        <div id="optionsGrid" class="options-grid"></div>
+        
+        <div id="explanationBox" class="explanation-box">
+          <div><strong>💡 Explanation:</strong> <span id="explanationText">Choose the correct answer!</span></div>
+        </div>
+
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next ➔</button>
+      </div>
+
     </div>
   </div>
 
+  <script>
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function checkAuth() {
+      const { data, error } = await supabaseClient.auth.getSession();
+      if (error || !data.session) {
+        window.location.href = "/login.html";
+        return;
+      }
+      nextQuestion();
+    }
+
+    checkAuth();
+
+    // Utility function: Fisher-Yates shuffle
+    function shuffleArray(array) {
+      let arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    const questionBank = [
+      // ================= LEVEL 1: RECOGNIZE THE GRAMMAR =================
+      {
+        level: 1,
+        question: "If the swelling is severe, the doctor usually recommends surgery.",
+        correctOption: "Zero Conditional (General medical rule: If + Present Simple, Present Simple)",
+        distractors: [
+          "First Conditional (Real future result)",
+          "Second Conditional (Unreal present condition)",
+          "Third Conditional (Unreal past condition)"
+        ],
+        explanation: "Zero Conditional formula is [IF I DO, THEN YOU DO]. It describes standard medical rules, facts, or routine clinical protocols."
+      },
+      {
+        level: 1,
+        question: "If sputum production increases, we will check for infection.",
+        correctOption: "First Conditional (Real condition in present/future)",
+        distractors: [
+          "Zero Conditional (General factual rule)",
+          "Second Conditional (Hypothetical present)",
+          "Mixed Conditional (Past condition + Present result)"
+        ],
+        explanation: "First Conditional formula is [IF I DO, THEN YOU WILL DO]. It refers to realistic future possibilities based on clinical observations."
+      },
+      {
+        level: 1,
+        question: "If the tendon were torn, the patient wouldn't move the joint at all.",
+        correctOption: "Second Conditional (Unreal/hypothetical condition in present/future)",
+        distractors: [
+          "First Conditional (Real future condition)",
+          "Third Conditional (Unreal past condition)",
+          "Zero Conditional (Rule or general fact)"
+        ],
+        explanation: "Second Conditional formula is [IF I DID, THEN YOU WOULD DO]. It expresses hypothetical or unreal situations in the present."
+      },
+      {
+        level: 1,
+        question: "If she had received treatment earlier, the stroke effects would have been less significant.",
+        correctOption: "Third Conditional (Unreal condition in the past)",
+        distractors: [
+          "Second Conditional (Unreal condition in the present)",
+          "Mixed Conditional (Past condition + Present result)",
+          "First Conditional (Real future outcome)"
+        ],
+        explanation: "Third Conditional formula is [IF I HAD DONE, THEN YOU WOULD HAVE DONE]. It addresses past unreal events and their unfulfilled outcomes."
+      },
+      {
+        level: 1,
+        question: "If the spinal cord were damaged, he would have lost sensation.",
+        correctOption: "Mixed Conditional (Present/Past unreal mix)",
+        distractors: [
+          "Zero Conditional (General factual rule)",
+          "First Conditional (Realistic future probability)",
+          "Third Conditional (Pure past unreal)"
+        ],
+        explanation: "Mixed Conditional combines different time frames (e.g. past condition with present result, or persistent state with past consequence)."
+      },
+      {
+        level: 1,
+        question: "If the tumor spread to the spine, she would need urgent radiation.",
+        correctOption: "Second Conditional (Hypothetical present/future)",
+        distractors: [
+          "First Conditional (Real future)",
+          "Third Conditional (Past unreal)",
+          "Zero Conditional (General truth)"
+        ],
+        explanation: "Uses Past Simple in the IF-clause ('spread') and 'would' + verb in the main clause, signifying a hypothetical condition."
+      },
+      {
+        level: 1,
+        question: "If stiffness lasts more than a week, the joint may need medical attention.",
+        correctOption: "First Conditional (Realistic future action with modal)",
+        distractors: [
+          "Third Conditional (Past unreal)",
+          "Second Conditional (Present hypothetical)",
+          "Mixed Conditional (Mixed time frames)"
+        ],
+        explanation: "First Conditional can use modal verbs like 'may' or 'will' in the main clause for probable outcomes."
+      },
+      {
+        level: 1,
+        question: "If I were the attending physician, I would recommend surgery immediately.",
+        correctOption: "Second Conditional (Hypothetical scenario in present)",
+        distractors: [
+          "Zero Conditional (Fact/Rule)",
+          "First Conditional (Real future probability)",
+          "Third Conditional (Past unfulfilled outcome)"
+        ],
+        explanation: "Uses subjunctive 'were' for hypothetical present scenarios: [IF I DID/WERE, THEN YOU WOULD DO]."
+      },
+      {
+        level: 1,
+        question: "If thyrotoxicosis is left untreated, it can result in a thyroid storm.",
+        correctOption: "Zero / First Conditional (General medical rule/consequence)",
+        distractors: [
+          "Third Conditional (Past unreal)",
+          "Second Conditional (Pure hypothetical)",
+          "Mixed Conditional (Past unreal condition)"
+        ],
+        explanation: "Present simple in condition leads to standard medical consequence ('can result in')."
+      },
+
+{
+        level: 1,
+        question: "If the tendon were torn, the patient wouldn't move the joint at all.",
+        correctOption: "Second Conditional (Unreal/hypothetical present condition)",
+        distractors: [
+          "First Conditional (Real future result)",
+          "Zero Conditional (General medical rule)",
+          "Third Conditional (Unreal past condition)"
+        ],
+        explanation: "Second Conditional formula is [IF I DID, THEN YOU WOULD DO]. It describes hypothetical or unreal situations in the present/future."
+      },
+      {
+        level: 1,
+        question: "If she had received treatment earlier, the stroke effects would have been less significant.",
+        correctOption: "Third Conditional (Unreal condition in the past)",
+        distractors: [
+          "Second Conditional (Unreal present condition)",
+          "Mixed Conditional (Past condition + Present result)",
+          "First Conditional (Real future result)"
+        ],
+        explanation: "Third Conditional formula is [IF I HAD DONE, THEN YOU WOULD HAVE DONE]. It refers to an unreal past event and its past outcome."
+      },
+      {
+        level: 1,
+        question: "If the spinal cord is damaged, the patient loses function below the injury.",
+        correctOption: "Zero Conditional (General medical rule: If + Present Simple, Present Simple)",
+        distractors: [
+          "First Conditional (Real future result)",
+          "Second Conditional (Unreal present condition)",
+          "Third Conditional (Unreal past condition)"
+        ],
+        explanation: "Zero Conditional formula is [IF I DO, THEN YOU DO]. It describes standard anatomical facts and predictable clinical rules."
+      },
+      {
+        level: 1,
+        question: "If he has sharp pain tomorrow, he will need further imaging.",
+        correctOption: "First Conditional (Real condition in present/future)",
+        distractors: [
+          "Zero Conditional (General factual rule)",
+          "Second Conditional (Hypothetical present)",
+          "Third Conditional (Unreal past condition)"
+        ],
+        explanation: "First Conditional formula is [IF I DO, THEN YOU WILL DO]. It refers to a realistic future plan based on potential symptoms."
+      },
+      {
+        level: 1,
+        question: "If the tumor spread to the spine, she would need urgent radiation.",
+        correctOption: "Second Conditional (Unreal/hypothetical present condition)",
+        distractors: [
+          "First Conditional (Real future result)",
+          "Zero Conditional (General medical rule)",
+          "Mixed Conditional (Past condition + Present result)"
+        ],
+        explanation: "Second Conditional formula is [IF I DID, THEN YOU WOULD DO]. It addresses hypothetical present or future clinical scenarios."
+      },
+      {
+        level: 1,
+        question: "If stiffness lasts more than a week, the joint may need medical attention.",
+        correctOption: "First Conditional (Real condition in present/future)",
+        distractors: [
+          "Zero Conditional (General factual rule)",
+          "Second Conditional (Hypothetical present)",
+          "Third Conditional (Unreal past condition)"
+        ],
+        explanation: "First Conditional formula is [IF I DO, THEN YOU WILL/MAY DO]. It sets a realistic condition for taking action if symptoms persist."
+      },
+      {
+        level: 1,
+        question: "If the patient had received supportive care, he might have been OK.",
+        correctOption: "Third Conditional (Unreal condition in the past)",
+        distractors: [
+          "Second Conditional (Unreal present condition)",
+          "Mixed Conditional (Past condition + Present result)",
+          "First Conditional (Real future result)"
+        ],
+        explanation: "Third Conditional formula is [IF I HAD DONE, THEN YOU WOULD HAVE DONE]. It expresses a past hypothetical scenario that did not happen."
+      },
+      {
+        level: 1,
+        question: "If swelling occurs, it usually means there is inflammation on the surface.",
+        correctOption: "Zero Conditional (General medical rule: If + Present Simple, Present Simple)",
+        distractors: [
+          "First Conditional (Real future result)",
+          "Second Conditional (Unreal present condition)",
+          "Mixed Conditional (Past condition + Present result)"
+        ],
+        explanation: "Zero Conditional formula is [IF I DO, THEN YOU DO]. It explains a routine rule of clinical physiology."
+      },
+      {
+        level: 1,
+        question: "If I were the attending physician, I would recommend surgery.",
+        correctOption: "Second Conditional (Unreal/hypothetical present condition)",
+        distractors: [
+          "Third Conditional (Unreal past condition)",
+          "First Conditional (Real future result)",
+          "Zero Conditional (General medical rule)"
+        ],
+        explanation: "Second Conditional formula is [IF I DID (were), THEN YOU WOULD DO]. Used for imaginary roles ('If I were you/the doctor')."
+      },
+      {
+        level: 1,
+        question: "If she struggles with swallowing again, the doctor will order a scan.",
+        correctOption: "First Conditional (Real condition in present/future)",
+        distractors: [
+          "Zero Conditional (General factual rule)",
+          "Second Conditional (Hypothetical present)",
+          "Third Conditional (Unreal past condition)"
+        ],
+        explanation: "First Conditional formula is [IF I DO, THEN YOU WILL DO]. It outlines a real action plan triggered by a possible future symptom."
+      },
+      {
+        level: 1,
+        question: "If the swelling doesn't go down, we will consider a steroid injection.",
+        correctOption: "First Conditional (Real condition in present/future)",
+        distractors: [
+          "Second Conditional (Hypothetical present)",
+          "Zero Conditional (General factual rule)",
+          "Mixed Conditional (Past condition + Present result)"
+        ],
+        explanation: "First Conditional formula is [IF I DO NOT, THEN YOU WILL DO]. It indicates a realistic future medical intervention."
+      },
+      {
+        level: 1,
+        question: "If a tendon is torn, movement becomes difficult.",
+        correctOption: "Zero Conditional (General medical rule: If + Present Simple, Present Simple)",
+        distractors: [
+          "First Conditional (Real future result)",
+          "Second Conditional (Unreal present condition)",
+          "Third Conditional (Unreal past condition)"
+        ],
+        explanation: "Zero Conditional formula is [IF I DO, THEN YOU DO]. It states an established biological truth."
+      },
+      {
+        level: 1,
+        question: "If the spinal cord had been damaged, he would have lost sensation.",
+        correctOption: "Third Conditional (Unreal condition in the past)",
+        distractors: [
+          "Mixed Conditional (Past condition + Present result)",
+          "Second Conditional (Unreal present condition)",
+          "First Conditional (Real future result)"
+        ],
+        explanation: "Third Conditional formula is [IF I HAD DONE, THEN YOU WOULD HAVE DONE]. It reviews a past non-occurrence and its past outcome."
+      },
+      {
+        level: 1,
+        question: "If he had a stroke, he might need supportive care for months.",
+        correctOption: "Second Conditional (Unreal/hypothetical present condition)",
+        distractors: [
+          "Third Conditional (Unreal past condition)",
+          "First Conditional (Real future result)",
+          "Zero Conditional (General medical rule)"
+        ],
+        explanation: "Second Conditional formula is [IF I DID, THEN YOU WOULD/MIGHT DO]. It treats the stroke as a present hypothetical possibility."
+      },
+      {
+        level: 1,
+        question: "If the pain is sharp, the patient usually reports it immediately.",
+        correctOption: "Zero Conditional (General medical rule: If + Present Simple, Present Simple)",
+        distractors: [
+          "First Conditional (Real future result)",
+          "Second Conditional (Unreal present condition)",
+          "Third Conditional (Unreal past condition)"
+        ],
+        explanation: "Zero Conditional formula is [IF I DO, THEN YOU DO]. It reflects regular patient behavior and routine clinical observations."
+      }
+
+
+
+
+      
+
+      // ================= LEVEL 2: FILL IN THE BLANK =================
+      {
+        level: 2,
+        question: "If the swelling is severe, the doctor usually ____ (recommend) surgery.",
+        correctOption: "recommends",
+        distractors: ["will recommend", "would recommend", "had recommended"],
+        explanation: "Zero conditional rule [IF I DO, THEN YOU DO] uses Present Simple ('recommends') for general rules or clinical facts."
+      },
+      {
+        level: 2,
+        question: "If he ____ a stroke last year, he might need supportive care for months.",
+        correctOption: "had had",
+        distractors: ["has", "had", "will have"],
+        explanation: "Requires Past Perfect ('had had') for a past unreal condition affecting a present state (Mixed conditional)."
+      },
+      {
+        level: 2,
+        question: "If the tendon ____ torn, the patient wouldn't move the joint at all.",
+        correctOption: "were",
+        distractors: ["is", "has been", "would be"],
+        explanation: "Second conditional uses Past Subjunctive ('were') in the condition clause."
+      },
+      {
+        level: 2,
+        question: "If sputum production increases, we ____ check for infection.",
+        correctOption: "will check",
+        distractors: ["checked", "would check", "had checked"],
+        explanation: "First conditional [IF I DO, THEN YOU WILL DO] uses 'will + verb' for future action based on real condition."
+      },
+      {
+        level: 2,
+        question: "If the spinal cord ____ damaged, he would have lost sensation.",
+        correctOption: "had been",
+        distractors: ["is damaged", "was damage", "will be damaged"],
+        explanation: "Past Perfect Passive ('had been damaged') forms the condition for past unreal outcomes."
+      },
+      {
+        level: 2,
+        question: "If the pain is sharp, the patient usually ____ (report) it immediately.",
+        correctOption: "reports",
+        distractors: ["reported", "will report", "would report"],
+        explanation: "Zero conditional: general rule / habit requires Present Simple ('reports')."
+      },
+      {
+        level: 2,
+        question: "If the infection spreads to the surface of the skin, the redness ____ (become) visible.",
+        correctOption: "becomes",
+        distractors: ["became", "would become", "had become"],
+        explanation: "Zero/First conditional: Present Simple ('becomes') states a routine physiological reaction."
+      },
+      {
+        level: 2,
+        question: "If she had received treatment earlier, the stroke effects ____ less significant.",
+        correctOption: "would have been",
+        distractors: ["will be", "would be", "are"],
+        explanation: "Third conditional formula requires 'would have + past participle' ('would have been')."
+      },
+      {
+        level: 2,
+        question: "If the patient had a spinal cord injury, he ____ anything below the waist.",
+        correctOption: "would not feel",
+        distractors: ["will not feel", "does not feel", "had not felt"],
+        explanation: "Second conditional requires 'would + verb' ('would not feel') in the main clause."
+      },
+      {
+        level: 2,
+        question: "If the stiffness continues for more than 3 days, we ____ a follow-up.",
+        correctOption: "will schedule",
+        distractors: ["scheduled", "would schedule", "had scheduled"],
+        explanation: "First conditional requires 'will + base verb' ('will schedule') for planned action."
+      },
+      {
+        level: 2,
+        question: "If patients continue to have anti-TSH receptor antibodies after 18 months, surgery ____.",
+        correctOption: "should be considered",
+        distractors: ["would have been considered", "was considered", "had considered"],
+        explanation: "First conditional medical recommendation uses modal passive ('should be considered')."
+      },
+      {
+        level: 2,
+        question: "If she struggles with swallowing again, the doctor ____ a scan.",
+        correctOption: "will order",
+        distractors: ["ordered", "would order", "had ordered"],
+        explanation: "First conditional real prediction uses 'will order'."
+      },
+
+    {
+        level: 2,
+        question: "If she had received treatment earlier, the stroke effects ____ less significant.",
+        correctOption: "would have been",
+        distractors: ["would be", "will be", "were"],
+        explanation: "Third conditional uses 'would have + past participle' in the main clause for an unreal past outcome."
+      },
+      {
+        level: 2,
+        question: "If the swelling ____ severe, the doctor usually recommends surgery.",
+        correctOption: "is",
+        distractors: ["was", "would be", "had been"],
+        explanation: "Zero conditional uses Present Simple ('is') in the condition clause to state a general factual rule."
+      },
+      {
+        level: 2,
+        question: "If he has sharp pain tomorrow, he ____ further imaging.",
+        correctOption: "will need",
+        distractors: ["needed", "would need", "would have needed"],
+        explanation: "First conditional uses 'will + base verb' in the main clause for a real future possibility."
+      },
+      {
+        level: 2,
+        question: "If the tumor spread to the spine, she ____ urgent radiation.",
+        correctOption: "would need",
+        distractors: ["will need", "needs", "had needed"],
+        explanation: "Second conditional uses 'would + base verb' in the main clause for a hypothetical present or future situation."
+      },
+      {
+        level: 2,
+        question: "If stiffness ____ more than a week, the joint may need medical attention.",
+        correctOption: "lasts",
+        distractors: ["lasted", "had lasted", "would last"],
+        explanation: "First conditional uses Present Simple ('lasts') in the condition clause to establish a realistic future condition."
+      },
+      {
+        level: 2,
+        question: "If the spinal cord ____ damaged, the patient loses function below the injury.",
+        correctOption: "is",
+        distractors: ["were", "had been", "would be"],
+        explanation: "Zero conditional uses Present Simple ('is') to describe permanent anatomical and clinical facts."
+      },
+      {
+        level: 2,
+        question: "If I ____ the attending physician, I would recommend surgery immediately.",
+        correctOption: "were",
+        distractors: ["am", "will be", "have been"],
+        explanation: "Second conditional uses the subjunctive 'were' for hypothetical or imaginary roles ('If I were you/the doctor')."
+      },
+      {
+        level: 2,
+        question: "If the patient had received supportive care, he ____ OK.",
+        correctOption: "might have been",
+        distractors: ["might be", "will be", "is"],
+        explanation: "Third conditional uses 'modal + have + past participle' ('might have been') for an unreal past possibility."
+      },
+      {
+        level: 2,
+        question: "If the swelling doesn't go down, we ____ a steroid injection.",
+        correctOption: "will consider",
+        distractors: ["considered", "would consider", "would have considered"],
+        explanation: "First conditional [IF + Present Simple, THEN WILL + verb] indicates a planned future intervention."
+      },
+      {
+        level: 2,
+        question: "If the spinal cord had been damaged, he ____ sensation below the waist.",
+        correctOption: "would have lost",
+        distractors: ["would lose", "will lose", "loses"],
+        explanation: "Third conditional uses 'would have + past participle' in the result clause following a past perfect condition."
+      }
+
+      // ================= LEVEL 3: PUT SENTENCE IN ORDER =================
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["the doctor usually", "if the swelling is severe", "recommends surgery"],
+        correctOption: "If the swelling is severe, the doctor usually recommends surgery.",
+        distractors: [
+          "The doctor usually if the swelling is severe recommends surgery.",
+          "Recommends surgery the doctor usually if the swelling is severe.",
+          "If the swelling is severe recommends surgery the doctor usually."
+        ],
+        explanation: "Standard Zero Conditional structure: [If + clause, Subject + adverb + verb + object]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["we will check", "if sputum production increases", "for infection"],
+        correctOption: "If sputum production increases, we will check for infection.",
+        distractors: [
+          "For infection we will check if sputum production increases.",
+          "We will check for infection increases if sputum production.",
+          "If sputum production we will check increases for infection."
+        ],
+        explanation: "First Conditional: [If + condition (Present Simple), main clause (will + verb)]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["the stroke effects", "if she had received treatment earlier", "would have been less significant"],
+        correctOption: "If she had received treatment earlier, the stroke effects would have been less significant.",
+        distractors: [
+          "The stroke effects if she had received treatment earlier would have been less significant.",
+          "Would have been less significant the stroke effects if she had received treatment earlier.",
+          "If she had received treatment earlier would have been less significant the stroke effects."
+        ],
+        explanation: "Third Conditional: [If + Past Perfect, Subject + would have + Past Participle]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["anything below the waist", "if the patient had spinal cord injury", "he would not feel"],
+        correctOption: "If the patient had spinal cord injury, he would not feel anything below the waist.",
+        distractors: [
+          "He would not feel if the patient had spinal cord injury anything below the waist.",
+          "Anything below the waist if the patient had spinal cord injury he would not feel.",
+          "If the patient had spinal cord injury anything below the waist he would not feel."
+        ],
+        explanation: "Second Conditional: [If + Past Simple, Subject + would not + base verb + object]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["we will schedule", "if the stiffness continues", "for more than 3 days", "a follow-up"],
+        correctOption: "If the stiffness continues for more than 3 days, we will schedule a follow-up.",
+        distractors: [
+          "We will schedule for more than 3 days if the stiffness continues a follow-up.",
+          "If the stiffness continues a follow-up we will schedule for more than 3 days.",
+          "For more than 3 days we will schedule if the stiffness continues a follow-up."
+        ],
+        explanation: "First Conditional: [If + condition + duration, Subject + will + verb + object]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["I would recommend surgery", "if I were", "the attending physician"],
+        correctOption: "If I were the attending physician, I would recommend surgery.",
+        distractors: [
+          "The attending physician if I were I would recommend surgery.",
+          "I would recommend surgery the attending physician if I were.",
+          "If I were I would recommend surgery the attending physician."
+        ],
+        explanation: "Second Conditional: [If + Subject + were + noun, Subject + would + verb + object]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["options such as surgery", "after 18 months", "if signs of hyperthyroidism continue", "should be considered"],
+        correctOption: "If signs of hyperthyroidism continue after 18 months, options such as surgery should be considered.",
+        distractors: [
+          "After 18 months options such as surgery if signs of hyperthyroidism continue should be considered.",
+          "Should be considered options such as surgery if signs of hyperthyroidism continue after 18 months.",
+          "If signs of hyperthyroidism continue options such as surgery after 18 months should be considered."
+        ],
+        explanation: "First Conditional passive recommendation structure."
+      },
+
+        {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["if the swelling is severe", "the doctor usually recommends", "surgery"],
+        correctOption: "If the swelling is severe, the doctor usually recommends surgery.",
+        distractors: [
+          "The doctor usually recommends if the swelling is severe surgery.",
+          "Surgery recommends the doctor usually if the swelling is severe.",
+          "If the swelling is severe surgery the doctor usually recommends."
+        ],
+        explanation: "Zero Conditional: [If + Present Simple, Present Simple]. Explains standard clinical rules."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["if the tendon were torn", "the patient wouldn't move", "the joint at all"],
+        correctOption: "If the tendon were torn, the patient wouldn't move the joint at all.",
+        distractors: [
+          "The patient wouldn't move if the tendon were torn the joint at all.",
+          "The joint at all the patient wouldn't move if the tendon were torn.",
+          "If the tendon were torn the joint at all wouldn't move the patient."
+        ],
+        explanation: "Second Conditional: [If + Past Subjunctive, Subject + would + base verb]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["he will need", "if he has sharp pain tomorrow", "further imaging"],
+        correctOption: "If he has sharp pain tomorrow, he will need further imaging.",
+        distractors: [
+          "He will need if he has sharp pain tomorrow further imaging.",
+          "Further imaging he will need if he has sharp pain tomorrow.",
+          "If he has sharp pain tomorrow further imaging he will need."
+        ],
+        explanation: "First Conditional: [If + Present Simple, main clause (will + verb)]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["she would need", "if the tumor spread to the spine", "urgent radiation"],
+        correctOption: "If the tumor spread to the spine, she would need urgent radiation.",
+        distractors: [
+          "She would need if the tumor spread to the spine urgent radiation.",
+          "Urgent radiation she would need if the tumor spread to the spine.",
+          "If the tumor spread to the spine urgent radiation she would need."
+        ],
+        explanation: "Second Conditional: [If + Past Simple, Subject + would + base verb]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["the joint may need medical attention", "if stiffness lasts", "more than a week"],
+        correctOption: "If stiffness lasts more than a week, the joint may need medical attention.",
+        distractors: [
+          "The joint may need medical attention if stiffness lasts more than a week.",
+          "More than a week if stiffness lasts the joint may need medical attention.",
+          "If stiffness lasts the joint may need medical attention more than a week."
+        ],
+        explanation: "First Conditional: [If + Present Simple, modal (may) + base verb]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["the patient loses function", "if the spinal cord is damaged", "below the injury"],
+        correctOption: "If the spinal cord is damaged, the patient loses function below the injury.",
+        distractors: [
+          "The patient loses function if the spinal cord is damaged below the injury.",
+          "Below the injury the patient loses function if the spinal cord is damaged.",
+          "If the spinal cord is damaged below the injury loses function the patient."
+        ],
+        explanation: "Zero Conditional: [If + Present Simple, Present Simple]. Refers to medical and anatomical facts."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["I would recommend surgery", "if I were", "the attending physician"],
+        correctOption: "If I were the attending physician, I would recommend surgery.",
+        distractors: [
+          "I would recommend surgery if I were the attending physician.",
+          "The attending physician if I were I would recommend surgery.",
+          "If I were I would recommend surgery the attending physician."
+        ],
+        explanation: "Second Conditional: [If + Subjunctive 'were', Subject + would + base verb] for imaginary clinical scenarios."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["he might have been OK", "if the patient had received", "supportive care"],
+        correctOption: "If the patient had received supportive care, he might have been OK.",
+        distractors: [
+          "He might have been OK if the patient had received supportive care.",
+          "Supportive care he might have been OK if the patient had received.",
+          "If the patient had received he might have been OK supportive care."
+        ],
+        explanation: "Third Conditional: [If + Past Perfect, Subject + modal (might) + have + Past Participle]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["we will consider", "if the swelling doesn't go down", "a steroid injection"],
+        correctOption: "If the swelling doesn't go down, we will consider a steroid injection.",
+        distractors: [
+          "We will consider if the swelling doesn't go down a steroid injection.",
+          "A steroid injection we will consider if the swelling doesn't go down.",
+          "If the swelling doesn't go down a steroid injection we will consider."
+        ],
+        explanation: "First Conditional: [If + Present Simple negative, Subject + will + base verb]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["he would have lost sensation", "if the spinal cord had been damaged", "below the waist"],
+        correctOption: "If the spinal cord had been damaged, he would have lost sensation below the waist.",
+        distractors: [
+          "He would have lost sensation if the spinal cord had been damaged below the waist.",
+          "Below the waist he would have lost sensation if the spinal cord had been damaged.",
+          "If the spinal cord had been damaged below the waist would have lost sensation he."
+        ],
+        explanation: "Third Conditional: [If + Past Perfect Passive, Subject + would have + Past Participle]."
+      }
+    ];
+
+    let total = 0;
+    let correct = 0;
+    let streak = 0;
+    let currentQuestion = null;
+    let answered = false;
+
+    function changeLevel() {
+      nextQuestion();
+    }
+
+    function getFilteredQuestions() {
+      const selectedLevel = document.getElementById('levelSelect').value;
+      if (selectedLevel === 'mix') {
+        return questionBank;
+      }
+      return questionBank.filter(q => q.level === parseInt(selectedLevel));
+    }
+
+    function nextQuestion() {
+      answered = false;
+      
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.classList.remove('visible');
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.remove('answered');
+      document.getElementById('explanationText').textContent = "Choose the correct answer!";
+
+      const pool = getFilteredQuestions();
+      currentQuestion = pool[Math.floor(Math.random() * pool.length)];
+
+      const levelTag = document.getElementById('levelTag');
+      levelTag.textContent = `Level ${currentQuestion.level}`;
+
+      document.getElementById('questionText').textContent = currentQuestion.question;
+
+      // Randomize sentence chunks for Level 3 dynamically
+      const chunksBox = document.getElementById('chunksBox');
+      if (currentQuestion.level === 3 && currentQuestion.rawChunks) {
+        const shuffledChunks = shuffleArray(currentQuestion.rawChunks);
+        chunksBox.textContent = shuffledChunks.join(" / ");
+        chunksBox.classList.remove('invisible');
+      } else {
+        chunksBox.textContent = '';
+        chunksBox.classList.add('invisible');
+      }
+
+      // Combine correct option and distractors into one array and shuffle them dynamically
+      const allOptions = [currentQuestion.correctOption, ...currentQuestion.distractors];
+      const shuffledOptions = shuffleArray(allOptions);
+
+      // Find the new index of the correct answer after shuffling
+      const correctIndex = shuffledOptions.indexOf(currentQuestion.correctOption);
+      currentQuestion.computedCorrectIndex = correctIndex;
+
+      // Render answer options
+      const grid = document.getElementById('optionsGrid');
+      grid.innerHTML = '';
+
+      shuffledOptions.forEach((optText, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = `${String.fromCharCode(65 + index)}) ${optText}`;
+        btn.onclick = () => selectOption(btn, index);
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedBtn, selectedIndex) {
+      if (answered) return;
+      answered = true;
+
+      total++;
+      const isCorrect = (selectedIndex === currentQuestion.computedCorrectIndex);
+
+      if (isCorrect) {
+        correct++;
+        streak++;
+        selectedBtn.classList.add('correct');
+      } else {
+        streak = 0;
+        selectedBtn.classList.add('wrong');
+        
+        const allBtns = document.querySelectorAll('.option-btn');
+        if (allBtns[currentQuestion.computedCorrectIndex]) {
+          allBtns[currentQuestion.computedCorrectIndex].classList.add('correct');
+        }
+      }
+
+      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('correctCount').textContent = correct;
+      document.getElementById('streakCount').textContent = `${streak} 🔥`;
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.add('answered');
+      document.getElementById('explanationText').textContent = currentQuestion.explanation;
+
+      document.getElementById('nextBtn').classList.add('visible');
+    }
+  </script>
 </body>
 </html>
