@@ -266,11 +266,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
-        const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ"; // Тот же ключ, что в index.html
+        const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Проверка авторизации при загрузке
+        // Проверка авторизации и прав администратора при загрузке
         async function checkAdminAccess() {
             const { data, error } = await supabaseClient.auth.getSession();
 
@@ -279,8 +279,20 @@
                 return;
             }
 
-            // Показываем форму авторизованному пользователю
-            document.getElementById("adminFormCard").style.display = "block";
+            const user = data.session.user;
+
+            // Проверяем роль админа (проверяем app_metadata или user_metadata)
+            const isAdmin = 
+                user?.app_metadata?.role === "admin" || 
+                user?.user_metadata?.role === "admin" ||
+                user?.user_metadata?.is_admin === true;
+
+            if (isAdmin) {
+                document.getElementById("adminFormCard").style.display = "block";
+                document.getElementById("accessDenied").style.display = "none";
+            } else {
+                showDenied();
+            }
         }
 
         function showDenied() {
@@ -311,10 +323,8 @@
             submitBtn.textContent = "Сохранение...";
 
             try {
-                // Получаем текущую сессию менеджера для передачи токена
                 const { data: { session } } = await supabaseClient.auth.getSession();
 
-                // Вызов Supabase Edge Function
                 const response = await fetch(`${SUPABASE_URL}/functions/v1/create-user`, {
                     method: 'POST',
                     headers: {
