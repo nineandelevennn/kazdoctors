@@ -3,150 +3,320 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>@doctors.speak — Page not ready yet</title>
+  <title>@doctors.speak — Medical Grammar Trainer (Articles: A, An, The, Zero Article)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Montserrat', sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background: linear-gradient(135deg, #00afca 0%, #0081a7 100%);
-      color: #333;
+      background: var(--bg-main);
+      color: var(--text-dark);
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 10px;
+      padding: 12px 10px;
     }
 
     .card {
-      background: #ffffff;
+      background: var(--card-bg);
       border-radius: 20px;
       width: 100%;
-      max-width: 420px;
-      height: 680px;
-      max-height: 95vh;
+      max-width: 440px;
+      min-height: 720px;
+      height: 720px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      border: 3px solid #fbc02d;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-color);
       position: relative;
-      overflow-y: auto;
+      overflow: hidden;
     }
 
     .header {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 16px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 10px;
-      border-bottom: 2px solid #00afca;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
       flex-shrink: 0;
     }
 
     .home-btn {
-      background-color: #fbc02d;
-      color: #003366;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #FFFFFF;
       text-decoration: none;
       font-weight: 700;
-      font-size: 0.8rem;
-      padding: 6px 12px;
-      border-radius: 12px;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.12);
-      transition: transform 0.1s, background-color 0.2s;
+      transition: all 0.2s ease;
     }
 
     .home-btn:active {
-      transform: scale(0.95);
-      background-color: #fdd835;
+      transform: scale(0.96);
+      background: rgba(255, 255, 255, 0.3);
     }
 
     .brand {
-      color: #00afca;
       font-weight: 800;
-      font-size: 1.05rem;
+      font-size: 0.82rem;
       letter-spacing: 0.5px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
     }
 
-    .content-container {
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+      padding: 16px;
+      gap: 8px;
+      overflow-y: hidden;
+    }
+
+    .mode-select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      border-radius: 12px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--kz-blue-dark);
+      background: var(--kz-blue-light);
+      outline: none;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 6px;
+      background: var(--bg-main);
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .stats span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .term-box {
+      margin: 2px 0;
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-left: 6px solid var(--kz-gold-dark);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      text-align: center;
+      min-height: 135px;
+      height: 135px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 18px;
-      padding: 20px 10px;
-      text-align: center;
-      flex-grow: 1;
     }
 
-    .icon-box {
-      font-size: 4rem;
-      line-height: 1;
-      margin-bottom: 5px;
-    }
-
-    .title {
-      font-size: 1.35rem;
-      color: #0081a7;
-      font-weight: 800;
-      line-height: 1.3;
-    }
-
-    .description {
-      font-size: 0.95rem;
-      color: #555;
-      line-height: 1.5;
-      max-width: 320px;
-    }
-
-    .action-btn {
-      background: #fbc02d;
-      color: #003366;
-      border: none;
-      padding: 14px 24px;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 800;
-      cursor: pointer;
-      width: 100%;
-      max-width: 300px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      text-decoration: none;
+    .level-tag {
       display: inline-block;
-      transition: transform 0.1s, background-color 0.2s;
-      margin-top: 10px;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .action-btn:hover {
-      background: #fdd835;
+    .term-title {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.3;
+      min-height: 2.6em;
+      height: 2.6em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
     }
 
-    .action-btn:active {
-      transform: scale(0.98);
-    }
-
-    .insta-link {
-      font-size: 0.85rem;
-      color: #666;
-      margin-top: 10px;
-    }
-
-    .insta-link a {
-      color: #0081a7;
+    .chunks-box {
+      background: var(--bg-main);
+      border: 1px dashed var(--kz-gold-dark);
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      color: var(--kz-gold-dark);
       font-weight: 700;
-      text-decoration: underline;
+      margin-top: 4px;
+      word-break: break-word;
+      min-height: 38px;
+      height: 38px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chunks-box.invisible {
+      visibility: hidden;
+      border-color: transparent;
+      background: transparent;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .option-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-align: left;
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+      line-height: 1.25;
+      min-height: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+      overflow: hidden;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background-color: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+    }
+
+    .option-btn.correct {
+      background-color: #DCFCE7 !important;
+      border-color: #22C55E !important;
+      color: #15803D !important;
+      font-weight: 700;
+    }
+
+    .option-btn.wrong {
+      background-color: #FEE2E2 !important;
+      border-color: #EF4444 !important;
+      color: #B91C1C !important;
+      font-weight: 700;
+    }
+
+    .explanation-box {
+      background-color: var(--kz-blue-light);
+      border-left: 4px solid var(--kz-blue);
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      color: var(--kz-blue-dark);
+      margin-bottom: 6px;
+      line-height: 1.3;
+      min-height: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .explanation-box.answered {
+      background-color: #E0F2FE;
+      border-left-color: var(--kz-blue-dark);
+    }
+
+    .next-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      font-weight: 800;
+      padding: 10px;
+      border-radius: 16px;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      border: 1px solid var(--kz-gold-dark);
+      cursor: pointer;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.2s ease, visibility 0.2s ease, background-color 0.2s ease;
+      min-height: 42px;
+      height: 42px;
+    }
+
+    .next-btn.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .next-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    .next-btn:active {
+      transform: scale(0.98);
     }
   </style>
 </head>
 <body>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <div class="card">
     <!-- Header -->
@@ -155,22 +325,792 @@
       <div class="brand">@doctors.speak</div>
     </header>
 
-    <!-- Content -->
-    <div class="content-container">
-      <div class="icon-box">🚧</div>
-      <h1 class="title">Page not ready yet :( </h1>
-      <p class="description">
-        We are working on the page, please check it later🙏
-      </p>
+    <!-- Game Screen -->
+    <div id="gameScreen" class="game-container">
+      
+      <div>
+        <select id="levelSelect" class="mode-select" onchange="changeLevel()">
+          <option value="1">Level 1 — Recognition</option>
+          <option value="2">Level 2 — Fill in the Correct Article </option>
+          <option value="3">Level 3 — Sentence Building</option>
+          <option value="mix">🔥 Mix</option>
+        </select>
 
-      <a href="https://kazdoctors.com/grammar/" class="action-btn">Go back</a>
-
-      <div class="insta-link">
-        Our updates:<br>
-        <a href="https://instagram.com/doctors.speak" target="_blank">@doctors.speak</a>
+        <div class="stats">
+          <span>Total: <strong id="totalCount">0</strong></span>
+          <span>Correct: <strong id="correctCount" style="color:#16A34A;">0</strong></span>
+          <span>Streak: <strong id="streakCount" style="color:#D9A000;">0 🔥</strong></span>
+        </div>
       </div>
+
+      <div class="term-box">
+        <span id="levelTag" class="level-tag">Level 1</span>
+        <div id="questionText" class="term-title">Loading question...</div>
+        <div id="chunksBox" class="chunks-box invisible"></div>
+      </div>
+
+      <div>
+        <div id="optionsGrid" class="options-grid"></div>
+        
+        <div id="explanationBox" class="explanation-box">
+          <div><strong>💡 Explanation:</strong> <span id="explanationText">Choose the correct answer!</span></div>
+        </div>
+
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next ➔</button>
+      </div>
+
     </div>
   </div>
 
+  <script>
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function checkAuth() {
+      const { data, error } = await supabaseClient.auth.getSession();
+      if (error || !data.session) {
+        window.location.href = "/login.html";
+        return;
+      }
+      nextQuestion();
+    }
+
+    checkAuth();
+
+    function shuffleArray(array) {
+      let arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    const rawQuestionBank = [
+      // ================= LEVEL 1: RECOGNIZE THE GRAMMAR & CONTEXT (20 ITEMS) =================
+      {
+        level: 1,
+        question: "The doctor needs to confirm the diagnosis",
+        options: [
+          "Definite article",
+          "Indefinite article",
+          "Zero article",
+          "Plural"
+        ],
+        targetIndex: 0,
+        explanation: "'The' is used when referring to a specific, contextually known object or case[cite: 46]."
+      },
+      {
+        level: 1,
+        question: "A contagion can spread quickly in a crowded hospital",
+        options: [
+          "Definite article",
+          "Indefinite article",
+          "Zero article rule",
+          "Plural noun rule"
+        ],
+        targetIndex: 1,
+        explanation: "'A/an' is used when introducing a singular countable concept or object for the first time[cite: 46]."
+      },
+      {
+        level: 1,
+        question: "An exacerbation of asthma can occur without warning",
+        options: [
+          "Definite article",
+          "Indefinite article",
+          "Zero article rule",
+          "Plural noun rule"
+        ],
+        targetIndex: 1,
+        explanation: "'An' is used before singular countable nouns beginning with a vowel sound[cite: 46]."
+      },
+      {
+        level: 1,
+        question: "Exposure to chemical agents can disrupt immune system functions",
+        options: [
+          "Zero article",
+          "Indefinite article",
+          "Definite article",
+          "Plural noun rule"
+        ],
+        targetIndex: 0,
+        explanation: "No article is used when expressing general concepts or non-countable terms in broad context[cite: 46]."
+      },
+      {
+        level: 1,
+        question: "THE GFR is essential in evaluating kidney function",
+        options: [
+          "Zero article",
+          "Indefinite article",
+          "Definite article",
+          "Plural noun rule"
+        ],
+        targetIndex: 2,
+        explanation: "Unique anatomical parameters or specific medical indices take the definite article 'the'[cite: 46, 48]."
+      },
+      {
+        level: 1,
+        question: "She felt a flutter in her ches",
+        options: [
+          "Zero article",
+          "Indefinite article",
+          "Definite article",
+          "Plural noun rule"
+        ],
+        targetIndex: 1,
+        explanation: "'A' introduces a single, general occurrence of a physical symptom/sensation[cite: 46, 48]."
+      },
+      {
+        level: 1,
+        question: "Improper technique can lead to contamination",
+        options: [
+          "Zero article",
+          "Indefinite article",
+          "Definite article",
+          "Plural noun rule"
+        ],
+        targetIndex: 0,
+        explanation: "Uncountable nouns representing general phenomena do not take an article[cite: 46, 48]."
+      },
+      {
+        level: 1,
+        question: "The nurse noticed a crust forming around the wound'",
+        options: [
+          "Zero article",
+          "Indefinite article",
+          "Definite article",
+          "Plural noun rule"
+        ],
+        targetIndex: 2,
+        explanation: "Definite article 'the' is used because the specific lesion/wound is known in context[cite: 46, 48]."
+      },
+      {
+        level: 1,
+        question: "Flares occur more frequently in cold weather",
+        options: [
+          "Zero article",
+          "Indefinite article",
+          "Definite article",
+          "Plural noun rule"
+        ],
+        targetIndex: 0,
+        explanation: "Plural countable nouns referring to general clinical occurrences take no article[cite: 46, 48]."
+      },
+      {
+        level: 1,
+        question: "In 'He has a follow-up appointment next week', why is 'a' used before 'follow-up'?",
+        options: [
+          "Indefinite article",
+          "Definite article",
+          "Zero article",
+          "Plural noun rule"
+        ],
+        targetIndex: 0,
+        explanation: "'A' specifies a singular countable appointment introduced in context[cite: 46, 48]."
+      },
+      {
+        level: 1,
+        question: "The detachment was treated surgically",
+        options: [
+          "It is a general textbook definition.",
+          "It refers to a specific case of detachment previously identified in the patient.",
+          "It refers to any possible tissue detachment.",
+          "It is a verb in the sentence."
+        ],
+        targetIndex: 1,
+        explanation: "'The' indicates a specific instance (e.g., retinal detachment) already established in context[cite: 46, 48]."
+      },
+      {
+        level: 1,
+        question: "Why is 'the' used in 'disrupt the immune system'?",
+        options: [
+          "The body has one specific immune system being referred to.",
+          "'Immune system' is a plural term.",
+          "It is introduced for the very first time in medical history.",
+          "'System' is an abstract uncountable concept."
+        ],
+        targetIndex: 0,
+        explanation: "Unique anatomical structures or body systems take 'the'[cite: 46, 48, 50]."
+      },
+      {
+        level: 1,
+        question: "In 'Doctors noted a gasping sound', what does 'a' indicate?",
+        options: [
+          "A specific gasping sound already analyzed.",
+          "An unspecified singular sound heard for the first time during auscultation.",
+          "That 'sound' is uncountable.",
+          "That all doctors always hear gasping."
+        ],
+        targetIndex: 1,
+        explanation: "'A' marks a non-specific singular sound observed during physical exam[cite: 46, 50]."
+      },
+      {
+        level: 1,
+        question: "In 'She complained of cramping in the lower abdomen', why is there NO article before 'cramping'?",
+        options: [
+          "Zero article: 'Cramping' is used here as an uncountable symptom in general.",
+          "Definite article: 'Cramping' is a specific organ.",
+          "Indefinite article: 'Cramping' starts with a vowel.",
+          "Plural form: 'Cramping' ends in -ing so it is plural."
+        ],
+        targetIndex: 0,
+        explanation: "Uncountable symptom nouns take zero article when used generally[cite: 46, 48, 50]."
+      },
+      {
+        level: 1,
+        question: "In 'The gasping lasted for several minutes', why is 'the' used now?",
+        options: [
+          "Because gasping is always preceded by 'the'.",
+          "Because the gasping sound was already introduced and is now known in context.",
+          "Because it is followed by 'several minutes'.",
+          "Because gasping is a proper noun."
+        ],
+        targetIndex: 1,
+        explanation: "Once a symptom is introduced ('a gasping sound'), repeating it calls for 'the'[cite: 46, 48, 50]."
+      },
+      {
+        level: 1,
+        question: "Choose the statement that correctly explains Zero Article with names:",
+        options: [
+          "We say 'The Aiganym is a doctor'.",
+          "We say 'Aiganym is a doctor' without an article before personal names.",
+          "We say 'An Aiganym is a doctor'.",
+          "Names always require 'a' or 'the' depending on gender."
+        ],
+        targetIndex: 1,
+        explanation: "Names of people do not take articles in English grammar[cite: 46]."
+      },
+      {
+        level: 1,
+        question: "Why do we say 'a doctor' in 'Aiganym is a doctor'?",
+        options: [
+          "Because doctor is a specific person.",
+          "Because doctor is a singular countable profession noun introduced generally.",
+          "Because doctor is a proper noun.",
+          "Because doctor is an uncountable concept."
+        ],
+        targetIndex: 1,
+        explanation: "Professions take 'a/an' when classifying a person[cite: 46]."
+      },
+      {
+        level: 1,
+        question: "In 'contamination in the lab sample led to an incorrect result', why is 'the' used with 'lab sample'?",
+        options: [
+          "It refers to a specific laboratory sample being analyzed in the case.",
+          "Lab samples are uncountable.",
+          "It is the first time lab samples were invented.",
+          "It is a general rule for all lab samples."
+        ],
+        targetIndex: 0,
+        explanation: "'The lab sample' specifies the particular clinical specimen in question[cite: 44, 50]."
+      },
+
+      // ================= LEVEL 2: FILL IN THE BLANK (20 ITEMS) =================
+      {
+        level: 2,
+        question: "The patient showed signs of ____ exacerbation of symptoms overnight.",
+        options: ["an", "a", "the", "- (no article)"],
+        targetIndex: 0,
+        explanation: "'Exacerbation' begins with a vowel sound and is a singular countable noun here ('an exacerbation')[cite: 44, 50]."
+      },
+      {
+        level: 2,
+        question: "He had ____ follow-up scheduled three days after discharge.",
+        options: ["the", "a", "an", "- (no article)"],
+        targetIndex: 1,
+        explanation: "Takes indefinite article 'a' ('a follow-up scheduled')[cite: 44, 50]."
+      },
+      {
+        level: 2,
+        question: "____ contamination in the lab sample led to an incorrect result.",
+        options: ["An", "A", "The", "- (no article)"],
+        targetIndex: 2,
+        explanation: "Refers to specific contamination in that specific lab sample ('The contamination')[cite: 44, 50]."
+      },
+      {
+        level: 2,
+        question: "She experienced cramping and ____ flutter in the lower abdomen.",
+        options: ["an", "- (no article)", "the", "a"],
+        targetIndex: 3,
+        explanation: "'Flutter' is introduced as a singular countable sensation ('a flutter')[cite: 44, 50]."
+      },
+      {
+        level: 2,
+        question: "Doctors noted ____ gasping sound during auscultation.",
+        options: ["a", "an", "the", "- (no article)"],
+        targetIndex: 0,
+        explanation: "'Gasping sound' starts with a consonant sound (/ɡ/), requiring 'a' ('a gasping sound')[cite: 44, 50]."
+      },
+      {
+        level: 2,
+        question: "We need to confirm whether it's ____ contagion or an allergic reaction.",
+        options: ["the", "a", "an", "- (no article)"],
+        targetIndex: 1,
+        explanation: "'Contagion' here refers to a non-specific infectious cause ('a contagion')[cite: 44, 50]."
+      },
+      {
+        level: 2,
+        question: "There was ____ crust forming around the wound.",
+        options: ["an", "the", "a", "- (no article)"],
+        targetIndex: 2,
+        explanation: "Singular countable layer forming for the first time ('a crust')[cite: 44, 50]."
+      },
+      {
+        level: 2,
+        question: "____ glomerular filtration rate (GFR) is essential for assessing kidney function.",
+        options: ["A", "An", "- (no article)", "The"],
+        targetIndex: 3,
+        explanation: "Refers to a specific, defined physiological parameter ('The GFR')[cite: 44, 50]."
+      },
+      {
+        level: 2,
+        question: "The patient had ____ detachment of the retina after trauma.",
+        options: ["a", "an", "- (no article)", "the"],
+        targetIndex: 0,
+        explanation: "Refers to an occurrence of retinal detachment ('a detachment' / 'a retinal detachment')[cite: 44, 50]."
+      },
+      {
+        level: 2,
+        question: "Prolonged exposure to the chemical can disrupt ____ immune system.",
+        options: ["a", "an", "the", "- (no article)"],
+        targetIndex: 2,
+        explanation: "Refers to the specific body system ('the immune system')[cite: 44, 50]."
+      },
+      {
+        level: 2,
+        question: "The doctor needs to confirm ____ diagnosis before starting treatment.",
+        options: ["a", "an", "the", "- (no article)"],
+        targetIndex: 2,
+        explanation: "Refers to the specific diagnosis for this patient ('the diagnosis')[cite: 48]."
+      },
+      {
+        level: 2,
+        question: "____ exposure to radiation should be kept to a minimum.",
+        options: ["An", "A", "The", "- (no article)"],
+        targetIndex: 3,
+        explanation: "General uncountable concept takes zero article ('Exposure to radiation...')[cite: 46, 48]."
+      },
+      {
+        level: 2,
+        question: "She complained of ____ cramping in the lower abdomen.",
+        options: ["a", "an", "the", "- (no article)"],
+        targetIndex: 3,
+        explanation: "Symptom noun 'cramping' used in a general sense takes zero article[cite: 48, 50]."
+      },
+      {
+        level: 2,
+        question: "The nurse noticed a crust forming around ____ wound.",
+        options: ["a", "an", "the", "- (no article)"],
+        targetIndex: 2,
+        explanation: "Refers to the specific lesion/wound on the patient ('the wound')[cite: 48, 50]."
+      },
+      {
+        level: 2,
+        question: "____ flares occur more frequently in cold weather.",
+        options: ["A", "An", "The", "- (no article)"],
+        targetIndex: 3,
+        explanation: "Plural noun in general context takes zero article ('Flares occur...')[cite: 48]."
+      },
+      {
+        level: 2,
+        question: "He presented with ____ acute exacerbation of COPD.",
+        options: ["an", "a", "the", "- (no article)"],
+        targetIndex: 0,
+        explanation: "'Acute' starts with a vowel sound (/æ/), so we use 'an acute exacerbation'."
+      },
+      {
+        level: 2,
+        question: "The surge of infection was caused by ____ airborne contagion.",
+        options: ["a", "an", "the", "- (no article)"],
+        targetIndex: 1,
+        explanation: "'Airborne' starts with a vowel sound (/ɛər/), requiring 'an' ('an airborne contagion')."
+      },
+      {
+        level: 2,
+        question: "The surgeon managed to repair ____ detachment quickly.",
+        options: ["a", "an", "the", "- (no article)"],
+        targetIndex: 2,
+        explanation: "Refers to the specific detachment operated on ('the detachment')[cite: 48]."
+      },
+      {
+        level: 2,
+        question: "Severe fatigue can disrupt ____ normal healing process.",
+        options: ["a", "an", "the", "- (no article)"],
+        targetIndex: 2,
+        explanation: "Refers to the specific physiological process ('the normal healing process')."
+      },
+      {
+        level: 2,
+        question: "Dr. Aiganym is ____ experienced cardiologist at the clinic.",
+        options: ["a", "an", "the", "- (no article)"],
+        targetIndex: 1,
+        explanation: "'Experienced' starts with a vowel sound (/ɪk/), requiring 'an' ('an experienced cardiologist')."
+      },
+
+      // ================= LEVEL 3: PUT SENTENCE IN ORDER (20 ITEMS) =================
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["the doctor needs", "to confirm the diagnosis", "before starting", "treatment"],
+        options: [
+          "The doctor needs to confirm the diagnosis before starting treatment.",
+          "To confirm the diagnosis before starting treatment the doctor needs.",
+          "Before starting treatment the diagnosis needs to confirm the doctor.",
+          "The diagnosis needs the doctor to confirm before starting treatment."
+        ],
+        targetIndex: 0,
+        explanation: "Correct order: [Subject + Verb + Infinitival Object + Time Clause][cite: 48]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["a contagion can", "spread quickly", "in a crowded", "hospital ward"],
+        options: [
+          "In a crowded hospital ward spread quickly a contagion can.",
+          "A contagion can spread quickly in a crowded hospital ward.",
+          "Spread quickly in a crowded hospital ward a contagion can.",
+          "A crowded hospital ward can spread quickly a contagion in."
+        ],
+        targetIndex: 1,
+        explanation: "Correct order: [Subject + Modal Verb + Adverbial Phrase + Prepositional Location][cite: 48]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["improper technique", "can lead to", "contamination in", "the laboratory"],
+        options: [
+          "In the laboratory improper technique contamination can lead to.",
+          "Lead to contamination in the laboratory improper technique can.",
+          "Improper technique can lead to contamination in the laboratory.",
+          "Contamination in the laboratory can lead to improper technique."
+        ],
+        targetIndex: 2,
+        explanation: "Correct order: [Subject + Modal + Verb + Prepositional Object + Location][cite: 48]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["she complained of", "cramping and flutter", "in the lower", "abdomen"],
+        options: [
+          "In the lower abdomen she complained of cramping and flutter.",
+          "Cramping and flutter she complained of in the lower abdomen.",
+          "Abdomen in the lower she complained of cramping and flutter.",
+          "She complained of cramping and flutter in the lower abdomen."
+        ],
+        targetIndex: 3,
+        explanation: "Correct order: [Subject + Verb + Prepositional Object + Location][cite: 44, 48, 50]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["the nurse noticed", "a crust forming", "around the wound", "during dressing"],
+        options: [
+          "The nurse noticed a crust forming around the wound during dressing.",
+          "Around the wound during dressing a crust forming the nurse noticed.",
+          "A crust forming the nurse noticed around the wound during dressing.",
+          "During dressing the wound a crust forming noticed the nurse."
+        ],
+        targetIndex: 0,
+        explanation: "Correct order: [Subject + Verb + Direct Object + Participle Phrase + Time Phrase][cite: 48]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["the detachment of", "the retina was", "treated surgically", "by the specialist"],
+        options: [
+          "Treated surgically by the specialist the detachment of the retina was.",
+          "The detachment of the retina was treated surgically by the specialist.",
+          "By the specialist treated surgically was the detachment of the retina.",
+          "The retina was treated surgically the detachment of by the specialist."
+        ],
+        targetIndex: 1,
+        explanation: "Correct order: [Noun Phrase + Passive Verb + Manner + Agent][cite: 48]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["prolonged stress can", "disrupt the normal", "immune system", "response"],
+        options: [
+          "Immune system response prolonged stress can disrupt the normal.",
+          "Disrupt the normal immune system response can prolonged stress.",
+          "Prolonged stress can disrupt the normal immune system response.",
+          "The normal immune system response can disrupt prolonged stress."
+        ],
+        targetIndex: 2,
+        explanation: "Correct order: [Subject + Modal + Verb + Definite Noun Phrase][cite: 48, 50]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["an exacerbation of", "asthma symptoms occurred", "without any prior", "warning"],
+        options: [
+          "Without any prior warning occurred an exacerbation of asthma symptoms.",
+          "Asthma symptoms occurred without any prior warning an exacerbation of.",
+          "Prior warning without an exacerbation of asthma symptoms occurred.",
+          "An exacerbation of asthma symptoms occurred without any prior warning."
+        ],
+        targetIndex: 3,
+        explanation: "Correct order: [Indefinite Noun Subject + Verb + Prepositional Condition][cite: 48]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["exposure to sunlight", "is restricted in", "this hospital", "ward"],
+        options: [
+          "Exposure to sunlight is restricted in this hospital ward.",
+          "In this hospital ward exposure to sunlight restricted is.",
+          "Restricted in this hospital ward exposure to sunlight is.",
+          "This hospital ward is restricted exposure to sunlight in."
+        ],
+        targetIndex: 0,
+        explanation: "Correct order: [Uncountable Subject + Verb + Location][cite: 48]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["flares occur more", "frequently during the", "cold winter months", "in this region"],
+        options: [
+          "Cold winter months in this region flares occur more frequently during the.",
+          "Flares occur more frequently during the cold winter months in this region.",
+          "During the cold winter months flares occur more frequently in this region.",
+          "In this region flares occur more frequently during the cold winter months."
+        ],
+        targetIndex: 1,
+        explanation: "Correct order: [Zero-article Plural Subject + Verb + Frequency + Time Phrase][cite: 48]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["she felt a flutter", "in her chest", "during the physical", "examination"],
+        options: [
+          "During the physical examination in her chest she felt a flutter.",
+          "In her chest during the physical examination she felt a flutter.",
+          "She felt a flutter in her chest during the physical examination.",
+          "A flutter in her chest she felt during the physical examination."
+        ],
+        targetIndex: 2,
+        explanation: "Correct order: [Subject + Verb + Indefinite Noun + Location + Context][cite: 48]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["he scheduled a", "follow-up appointment for", "next Tuesday morning", "with the doctor"],
+        options: [
+          "With the doctor next Tuesday morning he scheduled a follow-up appointment for.",
+          "For next Tuesday morning with the doctor he scheduled a follow-up appointment.",
+          "Next Tuesday morning he scheduled a follow-up appointment for with the doctor.",
+          "He scheduled a follow-up appointment for next Tuesday morning with the doctor."
+        ],
+        targetIndex: 3,
+        explanation: "Correct order: [Subject + Verb + Indefinite Object + Time + Agent][cite: 48]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["the gasping sound", "lasted for several", "minutes before", "subsiding"],
+        options: [
+          "The gasping sound lasted for several minutes before subsiding.",
+          "Lasted for several minutes before subsiding the gasping sound.",
+          "Before subsiding several minutes lasted for the gasping sound.",
+          "For several minutes subsiding before the gasping sound lasted."
+        ],
+        targetIndex: 0,
+        explanation: "Correct order: [Definite Subject + Verb + Duration + Time Clause][cite: 48, 50]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["the GFR value", "is essential in", "evaluating overall", "kidney function"],
+        options: [
+          "Evaluating overall kidney function the GFR value is essential in.",
+          "The GFR value is essential in evaluating overall kidney function.",
+          "Is essential in evaluating overall kidney function the GFR value.",
+          "In evaluating overall kidney function is essential the GFR value."
+        ],
+        targetIndex: 1,
+        explanation: "Correct order: [Definite Abbreviation Subject + Verb + Adjective + Prepositional Purpose][cite: 48, 50]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["we need to confirm", "whether it is a", "contagion or an", "allergic reaction"],
+        options: [
+          "Contagion or an allergic reaction whether it is we need to confirm.",
+          "Whether it is a contagion or an allergic reaction we need to confirm.",
+          "We need to confirm whether it is a contagion or an allergic reaction.",
+          "It is a contagion or an allergic reaction we need to confirm whether."
+        ],
+        targetIndex: 2,
+        explanation: "Correct order: [Main Clause + Conjunction + Dummy Subject + Verb + Indefinite Alternatives][cite: 44, 50]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["the patient presented", "with an acute", "exacerbation of chronic", "bronchitis"],
+        options: [
+          "Bronchitis chronic exacerbation of with an acute the patient presented.",
+          "With an acute exacerbation of chronic bronchitis the patient presented.",
+          "An acute exacerbation of chronic bronchitis presented with the patient.",
+          "The patient presented with an acute exacerbation of chronic bronchitis."
+        ],
+        targetIndex: 3,
+        explanation: "Correct order: [Subject + Verb + Preposition + Indefinite Noun Phrase][cite: 44, 50]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["a crust formed", "over the wound", "within two days", "after surgery"],
+        options: [
+          "A crust formed over the wound within two days after surgery.",
+          "Over the wound formed a crust within two days after surgery.",
+          "Within two days after surgery formed over the wound a crust.",
+          "After surgery within two days a crust formed over the wound."
+        ],
+        targetIndex: 0,
+        explanation: "Correct order: [Indefinite Subject + Verb + Prepositional Location + Time Phrase][cite: 48, 50]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["the laboratory result", "confirmed the presence", "of bacterial contamination", "in the sample"],
+        options: [
+          "In the sample of bacterial contamination the laboratory result confirmed the presence.",
+          "The laboratory result confirmed the presence of bacterial contamination in the sample.",
+          "Confirmed the presence of bacterial contamination the laboratory result in the sample.",
+          "Bacterial contamination in the sample confirmed the laboratory result the presence of."
+        ],
+        targetIndex: 1,
+        explanation: "Correct order: [Definite Subject + Verb + Definite Object + Prepositional Modifiers][cite: 48, 50]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["she required a", "follow-up consultation to", "assess the recovery", "of her vision"],
+        options: [
+          "To assess the recovery of her vision she required a follow-up consultation.",
+          "Assess the recovery of her vision she required a follow-up consultation to.",
+          "She required a follow-up consultation to assess the recovery of her vision.",
+          "Her vision recovery assess to she required a follow-up consultation."
+        ],
+        targetIndex: 2,
+        explanation: "Correct order: [Subject + Verb + Indefinite Object + Infinitive Purpose Clause][cite: 48, 50]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["uncontrolled hypertension can", "cause damage to", "the vascular system", "over time"],
+        options: [
+          "Over time damage to the vascular system uncontrolled hypertension can cause.",
+          "The vascular system over time can cause damage to uncontrolled hypertension.",
+          "Damage to the vascular system can cause uncontrolled hypertension over time.",
+          "Uncontrolled hypertension can cause damage to the vascular system over time."
+        ],
+        targetIndex: 3,
+        explanation: "Correct order: [Zero-article Subject + Modal Verb + Definite Object + Time Modifier]."
+      }
+    ];
+
+    let total = 0;
+    let correct = 0;
+    let streak = 0;
+    let currentQuestion = null;
+    let answered = false;
+
+    function changeLevel() {
+      nextQuestion();
+    }
+
+    function getFilteredQuestions() {
+      const selectedLevel = document.getElementById('levelSelect').value;
+      if (selectedLevel === 'mix') {
+        return rawQuestionBank;
+      }
+      return rawQuestionBank.filter(q => q.level === parseInt(selectedLevel));
+    }
+
+    function nextQuestion() {
+      answered = false;
+      
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.classList.remove('visible');
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.remove('answered');
+      document.getElementById('explanationText').textContent = "Choose the correct answer!";
+
+      const pool = getFilteredQuestions();
+      const rawQ = pool[Math.floor(Math.random() * pool.length)];
+
+      const levelTag = document.getElementById('levelTag');
+      levelTag.textContent = `Level ${rawQ.level}`;
+
+      document.getElementById('questionText').textContent = rawQ.question;
+
+      const chunksBox = document.getElementById('chunksBox');
+      if (rawQ.level === 3 && rawQ.rawChunks) {
+        const shuffledChunks = shuffleArray(rawQ.rawChunks);
+        chunksBox.textContent = shuffledChunks.join(" / ");
+        chunksBox.classList.remove('invisible');
+      } else {
+        chunksBox.textContent = '';
+        chunksBox.classList.add('invisible');
+      }
+
+      currentQuestion = {
+        level: rawQ.level,
+        question: rawQ.question,
+        explanation: rawQ.explanation,
+        computedCorrectIndex: rawQ.targetIndex,
+        displayOptions: rawQ.options
+      };
+
+      const grid = document.getElementById('optionsGrid');
+      grid.innerHTML = '';
+
+      currentQuestion.displayOptions.forEach((optText, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = `${String.fromCharCode(65 + index)}) ${optText}`;
+        btn.onclick = () => selectOption(btn, index);
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedBtn, selectedIndex) {
+      if (answered) return;
+      answered = true;
+
+      total++;
+      const isCorrect = (selectedIndex === currentQuestion.computedCorrectIndex);
+
+      if (isCorrect) {
+        correct++;
+        streak++;
+        selectedBtn.classList.add('correct');
+      } else {
+        streak = 0;
+        selectedBtn.classList.add('wrong');
+        
+        const allBtns = document.querySelectorAll('.option-btn');
+        if (allBtns[currentQuestion.computedCorrectIndex]) {
+          allBtns[currentQuestion.computedCorrectIndex].classList.add('correct');
+        }
+      }
+
+      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('correctCount').textContent = correct;
+      document.getElementById('streakCount').textContent = `${streak} 🔥`;
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.add('answered');
+      document.getElementById('explanationText').textContent = currentQuestion.explanation;
+
+      document.getElementById('nextBtn').classList.add('visible');
+    }
+  </script>
 </body>
 </html>
