@@ -3,150 +3,320 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>@doctors.speak — Page not ready yet</title>
+  <title>@doctors.speak — Medical Grammar Trainer (Lesson 1: To Be & To Do)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Montserrat', sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background: linear-gradient(135deg, #00afca 0%, #0081a7 100%);
-      color: #333;
+      background: var(--bg-main);
+      color: var(--text-dark);
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 10px;
+      padding: 12px 10px;
     }
 
     .card {
-      background: #ffffff;
+      background: var(--card-bg);
       border-radius: 20px;
       width: 100%;
-      max-width: 420px;
-      height: 680px;
-      max-height: 95vh;
+      max-width: 440px;
+      min-height: 720px;
+      height: 720px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      border: 3px solid #fbc02d;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-color);
       position: relative;
-      overflow-y: auto;
+      overflow: hidden;
     }
 
     .header {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 16px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 10px;
-      border-bottom: 2px solid #00afca;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
       flex-shrink: 0;
     }
 
     .home-btn {
-      background-color: #fbc02d;
-      color: #003366;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #FFFFFF;
       text-decoration: none;
       font-weight: 700;
-      font-size: 0.8rem;
-      padding: 6px 12px;
-      border-radius: 12px;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.12);
-      transition: transform 0.1s, background-color 0.2s;
+      transition: all 0.2s ease;
     }
 
     .home-btn:active {
-      transform: scale(0.95);
-      background-color: #fdd835;
+      transform: scale(0.96);
+      background: rgba(255, 255, 255, 0.3);
     }
 
     .brand {
-      color: #00afca;
       font-weight: 800;
-      font-size: 1.05rem;
+      font-size: 0.82rem;
       letter-spacing: 0.5px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
     }
 
-    .content-container {
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+      padding: 16px;
+      gap: 8px;
+      overflow-y: hidden;
+    }
+
+    .mode-select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      border-radius: 12px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--kz-blue-dark);
+      background: var(--kz-blue-light);
+      outline: none;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 6px;
+      background: var(--bg-main);
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .stats span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .term-box {
+      margin: 2px 0;
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-left: 6px solid var(--kz-gold-dark);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      text-align: center;
+      min-height: 135px;
+      height: 135px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 18px;
-      padding: 20px 10px;
-      text-align: center;
-      flex-grow: 1;
     }
 
-    .icon-box {
-      font-size: 4rem;
-      line-height: 1;
-      margin-bottom: 5px;
-    }
-
-    .title {
-      font-size: 1.35rem;
-      color: #0081a7;
-      font-weight: 800;
-      line-height: 1.3;
-    }
-
-    .description {
-      font-size: 0.95rem;
-      color: #555;
-      line-height: 1.5;
-      max-width: 320px;
-    }
-
-    .action-btn {
-      background: #fbc02d;
-      color: #003366;
-      border: none;
-      padding: 14px 24px;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 800;
-      cursor: pointer;
-      width: 100%;
-      max-width: 300px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      text-decoration: none;
+    .level-tag {
       display: inline-block;
-      transition: transform 0.1s, background-color 0.2s;
-      margin-top: 10px;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .action-btn:hover {
-      background: #fdd835;
+    .term-title {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.3;
+      min-height: 2.6em;
+      height: 2.6em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
     }
 
-    .action-btn:active {
-      transform: scale(0.98);
-    }
-
-    .insta-link {
-      font-size: 0.85rem;
-      color: #666;
-      margin-top: 10px;
-    }
-
-    .insta-link a {
-      color: #0081a7;
+    .chunks-box {
+      background: var(--bg-main);
+      border: 1px dashed var(--kz-gold-dark);
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      color: var(--kz-gold-dark);
       font-weight: 700;
-      text-decoration: underline;
+      margin-top: 4px;
+      word-break: break-word;
+      min-height: 38px;
+      height: 38px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chunks-box.invisible {
+      visibility: hidden;
+      border-color: transparent;
+      background: transparent;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .option-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-align: left;
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+      line-height: 1.25;
+      min-height: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+      overflow: hidden;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background-color: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+    }
+
+    .option-btn.correct {
+      background-color: #DCFCE7 !important;
+      border-color: #22C55E !important;
+      color: #15803D !important;
+      font-weight: 700;
+    }
+
+    .option-btn.wrong {
+      background-color: #FEE2E2 !important;
+      border-color: #EF4444 !important;
+      color: #B91C1C !important;
+      font-weight: 700;
+    }
+
+    .explanation-box {
+      background-color: var(--kz-blue-light);
+      border-left: 4px solid var(--kz-blue);
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      color: var(--kz-blue-dark);
+      margin-bottom: 6px;
+      line-height: 1.3;
+      min-height: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .explanation-box.answered {
+      background-color: #E0F2FE;
+      border-left-color: var(--kz-blue-dark);
+    }
+
+    .next-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      font-weight: 800;
+      padding: 10px;
+      border-radius: 16px;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      border: 1px solid var(--kz-gold-dark);
+      cursor: pointer;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.2s ease, visibility 0.2s ease, background-color 0.2s ease;
+      min-height: 42px;
+      height: 42px;
+    }
+
+    .next-btn.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .next-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    .next-btn:active {
+      transform: scale(0.98);
     }
   </style>
 </head>
 <body>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <div class="card">
     <!-- Header -->
@@ -155,22 +325,374 @@
       <div class="brand">@doctors.speak</div>
     </header>
 
-    <!-- Content -->
-    <div class="content-container">
-      <div class="icon-box">🚧</div>
-      <h1 class="title">Page not ready yet :( </h1>
-      <p class="description">
-        We are working on the page, please check it later🙏
-      </p>
+    <!-- Game Screen -->
+    <div id="gameScreen" class="game-container">
+      
+      <div>
+        <select id="levelSelect" class="mode-select" onchange="changeLevel()">
+          <option value="1">Level 1 — Identify Sentence Type</option>
+          <option value="2">Level 2 — Fill in the Blanks</option>
+          <option value="3">Level 3 — Identify Main Verb</option>
+          <option value="mix">🔥 Mix</option>
+        </select>
 
-      <a href="https://kazdoctors.com/grammar/" class="action-btn">Go back</a>
-
-      <div class="insta-link">
-        Our updates:<br>
-        <a href="https://instagram.com/doctors.speak" target="_blank">@doctors.speak</a>
+        <div class="stats">
+          <span>Total: <strong id="totalCount">0</strong></span>
+          <span>Correct: <strong id="correctCount" style="color:#16A34A;">0</strong></span>
+          <span>Streak: <strong id="streakCount" style="color:#D9A000;">0 🔥</strong></span>
+        </div>
       </div>
+
+      <div class="term-box">
+        <span id="levelTag" class="level-tag">Level 1</span>
+        <div id="questionText" class="term-title">Loading question...</div>
+        <div id="chunksBox" class="chunks-box invisible"></div>
+      </div>
+
+      <div>
+        <div id="optionsGrid" class="options-grid"></div>
+        
+        <div id="explanationBox" class="explanation-box">
+          <div><strong>💡 Explanation:</strong> <span id="explanationText">Choose the correct answer!</span></div>
+        </div>
+
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next ➔</button>
+      </div>
+
     </div>
   </div>
 
+  <script>
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function checkAuth() {
+      const { data, error } = await supabaseClient.auth.getSession();
+      if (error || !data.session) {
+        window.location.href = "/login.html";
+        return;
+      }
+      nextQuestion();
+    }
+
+    checkAuth();
+
+    function shuffleArray(array) {
+      let arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    const rawQuestionBank = [
+      // ================= LEVEL 1: IDENTIFY SENTENCE TYPE (20 ITEMS - EQUAL A, B, C, D) =================
+      // Options format: ["to be", "to do", "modal verb", "combination"]
+      // Target 0 (A) - to be
+      { level: 1, question: "Dyspnea is the most common early symptom of COPD.", options: ["to be", "to do", "modal verb", "combination"], targetIndex: 0, explanation: "'is' comes from 'to be'. It shows state (быть/являться)." },
+      { level: 1, question: "High cholesterol is a major risk factor for heart disease.", options: ["to be", "to do", "modal verb", "combination"], targetIndex: 0, explanation: "'is' comes from 'to be'. It describes state or definition." },
+      { level: 1, question: "The symptoms were severe during the night.", options: ["to be", "to do", "modal verb", "combination"], targetIndex: 0, explanation: "'were' is the past form of 'to be'." },
+      { level: 1, question: "Fatigue was a common problem in hypothyroidism.", options: ["to be", "to do", "modal verb", "combination"], targetIndex: 0, explanation: "'was' is the past simple form of 'to be'." },
+      { level: 1, question: "These symptoms are common in chronic heart failure.", options: ["to be", "to do", "modal verb", "combination"], targetIndex: 0, explanation: "'are' is a present form of 'to be'." },
+
+      // Target 1 (B) - to do
+      { level: 1, question: "The children complained about the pain in the abdomen.", options: ["to be", "to do", "modal verb", "combination"], targetIndex: 1, explanation: "'complained' is a action verb (to do) in past simple." },
+      { level: 1, question: "This medication helps control high blood pressure.", options: ["to be", "to do", "modal verb", "combination"], targetIndex: 1, explanation: "'helps' is an action verb (to do) in present simple." },
+      { level: 1, question: "The patient followed the doctor's advice.", options: ["to be", "to do", "modal verb", "combination"], targetIndex: 1, explanation: "'followed' is an action verb (to do) in past simple." },
+      { level: 1, question: "Nurses monitor oxygen saturation during the shift.", options: ["to be", "to do", "modal verb", "combination"], targetIndex: 1, explanation: "'monitor' is an action verb (to do)." },
+      { level: 1, question: "Regular exercise reduces the risk of heart disease.", options: ["to be", "to do", "modal verb", "combination"], targetIndex: 1, explanation: "'reduces' is an action verb (to do)." },
+
+      // Target 2 (C) - modal verb
+      { level: 1, question: "Shortness of breath must be treated with bronchodilators.", options: ["to be", "to do", "modal verb", "combination"], targetIndex: 2, explanation: "'must' is a modal verb expressing strong necessity." },
+      { level: 1, question: "Patients with severe symptoms can experience fatigue.", options: ["to be", "to do", "modal verb", "combination"], targetIndex: 2, explanation: "'can' is a modal verb expressing possibility." },
+      { level: 1, question: "The doctor should prescribe antibiotics immediately.", options: ["to be", "to do", "modal verb", "combination"], targetIndex: 2, explanation: "'should' is a modal verb giving advice/recommendation." },
+      { level: 1, question: "Any of these symptoms may develop independently.", options: ["to be", "to do", "modal verb", "combination"], targetIndex: 2, explanation: "'may' is a modal verb indicating possibility." },
+      { level: 1, question: "This treatment could improve the patient's condition.", options: ["to be", "to do", "modal verb", "combination"], targetIndex: 2, explanation: "'could' is a modal verb indicating potential." },
+
+      // Target 3 (D) - combination
+      { level: 1, question: "Hypertension is often called the 'silent killer'.", options: ["to be", "to do", "modal verb", "combination"], targetIndex: 3, explanation: "'is called' combines 'to be' (is) and 'to do' (called, V3) to form passive voice." },
+      { level: 1, question: "The patient was admitted to the hospital yesterday.", options: ["to be", "to do", "modal verb", "combination"], targetIndex: 3, explanation: "'was admitted' combines 'to be' (was) and 'to do' (admitted) in passive voice." },
+      { level: 1, question: "I am feeling much better after taking the medication.", options: ["to be", "to do", "modal verb", "combination"], targetIndex: 3, explanation: "'am feeling' combines 'to be' (am) and action verb (feeling) for Continuous." },
+      { level: 1, question: "The physician is monitoring the patient's vital signs.", options: ["to be", "to do", "modal verb", "combination"], targetIndex: 3, explanation: "'is monitoring' combines 'to be' (is) and action verb (monitoring) for Continuous." },
+      { level: 1, question: "This drug has been tested in several clinical trials.", options: ["to be", "to do", "modal verb", "combination"], targetIndex: 3, explanation: "'has been tested' combines auxiliary verbs with main action verb." },
+
+
+      // ================= LEVEL 2: FILL IN THE BLANKS (20 ITEMS - EQUAL A, B, C, D) =================
+      // Target 0 (A)
+      { level: 2, question: "Aigerim ___ a doctor now.", options: ["is", "am", "are", "was"], targetIndex: 0, explanation: "'Aigerim' is 3rd person singular (she), so we use 'is' in present." },
+      { level: 2, question: "Hypertension ___ often called the 'silent killer'.", options: ["is", "are", "were", "been"], targetIndex: 0, explanation: "'Hypertension' is singular, so we use 'is'." },
+      { level: 2, question: "This medication ___ control high blood pressure.", options: ["helps", "help", "helping", "helped"], targetIndex: 0, explanation: "Singular subject 'This medication' takes present verb with -s ('helps')." },
+      { level: 2, question: "Dr. Smith ___ the cardiologist in charge.", options: ["is", "are", "were", "be"], targetIndex: 0, explanation: "Singular noun 'Dr. Smith' requires 'is'." },
+      { level: 2, question: "Exercise and a healthy diet ___ essential for heart health.", options: ["are", "is", "was", "be"], targetIndex: 0, explanation: "Plural subject ('Exercise and diet') requires 'are'." },
+
+      // Target 1 (B)
+      { level: 2, question: "The previous study ___ the main risk factors.", options: ["are", "identified", "identifies", "have been"], targetIndex: 1, explanation: "Past context 'previous study' requires past simple verb 'identified'." },
+      { level: 2, question: "The patient ___ admitted to the hospital yesterday.", options: ["is", "was", "are", "were"], targetIndex: 1, explanation: "'yesterday' indicates past time with singular subject -> 'was'." },
+      { level: 2, question: "Regular exercise ___ the risk of heart disease.", options: ["reduce", "reduces", "reducing", "reduced"], targetIndex: 1, explanation: "3rd person singular subject 'Regular exercise' takes 'reduces'." },
+      { level: 2, question: "___ high cholesterol a risk factor for heart disease?", options: ["Do", "Is", "Does", "Are"], targetIndex: 1, explanation: "'Is' goes in front of singular subject 'high cholesterol' for to be question." },
+      { level: 2, question: "The symptoms ___ severe last night.", options: ["are", "were", "is", "was"], targetIndex: 1, explanation: "'symptoms' is plural and 'last night' is past tense -> 'were'." },
+
+      // Target 2 (C)
+      { level: 2, question: "___ this medication help control high blood pressure?", options: ["Is", "Do", "Does", "Are"], targetIndex: 2, explanation: "Question for 'to do' verb 'help' with singular subject uses 'Does'." },
+      { level: 2, question: "The physician ___ antibiotics for the infection yesterday.", options: ["prescribe", "prescribes", "prescribed", "prescribing"], targetIndex: 2, explanation: "Past action ('yesterday') uses past verb form 'prescribed'." },
+      { level: 2, question: "Nurses ___ patients closely during recovery.", options: ["monitors", "monitoring", "monitor", "monitored"], targetIndex: 2, explanation: "Plural subject 'Nurses' takes base verb 'monitor' in present." },
+      { level: 2, question: "These symptoms ___ common in patients with high cholesterol.", options: ["is", "was", "are", "be"], targetIndex: 2, explanation: "Plural subject 'These symptoms' takes present 'are'." },
+      { level: 2, question: "___ regular exercise reduce the risk of heart disease?", options: ["Is", "Are", "Does", "Do"], targetIndex: 2, explanation: "Singular subject + action verb question takes 'Does'." },
+
+      // Target 3 (D)
+      { level: 2, question: "The patient's condition ___ significantly after treatment.", options: ["improve", "improving", "is improve", "improved"], targetIndex: 3, explanation: "Past completed event takes past simple verb 'improved'." },
+      { level: 2, question: "___ the patient follow the doctor's advice yesterday?", options: ["Is", "Does", "Do", "Did"], targetIndex: 3, explanation: "Past action question with 'to do' verb uses 'Did'." },
+      { level: 2, question: "___ stress management techniques effective?", options: ["Is", "Does", "Do", "Are"], targetIndex: 3, explanation: "Plural subject 'techniques' with 'to be' adjective structure takes 'Are'." },
+      { level: 2, question: "Shortness of breath ___ be treated with bronchodilators.", options: ["is", "are", "does", "must"], targetIndex: 3, explanation: "'must' is a modal verb needed before passive verb 'be treated'." },
+      { level: 2, question: "The blood pressure reading ___ accurate when measured.", options: ["is", "are", "were", "was"], targetIndex: 3, explanation: "Singular subject 'reading' in past context takes 'was'." },
+
+
+      // ================= LEVEL 3: IDENTIFY ACTUAL VERB (20 ITEMS - EQUAL A, B, C, D) =================
+      // Target 0 (A) - cause, is, require, present, perform
+      {
+        level: 3,
+        question: "Mutations in the CFTR gene cause the CFTR protein to not function properly.",
+        options: ["cause", "mutations", "protein", "function"],
+        targetIndex: 0,
+        explanation: "'mutations' is subject, 'cause' is the main action verb (to do)."
+      },
+      {
+        level: 3,
+        question: "Dyspnea is the most common early symptom of chronic obstructive pulmonary disease.",
+        options: ["is", "dyspnea", "symptom", "disease"],
+        targetIndex: 0,
+        explanation: "'is' is the main verb (to be) connecting subject to description."
+      },
+      {
+        level: 3,
+        question: "Patients with severe pneumonia require immediate antibiotic treatment.",
+        options: ["require", "pneumonia", "treatment", "patients"],
+        targetIndex: 0,
+        explanation: "'require' is the main predicate verb (to do) of the sentence."
+      },
+      {
+        level: 3,
+        question: "Patients with a sedentary lifestyle present with few complaints.",
+        options: ["present", "patients", "lifestyle", "complaints"],
+        targetIndex: 0,
+        explanation: "'present' is the main action verb of the main clause ('Patients ... present')."
+      },
+      {
+        level: 3,
+        question: "Cardiologists perform echocardiograms to evaluate myocardial function.",
+        options: ["perform", "cardiologists", "echocardiograms", "function"],
+        targetIndex: 0,
+        explanation: "'perform' is the primary action verb (to do)."
+      },
+
+      // Target 1 (B) - triggers, reduces, controls, leads, indicates
+      {
+        level: 3,
+        question: "Acute myocardial infarction triggers severe retrosternal chest pain.",
+        options: ["infarction", "triggers", "pain", "severe"],
+        targetIndex: 1,
+        explanation: "'triggers' is the action verb (to do); 'infarction' is subject; it has '-es'."
+      },
+      {
+        level: 3,
+        question: "Regular physical activity reduces mortality in hypertensive patients.",
+        options: ["activity", "reduces", "mortality", "patients"],
+        targetIndex: 1,
+        explanation: "'reduces' is the main verb (to do); 'activity' is subject; it has '-es'."
+      },
+      {
+        level: 3,
+        question: "Antihypertensive therapy controls blood pressure in diabetic subjects.",
+        options: ["therapy", "controls", "pressure", "subjects"],
+        targetIndex: 1,
+        explanation: "'controls' is the main predicate verb; it has '-es'."
+      },
+      {
+        level: 3,
+        question: "Chronic inflammation leads to vascular endothelial dysfunction.",
+        options: ["inflammation", "leads", "dysfunction", "vascular"],
+        targetIndex: 1,
+        explanation: "'leads' (leads to) is the main predicate verb; it has '-es'."
+      },
+      {
+        level: 3,
+        question: "His elevated troponin levels indicated acute myocardial injury.",
+        options: ["levels", "indicated", "injury", "troponin"],
+        targetIndex: 1,
+        explanation: "'indicate' is the main verb showing sign or result; it has '-ed'."
+      },
+
+      // Target 2 (C) - prescribe, monitors, prevents, shows, increases
+      {
+        level: 3,
+        question: "Clinicians prescribe corticosteroids for acute asthma exacerbations.",
+        options: ["clinicians", "corticosteroids", "prescribe", "exacerbations"],
+        targetIndex: 2,
+        explanation: "'prescribe' is the main action verb (to do)."
+      },
+      {
+        level: 3,
+        question: "The nursing team monitors blood oxygen saturation continuously.",
+        options: ["team", "saturation", "monitors", "nursing"],
+        targetIndex: 2,
+        explanation: "'monitors' is the main action verb executed by the nursing team; it has '-es'."
+      },
+      {
+        level: 3,
+        question: "Prophylactic anticoagulation prevents venous thromboembolism in surgical patients.",
+        options: ["anticoagulation", "thromboembolism", "prevents", "surgical"],
+        targetIndex: 2,
+        explanation: "'prevents' is the main predicate verb; it has '-es'."
+      },
+      {
+        level: 3,
+        question: "The chest radiograph showed bilateral pulmonary infiltrates.",
+        options: ["radiograph", "infiltrates", "showed", "pulmonary"],
+        targetIndex: 2,
+        explanation: "'showed' has '-ed', so it is past form."
+      },
+      {
+        level: 3,
+        question: "Insulin resistance led to type 2 diabetes mellitus.",
+        options: ["resistance", "risk", "led to", "diabetes"],
+        targetIndex: 2,
+        explanation: "'led' is the past form for 'lead' - irregular verb."
+      },
+
+      // Target 3 (D) - release, regulates, damages, causes, develops
+      {
+        level: 3,
+        question: "Mast cells released histamine during an allergic reaction.",
+        options: ["cells", "histamine", "reaction", "released"],
+        targetIndex: 3,
+        explanation: "'released' is the action verb performed by mast cells in the past."
+      },
+      {
+        level: 3,
+        question: "The autonomic nervous system regulates heart rate and blood pressure.",
+        options: ["system", "rate", "pressure", "regulates"],
+        targetIndex: 3,
+        explanation: "'regulates' is the main verb. '-s' is for he/she/it"
+      },
+      {
+        level: 3,
+        question: "Uncontrolled hyperglycemia damaged his small blood vessels over time.",
+        options: ["hyperglycemia", "vessels", "time", "damaged"],
+        targetIndex: 3,
+        explanation: "'damaged' is the main action verb. It has '-ed' - past simple"
+      },
+      {
+        level: 3,
+        question: "Bacterial infection causes severe swelling in lymph nodes.",
+        options: ["infection", "swelling", "nodes", "causes"],
+        targetIndex: 3,
+        explanation: "'causes' is the main action verb."
+      },
+      {
+        level: 3,
+        question: "Exertional dyspnea develops gradually in patients with COPD.",
+        options: ["dyspnea", "patients", "gradually", "develops"],
+        targetIndex: 3,
+        explanation: "'develops' is the predicate verb."
+      }
+    ];
+
+    let total = 0;
+    let correct = 0;
+    let streak = 0;
+    let currentQuestion = null;
+    let answered = false;
+
+    function changeLevel() {
+      nextQuestion();
+    }
+
+    function getFilteredQuestions() {
+      const selectedLevel = document.getElementById('levelSelect').value;
+      if (selectedLevel === 'mix') {
+        return rawQuestionBank;
+      }
+      return rawQuestionBank.filter(q => q.level === parseInt(selectedLevel));
+    }
+
+    function nextQuestion() {
+      answered = false;
+      
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.classList.remove('visible');
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.remove('answered');
+      document.getElementById('explanationText').textContent = "Choose the correct answer!";
+
+      const pool = getFilteredQuestions();
+      const rawQ = pool[Math.floor(Math.random() * pool.length)];
+
+      const levelTag = document.getElementById('levelTag');
+      levelTag.textContent = `Level ${rawQ.level}`;
+
+      document.getElementById('questionText').textContent = rawQ.question;
+
+      const chunksBox = document.getElementById('chunksBox');
+      chunksBox.textContent = '';
+      chunksBox.classList.add('invisible');
+
+      currentQuestion = {
+        level: rawQ.level,
+        question: rawQ.question,
+        explanation: rawQ.explanation,
+        computedCorrectIndex: rawQ.targetIndex,
+        displayOptions: rawQ.options
+      };
+
+      const grid = document.getElementById('optionsGrid');
+      grid.innerHTML = '';
+
+      currentQuestion.displayOptions.forEach((optText, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = `${String.fromCharCode(65 + index)}) ${optText}`;
+        btn.onclick = () => selectOption(btn, index);
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedBtn, selectedIndex) {
+      if (answered) return;
+      answered = true;
+
+      total++;
+      const isCorrect = (selectedIndex === currentQuestion.computedCorrectIndex);
+
+      if (isCorrect) {
+        correct++;
+        streak++;
+        selectedBtn.classList.add('correct');
+      } else {
+        streak = 0;
+        selectedBtn.classList.add('wrong');
+        
+        const allBtns = document.querySelectorAll('.option-btn');
+        if (allBtns[currentQuestion.computedCorrectIndex]) {
+          allBtns[currentQuestion.computedCorrectIndex].classList.add('correct');
+        }
+      }
+
+      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('correctCount').textContent = correct;
+      document.getElementById('streakCount').textContent = `${streak} 🔥`;
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.add('answered');
+      document.getElementById('explanationText').textContent = currentQuestion.explanation;
+
+      document.getElementById('nextBtn').classList.add('visible');
+    }
+  </script>
 </body>
 </html>
