@@ -599,6 +599,15 @@
         document.getElementById("grammarIcon").textContent = "📖";
         document.getElementById("grammarStatus").textContent =
             "full practice!";
+
+        if (!document.getElementById("adminBtn")) {
+        const adminBtn = document.createElement("a");
+        adminBtn.id = "adminBtn";
+        adminBtn.href = "admin.html";
+        adminBtn.textContent = "⚙️ ADMIN";
+        adminBtn.style.cssText = "display: inline-block; margin-right: 8px; padding: 8px 18px; border-radius: 20px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--kz-blue-dark); font-size: 0.78rem; font-weight: 700; text-decoration: none;";
+        document.getElementById("userArea").insertBefore(adminBtn, document.getElementById("logoutButton"));
+    }
     }
 
 
