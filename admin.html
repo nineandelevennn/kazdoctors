@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Admin Panel — Doctors Speak</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --kz-blue: #00A1DE;
+            --kz-blue-dark: #0077A3;
+            --kz-blue-light: #EBF8FC;
+            --kz-gold: #FFC72C;
+            --bg-main: #F2F5F8;
+            --card-bg: #FFFFFF;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+            --danger-color: #EF4444;
+            --success-color: #10B981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            background: var(--bg-main);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            position: relative;
+            background: var(--kz-blue);
+            color: #FFFFFF;
+            text-align: center;
+            padding: 24px 16px 26px 16px;
+            box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
+        }
+
+        .back-link {
+            position: absolute;
+            left: 16px;
+            top: 20px;
+            color: #FFFFFF;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            color: #FFFFFF;
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 0.8px;
+            padding: 5px 14px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            text-decoration: none;
+        }
+
+        h1 {
+            font-size: 1.35rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #FFFFFF;
+            margin: 0 auto;
+        }
+
+        .subtitle {
+            font-size: 0.78rem;
+            margin-top: 6px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--kz-gold);
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 440px;
+            margin: 0 auto;
+            padding: 24px 16px;
+            flex-grow: 1;
+        }
+
+        .admin-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-dark);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-main);
+            font-size: 0.9rem;
+            font-family: inherit;
+            color: var(--text-dark);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--kz-blue);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: var(--kz-blue);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 6px;
+        }
+
+        .btn-submit:hover {
+            background: var(--kz-blue-dark);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .alert {
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 14px;
+            display: none;
+        }
+
+        .alert-error {
+            background: #FEE2E2;
+            color: var(--danger-color);
+            border: 1px solid #FCA5A5;
+        }
+
+        .alert-success {
+            background: #D1FAE5;
+            color: var(--success-color);
+            border: 1px solid #6EE7B7;
+        }
+
+        #accessDenied {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        #accessDenied h2 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: var(--danger-color);
+        }
+
+        #accessDenied p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="back-link">← Назад</a>
+        <div class="brand-badge">@doctors.speak</div>
+        <h1>Admin Control</h1>
+        <p class="subtitle">Управление участниками</p>
+    </header>
+
+    <main>
+        <!-- Блок запрета доступа -->
+        <div id="accessDenied" class="admin-card">
+            <h2>⛔ Доступ запрещен</h2>
+            <p>У вас нет прав для просмотра этой страницы. Войдите под аккаунтом администратора.</p>
+        </div>
+
+        <!-- Блок формы добавления пользователя -->
+        <div id="adminFormCard" class="admin-card" style="display: none;">
+            <div class="card-title">
+                <span>👤</span> Добавить участника
+            </div>
+
+            <div id="alertMessage" class="alert"></div>
+
+            <form id="addUserForm" onsubmit="createUser(event)">
+                <div class="form-group">
+                    <label for="userEmail">Email пользователя</label>
+                    <input type="email" id="userEmail" placeholder="student@gmail.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userPassword">Пароль</label>
+                    <input type="password" id="userPassword" placeholder="Минимум 6 символов" minlength="6" required>
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn-submit">
+                    Добавить участника
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ"; // Тот же ключ, что в index.html
+
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // Проверка авторизации при загрузке
+        async function checkAdminAccess() {
+            const { data, error } = await supabaseClient.auth.getSession();
+
+            if (error || !data.session) {
+                showDenied();
+                return;
+            }
+
+            // Показываем форму авторизованному пользователю
+            document.getElementById("adminFormCard").style.display = "block";
+        }
+
+        function showDenied() {
+            document.getElementById("accessDenied").style.display = "block";
+            document.getElementById("adminFormCard").style.display = "none";
+        }
+
+        function showAlert(text, type) {
+            const alertEl = document.getElementById("alertMessage");
+            alertEl.textContent = text;
+            alertEl.className = "alert " + (type === "success" ? "alert-success" : "alert-error");
+            alertEl.style.display = "block";
+        }
+
+        function hideAlert() {
+            document.getElementById("alertMessage").style.display = "none";
+        }
+
+        async function createUser(e) {
+            e.preventDefault();
+            hideAlert();
+
+            const email = document.getElementById("userEmail").value.trim();
+            const password = document.getElementById("userPassword").value;
+            const submitBtn = document.getElementById("submitBtn");
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Сохранение...";
+
+            try {
+                // Получаем текущую сессию менеджера для передачи токена
+                const { data: { session } } = await supabaseClient.auth.getSession();
+
+                // Вызов Supabase Edge Function
+                const response = await fetch(`${SUPABASE_URL}/functions/v1/create-user`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${session.access_token}`
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || "Ошибка при создании пользователя");
+                }
+
+                showAlert(`Участник ${email} успешно создан!`, "success");
+                document.getElementById("addUserForm").reset();
+
+            } catch (err) {
+                showAlert(err.message, "error");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Добавить участника";
+            }
+        }
+
+        checkAdminAccess();
+    </script>
+</body>
+</html>
