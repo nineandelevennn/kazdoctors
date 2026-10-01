@@ -3,150 +3,320 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>@doctors.speak — Page not ready yet</title>
+  <title>@doctors.speak — Medical Grammar Trainer (Comparatives & Superlatives)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Montserrat', sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background: linear-gradient(135deg, #00afca 0%, #0081a7 100%);
-      color: #333;
+      background: var(--bg-main);
+      color: var(--text-dark);
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 10px;
+      padding: 12px 10px;
     }
 
     .card {
-      background: #ffffff;
+      background: var(--card-bg);
       border-radius: 20px;
       width: 100%;
-      max-width: 420px;
-      height: 680px;
-      max-height: 95vh;
+      max-width: 440px;
+      min-height: 720px;
+      height: 720px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      border: 3px solid #fbc02d;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-color);
       position: relative;
-      overflow-y: auto;
+      overflow: hidden;
     }
 
     .header {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 16px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 10px;
-      border-bottom: 2px solid #00afca;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
       flex-shrink: 0;
     }
 
     .home-btn {
-      background-color: #fbc02d;
-      color: #003366;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #FFFFFF;
       text-decoration: none;
       font-weight: 700;
-      font-size: 0.8rem;
-      padding: 6px 12px;
-      border-radius: 12px;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.12);
-      transition: transform 0.1s, background-color 0.2s;
+      transition: all 0.2s ease;
     }
 
     .home-btn:active {
-      transform: scale(0.95);
-      background-color: #fdd835;
+      transform: scale(0.96);
+      background: rgba(255, 255, 255, 0.3);
     }
 
     .brand {
-      color: #00afca;
       font-weight: 800;
-      font-size: 1.05rem;
+      font-size: 0.82rem;
       letter-spacing: 0.5px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
     }
 
-    .content-container {
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+      padding: 16px;
+      gap: 8px;
+      overflow-y: hidden;
+    }
+
+    .mode-select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      border-radius: 12px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--kz-blue-dark);
+      background: var(--kz-blue-light);
+      outline: none;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 6px;
+      background: var(--bg-main);
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .stats span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .term-box {
+      margin: 2px 0;
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-left: 6px solid var(--kz-gold-dark);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      text-align: center;
+      min-height: 135px;
+      height: 135px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 18px;
-      padding: 20px 10px;
-      text-align: center;
-      flex-grow: 1;
     }
 
-    .icon-box {
-      font-size: 4rem;
-      line-height: 1;
-      margin-bottom: 5px;
-    }
-
-    .title {
-      font-size: 1.35rem;
-      color: #0081a7;
-      font-weight: 800;
-      line-height: 1.3;
-    }
-
-    .description {
-      font-size: 0.95rem;
-      color: #555;
-      line-height: 1.5;
-      max-width: 320px;
-    }
-
-    .action-btn {
-      background: #fbc02d;
-      color: #003366;
-      border: none;
-      padding: 14px 24px;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 800;
-      cursor: pointer;
-      width: 100%;
-      max-width: 300px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      text-decoration: none;
+    .level-tag {
       display: inline-block;
-      transition: transform 0.1s, background-color 0.2s;
-      margin-top: 10px;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .action-btn:hover {
-      background: #fdd835;
+    .term-title {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.3;
+      min-height: 2.6em;
+      height: 2.6em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
     }
 
-    .action-btn:active {
-      transform: scale(0.98);
-    }
-
-    .insta-link {
-      font-size: 0.85rem;
-      color: #666;
-      margin-top: 10px;
-    }
-
-    .insta-link a {
-      color: #0081a7;
+    .chunks-box {
+      background: var(--bg-main);
+      border: 1px dashed var(--kz-gold-dark);
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      color: var(--kz-gold-dark);
       font-weight: 700;
-      text-decoration: underline;
+      margin-top: 4px;
+      word-break: break-word;
+      min-height: 38px;
+      height: 38px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chunks-box.invisible {
+      visibility: hidden;
+      border-color: transparent;
+      background: transparent;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .option-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-align: left;
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+      line-height: 1.25;
+      min-height: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+      overflow: hidden;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background-color: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+    }
+
+    .option-btn.correct {
+      background-color: #DCFCE7 !important;
+      border-color: #22C55E !important;
+      color: #15803D !important;
+      font-weight: 700;
+    }
+
+    .option-btn.wrong {
+      background-color: #FEE2E2 !important;
+      border-color: #EF4444 !important;
+      color: #B91C1C !important;
+      font-weight: 700;
+    }
+
+    .explanation-box {
+      background-color: var(--kz-blue-light);
+      border-left: 4px solid var(--kz-blue);
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      color: var(--kz-blue-dark);
+      margin-bottom: 6px;
+      line-height: 1.3;
+      min-height: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .explanation-box.answered {
+      background-color: #E0F2FE;
+      border-left-color: var(--kz-blue-dark);
+    }
+
+    .next-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      font-weight: 800;
+      padding: 10px;
+      border-radius: 16px;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      border: 1px solid var(--kz-gold-dark);
+      cursor: pointer;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.2s ease, visibility 0.2s ease, background-color 0.2s ease;
+      min-height: 42px;
+      height: 42px;
+    }
+
+    .next-btn.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .next-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    .next-btn:active {
+      transform: scale(0.98);
     }
   </style>
 </head>
 <body>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <div class="card">
     <!-- Header -->
@@ -155,22 +325,816 @@
       <div class="brand">@doctors.speak</div>
     </header>
 
-    <!-- Content -->
-    <div class="content-container">
-      <div class="icon-box">🚧</div>
-      <h1 class="title">Page not ready yet :( </h1>
-      <p class="description">
-        We are working on the page, please check it later🙏
-      </p>
+    <!-- Game Screen -->
+    <div id="gameScreen" class="game-container">
+      
+      <div>
+        <select id="levelSelect" class="mode-select" onchange="changeLevel()">
+          <option value="1">Level 1 — Recognize the grammar</option>
+          <option value="2">Level 2 — Fill in comparative/superlative</option>
+          <option value="3">Level 3 — Put the sentence in order</option>
+          <option value="mix">🔥 Mix</option>
+        </select>
 
-      <a href="https://kazdoctors.com/grammar/" class="action-btn">Go back</a>
-
-      <div class="insta-link">
-        Our updates:<br>
-        <a href="https://instagram.com/doctors.speak" target="_blank">@doctors.speak</a>
+        <div class="stats">
+          <span>Total: <strong id="totalCount">0</strong></span>
+          <span>Correct: <strong id="correctCount" style="color:#16A34A;">0</strong></span>
+          <span>Streak: <strong id="streakCount" style="color:#D9A000;">0 🔥</strong></span>
+        </div>
       </div>
+
+      <div class="term-box">
+        <span id="levelTag" class="level-tag">Level 1</span>
+        <div id="questionText" class="term-title">Loading question...</div>
+        <div id="chunksBox" class="chunks-box invisible"></div>
+      </div>
+
+      <div>
+        <div id="optionsGrid" class="options-grid"></div>
+        
+        <div id="explanationBox" class="explanation-box">
+          <div><strong>💡 Explanation:</strong> <span id="explanationText">Choose the correct answer!</span></div>
+        </div>
+
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next ➔</button>
+      </div>
+
     </div>
   </div>
 
+  <script>
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function checkAuth() {
+      const { data, error } = await supabaseClient.auth.getSession();
+      if (error || !data.session) {
+        window.location.href = "/login.html";
+        return;
+      }
+      nextQuestion();
+    }
+
+    checkAuth();
+
+    function shuffleArray(array) {
+      let arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    const rawQuestionBank = [
+      // ================= LEVEL 1: RECOGNIZE THE GRAMMAR (20 ITEMS) =================
+      {
+        level: 1,
+        question: "This ulcer is getting worse than the one we treated last month.",
+        options: [
+          "Comparative",
+          "Superlative",
+          "Zero Conditional",
+          "Passive Voice"
+        ],
+        targetIndex: 0,
+        explanation: "'Worse than' is a comparative form of 'bad' used to compare two specific clinical cases."
+      },
+      {
+        level: 1,
+        question: "Anthrax is one of the deadliest bacterial diseases in terms of transmission.",
+        options: [
+          "Comparative",
+          "Superlative",
+          "First Conditional",
+          "Modal Verb"
+        ],
+        targetIndex: 1,
+        explanation: "'The deadliest' is a superlative form indicating the highest degree among a group."
+      },
+      {
+        level: 1,
+        question: "After the concussion, he was less alert than before.",
+        options: [
+          "Comparative of Equality",
+          "Superlative of Superiority",
+          "Comparative of Inferiority",
+          "Past Perfect Tense"
+        ],
+        targetIndex: 2,
+        explanation: "'Less alert than' forms a comparative of inferiority to show reduced mental clarity. Inferior - хуже"
+      },
+      {
+        level: 1,
+        question: "The tension in her wrist muscle is higher than in the shoulder.",
+        options: [
+          "Superlative",
+          "First Conditional",
+          "Second Conditional",
+          "Comparative"
+        ],
+        targetIndex: 3,
+        explanation: "'Higher' - short adjective + er."
+      },
+      {
+        level: 1,
+        question: "This bump looks smaller than the one on his head.",
+        options: [
+          "Comparative",
+          "Superlative",
+          "Zero Conditional",
+          "Third Conditional"
+        ],
+        targetIndex: 0,
+        explanation: "'Smaller than' follows the comparative formula for short adjectives: [short adjective + -er + than]."
+      },
+      {
+        level: 1,
+        question: "Positive symptoms are the most easily identified in schizophrenia.",
+        options: [
+          "Comparative",
+          "Superlative",
+          "Present Continuous",
+          "Passive Voice"
+        ],
+        targetIndex: 1,
+        explanation: "'The most easily identified' uses the superlative formula [THE MOST + long adjective/adverb]. Самый легко-определяемый"
+      },
+      {
+        level: 1,
+        question: "Negative symptoms are more difficult to diagnose than positive symptoms.",
+        options: [
+          "Superlative",
+          "Zero Conditional",
+          "Comparative",
+          "First Conditional"
+        ],
+        targetIndex: 2,
+        explanation: "'More difficult to diagnose than' follows the comparative formula [MORE + long adjective + THAN]."
+      },
+      {
+        level: 1,
+        question: "The nurse is faster than the doctor at taking blood samples.",
+        options: [
+          "Superlative",
+          "Second Conditional",
+          "Zero Conditional",
+          "Comparative"
+        ],
+        targetIndex: 3,
+        explanation: "'Faster than' compares two individuals using a short adjective with '-er'."
+      },
+      {
+        level: 1,
+        question: "Cognitive symptoms are the newest classification in schizophrenia guidelines.",
+        options: [
+          "Superlative",
+          "Comparative",
+          "First Conditional",
+          "Mixed Conditional"
+        ],
+        targetIndex: 0,
+        explanation: "'The newest' represents the superlative form of the short adjective 'new'."
+      },
+      {
+        level: 1,
+        question: "She is more skillful than the resident surgeon.",
+        options: [
+          "Superlative",
+          "Comparative",
+          "Past Continuous",
+          "Zero Conditional"
+        ],
+        targetIndex: 1,
+        explanation: "'More skillful than' uses [MORE + long adjective + THAN] for two-syllable/long adjectives."
+      },
+      {
+        level: 1,
+        question: "Airborne transmission is more dangerous than surface contact.",
+        options: [
+          "Superlative",
+          "Second Conditional",
+          "Comparative",
+          "Zero Conditional"
+        ],
+        targetIndex: 2,
+        explanation: "'More dangerous than' compares the risk levels of two distinct transmission pathways."
+      },
+      {
+        level: 1,
+        question: "Of all patients examined today, she had the most noticeable tremor.",
+        options: [
+          "Comparative",
+          "First Conditional",
+          "Passive Voice",
+          "Superlative"
+        ],
+        targetIndex: 3,
+        explanation: "'The most noticeable' singles out one patient from the entire evaluated group."
+      },
+      {
+        level: 1,
+        question: "This patient has the least frequent bowel movements in the ward.",
+        options: [
+          "Superlative",
+          "Comparative",
+          "Zero Conditional",
+          "First Conditional"
+        ],
+        targetIndex: 0,
+        explanation: "'The least frequent' forms the superlative of inferiority using [THE LEAST + adjective]."
+      },
+      {
+        level: 1,
+        question: "That was the biggest bump I've ever seen from a minor fall.",
+        options: [
+          "Comparative",
+          "Superlative",
+          "Third Conditional",
+          "Second Conditional"
+        ],
+        targetIndex: 1,
+        explanation: "'The biggest' uses the superlative form of 'big' (with doubled final consonant)."
+      },
+      {
+        level: 1,
+        question: "This concussion is more serious than the one he had last year.",
+        options: [
+          "Superlative",
+          "Zero Conditional",
+          "Comparative",
+          "Past Perfect Tense"
+        ],
+        targetIndex: 2,
+        explanation: "'More serious than' compares the severity of two separate concussion episodes."
+      },
+      {
+        level: 1,
+        question: "The swelling in the right wrist is bigger than in the left.",
+        options: [
+          "Superlative",
+          "First Conditional",
+          "Modal Verb",
+          "Comparative"
+        ],
+        targetIndex: 3,
+        explanation: "'Bigger than' compares anatomical measurements between right and left wrists."
+      },
+      {
+        level: 1,
+        question: "This is the most effective administration method for rapid absorption.",
+        options: [
+          "Superlative",
+          "Comparative",
+          "Zero Conditional",
+          "Second Conditional"
+        ],
+        targetIndex: 0,
+        explanation: "'The most effective' identifies the top route among all available administration methods."
+      },
+      {
+        level: 1,
+        question: "He is less fast than other nurses; in fact, he is the least fast.",
+        options: [
+          "Only Comparatives used in both clauses",
+          "Comparative of Inferiority followed by Superlative of Inferiority",
+          "Zero Conditional combined with First Conditional",
+          "Only Superlatives used in both clauses"
+        ],
+        targetIndex: 1,
+        explanation: "'Less fast than' is a comparative of inferiority; 'the least fast' is a superlative of inferiority."
+      },
+      {
+        level: 1,
+        question: "Diminished emotional expression is the most common negative symptom.",
+        options: [
+          "Comparative",
+          "Second Conditional",
+          "Superlative",
+          "Passive Voice"
+        ],
+        targetIndex: 2,
+        explanation: "'The most common' singles out the single primary negative symptom among all possibilities."
+      },
+      {
+        level: 1,
+        question: "Her condition is worsening more quickly than expected.",
+        options: [
+          "Superlative",
+          "First Conditional",
+          "Past Continuous",
+          "Comparative of Adverb"
+        ],
+        targetIndex: 3,
+        explanation: "'More quickly than' forms a comparative using an adverb to compare rates of change."
+      },
+
+      // ================= LEVEL 2: FILL IN THE BLANK (20 ITEMS) =================
+      {
+        level: 2,
+        question: "This ulcer is getting ____ (bad) than the one we treated last month.",
+        options: ["worse", "badder", "worst", "more bad"],
+        targetIndex: 0,
+        explanation: "'Bad' is an irregular adjective; its comparative form before 'than' is 'worse'."
+      },
+      {
+        level: 2,
+        question: "Anthrax is one of the ____ (deadly) bacterial diseases in terms of transmission.",
+        options: ["deadlier", "deadliest", "more deadly", "most deadlier"],
+        targetIndex: 1,
+        explanation: "'Deadly' ends in -y, changing to -iest in the superlative form ('deadliest')."
+      },
+      {
+        level: 2,
+        question: "After the concussion, he was ____ (alert) than before, almost unresponsive.",
+        options: ["most alert", "more alert", "less alert", "least alert"],
+        targetIndex: 2,
+        explanation: "Context ('almost unresponsive') requires the comparative of inferiority: 'less alert'."
+      },
+      {
+        level: 2,
+        question: "The tension in her wrist muscle is ____ (high) than in the shoulder.",
+        options: ["highest", "more high", "as high", "higher"],
+        targetIndex: 3,
+        explanation: "Short adjective 'high' takes the suffix '-er' ('higher') when followed by 'than'."
+      },
+      {
+        level: 2,
+        question: "This bump looks ____ (small) than the one on his head.",
+        options: ["smaller", "smallest", "more small", "most small"],
+        targetIndex: 0,
+        explanation: "Short adjective 'small' forms its comparative by adding '-er' ('smaller')."
+      },
+      {
+        level: 2,
+        question: "Today's tremor was ____ (bad) than yesterday's evaluation.",
+        options: ["badder", "worse", "worst", "more bad"],
+        targetIndex: 1,
+        explanation: "The comparative form of irregular adjective 'bad' is 'worse'."
+      },
+      {
+        level: 2,
+        question: "This is the ____ (bad) case of acquired infection we've seen this year.",
+        options: ["worse", "more bad", "worst", "most bad"],
+        targetIndex: 2,
+        explanation: "Superlative form of irregular adjective 'bad' with 'the' is 'worst'."
+      },
+      {
+        level: 2,
+        question: "His bowel movements are becoming more and ____ (regular).",
+        options: ["regularer", "most regular", "as regular", "more regular"],
+        targetIndex: 3,
+        explanation: "Parallel comparative structure uses 'more and more regular'."
+      },
+      {
+        level: 2,
+        question: "The patient's response after drug administration was much ____ (bad) than expected.",
+        options: ["worse", "worst", "badder", "more bad"],
+        targetIndex: 0,
+        explanation: "Intensifier 'much' modifies the comparative form 'worse'."
+      },
+      {
+        level: 2,
+        question: "The tumor is ____ (large) than we initially thought; surgery is required.",
+        options: ["largest", "larger", "more large", "most large"],
+        targetIndex: 1,
+        explanation: "Short adjective ending in -e ('large') adds '-r' ('larger') for comparative."
+      },
+      {
+        level: 2,
+        question: "This patient shows ____ (tension) in the neck muscles than the previous one.",
+        options: ["tense", "tenser", "more tension", "most tension"],
+        targetIndex: 2,
+        explanation: "Noun 'tension' uses 'more tension... than' for comparative comparison."
+      },
+      {
+        level: 2,
+        question: "She is the ____ (fast) nurse in the surgical department.",
+        options: ["faster", "more fast", "most fast", "fastest"],
+        targetIndex: 3,
+        explanation: "Short adjective 'fast' with 'the' takes superlative suffix '-est' ('fastest')."
+      },
+      {
+        level: 2,
+        question: "Positive symptoms are the ____ (easy) identified signs of schizophrenia.",
+        options: ["most easily", "more easily", "easier", "easiest"],
+        targetIndex: 0,
+        explanation: "Adverb phrase requires superlative superlative modifier 'most easily'."
+      },
+      {
+        level: 2,
+        question: "Negative symptoms are ____ (difficult) to diagnose than positive symptoms.",
+        options: ["difficultly", "more difficult", "most difficult", "as difficult"],
+        targetIndex: 1,
+        explanation: "Long adjective 'difficult' takes 'more' in comparative form ('more difficult')."
+      },
+      {
+        level: 2,
+        question: "Cognitive symptoms are the ____ (new) classification in DSM guidelines.",
+        options: ["newer", "more new", "newest", "most new"],
+        targetIndex: 2,
+        explanation: "Short adjective 'new' takes superlative suffix '-est' ('newest')."
+      },
+      {
+        level: 2,
+        question: "She is ____ (skillful) than the resident physician in lumbar punctures.",
+        options: ["skillfuler", "skillfulest", "most skillful", "more skillful"],
+        targetIndex: 3,
+        explanation: "Multi-syllable adjective 'skillful' uses 'more skillful than'."
+      },
+      {
+        level: 2,
+        question: "This is a ____ (recently) acquired infection than the previous case.",
+        options: ["more recently", "most recently", "recentlier", "recentliest"],
+        targetIndex: 0,
+        explanation: "Adverb 'recently' forms comparative with 'more' ('more recently')."
+      },
+      {
+        level: 2,
+        question: "This is the ____ (effective) administration route for emergency drugs.",
+        options: ["effectivest", "most effective", "more effective", "as effective"],
+        targetIndex: 1,
+        explanation: "Long adjective 'effective' forms superlative with 'most' ('most effective')."
+      },
+      {
+        level: 2,
+        question: "That was the ____ (big) bump I've ever seen from a minor fall.",
+        options: ["biger", "bigest", "biggest", "more big"],
+        targetIndex: 2,
+        explanation: "Consonant-vowel-consonant adjective 'big' doubles final consonant: 'biggest'."
+      },
+      {
+        level: 2,
+        question: "This concussion is ____ (serious) than the head injury last month.",
+        options: ["seriouser", "seriousest", "most serious", "more serious"],
+        targetIndex: 3,
+        explanation: "Long adjective 'serious' uses 'more serious than'."
+      },
+
+      // ================= LEVEL 3: PUT SENTENCE IN ORDER (20 ITEMS) =================
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["this ulcer", "is getting worse", "than the one", "we treated last month"],
+        options: [
+          "This ulcer is getting worse than the one we treated last month.",
+          "We treated last month this ulcer is getting worse than the one.",
+          "Than the one we treated last month this ulcer is getting worse.",
+          "Is getting worse this ulcer than the one we treated last month."
+        ],
+        targetIndex: 0,
+        explanation: "Correct order: [Subject + Verb + Comparative + Comparison baseline]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["anthrax is", "one of the deadliest", "bacterial diseases", "in terms of transmission"],
+        options: [
+          "In terms of transmission anthrax is bacterial diseases one of the deadliest.",
+          "Anthrax is one of the deadliest bacterial diseases in terms of transmission.",
+          "Bacterial diseases anthrax is one of the deadliest in terms of transmission.",
+          "One of the deadliest anthrax is bacterial diseases in terms of transmission."
+        ],
+        targetIndex: 1,
+        explanation: "Correct order: [Subject + Verb + One of the + Superlative + Noun + Prepositional phrase]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["after the concussion", "he was less alert", "than before", "almost unresponsive"],
+        options: [
+          "He was less alert almost unresponsive than before after the concussion.",
+          "Than before after the concussion he was less alert almost unresponsive.",
+          "After the concussion, he was less alert than before, almost unresponsive.",
+          "Almost unresponsive than before he was less alert after the concussion."
+        ],
+        targetIndex: 2,
+        explanation: "Correct order: [Time phrase + Subject + Verb + Comparative clause + Appositive phrase]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["the tension", "in her wrist", "is higher than", "in the shoulder"],
+        options: [
+          "In the shoulder the tension is higher than in her wrist.",
+          "In her wrist is higher than the tension in the shoulder.",
+          "Is higher than the tension in the shoulder in her wrist.",
+          "The tension in her wrist is higher than in the shoulder."
+        ],
+        targetIndex: 3,
+        explanation: "Correct order: [Noun + Location + Verb + Comparative + Location comparison]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["this bump", "looks smaller than", "the one", "on his head"],
+        options: [
+          "This bump looks smaller than the one on his head.",
+          "On his head this bump looks smaller than the one.",
+          "The one on his head looks smaller than this bump.",
+          "Smaller than the one on his head looks this bump."
+        ],
+        targetIndex: 0,
+        explanation: "Correct order: [Subject + Linking Verb + Comparative + Target phrase]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["today's tremor", "was worse than", "yesterday's", "clinical evaluation"],
+        options: [
+          "Yesterday's clinical evaluation today's tremor was worse than.",
+          "Today's tremor was worse than yesterday's clinical evaluation.",
+          "Was worse than today's tremor yesterday's clinical evaluation.",
+          "Clinical evaluation yesterday's was worse than today's tremor."
+        ],
+        targetIndex: 1,
+        explanation: "Correct order: [Subject 1 + Verb + Irregular Comparative + Subject 2]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["this is the worst", "case of acquired infection", "we have seen", "this year"],
+        options: [
+          "We have seen this year this is the worst case of acquired infection.",
+          "Case of acquired infection this is the worst we have seen this year.",
+          "This is the worst case of acquired infection we have seen this year.",
+          "This year we have seen case of acquired infection this is the worst."
+        ],
+        targetIndex: 2,
+        explanation: "Correct order: [Demonstrative + Verb + Superlative noun phrase + Relative clause]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["his bowel movements", "are becoming", "more and more", "regular"],
+        options: [
+          "More and more regular are becoming his bowel movements.",
+          "Are becoming regular his bowel movements more and more.",
+          "Regular his bowel movements are becoming more and more.",
+          "His bowel movements are becoming more and more regular."
+        ],
+        targetIndex: 3,
+        explanation: "Correct order: [Subject + Continuous Verb + Parallel Comparative + Adjective]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["the patient's response", "after drug administration", "was much worse", "than expected"],
+        options: [
+          "The patient's response after drug administration was much worse than expected.",
+          "After drug administration than expected was much worse the patient's response.",
+          "Was much worse than expected after drug administration the patient's response.",
+          "Than expected the patient's response was much worse after drug administration."
+        ],
+        targetIndex: 0,
+        explanation: "Correct order: [Subject + Time modifier + Verb + Intensified Comparative + Baseline]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["the tumor is larger", "than we initially thought", "and surgery", "may be needed"],
+        options: [
+          "And surgery may be needed than we initially thought the tumor is larger.",
+          "The tumor is larger than we initially thought, and surgery may be needed.",
+          "Than we initially thought the tumor is larger and surgery may be needed.",
+          "May be needed surgery and the tumor is larger than we initially thought."
+        ],
+        targetIndex: 1,
+        explanation: "Correct order: [Clause 1 with Comparative + Coordinating conjunction + Clause 2]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["this patient shows", "more tension in the neck", "than the previous one", "examined"],
+        options: [
+          "Examined than the previous one this patient shows more tension in the neck.",
+          "More tension in the neck than the previous one examined this patient shows.",
+          "This patient shows more tension in the neck than the previous one examined.",
+          "Than the previous one examined this patient shows more tension in the neck."
+        ],
+        targetIndex: 2,
+        explanation: "Correct order: [Subject + Verb + Comparative Noun Phrase + Comparison Baseline]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["she is the fastest", "nurse in the department", "at taking", "blood samples"],
+        options: [
+          "Blood samples at taking she is the fastest nurse in the department.",
+          "In the department nurse she is the fastest at taking blood samples.",
+          "At taking blood samples in the department she is the fastest nurse.",
+          "She is the fastest nurse in the department at taking blood samples."
+        ],
+        targetIndex: 3,
+        explanation: "Correct order: [Subject + Verb + Superlative Noun + Location + Prepositional Task]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["positive symptoms are", "the most easily identified", "in patients with", "schizophrenia"],
+        options: [
+          "Positive symptoms are the most easily identified in patients with schizophrenia.",
+          "In patients with schizophrenia positive symptoms are the most easily identified.",
+          "The most easily identified positive symptoms are in patients with schizophrenia.",
+          "Schizophrenia positive symptoms are the most easily identified in patients with."
+        ],
+        targetIndex: 0,
+        explanation: "Correct order: [Subject + Verb + Superlative Adverbial Phrase + Prepositional Phrase]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["negative symptoms are", "more difficult to diagnose", "than positive symptoms", "in clinic"],
+        options: [
+          "In clinic negative symptoms are than positive symptoms more difficult to diagnose.",
+          "Negative symptoms are more difficult to diagnose than positive symptoms in clinic.",
+          "Than positive symptoms negative symptoms are more difficult to diagnose in clinic.",
+          "More difficult to diagnose negative symptoms are than positive symptoms in clinic."
+        ],
+        targetIndex: 1,
+        explanation: "Correct order: [Subject + Verb + Comparative Infinitive Phrase + Comparison Baseline]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["cognitive symptoms are", "the newest classification", "in DSM-5 diagnostic", "criteria"],
+        options: [
+          "In DSM-5 diagnostic criteria cognitive symptoms are the newest classification.",
+          "Criteria cognitive symptoms are the newest classification in DSM-5 diagnostic.",
+          "Cognitive symptoms are the newest classification in DSM-5 diagnostic criteria.",
+          "The newest classification cognitive symptoms are in DSM-5 diagnostic criteria."
+        ],
+        targetIndex: 2,
+        explanation: "Correct order: [Subject + Verb + Superlative Noun Phrase + Domain Modifier]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["she is more skillful", "than the resident doctor", "in performing", "lumbar punctures"],
+        options: [
+          "In performing lumbar punctures she is more skillful than the resident doctor.",
+          "Lumbar punctures in performing than the resident doctor she is more skillful.",
+          "Than the resident doctor she is more skillful in performing lumbar punctures.",
+          "She is more skillful than the resident doctor in performing lumbar punctures."
+        ],
+        targetIndex: 3,
+        explanation: "Correct order: [Subject + Verb + Comparative + Baseline + Activity Modifier]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["this is a more recently", "acquired infection", "than the ones seen", "last week"],
+        options: [
+          "This is a more recently acquired infection than the ones seen last week.",
+          "Acquired infection this is a more recently than the ones seen last week.",
+          "Than the ones seen last week this is a more recently acquired infection.",
+          "Last week acquired infection this is a more recently than the ones seen."
+        ],
+        targetIndex: 0,
+        explanation: "Correct order: [Demonstrative + Verb + Comparative Adverbial Participle + Baseline]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["this is the most effective", "administration method", "for emergency drug", "delivery"],
+        options: [
+          "For emergency drug delivery administration method this is the most effective.",
+          "This is the most effective administration method for emergency drug delivery.",
+          "Administration method this is the most effective for emergency drug delivery.",
+          "The most effective this is administration method for emergency drug delivery."
+        ],
+        targetIndex: 1,
+        explanation: "Correct order: [Demonstrative + Verb + Superlative Adjective + Noun + Purpose Phrase]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["that was the biggest", "bump on his head", "I have ever seen", "after a fall"],
+        options: [
+          "I have ever seen after a fall that was the biggest bump on his head.",
+          "Bump on his head that was the biggest I have ever seen after a fall.",
+          "That was the biggest bump on his head I have ever seen after a fall.",
+          "After a fall that was the biggest bump on his head I have ever seen."
+        ],
+        targetIndex: 2,
+        explanation: "Correct order: [Demonstrative + Verb + Superlative Noun Phrase + Perfective Clause]."
+      },
+      {
+        level: 3,
+        question: "Put the sentence in correct order:",
+        rawChunks: ["this concussion is", "more serious than", "the head injury", "treated last month"],
+        options: [
+          "Treated last month this concussion is more serious than the head injury.",
+          "The head injury treated last month this concussion is more serious than.",
+          "More serious than the head injury this concussion is treated last month.",
+          "This concussion is more serious than the head injury treated last month."
+        ],
+        targetIndex: 3,
+        explanation: "Correct order: [Subject + Verb + Comparative + Baseline + Reduced Relative Clause]."
+      }
+    ];
+
+    let total = 0;
+    let correct = 0;
+    let streak = 0;
+    let currentQuestion = null;
+    let answered = false;
+
+    function changeLevel() {
+      nextQuestion();
+    }
+
+    function getFilteredQuestions() {
+      const selectedLevel = document.getElementById('levelSelect').value;
+      if (selectedLevel === 'mix') {
+        return rawQuestionBank;
+      }
+      return rawQuestionBank.filter(q => q.level === parseInt(selectedLevel));
+    }
+
+    function nextQuestion() {
+      answered = false;
+      
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.classList.remove('visible');
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.remove('answered');
+      document.getElementById('explanationText').textContent = "Choose the correct answer!";
+
+      const pool = getFilteredQuestions();
+      const rawQ = pool[Math.floor(Math.random() * pool.length)];
+
+      const levelTag = document.getElementById('levelTag');
+      levelTag.textContent = `Level ${rawQ.level}`;
+
+      document.getElementById('questionText').textContent = rawQ.question;
+
+      const chunksBox = document.getElementById('chunksBox');
+      if (rawQ.level === 3 && rawQ.rawChunks) {
+        const shuffledChunks = shuffleArray(rawQ.rawChunks);
+        chunksBox.textContent = shuffledChunks.join(" / ");
+        chunksBox.classList.remove('invisible');
+      } else {
+        chunksBox.textContent = '';
+        chunksBox.classList.add('invisible');
+      }
+
+      currentQuestion = {
+        level: rawQ.level,
+        question: rawQ.question,
+        explanation: rawQ.explanation,
+        computedCorrectIndex: rawQ.targetIndex,
+        displayOptions: rawQ.options
+      };
+
+      const grid = document.getElementById('optionsGrid');
+      grid.innerHTML = '';
+
+      currentQuestion.displayOptions.forEach((optText, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = `${String.fromCharCode(65 + index)}) ${optText}`;
+        btn.onclick = () => selectOption(btn, index);
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedBtn, selectedIndex) {
+      if (answered) return;
+      answered = true;
+
+      total++;
+      const isCorrect = (selectedIndex === currentQuestion.computedCorrectIndex);
+
+      if (isCorrect) {
+        correct++;
+        streak++;
+        selectedBtn.classList.add('correct');
+      } else {
+        streak = 0;
+        selectedBtn.classList.add('wrong');
+        
+        const allBtns = document.querySelectorAll('.option-btn');
+        if (allBtns[currentQuestion.computedCorrectIndex]) {
+          allBtns[currentQuestion.computedCorrectIndex].classList.add('correct');
+        }
+      }
+
+      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('correctCount').textContent = correct;
+      document.getElementById('streakCount').textContent = `${streak} 🔥`;
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.add('answered');
+      document.getElementById('explanationText').textContent = currentQuestion.explanation;
+
+      document.getElementById('nextBtn').classList.add('visible');
+    }
+  </script>
 </body>
 </html>
