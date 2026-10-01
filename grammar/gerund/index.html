@@ -3,150 +3,320 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>@doctors.speak — Page not ready yet</title>
+  <title>@doctors.speak — Medical Grammar Trainer (Verb Forms)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Montserrat', sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background: linear-gradient(135deg, #00afca 0%, #0081a7 100%);
-      color: #333;
+      background: var(--bg-main);
+      color: var(--text-dark);
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 10px;
+      padding: 12px 10px;
     }
 
     .card {
-      background: #ffffff;
+      background: var(--card-bg);
       border-radius: 20px;
       width: 100%;
-      max-width: 420px;
-      height: 680px;
-      max-height: 95vh;
+      max-width: 440px;
+      min-height: 720px;
+      height: 720px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      border: 3px solid #fbc02d;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-color);
       position: relative;
-      overflow-y: auto;
+      overflow: hidden;
     }
 
     .header {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 16px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 10px;
-      border-bottom: 2px solid #00afca;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
       flex-shrink: 0;
     }
 
     .home-btn {
-      background-color: #fbc02d;
-      color: #003366;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #FFFFFF;
       text-decoration: none;
       font-weight: 700;
-      font-size: 0.8rem;
-      padding: 6px 12px;
-      border-radius: 12px;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.12);
-      transition: transform 0.1s, background-color 0.2s;
+      transition: all 0.2s ease;
     }
 
     .home-btn:active {
-      transform: scale(0.95);
-      background-color: #fdd835;
+      transform: scale(0.96);
+      background: rgba(255, 255, 255, 0.3);
     }
 
     .brand {
-      color: #00afca;
       font-weight: 800;
-      font-size: 1.05rem;
+      font-size: 0.82rem;
       letter-spacing: 0.5px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
     }
 
-    .content-container {
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+      padding: 16px;
+      gap: 8px;
+      overflow-y: hidden;
+    }
+
+    .mode-select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      border-radius: 12px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--kz-blue-dark);
+      background: var(--kz-blue-light);
+      outline: none;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 6px;
+      background: var(--bg-main);
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .stats span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .term-box {
+      margin: 2px 0;
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-left: 6px solid var(--kz-gold-dark);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      text-align: center;
+      min-height: 135px;
+      height: 135px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 18px;
-      padding: 20px 10px;
-      text-align: center;
-      flex-grow: 1;
     }
 
-    .icon-box {
-      font-size: 4rem;
-      line-height: 1;
-      margin-bottom: 5px;
-    }
-
-    .title {
-      font-size: 1.35rem;
-      color: #0081a7;
-      font-weight: 800;
-      line-height: 1.3;
-    }
-
-    .description {
-      font-size: 0.95rem;
-      color: #555;
-      line-height: 1.5;
-      max-width: 320px;
-    }
-
-    .action-btn {
-      background: #fbc02d;
-      color: #003366;
-      border: none;
-      padding: 14px 24px;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 800;
-      cursor: pointer;
-      width: 100%;
-      max-width: 300px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      text-decoration: none;
+    .level-tag {
       display: inline-block;
-      transition: transform 0.1s, background-color 0.2s;
-      margin-top: 10px;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .action-btn:hover {
-      background: #fdd835;
+    .term-title {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.3;
+      min-height: 2.6em;
+      height: 2.6em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
     }
 
-    .action-btn:active {
-      transform: scale(0.98);
-    }
-
-    .insta-link {
-      font-size: 0.85rem;
-      color: #666;
-      margin-top: 10px;
-    }
-
-    .insta-link a {
-      color: #0081a7;
+    .chunks-box {
+      background: var(--bg-main);
+      border: 1px dashed var(--kz-gold-dark);
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      color: var(--kz-gold-dark);
       font-weight: 700;
-      text-decoration: underline;
+      margin-top: 4px;
+      word-break: break-word;
+      min-height: 38px;
+      height: 38px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chunks-box.invisible {
+      visibility: hidden;
+      border-color: transparent;
+      background: transparent;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .option-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-align: left;
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+      line-height: 1.25;
+      min-height: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+      overflow: hidden;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background-color: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+    }
+
+    .option-btn.correct {
+      background-color: #DCFCE7 !important;
+      border-color: #22C55E !important;
+      color: #15803D !important;
+      font-weight: 700;
+    }
+
+    .option-btn.wrong {
+      background-color: #FEE2E2 !important;
+      border-color: #EF4444 !important;
+      color: #B91C1C !important;
+      font-weight: 700;
+    }
+
+    .explanation-box {
+      background-color: var(--kz-blue-light);
+      border-left: 4px solid var(--kz-blue);
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      color: var(--kz-blue-dark);
+      margin-bottom: 6px;
+      line-height: 1.3;
+      min-height: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .explanation-box.answered {
+      background-color: #E0F2FE;
+      border-left-color: var(--kz-blue-dark);
+    }
+
+    .next-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      font-weight: 800;
+      padding: 10px;
+      border-radius: 16px;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      border: 1px solid var(--kz-gold-dark);
+      cursor: pointer;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.2s ease, visibility 0.2s ease, background-color 0.2s ease;
+      min-height: 42px;
+      height: 42px;
+    }
+
+    .next-btn.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .next-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    .next-btn:active {
+      transform: scale(0.98);
     }
   </style>
 </head>
 <body>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <div class="card">
     <!-- Header -->
@@ -155,22 +325,499 @@
       <div class="brand">@doctors.speak</div>
     </header>
 
-    <!-- Content -->
-    <div class="content-container">
-      <div class="icon-box">🚧</div>
-      <h1 class="title">Page not ready yet :( </h1>
-      <p class="description">
-        We are working on the page, please check it later🙏
-      </p>
+    <!-- Game Screen -->
+    <div id="gameScreen" class="game-container">
+      
+      <div>
+        <select id="levelSelect" class="mode-select" onchange="changeLevel()">
+          <option value="1">Level 1 — Verb Form Recognition</option>
+          <option value="2">Level 2 — Fill in the Blanks</option>
+          <option value="3">Level 3 — Sentence Reconstruction (Randomized Chunks)</option>
+          <option value="mix">🔥 Mix</option>
+        </select>
 
-      <a href="https://kazdoctors.com/grammar/" class="action-btn">Go back</a>
-
-      <div class="insta-link">
-        Our updates:<br>
-        <a href="https://instagram.com/doctors.speak" target="_blank">@doctors.speak</a>
+        <div class="stats">
+          <span>Total: <strong id="totalCount">0</strong></span>
+          <span>Correct: <strong id="correctCount" style="color:#16A34A;">0</strong></span>
+          <span>Streak: <strong id="streakCount" style="color:#D9A000;">0 🔥</strong></span>
+        </div>
       </div>
+
+      <div class="term-box">
+        <span id="levelTag" class="level-tag">Level 1</span>
+        <div id="questionText" class="term-title">Loading question...</div>
+        <div id="chunksBox" class="chunks-box invisible"></div>
+      </div>
+
+      <div>
+        <div id="optionsGrid" class="options-grid"></div>
+        
+        <div id="explanationBox" class="explanation-box">
+          <div><strong>💡 Explanation:</strong> <span id="explanationText">Choose the correct answer!</span></div>
+        </div>
+
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next ➔</button>
+      </div>
+
     </div>
   </div>
 
+  <script>
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function checkAuth() {
+      const { data, error } = await supabaseClient.auth.getSession();
+      if (error || !data.session) {
+        window.location.href = "/login.html";
+        return;
+      }
+      nextQuestion();
+    }
+
+    checkAuth();
+
+    function shuffleArray(array) {
+      let arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    const rawQuestionBank = [
+      // ================= LEVEL 1: RECOGNIZE VERB FORM (20 ITEMS - EXACT EQUAL A,B,C,D) =================
+      // Target 0 (A) - Gerund
+      { level: 1, question: "'RESOLVING the outbreak took days.' What form is 'resolving'?", options: ["Gerund", "Past Participle", "Continuous", "Past Simple"], targetIndex: 0, explanation: "Verb + -ing acting as a noun/subject is a Gerund." },
+      { level: 1, question: "'URGING early treatment is vital.' What form is 'urging'?", options: ["Gerund", "Infinitive", "Continuous", "Passive"], targetIndex: 0, explanation: "Gerund is formed by adding -ing to the base verb (acting as noun)." },
+      { level: 1, question: "'They recommended SOOTHING the pain.' What form is 'soothing'?", options: ["Gerund", "Past Participle", "Infinitive", "Continuous"], targetIndex: 0, explanation: "Verb + -ing as object of 'recommend' is a Gerund." },
+      { level: 1, question: "'RULING OUT infection is key.' What form is 'ruling out'?", options: ["Gerund", "Infinitive", "Continuous", "Passive"], targetIndex: 0, explanation: "Verb + -ing serving as the subject is a Gerund." },
+      { level: 1, question: "'PERFORMING CPR saved his life.' What form is 'performing'?", options: ["Gerund", "Past Participle", "Continuous", "Past Simple"], targetIndex: 0, explanation: "'Performing' acts as a noun subject, so it is a Gerund." },
+
+      // Target 1 (B) - Past Participle
+      { level: 1, question: "'The REVEALED scan showed rupture.' What form is 'revealed'?", options: ["Gerund", "Past Participle", "Infinitive", "Past Simple"], targetIndex: 1, explanation: "V3 form used as an adjective modifying 'scan' is a Past Participle." },
+      { level: 1, question: "'The RUPTURED appendix was treated.' What form is 'ruptured'?", options: ["Infinitive", "Past Participle", "Past Simple", "Passive"], targetIndex: 1, explanation: "V3 form acting like an adjective is a Past Participle." },
+      { level: 1, question: "'The SUB LUXATED joint was fixed.' What form is 'subluxated'?", options: ["Gerund", "Past Participle", "Past Simple", "Past Simple"], targetIndex: 1, explanation: "V3 adjective describing 'joint' is a Past Participle." },
+      { level: 1, question: "'The CONFIRMED suspicion led to surgery.' Form of 'confirmed'?", options: ["Infinitive", "Past Participle", "Gerund", "Passive"], targetIndex: 1, explanation: "Past Participle (V3) acts as an adjective here." },
+      { level: 1, question: "'The PRESCRIBED drug reduced pain.' What form is 'prescribed'?", options: ["Continuous", "Past Participle", "Past Simple", "Past Simple"], targetIndex: 1, explanation: "V3 form used as an adjective is a Past Participle." },
+
+      // Target 2 (C) - Infinitive
+      { level: 1, question: "'They decided TO RULE OUT meningitis.' Form of 'to rule out'?", options: ["Gerund", "Past Participle", "Infinitive", "Continuous"], targetIndex: 2, explanation: "'To + base verb' is an Infinitive." },
+      { level: 1, question: "'He came TO SOOTHE the severe pain.' Form of 'to soothe'?", options: ["Past Simple", "Passive", "Infinitive", "Gerund"], targetIndex: 2, explanation: "'To + base verb' expressing purpose is an Infinitive." },
+      { level: 1, question: "'She tried TO REVEAL the diagnosis.' Form of 'to reveal'?", options: ["Gerund", "Continuous", "Infinitive", "Past Participle"], targetIndex: 2, explanation: "Initial verb form with 'to' ('to reveal') is an Infinitive." },
+      { level: 1, question: "'We plan TO PERFORM resuscitation.' Form of 'to perform'?", options: ["Past Simple", "Passive", "Infinitive", "Gerund"], targetIndex: 2, explanation: "'To + base verb' is an Infinitive." },
+      { level: 1, question: "'He urged us TO RESOLVE the issue.' Form of 'to resolve'?", options: ["Past Participle", "Continuous", "Infinitive", "Past Simple"], targetIndex: 2, explanation: "'To + base verb' is an Infinitive." },
+
+      // Target 3 (D) - Continuous / Past Simple / Passive
+      { level: 1, question: "'The doctor WAS PERFORMING CPR.' What tense is 'was performing'?", options: ["Gerund", "Past Participle", "Past Simple", "Continuous"], targetIndex: 3, explanation: "Be + verb-ing in past context forms Past Continuous." },
+      { level: 1, question: "'The infection WAS CONFIRMED yesterday.' What form is used here?", options: ["Gerund", "Infinitive", "Continuous", "Passive"], targetIndex: 3, explanation: "Was/Were + V3 forms Passive voice." },
+      { level: 1, question: "'The team RESOLVED the outbreak.' What tense is 'resolved'?", options: ["Gerund", "Past Participle", "Infinitive", "Past Simple"], targetIndex: 3, explanation: "Main verb in past tense action is Past Simple." },
+      { level: 1, question: "'The nurse IS SOOTHING the patient.' What tense is 'is soothing'?", options: ["Gerund", "Past Participle", "Past Simple", "Continuous"], targetIndex: 3, explanation: "Am/Is/Are + verb-ing forms Present Continuous." },
+      { level: 1, question: "'A spinal tap WAS SUGGESTED by MD.' What structure is this?", options: ["Gerund", "Infinitive", "Continuous", "Passive"], targetIndex: 3, explanation: "Was + V3 indicates Passive voice." },
+
+
+      // ================= LEVEL 2: FILL IN THE BLANKS (20 ITEMS - EXACT EQUAL A,B,C,D) =================
+      // Target 0 (A)
+      { level: 2, question: "After the outbreak, the team focused on ____ the contagion.", options: ["resolving", "to resolve", "resolved", "resolve"], targetIndex: 0, explanation: "Prepositions (on) are followed by a Gerund (-ing)." },
+      { level: 2, question: "The doctor managed ____ spinal tap as necessary.", options: ["to rule out", "ruling out", "ruled out", "rule out"], targetIndex: 0, explanation: "The verb 'manage' is followed by an Infinitive (to + verb)." },
+      { level: 2, question: "They recommended ____ the irritated mucosa with warm compresses.", options: ["soothing", "to soothe", "soothed", "soothe"], targetIndex: 0, explanation: "The verb 'recommend' is followed by a Gerund (-ing)." },
+      { level: 2, question: "The patient complained of shooting pain and ____ shoulder.", options: ["subluxated", "to subluxate", "subluxating", "subluxate"], targetIndex: 0, explanation: "Past participle 'subluxated' acts as an adjective for 'shoulder'." },
+      { level: 2, question: "The nurse was trained in ____ emergency resuscitation procedures.", options: ["performing", "to perform", "performed", "perform"], targetIndex: 0, explanation: "Prepositions (in) require a Gerund (-ing)." },
+
+      // Target 1 (B)
+      { level: 2, question: "A spinal tap was suggested ____ meningitis.", options: ["ruling out", "to rule out", "ruled out", "rule out"], targetIndex: 1, explanation: "Infinitive 'to rule out' expresses purpose ('to help rule out')." },
+      { level: 2, question: "There was a suspicion, later ____, of internal bleeding.", options: ["confirming", "confirmed", "to confirm", "confirm"], targetIndex: 1, explanation: "Past participle 'confirmed' modifies 'suspicion'." },
+      { level: 2, question: "____ early treatment can prevent severe complications.", options: ["Urged", "Urging", "To urge", "Urge"], targetIndex: 1, explanation: "Gerund 'Urging' acts as the subject of the sentence." },
+      { level: 2, question: "The scan revealed a ____ appendix requiring surgery.", options: ["rupture", "ruptured", "rupturing", "to rupture"], targetIndex: 1, explanation: "Past Participle 'ruptured' acts as an adjective." },
+      { level: 2, question: "She has a strong predisposition ____ fainting under stress.", options: ["to", "towards", "for", "in"], targetIndex: 1, explanation: "Predisposition is commonly followed by 'towards' / 'to'." },
+
+      // Target 2 (C)
+      { level: 2, question: "The patient showed signs of an overt rupture, clearly ____.", options: ["reveals", "to reveal", "revealed", "revealing"], targetIndex: 2, explanation: "Past participle 'revealed' describes the state shown on scan." },
+      { level: 2, question: "A predisposition to fainting was ____ during resuscitation.", options: ["reveal", "revealing", "revealed", "to reveal"], targetIndex: 2, explanation: "Passive voice: 'was' + past participle ('revealed')." },
+      { level: 2, question: "The doctor decided ____ the medication immediately.", options: ["prescribe", "prescribing", "to prescribe", "prescribed"], targetIndex: 2, explanation: "'Decide' takes an infinitive ('to prescribe')." },
+      { level: 2, question: "Controlling an outbreak requires ____ immediate measures.", options: ["take", "took", "taking", "to take"], targetIndex: 2, explanation: "'Require' in this context takes gerund 'taking'." },
+      { level: 2, question: "He had a frequent urge ____ urinate during the night.", options: ["for", "in", "to", "at"], targetIndex: 2, explanation: "'Urge' as a noun takes an infinitive structure ('urge to urinate')." },
+
+      // Target 3 (D)
+      { level: 2, question: "The admitted patient had ____ bleeding in the GI tract.", options: ["overtly", "overts", "overting", "overt"], targetIndex: 3, explanation: "Adjective 'overt' describes 'bleeding'." },
+      { level: 2, question: "The suspected infection was confirmed by ____ tap.", options: ["spine", "spinals", "spinous", "spinal"], targetIndex: 3, explanation: "Medical term: 'spinal tap'." },
+      { level: 2, question: "You can save lives by performing timely ____.", options: ["resuscitate", "resuscitated", "resuscitating", "resuscitation"], targetIndex: 3, explanation: "Noun 'resuscitation' follows adjective 'timely'." },
+      { level: 2, question: "Majority of patients reported a ____ pain in the leg.", options: ["shoot", "shoots", "to shoot", "shooting"], targetIndex: 3, explanation: "Participle/Adjective 'shooting' describes 'pain'." },
+      { level: 2, question: "The team succeeded in ____ the source of contagion.", options: ["resolve", "resolved", "to resolve", "resolving"], targetIndex: 3, explanation: "Preposition 'in' requires gerund 'resolving'." },
+
+
+      // ================= LEVEL 3: SENTENCE RECONSTRUCTION (20 ITEMS - EXACT EQUAL A,B,C,D) =================
+      // Target 0 (A)
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["the team focused on", "resolving the source", "of contagion", "after the outbreak"],
+        options: [
+          "The team focused on resolving the source of contagion after the outbreak.",
+          "After the outbreak resolving the source the team focused on of contagion.",
+          "Resolving the source of contagion after the outbreak the team focused on.",
+          "Of contagion the team focused on after the outbreak resolving the source."
+        ],
+        targetIndex: 0,
+        explanation: "Correct order: [Subject + Verb + Prepositional Gerund Phrase + Time Modifier]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["a spinal tap", "was suggested", "to help rule out", "acute meningitis"],
+        options: [
+          "A spinal tap was suggested to help rule out acute meningitis.",
+          "To help rule out acute meningitis a spinal tap suggested was.",
+          "Was suggested acute meningitis to help rule out a spinal tap.",
+          "Acute meningitis a spinal tap was suggested to help rule out."
+        ],
+        targetIndex: 0,
+        explanation: "Correct order: [Subject + Passive Verb + Infinitive Purpose Phrase]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["urging early treatment", "can prevent", "severe complications", "in patients"],
+        options: [
+          "Urging early treatment can prevent severe complications in patients.",
+          "In patients severe complications urging early treatment can prevent.",
+          "Can prevent severe complications in patients urging early treatment.",
+          "Severe complications can prevent urging early treatment in patients."
+        ],
+        targetIndex: 0,
+        explanation: "Correct order: [Gerund Subject + Modal Verb + Direct Object + Prepositional Phrase]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["the patient showed", "signs of rupture", "clearly revealed", "on the scan"],
+        options: [
+          "The patient showed signs of rupture clearly revealed on the scan.",
+          "On the scan clearly revealed the patient showed signs of rupture.",
+          "Clearly revealed on the scan signs of rupture the patient showed.",
+          "Signs of rupture the patient showed clearly revealed on the scan."
+        ],
+        targetIndex: 0,
+        explanation: "Correct order: [Subject + Main Verb + Object + Participle Phrase]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["they recommended", "soothing the pain", "with a warm compress", "at night"],
+        options: [
+          "They recommended soothing the pain with a warm compress at night.",
+          "With a warm compress at night they recommended soothing the pain.",
+          "Soothing the pain at night they recommended with a warm compress.",
+          "At night with a warm compress soothing the pain they recommended."
+        ],
+        targetIndex: 0,
+        explanation: "Correct order: [Subject + Verb + Gerund Object + Instrument + Time]."
+      },
+
+      // Target 1 (B)
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["a predisposition to fainting", "was revealed", "during resuscitation", "by the team"],
+        options: [
+          "Was revealed by the team a predisposition to fainting during resuscitation.",
+          "A predisposition to fainting was revealed during resuscitation by the team.",
+          "During resuscitation by the team a predisposition to fainting was revealed.",
+          "By the team during resuscitation was revealed a predisposition to fainting."
+        ],
+        targetIndex: 1,
+        explanation: "Correct order: [Subject + Passive Verb + Time Phrase + Agent]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["the nurse was trained", "in performing", "emergency resuscitation", "procedures"],
+        options: [
+          "Emergency resuscitation procedures in performing the nurse was trained.",
+          "The nurse was trained in performing emergency resuscitation procedures.",
+          "In performing emergency resuscitation procedures was trained the nurse.",
+          "Procedures the nurse was trained in performing emergency resuscitation."
+        ],
+        targetIndex: 1,
+        explanation: "Correct order: [Subject + Passive Verb + Prepositional Gerund Phrase]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["controlling an outbreak", "requires immediate", "public health measures", "in town"],
+        options: [
+          "Public health measures in town controlling an outbreak requires immediate.",
+          "Controlling an outbreak requires immediate public health measures in town.",
+          "Requires immediate public health measures in town controlling an outbreak.",
+          "In town controlling an outbreak public health measures requires immediate."
+        ],
+        targetIndex: 1,
+        explanation: "Correct order: [Gerund Phrase Subject + Verb + Adjective + Object Noun]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["the admitted patient", "had overt bleeding", "in the GI tract", "this morning"],
+        options: [
+          "In the GI tract this morning had overt bleeding the admitted patient.",
+          "The admitted patient had overt bleeding in the GI tract this morning.",
+          "Overt bleeding in the GI tract the admitted patient had this morning.",
+          "This morning in the GI tract had overt bleeding the admitted patient."
+        ],
+        targetIndex: 1,
+        explanation: "Correct order: [Subject + Main Verb + Object Phrase + Location + Time]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["revealing test results", "without preparation", "caused severe anxiety", "to him"],
+        options: [
+          "Severe anxiety to him revealing test results without preparation caused.",
+          "Revealing test results without preparation caused severe anxiety to him.",
+          "Without preparation caused severe anxiety to him revealing test results.",
+          "To him caused severe anxiety revealing test results without preparation."
+        ],
+        targetIndex: 1,
+        explanation: "Correct order: [Gerund Subject + Modifier + Verb + Object + Prepositional Phrase]."
+      },
+
+      // Target 2 (C)
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["ruling out bacterial infection", "was the first step", "in the diagnosis", "today"],
+        options: [
+          "In the diagnosis ruling out bacterial infection was the first step today.",
+          "Was the first step today in the diagnosis ruling out bacterial infection.",
+          "Ruling out bacterial infection was the first step in the diagnosis today.",
+          "Today in the diagnosis was the first step ruling out bacterial infection."
+        ],
+        targetIndex: 2,
+        explanation: "Correct order: [Gerund Subject + Link Verb + Predicate Noun + Prepositional Modifier]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["the ruptured appendix", "caused peritonitis", "in the young patient", "rapidly"],
+        options: [
+          "Caused peritonitis rapidly the ruptured appendix in the young patient.",
+          "In the young patient rapidly caused peritonitis the ruptured appendix.",
+          "The ruptured appendix caused peritonitis in the young patient rapidly.",
+          "Rapidly in the young patient the ruptured appendix caused peritonitis."
+        ],
+        targetIndex: 2,
+        explanation: "Correct order: [Subject + Main Verb + Direct Object + Location + Adverb]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["majority of patients", "reported shooting pain", "in studied areas", "during trial"],
+        options: [
+          "In studied areas during trial reported shooting pain majority of patients.",
+          "Shooting pain in studied areas majority of patients reported during trial.",
+          "Majority of patients reported shooting pain in studied areas during trial.",
+          "During trial reported shooting pain in studied areas majority of patients."
+        ],
+        targetIndex: 2,
+        explanation: "Correct order: [Subject Noun Phrase + Verb + Participle Object + Location + Time]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["soothing irritated mucosa", "helped the patient", "feel much better", "afterward"],
+        options: [
+          "Feel much better afterward soothing irritated mucosa helped the patient.",
+          "Helped the patient feel much better afterward soothing irritated mucosa.",
+          "Soothing irritated mucosa helped the patient feel much better afterward.",
+          "Afterward feel much better the patient helped soothing irritated mucosa."
+        ],
+        targetIndex: 2,
+        explanation: "Correct order: [Gerund Subject + Verb + Object + Bare Infinitive Complement]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["the suspected infection", "was confirmed", "by spinal tap", "yesterday"],
+        options: [
+          "By spinal tap yesterday was confirmed the suspected infection.",
+          "Yesterday by spinal tap was confirmed the suspected infection.",
+          "The suspected infection was confirmed by spinal tap yesterday.",
+          "Was confirmed the suspected infection by spinal tap yesterday."
+        ],
+        targetIndex: 2,
+        explanation: "Correct order: [Subject + Passive Verb + Instrument Phrase + Time]."
+      },
+
+      // Target 3 (D)
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["a subluxated vertebra", "was discovered", "on the MRI scan", "by MD"],
+        options: [
+          "On the MRI scan by MD was discovered a subluxated vertebra.",
+          "Was discovered on the MRI scan a subluxated vertebra by MD.",
+          "By MD on the MRI scan was discovered a subluxated vertebra.",
+          "A subluxated vertebra was discovered on the MRI scan by MD."
+        ],
+        targetIndex: 3,
+        explanation: "Correct order: [Subject Phrase + Passive Verb + Location + Agent]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["the suspicion of TB", "required the doctor", "to perform the test", "immediately"],
+        options: [
+          "To perform the test immediately required the doctor the suspicion of TB.",
+          "Required the doctor to perform the test immediately the suspicion of TB.",
+          "Immediately required the doctor to perform the test the suspicion of TB.",
+          "The suspicion of TB required the doctor to perform the test immediately."
+        ],
+        targetIndex: 3,
+        explanation: "Correct order: [Subject + Verb + Object + Infinitive Phrase + Adverb]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["the patient had", "a frequent urge", "to urinate frequently", "at night"],
+        options: [
+          "At night to urinate frequently the patient had a frequent urge.",
+          "To urinate frequently at night a frequent urge had the patient.",
+          "A frequent urge to urinate frequently had the patient at night.",
+          "The patient had a frequent urge to urinate frequently at night."
+        ],
+        targetIndex: 3,
+        explanation: "Correct order: [Subject + Verb + Noun Phrase + Infinitive Complement + Time]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["there was suspicion", "later confirmed", "of internal bleeding", "in ICU"],
+        options: [
+          "Of internal bleeding in ICU there was suspicion later confirmed.",
+          "In ICU later confirmed of internal bleeding there was suspicion.",
+          "Later confirmed of internal bleeding in ICU there was suspicion.",
+          "There was suspicion, later confirmed, of internal bleeding in ICU."
+        ],
+        targetIndex: 3,
+        explanation: "Correct order: [Existential There + Verb + Noun + Participle Modifier + Prepositional Phrase]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["prescribing adalimumab", "can be dangerous", "in active TB cases", "always"],
+        options: [
+          "In active TB cases always can be dangerous prescribing adalimumab.",
+          "Can be dangerous in active TB cases always prescribing adalimumab.",
+          "Always in active TB cases prescribing adalimumab can be dangerous.",
+          "Prescribing adalimumab can be dangerous in active TB cases always."
+        ],
+        targetIndex: 3,
+        explanation: "Correct order: [Gerund Subject + Modal Predicate + Adjective + Context Phrase]."
+      }
+    ];
+
+    let total = 0;
+    let correct = 0;
+    let streak = 0;
+    let currentQuestion = null;
+    let answered = false;
+
+    function changeLevel() {
+      nextQuestion();
+    }
+
+    function getFilteredQuestions() {
+      const selectedLevel = document.getElementById('levelSelect').value;
+      if (selectedLevel === 'mix') {
+        return rawQuestionBank;
+      }
+      return rawQuestionBank.filter(q => q.level === parseInt(selectedLevel));
+    }
+
+    function nextQuestion() {
+      answered = false;
+      
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.classList.remove('visible');
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.remove('answered');
+      document.getElementById('explanationText').textContent = "Choose the correct answer!";
+
+      const pool = getFilteredQuestions();
+      const rawQ = pool[Math.floor(Math.random() * pool.length)];
+
+      const levelTag = document.getElementById('levelTag');
+      levelTag.textContent = `Level ${rawQ.level}`;
+
+      document.getElementById('questionText').textContent = rawQ.question;
+
+      const chunksBox = document.getElementById('chunksBox');
+      if (rawQ.level === 3 && rawQ.rawChunks) {
+        const shuffledChunks = shuffleArray(rawQ.rawChunks);
+        chunksBox.textContent = shuffledChunks.join(" / ");
+        chunksBox.classList.remove('invisible');
+      } else {
+        chunksBox.textContent = '';
+        chunksBox.classList.add('invisible');
+      }
+
+      currentQuestion = {
+        level: rawQ.level,
+        question: rawQ.question,
+        explanation: rawQ.explanation,
+        computedCorrectIndex: rawQ.targetIndex,
+        displayOptions: rawQ.options
+      };
+
+      const grid = document.getElementById('optionsGrid');
+      grid.innerHTML = '';
+
+      currentQuestion.displayOptions.forEach((optText, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = `${String.fromCharCode(65 + index)}) ${optText}`;
+        btn.onclick = () => selectOption(btn, index);
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedBtn, selectedIndex) {
+      if (answered) return;
+      answered = true;
+
+      total++;
+      const isCorrect = (selectedIndex === currentQuestion.computedCorrectIndex);
+
+      if (isCorrect) {
+        correct++;
+        streak++;
+        selectedBtn.classList.add('correct');
+      } else {
+        streak = 0;
+        selectedBtn.classList.add('wrong');
+        
+        const allBtns = document.querySelectorAll('.option-btn');
+        if (allBtns[currentQuestion.computedCorrectIndex]) {
+          allBtns[currentQuestion.computedCorrectIndex].classList.add('correct');
+        }
+      }
+
+      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('correctCount').textContent = correct;
+      document.getElementById('streakCount').textContent = `${streak} 🔥`;
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.add('answered');
+      document.getElementById('explanationText').textContent = currentQuestion.explanation;
+
+      document.getElementById('nextBtn').classList.add('visible');
+    }
+  </script>
 </body>
 </html>
