@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>@doctors.speak — Medical Grammar Trainer (Comparatives & Superlatives)</title>
+  <title>@doctors.speak — Medical Grammar Trainer (Relative Clauses)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -330,9 +330,9 @@
       
       <div>
         <select id="levelSelect" class="mode-select" onchange="changeLevel()">
-          <option value="1">Level 1 — Recognize the grammar</option>
-          <option value="2">Level 2 — Fill in comparative/superlative</option>
-          <option value="3">Level 3 — Put the sentence in order</option>
+          <option value="1">Level 1 — Relative Pronoun Recognition & Rules</option>
+          <option value="2">Level 2 — Fill in the Relative Pronoun (who / which / that / whose / where)</option>
+          <option value="3">Level 3 — Sentence Reconstruction (Randomized Chunks)</option>
           <option value="mix">🔥 Mix</option>
         </select>
 
@@ -389,650 +389,449 @@
     }
 
     const rawQuestionBank = [
-      // ================= LEVEL 1: RECOGNIZE THE GRAMMAR (20 ITEMS) =================
-      {
-        level: 1,
-        question: "This ulcer is getting worse than the one we treated last month.",
-        options: [
-          "Comparative (comparing two specific ulcers with '-er/than')",
-          "Superlative (identifying the single worst ulcer in a group)",
-          "Zero Conditional (expressing an anatomical law)",
-          "Passive Voice (focusing on the action of treatment)"
-        ],
-        targetIndex: 0,
-        explanation: "'Worse than' is a comparative form of 'bad' used to compare two specific clinical cases."
-      },
-      {
-        level: 1,
-        question: "Anthrax is one of the deadliest bacterial diseases in terms of transmission.",
-        options: [
-          "Comparative (comparing anthrax directly to one other disease)",
-          "Superlative (ranking anthrax at the absolute top among all diseases)",
-          "First Conditional (predicting a future outbreak)",
-          "Modal Verb (expressing medical necessity)"
-        ],
-        targetIndex: 1,
-        explanation: "'The deadliest' is a superlative form indicating the highest degree among a group."
-      },
-      {
-        level: 1,
-        question: "After the concussion, he was less alert than before.",
-        options: [
-          "Comparative of Equality (stating equal alertness)",
-          "Superlative of Superiority (most alert patient in ward)",
-          "Comparative of Inferiority (using 'less + adjective + than')",
-          "Past Perfect Tense (describing past event before concussion)"
-        ],
-        targetIndex: 2,
-        explanation: "'Less alert than' forms a comparative of inferiority to show reduced mental clarity."
-      },
-      {
-        level: 1,
-        question: "The tension in her wrist muscle is higher than in the shoulder.",
-        options: [
-          "Superlative (highest tension in the whole body)",
-          "First Conditional (future condition regarding muscle tone)",
-          "Second Conditional (hypothetical muscle weakness)",
-          "Comparative (comparing tension levels between two body areas)"
-        ],
-        targetIndex: 3,
-        explanation: "'Higher than' compares physical tension between two distinct anatomical locations."
-      },
-      {
-        level: 1,
-        question: "This bump looks smaller than the one on his head.",
-        options: [
-          "Comparative (short adjective + '-er' + than)",
-          "Superlative (the + short adjective + '-est')",
-          "Zero Conditional (general physiological rule)",
-          "Third Conditional (unreal past medical event)"
-        ],
-        targetIndex: 0,
-        explanation: "'Smaller than' follows the comparative formula for short adjectives: [short adjective + -er + than]."
-      },
-      {
-        level: 1,
-        question: "Positive symptoms are the most easily identified in schizophrenia.",
-        options: [
-          "Comparative (more easily identified than negative symptoms)",
-          "Superlative ('the most + adverb/adjective' for highest degree)",
-          "Present Continuous (describing ongoing diagnostic action)",
-          "Passive Voice (focusing on symptom classification)"
-        ],
-        targetIndex: 1,
-        explanation: "'The most easily identified' uses the superlative formula [THE MOST + long adjective/adverb]."
-      },
-      {
-        level: 1,
-        question: "Negative symptoms are more difficult to diagnose than positive symptoms.",
-        options: [
-          "Superlative (the most difficult diagnosis in psychiatry)",
-          "Zero Conditional (general rule about diagnostic criteria)",
-          "Comparative ('MORE + long adjective + THAN')",
-          "First Conditional (future diagnostic prediction)"
-        ],
-        targetIndex: 2,
-        explanation: "'More difficult to diagnose than' follows the comparative formula [MORE + long adjective + THAN]."
-      },
-      {
-        level: 1,
-        question: "The nurse is faster than the doctor at taking blood samples.",
-        options: [
-          "Superlative (she is the fastest nurse in the entire department)",
-          "Second Conditional (hypothetical workplace scenario)",
-          "Zero Conditional (general administrative rule)",
-          "Comparative ('short adjective + -er + THAN')"
-        ],
-        targetIndex: 3,
-        explanation: "'Faster than' compares two individuals using a short adjective with '-er'."
-      },
-      {
-        level: 1,
-        question: "Cognitive symptoms are the newest classification in schizophrenia guidelines.",
-        options: [
-          "Superlative ('THE + short adjective + -EST')",
-          "Comparative ('MORE + new + THAN')",
-          "First Conditional (future clinical classification)",
-          "Mixed Conditional (past diagnostic update with present impact)"
-        ],
-        targetIndex: 0,
-        explanation: "'The newest' represents the superlative form of the short adjective 'new'."
-      },
-      {
-        level: 1,
-        question: "She is more skillful than the resident surgeon.",
-        options: [
-          "Superlative (she is the most skillful surgeon in the hospital)",
-          "Comparative ('MORE + long adjective + THAN')",
-          "Past Continuous (describing a past surgical technique)",
-          "Zero Conditional (general surgical protocol)"
-        ],
-        targetIndex: 1,
-        explanation: "'More skillful than' uses [MORE + long adjective + THAN] for two-syllable/long adjectives."
-      },
-      {
-        level: 1,
-        question: "Airborne transmission is more dangerous than surface contact.",
-        options: [
-          "Superlative (most dangerous infection route)",
-          "Second Conditional (hypothetical pathogen transmission)",
-          "Comparative (comparing two transmission modes)",
-          "Zero Conditional (epidemiological fact rule)"
-        ],
-        targetIndex: 2,
-        explanation: "'More dangerous than' compares the risk levels of two distinct transmission pathways."
-      },
-      {
-        level: 1,
-        question: "Of all patients examined today, she had the most noticeable tremor.",
-        options: [
-          "Comparative (more noticeable tremor than yesterday)",
-          "First Conditional (predicting worsening tremor)",
-          "Passive Voice (examining tremor in ward)",
-          "Superlative ('THE MOST + adjective' among a full group)"
-        ],
-        targetIndex: 3,
-        explanation: "'The most noticeable' singles out one patient from the entire evaluated group."
-      },
-      {
-        level: 1,
-        question: "This patient has the least frequent bowel movements in the ward.",
-        options: [
-          "Superlative of Inferiority ('THE LEAST + adjective')",
-          "Comparative of Inferiority ('less frequent than')",
-          "Zero Conditional (physiological bowel frequency)",
-          "First Conditional (future bowel regimen)"
-        ],
-        targetIndex: 0,
-        explanation: "'The least frequent' forms the superlative of inferiority using [THE LEAST + adjective]."
-      },
-      {
-        level: 1,
-        question: "That was the biggest bump I've ever seen from a minor fall.",
-        options: [
-          "Comparative (bigger bump than previous fall)",
-          "Superlative ('THE + short adjective + -EST')",
-          "Third Conditional (unreal past injury outcome)",
-          "Second Conditional (hypothetical swelling level)"
-        ],
-        targetIndex: 1,
-        explanation: "'The biggest' uses the superlative form of 'big' (with doubled final consonant)."
-      },
-      {
-        level: 1,
-        question: "This concussion is more serious than the one he had last year.",
-        options: [
-          "Superlative (most serious concussion of his life)",
-          "Zero Conditional (concussion protocol definition)",
-          "Comparative ('MORE + long adjective + THAN')",
-          "Past Perfect Tense (describing past head injury)"
-        ],
-        targetIndex: 2,
-        explanation: "'More serious than' compares the severity of two separate concussion episodes."
-      },
-      {
-        level: 1,
-        question: "The swelling in the right wrist is bigger than in the left.",
-        options: [
-          "Superlative (biggest swelling in the extremity)",
-          "First Conditional (future edema monitoring)",
-          "Modal Verb (evaluating wrist swelling)",
-          "Comparative (comparing bilateral physical signs)"
-        ],
-        targetIndex: 3,
-        explanation: "'Bigger than' compares anatomical measurements between right and left wrists."
-      },
-      {
-        level: 1,
-        question: "This is the most effective administration method for rapid absorption.",
-        options: [
-          "Superlative ('THE MOST + long adjective')",
-          "Comparative ('more effective administration than oral')",
-          "Zero Conditional (pharmacological absorption rule)",
-          "Second Conditional (hypothetical drug route)"
-        ],
-        targetIndex: 0,
-        explanation: "'The most effective' identifies the top route among all available administration methods."
-      },
-      {
-        level: 1,
-        question: "He is less fast than other nurses; in fact, he is the least fast.",
-        options: [
-          "Only Comparatives used in both clauses",
-          "Comparative of Inferiority followed by Superlative of Inferiority",
-          "Zero Conditional combined with First Conditional",
-          "Only Superlatives used in both clauses"
-        ],
-        targetIndex: 1,
-        explanation: "'Less fast than' is a comparative of inferiority; 'the least fast' is a superlative of inferiority."
-      },
-      {
-        level: 1,
-        question: "Diminished emotional expression is the most common negative symptom.",
-        options: [
-          "Comparative (more common than avolition)",
-          "Second Conditional (hypothetical psychiatric presentation)",
-          "Superlative ('THE MOST + adjective' among negative symptoms)",
-          "Passive Voice (diagnosing schizophrenia symptoms)"
-        ],
-        targetIndex: 2,
-        explanation: "'The most common' singles out the single primary negative symptom among all possibilities."
-      },
-      {
-        level: 1,
-        question: "Her condition is worsening more quickly than expected.",
-        options: [
-          "Superlative (worsening the most quickly in ICU)",
-          "First Conditional (future deterioration plan)",
-          "Past Continuous (describing past clinical decline)",
-          "Comparative of Adverb ('MORE + adverb + THAN')"
-        ],
-        targetIndex: 3,
-        explanation: "'More quickly than' forms a comparative using an adverb to compare rates of change."
-      },
+      // ================= LEVEL 1: RECOGNIZE RELATIVE CLAUSE WORD & RULES (20 ITEMS) =================
+{ level: 1, question: "The doctor who treats children is a pediatrician. Why 'who'?", options: [ "A person", "A place", "A thing", "Possession" ], targetIndex: 0, explanation: "'Who' is used for people." },
+
+{ level: 1, question: "The hospital where I work is large. Why 'where'?", options: [ "A person", "A place", "A thing", "Possession" ], targetIndex: 1, explanation: "'Where' is used for places." },
+
+{ level: 1, question: "The medicine which I take is new. Why 'which'?", options: [ "A person", "A place", "A thing", "Possession" ], targetIndex: 2, explanation: "'Which' is used for things." },
+
+{ level: 1, question: "The nurse who helped me was kind. What is 'who' for?", options: [ "People", "Places", "Things", "Possession" ], targetIndex: 0, explanation: "'Who' is used for people." },
+
+{ level: 1, question: "The clinic where she works is nearby. What is 'where' for?", options: [ "People", "Places", "Things", "Possession" ], targetIndex: 1, explanation: "'Where' is used for places." },
+
+{ level: 1, question: "The test which was normal was repeated. What is 'which' for?", options: [ "People", "Places", "Things", "Possession" ], targetIndex: 2, explanation: "'Which' is used for things." },
+
+{ level: 1, question: "The surgeon who operated on me was young. Who is 'who'?", options: [ "The surgeon", "The patient", "The operation", "The hospital" ], targetIndex: 0, explanation: "'Who' refers to the surgeon, a person." },
+
+{ level: 1, question: "The ward where patients sleep is quiet. What does 'where' refer to?", options: [ "Patients", "Sleep", "The ward", "Quiet" ], targetIndex: 2, explanation: "'Where' refers to the ward, a place." },
+
+{ level: 1, question: "The drug which reduces pain is useful. What does 'which' refer to?", options: [ "The drug", "The pain", "The patient", "The doctor" ], targetIndex: 0, explanation: "'Which' refers to the drug, a thing." },
+
+{ level: 1, question: "The doctor who called me is my GP. Who is 'who'?", options: [ "The doctor", "Me", "The GP", "The call" ], targetIndex: 0, explanation: "'Who' refers to the doctor, a person." },
+
+{ level: 1, question: "The hospital where he works is old. What does 'where' refer to?", options: [ "He", "Works", "The hospital", "Old" ], targetIndex: 2, explanation: "'Where' refers to the hospital, a place." },
+
+{ level: 1, question: "The vaccine which we used was effective. What does 'which' refer to?", options: [ "We", "The vaccine", "Used", "Effective" ], targetIndex: 1, explanation: "'Which' refers to the vaccine, a thing." },
+
+{ level: 1, question: "The patient whose leg is injured needs help. Why 'whose'?", options: [ "Person", "Place", "Possession", "Thing" ], targetIndex: 2, explanation: "'Whose' shows possession or connection." },
+
+{ level: 1, question: "The doctor whose patient is here is busy. What does 'whose' show?", options: [ "Place", "Time", "Possession", "Action" ], targetIndex: 2, explanation: "'Whose' shows possession or connection." },
+
+{ level: 1, question: "The room where we examine patients is clean. Choose the correct word.", options: [ "Who", "Where", "Which", "Whose" ], targetIndex: 1, explanation: "'Where' is used for a place." },
+
+{ level: 1, question: "The patient who has a fever needs rest. Choose the correct word.", options: [ "Who", "Where", "Which", "Whose" ], targetIndex: 0, explanation: "'Who' is used for a person." },
+
+{ level: 1, question: "The medicine which helps patients is cheap. Choose the correct word.", options: [ "Who", "Where", "Which", "Whose" ], targetIndex: 2, explanation: "'Which' is used for a thing." },
+
+{ level: 1, question: "The doctor whose office is here is a neurologist. Choose the correct word.", options: [ "Who", "Where", "Which", "Whose" ], targetIndex: 3, explanation: "'Whose' shows possession or connection." },
+
+{ level: 1, question: "The hospital that treats children is nearby. What does 'that' refer to?", options: [ "The hospital", "Children", "Nearby", "Treats" ], targetIndex: 0, explanation: "'That' refers to the hospital, a thing/place." },
+
+{ level: 1, question: "The nurse that helped the patient was friendly. What does 'that' refer to?", options: [ "The patient", "The nurse", "Friendly", "Helped" ], targetIndex: 1, explanation: "'That' refers to the nurse." },
 
       // ================= LEVEL 2: FILL IN THE BLANK (20 ITEMS) =================
       {
         level: 2,
-        question: "This ulcer is getting ____ (bad) than the one we treated last month.",
-        options: ["worse", "badder", "worst", "more bad"],
-        targetIndex: 0,
-        explanation: "'Bad' is an irregular adjective; its comparative form before 'than' is 'worse'."
-      },
-      {
-        level: 2,
-        question: "Anthrax is one of the ____ (deadly) bacterial diseases in terms of transmission.",
-        options: ["deadlier", "deadliest", "more deadly", "most deadlier"],
+        question: "The patient, ____ follow-up was scheduled for next Monday, did not return.",
+        options: ["who", "whose", "which", "where"],
         targetIndex: 1,
-        explanation: "'Deadly' ends in -y, changing to -iest in the superlative form ('deadliest')."
+        explanation: "'Whose' expresses possession relative to the patient ('whose follow-up')[cite: 52, 59]."
       },
       {
         level: 2,
-        question: "After the concussion, he was ____ (alert) than before, almost unresponsive.",
-        options: ["most alert", "more alert", "less alert", "least alert"],
-        targetIndex: 2,
-        explanation: "Context ('almost unresponsive') requires the comparative of inferiority: 'less alert'."
-      },
-      {
-        level: 2,
-        question: "The tension in her wrist muscle is ____ (high) than in the shoulder.",
-        options: ["highest", "more high", "as high", "higher"],
-        targetIndex: 3,
-        explanation: "Short adjective 'high' takes the suffix '-er' ('higher') when followed by 'than'."
-      },
-      {
-        level: 2,
-        question: "This bump looks ____ (small) than the one on his head.",
-        options: ["smaller", "smallest", "more small", "most small"],
-        targetIndex: 0,
-        explanation: "Short adjective 'small' forms its comparative by adding '-er' ('smaller')."
-      },
-      {
-        level: 2,
-        question: "Today's tremor was ____ (bad) than yesterday's evaluation.",
-        options: ["badder", "worse", "worst", "more bad"],
+        question: "We reviewed the test ____ confirmed the diagnosis of contamination.",
+        options: ["who", "which", "where", "whose"],
         targetIndex: 1,
-        explanation: "The comparative form of irregular adjective 'bad' is 'worse'."
+        explanation: "'Which' (or 'that') is used for non-human subjects like 'the test'[cite: 52, 59]."
       },
       {
         level: 2,
-        question: "This is the ____ (bad) case of acquired infection we've seen this year.",
-        options: ["worse", "more bad", "worst", "most bad"],
-        targetIndex: 2,
-        explanation: "Superlative form of irregular adjective 'bad' with 'the' is 'worst'."
-      },
-      {
-        level: 2,
-        question: "His bowel movements are becoming more and ____ (regular).",
-        options: ["regularer", "most regular", "as regular", "more regular"],
-        targetIndex: 3,
-        explanation: "Parallel comparative structure uses 'more and more regular'."
-      },
-      {
-        level: 2,
-        question: "The patient's response after drug administration was much ____ (bad) than expected.",
-        options: ["worse", "worst", "badder", "more bad"],
+        question: "The condition, ____ flare started last night, has worsened.",
+        options: ["whose", "that", "when", "who"],
         targetIndex: 0,
-        explanation: "Intensifier 'much' modifies the comparative form 'worse'."
+        explanation: "'Whose' indicates the condition's flare[cite: 52, 59]."
       },
       {
         level: 2,
-        question: "The tumor is ____ (large) than we initially thought; surgery is required.",
-        options: ["largest", "larger", "more large", "most large"],
+        question: "This is the ward ____ patients are treated for exposure-related illness.",
+        options: ["who", "where", "which", "whose"],
         targetIndex: 1,
-        explanation: "Short adjective ending in -e ('large') adds '-r' ('larger') for comparative."
+        explanation: "'Where' refers to the location ('the ward')[cite: 52, 59]."
       },
       {
         level: 2,
-        question: "This patient shows ____ (tension) in the neck muscles than the previous one.",
-        options: ["tense", "tenser", "more tension", "most tension"],
-        targetIndex: 2,
-        explanation: "Noun 'tension' uses 'more tension... than' for comparative comparison."
-      },
-      {
-        level: 2,
-        question: "She is the ____ (fast) nurse in the surgical department.",
-        options: ["faster", "more fast", "most fast", "fastest"],
-        targetIndex: 3,
-        explanation: "Short adjective 'fast' with 'the' takes superlative suffix '-est' ('fastest')."
-      },
-      {
-        level: 2,
-        question: "Positive symptoms are the ____ (easy) identified signs of schizophrenia.",
-        options: ["most easily", "more easily", "easier", "easiest"],
+        question: "Gasping is a symptom ____ may occur during severe asthma attacks.",
+        options: ["that", "who", "where", "whose"],
         targetIndex: 0,
-        explanation: "Adverb phrase requires superlative superlative modifier 'most easily'."
+        explanation: "'That' (or 'which') is used for medical symptoms/objects ('a symptom that...')[cite: 52, 59]."
       },
       {
         level: 2,
-        question: "Negative symptoms are ____ (difficult) to diagnose than positive symptoms.",
-        options: ["difficultly", "more difficult", "most difficult", "as difficult"],
+        question: "The patient, ____ suffers from gout, is advised to avoid high-purine foods.",
+        options: ["which", "who", "where", "whose"],
         targetIndex: 1,
-        explanation: "Long adjective 'difficult' takes 'more' in comparative form ('more difficult')."
+        explanation: "Use 'who' for patients and people ('patient, who suffers...')[cite: 57]."
       },
       {
         level: 2,
-        question: "Cognitive symptoms are the ____ (new) classification in DSM guidelines.",
-        options: ["newer", "more new", "newest", "most new"],
+        question: "The hot flashes ____ she experienced were most severe at night.",
+        options: ["who", "where", "that", "whose"],
         targetIndex: 2,
-        explanation: "Short adjective 'new' takes superlative suffix '-est' ('newest')."
+        explanation: "Use 'that' or 'which' for symptoms ('hot flashes that she experienced')[cite: 57]."
       },
       {
         level: 2,
-        question: "She is ____ (skillful) than the resident physician in lumbar punctures.",
-        options: ["skillfuler", "skillfulest", "most skillful", "more skillful"],
+        question: "The surgeon made an incision ____ was 3 centimeters long during the procedure.",
+        options: ["who", "where", "whose", "that"],
         targetIndex: 3,
-        explanation: "Multi-syllable adjective 'skillful' uses 'more skillful than'."
+        explanation: "'Incision' is a thing/object, requiring 'that' or 'which'[cite: 57]."
       },
       {
         level: 2,
-        question: "This is a ____ (recently) acquired infection than the previous case.",
-        options: ["more recently", "most recently", "recentlier", "recentliest"],
+        question: "The injury ____ caused the swelling was a direct blow to the knee.",
+        options: ["that", "who", "where", "whose"],
         targetIndex: 0,
-        explanation: "Adverb 'recently' forms comparative with 'more' ('more recently')."
+        explanation: "'Injury' is a non-human noun, so 'that' or 'which' is correct[cite: 57]."
       },
       {
         level: 2,
-        question: "This is the ____ (effective) administration route for emergency drugs.",
-        options: ["effectivest", "most effective", "more effective", "as effective"],
-        targetIndex: 1,
-        explanation: "Long adjective 'effective' forms superlative with 'most' ('most effective')."
-      },
-      {
-        level: 2,
-        question: "That was the ____ (big) bump I've ever seen from a minor fall.",
-        options: ["biger", "bigest", "biggest", "more big"],
+        question: "The insertion of the catheter ____ you brought was uncomplicated.",
+        options: ["who", "where", "that", "whose"],
         targetIndex: 2,
-        explanation: "Consonant-vowel-consonant adjective 'big' doubles final consonant: 'biggest'."
+        explanation: "'Catheter' is a device, so it takes 'that' or 'which'[cite: 57]."
       },
       {
         level: 2,
-        question: "This concussion is ____ (serious) than the head injury last month.",
-        options: ["seriouser", "seriousest", "most serious", "more serious"],
-        targetIndex: 3,
-        explanation: "Long adjective 'serious' uses 'more serious than'."
+        question: "The results of the lab work-up, ____ you did yesterday, are now available.",
+        options: ["who", "which", "where", "whose"],
+        targetIndex: 1,
+        explanation: "Non-defining clause for a medical test takes 'which' with commas[cite: 57]."
+      },
+      {
+        level: 2,
+        question: "The patient, ____ likely caused the contagion, was isolated.",
+        options: ["who", "which", "where", "whose"],
+        targetIndex: 0,
+        explanation: "Refers to a person ('The patient, who...')[cite: 57]."
+      },
+      {
+        level: 2,
+        question: "She pointed at the limb, ____ she thought was lesioned.",
+        options: ["who", "where", "which", "whose"],
+        targetIndex: 2,
+        explanation: "'Limb' is a body part, taking 'which' or 'that'[cite: 57]."
+      },
+      {
+        level: 2,
+        question: "The lump ____ appeared on the skin could be benign or malignant.",
+        options: ["who", "where", "that", "whose"],
+        targetIndex: 2,
+        explanation: "'Lump' is a medical object/finding, requiring 'that' or 'which'[cite: 57]."
+      },
+      {
+        level: 2,
+        question: "Parents should follow the milestones, ____ their babies have to meet by age.",
+        options: ["who", "which", "where", "whose"],
+        targetIndex: 1,
+        explanation: "'Milestones' takes 'which' or 'that'[cite: 57]."
+      },
+      {
+        level: 2,
+        question: "The dermatologist, ____ removed the mole, will send it for biopsy.",
+        options: ["who", "which", "where", "whose"],
+        targetIndex: 0,
+        explanation: "'Dermatologist' is a human practitioner, requiring 'who'[cite: 57]."
+      },
+      {
+        level: 2,
+        question: "She has occasional headaches, ____ are usually triggered by stress.",
+        options: ["who", "which", "where", "whose"],
+        targetIndex: 1,
+        explanation: "Non-defining relative clause describing 'headaches' uses 'which'[cite: 57]."
+      },
+      {
+        level: 2,
+        question: "The side effects ____ occur during chemotherapy are manageable.",
+        options: ["who", "that", "where", "whose"],
+        targetIndex: 1,
+        explanation: "'Side effects' takes 'that' or 'which'[cite: 57]."
+      },
+      {
+        level: 2,
+        question: "The origin of the disease ____ causes the symptom is not yet known.",
+        options: ["who", "where", "that", "whose"],
+        targetIndex: 2,
+        explanation: "'Disease' takes 'that' or 'which'[cite: 57]."
+      },
+      {
+        level: 2,
+        question: "The doctor ____ treated so many patients got an award.",
+        options: ["that", "which", "where", "whose"],
+        targetIndex: 0,
+        explanation: "'Doctor' can take 'who' or 'that' ('The doctor that treated...')[cite: 54]."
       },
 
-      // ================= LEVEL 3: PUT SENTENCE IN ORDER (20 ITEMS) =================
+      // ================= LEVEL 3: SENTENCE RECONSTRUCTION (20 ITEMS) =================
       {
         level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["this ulcer", "is getting worse", "than the one", "we treated last month"],
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["The patient had cramping", "that lasted", "for several hours", "overnight"],
         options: [
-          "This ulcer is getting worse than the one we treated last month.",
-          "We treated last month this ulcer is getting worse than the one.",
-          "Than the one we treated last month this ulcer is getting worse.",
-          "Is getting worse this ulcer than the one we treated last month."
+          "The patient had cramping that lasted for several hours overnight.",
+          "For several hours overnight the patient had cramping that lasted.",
+          "That lasted for several hours overnight the patient had cramping.",
+          "Overnight that lasted the patient had cramping for several hours."
         ],
         targetIndex: 0,
-        explanation: "Correct order: [Subject + Verb + Comparative + Comparison baseline]."
+        explanation: "Correct order: [Main Clause + Relative Pronoun (that) + Verb + Duration][cite: 58, 59]."
       },
       {
         level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["anthrax is", "one of the deadliest", "bacterial diseases", "in terms of transmission"],
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["We saw a case of GFR decrease", "which was", "very sudden and severe", "in the patient"],
         options: [
-          "In terms of transmission anthrax is bacterial diseases one of the deadliest.",
-          "Anthrax is one of the deadliest bacterial diseases in terms of transmission.",
-          "Bacterial diseases anthrax is one of the deadliest in terms of transmission.",
-          "One of the deadliest anthrax is bacterial diseases in terms of transmission."
+          "Very sudden and severe in the patient we saw a case of GFR decrease which was.",
+          "We saw a case of GFR decrease, which was very sudden and severe in the patient.",
+          "Which was very sudden and severe we saw a case of GFR decrease in the patient.",
+          "In the patient we saw a case of GFR decrease very sudden which was."
         ],
         targetIndex: 1,
-        explanation: "Correct order: [Subject + Verb + One of the + Superlative + Noun + Prepositional phrase]."
+        explanation: "Correct order: [Main Clause + , which was + Adjectives + Prepositional Phrase][cite: 58, 59]."
       },
       {
         level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["after the concussion", "he was less alert", "than before", "almost unresponsive"],
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["The doctor confirmed an exacerbation", "that affected", "the patient's lungs", "severely"],
         options: [
-          "He was less alert almost unresponsive than before after the concussion.",
-          "Than before after the concussion he was less alert almost unresponsive.",
-          "After the concussion, he was less alert than before, almost unresponsive.",
-          "Almost unresponsive than before he was less alert after the concussion."
-        ],
-        targetIndex: 2,
-        explanation: "Correct order: [Time phrase + Subject + Verb + Comparative clause + Appositive phrase]."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["the tension", "in her wrist", "is higher than", "in the shoulder"],
-        options: [
-          "In the shoulder the tension is higher than in her wrist.",
-          "In her wrist is higher than the tension in the shoulder.",
-          "Is higher than the tension in the shoulder in her wrist.",
-          "The tension in her wrist is higher than in the shoulder."
-        ],
-        targetIndex: 3,
-        explanation: "Correct order: [Noun + Location + Verb + Comparative + Location comparison]."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["this bump", "looks smaller than", "the one", "on his head"],
-        options: [
-          "This bump looks smaller than the one on his head.",
-          "On his head this bump looks smaller than the one.",
-          "The one on his head looks smaller than this bump.",
-          "Smaller than the one on his head looks this bump."
+          "The doctor confirmed an exacerbation that affected the patient's lungs severely.",
+          "That affected the patient's lungs severely the doctor confirmed an exacerbation.",
+          "The patient's lungs severely that affected the doctor confirmed an exacerbation.",
+          "An exacerbation that affected the doctor confirmed the patient's lungs severely."
         ],
         targetIndex: 0,
-        explanation: "Correct order: [Subject + Linking Verb + Comparative + Target phrase]."
+        explanation: "Correct order: [Main Clause + Relative Pronoun (that) + Verb + Object + Adverb][cite: 58, 59]."
       },
       {
         level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["today's tremor", "was worse than", "yesterday's", "clinical evaluation"],
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["They examined the crust", "which had formed", "around the surgical site", "yesterday"],
         options: [
-          "Yesterday's clinical evaluation today's tremor was worse than.",
-          "Today's tremor was worse than yesterday's clinical evaluation.",
-          "Was worse than today's tremor yesterday's clinical evaluation.",
-          "Clinical evaluation yesterday's was worse than today's tremor."
-        ],
-        targetIndex: 1,
-        explanation: "Correct order: [Subject 1 + Verb + Irregular Comparative + Subject 2]."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["this is the worst", "case of acquired infection", "we have seen", "this year"],
-        options: [
-          "We have seen this year this is the worst case of acquired infection.",
-          "Case of acquired infection this is the worst we have seen this year.",
-          "This is the worst case of acquired infection we have seen this year.",
-          "This year we have seen case of acquired infection this is the worst."
+          "Around the surgical site yesterday they examined the crust which had formed.",
+          "Which had formed around the surgical site yesterday they examined the crust.",
+          "They examined the crust which had formed around the surgical site yesterday.",
+          "Yesterday which had formed they examined the crust around the surgical site."
         ],
         targetIndex: 2,
-        explanation: "Correct order: [Demonstrative + Verb + Superlative noun phrase + Relative clause]."
+        explanation: "Correct order: [Main Clause + Relative Clause (which had formed...) + Location + Time][cite: 58, 59]."
       },
       {
         level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["his bowel movements", "are becoming", "more and more", "regular"],
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["The contamination", "which delayed the test results", "was severe", "in the laboratory"],
         options: [
-          "More and more regular are becoming his bowel movements.",
-          "Are becoming regular his bowel movements more and more.",
-          "Regular his bowel movements are becoming more and more.",
-          "His bowel movements are becoming more and more regular."
-        ],
-        targetIndex: 3,
-        explanation: "Correct order: [Subject + Continuous Verb + Parallel Comparative + Adjective]."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["the patient's response", "after drug administration", "was much worse", "than expected"],
-        options: [
-          "The patient's response after drug administration was much worse than expected.",
-          "After drug administration than expected was much worse the patient's response.",
-          "Was much worse than expected after drug administration the patient's response.",
-          "Than expected the patient's response was much worse after drug administration."
+          "The contamination, which delayed the test results, was severe in the laboratory.",
+          "Was severe in the laboratory the contamination which delayed the test results.",
+          "Which delayed the test results in the laboratory was severe the contamination.",
+          "In the laboratory the contamination was severe which delayed the test results."
         ],
         targetIndex: 0,
-        explanation: "Correct order: [Subject + Time modifier + Verb + Intensified Comparative + Baseline]."
+        explanation: "Correct order: [Subject + , Relative Clause , + Predicate + Location][cite: 58, 59]."
       },
       {
         level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["the tumor is larger", "than we initially thought", "and surgery", "may be needed"],
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["The patient", "who suffers from gout", "is advised to avoid", "high-purine foods"],
         options: [
-          "And surgery may be needed than we initially thought the tumor is larger.",
-          "The tumor is larger than we initially thought, and surgery may be needed.",
-          "Than we initially thought the tumor is larger and surgery may be needed.",
-          "May be needed surgery and the tumor is larger than we initially thought."
+          "High-purine foods the patient who suffers from gout is advised to avoid.",
+          "The patient, who suffers from gout, is advised to avoid high-purine foods.",
+          "Is advised to avoid high-purine foods the patient who suffers from gout.",
+          "Who suffers from gout the patient is advised to avoid high-purine foods."
         ],
         targetIndex: 1,
-        explanation: "Correct order: [Clause 1 with Comparative + Coordinating conjunction + Clause 2]."
+        explanation: "Correct order: [Subject + , who + verb phrase , + Main Verb Phrase][cite: 57]."
       },
       {
         level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["this patient shows", "more tension in the neck", "than the previous one", "examined"],
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["The hot flashes", "that she experienced", "were most severe", "at night"],
         options: [
-          "Examined than the previous one this patient shows more tension in the neck.",
-          "More tension in the neck than the previous one examined this patient shows.",
-          "This patient shows more tension in the neck than the previous one examined.",
-          "Than the previous one examined this patient shows more tension in the neck."
+          "At night were most severe the hot flashes that she experienced.",
+          "The hot flashes that she experienced were most severe at night.",
+          "Were most severe at night the hot flashes that she experienced.",
+          "That she experienced the hot flashes were most severe at night."
         ],
-        targetIndex: 2,
-        explanation: "Correct order: [Subject + Verb + Comparative Noun Phrase + Comparison Baseline]."
+        targetIndex: 1,
+        explanation: "Correct order: [Noun + Relative Clause + Main Verb + Adverbial][cite: 57]."
       },
       {
         level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["she is the fastest", "nurse in the department", "at taking", "blood samples"],
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["The surgeon made an incision", "that was 3 centimeters long", "during the procedure", "this morning"],
         options: [
-          "Blood samples at taking she is the fastest nurse in the department.",
-          "In the department nurse she is the fastest at taking blood samples.",
-          "At taking blood samples in the department she is the fastest nurse.",
-          "She is the fastest nurse in the department at taking blood samples."
-        ],
-        targetIndex: 3,
-        explanation: "Correct order: [Subject + Verb + Superlative Noun + Location + Prepositional Task]."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["positive symptoms are", "the most easily identified", "in patients with", "schizophrenia"],
-        options: [
-          "Positive symptoms are the most easily identified in patients with schizophrenia.",
-          "In patients with schizophrenia positive symptoms are the most easily identified.",
-          "The most easily identified positive symptoms are in patients with schizophrenia.",
-          "Schizophrenia positive symptoms are the most easily identified in patients with."
+          "The surgeon made an incision that was 3 centimeters long during the procedure this morning.",
+          "During the procedure this morning that was 3 centimeters long the surgeon made an incision.",
+          "That was 3 centimeters long during the procedure the surgeon made an incision this morning.",
+          "This morning during the procedure that was 3 centimeters long made an incision the surgeon."
         ],
         targetIndex: 0,
-        explanation: "Correct order: [Subject + Verb + Superlative Adverbial Phrase + Prepositional Phrase]."
+        explanation: "Correct order: [Main Clause + Relative Clause + Time Modifiers][cite: 57]."
       },
       {
         level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["negative symptoms are", "more difficult to diagnose", "than positive symptoms", "in clinic"],
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["The injury", "that caused the swelling", "was a direct blow", "to the right knee"],
         options: [
-          "In clinic negative symptoms are than positive symptoms more difficult to diagnose.",
-          "Negative symptoms are more difficult to diagnose than positive symptoms in clinic.",
-          "Than positive symptoms negative symptoms are more difficult to diagnose in clinic.",
-          "More difficult to diagnose negative symptoms are than positive symptoms in clinic."
+          "To the right knee was a direct blow the injury that caused the swelling.",
+          "The injury that caused the swelling was a direct blow to the right knee.",
+          "Was a direct blow to the right knee the injury that caused the swelling.",
+          "That caused the swelling the injury was a direct blow to the right knee."
         ],
         targetIndex: 1,
-        explanation: "Correct order: [Subject + Verb + Comparative Infinitive Phrase + Comparison Baseline]."
+        explanation: "Correct order: [Subject + Relative Clause + Predicate Complement][cite: 57]."
       },
       {
         level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["cognitive symptoms are", "the newest classification", "in DSM-5 diagnostic", "criteria"],
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["The results of the lab work-up", "which you did yesterday", "are now available", "in the system"],
         options: [
-          "In DSM-5 diagnostic criteria cognitive symptoms are the newest classification.",
-          "Criteria cognitive symptoms are the newest classification in DSM-5 diagnostic.",
-          "Cognitive symptoms are the newest classification in DSM-5 diagnostic criteria.",
-          "The newest classification cognitive symptoms are in DSM-5 diagnostic criteria."
+          "In the system are now available the results of the lab work-up which you did yesterday.",
+          "Which you did yesterday the results of the lab work-up are now available in the system.",
+          "The results of the lab work-up, which you did yesterday, are now available in the system.",
+          "Are now available in the system the results of the lab work-up which you did yesterday."
         ],
         targetIndex: 2,
-        explanation: "Correct order: [Subject + Verb + Superlative Noun Phrase + Domain Modifier]."
+        explanation: "Correct order: [Subject + , Relative Clause , + Predicate][cite: 57]."
       },
       {
         level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["she is more skillful", "than the resident doctor", "in performing", "lumbar punctures"],
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["The patient", "who likely caused the contagion", "was isolated", "immediately"],
         options: [
-          "In performing lumbar punctures she is more skillful than the resident doctor.",
-          "Lumbar punctures in performing than the resident doctor she is more skillful.",
-          "Than the resident doctor she is more skillful in performing lumbar punctures.",
-          "She is more skillful than the resident doctor in performing lumbar punctures."
-        ],
-        targetIndex: 3,
-        explanation: "Correct order: [Subject + Verb + Comparative + Baseline + Activity Modifier]."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["this is a more recently", "acquired infection", "than the ones seen", "last week"],
-        options: [
-          "This is a more recently acquired infection than the ones seen last week.",
-          "Acquired infection this is a more recently than the ones seen last week.",
-          "Than the ones seen last week this is a more recently acquired infection.",
-          "Last week acquired infection this is a more recently than the ones seen."
+          "The patient, who likely caused the contagion, was isolated immediately.",
+          "Was isolated immediately the patient who likely caused the contagion.",
+          "Who likely caused the contagion the patient was isolated immediately.",
+          "Immediately was isolated the patient who likely caused the contagion."
         ],
         targetIndex: 0,
-        explanation: "Correct order: [Demonstrative + Verb + Comparative Adverbial Participle + Baseline]."
+        explanation: "Correct order: [Subject + Relative Clause + Passive Predicate + Adverb][cite: 57]."
       },
       {
         level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["this is the most effective", "administration method", "for emergency drug", "delivery"],
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["She pointed at the limb", "which she thought", "was lesioned and painful", "during examination"],
         options: [
-          "For emergency drug delivery administration method this is the most effective.",
-          "This is the most effective administration method for emergency drug delivery.",
-          "Administration method this is the most effective for emergency drug delivery.",
-          "The most effective this is administration method for emergency drug delivery."
-        ],
-        targetIndex: 1,
-        explanation: "Correct order: [Demonstrative + Verb + Superlative Adjective + Noun + Purpose Phrase]."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["that was the biggest", "bump on his head", "I have ever seen", "after a fall"],
-        options: [
-          "I have ever seen after a fall that was the biggest bump on his head.",
-          "Bump on his head that was the biggest I have ever seen after a fall.",
-          "That was the biggest bump on his head I have ever seen after a fall.",
-          "After a fall that was the biggest bump on his head I have ever seen."
+          "During examination she pointed at the limb which she thought was lesioned and painful.",
+          "Which she thought was lesioned and painful during examination she pointed at the limb.",
+          "She pointed at the limb, which she thought was lesioned and painful, during examination.",
+          "Was lesioned and painful during examination she pointed at the limb which she thought."
         ],
         targetIndex: 2,
-        explanation: "Correct order: [Demonstrative + Verb + Superlative Noun Phrase + Perfective Clause]."
+        explanation: "Correct order: [Main Clause + Relative Clause + Context Modifier][cite: 57]."
       },
       {
         level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["this concussion is", "more serious than", "the head injury", "treated last month"],
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["The lump", "that appeared on the skin", "could be benign", "or malignant"],
         options: [
-          "Treated last month this concussion is more serious than the head injury.",
-          "The head injury treated last month this concussion is more serious than.",
-          "More serious than the head injury this concussion is treated last month.",
-          "This concussion is more serious than the head injury treated last month."
+          "Could be benign or malignant the lump that appeared on the skin.",
+          "The lump that appeared on the skin could be benign or malignant.",
+          "On the skin that appeared the lump could be benign or malignant.",
+          "Benign or malignant could be the lump that appeared on the skin."
         ],
-        targetIndex: 3,
-        explanation: "Correct order: [Subject + Verb + Comparative + Baseline + Reduced Relative Clause]."
+        targetIndex: 1,
+        explanation: "Correct order: [Subject + Relative Clause + Modal Predicate][cite: 57]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["Parents should follow the milestones", "which their babies", "have to meet", "by age"],
+        options: [
+          "By age which their babies have to meet parents should follow the milestones.",
+          "Parents should follow the milestones, which their babies have to meet by age.",
+          "Which their babies have to meet by age parents should follow the milestones.",
+          "Have to meet by age parents should follow the milestones which their babies."
+        ],
+        targetIndex: 1,
+        explanation: "Correct order: [Main Clause + , Relative Pronoun + Subject + Verb + Prepositional Phrase][cite: 57]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["The dermatologist", "who removed the mole", "will send it", "for biopsy"],
+        options: [
+          "For biopsy will send it the dermatologist who removed the mole.",
+          "The dermatologist, who removed the mole, will send it for biopsy.",
+          "Who removed the mole the dermatologist will send it for biopsy.",
+          "Will send it for biopsy the dermatologist who removed the mole."
+        ],
+        targetIndex: 1,
+        explanation: "Correct order: [Subject + , Relative Clause , + Future Verb + Object + Purpose][cite: 57]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["She has occasional headaches", "which are usually", "triggered by stress", "and fatigue"],
+        options: [
+          "Triggered by stress and fatigue she has occasional headaches which are usually.",
+          "Which are usually triggered by stress and fatigue she has occasional headaches.",
+          "She has occasional headaches, which are usually triggered by stress and fatigue.",
+          "And fatigue triggered by stress she has occasional headaches which are usually."
+        ],
+        targetIndex: 2,
+        explanation: "Correct order: [Main Clause + , Relative Clause + Passive Verb + Agent][cite: 57]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["The side effects", "that occur during chemotherapy", "are manageable", "with medication"],
+        options: [
+          "With medication are manageable the side effects that occur during chemotherapy.",
+          "The side effects that occur during chemotherapy are manageable with medication.",
+          "Are manageable with medication the side effects that occur during chemotherapy.",
+          "That occur during chemotherapy the side effects are manageable with medication."
+        ],
+        targetIndex: 1,
+        explanation: "Correct order: [Subject + Relative Clause + Main Verb + Adjective + Prepositional Modifier][cite: 57]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["The origin of the disease", "that causes the symptom", "is not yet known", "to researchers"],
+        options: [
+          "Is not yet known to researchers the origin of the disease that causes the symptom.",
+          "The origin of the disease that causes the symptom is not yet known to researchers.",
+          "To researchers is not yet known the origin of the disease that causes the symptom.",
+          "That causes the symptom the origin of the disease is not yet known to researchers."
+        ],
+        targetIndex: 1,
+        explanation: "Correct order: [Complex Subject Noun Phrase + Relative Clause + Passive Predicate][cite: 57]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["The insertion of the catheter", "that you brought", "was uncomplicated", "and successful"],
+        options: [
+          "The insertion of the catheter that you brought was uncomplicated and successful.",
+          "That you brought was uncomplicated and successful the insertion of the catheter.",
+          "Was uncomplicated and successful the insertion of the catheter that you brought.",
+          "And successful was uncomplicated the insertion of the catheter that you brought."
+        ],
+        targetIndex: 0,
+        explanation: "Correct order: [Subject Noun Phrase + Relative Clause + Predicate Adjectives][cite: 57]."
+      },
+      {
+        level: 3,
+        question: "Reconstruct the sentence from the chunks:",
+        rawChunks: ["Biofilm colonies exist in a matrix", "which reduces their process", "of dividing and growing", "rapidly"],
+        options: [
+          "Which reduces their process of dividing and growing rapidly biofilm colonies exist in a matrix.",
+          "Biofilm colonies exist in a matrix, which reduces their process of dividing and growing rapidly.",
+          "Of dividing and growing rapidly biofilm colonies exist in a matrix which reduces their process.",
+          "In a matrix biofilm colonies exist which reduces their process of dividing and growing rapidly."
+        ],
+        targetIndex: 1,
+        explanation: "Correct order: [Main Clause + , Relative Clause + Object + Gerund Phrase][cite: 55, 56]."
       }
     ];
 
