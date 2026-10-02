@@ -42,33 +42,40 @@
         justify-content: space-between;
     }
 
-    /* 1. Шапка сайта */
+    /* 1. Шапка сайта (Обновлена градиентом в стиле флага Казахстана) */
     header {
         position: relative;
         z-index: 1;
-        background: var(--kz-blue);
+        background: linear-gradient(165deg, var(--kz-blue) 0%, #0088bb 70%, var(--kz-gold) 100%);
         color: #FFFFFF;
         text-align: center;
         padding: 24px 16px 26px 16px;
-        box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
+        box-shadow: 0 4px 16px rgba(0, 161, 222, 0.25);
     }
 
+    /* Кнопка плашки со ссылкой на Instagram */
     .brand-badge {
         display: inline-flex;
         align-items: center;
         gap: 4px;
-        background: rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.2);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.4);
         color: #FFFFFF;
         font-weight: 700;
         font-size: 0.75rem;
         letter-spacing: 0.8px;
-        padding: 5px 14px;
+        padding: 6px 16px;
         border-radius: 20px;
         margin-bottom: 10px;
         text-decoration: none;
+        transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .brand-badge:active {
+        transform: scale(0.95);
+        background: rgba(255, 255, 255, 0.35);
     }
 
     h1 {
@@ -461,7 +468,7 @@
 <body>
 
     <header>
-        <div class="brand-badge">@doctors.speak</div>
+        <a href="https://instagram.com/doctors.speak" target="_blank" rel="noopener noreferrer" class="brand-badge">@doctors.speak</a>
         <h1>Medical English</h1>
         <p class="subtitle">Practice everyday!</p>
         
