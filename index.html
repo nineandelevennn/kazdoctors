@@ -20,6 +20,7 @@
         --text-muted: #64748B;
         --border-color: #E2E8F0;
         --green-accent: #10B981;
+        --red-accent: #EF4444;
     }
 
     * {
@@ -112,7 +113,7 @@
         flex-grow: 1;
     }
 
-    /* Word of the Hour Card */
+    /* Word of the Hour Card / Quiz */
     .woth-card {
         background: var(--card-bg);
         border: 1px solid var(--border-color);
@@ -154,43 +155,52 @@
         margin: 6px 0 12px 0;
     }
 
-    .woth-btn {
-        background: var(--kz-blue-light);
-        color: var(--kz-blue-dark);
-        border: 1px solid rgba(0, 161, 222, 0.25);
-        padding: 8px 16px;
-        border-radius: 20px;
-        font-weight: 700;
-        font-size: 0.78rem;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-
-    .woth-translations {
-        margin-top: 12px;
-        padding-top: 12px;
-        border-top: 1px dashed var(--border-color);
+    .quiz-options {
         display: flex;
         flex-direction: column;
-        gap: 6px;
+        gap: 8px;
+        margin-top: 12px;
         text-align: left;
     }
 
-    .woth-translations.hidden { display: none; }
-
-    .trans-row {
-        display: flex;
-        align-items: center;
-        font-size: 0.85rem;
-        gap: 8px;
+    .quiz-btn {
+        width: 100%;
         background: var(--bg-main);
-        padding: 8px 12px;
+        color: var(--text-dark);
+        border: 1px solid var(--border-color);
+        padding: 10px 14px;
         border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-align: left;
     }
 
-    .trans-flag { font-size: 1rem; }
-    .trans-lang { font-size: 0.7rem; font-weight: 700; color: var(--text-muted); width: 22px; }
-    .trans-val { font-weight: 600; color: var(--text-dark); }
+    .quiz-btn:hover:not(:disabled) {
+        background: var(--kz-blue-light);
+        border-color: rgba(0, 161, 222, 0.3);
+    }
+
+    .quiz-btn.correct {
+        background: #DEF7EC !important;
+        color: #03543F !important;
+        border-color: var(--green-accent) !important;
+        font-weight: 700;
+    }
+
+    .quiz-btn.incorrect {
+        background: #FDE8E8 !important;
+        color: #9B1C1C !important;
+        border-color: var(--red-accent) !important;
+    }
+
+    .quiz-feedback {
+        margin-top: 10px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        min-height: 20px;
+    }
 
     /* Тренажеры */
     .trainer-card {
@@ -246,172 +256,6 @@
     }
 
     .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-
-    /* ===========================================
-       3. PRICING SECTION (NEW HIGH-CONVERTING)
-       =========================================== */
-    .pricing-section {
-        margin-top: 20px;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-    }
-
-    .pricing-header {
-        text-align: center;
-    }
-
-    .pricing-header h2 {
-        font-size: 1.25rem;
-        font-weight: 900;
-        text-transform: uppercase;
-        color: var(--text-dark);
-        letter-spacing: 0.5px;
-    }
-
-    .pricing-header p {
-        font-size: 0.8rem;
-        color: var(--text-muted);
-        margin-top: 4px;
-        font-weight: 600;
-    }
-
-    .pricing-grid {
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-    }
-
-    .price-card {
-        position: relative;
-        background: var(--card-bg);
-        border: 1px solid var(--border-color);
-        border-radius: 18px;
-        padding: 20px 16px;
-        box-shadow: 0 4px 14px rgba(0,0,0,0.03);
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    /* Featured All-in-One Card Accent */
-    .price-card.featured {
-        border: 2px solid var(--kz-gold-dark);
-        background: linear-gradient(180deg, #FFFFFF 0%, #FFFDF5 100%);
-        box-shadow: 0 8px 24px rgba(217, 160, 0, 0.15);
-    }
-
-    .badge-pop {
-        position: absolute;
-        top: -12px;
-        right: 16px;
-        background: var(--kz-gold-dark);
-        color: #FFFFFF;
-        font-size: 0.68rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        padding: 4px 10px;
-        border-radius: 12px;
-        letter-spacing: 0.5px;
-    }
-
-    .badge-discount {
-        display: inline-block;
-        background: #DEF7EC;
-        color: #03543F;
-        font-size: 0.7rem;
-        font-weight: 800;
-        padding: 3px 8px;
-        border-radius: 6px;
-        margin-left: 6px;
-    }
-
-    .price-card-title {
-        font-size: 1.05rem;
-        font-weight: 800;
-        color: var(--text-dark);
-        line-height: 1.2;
-    }
-
-    .price-amount {
-        display: flex;
-        align-items: baseline;
-        gap: 6px;
-        margin-top: 2px;
-    }
-
-    .price-num {
-        font-size: 1.5rem;
-        font-weight: 900;
-        color: var(--kz-blue-dark);
-    }
-
-    .price-period {
-        font-size: 0.78rem;
-        color: var(--text-muted);
-        font-weight: 600;
-    }
-
-    .price-features {
-        list-style: none;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        padding-top: 8px;
-        border-top: 1px dashed var(--border-color);
-    }
-
-    .price-features li {
-        font-size: 0.8rem;
-        color: var(--text-dark);
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .price-features li span {
-        color: var(--green-accent);
-        font-weight: 800;
-    }
-
-    .price-btn {
-        display: block;
-        width: 100%;
-        text-align: center;
-        background: var(--kz-blue);
-        color: #FFFFFF;
-        text-decoration: none;
-        padding: 12px 16px;
-        border-radius: 12px;
-        font-weight: 800;
-        font-size: 0.85rem;
-        box-shadow: 0 4px 10px rgba(0, 161, 222, 0.25);
-        transition: all 0.2s ease;
-    }
-
-    .price-btn:active {
-        transform: scale(0.98);
-        background: var(--kz-blue-dark);
-    }
-
-    .price-btn.featured-btn {
-        background: var(--kz-gold-dark);
-        color: #FFFFFF;
-        box-shadow: 0 4px 12px rgba(217, 160, 0, 0.3);
-    }
-
-    .guarantee-note {
-        text-align: center;
-        font-size: 0.75rem;
-        color: var(--text-muted);
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        margin-top: 4px;
-    }
 
     /* 4. Футер */
     footer {
@@ -482,28 +326,17 @@
     </header>
 
     <main>
-        <!-- Word of the Hour Box -->
+        <!-- Word of the Hour Quiz Box -->
         <div class="woth-card">
             <div class="woth-header">
-                <span class="woth-title">💡 Word of the hour</span>
+                <span class="woth-title">💡 Word of the hour quiz</span>
                 <span class="woth-timer" id="wothTimer">Next in --:--</span>
             </div>
             <div class="woth-term" id="wothTerm">Loading...</div>
-            <button class="woth-btn" id="showTranslationBtn" onclick="toggleTranslation()">
-                Show Translation
-            </button>
-            <div class="woth-translations hidden" id="wothTranslations">
-                <div class="trans-row">
-                    <span class="trans-flag">🇰🇿</span>
-                    <span class="trans-lang">KZ</span>
-                    <span class="trans-val" id="wothKz"></span>
-                </div>
-                <div class="trans-row">
-                    <span class="trans-flag">🇷🇺</span>
-                    <span class="trans-lang">RU</span>
-                    <span class="trans-val" id="wothRu"></span>
-                </div>
+            <div class="quiz-options" id="quizOptions">
+                <!-- Options injected via script -->
             </div>
+            <div class="quiz-feedback" id="quizFeedback"></div>
         </div>
 
         <!-- Анатомический тренажер -->
@@ -578,7 +411,7 @@
             <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </a>
 
-                <!-- Тарифы -->
+        <!-- Тарифы -->
         <a href="./tarifs/" class="trainer-card">
             <div class="card-content">
                 <div class="card-icon" id="grammarIcon">📚</div>
@@ -589,8 +422,6 @@
             </div>
             <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </a>
-
-        </section>
 
     </main>
 
@@ -669,16 +500,59 @@
 </script>
 
 <script>
-    const words = [
+const words = [
+        // --- 15 ANATOMICAL TERMS ---
         { en: "Heart", kz: "Жүрек", ru: "Сердце" },
-        { en: "Connective tissue", kz: "Дәнекер тін", ru: "Соединительная ткань" },
+        { en: "Bone", kz: "Сүйек", ru: "Кость" },
+        { en: "Humerus", kz: "Тоқпан жілік", ru: "Плечевая кость" },
         { en: "Lung", kz: "Өкпе", ru: "Лёгкое" },
         { en: "Liver", kz: "Бауыр", ru: "Печень" },
         { en: "Stomach", kz: "Асқазан", ru: "Желудок" },
-        { en: "Kidney", kz: "Бүйрек", ru: "Почка" }
+        { en: "Kidney", kz: "Бүйрек", ru: "Почка" },
+        { en: "Brain", kz: "Ми", ru: "Головной мозг" },
+        { en: "Muscle", kz: "Бұлшықет", ru: "Мышца" },
+        { en: "Skin", kz: "Тері", ru: "Кожа" },
+        { en: "Vein", kz: "Вена", ru: "Вена" },
+        { en: "Artery", kz: "Артерия", ru: "Артерия" },
+        { en: "Joint", kz: "Буын", ru: "Сустав" },
+        { en: "Thyroid", kz: "Қалқанша без", ru: "Щитовидная железа" },
+        { en: "Aorta", kz: "Аорта", ru: "Аорта" },
+
+        // --- 15 CLINICAL TERMS ---
+        { en: "Fever", kz: "Қызба", ru: "Лихорадка" },
+        { en: "Cough", kz: "Жөтел", ru: "Кашель" },
+        { en: "Edema", kz: "Ісіну", ru: "Отек" },
+        { en: "Nausea", kz: "Жүрек айну", ru: "Тошнота" },
+        { en: "Headache", kz: "Бас ауруы", ru: "Головная боль" },
+        { en: "Dizziness", kz: "Бас айналу", ru: "Головокружение" },
+        { en: "Rash", kz: "Бөртпе", ru: "Сыпь" },
+        { en: "Fatigue", kz: "Шаршау", ru: "Утомляемость" },
+        { en: "Diarrhea", kz: "Іш өту", ru: "Диарея" },
+        { en: "Insomnia", kz: "Ұйқысыздық", ru: "Бессонница" },
+        { en: "Dyspnea", kz: "Ырғақтың бұзылуы / Тыныс алудың тарылуы", ru: "Одышка" },
+        { en: "Anemia", kz: "Анемия", ru: "Анемия" },
+        { en: "Hyperglycemia", kz: "Гипергликемия", ru: "Гипергликемия" },
+        { en: "Tachycardia", kz: "Тахикардия", ru: "Тахикардия" },
+        { en: "Inflammation", kz: "Қабыну", ru: "Воспаление" },
+
+        // --- 15 ACADEMIC TERMS ---
+        { en: "Increase", kz: "Ұлғайту / Өсу", ru: "Увеличение" },
+        { en: "Improve", kz: "Жақсарту", ru: "Улучшать" },
+        { en: "In contrast", kz: "Керісінше", ru: "В отличие / Напротив" },
+        { en: "Significant", kz: "Маңызды", ru: "Значительный" },
+        { en: "Evidence", kz: "Дәлел", ru: "Доказательство" },
+        { en: "Demonstrate", kz: "Көрсету / Дәлелдеу", ru: "Демонстрировать" },
+        { en: "Objective", kz: "Мақсат / Объективті", ru: "Цель / Объективный" },
+        { en: "Decline", kz: "Төмендеу", ru: "Снижение / Упадок" },
+        { en: "Associated", kz: "Байланысты", ru: "Связанный" },
+        { en: "Beneficial", kz: "Пайдалы", ru: "Полезный / Благотворный" },
+        { en: "Consist", kz: "Тұру", ru: "Состоять" },
+        { en: "Evaluate", kz: "Бағалау", ru: "Оценивать" },
+        { en: "Establish", kz: "Анықтау / Құру", ru: "Устанавливать" },
+        { en: "Prevalence", kz: "Таралуы", ru: "Распространенность" },
+        { en: "Subsequent", kz: "Кейінгі", ru: "Последующий" }
     ];
 
-    let translationVisible = false;
     let lastHourIndex = -1;
 
     function updateWordOfTheHour() {
@@ -691,12 +565,33 @@
             const currentWord = words[wordIndex];
             
             document.getElementById('wothTerm').textContent = currentWord.en;
-            document.getElementById('wothKz').textContent = currentWord.kz;
-            document.getElementById('wothRu').textContent = currentWord.ru;
+            document.getElementById('quizFeedback').textContent = "";
 
-            translationVisible = false;
-            document.getElementById('wothTranslations').classList.add('hidden');
-            document.getElementById('showTranslationBtn').textContent = 'Show Translation';
+            // Generate 3 options: 1 correct (combining KZ / RU) and 2 random distractors
+            const correctOptionText = `🇰🇿 ${currentWord.kz} / 🇷🇺 ${currentWord.ru}`;
+            
+            let options = [correctOptionText];
+            while (options.length < 3) {
+                const randomWord = words[Math.floor(Math.random() * words.length)];
+                const distractorText = `🇰🇿 ${randomWord.kz} / 🇷🇺 ${randomWord.ru}`;
+                if (!options.includes(distractorText)) {
+                    options.push(distractorText);
+                }
+            }
+
+            // Shuffle options
+            options.sort(() => Math.random() - 0.5);
+
+            const optionsContainer = document.getElementById('quizOptions');
+            optionsContainer.innerHTML = '';
+
+            options.forEach(optionText => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-btn';
+                btn.textContent = optionText;
+                btn.onclick = () => checkAnswer(btn, optionText === correctOptionText);
+                optionsContainer.appendChild(btn);
+            });
         }
 
         const nextHourEpochMs = (currentHourEpoch + 1) * 3600000;
@@ -708,17 +603,29 @@
         document.getElementById('wothTimer').textContent = `Next in ${pad(mins)}:${pad(secs)}`;
     }
 
-    function toggleTranslation() {
-        const transEl = document.getElementById('wothTranslations');
-        const btn = document.getElementById('showTranslationBtn');
-        translationVisible = !translationVisible;
+    function checkAnswer(selectedBtn, isCorrect) {
+        const allButtons = document.querySelectorAll('.quiz-btn');
+        allButtons.forEach(btn => {
+            btn.disabled = true;
+            if (btn === selectedBtn) {
+                btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+            } else if (btn.textContent.includes('🇰🇿') && isCorrect === false) {
+                // If wrong, highlight the correct one too
+                const currentWord = words[lastHourIndex];
+                const correctText = `🇰🇿 ${currentWord.kz} / 🇷🇺 ${currentWord.ru}`;
+                if (btn.textContent === correctText) {
+                    btn.classList.add('correct');
+                }
+            }
+        });
 
-        if (translationVisible) {
-            transEl.classList.remove('hidden');
-            btn.textContent = 'Hide Translation';
+        const feedback = document.getElementById('quizFeedback');
+        if (isCorrect) {
+            feedback.textContent = "✅ Correct! Great job!";
+            feedback.style.color = "var(--green-accent)";
         } else {
-            transEl.classList.add('hidden');
-            btn.textContent = 'Show Translation';
+            feedback.textContent = "❌ Incorrect. Try again next hour!";
+            feedback.style.color = "var(--red-accent)";
         }
     }
 
