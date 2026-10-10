@@ -567,13 +567,13 @@ const words = [
             document.getElementById('wothTerm').textContent = currentWord.en;
             document.getElementById('quizFeedback').textContent = "";
 
-            // Generate 3 options: 1 correct (combining KZ / RU) and 2 random distractors
-            const correctOptionText = `🇰🇿 ${currentWord.kz} / 🇷🇺 ${currentWord.ru}`;
+            // Generate 3 options: 1 correct (Kazakh first, Russian second) and 2 random distractors
+            const correctOptionText = `${currentWord.kz} / ${currentWord.ru}`;
             
             let options = [correctOptionText];
             while (options.length < 3) {
                 const randomWord = words[Math.floor(Math.random() * words.length)];
-                const distractorText = `🇰🇿 ${randomWord.kz} / 🇷🇺 ${randomWord.ru}`;
+                const distractorText = `${randomWord.kz} / ${randomWord.ru}`;
                 if (!options.includes(distractorText)) {
                     options.push(distractorText);
                 }
@@ -609,10 +609,9 @@ const words = [
             btn.disabled = true;
             if (btn === selectedBtn) {
                 btn.classList.add(isCorrect ? 'correct' : 'incorrect');
-            } else if (btn.textContent.includes('🇰🇿') && isCorrect === false) {
-                // If wrong, highlight the correct one too
+            } else if (isCorrect === false) {
                 const currentWord = words[lastHourIndex];
-                const correctText = `🇰🇿 ${currentWord.kz} / 🇷🇺 ${currentWord.ru}`;
+                const correctText = `${currentWord.kz} / ${currentWord.ru}`;
                 if (btn.textContent === correctText) {
                     btn.classList.add('correct');
                 }
