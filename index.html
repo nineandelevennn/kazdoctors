@@ -522,55 +522,55 @@
 <script>
 const words = [
         // --- 15 ANATOMICAL TERMS ---
-        { en: "Heart", kz: "Жүрек", ru: "Сердце" },
-        { en: "Bone", kz: "Сүйек", ru: "Кость" },
-        { en: "Humerus", kz: "Тоқпан жілік", ru: "Плечевая кость" },
-        { en: "Lung", kz: "Өкпе", ru: "Лёгкое" },
-        { en: "Liver", kz: "Бауыр", ru: "Печень" },
-        { en: "Stomach", kz: "Асқазан", ru: "Желудок" },
-        { en: "Kidney", kz: "Бүйрек", ru: "Почка" },
-        { en: "Brain", kz: "Ми", ru: "Головной мозг" },
-        { en: "Muscle", kz: "Бұлшықет", ru: "Мышца" },
-        { en: "Skin", kz: "Тері", ru: "Кожа" },
-        { en: "Vein", kz: "Вена", ru: "Вена" },
-        { en: "Artery", kz: "Артерия", ru: "Артерия" },
-        { en: "Joint", kz: "Буын", ru: "Сустав" },
-        { en: "Thyroid", kz: "Қалқанша без", ru: "Щитовидная железа" },
-        { en: "Aorta", kz: "Аорта", ru: "Аорта" },
+        { en: "Heart", kz: "Жүрек", ru: "Сердце", cat: "anatomy" },
+        { en: "Bone", kz: "Сүйек", ru: "Кость", cat: "anatomy" },
+        { en: "Humerus", kz: "Тоқпан жілік", ru: "Плечевая кость", cat: "anatomy" },
+        { en: "Lung", kz: "Өкпе", ru: "Лёгкое", cat: "anatomy" },
+        { en: "Liver", kz: "Бауыр", ru: "Печень", cat: "anatomy" },
+        { en: "Stomach", kz: "Асқазан", ru: "Желудок", cat: "anatomy" },
+        { en: "Kidney", kz: "Бүйрек", ru: "Почка", cat: "anatomy" },
+        { en: "Brain", kz: "Ми", ru: "Головной мозг", cat: "anatomy" },
+        { en: "Muscle", kz: "Бұлшықет", ru: "Мышца", cat: "anatomy" },
+        { en: "Skin", kz: "Тері", ru: "Кожа", cat: "anatomy" },
+        { en: "Vein", kz: "Вена", ru: "Вена", cat: "anatomy" },
+        { en: "Artery", kz: "Артерия", ru: "Артерия", cat: "anatomy" },
+        { en: "Joint", kz: "Буын", ru: "Сустав", cat: "anatomy" },
+        { en: "Thyroid", kz: "Қалқанша без", ru: "Щитовидная железа", cat: "anatomy" },
+        { en: "Aorta", kz: "Аорта", ru: "Аорта", cat: "anatomy" },
 
         // --- 15 CLINICAL TERMS ---
-        { en: "Fever", kz: "Қызба", ru: "Лихорадка" },
-        { en: "Cough", kz: "Жөтел", ru: "Кашель" },
-        { en: "Edema", kz: "Ісіну", ru: "Отек" },
-        { en: "Nausea", kz: "Жүрек айну", ru: "Тошнота" },
-        { en: "Headache", kz: "Бас ауруы", ru: "Головная боль" },
-        { en: "Dizziness", kz: "Бас айналу", ru: "Головокружение" },
-        { en: "Rash", kz: "Бөртпе", ru: "Сыпь" },
-        { en: "Fatigue", kz: "Шаршау", ru: "Утомляемость" },
-        { en: "Diarrhea", kz: "Іш өту", ru: "Диарея" },
-        { en: "Insomnia", kz: "Ұйқысыздық", ru: "Бессонница" },
-        { en: "Dyspnea", kz: "Ырғақтың бұзылуы / Тыныс алудың тарылуы", ru: "Одышка" },
-        { en: "Anemia", kz: "Анемия", ru: "Анемия" },
-        { en: "Hyperglycemia", kz: "Гипергликемия", ru: "Гипергликемия" },
-        { en: "Tachycardia", kz: "Тахикардия", ru: "Тахикардия" },
-        { en: "Inflammation", kz: "Қабыну", ru: "Воспаление" },
+        { en: "Fever", kz: "Қызба", ru: "Лихорадка", cat: "clinical" },
+        { en: "Cough", kz: "Жөтел", ru: "Кашель", cat: "clinical" },
+        { en: "Edema", kz: "Ісіну", ru: "Отек", cat: "clinical" },
+        { en: "Nausea", kz: "Жүрек айну", ru: "Тошнота", cat: "clinical" },
+        { en: "Headache", kz: "Бас ауруы", ru: "Головная боль", cat: "clinical" },
+        { en: "Dizziness", kz: "Бас айналу", ru: "Головокружение", cat: "clinical" },
+        { en: "Rash", kz: "Бөртпе", ru: "Сыпь", cat: "clinical" },
+        { en: "Fatigue", kz: "Шаршау", ru: "Утомляемость", cat: "clinical" },
+        { en: "Diarrhea", kz: "Іш өту", ru: "Диарея", cat: "clinical" },
+        { en: "Insomnia", kz: "Ұйқысыздық", ru: "Бессонница", cat: "clinical" },
+        { en: "Dyspnea", kz: "Ырғақтың бұзылуы / Тыныс алудың тарылуы", ru: "Одышка", cat: "clinical" },
+        { en: "Anemia", kz: "Анемия", ru: "Анемия", cat: "clinical" },
+        { en: "Hyperglycemia", kz: "Гипергликемия", ru: "Гипергликемия", cat: "clinical" },
+        { en: "Tachycardia", kz: "Тахикардия", ru: "Тахикардия", cat: "clinical" },
+        { en: "Inflammation", kz: "Қабыну", ru: "Воспаление", cat: "clinical" },
 
         // --- 15 ACADEMIC TERMS ---
-        { en: "Increase", kz: "Ұлғайту / Өсу", ru: "Увеличение" },
-        { en: "Improve", kz: "Жақсарту", ru: "Улучшать" },
-        { en: "In contrast", kz: "Керісінше", ru: "В отличие / Напротив" },
-        { en: "Significant", kz: "Маңызды", ru: "Значительный" },
-        { en: "Evidence", kz: "Дәлел", ru: "Доказательство" },
-        { en: "Demonstrate", kz: "Көрсету / Дәлелдеу", ru: "Демонстрировать" },
-        { en: "Objective", kz: "Мақсат / Объективті", ru: "Цель / Объективный" },
-        { en: "Decline", kz: "Төмендеу", ru: "Снижение / Упадок" },
-        { en: "Associated", kz: "Байланысты", ru: "Связанный" },
-        { en: "Beneficial", kz: "Пайдалы", ru: "Полезный / Благотворный" },
-        { en: "Consist", kz: "Тұру", ru: "Состоять" },
-        { en: "Evaluate", kz: "Бағалау", ru: "Оценивать" },
-        { en: "Establish", kz: "Анықтау / Құру", ru: "Устанавливать" },
-        { en: "Prevalence", kz: "Таралуы", ru: "Распространенность" },
-        { en: "Subsequent", kz: "Кейінгі", ru: "Последующий" }
+        { en: "Increase", kz: "Ұлғайту / Өсу", ru: "Увеличение", cat: "academic" },
+        { en: "Improve", kz: "Жақсарту", ru: "Улучшать", cat: "academic" },
+        { en: "In contrast", kz: "Керісінше", ru: "В отличие / Напротив", cat: "academic" },
+        { en: "Significant", kz: "Маңызды", ru: "Значительный", cat: "academic" },
+        { en: "Evidence", kz: "Дәлел", ru: "Доказательство", cat: "academic" },
+        { en: "Demonstrate", kz: "Көрсету / Дәлелдеу", ru: "Демонстрировать", cat: "academic" },
+        { en: "Objective", kz: "Мақсат / Объективті", ru: "Цель / Объективный", cat: "academic" },
+        { en: "Decline", kz: "Төмендеу", ru: "Снижение / Упадок", cat: "academic" },
+        { en: "Associated", kz: "Байланысты", ru: "Связанный", cat: "academic" },
+        { en: "Beneficial", kz: "Пайдалы", ru: "Полезный / Благотворный", cat: "academic" },
+        { en: "Consist", kz: "Тұру", ru: "Состоять", cat: "academic" },
+        { en: "Evaluate", kz: "Бағалау", ru: "Оценивать", cat: "academic" },
+        { en: "Establish", kz: "Анықтау / Құру", ru: "Устанавливать", cat: "academic" },
+        { en: "Prevalence", kz: "Таралуы", ru: "Распространенность", cat: "academic" },
+        { en: "Subsequent", kz: "Кейінгі", ru: "Последующий", cat: "academic" }
     ];
 
     let lastHourIndex = -1;
@@ -587,12 +587,13 @@ const words = [
             document.getElementById('wothTerm').textContent = currentWord.en;
             document.getElementById('quizFeedback').textContent = "";
 
-            // Generate 3 options: 1 correct (Kazakh first, Russian second) and 2 random distractors
+            // Generate 3 options: 1 correct and 2 random distractors FROM THE SAME CATEGORY
             const correctOptionText = `${currentWord.kz} / ${currentWord.ru}`;
+            const sameCategoryWords = words.filter(w => w.cat === currentWord.cat && w.en !== currentWord.en);
             
             let options = [correctOptionText];
             while (options.length < 3) {
-                const randomWord = words[Math.floor(Math.random() * words.length)];
+                const randomWord = sameCategoryWords[Math.floor(Math.random() * sameCategoryWords.length)];
                 const distractorText = `${randomWord.kz} / ${randomWord.ru}`;
                 if (!options.includes(distractorText)) {
                     options.push(distractorText);
