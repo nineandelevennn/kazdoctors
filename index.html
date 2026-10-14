@@ -320,7 +320,13 @@
     navigator.serviceWorker.register('/sw.js');
   }
 </script>
-    
+   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+  if (window.Telegram && window.Telegram.WebApp) {
+    window.Telegram.WebApp.ready();
+    window.Telegram.WebApp.expand(); // Разворачивает на весь экран!
+  }
+</script> 
 </head>
     
 <body>
