@@ -6,7 +6,7 @@
     <title>Doctors Speak — Medical English</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
     :root {
         --kz-blue: #00A1DE;
@@ -14,7 +14,8 @@
         --kz-blue-light: #EBF8FC;
         --kz-gold: #FFC72C;
         --kz-gold-dark: #D9A000;
-        --bg-main: #F2F5F8;
+        --kz-gold-light: #FFFBEB;
+        --bg-main: #F0F6FA;
         --card-bg: #FFFFFF;
         --text-dark: #1E293B;
         --text-muted: #64748B;
@@ -36,41 +37,58 @@
         min-height: 100vh;
         min-height: 100dvh;
         overflow-y: auto;
-        background: var(--bg-main);
+        background: radial-gradient(circle at top, #EBF8FC 0%, var(--bg-main) 60%);
         color: var(--text-dark);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
     }
 
-    /* 1. Шапка сайта (Обновлена градиентом в стиле флага Казахстана) */
+    /* 1. Шапка сайта (Стилистика флага Казахстана с мягким свечением) */
     header {
         position: relative;
         z-index: 1;
-        background: linear-gradient(165deg, var(--kz-blue) 0%, #0088bb 70%, var(--kz-gold) 100%);
+        background: linear-gradient(150deg, #0093CC 0%, var(--kz-blue) 55%, #22B8CF 85%, var(--kz-gold) 130%);
         color: #FFFFFF;
         text-align: center;
-        padding: 24px 16px 26px 16px;
-        box-shadow: 0 4px 16px rgba(0, 161, 222, 0.25);
+        padding: 28px 16px 28px 16px;
+        box-shadow: 0 8px 24px rgba(0, 161, 222, 0.22);
+        border-bottom-left-radius: 24px;
+        border-bottom-right-radius: 24px;
+        overflow: hidden;
+    }
+
+    /* Декоративный солнечный блик в шапке */
+    header::after {
+        content: '';
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 160px;
+        height: 160px;
+        background: radial-gradient(circle, rgba(255, 199, 44, 0.35) 0%, rgba(255, 199, 44, 0) 70%);
+        border-radius: 50%;
+        pointer-events: none;
     }
 
     /* Кнопка плашки со ссылкой на Instagram */
     .brand-badge {
         display: inline-flex;
         align-items: center;
-        gap: 4px;
+        gap: 6px;
         background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.45);
         color: #FFFFFF;
         font-weight: 700;
-        font-size: 0.75rem;
-        letter-spacing: 0.8px;
+        font-size: 0.76rem;
+        letter-spacing: 0.6px;
         padding: 6px 16px;
         border-radius: 20px;
         margin-bottom: 10px;
         text-decoration: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
         transition: transform 0.2s ease, background 0.2s ease;
     }
 
@@ -80,23 +98,25 @@
     }
 
     h1 {
-        font-size: 1.35rem;
+        font-size: 1.45rem;
         font-weight: 900;
         line-height: 1.2;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.6px;
         color: #FFFFFF;
         max-width: 380px;
         margin: 0 auto;
+        text-shadow: 0 2px 10px rgba(0, 80, 120, 0.2);
     }
 
     .subtitle {
-        font-size: 0.78rem;
+        font-size: 0.8rem;
         margin-top: 6px;
         font-weight: 800;
-        letter-spacing: 1px;
+        letter-spacing: 1.2px;
         text-transform: uppercase;
         color: var(--kz-gold);
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
     }
 
     /* 2. Основная зона */
@@ -116,12 +136,12 @@
     /* Word of the Hour Card / Quiz */
     .woth-card {
         background: var(--card-bg);
-        border: 1px solid var(--border-color);
-        border-left: 6px solid var(--kz-gold-dark);
-        border-radius: 16px;
+        border: 1px solid rgba(217, 160, 0, 0.25);
+        border-left: 6px solid var(--kz-gold);
+        border-radius: 18px;
         padding: 16px;
         text-align: center;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+        box-shadow: 0 6px 18px rgba(0, 119, 163, 0.06);
     }
 
     .woth-header {
@@ -135,24 +155,27 @@
         font-size: 0.72rem;
         font-weight: 800;
         color: var(--kz-gold-dark);
+        background: var(--kz-gold-light);
+        padding: 4px 10px;
+        border-radius: 12px;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
 
     .woth-timer {
         font-size: 0.7rem;
-        color: var(--text-muted);
-        font-weight: 600;
-        background: var(--bg-main);
-        padding: 3px 10px;
+        color: var(--kz-blue-dark);
+        font-weight: 700;
+        background: var(--kz-blue-light);
+        padding: 4px 10px;
         border-radius: 12px;
     }
 
     .woth-term {
-        font-size: 1.3rem;
-        font-weight: 800;
+        font-size: 1.35rem;
+        font-weight: 900;
         color: var(--text-dark);
-        margin: 6px 0 12px 0;
+        margin: 8px 0 12px 0;
     }
 
     .quiz-options {
@@ -165,11 +188,11 @@
 
     .quiz-btn {
         width: 100%;
-        background: var(--bg-main);
+        background: #F8FAFC;
         color: var(--text-dark);
         border: 1px solid var(--border-color);
-        padding: 10px 14px;
-        border-radius: 10px;
+        padding: 11px 14px;
+        border-radius: 12px;
         font-weight: 600;
         font-size: 0.85rem;
         cursor: pointer;
@@ -179,7 +202,8 @@
 
     .quiz-btn:hover:not(:disabled) {
         background: var(--kz-blue-light);
-        border-color: rgba(0, 161, 222, 0.3);
+        border-color: var(--kz-blue);
+        transform: translateY(-1px);
     }
 
     .quiz-btn.correct {
@@ -202,14 +226,18 @@
         min-height: 20px;
     }
 
-    /* Складывающиеся категории (Аккордеоны) */
+    /* Складывающиеся категории (Аккордеоны) — Единый цвет линии var(--kz-blue) */
     details.category-group {
         background: var(--card-bg);
-        border-radius: 16px;
+        border-radius: 18px;
         border: 1px solid var(--border-color);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        box-shadow: 0 6px 16px rgba(0, 119, 163, 0.05);
         overflow: hidden;
-        transition: all 0.2s ease;
+        transition: all 0.25s ease;
+    }
+
+    details.category-group:hover {
+        border-color: rgba(0, 161, 222, 0.35);
     }
 
     summary.category-header {
@@ -217,7 +245,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 14px 16px;
+        padding: 15px 16px;
         cursor: pointer;
         position: relative;
         user-select: none;
@@ -229,41 +257,58 @@
         display: none;
     }
 
+    /* ТАКАЯ ЖЕ ЛИНИЯ, КАК У КНОПКИ "ЦЕНЫ" */
     summary.category-header::before {
         content: '';
         position: absolute;
         left: 0; top: 0; bottom: 0;
         width: 6px;
-        background: var(--kz-blue-dark);
+        background: var(--kz-blue);
     }
 
     details.category-group[open] > summary.category-header {
-        background: var(--kz-blue-light);
+        background: linear-gradient(90deg, var(--kz-blue-light) 0%, #FFFFFF 100%);
         border-bottom: 1px solid var(--border-color);
     }
 
-    .chevron-icon {
-        width: 20px;
-        height: 20px;
-        fill: var(--kz-blue-dark);
+    .chevron-box {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: var(--kz-blue-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
         flex-shrink: 0;
         margin-left: 8px;
+        transition: all 0.25s ease;
+    }
+
+    .chevron-icon {
+        width: 18px;
+        height: 18px;
+        fill: var(--kz-blue);
         transition: transform 0.25s ease;
+    }
+
+    details.category-group[open] .chevron-box {
+        background: var(--kz-blue);
     }
 
     details.category-group[open] .chevron-icon {
         transform: rotate(180deg);
+        fill: #FFFFFF;
     }
 
     .category-body {
         padding: 12px;
-        background: var(--bg-main);
+        background: #F8FAFC;
         display: flex;
         flex-direction: column;
         gap: 10px;
     }
 
-    /* Тренажеры */
+    /* Карточки тренажеров — Единый цвет линии var(--kz-blue) */
     .trainer-card {
         display: flex;
         align-items: center;
@@ -273,12 +318,24 @@
         padding: 14px 16px;
         text-decoration: none;
         color: var(--text-dark);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        box-shadow: 0 4px 12px rgba(0, 119, 163, 0.04);
         position: relative;
         overflow: hidden;
         border: 1px solid var(--border-color);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
+    .trainer-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 161, 222, 0.12);
+        border-color: rgba(0, 161, 222, 0.35);
+    }
+
+    .trainer-card:active {
+        transform: scale(0.99);
+    }
+
+    /* ЛИНИЯ СЛЕВА НА ВСЕХ КАРТОЧКАХ */
     .trainer-card::before {
         content: '';
         position: absolute;
@@ -288,17 +345,45 @@
     }
 
     .card-content { display: flex; align-items: center; gap: 14px; }
+    
     .card-icon {
-        width: 48px; height: 48px;
-        background: var(--kz-blue-light);
+        width: 50px; height: 50px;
+        background: linear-gradient(135deg, #EBF8FC 0%, #D6F1FA 100%);
         border-radius: 14px;
         display: flex; align-items: center; justify-content: center;
-        font-size: 1.35rem; flex-shrink: 0;
-        border: 1px solid rgba(0, 161, 222, 0.15);
+        font-size: 1.45rem; flex-shrink: 0;
+        border: 1px solid rgba(0, 161, 222, 0.2);
+        box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.8);
     }
 
-    .card-text h2 { font-size: 0.95rem; font-weight: 800; color: var(--text-dark); margin-bottom: 2px; }
-    .card-text p { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
+    .card-text h2 { 
+        font-size: 0.94rem; 
+        font-weight: 800; 
+        color: var(--text-dark); 
+        margin-bottom: 3px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+    
+    .card-text p { 
+        font-size: 0.75rem; 
+        color: var(--text-muted); 
+        font-weight: 500; 
+    }
+
+    .badge-pill {
+        font-size: 0.62rem;
+        font-weight: 800;
+        background: var(--kz-gold-light);
+        color: var(--kz-gold-dark);
+        border: 1px solid rgba(217, 160, 0, 0.3);
+        padding: 2px 7px;
+        border-radius: 10px;
+        text-transform: uppercase;
+    }
+
     .arrow-icon { width: 18px; height: 18px; fill: var(--kz-blue); flex-shrink: 0; margin-left: 8px; }
 
     /* Видеоплеер YouTube */
@@ -323,7 +408,7 @@
         position: relative;
         z-index: 1;
         text-align: center;
-        padding: 12px 16px 24px 16px;
+        padding: 12px 16px 26px 16px;
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -333,39 +418,54 @@
     .instagram-link {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        justify-content: center;
+        gap: 8px;
         color: var(--kz-blue-dark);
         text-decoration: none;
         font-weight: 700;
         font-size: 0.82rem;
-        padding: 10px 20px;
-        border-radius: 20px;
+        padding: 11px 22px;
+        border-radius: 22px;
         background: var(--card-bg);
-        border: 1px solid var(--border-color);
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        border: 1px solid rgba(0, 161, 222, 0.25);
+        box-shadow: 0 4px 12px rgba(0, 119, 163, 0.05);
+        transition: all 0.2s ease;
     }
 
-    #authArea { margin-top: 12px; text-align: center; }
+    .instagram-link.cta-primary {
+        background: linear-gradient(135deg, var(--kz-gold) 0%, #FFD55A 100%);
+        color: var(--text-dark);
+        border-color: var(--kz-gold-dark);
+        font-weight: 800;
+        box-shadow: 0 4px 14px rgba(217, 160, 0, 0.22);
+    }
+
+    .instagram-link:active {
+        transform: scale(0.97);
+    }
+
+    #authArea { margin-top: 14px; text-align: center; }
     #loginButton, #logoutButton {
         display: inline-block;
-        padding: 8px 18px;
+        padding: 8px 20px;
         border-radius: 20px;
-        border: 1px solid var(--border-color);
+        border: 1px solid rgba(255, 255, 255, 0.5);
         background: var(--card-bg);
         color: var(--kz-blue-dark);
         font-size: 0.78rem;
-        font-weight: 700;
+        font-weight: 800;
         text-decoration: none;
         cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
     #userArea { display: none; }
     #welcomeMessage { display: block; margin-bottom: 8px; font-size: 0.82rem; font-weight: 700; }      
 
     @media (max-height: 680px) {
-        header { padding: 18px 16px; }
-        h1 { font-size: 1.15rem; }
-        .subtitle { font-size: 0.72rem; }
+        header { padding: 20px 16px; }
+        h1 { font-size: 1.2rem; }
+        .subtitle { font-size: 0.74rem; }
     }
 </style>
 
@@ -393,7 +493,7 @@
 <body>
 
     <header>
-        <a href="https://instagram.com/doctors.speak" target="_blank" rel="noopener noreferrer" class="brand-badge">@doctors.speak</a>
+        <a href="https://instagram.com/doctors.speak" target="_blank" rel="noopener noreferrer" class="brand-badge">✨ @doctors.speak</a>
         <h1>Medical English</h1>
         <p class="subtitle">Practice everyday!</p>
         
@@ -410,7 +510,7 @@
         <!-- Word of the Hour Quiz Box -->
         <div class="woth-card">
             <div class="woth-header">
-                <span class="woth-title">💡 Word of the hour quiz</span>
+                <span class="woth-title">⚡ Word of the hour</span>
                 <span class="woth-timer" id="wothTimer">Next in --:--</span>
             </div>
             <div class="woth-term" id="wothTerm">Loading...</div>
@@ -424,13 +524,15 @@
         <details class="category-group">
             <summary class="category-header">
                 <div class="card-content">
-                    <div class="card-icon">🔤</div>
+                    <div class="card-icon">🧠</div>
                     <div class="card-text">
-                        <h2>VOCABULARY</h2>
+                        <h2>VOCABULARY <span class="badge-pill">Практика</span></h2>
                         <p>Anatomy, Clinical & Academic terms</p>
                     </div>
                 </div>
-                <svg class="chevron-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                <div class="chevron-box">
+                    <svg class="chevron-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                </div>
             </summary>
 
             <div class="category-body">
@@ -476,13 +578,15 @@
         <details class="category-group">
             <summary class="category-header">
                 <div class="card-content">
-                    <div class="card-icon">📐</div>
+                    <div class="card-icon">🚀</div>
                     <div class="card-text">
-                        <h2>GRAMMAR</h2>
-                        <p>Video lesson & Grammar exercises</p>
+                        <h2>GRAMMAR <span class="badge-pill">Практика</span></h2>
+                        <p>Medical grammar lessons & exercises</p>
                     </div>
                 </div>
-                <svg class="chevron-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                <div class="chevron-box">
+                    <svg class="chevron-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                </div>
             </summary>
 
             <div class="category-body">
@@ -528,27 +632,29 @@
         <details class="category-group">
             <summary class="category-header">
                 <div class="card-content">
-                    <div class="card-icon">🩺</div>
+                    <div class="card-icon">🗣️</div>
                     <div class="card-text">
-                        <h2>PATIENT INTERVIEWING</h2>
-                        <p>Video guide & Anamnesis trainer</p>
+                        <h2>PATIENT INTERVIEWING <span class="badge-pill">Практика</span></h2>
+                        <p>How to interview patients in English</p>
                     </div>
                 </div>
-                <svg class="chevron-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                <div class="chevron-box">
+                    <svg class="chevron-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                </div>
             </summary>
 
             <div class="category-body">
-<!-- Второе видео YouTube (Опрос пациентов) -->
-<div class="video-card">
-    <div class="video-container" style="padding-top: 125%;">
-        <iframe 
-            src="https://www.youtube.com/embed/LWgCd1LpFis?si=t04Zq5qFxqzghpVI" 
-            title="YouTube video player" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            allowfullscreen>
-        </iframe>
-    </div>
-</div>
+                <!-- Второе видео YouTube (Увеличенный размер 100%) -->
+                <div class="video-card">
+                    <div class="video-container" style="padding-top: 100%;">
+                        <iframe 
+                            src="https://www.youtube.com/embed/LWgCd1LpFis?si=t04Zq5qFxqzghpVI" 
+                            title="YouTube video player" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
 
                 <!-- Тренажер опросов -->
                 <a href="./interview/" class="trainer-card">
@@ -564,13 +670,13 @@
             </div>
         </details>
 
-        <!-- Тарифы (всегда на виду) -->
+        <!-- Тарифы (всегда на виду, с той же линией var(--kz-blue)) -->
         <a href="./tarifs/" class="trainer-card">
             <div class="card-content">
-                <div class="card-icon">📚</div>
+                <div class="card-icon">💎</div>
                 <div class="card-text">
-                    <h2>Бағалар / Цены</h2>
-                    <p>Сабақтар, материалдар / занятия и материалы</p>
+                    <h2>ТАРИФТЕР / ТАРИФЫ</h2>
+                    <p>Жеке сабақтар, материалдар / индивидуальные занятия и материалы</p>
                 </div>
             </div>
             <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -579,11 +685,11 @@
     </main>
 
     <footer>
-        <a href="https://wa.me/77081595038" target="_blank" class="instagram-link">
-            <span>✅ Сабаққа жазылу / Записаться на занятия </span>
+        <a href="https://wa.me/77081595038" target="_blank" class="instagram-link cta-primary">
+            <span>🔥 Сабаққа жазылу / Записаться на занятия</span>
         </a>
         <a href="https://instagram.com/doctors.speak" target="_blank" class="instagram-link">
-            <span>✍️ Our Instagram!</span>
+            <span>📸 Instagram @doctors.speak</span>
         </a>
     </footer>
 
