@@ -105,7 +105,7 @@
         z-index: 1;
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: 14px;
         width: 100%;
         max-width: 460px;
         margin: 0 auto;
@@ -200,6 +200,67 @@
         font-size: 0.8rem;
         font-weight: 700;
         min-height: 20px;
+    }
+
+    /* Складывающиеся категории (Аккордеоны) */
+    details.category-group {
+        background: var(--card-bg);
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        overflow: hidden;
+        transition: all 0.2s ease;
+    }
+
+    summary.category-header {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        cursor: pointer;
+        position: relative;
+        user-select: none;
+        background: var(--card-bg);
+        transition: background 0.2s ease;
+    }
+
+    summary.category-header::-webkit-details-marker {
+        display: none;
+    }
+
+    summary.category-header::before {
+        content: '';
+        position: absolute;
+        left: 0; top: 0; bottom: 0;
+        width: 6px;
+        background: var(--kz-blue-dark);
+    }
+
+    details.category-group[open] > summary.category-header {
+        background: var(--kz-blue-light);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .chevron-icon {
+        width: 20px;
+        height: 20px;
+        fill: var(--kz-blue-dark);
+        flex-shrink: 0;
+        margin-left: 8px;
+        transition: transform 0.25s ease;
+    }
+
+    details.category-group[open] .chevron-icon {
+        transform: rotate(180deg);
+    }
+
+    .category-body {
+        padding: 12px;
+        background: var(--bg-main);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
 
     /* Тренажеры */
@@ -320,7 +381,7 @@
     navigator.serviceWorker.register('/sw.js');
   }
 </script>
-   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script>
   if (window.Telegram && window.Telegram.WebApp) {
     window.Telegram.WebApp.ready();
@@ -359,112 +420,157 @@
             <div class="quiz-feedback" id="quizFeedback"></div>
         </div>
 
-        <!-- Анатомический тренажер -->
-        <a href="./anatomic/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🫀</div>
-                <div class="card-text">
-                    <h2>ANATOMY VOCABULARY</h2>
-                    <p>Organs and Bones</p>
+        <!-- ==================== 1. КАТЕГОРИЯ: VOCABULARY ==================== -->
+        <details class="category-group">
+            <summary class="category-header">
+                <div class="card-content">
+                    <div class="card-icon">🔤</div>
+                    <div class="card-text">
+                        <h2>VOCABULARY</h2>
+                        <p>Anatomy, Clinical & Academic terms</p>
+                    </div>
                 </div>
+                <svg class="chevron-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+            </summary>
+
+            <div class="category-body">
+                <!-- Анатомический тренажер -->
+                <a href="./anatomic/" class="trainer-card">
+                    <div class="card-content">
+                        <div class="card-icon">🫀</div>
+                        <div class="card-text">
+                            <h2>ANATOMY VOCABULARY</h2>
+                            <p>Organs and Bones</p>
+                        </div>
+                    </div>
+                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                </a>
+                
+                <!-- Клинический тренажер -->
+                <a href="./clinical" class="trainer-card">
+                    <div class="card-content">
+                        <div class="card-icon" id="clinicalIcon">🔒</div>
+                        <div class="card-text">
+                            <h2>CLINICAL VOCABULARY</h2>
+                            <p id="clinicalStatus">Terms for Doctors!</p>
+                        </div>
+                    </div>
+                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                </a>
+                
+                <!-- Академический тренажер -->
+                <a href="./academic/" class="trainer-card">
+                    <div class="card-content">
+                        <div class="card-icon" id="academicIcon">🔒</div>
+                        <div class="card-text">
+                            <h2>ACADEMIC VOCABULARY</h2>
+                            <p id="academicStatus">Terms for Guidelines and IELTS!</p>
+                        </div>
+                    </div>
+                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                </a>
             </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
-        
-        <!-- Клинический тренажер -->
-        <a href="./clinical" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon" id="clinicalIcon">🔒</div>
-                <div class="card-text">
-                    <h2>CLINICAL VOCABULARY</h2>
-                    <p id="clinicalStatus">Terms for Doctors!</p>
+        </details>
+
+        <!-- ==================== 2. КАТЕГОРИЯ: GRAMMAR ==================== -->
+        <details class="category-group">
+            <summary class="category-header">
+                <div class="card-content">
+                    <div class="card-icon">📐</div>
+                    <div class="card-text">
+                        <h2>GRAMMAR</h2>
+                        <p>Video lesson & Grammar exercises</p>
+                    </div>
                 </div>
-            </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
-        
-        <!-- Академический тренажер -->
-        <a href="./academic/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon" id="academicIcon">🔒</div>
-                <div class="card-text">
-                    <h2>ACADEMIC VOCABULARY</h2>
-                    <p id="academicStatus">Terms for Guidelines and IELTS!</p>
+                <svg class="chevron-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+            </summary>
+
+            <div class="category-body">
+                <!-- Первое видео YouTube (Грамматика) -->
+                <div class="video-card">
+                    <div class="video-container">
+                        <iframe 
+                            src="https://www.youtube.com/embed/j8azjjNha1w" 
+                            title="YouTube video player" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
                 </div>
-            </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
 
-        <!-- Видеоплеер YouTube -->
-        <div class="video-card">
-            <div class="video-container">
-                <iframe 
-                    src="https://www.youtube.com/embed/j8azjjNha1w" 
-                    title="YouTube video player" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                    allowfullscreen>
-                </iframe>
-            </div>
-        </div>
+                <!-- Грамматика урок -->
+                <a href="./grammar/thereis/" class="trainer-card">
+                    <div class="card-content">
+                        <div class="card-icon">🤓</div>
+                        <div class="card-text">
+                            <h2>GRAMMAR PRACTICE</h2>
+                            <p>Lesson 08</p>
+                        </div>
+                    </div>
+                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                </a>
 
-        <!-- Грамматика урок -->
-        <a href="./grammar/thereis/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🤓</div>
-                <div class="card-text">
-                    <h2>GRAMMAR PRACTICE</h2>
-                    <p>Lesson 08</p>
+                <!-- Полный список грамматики -->
+                <a href="./grammar/" class="trainer-card">
+                    <div class="card-content">
+                        <div class="card-icon" id="grammarIcon">🔒</div>
+                        <div class="card-text">
+                            <h2>GRAMMAR FULL LIST</h2>
+                            <p id="grammarStatus">Exercises from Videocourse</p>
+                        </div>
+                    </div>
+                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                </a>
+            </div>
+        </details>
+
+        <!-- ==================== 3. КАТЕГОРИЯ: PATIENT INTERVIEWING ==================== -->
+        <details class="category-group">
+            <summary class="category-header">
+                <div class="card-content">
+                    <div class="card-icon">🩺</div>
+                    <div class="card-text">
+                        <h2>PATIENT INTERVIEWING</h2>
+                        <p>Video guide & Anamnesis trainer</p>
+                    </div>
                 </div>
-            </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+                <svg class="chevron-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+            </summary>
 
-        <!-- Полный список грамматики -->
-        <a href="./grammar/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon" id="grammarIcon">🔒</div>
-                <div class="card-text">
-                    <h2>GRAMMAR FULL LIST</h2>
-                    <p id="grammarStatus">Exercises from Videocourse</p>
+            <div class="category-body">
+                <!-- Второе видео YouTube (Опрос пациентов) -->
+                <div class="video-card">
+                    <div class="video-container">
+                        <iframe 
+                            src="https://youtube.com/embed/LWgCd1LpFis?si=t04Zq5qFxqzghpVI" 
+                            title="YouTube video player" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
                 </div>
+
+                <!-- Тренажер опросов -->
+                <a href="./interview/" class="trainer-card">
+                    <div class="card-content">
+                        <div class="card-icon" id="interviewIcon">🔒</div>
+                        <div class="card-text">
+                            <h2>PATIENT INTERVIEW</h2>
+                            <p id="interviewStatus">Exercises from Textbook</p>
+                        </div>
+                    </div>
+                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                </a>
             </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+        </details>
 
-
-                <!-- Видеоплеер YouTube -->
-        <div class="video-card">
-            <div class="video-container">
-                <iframe 
-                    src="https://youtube.com/embed/LWgCd1LpFis?si=t04Zq5qFxqzghpVI" 
-                    title="YouTube video player" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                    allowfullscreen>
-                </iframe>
-            </div>
-        </div>
-
-        
-        <!-- Тренажер опросов -->
-        <a href="./interview/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon" id="interviewIcon">🔒</div>
-                <div class="card-text">
-                    <h2>PATIENT INTERVIEW</h2>
-                    <p id="interviewStatus">Exercises from Textbook</p>
-                </div>
-            </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
-
-
-        <!-- Тарифы -->
+        <!-- Тарифы (всегда на виду) -->
         <a href="./tarifs/" class="trainer-card">
             <div class="card-content">
-                <div class="card-icon" id="grammarIcon">📚</div>
+                <div class="card-icon">📚</div>
                 <div class="card-text">
                     <h2>Бағалар / Цены</h2>
-                    <p id="grammarStatus">Сабақтар, материалдар / занятия и материалы</p>
+                    <p>Сабақтар, материалдар / занятия и материалы</p>
                 </div>
             </div>
             <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -515,7 +621,6 @@
         document.getElementById("grammarIcon").textContent = "📖";
         document.getElementById("grammarStatus").textContent = "full practice!";
 
-        
         document.getElementById("interviewIcon").textContent = "💬";
         document.getElementById("interviewStatus").textContent = "for working with patients!";
 
@@ -539,7 +644,7 @@
         document.getElementById("academicStatus").textContent = "for articles and IELTS!";
         document.getElementById("grammarIcon").textContent = "🔒";
         document.getElementById("grammarStatus").textContent = "full practice!";
-                document.getElementById("interviewIcon").textContent = "🔒";
+        document.getElementById("interviewIcon").textContent = "🔒";
         document.getElementById("interviewStatus").textContent = "for work with patients!";
     }
 
