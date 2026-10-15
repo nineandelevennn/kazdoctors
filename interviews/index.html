@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>@doctors.speak — Patient Interviewing Trainer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px 10px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 440px;
+      min-height: 680px;
+      max-height: 95vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-color);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
+      flex-shrink: 0;
+      gap: 8px;
+    }
+
+    .home-btn {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 6px 12px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .home-btn:active {
+      transform: scale(0.96);
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand {
+      font-weight: 800;
+      font-size: 0.75rem;
+      letter-spacing: 0.3px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 5px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      white-space: nowrap;
+    }
+
+    .lang-switch {
+      display: flex;
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 20px;
+      padding: 2px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 800;
+      font-size: 0.7rem;
+      padding: 4px 8px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: #FFFFFF;
+      color: var(--kz-blue-dark);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Плашка Демо-режима */
+    .demo-banner {
+      background: #FFFBEB;
+      border: 1px solid rgba(217, 160, 0, 0.35);
+      color: var(--kz-gold-dark);
+      font-size: 0.74rem;
+      font-weight: 800;
+      padding: 6px 12px;
+      border-radius: 10px;
+      text-align: center;
+      margin-bottom: 8px;
+      display: none;
+    }
+
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+      padding: 16px;
+      gap: 12px;
+      overflow-y: auto;
+    }
+
+    .mode-select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      border-radius: 12px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--kz-blue-dark);
+      background: var(--kz-blue-light);
+      outline: none;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 8px;
+      background: var(--bg-main);
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .stats span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .term-box {
+      margin: 4px 0;
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 14px 16px;
+      border: 1px solid var(--border-color);
+      border-left: 6px solid var(--kz-gold-dark);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      text-align: center;
+      min-height: 130px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .level-tag {
+      display: inline-block;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .term-title {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+      line-height: 1.35;
+      min-height: 2.7em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chunks-box {
+      background: var(--bg-main);
+      border: 1px dashed var(--kz-gold-dark);
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      color: var(--kz-gold-dark);
+      font-weight: 700;
+      margin-top: 6px;
+      word-break: break-word;
+      min-height: 34px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s, visibility 0.2s;
+    }
+
+    .chunks-box.invisible {
+      display: none;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .option-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      line-height: 1.3;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background-color: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+    }
+
+    .option-btn.correct {
+      background-color: #DCFCE7 !important;
+      border-color: #22C55E !important;
+      color: #15803D !important;
+      font-weight: 700;
+    }
+
+    .option-btn.wrong {
+      background-color: #FEE2E2 !important;
+      border-color: #EF4444 !important;
+      color: #B91C1C !important;
+      font-weight: 700;
+    }
+
+    .explanation-box {
+      background-color: var(--kz-blue-light);
+      border-left: 4px solid var(--kz-blue);
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      color: var(--kz-blue-dark);
+      margin-bottom: 10px;
+      line-height: 1.4;
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .explanation-box.answered {
+      background-color: #E0F2FE;
+      border-left-color: var(--kz-blue-dark);
+    }
+
+    .next-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      font-weight: 800;
+      padding: 12px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      border: 1px solid var(--kz-gold-dark);
+      cursor: pointer;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.2s ease, visibility 0.2s ease, background-color 0.2s ease, transform 0.1s ease;
+      min-height: 44px;
+    }
+
+    .next-btn.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .next-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    .next-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Экран окончания демо-версии (Paywall) */
+    .paywall-container {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 28px 20px;
+      flex-grow: 1;
+      gap: 14px;
+    }
+
+    .paywall-icon {
+      font-size: 3rem;
+      background: var(--kz-blue-light);
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid rgba(0, 161, 222, 0.25);
+    }
+
+    .paywall-title {
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: var(--text-dark);
+    }
+
+    .paywall-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    .paywall-features {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px 16px;
+      width: 100%;
+      text-align: left;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cta-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      font-weight: 800;
+      padding: 14px;
+      border-radius: 16px;
+      font-size: 0.92rem;
+      text-decoration: none;
+      border: 1px solid var(--kz-gold-dark);
+      box-shadow: 0 4px 14px rgba(217, 160, 0, 0.25);
+      transition: transform 0.15s ease;
+    }
+
+    .cta-btn.secondary {
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      border-color: rgba(0, 161, 222, 0.3);
+      box-shadow: none;
+      font-weight: 700;
+    }
+
+    .cta-btn:active {
+      transform: scale(0.98);
+    }
+  </style>
+</head>
+<body>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <div class="card">
+    <!-- Header -->
+    <header class="header">
+      <a href="https://kazdoctors.com/" class="home-btn" id="backBtn">⬅ Назад</a>
+      <div class="header-right">
+        <div class="brand">@doctors.speak</div>
+        <div class="lang-switch">
+          <button id="langRu" class="lang-btn active" onclick="setLanguage('ru')">RU</button>
+          <button id="langKz" class="lang-btn" onclick="setLanguage('kz')">KZ</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Game Screen -->
+    <div id="gameScreen" class="game-container">
+      
+      <div>
+        <div id="demoBanner" class="demo-banner">🔓 Демо-режим: доступно 5 бесплатных вопросов</div>
+
+        <select id="levelSelect" class="mode-select" onchange="changeLevel()">
+          <option value="A1" id="optA1">Level A1 — Базовые фразы и симптомы</option>
+          <option value="A2" id="optA2">Level A2 — Грамматика и ход опроса</option>
+          <option value="B1+" id="optB1">Level B1+ — Клинические кейсы и эмпатия</option>
+          <option value="mix" id="optMix">🔥 Все уровни (Mix)</option>
+        </select>
+
+        <div class="stats">
+          <span><span id="lblTotal">Всего:</span> <strong id="totalCount">0</strong></span>
+          <span><span id="lblCorrect">Верно:</span> <strong id="correctCount" style="color:#16A34A;">0</strong></span>
+          <span><span id="lblStreak">Серия:</span> <strong id="streakCount" style="color:#D9A000;">0 🔥</strong></span>
+        </div>
+      </div>
+
+      <div class="term-box">
+        <span id="levelTag" class="level-tag">Level A1</span>
+        <div id="questionText" class="term-title">Загрузка...</div>
+        <div id="chunksBox" class="chunks-box invisible"></div>
+      </div>
+
+      <div>
+        <div id="optionsGrid" class="options-grid"></div>
+        
+        <div id="explanationBox" class="explanation-box">
+          <div><strong id="lblExpTitle">💡 Пояснение:</strong> <span id="explanationText">Выберите правильный ответ...</span></div>
+        </div>
+
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Далее ➔</button>
+      </div>
+
+    </div>
+
+    <!-- Paywall Screen (показывается после 5 вопросов в демо-режиме) -->
+    <div id="paywallScreen" class="paywall-container">
+      <div class="paywall-icon">🔒</div>
+      <div class="paywall-title" id="pwTitle">Демо-режим завершен!</div>
+      <div class="paywall-desc" id="pwDesc">Вы ответили на 5 пробных вопросов. Откройте полный доступ ко всем тренажерам, чтобы отработать медицинский английский до автоматизма!</div>
+      
+      <div class="paywall-features" id="pwFeatures">
+        <div>✅ Полная база вопросов (уровни A1, A2, B1+)</div>
+        <div>✅ Разбор реальных клинических кейсов</div>
+        <div>✅ Доступ к разделам Clinical, Academic & Grammar</div>
+      </div>
+
+      <a href="https://kazdoctors.com/tarifs/" class="cta-btn" id="pwBuyBtn">🔥 Получить полный доступ</a>
+      <a href="/login.html" class="cta-btn secondary" id="pwLoginBtn">🔐 Уже есть аккаунт? Войти</a>
+    </div>
+
+  </div>
+
+<script>
+  // ================= SUPABASE & DEMO MODE CHECK =================
+  const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  let isDemoMode = true;
+  const DEMO_LIMIT = 5; // Сколько вопросов доступно бесплатно без входа в аккаунт
+
+  async function checkAuth() {
+    try {
+      const { data, error } = await supabaseClient.auth.getSession();
+      if (!error && data && data.session) {
+        // Пользователь авторизован — даем безлимитный полный доступ
+        isDemoMode = false;
+        document.getElementById('demoBanner').style.display = 'none';
+      } else {
+        // Не авторизован — включаем демо на 5 вопросов
+        isDemoMode = true;
+        document.getElementById('demoBanner').style.display = 'block';
+      }
+    } catch (e) {
+      isDemoMode = true;
+      document.getElementById('demoBanner').style.display = 'block';
+    }
+    updateStatsUI();
+    nextQuestion();
+  }
+
+  // ================= UI TRANSLATIONS =================
+  let currentLang = 'ru';
+
+  const uiTranslations = {
+    ru: {
+      back: "⬅ Назад",
+      demoBanner: `🔓 Демо-режим: доступно ${DEMO_LIMIT} бесплатных вопросов`,
+      optA1: "Level A1 — Базовые фразы и симптомы",
+      optA2: "Level A2 — Грамматика и ход опроса",
+      optB1: "Level B1+ — Клинические кейсы и эмпатия",
+      optMix: "🔥 Все уровни (Mix)",
+      total: "Всего:",
+      correct: "Верно:",
+      streak: "Серия:",
+      expTitle: "💡 Пояснение:",
+      expDefault: "Выберите правильный вариант ответа.",
+      nextBtn: "Далее ➔",
+      pwTitle: "Демо-режим завершен!",
+      pwDesc: "Вы прошли 5 пробных вопросов. Откройте полный доступ ко всем тренажерам, чтобы отработать опрос пациентов до автоматизма!",
+      pwFeatures: `
+        <div>✅ Полная база вопросов (уровни A1, A2, B1+)</div>
+        <div>✅ Разбор реальных клинических кейсов</div>
+        <div>✅ Доступ к разделам Clinical, Academic & Grammar</div>
+      `,
+      pwBuyBtn: "🔥 Получить полный доступ (Тарифы)",
+      pwLoginBtn: "🔐 Уже есть аккаунт? Войти"
+    },
+    kz: {
+      back: "⬅ Артқа",
+      demoBanner: `🔓 Демо-режим: ${DEMO_LIMIT} тегін сұрақ қолжетімді`,
+      optA1: "Level A1 — Негізгі фразалар мен симптомдар",
+      optA2: "Level A2 — Грамматика және сұхбат барысы",
+      optB1: "Level B1+ — Клиникалық кейстер мен эмпатия",
+      optMix: "🔥 Барлық деңгейлер (Mix)",
+      total: "Барлығы:",
+      correct: "Дұрыс:",
+      streak: "Серия:",
+      expTitle: "💡 Түсіндірме:",
+      expDefault: "Дұрыс жауап нұсқасын таңдаңыз.",
+      nextBtn: "Келесі ➔",
+      pwTitle: "Демо-режим аяқталды!",
+      pwDesc: "Сіз 5 сынақ сұрағынан өттіңіз. Пациенттерден анамнез жинауды толық меңгеру үшін барлық тренажерлерге толық қолжетімділік алыңыз!",
+      pwFeatures: `
+        <div>✅ Толық сұрақтар базасы (A1, A2, B1+ деңгейлері)</div>
+        <div>✅ Нақты клиникалық кейстерді талдау</div>
+        <div>✅ Clinical, Academic & Grammar бөлімдеріне кіру</div>
+      `,
+      pwBuyBtn: "🔥 Толық қолжетімділік алу (Бағалар)",
+      pwLoginBtn: "🔐 Аккаунтыңыз бар ма? Кіру"
+    }
+  };
+
+  // ================= QUESTIONS DATABASE (A1, A2, B1+) =================
+  const questions = [
+    // -------------------- LEVEL A1 (12 Questions) --------------------
+    {
+      level: "A1",
+      tag: { ru: "A1 • Начало приема", kz: "A1 • Қабылдауды бастау" },
+      question: {
+        ru: "Как вежливо спросить пациента: «Что вас привело сегодня?»",
+        kz: "Пациенттен «Бүгін сізді не мазалап келді?» деп қалай сыпайы сұрауға болады?"
+      },
+      options: {
+        ru: ["What brings you in today?", "Why did you come here?", "Tell me your disease.", "What is your problem?"],
+        kz: ["What brings you in today?", "Why did you come here?", "Tell me your disease.", "What is your problem?"]
+      },
+      correct: 0,
+      explanation: {
+        ru: "Фраза «What brings you in today?» — золотой стандарт начала медицинского интервью в англоязычной практике. Вопрос «What is the problem?» звучит грубо.",
+        kz: "«What brings you in today?» фразасы — алтын стандарты. «What is the problem?» деген сұрақ дөрекі естіледі."
+      }
+    },
+    {
+      level: "A1",
+      tag: { ru: "A1 • Локализация (Site)", kz: "A1 • Орналасуы (Site)" },
+      question: {
+        ru: "Пациент жалуется на боль в животе. Как попросить его показать точное место боли?",
+        kz: "Пациент ішінің ауырғанына шағымданады. Ауырған жерді нақты көрсетуін қалай сұрайсыз?"
+      },
+      options: {
+        ru: ["Did it start suddenly?", "Can you point to the area?", "How often does it happen?", "Do you have a fever?"],
+        kz: ["Did it start suddenly?", "Can you point to the area?", "How often does it happen?", "Do you have a fever?"]
+      },
+      correct: 1,
+      explanation: {
+        ru: "«Can you point to the area?» — просьба указать пальцем на место боли.",
+        kz: "«Can you point to the area?» — ауырған аймақты қолмен көрсетуді сұрау."
+      }
+    },
+    {
+      level: "A1",
+      tag: { ru: "A1 • Оценка тяжести (Severity)", kz: "A1 • Ауырлығын бағалау (Severity)" },
+      question: {
+        ru: "Выберите правильный вопрос для оценки силы боли по шкале от 0 до 10:",
+        kz: "0-ден 10-ға дейінгі шкала бойынша ауырсыну күшін бағалауға арналған сұрақты таңдаңыз:"
+      },
+      options: {
+        ru: [
+          "How many pains do you have from 0 to 10?",
+          "On a scale from 0 to 10, how bad is it?",
+          "Is your pain 0 or 10 today?",
+          "Tell me the number of your pain."
+        ],
+        kz: [
+          "How many pains do you have from 0 to 10?",
+          "On a scale from 0 to 10, how bad is it?",
+          "Is your pain 0 or 10 today?",
+          "Tell me the number of your pain."
+        ]
+      },
+      correct: 1,
+      explanation: {
+        ru: "Стандартный чанк: «On a scale from 0 to 10, how bad is it?» (или «how severe is the pain?»).",
+        kz: "Стандартты құрылым (chunk): «On a scale from 0 to 10, how bad is it?» (немесе «how severe is the pain?»)."
+      }
+    },
+    {
+      level: "A1",
+      tag: { ru: "A1 • Понимание пациента", kz: "A1 • Пациентті түсіну" },
+      question: {
+        ru: "Врач спрашивает: «When did the headache start?» Какой ответ пациента подходит по смыслу?",
+        kz: "Дәрігер: «When did the headache start?» деп сұрайды. Пациенттің қай жауабы мағынасы бойынша сәйкес келеді?"
+      },
+      options: {
+        ru: ["Around 7 out of 10.", "Two days ago.", "At the back of my head.", "Stress makes it worse."],
+        kz: ["Around 7 out of 10.", "Two days ago.", "At the back of my head.", "Stress makes it worse."]
+      },
+      correct: 1,
+      explanation: {
+        ru: "Вопрос «When did ... start?» спрашивает о времени начала симптомов (Onset). Ответ: «Two days ago» (Два дня назад).",
+        kz: "«When did ... start?» сұрағы симптомдардың басталу уақытын (Onset) сұрайды. Жауап: «Two days ago» (Екі күн бұрын)."
+      }
+    },
+    {
+      level: "A1",
+      tag: { ru: "A1 • Симптомы и вопросы", kz: "A1 • Симптомдар мен сұрақтар" },
+      question: {
+        ru: "Пациент говорит: «I feel dizzy» (У меня кружится голова). Какой уточняющий вопрос подходит лучше всего?",
+        kz: "Пациент: «I feel dizzy» (Басым айналып тұр) дейді. Қай нақтылаушы сұрақ ең қолайлы?"
+      },
+      options: {
+        ru: [
+          "Do you feel like the room is spinning?",
+          "How many times a day do you go to the toilet?",
+          "Is the cough dry or wet?",
+          "Do you have difficulty swallowing?"
+        ],
+        kz: [
+          "Do you feel like the room is spinning?",
+          "How many times a day do you go to the toilet?",
+          "Is the cough dry or wet?",
+          "Do you have difficulty swallowing?"
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "При головокружении (dizziness) важно уточнить наличие истинного вертиго: «Do you feel like the room is spinning?» (Кажется ли вам, что комната вращается?).",
+        kz: "Бас айналу кезінде (dizziness) вертиго бар-жоғын нақтылау маңызды: «Do you feel like the room is spinning?» (Сізге бөлме айналып жатқандай көріне ме?)."
+      }
+    },
+    {
+      level: "A1",
+      tag: { ru: "A1 • Социальный анамнез", kz: "A1 • Әлеуметтік анамнез" },
+      question: {
+        ru: "Как естественно спросить пациента: «Кем вы работаете?»",
+        kz: "Пациенттен «Кім болып жұмыс істейсіз?» деп қалай табиғи түрде сұрауға болады?"
+      },
+      options: {
+        ru: ["What do you do for a living?", "Who are you at work?", "Why do you work?", "Where is your money from?"],
+        kz: ["What do you do for a living?", "Who are you at work?", "Why do you work?", "Where is your money from?"]
+      },
+      correct: 0,
+      explanation: {
+        ru: "«What do you do for a living?» или «What do you do for work?» — вежливые идиоматические вопросы о профессии.",
+        kz: "«What do you do for a living?» немесе «What do you do for work?» — кәсібі туралы сыпайы әрі табиғи сұрақтар."
+      }
+    },
+    {
+      level: "A1",
+      tag: { ru: "A1 • Характер боли (Character)", kz: "A1 • Ауырсыну сипаты (Character)" },
+      question: {
+        ru: "Что означает вопрос врача: «Is the pain sharp, dull, burning, or throbbing?»",
+        kz: "Дәрігердің «Is the pain sharp, dull, burning, or throbbing?» деген сұрағы нені білдіреді?"
+      },
+      options: {
+        ru: [
+          "Боль постоянная или приступообразная?",
+          "Боль острая, тупая, жгучая или пульсирующая?",
+          "Боль отдает в руку, спину, шею или челюсть?",
+          "Боль усиливается утром, днем, вечером или ночью?"
+        ],
+        kz: [
+          "Ауырсыну тұрақты ма, әлде ұстамалы ма?",
+          "Ауырсыну өткір ме, сыздаған ба, ашыған ба, әлде лүпілдеген бе?",
+          "Ауырсыну қолға, арқаға, мойынға немесе жаққа беріле ме?",
+          "Ауырсыну таңертең, күндіз, кешке немесе түнде күшейе ме?"
+        ]
+      },
+      correct: 1,
+      explanation: {
+        ru: "Sharp — острая, dull — тупая/ноющая, burning — жгучая, throbbing — пульсирующая.",
+        kz: "Sharp — өткір, dull — сыздаған, burning — ашыған (күйдірген), throbbing — лүпілдеген."
+      }
+    },
+    {
+      level: "A1",
+      tag: { ru: "A1 • Анамнез жизни (PMH)", kz: "A1 • Аурулар анамнезі (PMH)" },
+      question: {
+        ru: "Как спросить пациента: «Есть ли у вас хронические заболевания?»",
+        kz: "Пациенттен «Сізде созылмалы аурулар бар ма?» деп қалай сұрайсыз?"
+      },
+      options: {
+        ru: [
+          "Do you have any chronic medical conditions?",
+          "Are you always sick every day?",
+          "Did you have old diseases?",
+          "Do you take any home remedies?"
+        ],
+        kz: [
+          "Do you have any chronic medical conditions?",
+          "Are you always sick every day?",
+          "Did you have old diseases?",
+          "Do you take any home remedies?"
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "В медицинском английском термин «хронические заболевания» передается как «chronic medical conditions».",
+        kz: "Медициналық ағылшын тілінде «созылмалы аурулар» термині «chronic medical conditions» деп беріледі."
+      }
+    },
+    {
+      level: "A1",
+      tag: { ru: "A1 • Понимание ответов", kz: "A1 • Жауаптарды түсіну" },
+      question: {
+        ru: "Врач спрашивает: «Does the pain spread anywhere?» Пациент отвечает: «Yes, to my back.» Что это значит?",
+        kz: "Дәрігер: «Does the pain spread anywhere?» деп сұрайды. Пациент: «Yes, to my back.» деп жауап береді. Бұл нені білдіреді?"
+      },
+      options: {
+        ru: [
+          "Боль началась вчера в спине.",
+          "Да, боль отдает (распространяется) в спину.",
+          "Нет, спина совсем не болит.",
+          "Боль проходит, когда я ложусь на спину."
+        ],
+        kz: [
+          "Ауырсыну кеше арқадан басталды.",
+          "Иә, ауырсыну арқаға тарайды (беріледі).",
+          "Жоқ, арқам мүлдем ауырмайды.",
+          "Шалқамнан жатқанда ауырсыну басылады."
+        ]
+      },
+      correct: 1,
+      explanation: {
+        ru: "Глаголы «spread» и «radiate» используются для оценки иррадиации боли (Radiation).",
+        kz: "«Spread» және «radiate» етістіктері ауырсынудың таралуын (Radiation) бағалау үшін қолданылады."
+      }
+    },
+    {
+      level: "A1",
+      tag: { ru: "A1 • Аллергоанамнез", kz: "A1 • Аллергиялық анамнез" },
+      question: {
+        ru: "Пациент сообщил об аллергии на пенициллин. Как спросить: «Какая реакция происходит при приеме?»",
+        kz: "Пациент пенициллинге аллергиясы бар екенін айтты. «Оны қабылдағанда қандай реакция болады?» деп қалай сұрайсыз?"
+      },
+      options: {
+        ru: [
+          "Why do you take penicillin?",
+          "What happens when you take it?",
+          "How much penicillin do you drink?",
+          "Who gave you this allergy?"
+        ],
+        kz: [
+          "Why do you take penicillin?",
+          "What happens when you take it?",
+          "How much penicillin do you drink?",
+          "Who gave you this allergy?"
+        ]
+      },
+      correct: 1,
+      explanation: {
+        ru: "Простой и точный вопрос из учебника: «What happens when you take it?» (Пациент может ответить: «I get a rash» — появляется сыпь).",
+        kz: "Оқулықтағы қарапайым әрі нақты сұрақ: «What happens when you take it?» (Пациент «I get a rash» — бөртпе шығады деп жауап бере алады)."
+      }
+    },
+    {
+      level: "A1",
+      tag: { ru: "A1 • Лекарства", kz: "A1 • Дәрі-дәрмектер" },
+      question: {
+        ru: "Как переводится вопрос: «Do you take any over-the-counter drugs or supplements?»",
+        kz: "«Do you take any over-the-counter drugs or supplements?» сұрағы қалай аударылады?"
+      },
+      options: {
+        ru: [
+          "Принимаете ли вы антибиотики по рецепту?",
+          "Принимаете ли вы безрецептурные препараты или добавки (БАДы)?",
+          "Покупаете ли вы лекарства в аптеке каждый день?",
+          "Были ли у вас побочные эффекты от таблеток?"
+        ],
+        kz: [
+          "Рецепт бойынша антибиотиктер қабылдайсыз ба?",
+          "Рецептсіз дәрілерді немесе БАД-тарды (қоспаларды) қабылдайсыз ба?",
+          "Дәріханадан күн сайын дәрі сатып аласыз ба?",
+          "Дәрілерден жанама әсерлер болды ма?"
+        ]
+      },
+      correct: 1,
+      explanation: {
+        ru: "Over-the-counter (OTC) drugs — препараты, отпускаемые без рецепта врача; supplements — пищевые добавки/витамины.",
+        kz: "Over-the-counter (OTC) drugs — дәрігердің рецептісіз сатылатын препараттар; supplements — тағамдық қоспалар/дәрумендер."
+      }
+    },
+    {
+      level: "A1",
+      tag: { ru: "A1 • Завершение опроса", kz: "A1 • Сұхбатты аяқтау" },
+      question: {
+        ru: "Какой вопрос лучше всего задать в самом конце сбора анамнеза (Closing)?",
+        kz: "Анамнез жинаудың ең соңында (Closing) қандай сұрақ қойған дұрыс?"
+      },
+      options: {
+        ru: [
+          "Is there anything else I should know?",
+          "When did the symptoms begin?",
+          "What brings you in today?",
+          "Can you point to the area?"
+        ],
+        kz: [
+          "Is there anything else I should know?",
+          "When did the symptoms begin?",
+          "What brings you in today?",
+          "Can you point to the area?"
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "«Is there anything else I should know?» (Есть ли что-то еще, что мне нужно знать?) позволяет пациенту добавить важные детали перед осмотром.",
+        kz: "«Is there anything else I should know?» (Мен білуім керек тағы бірдеңе бар ма?) сұрағы пациентке тексеру алдында маңызды деректерді қосуға мүмкіндік береді."
+      }
+    },
+
+    // -------------------- LEVEL A2 (12 Questions) --------------------
+    {
+      level: "A2",
+      tag: { ru: "A2 • Исправление ошибки", kz: "A2 • Қатені түзету" },
+      question: {
+        ru: "Исправьте частую грамматическую ошибку в вопросе врача:",
+        kz: "Дәрігер сұрағындағы жиі кездесетін грамматикалық қатені түзетіңіз:"
+      },
+      chunks: "❌ \"How long you have cough?\"",
+      options: {
+        ru: [
+          "How long have you had the cough?",
+          "How long did you had cough?",
+          "How long are you having cough?",
+          "When you have the cough?"
+        ],
+        kz: [
+          "How long have you had the cough?",
+          "How long did you had cough?",
+          "How long are you having cough?",
+          "When you have the cough?"
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "Если симптом начался в прошлом и продолжается сейчас, с вопросом «How long...» используется Present Perfect: «How long have you had the cough?» (или «How long have you been coughing?»).",
+        kz: "Егер симптом бұрын басталып, қазір де жалғасып жатса, «How long...» сұрағымен Present Perfect қолданылады: «How long have you had the cough?» (немесе «How long have you been coughing?»)."
+      }
+    },
+    {
+      level: "A2",
+      tag: { ru: "A2 • Конструктор вопроса", kz: "A2 • Сұрақ құрастыру" },
+      question: {
+        ru: "Составьте грамматически правильный вопрос из опорных слов:",
+        kz: "Тірек сөздерден грамматикалық тұрғыдан дұрыс сұрақ құрастырыңыз:"
+      },
+      chunks: "pain / start / suddenly / or / gradually",
+      options: {
+        ru: [
+          "Did the pain start suddenly or gradually?",
+          "Was the pain start suddenly or gradually?",
+          "Did the pain started suddenly or gradually?",
+          "Does pain starting suddenly or gradually?"
+        ],
+        kz: [
+          "Did the pain start suddenly or gradually?",
+          "Was the pain start suddenly or gradually?",
+          "Did the pain started suddenly or gradually?",
+          "Does pain starting suddenly or gradually?"
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "Начало боли — свершившийся факт в прошлом (Past Simple). В вопросе используется вспомогательный глагол Did + начальная форма глагола (start).",
+        kz: "Ауырсынудың басталуы — өткен шақта болған әрекет (Past Simple). Сұраулы сөйлемде Did көмекші етістігі + етістіктің бастапқы формасы (start) қолданылады."
+      }
+    },
+    {
+      level: "A2",
+      tag: { ru: "A2 • Исправление ошибки", kz: "A2 • Қатені түзету" },
+      question: {
+        ru: "Как правильно переформулировать некорректный вопрос врача?",
+        kz: "Дәрігердің қате құрылған сұрағын қалай дұрыс айту керек?"
+      },
+      chunks: "❌ \"Where exactly you feel pain?\"",
+      options: {
+        ru: [
+          "Where exactly do you feel the pain?",
+          "Where exactly are you feel the pain?",
+          "Where exactly feels the pain?",
+          "Where you do feel the pain?"
+        ],
+        kz: [
+          "Where exactly do you feel the pain?",
+          "Where exactly are you feel the pain?",
+          "Where exactly feels the pain?",
+          "Where you do feel the pain?"
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "В вопросах Present Simple после вопросительного слова (Where exactly) обязательно ставится вспомогательный глагол do: «Where exactly do you feel the pain?».",
+        kz: "Present Simple сұрақтарында сұраулы сөзден кейін (Where exactly) міндетті түрде do көмекші етістігі қойылады: «Where exactly do you feel the pain?»."
+      }
+    },
+    {
+      level: "A2",
+      tag: { ru: "A2 • Диалог с пациентом", kz: "A2 • Пациентпен диалог" },
+      question: {
+        ru: "Восстановите пропущенную реплику врача в диалоге:",
+        kz: "Диалогтағы дәрігердің қалып қойған сұрағын табыңыз:"
+      },
+      chunks: "Doctor: ________ \nPatient: Yes, moving makes it worse.",
+      options: {
+        ru: [
+          "Does anything make it better or worse?",
+          "How long have you had this pain?",
+          "Have you taken any painkillers?",
+          "Did it start suddenly or gradually?"
+        ],
+        kz: [
+          "Does anything make it better or worse?",
+          "How long have you had this pain?",
+          "Have you taken any painkillers?",
+          "Did it start suddenly or gradually?"
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "Пациент отвечает о триггерах/ухудшающих факторах (Exacerbating factors): «Движение усиливает боль». Значит, врач спросил: «Does anything make it better or worse?».",
+        kz: "Пациент ауырсынуды күшейтетін факторлар (Exacerbating factors) туралы жауап береді: «Қозғалыс оны нашарлатады». Демек, дәрігер: «Does anything make it better or worse?» деп сұраған."
+      }
+    },
+    {
+      level: "A2",
+      tag: { ru: "A2 • Мнемоника SOCRATES", kz: "A2 • SOCRATES мнемоникасы" },
+      question: {
+        ru: "К какому пункту схемы SOCRATES относится вопрос: «Is the pain constant or does it come and go?»",
+        kz: "«Is the pain constant or does it come and go?» сұрағы SOCRATES схемасының қай бөліміне жатады?"
+      },
+      options: {
+        ru: [
+          "T — Timing and frequency (Время и периодичность)",
+          "R — Radiation (Иррадиация)",
+          "A — Associated symptoms (Сопутствующие симптомы)",
+          "S — Site (Место локализации)"
+        ],
+        kz: [
+          "T — Timing and frequency (Уақыты мен жиілігі)",
+          "R — Radiation (Таралуы)",
+          "A — Associated symptoms (Қосалқы симптомдар)",
+          "S — Site (Орналасу орны)"
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "Вопрос о том, постоянная ли боль или приступообразная («comes and goes»), характеризует её течение во времени (Timing & Frequency).",
+        kz: "Ауырсынудың тұрақты немесе әлсін-әлсін пайда болатыны («comes and goes») туралы сұрақ оның уақыт пен жиілік сипатын (Timing & Frequency) анықтайды."
+      }
+    },
+    {
+      level: "A2",
+      tag: { ru: "A2 • Семейный анамнез", kz: "A2 • Отбасылық анамнез" },
+      question: {
+        ru: "Какой идиоматический глагол используется во фразе «Есть ли в вашей семье наследственные заболевания?»",
+        kz: "«Отбасыңызда тұқым қуалайтын аурулар бар ма?» деген фразада қандай идиомалық етістік қолданылады?"
+      },
+      chunks: "Do any medical conditions ____ in your family?",
+      options: {
+        ru: ["run", "walk", "go", "stay"],
+        kz: ["run", "walk", "go", "stay"]
+      },
+      correct: 0,
+      explanation: {
+        ru: "Устойчивое выражение (chunk): «run in the family» — передаваться по наследству / встречаться в семье.",
+        kz: "Тұрақты тіркес (chunk): «run in the family» — тұқым қуалау / отбасында кездесу."
+      }
+    },
+    {
+      level: "A2",
+      tag: { ru: "A2 • Логика опроса", kz: "A2 • Сұхбат логикасы" },
+      question: {
+        ru: "Пациент говорит: «I have had a cough for 5 days.» Какой следующий вопрос наиболее клинически грамотный?",
+        kz: "Пациент: «I have had a cough for 5 days» дейді. Келесі қандай клиникалық сұрақ ең орынды?"
+      },
+      options: {
+        ru: [
+          "Is the cough dry or are you coughing up mucus?",
+          "Do you like cold weather?",
+          "Do you eat late at night?",
+          "Are your limbs edematous?"
+        ],
+        kz: [
+          "Is the cough dry or are you coughing up mucus?",
+          "Do you like cold weather?",
+          "Do you eat late at night?",
+          "Are your limbs edematous?"
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "При жалобе на кашель сразу после длительности выясняется его характер: сухой или продуктивный (с мокротой — «coughing up mucus / productive»).",
+        kz: "Жөтелге шағымданғанда, оның ұзақтығынан кейін бірден сипаты анықталады: құрғақ па, әлде қақырықты ма («coughing up mucus / productive»)."
+      }
+    },
+    {
+      level: "A2",
+      tag: { ru: "A2 • Вежливая коммуникация", kz: "A2 • Сыпайы коммуникация" },
+      question: {
+        ru: "Вы не расслышали слова пациента. Как вежливо переспросить вместо грубого «I you not understand, repeat»?",
+        kz: "Пациенттің сөзін естімей қалдыңыз. Дөрекі «I you not understand, repeat» орнына қалай сыпайы қайта сұрауға болады?"
+      },
+      options: {
+        ru: [
+          "I do not understand you, could you please repeat?",
+          "Speak louder now please.",
+          "Why you speak unclear?",
+          "Repeat your words again."
+        ],
+        kz: [
+          "I do not understand you, could you please repeat?",
+          "Speak louder now please.",
+          "Why you speak unclear?",
+          "Repeat your words again."
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "Конструкция «Could you please...?» и «Could you clarify what you mean by...?» делает речь врача профессиональной и уважительной.",
+        kz: "«Could you please...?» және «Could you clarify what you mean by...?» құрылымдары дәрігердің сөзін кәсіби әрі сыпайы етеді."
+      }
+    },
+    {
+      level: "A2",
+      tag: { ru: "A2 • Динамика симптомов", kz: "A2 • Симптомдар динамикасы" },
+      question: {
+        ru: "Как грамматически правильно спросить, улучшается ли состояние, ухудшается или остается прежним?",
+        kz: "Жағдайдың жақсарып, нашарлап немесе өзгеріссіз қалып жатқанын грамматикалық тұрғыдан қалай дұрыс сұрайды?"
+      },
+      options: {
+        ru: [
+          "Has it been getting better, worse, or staying the same?",
+          "Did it got better, worse or same?",
+          "Is it get better, worse or stay same?",
+          "How it changes better or worse?"
+        ],
+        kz: [
+          "Has it been getting better, worse, or staying the same?",
+          "Did it got better, worse or same?",
+          "Is it get better, worse or stay same?",
+          "How it changes better or worse?"
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "Для описания динамики процесса от прошлого к настоящему используется Present Perfect Continuous: «Has it been getting better, worse, or staying the same?».",
+        kz: "Өткеннен бүгінгі күнге дейінгі процесс динамикасын сипаттау үшін Present Perfect Continuous қолданылады: «Has it been getting better, worse, or staying the same?»."
+      }
+    },
+    {
+      level: "A2",
+      tag: { ru: "A2 • Педиатрический опрос", kz: "A2 • Педиатриялық сұхбат" },
+      question: {
+        ru: "На приеме мама с маленьким ребенком (Case 5). Какой вопрос критически важен для оценки обезвоживания у детей?",
+        kz: "Қабылдауда кішкентай баласы бар ана отыр (Case 5). Балалардағы сусыздануды бағалау үшін қай сұрақ өте маңызды?"
+      },
+      options: {
+        ru: [
+          "Is he drinking enough fluids and urinating normally?",
+          "What does he do for a living?",
+          "Has he ever had an endoscopy?",
+          "Does the pain spread to his jaw?"
+        ],
+        kz: [
+          "Is he drinking enough fluids and urinating normally?",
+          "What does he do for a living?",
+          "Has he ever had an endoscopy?",
+          "Does the pain spread to his jaw?"
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "В педиатрии контроль потребления и выделения жидкости (Intake & Output: «Is he drinking enough fluids? Is he urinating normally?») — ключевой показатель гидратации.",
+        kz: "Педиатрияда сұйықтықты ішу мен шығаруды бақылау (Intake & Output: «Is he drinking enough fluids? Is he urinating normally?») — гидратацияның негізгі көрсеткіші."
+      }
+    },
+    {
+      level: "A2",
+      tag: { ru: "A2 • Влияние на жизнь", kz: "A2 • Өмірге әсері" },
+      question: {
+        ru: "Как спросить пациента: «Мешает ли это вашему сну?»",
+        kz: "Пациенттен «Бұл ұйқыңызға кедергі келтіре ме?» деп қалай сұрайсыз?"
+      },
+      chunks: "Does it ____ with your sleep?",
+      options: {
+        ru: ["interfere", "stop", "break", "damage"],
+        kz: ["interfere", "stop", "break", "damage"]
+      },
+      correct: 0,
+      explanation: {
+        ru: "Устойчивое сочетание: «interfere with something» — мешать чему-либо / препятствовать («Does it interfere with your sleep?»).",
+        kz: "Тұрақты тіркес: «interfere with something» — бір нәрсеге кедергі келтіру («Does it interfere with your sleep?»)."
+      }
+    },
+    {
+      level: "A2",
+      tag: { ru: "A2 • Активное слушание", kz: "A2 • Белсенді тыңдау" },
+      question: {
+        ru: "Пациент упомянул, что головная боль усиливается ночью. Как вежливо попросить его рассказать об этом подробнее?",
+        kz: "Пациент бас ауруының түнде күшейетінін айтты. Осы туралы толығырақ айтып беруін қалай сыпайы сұрайсыз?"
+      },
+      chunks: "mention / headache / worse at night",
+      options: {
+        ru: [
+          "You mentioned that the headache is worse at night, could you please describe it more?",
+          "You said pain worse at night, explain now.",
+          "Why night headache is worse tell me?",
+          "Night headache — what is it?"
+        ],
+        kz: [
+          "You mentioned that the headache is worse at night, could you please describe it more?",
+          "You said pain worse at night, explain now.",
+          "Why night headache is worse tell me?",
+          "Night headache — what is it?"
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "Прием возврата к словам пациента («You mentioned that..., could you please describe it more / elaborate on that?») показывает внимательность врача.",
+        kz: "Пациенттің сөзіне қайта оралу тәсілі («You mentioned that..., could you please describe it more / elaborate on that?») дәрігердің мұқияттылығын көрсетеді."
+      }
+    },
+
+    // -------------------- LEVEL B1+ (12 Questions) --------------------
+    {
+      level: "B1+",
+      tag: { ru: "B1+ • Эмпатия (Active Listening)", kz: "B1+ • Эмпатия (Active Listening)" },
+      question: {
+        ru: "Пациент встревожен своими симптомами. Какая фраза лучше всего выражает эмпатию и поддержку врача?",
+        kz: "Пациент өз симптомдарына қатты алаңдап отыр. Қай фраза дәрігердің эмпатиясы мен қолдауын ең жақсы білдіреді?"
+      },
+      options: {
+        ru: [
+          "I can see why you're concerned. You did the right thing by coming in.",
+          "Calm down, everyone has this disease.",
+          "Don't talk about your feelings, just answer my questions.",
+          "It is your fault because you smoke a pack a day."
+        ],
+        kz: [
+          "I can see why you're concerned. You did the right thing by coming in.",
+          "Calm down, everyone has this disease.",
+          "Don't talk about your feelings, just answer my questions.",
+          "It is your fault because you smoke a pack a day."
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "Валидация чувств пациента («I can see why you're concerned») и похвала за своевременный визит («You did the right thing by coming in») создают доверительный контакт (rapport).",
+        kz: "Пациенттің сезімін түсіну («I can see why you're concerned») және уақытылы келгенін қолдау («You did the right thing by coming in») сенімді байланыс (rapport) орнатады."
+      }
+    },
+    {
+      level: "B1+",
+      tag: { ru: "B1+ • Смягчение диагноза (Softening)", kz: "B1+ • Диагнозды жұмсарту (Softening)" },
+      question: {
+        ru: "Как профессионально и мягко сообщить предварительный диагноз, чтобы не напугать пациента?",
+        kz: "Пациентті қорқытып алмау үшін алдын ала диагнозды қалай кәсіби әрі жұмсақ жеткізуге болады?"
+      },
+      options: {
+        ru: [
+          "Based on your symptoms and examination, it looks like you may have...",
+          "You definitely have a bad disease called...",
+          "I am 100% sure your organ is infected.",
+          "Your results are bad, you have..."
+        ],
+        kz: [
+          "Based on your symptoms and examination, it looks like you may have...",
+          "You definitely have a bad disease called...",
+          "I am 100% sure your organ is infected.",
+          "Your results are bad, you have..."
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "Смягчающие конструкции (Softening phrases): «Based on your symptoms, it looks like it might be / you may have...» снижают тревожность пациента.",
+        kz: "Жұмсарту фразалары (Softening phrases): «Based on your symptoms, it looks like it might be / you may have...» пациенттің уайымын азайтады."
+      }
+    },
+    {
+      level: "B1+",
+      tag: { ru: "B1+ • Case 1: Гипертония", kz: "B1+ • Case 1: Гипертония" },
+      question: {
+        ru: "Как простыми словами (без сложного жаргона) объяснить пациенту суть артериальной гипертензии (Case 1)?",
+        kz: "Пациентке артериялық гипертензияның мәнін (Case 1) қарапайым сөзбен қалай түсіндіруге болады?"
+      },
+      options: {
+        ru: [
+          "It means that the force of blood against your blood vessel walls is too strong.",
+          "It means your systemic vascular resistance and cardiac output are elevated.",
+          "It means your blood is boiling inside your arteries.",
+          "It means your heart has stopped pumping blood normally."
+        ],
+        kz: [
+          "It means that the force of blood against your blood vessel walls is too strong.",
+          "It means your systemic vascular resistance and cardiac output are elevated.",
+          "It means your blood is boiling inside your arteries.",
+          "It means your heart has stopped pumping blood normally."
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "Объяснение для пациента должно быть понятным: «сила давления крови на стенки сосудов слишком велика» («the force of blood against your blood vessel walls is too strong»).",
+        kz: "Пациентке арналған түсіндірме ұғынықты болуы керек: «қанның қан тамырлары қабырғаларына түсіретін күші тым жоғары» («the force of blood against your blood vessel walls is too strong»)."
+      }
+    },
+    {
+      level: "B1+",
+      tag: { ru: "B1+ • Case 2: Острый бронхит", kz: "B1+ • Case 2: Жедел бронхит" },
+      question: {
+        ru: "Пациент с острым бронхитом просит назначить антибиотики. Как грамотно объяснить, почему они не нужны (Case 2)?",
+        kz: "Жедел бронхитпен ауырған пациент антибиотик тағайындауды сұрайды. Олардың неге қажет емес екенін қалай сауатты түсіндіресіз (Case 2)?"
+      },
+      options: {
+        ru: [
+          "Because it's most often caused by a virus, antibiotics are not usually needed. Instead, treatment focuses on relieving your symptoms.",
+          "Antibiotics are too expensive and dangerous for your liver.",
+          "We never give antibiotics for cough in this hospital.",
+          "Viruses eat antibiotics, so they will make you worse."
+        ],
+        kz: [
+          "Because it's most often caused by a virus, antibiotics are not usually needed. Instead, treatment focuses on relieving your symptoms.",
+          "Antibiotics are too expensive and dangerous for your liver.",
+          "We never give antibiotics for cough in this hospital.",
+          "Viruses eat antibiotics, so they will make you worse."
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "Четкое клиническое обоснование из Case 2: так как причина вирусная, антибиотики не показаны, а лечение направлено на снятие симптомов (supportive care).",
+        kz: "Case 2-дегі нақты клиникалық негіздеме: себебі вирус болғандықтан, антибиотиктер қажет емес, ал емдеу симптомдарды жеңілдетуге бағытталады."
+      }
+    },
+    {
+      level: "B1+",
+      tag: { ru: "B1+ • Case 3: Диабет 2 типа", kz: "B1+ • Case 3: 2 типті қант диабеті" },
+      question: {
+        ru: "У пациента жалобы: сильная усталость, жажда (3-4 л в день), частое мочеиспускание ночью, потеря веса. Как объяснить механизм диабета 2 типа?",
+        kz: "Пациенттің шағымдары: қатты шаршау, шөлдеу (күніне 3-4 л), түнде жиі кіші дәретке бару, салмақ жоғалту. 2 типті диабеттің механизмін қалай түсіндіресіз?"
+      },
+      options: {
+        ru: [
+          "In simple terms, your body is not using insulin effectively, so sugar builds up in your blood instead of being used for energy.",
+          "Your kidneys are broken because you drink 4 liters of water every day.",
+          "Your pancreas has completely disappeared and cannot make hormones.",
+          "You eat too many sweets, so your blood turned into syrup."
+        ],
+        kz: [
+          "In simple terms, your body is not using insulin effectively, so sugar builds up in your blood instead of being used for energy.",
+          "Your kidneys are broken because you drink 4 liters of water every day.",
+          "Your pancreas has completely disappeared and cannot make hormones.",
+          "You eat too many sweets, so your blood turned into syrup."
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "Фраза «In simple terms...» вводит доступное объяснение инсулинорезистентности: организм не использует инсулин эффективно, и сахар накапливается в крови.",
+        kz: "«In simple terms...» тіркесі инсулинге төзімділіктің қарапайым түсіндірмесін береді: ағза инсулинді тиімді пайдаланбайды, сондықтан қант энергияға айналудың орнына қанда жиналады."
+      }
+    },
+    {
+      level: "B1+",
+      tag: { ru: "B1+ • Case 4: Острый аппендицит", kz: "B1+ • Case 4: Жедел аппендицит" },
+      question: {
+        ru: "Боль началась около пупка и сместилась в правую нижнюю часть живота (8/10), была рвота. Как объяснить пациенту необходимость срочной операции?",
+        kz: "Ауырсыну кіндік маңынан басталып, іштің оң жақ төменгі бөлігіне ауысты (8/10), құсу болды. Пациентке шұғыл отаның қажеттілігін қалай түсіндіресіз?"
+      },
+      options: {
+        ru: [
+          "Appendicitis usually requires surgery, because if the appendix bursts, it can lead to a serious infection in the abdomen.",
+          "We need to cut your stomach today or you will die tonight.",
+          "You can take painkillers at home and come back next month for surgery.",
+          "Antibiotics will dissolve your appendix in two days."
+        ],
+        kz: [
+          "Appendicitis usually requires surgery, because if the appendix bursts, it can lead to a serious infection in the abdomen.",
+          "We need to cut your stomach today or you will die tonight.",
+          "You can take painkillers at home and come back next month for surgery.",
+          "Antibiotics will dissolve your appendix in two days."
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "Спокойное объяснение риска (Explaining risks): «if the appendix bursts (разрывается), it can lead to a serious infection in the abdomen».",
+        kz: "Қауіпті сабырлы түрде түсіндіру (Explaining risks): «if the appendix bursts (жарылса), it can lead to a serious infection in the abdomen»."
+      }
+    },
+    {
+      level: "B1+",
+      tag: { ru: "B1+ • Case 6: ГЭРБ (Acid Reflux)", kz: "B1+ • Case 6: ГЭРБ (Acid Reflux)" },
+      question: {
+        ru: "Пациент жалуется на жжение в груди после еды и кислый привкус во рту по ночам (Case 6). Какой вопрос обязателен для исключения кардиологической патологии?",
+        kz: "Пациент тамақтан кейін кеудесінің ашуына және түнде аузында қышқыл дәм пайда болуына шағымданады (Case 6). Кардиологиялық патологияны жоққа шығару үшін қай сұрақ міндетті?"
+      },
+      options: {
+        ru: [
+          "Does the pain spread anywhere, like to your arm or jaw?",
+          "Do you eat vegetables every morning?",
+          "Have you traveled abroad recently?",
+          "Does anyone in your family have asthma?"
+        ],
+        kz: [
+          "Does the pain spread anywhere, like to your arm or jaw?",
+          "Do you eat vegetables every morning?",
+          "Have you traveled abroad recently?",
+          "Does anyone in your family have asthma?"
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "При любой боли/жжении в груди врач обязан проверить иррадиацию в руку или челюсть («Does the pain spread anywhere, like to your arm or jaw?»), чтобы не пропустить ишемию миокарда.",
+        kz: "Кеудедегі кез келген ауырсыну/ашу кезінде миокард ишемиясын өткізіп алмау үшін дәрігер ауырсынудың қолға немесе жаққа берілуін («Does the pain spread anywhere, like to your arm or jaw?») тексеруге міндетті."
+      }
+    },
+    {
+      level: "B1+",
+      tag: { ru: "B1+ • Case 6: Рекомендации при ГЭРБ", kz: "B1+ • Case 6: ГЭРБ кезіндегі кеңестер" },
+      question: {
+        ru: "Какие рекомендации по образу жизни следует дать пациенту с гастроэзофагеальным рефлюксом (GERD)?",
+        kz: "Гастроэзофагеальды рефлюксі (GERD) бар пациентке өмір салты бойынша қандай кеңестер беру керек?"
+      },
+      options: {
+        ru: [
+          "I would recommend avoiding large or heavy meals, especially before lying down, and reducing spicy or fatty foods, caffeine, and alcohol.",
+          "You should lie down immediately after eating a heavy dinner to rest your stomach.",
+          "Drink more black coffee and eat spicy food to neutralize stomach acid.",
+          "Stop drinking water completely after 2 PM."
+        ],
+        kz: [
+          "I would recommend avoiding large or heavy meals, especially before lying down, and reducing spicy or fatty foods, caffeine, and alcohol.",
+          "You should lie down immediately after eating a heavy dinner to rest your stomach.",
+          "Drink more black coffee and eat spicy food to neutralize stomach acid.",
+          "Stop drinking water completely after 2 PM."
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "Вежливая форма совета («I would recommend avoiding...») с перечислением ключевых триггеров ГЭРБ: обильная еда перед сном, острая/жирная пища, кофеин и алкоголь.",
+        kz: "Кеңес берудің сыпайы формасы («I would recommend avoiding...») және ГЭРБ негізгі триггерлерін атау: жатар алдында көп тамақтану, ащы/майлы тағам, кофеин және алкоголь."
+      }
+    },
+    {
+      level: "B1+",
+      tag: { ru: "B1+ • Проверка понимания (Teach-back)", kz: "B1+ • Түсінгенін тексеру (Teach-back)" },
+      question: {
+        ru: "Вы объяснили пациенту схему лечения. Как убедиться, что он всё понял правильно, используя метод «Teach-back»?",
+        kz: "Сіз пациентке емдеу схемасын түсіндірдіңіз. «Teach-back» әдісін қолдана отырып, оның бәрін дұрыс түсінгеніне қалай көз жеткізесіз?"
+      },
+      options: {
+        ru: [
+          "Just to make sure we're on the same page, can you tell me in your own words how you'll take the medication?",
+          "Are you smart enough to remember my instructions?",
+          "Repeat after me word for word what I just said.",
+          "If you didn't understand, read the internet at home."
+        ],
+        kz: [
+          "Just to make sure we're on the same page, can you tell me in your own words how you'll take the medication?",
+          "Are you smart enough to remember my instructions?",
+          "Repeat after me word for word what I just said.",
+          "If you didn't understand, read the internet at home."
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "Фразы «Just to make sure we're on the same page...» и «Can you tell me in your own words?» — лучшая мировая практика проверки понимания без давления на пациента.",
+        kz: "«Just to make sure we're on the same page...» және «Can you tell me in your own words?» фразалары — пациентке қысым жасамай, түсінгенін тексерудің үздік әлемдік тәжірибесі."
+      }
+    },
+    {
+      level: "B1+",
+      tag: { ru: "B1+ • Резюмирование (Summarizing)", kz: "B1+ • Қорытындылау (Summarizing)" },
+      question: {
+        ru: "В конце расспроса вы хотите подытожить жалобы пациента, чтобы проверить точность. Какая фраза подойдет лучше всего?",
+        kz: "Сұхбат соңында нақтылықты тексеру үшін пациенттің шағымдарын қорытындылағыңыз келеді. Қай фраза ең қолайлы?"
+      },
+      options: {
+        ru: [
+          "Let me make sure I understood correctly and summarize your complaints... Did I get that right?",
+          "Stop talking now, I will read my notes.",
+          "So you have many problems, right?",
+          "I wrote everything down, consultation is finished."
+        ],
+        kz: [
+          "Let me make sure I understood correctly and summarize your complaints... Did I get that right?",
+          "Stop talking now, I will read my notes.",
+          "So you have many problems, right?",
+          "I wrote everything down, consultation is finished."
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "Комбинация «Let me make sure I understood correctly...», «Let me summarize your complaints...» и «Did I get that right?» завершает сбор анамнеза по стандарту OSCE/USMLE.",
+        kz: "«Let me make sure I understood correctly...», «Let me summarize your complaints...» және «Did I get that right?» тіркестері анамнез жинауды OSCE/USMLE стандарты бойынша аяқтайды."
+      }
+    },
+    {
+      level: "B1+",
+      tag: { ru: "B1+ • Сигнальные фразы (Signalling)", kz: "B1+ • Белгі беру фразалары (Signalling)" },
+      question: {
+        ru: "Как структурированно начать этап объяснения результатов и диагноза пациенту?",
+        kz: "Пациентке нәтижелер мен диагнозды түсіндіру кезеңін қалай жүйелі түрде бастауға болады?"
+      },
+      options: {
+        ru: [
+          "I'll go through the results with you. First, I'll explain the diagnosis, and then let's talk about the next steps.",
+          "Listen to me carefully without interrupting.",
+          "Here is your paper with blood tests, read it.",
+          "Now I will talk about pharmacology."
+        ],
+        kz: [
+          "I'll go through the results with you. First, I'll explain the diagnosis, and then let's talk about the next steps.",
+          "Listen to me carefully without interrupting.",
+          "Here is your paper with blood tests, read it.",
+          "Now I will talk about pharmacology."
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "Сигнальные фразы («I'll go through the results with you», «First, I'll explain...», «Let's talk about the next steps») помогают пациенту легко воспринимать информацию.",
+        kz: "Белгі беру фразалары («I'll go through the results with you», «First, I'll explain...», «Let's talk about the next steps») пациентке ақпаратты оңай қабылдауға көмектеседі."
+      }
+    },
+    {
+      level: "B1+",
+      tag: { ru: "B1+ • Красные флаги (Safety Netting)", kz: "B1+ • Қауіпті белгілер (Safety Netting)" },
+      question: {
+        ru: "Отпуская пациента на амбулаторное лечение, как предупредить его о симптомах, при которых нужно срочно вернуться к врачу?",
+        kz: "Пациентті амбулаториялық емделуге жібере отырып, дәрігерге шұғыл қайта оралу керек симптомдар туралы қалай ескертесіз?"
+      },
+      options: {
+        ru: [
+          "If you develop a high fever, shortness of breath, or if your symptoms don't improve, you should come back for a reassessment.",
+          "Never come back to the hospital before next year.",
+          "If you feel worse, just double the dose of all medications yourself.",
+          "Disease is temporary, so nothing bad can happen."
+        ],
+        kz: [
+          "If you develop a high fever, shortness of breath, or if your symptoms don't improve, you should come back for a reassessment.",
+          "Never come back to the hospital before next year.",
+          "If you feel worse, just double the dose of all medications yourself.",
+          "Disease is temporary, so nothing bad can happen."
+        ]
+      },
+      correct: 0,
+      explanation: {
+        ru: "Прием «Safety Netting» (инструктаж по красным флагам): четкое указание условий («If you develop..., you should come back for a reassessment») защищает пациента и врача.",
+        kz: "«Safety Netting» тәсілі (қауіпті белгілер бойынша нұсқаулық): шарттарды нақты көрсету («If you develop..., you should come back for a reassessment») пациент пен дәрігерді қорғайды."
+      }
+    }
+  ];
+
+  // ================= GAME STATE & LOGIC =================
+  let total = 0;
+  let correct = 0;
+  let streak = 0;
+  let currentQuestion = null;
+  let answered = false;
+  let selectedIndexHistory = null;
+
+  function updateStatsUI() {
+    document.getElementById('totalCount').textContent = isDemoMode ? `${total}/${DEMO_LIMIT}` : total;
+    document.getElementById('correctCount').textContent = correct;
+    document.getElementById('streakCount').textContent = `${streak} 🔥`;
+  }
+
+  function setLanguage(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+
+    // Toggle active class on buttons
+    document.getElementById('langRu').classList.toggle('active', lang === 'ru');
+    document.getElementById('langKz').classList.toggle('active', lang === 'kz');
+
+    // Update static UI strings
+    const t = uiTranslations[lang];
+    document.getElementById('backBtn').textContent = t.back;
+    document.getElementById('demoBanner').textContent = t.demoBanner;
+    document.getElementById('optA1').textContent = t.optA1;
+    document.getElementById('optA2').textContent = t.optA2;
+    document.getElementById('optB1').textContent = t.optB1;
+    document.getElementById('optMix').textContent = t.optMix;
+    document.getElementById('lblTotal').textContent = t.total;
+    document.getElementById('lblCorrect').textContent = t.correct;
+    document.getElementById('lblStreak').textContent = t.streak;
+    document.getElementById('lblExpTitle').textContent = t.expTitle;
+    document.getElementById('nextBtn').textContent = t.nextBtn;
+
+    // Paywall translations
+    document.getElementById('pwTitle').textContent = t.pwTitle;
+    document.getElementById('pwDesc').textContent = t.pwDesc;
+    document.getElementById('pwFeatures').innerHTML = t.pwFeatures;
+    document.getElementById('pwBuyBtn').textContent = t.pwBuyBtn;
+    document.getElementById('pwLoginBtn').textContent = t.pwLoginBtn;
+
+    // Re-render current question in the selected language without losing state
+    if (currentQuestion) {
+      renderCurrentQuestion();
+    }
+  }
+
+  function changeLevel() {
+    nextQuestion();
+  }
+
+  function getFilteredQuestions() {
+    const selectedLevel = document.getElementById('levelSelect').value;
+    if (selectedLevel === 'mix') {
+      return questions;
+    }
+    return questions.filter(q => q.level === selectedLevel);
+  }
+
+  function showPaywall() {
+    document.getElementById('gameScreen').style.display = 'none';
+    document.getElementById('paywallScreen').style.display = 'flex';
+  }
+
+  function nextQuestion() {
+    // Если включен демо-режим и лимит исчерпан — показываем Paywall
+    if (isDemoMode && total >= DEMO_LIMIT) {
+      showPaywall();
+      return;
+    }
+
+    answered = false;
+    selectedIndexHistory = null;
+
+    const pool = getFilteredQuestions();
+    let nextQ = pool[Math.floor(Math.random() * pool.length)];
+    if (pool.length > 1 && nextQ === currentQuestion) {
+      nextQ = pool[(pool.indexOf(nextQ) + 1) % pool.length];
+    }
+    currentQuestion = nextQ;
+
+    renderCurrentQuestion();
+  }
+
+  function renderCurrentQuestion() {
+    const t = uiTranslations[currentLang];
+    const nextBtn = document.getElementById('nextBtn');
+    const expBox = document.getElementById('explanationBox');
+    const expText = document.getElementById('explanationText');
+
+    // Level tag & Question text
+    document.getElementById('levelTag').textContent = currentQuestion.tag[currentLang];
+    document.getElementById('questionText').textContent = currentQuestion.question[currentLang];
+
+    // Chunks box
+    const chunksBox = document.getElementById('chunksBox');
+    if (currentQuestion.chunks) {
+      chunksBox.innerHTML = currentQuestion.chunks.replace(/\n/g, '<br>');
+      chunksBox.classList.remove('invisible');
+    } else {
+      chunksBox.textContent = '';
+      chunksBox.classList.add('invisible');
+    }
+
+    // Options grid
+    const grid = document.getElementById('optionsGrid');
+    grid.innerHTML = '';
+
+    const opts = currentQuestion.options[currentLang];
+    opts.forEach((optText, index) => {
+      const btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.textContent = `${String.fromCharCode(65 + index)}) ${optText}`;
+      btn.onclick = () => selectOption(btn, index);
+
+      if (answered) {
+        btn.disabled = true;
+        if (index === currentQuestion.correct) {
+          btn.classList.add('correct');
+        } else if (index === selectedIndexHistory) {
+          btn.classList.add('wrong');
+        }
+      }
+
+      grid.appendChild(btn);
+    });
+
+    // Explanation & Next button state
+    if (answered) {
+      expBox.classList.add('answered');
+      expText.textContent = currentQuestion.explanation[currentLang];
+      nextBtn.classList.add('visible');
+    } else {
+      expBox.classList.remove('answered');
+      expText.textContent = t.expDefault;
+      nextBtn.classList.remove('visible');
+    }
+  }
+
+  function selectOption(selectedBtn, selectedIndex) {
+    if (answered) return;
+    answered = true;
+    selectedIndexHistory = selectedIndex;
+
+    total++;
+    const isCorrect = (selectedIndex === currentQuestion.correct);
+
+    if (isCorrect) {
+      correct++;
+      streak++;
+      selectedBtn.classList.add('correct');
+    } else {
+      streak = 0;
+      selectedBtn.classList.add('wrong');
+
+      const allBtns = document.querySelectorAll('.option-btn');
+      if (allBtns[currentQuestion.correct]) {
+        allBtns[currentQuestion.correct].classList.add('correct');
+      }
+    }
+
+    document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+    updateStatsUI();
+
+    const expBox = document.getElementById('explanationBox');
+    expBox.classList.add('answered');
+    document.getElementById('explanationText').textContent = currentQuestion.explanation[currentLang];
+
+    document.getElementById('nextBtn').classList.add('visible');
+  }
+
+  // Запуск проверки авторизации при загрузке
+  checkAuth();
+</script>
+</body>
+</html>
