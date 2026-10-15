@@ -513,7 +513,7 @@
   const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   let isDemoMode = true;
-  const DEMO_LIMIT = 5; // Сколько вопросов доступно бесплатно без входа в аккаунт
+  const DEMO_LIMIT = 2; // Сколько вопросов доступно бесплатно без входа в аккаунт
 
   async function checkAuth() {
     try {
@@ -1580,13 +1580,32 @@
     document.getElementById('gameScreen').style.display = 'none';
     document.getElementById('paywallScreen').style.display = 'flex';
   }
+function nextQuestion() {
+  // Если включен демо-режим и 3 вопроса уже пройдены — показываем Paywall
+  if (isDemoMode && total >= DEMO_LIMIT) {
+    showPaywall();
+    return;
+  }
 
-  function nextQuestion() {
-    // Если включен демо-режим и лимит исчерпан — показываем Paywall
-    if (isDemoMode && total >= DEMO_LIMIT) {
-      showPaywall();
-      return;
+  answered = false;
+  selectedIndexHistory = null;
+
+  const pool = getFilteredQuestions();
+
+  if (isDemoMode) {
+    // В ДЕМО-РЕЖИМЕ: берем вопросы строго по порядку (индексы 0, 1, 2)
+    currentQuestion = pool[total % pool.length];
+  } else {
+    // В ПОЛНОЙ ВЕРСИИ (для купивших доступ): оставляем случайное перемешивание
+    let nextQ = pool[Math.floor(Math.random() * pool.length)];
+    if (pool.length > 1 && nextQ === currentQuestion) {
+      nextQ = pool[(pool.indexOf(nextQ) + 1) % pool.length];
     }
+    currentQuestion = nextQ;
+  }
+
+  renderCurrentQuestion();
+}
 
     answered = false;
     selectedIndexHistory = null;
