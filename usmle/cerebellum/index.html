@@ -1,0 +1,2045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Cerebellum | USMLE Step 1 Self-Study Module</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --acsom-red: #00A1DE;
+      --acsom-red-dark: #0077A3;
+      --acsom-red-light: #EBF8FC;
+      --bg-main: #F2F5F8;
+      --bg-white: #ffffff;
+      --bg-subtle: #f8fafc;
+      --text-main: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --correct-bg: #ecfdf5;
+      --correct-border: #10b981;
+      --correct-text: #065f46;
+      --wrong-bg: #fef2f2;
+      --wrong-border: #ef4444;
+      --wrong-text: #991b1b;
+      --hy-bg: #FFF8E1;
+      --hy-border: #FFC72C;
+      --hy-text: #8C6200;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.65;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* 1. Верхняя шапка во всю ширину (стиль index-58) */
+    header.top-bar {
+      position: relative;
+      z-index: 1000;
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      text-align: center;
+      padding: 20px 16px 24px 16px;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header.top-bar .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      transition: all 0.2s ease;
+    }
+
+    header.top-bar .back-btn:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    header.top-bar .back-btn:active {
+      transform: scale(0.96);
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .brand-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.8px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+
+    .header-h1 {
+      font-size: 1.35rem;
+      font-weight: 900;
+      line-height: 1.2;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #FFFFFF;
+    }
+
+    .header-subtitle {
+      font-size: 0.78rem;
+      margin-top: 4px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--kz-gold);
+    }
+
+    /* MAIN CONTAINER */
+    .container {
+      max-width: 1020px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 28px 20px;
+      flex-grow: 1;
+    }
+
+    /* HERO BANNER & PROGRESS */
+    .module-hero {
+      background: var(--bg-white);
+      border: 1px solid var(--border-color);
+      border-left: 5px solid var(--kz-blue);
+      border-radius: 16px;
+      padding: 20px 22px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .module-hero h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .module-hero p.subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-subtle);
+      padding: 12px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .progress-stats {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .progress-stats span {
+      color: var(--kz-blue);
+      font-weight: 800;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-tool {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 7px 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-tool:hover {
+      border-color: var(--kz-blue);
+      color: var(--kz-blue);
+      background: var(--kz-blue-light);
+    }
+
+    /* COLLAPSIBLE CHUNKS */
+    .chunk-card {
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      margin-bottom: 20px;
+      background: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .chunk-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: var(--kz-blue);
+      z-index: 2;
+    }
+
+    .chunk-header {
+      width: 100%;
+      background: #ffffff;
+      border: none;
+      padding: 16px 22px 16px 26px;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      border-bottom: 1px solid transparent;
+      transition: background-color 0.2s;
+    }
+
+    .chunk-header:hover {
+      background: var(--bg-subtle);
+    }
+
+    .chunk-card.active .chunk-header {
+      border-bottom-color: var(--border-color);
+      background: var(--kz-blue-light);
+    }
+
+    .chunk-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .module-badge {
+      background: var(--kz-blue);
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      border-radius: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .chunk-title {
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .toggle-icon {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--kz-blue);
+      background: #ffffff;
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      padding: 5px 12px;
+      border-radius: 10px;
+      transition: transform 0.2s;
+    }
+
+    .chunk-body {
+      display: none;
+      padding: 24px 24px 24px 28px;
+    }
+
+    .chunk-card.active .chunk-body {
+      display: block;
+    }
+
+    /* CONTENT TYPOGRAPHY & TABLES */
+    .learning-objectives {
+      background: var(--kz-blue-light);
+      border-left: 4px solid var(--kz-blue);
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      border-radius: 0 10px 10px 0;
+    }
+
+    .learning-objectives h4 {
+      color: var(--kz-blue-dark);
+      margin-bottom: 6px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .section-block {
+      margin-bottom: 22px;
+    }
+
+    .section-block h3 {
+      font-size: 1.12rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      margin-bottom: 10px;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 6px;
+    }
+
+    .section-block p {
+      margin-bottom: 10px;
+    }
+
+    .section-block ul, .learning-objectives ul {
+      padding-left: 22px;
+      margin-bottom: 12px;
+    }
+
+    .section-block li, .learning-objectives li {
+      margin-bottom: 6px;
+    }
+
+    table.med-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 20px 0;
+      font-size: 0.92rem;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    table.med-table th, table.med-table td {
+      border: 1px solid var(--border-color);
+      padding: 10px 14px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    table.med-table th {
+      background: var(--kz-blue-light);
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+    }
+
+    .hy-summary-box {
+      background: var(--hy-bg);
+      border: 1px solid #FFE082;
+      border-left: 5px solid var(--hy-border);
+      padding: 14px 18px;
+      border-radius: 12px;
+      margin: 18px 0;
+    }
+
+    .hy-summary-box h4 {
+      color: var(--hy-text);
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* CLINICAL VIGNETTES */
+    .vignettes-section {
+      margin-top: 28px;
+      padding-top: 22px;
+      border-top: 2px dashed var(--border-color);
+    }
+
+    .vignettes-header {
+      font-size: 1.12rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .question-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .question-stem {
+      font-weight: 600;
+      font-size: 0.98rem;
+      margin-bottom: 16px;
+      color: var(--text-main);
+    }
+
+    .question-num {
+      font-weight: 800;
+      color: var(--kz-blue);
+      margin-right: 6px;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-btn {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      width: 100%;
+      text-align: left;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 0.93rem;
+      font-weight: 500;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      background: var(--kz-blue-light);
+      border-color: var(--kz-blue);
+    }
+
+    .option-letter {
+      font-weight: 800;
+      min-width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: var(--kz-blue-light);
+      border: 1px solid rgba(0, 161, 222, 0.2);
+      color: var(--kz-blue);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+      flex-shrink: 0;
+    }
+
+    .option-btn.correct-choice {
+      background: var(--correct-bg);
+      border-color: var(--correct-border);
+      color: var(--correct-text);
+      font-weight: 600;
+    }
+
+    .option-btn.correct-choice .option-letter {
+      background: var(--correct-border);
+      border-color: var(--correct-border);
+      color: #ffffff;
+    }
+
+    .option-btn.wrong-choice {
+      background: var(--wrong-bg);
+      border-color: var(--wrong-border);
+      color: var(--wrong-text);
+    }
+
+    .option-btn.wrong-choice .option-letter {
+      background: var(--wrong-border);
+      border-color: var(--wrong-border);
+      color: #ffffff;
+    }
+
+    .feedback-panel {
+      display: none;
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      font-size: 0.92rem;
+    }
+
+    .feedback-panel.visible {
+      display: block;
+    }
+
+    .explanation-block {
+      margin-bottom: 12px;
+    }
+
+    .hy-concept-tag {
+      background: var(--hy-bg);
+      border-left: 4px solid var(--hy-border);
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
+      color: var(--hy-text);
+      font-weight: 600;
+    }
+
+    /* 3. Подвал и кнопки внизу (стиль index-58) */
+    footer.bottom-footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 10px 16px 24px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    footer.bottom-footer .instagram-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--kz-blue-dark);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.82rem;
+      padding: 8px 18px;
+      border-radius: 20px;
+      background: var(--bg-white);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    footer.bottom-footer .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--kz-blue-dark);
+      background: var(--bg-white);
+      border: 1px solid var(--border-color);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 8px 18px;
+      border-radius: 20px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    footer.bottom-footer .back-btn:active {
+      transform: scale(0.96);
+      background: var(--bg-main);
+    }
+
+    footer.bottom-footer .back-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--kz-blue);
+    }
+
+    @media (max-width: 640px) {
+      .chunk-header {
+        padding: 14px 16px 14px 20px;
+      }
+      .chunk-title-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER (INDEX-58 STYLE) -->
+  <header class="top-bar">
+    <a href="https://kazdoctors.com/usmle/" class="back-btn">
+      <span>⬅️Go back</span>
+    </a>
+    <div class="brand-badge">@doctors.speak</div>
+    <h1 class="header-h1">NEUROLOGY</h1>
+    <p class="header-subtitle">The Cerebellum — Self-Study Module</p>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <div class="container">
+    <div class="module-hero">
+      <h1>The Cerebellum: Clinical Neuroanatomy &amp; USMLE Step 1 Prep</h1>
+      <p class="subtitle">Interactive self-study guide with collapsible learning chunks and USMLE-style clinical vignettes.</p>
+
+      <div class="toolbar">
+        <div class="progress-stats">
+          Questions Completed: <span id="answered-count">0</span> / <span id="total-count">23</span>
+          &nbsp;|&nbsp; Score: <span id="correct-count">0</span> Correct
+        </div>
+        <div class="toolbar-actions">
+          <button class="btn-tool" onclick="toggleAllChunks(true)">Expand All Chunks</button>
+          <button class="btn-tool" onclick="toggleAllChunks(false)">Collapse All Chunks</button>
+          <button class="btn-tool" onclick="shuffleAllQuestions()">Shuffle Answer Options (A-D)</button>
+          <button class="btn-tool" onclick="resetQuiz()">Reset All Answers</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         MODULE 1: INTRODUCTION TO THE CEREBELLUM
+         ========================================== -->
+    <div class="chunk-card active">
+      <button class="chunk-header" onclick="toggleChunk(this)">
+        <div class="chunk-title-group">
+          <span class="module-badge">Module 1</span>
+          <span class="chunk-title">Introduction &amp; Basic Functions of the Cerebellum</span>
+        </div>
+        <span class="toggle-icon">Collapse ▲</span>
+      </button>
+      <div class="chunk-body">
+        <div class="learning-objectives">
+          <h4>Learning Objectives</h4>
+          <ul>
+            <li>Describe the principal functions of the cerebellum.</li>
+            <li>Explain the difference between cerebellar dysfunction and primary motor weakness.</li>
+            <li>Recognize the characteristic clinical manifestations of cerebellar lesions.</li>
+            <li>Distinguish cerebellar ataxia from sensory ataxia.</li>
+            <li>Explain why cerebellar hemisphere lesions usually produce ipsilateral limb incoordination.</li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <h3>Chunk 1.1: Basic Functions of the Cerebellum</h3>
+          <p>The cerebellum is located in the <strong>posterior cranial fossa</strong>, posterior to the pons and medulla and inferior to the occipital lobes. It connects to the brainstem via three pairs of cerebellar peduncles.</p>
+          <p>The principal function of the cerebellum is the <strong>coordination and calibration of movement</strong>. It does not independently initiate voluntary movement; instead, it integrates information about <em>intended movement</em> with ongoing sensory feedback to adjust motor output via connections with the cerebral cortex, brainstem, and spinal cord.</p>
+          <ul>
+            <li><strong>1. Coordination of Voluntary Movement:</strong> Ensures movements are smooth, accurate, and appropriately timed. Damage causes dysmetria, intention tremor, and decomposition of movement.</li>
+            <li><strong>2. Balance and Posture:</strong> Integrates vestibular and proprioceptive input to stabilize posture, maintain equilibrium, and coordinate eye-head movements.</li>
+            <li><strong>3. Motor Learning and Error Correction:</strong> Refines movements through practice and adapts motor responses (e.g., adjusting reaching accuracy or vestibulo-ocular reflexes).</li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <h3>Important Clinical Manifestations</h3>
+          <p>A cerebellar lesion typically causes <strong>incoordination rather than primary paralysis</strong>; muscle strength is preserved, but movements lose accuracy.</p>
+          <ul>
+            <li><strong>Ataxia:</strong> Incoordination of movement.</li>
+            <li><strong>Dysmetria:</strong> Overshooting (hypermetria) or undershooting (hypometria) a target during directed movement.</li>
+            <li><strong>Intention Tremor:</strong> Kinetic tremor that worsens as a limb approaches its target.</li>
+            <li><strong>Dysdiadochokinesia:</strong> Impaired ability to perform rapid alternating movements.</li>
+            <li><strong>Nystagmus:</strong> Rhythmic involuntary eye oscillations caused by cerebellar or vestibular tract dysfunction.</li>
+            <li><strong>Scanning Dysarthria:</strong> Irregular, poorly coordinated speech with abnormal separation of syllables.</li>
+            <li><strong>Hypotonia:</strong> Decreased resistance to passive limb manipulation.</li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <h3>Cerebellar Ataxia vs. Sensory Ataxia &amp; Laterality</h3>
+          <table class="med-table">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Cerebellar Ataxia</th>
+                <th>Sensory Ataxia</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Pathophysiology</strong></td>
+                <td>Lesion of the cerebellum or its peduncular pathways</td>
+                <td>Loss of proprioception (dorsal columns or large peripheral fibers)</td>
+              </tr>
+              <tr>
+                <td><strong>Visual Compensation</strong></td>
+                <td>Unstable even with <strong>eyes open</strong></td>
+                <td>Markedly worsens when <strong>eyes are closed</strong> (loss of visual compensation)</td>
+              </tr>
+              <tr>
+                <td><strong>Romberg Test</strong></td>
+                <td>Not a defining sign (patient is already unsteady with eyes open)</td>
+                <td><strong>Positive Romberg sign</strong> (supports sensory or vestibular dysfunction)</td>
+              </tr>
+              <tr>
+                <td><strong>Associated Signs</strong></td>
+                <td>Dysmetria, intention tremor, dysdiadochokinesia, scanning speech</td>
+                <td>Decreased vibration and joint-position sense, hyporeflexia</td>
+              </tr>
+            </tbody>
+          </table>
+          <p><strong>Why are cerebellar signs ipsilateral?</strong> Cerebellar output fibers decussate in the superior cerebellar peduncle to reach the contralateral thalamus and motor cortex, and descending corticospinal fibers cross back in the medullary pyramids (a "double crossing"). Consequently, a <strong>right cerebellar hemisphere lesion produces right-sided limb dysmetria and intention tremor</strong>.</p>
+        </div>
+
+        <div class="hy-summary-box">
+          <h4>⚡ USMLE High-Yield Summary</h4>
+          <ul>
+            <li>The cerebellum calibrates movement and corrects motor errors; it does <strong>not</strong> initiate voluntary movement.</li>
+            <li>Cerebellar hemisphere lesions cause <strong>ipsilateral</strong> limb ataxia, whereas motor cortex lesions cause contralateral weakness.</li>
+            <li>A positive Romberg test (marked worsening upon eye closure) points toward dorsal column/proprioceptive or vestibular pathology rather than primary cerebellar pathology.</li>
+          </ul>
+        </div>
+
+        <!-- VIGNETTES 1.2 -->
+        <div class="vignettes-section">
+          <div class="vignettes-header">🩺 Chunk 1.2: Clinical Vignettes (Module 1)</div>
+
+          <div class="question-card" data-qid="m1q1">
+            <div class="question-stem">
+              <span class="question-num">Question 1.</span>
+              A 58-year-old man is examined after a small cerebellar infarction. He has 5/5 muscle strength throughout all extremities, but repeatedly overshoots the examiner's finger during the finger-to-nose test. Which physiological function is most directly impaired in this patient?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Initiation of voluntary movement by cortical motor networks</span>
+              </button>
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Calibration of the range and accuracy of movement</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>Transmission of pain and temperature from the upper extremity</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Generation of the monosynaptic stretch reflex</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> Overshooting a target (dysmetria) reflects impaired calibration of movement range and timing. Primary initiation of voluntary movement depends on the cerebral cortex and basal ganglia, pain/temperature relies on the spinothalamic tract, and the stretch reflex is mediated by spinal cord reflex circuits.
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> The cerebellum acts as a comparator that bridges motor intention with sensory feedback to calibrate movement range and timing without initiating motor strength.
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card" data-qid="m1q2">
+            <div class="question-stem">
+              <span class="question-num">Question 2.</span>
+              A 46-year-old woman presents with an unsteady, broad-based gait. Her instability is prominent with her eyes open and is accompanied by kinetic tremor as her hand approaches targets and impaired rapid alternating movements. Vibration and joint-position sense in the toes are intact. Which site is the most likely source of her dysfunction?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Posterior columns of the spinal cord</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Peripheral vestibular apparatus alone</span>
+              </button>
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>Cerebellum</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Anterior horn cells of the spinal cord</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> Unsteadiness present with the eyes open, coupled with intention tremor, dysdiadochokinesia, and preserved proprioception, localizes directly to the cerebellum. Posterior column disease causes sensory ataxia (worsened significantly by closing the eyes), and anterior horn cell damage causes lower motor neuron weakness and atrophy.
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> Cerebellar ataxia causes persistent unsteadiness even with visual input present and is accompanied by intention tremor and dysdiadochokinesia.
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card" data-qid="m1q3">
+            <div class="question-stem">
+              <span class="question-num">Question 3.</span>
+              A 64-year-old man suffers a focal ischemic stroke confined strictly to the right cerebellar hemisphere. Which neurological examination finding is most likely present?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Left-sided limb dysmetria</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Bilateral loss of pain and temperature sensation</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>Isolated left-sided spastic hemiparesis</span>
+              </button>
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Right-sided limb dysmetria</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> Because cerebellar efferents cross in the superior cerebellar peduncle to influence the contralateral motor cortex, and the corticospinal tract crosses back in the caudal medulla, unilateral cerebellar hemisphere lesions produce strictly <strong>ipsilateral</strong> limb incoordination.
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> Cerebellar hemisphere lesions produce ipsilateral motor coordination deficits due to the double decussation of ascending cerebellothalamic and descending corticospinal tracts.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         MODULE 2: GROSS ANATOMY & FUNCTIONAL DIVISIONS
+         ========================================== -->
+    <div class="chunk-card">
+      <button class="chunk-header" onclick="toggleChunk(this)">
+        <div class="chunk-title-group">
+          <span class="module-badge">Module 2</span>
+          <span class="chunk-title">Gross Anatomy &amp; Functional Divisions</span>
+        </div>
+        <span class="toggle-icon">Expand ▼</span>
+      </button>
+      <div class="chunk-body">
+        <div class="learning-objectives">
+          <h4>Learning Objectives</h4>
+          <ul>
+            <li>Identify the vermis, intermediate zone, lateral hemispheres, and three anatomical lobes.</li>
+            <li>Identify the primary and posterolateral fissures.</li>
+            <li>Explain the functions of the vestibulocerebellum, spinocerebellum, and cerebrocerebellum.</li>
+            <li>Localize midline, paramedian, lateral, and flocculonodular lesions from clinical signs.</li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <h3>Chunk 2.1: Gross Anatomy &amp; Fissures</h3>
+          <p>The cerebellum consists of two lateral hemispheres connected at the midline by the <strong>vermis</strong>. Its surface is folded into narrow ridges called <strong>folia</strong>.</p>
+          <ul>
+            <li><strong>Anterior Lobe:</strong> Located rostral/anterior to the <strong>primary fissure</strong>. Primarily involved in spinocerebellar processing, gait, and posture.</li>
+            <li><strong>Posterior Lobe:</strong> Located between the primary fissure and posterolateral fissure. The largest lobe; coordinates skilled limb movements and motor planning.</li>
+            <li><strong>Flocculonodular Lobe:</strong> Composed of the flocculus and nodulus, separated from the posterior lobe by the <strong>posterolateral fissure</strong>. Mediates balance, vestibular integration, and gaze stabilization.</li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <h3>Chunk 2.2: Functional Divisions &amp; Clinical Localization</h3>
+          <table class="med-table">
+            <thead>
+              <tr>
+                <th>Functional Division</th>
+                <th>Anatomical Structure</th>
+                <th>Major Function</th>
+                <th>Classic Lesion Presentation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Vestibulocerebellum</strong></td>
+                <td>Flocculonodular lobe (plus adjacent vermis)</td>
+                <td>Balance, equilibrium, vestibulo-ocular reflex (gaze stabilization)</td>
+                <td>Broad-based gait, truncal instability, vertigo, <strong>nystagmus</strong>, impaired eye-head coordination</td>
+              </tr>
+              <tr>
+                <td><strong>Spinocerebellum</strong></td>
+                <td><strong>Vermis</strong> (axial) &amp; <strong>Intermediate zone</strong> (paramedian hemisphere)</td>
+                <td>Integrates proprioceptive input to adjust posture and ongoing movement</td>
+                <td><strong>Vermis lesion:</strong> Truncal and gait ataxia.<br><strong>Intermediate lesion:</strong> Ipsilateral limb incoordination.</td>
+              </tr>
+              <tr>
+                <td><strong>Cerebrocerebellum</strong></td>
+                <td>Lateral cerebellar hemispheres</td>
+                <td>Receives cerebral cortical input via pontine nuclei; plans, sequences, and times complex movements</td>
+                <td><strong>Ipsilateral limb dysmetria</strong>, intention tremor, dysdiadochokinesia, impaired motor timing</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="hy-summary-box">
+          <h4>⚡ USMLE High-Yield Summary</h4>
+          <ul>
+            <li><strong>Vermis:</strong> Midline control (trunk, posture, gait). Lesion = truncal/gait ataxia.</li>
+            <li><strong>Lateral Hemispheres:</strong> Distal skilled movement planning. Lesion = ipsilateral limb dysmetria &amp; intention tremor.</li>
+            <li><strong>Flocculonodular Lobe:</strong> Eye movements and vestibular balance. Lesion = nystagmus, vertigo, truncal ataxia.</li>
+            <li><strong>Primary fissure</strong> divides anterior and posterior lobes; <strong>posterolateral fissure</strong> divides posterior and flocculonodular lobes.</li>
+          </ul>
+        </div>
+
+        <!-- VIGNETTES 2.3 -->
+        <div class="vignettes-section">
+          <div class="vignettes-header">🩺 Chunk 2.3: Clinical Vignettes (Module 2)</div>
+
+          <div class="question-card" data-qid="m2q1">
+            <div class="question-stem">
+              <span class="question-num">Question 1.</span>
+              A 6-year-old boy is brought to the clinic because of progressive difficulty walking over the past month. Examination reveals a wide-based gait and marked truncal instability when sitting unsupported, but finger-to-nose testing is relatively preserved. Brain MRI demonstrates a midline posterior fossa mass. Involvement of which structure best accounts for his motor deficit?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Lateral cerebellar hemisphere</span>
+              </button>
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Cerebellar vermis</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>Dentate nucleus alone</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Ventral posterolateral nucleus of the thalamus</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> The cerebellar vermis controls axial musculature, posture, and gait. Midline cerebellar tumors (such as pediatric medulloblastoma) classically compress the vermis and fastigial/vestibular pathways, resulting in prominent truncal and gait ataxia with relative sparing of distal extremity coordination.
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> Lesions of the cerebellar vermis produce truncal and gait ataxia; in children, a midline cerebellar mass strongly raises suspicion for medulloblastoma.
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card" data-qid="m2q2">
+            <div class="question-stem">
+              <span class="question-num">Question 2.</span>
+              A 39-year-old woman develops vertigo, severe postural imbalance, nystagmus, and inability to stabilize her gaze during head movements after a focal posterior fossa lesion. Which cerebellar region is most closely associated with these findings?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Flocculonodular lobe</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Lateral hemisphere of the posterior lobe alone</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>Cerebellar tonsil alone</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Intermediate zone of the anterior lobe</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> The flocculonodular lobe corresponds functionally to the vestibulocerebellum. It communicates bidirectionally with the vestibular nuclei to regulate equilibrium, axial balance, and the vestibulo-ocular reflex. Damage produces nystagmus, impaired gaze stabilization, and postural instability.
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> The flocculonodular lobe (vestibulocerebellum) governs balance and eye movements; lesions result in nystagmus, vertigo, and truncal instability.
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card" data-qid="m2q3">
+            <div class="question-stem">
+              <span class="question-num">Question 3.</span>
+              A 62-year-old man has a small embolic infarction restricted to the left lateral cerebellar hemisphere. Which deficit is most likely to be found on physical examination?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Right-sided loss of vibration sensation</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Right-sided spastic hemiparesis as the sole deficit</span>
+              </button>
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>Left-sided dysmetria during finger-to-nose testing</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Bilateral loss of pain and temperature sensation</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> The lateral cerebellar hemisphere (cerebrocerebellum) coordinates the planning, timing, and execution of skilled distal limb movements. A lesion in the left lateral hemisphere causes ipsilateral (left-sided) dysmetria, intention tremor, and dysdiadochokinesia.
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> Lateral cerebellar hemisphere (cerebrocerebellar) lesions impair skilled distal extremity coordination on the ipsilateral side.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         MODULE 3: CEREBELLAR PEDUNCLES & CONNECTIONS
+         ========================================== -->
+    <div class="chunk-card">
+      <button class="chunk-header" onclick="toggleChunk(this)">
+        <div class="chunk-title-group">
+          <span class="module-badge">Module 3</span>
+          <span class="chunk-title">Cerebellar Peduncles &amp; Brainstem Connections</span>
+        </div>
+        <span class="toggle-icon">Expand ▼</span>
+      </button>
+      <div class="chunk-body">
+        <div class="learning-objectives">
+          <h4>Learning Objectives</h4>
+          <ul>
+            <li>Identify the superior, middle, and inferior cerebellar peduncles.</li>
+            <li>Describe the major afferent and efferent pathways traveling through each peduncle.</li>
+            <li>Explain the connections between the cerebellum, pontine nuclei, inferior olive, spinal cord, red nucleus, and thalamus.</li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <h3>Chunk 3.1: The Three Cerebellar Peduncles</h3>
+          <table class="med-table">
+            <thead>
+              <tr>
+                <th>Peduncle</th>
+                <th>Brainstem Attachment</th>
+                <th>Predominant Direction &amp; Key Tracts</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Superior Cerebellar Peduncle (SCP)</strong></td>
+                <td>Midbrain</td>
+                <td><strong>Principal Efferent (Output) Pathway:</strong> Carries fibers from deep cerebellar nuclei (especially dentate &amp; interposed) to the contralateral <strong>red nucleus</strong> and <strong>ventral lateral (VL) thalamus</strong> (decussates in caudal midbrain).<br><em>Exception (Afferent):</em> Ventral spinocerebellar tract enters via the SCP.</td>
+              </tr>
+              <tr>
+                <td><strong>Middle Cerebellar Peduncle (MCP)</strong></td>
+                <td>Pons</td>
+                <td><strong>Purely Afferent (Input) Pathway:</strong> Carries <strong>pontocerebellar fibers</strong> from the contralateral pontine nuclei (relaying corticopontine motor planning signals from the cerebral cortex).</td>
+              </tr>
+              <tr>
+                <td><strong>Inferior Cerebellar Peduncle (ICP)</strong></td>
+                <td>Medulla</td>
+                <td><strong>Predominantly Afferent Pathway:</strong> Carries unconscious proprioceptive and vestibular inputs: <strong>dorsal spinocerebellar tract</strong>, cuneocerebellar tract, <strong>olivocerebellar fibers</strong> (climbing fibers from contralateral inferior olive), and vestibulocerebellar fibers.<br><em>Selected Efferents:</em> Fastigiovestibular and cerebelloreticular outputs.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="hy-summary-box">
+          <h4>⚡ USMLE High-Yield Summary</h4>
+          <ul>
+            <li><strong>SCP = Output</strong> to contralateral red nucleus and VL thalamus (plus ventral spinocerebellar input).</li>
+            <li><strong>MCP = Input</strong> from contralateral pontine nuclei (corticopontocerebellar pathway).</li>
+            <li><strong>ICP = Input</strong> from spinal cord (dorsal spinocerebellar), inferior olive (climbing fibers), and vestibular nuclei.</li>
+          </ul>
+        </div>
+
+        <!-- VIGNETTES 3.2 -->
+        <div class="vignettes-section">
+          <div class="vignettes-header">🩺 Chunk 3.2: Clinical Vignettes (Module 3)</div>
+
+          <div class="question-card" data-qid="m3q1">
+            <div class="question-stem">
+              <span class="question-num">Question 1.</span>
+              A patient develops severe ipsilateral limb ataxia and intention tremor after a localized brainstem lesion that interrupts the principal efferent pathway carrying signals from the deep cerebellar nuclei toward the ventral lateral thalamus and red nucleus. Which structure is most directly affected?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Superior cerebellar peduncle</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Middle cerebellar peduncle</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>Optic tract</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Medial lemniscus</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> The superior cerebellar peduncle (SCP) is the major outflow tract of the cerebellum, carrying efferent projections from the dentate, emboliform, and globose nuclei to the contralateral red nucleus and thalamus.
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> The superior cerebellar peduncle serves as the primary efferent conduit connecting deep cerebellar nuclei to the midbrain and thalamus.
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card" data-qid="m3q2">
+            <div class="question-stem">
+              <span class="question-num">Question 2.</span>
+              A 31-year-old woman with multiple sclerosis develops a demyelinating plaque involving the massive white matter bundle that conveys axons from the contralateral pontine nuclei into the cerebellar hemisphere. Which structure is affected?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Superior cerebellar peduncle</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Inferior cerebellar peduncle</span>
+              </button>
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>Middle cerebellar peduncle</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Posterior limb of the internal capsule</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> Corticopontine fibers synapse in the ipsilateral pontine nuclei; second-order pontocerebellar fibers decussate in the pons and enter the contralateral cerebellum exclusively via the middle cerebellar peduncle (MCP).
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> The middle cerebellar peduncle carries purely afferent pontocerebellar fibers originating from the contralateral pontine nuclei.
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card" data-qid="m3q3">
+            <div class="question-stem">
+              <span class="question-num">Question 3.</span>
+              A 66-year-old man suffers a dorsolateral medullary infarction that disrupts major unconscious proprioceptive inputs from the dorsal spinocerebellar tract as well as climbing fibers from the inferior olivary nucleus. Which structure is the site of this lesion?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Optic chiasm</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Cerebral peduncle (crus cerebri)</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>Corpus callosum</span>
+              </button>
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Inferior cerebellar peduncle</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> Located in the dorsolateral medulla, the inferior cerebellar peduncle (restiform body) transmits the dorsal spinocerebellar tract, cuneocerebellar tract, olivocerebellar tract, and vestibulocerebellar fibers into the cerebellum. Its damage in lateral medullary (Wallenberg) syndrome causes ipsilateral ataxia.
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> Damage to the inferior cerebellar peduncle in lateral medullary strokes causes ipsilateral limb and gait ataxia by severing spinocerebellar, olivocerebellar, and vestibular inputs.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         MODULE 4: CORTEX, NUCLEI & PHYSIOLOGY
+         ========================================== -->
+    <div class="chunk-card">
+      <button class="chunk-header" onclick="toggleChunk(this)">
+        <div class="chunk-title-group">
+          <span class="module-badge">Module 4</span>
+          <span class="chunk-title">Cerebellar Cortex, Deep Nuclei &amp; Microcircuitry</span>
+        </div>
+        <span class="toggle-icon">Expand ▼</span>
+      </button>
+      <div class="chunk-body">
+        <div class="learning-objectives">
+          <h4>Learning Objectives</h4>
+          <ul>
+            <li>Describe the three histological layers of the cerebellar cortex.</li>
+            <li>Compare the neurotransmitters and targets of Purkinje cells and granule cells.</li>
+            <li>List the four deep cerebellar nuclei from lateral to medial.</li>
+            <li>Explain the origin and function of mossy fibers and climbing fibers in motor learning.</li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <h3>Chunk 4.1: The Three Layers of the Cerebellar Cortex</h3>
+          <ul>
+            <li><strong>1. Molecular Layer (Outermost):</strong> Contains parallel fibers (axons of granule cells), extensive dendritic trees of Purkinje cells, and inhibitory interneurons (<strong>stellate and basket cells</strong>, which inhibit Purkinje cells).</li>
+            <li><strong>2. Purkinje Cell Layer (Middle):</strong> A single monolayer of large <strong>Purkinje cells</strong>. Purkinje cells are the <strong>sole output neurons of the cerebellar cortex</strong>. They release <strong>GABA</strong> and exert purely <strong>inhibitory</strong> control over the deep cerebellar nuclei and vestibular nuclei.</li>
+            <li><strong>3. Granular Layer (Innermost):</strong> Contains numerous tiny <strong>granule cells</strong> and inhibitory Golgi cells. Granule cells are the <strong>only excitatory neurons</strong> in the cerebellar cortex; they release <strong>glutamate</strong> and send axons into the molecular layer that bifurcate into parallel fibers.</li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <h3>Chunk 4.2: Deep Cerebellar Nuclei</h3>
+          <p>Arranged from <strong>lateral to medial</strong> (Mnemonic: <strong>D</strong>on't <strong>E</strong>at <strong>G</strong>reasy <strong>F</strong>ood):</p>
+          <ol style="padding-left:22px; margin-bottom:12px;">
+            <li><strong>Dentate Nucleus (Most Lateral):</strong> Receives Purkinje input from lateral hemispheres; projects via SCP to VL thalamus to plan and time voluntary movements.</li>
+            <li><strong>Emboliform Nucleus</strong> &amp; <strong>3. Globose Nucleus (Interposed Nuclei):</strong> Receive input from the intermediate zone; regulate distal limb coordination via red nucleus and thalamus.</li>
+            <li><strong>Fastigial Nucleus (Most Medial):</strong> Receives input from the vermis; projects to vestibular nuclei and reticular formation to control axial musculature and posture.</li>
+          </ol>
+        </div>
+
+        <div class="section-block">
+          <h3>Chunk 4.3: Mossy Fibers, Climbing Fibers &amp; Motor Learning</h3>
+          <ul>
+            <li><strong>Mossy Fibers:</strong> Originate from the spinal cord, pontine nuclei, vestibular nuclei, and reticular formation. They provide excitatory input to <strong>granule cells</strong> (which then excite Purkinje cells via parallel fibers) and send excitatory collaterals to deep nuclei.</li>
+            <li><strong>Climbing Fibers:</strong> Originate <strong>exclusively from the contralateral inferior olivary nucleus</strong> in the medulla. Each climbing fiber wraps around a Purkinje cell dendritic tree to produce powerful excitatory complex spikes. Climbing fibers signal <strong>motor errors</strong> and induce long-term synaptic plasticity (long-term depression at parallel fiber–Purkinje synapses) essential for <strong>motor learning</strong>.</li>
+          </ul>
+        </div>
+
+        <div class="hy-summary-box">
+          <h4>⚡ USMLE High-Yield Summary</h4>
+          <ul>
+            <li><strong>Purkinje cells = GABAergic (inhibitory)</strong> sole output of the cerebellar cortex; project to deep cerebellar nuclei.</li>
+            <li><strong>Granule cells = Glutamatergic (excitatory)</strong>; form parallel fibers in the molecular layer.</li>
+            <li><strong>Deep Nuclei (Lateral → Medial):</strong> Dentate, Emboliform, Globose, Fastigial.</li>
+            <li><strong>Climbing fibers</strong> arise solely from the <strong>inferior olive</strong> and drive error-based motor learning.</li>
+          </ul>
+        </div>
+
+        <!-- VIGNETTES 4.4 -->
+        <div class="vignettes-section">
+          <div class="vignettes-header">🩺 Chunk 4.4: Clinical Vignettes (Module 4)</div>
+
+          <div class="question-card" data-qid="m4q1">
+            <div class="question-stem">
+              <span class="question-num">Question 1.</span>
+              In a neurophysiology experiment, an investigator selectively ablates the sole output neurons of the cerebellar cortex. Which cell population has been targeted?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Purkinje cells</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Granule cells</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>Basket cells</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Anterior horn alpha motor neurons</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> All cortical computations in the cerebellum converge onto Purkinje cells, which serve as the sole output neurons of the cerebellar cortex. Their axons project to the deep cerebellar nuclei and vestibular nuclei.
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> Purkinje cells are the only output neurons of the cerebellar cortex and use GABA to inhibit the deep cerebellar nuclei.
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card" data-qid="m4q2">
+            <div class="question-stem">
+              <span class="question-num">Question 2.</span>
+              A neurotoxin selectively blocks vesicular GABA release from Purkinje cell axon terminals. Which immediate physiological change would occur at their direct postsynaptic targets?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Increased inhibitory postsynaptic potentials in the deep cerebellar nuclei</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Complete cessation of glutamate release from granule cells</span>
+              </button>
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>Reduced inhibitory input to the deep cerebellar nuclei</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Direct monosynaptic inhibition of spinal lower motor neurons</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> Purkinje cells tonically release GABA to inhibit neurons in the deep cerebellar nuclei (dentate, emboliform, globose, fastigial). Blocking GABA release removes this inhibitory restraint (disinhibition) on the deep cerebellar nuclei.
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> Excitatory mossy and climbing fiber collaterals activate the deep cerebellar nuclei, while GABAergic Purkinje cells sculpt and inhibit their output.
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card" data-qid="m4q3">
+            <div class="question-stem">
+              <span class="question-num">Question 3.</span>
+              Researchers studying motor adaptation selectively lesion the climbing fiber projections originating from the inferior olivary nucleus in the medulla. Which physiological process is most directly impaired?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Transmission of visual signals from the retina to the lateral geniculate nucleus</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Initiation of voluntary movement by the primary motor cortex</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>Transmission of nociceptive signals through the spinothalamic tract</span>
+              </button>
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Cerebellar error-signaling involved in synaptic plasticity and motor learning</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> Climbing fibers originate from the inferior olivary nucleus and form powerful excitatory synapses onto Purkinje dendrites. They act as "teaching signals" triggered by movement errors, inducing synaptic plasticity required for motor learning and adaptation.
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> Climbing fibers from the inferior olive deliver error signals to Purkinje cells to drive cerebellar synaptic plasticity and motor learning.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         MODULE 5: CLINICAL EXAMINATION & LOCALIZATION
+         ========================================== -->
+    <div class="chunk-card">
+      <button class="chunk-header" onclick="toggleChunk(this)">
+        <div class="chunk-title-group">
+          <span class="module-badge">Module 5</span>
+          <span class="chunk-title">Bedside Clinical Examination &amp; Localization</span>
+        </div>
+        <span class="toggle-icon">Expand ▼</span>
+      </button>
+      <div class="chunk-body">
+        <div class="learning-objectives">
+          <h4>Learning Objectives</h4>
+          <ul>
+            <li>Perform and interpret bedside cerebellar maneuvers (finger-to-nose, heel-to-shin, rapid alternating movements, rebound testing).</li>
+            <li>Differentiate cerebellar ataxia from dorsal column sensory ataxia on physical exam.</li>
+            <li>Localize clinical bedside findings to specific cerebellar zones.</li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <h3>Chunk 5.1: Examination of the Cerebellum</h3>
+          <table class="med-table">
+            <thead>
+              <tr>
+                <th>Bedside Maneuver</th>
+                <th>How It Is Performed</th>
+                <th>Pathological Finding &amp; Localization</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Finger-to-Nose Test</strong></td>
+                <td>Patient alternately touches their own nose and the examiner's target finger</td>
+                <td><strong>Dysmetria</strong> (overshooting/undershooting) &amp; <strong>Intention tremor</strong> (increases near target). Localizes to <em>ipsilateral cerebellar hemisphere</em>.</td>
+              </tr>
+              <tr>
+                <td><strong>Heel-to-Shin Test</strong></td>
+                <td>Patient places one heel on the opposite knee and slides it smoothly down the shin</td>
+                <td>Wavering side-to-side off the shin indicates <em>ipsilateral lower-limb cerebellar incoordination</em>.</td>
+              </tr>
+              <tr>
+                <td><strong>Rapid Alternating Movements</strong></td>
+                <td>Rapid pronation/supination of the forearm or tapping hand on thigh</td>
+                <td><strong>Dysdiadochokinesia</strong> (slow, irregular, poorly timed rhythm). Localizes to <em>ipsilateral hemisphere</em>.</td>
+              </tr>
+              <tr>
+                <td><strong>Rebound Phenomenon (Stewart-Holmes)</strong></td>
+                <td>Patient flexes arm against resistance; examiner suddenly releases resistance</td>
+                <td>Inability to rapidly activate antagonist muscles causes the limb to fly back unchecked.</td>
+              </tr>
+              <tr>
+                <td><strong>Gait &amp; Station</strong></td>
+                <td>Observe natural gait, tandem walking, and truncal stability</td>
+                <td>Broad-based, staggering gait; truncal titubation localizes to the <em>vermis or flocculonodular lobe</em>.</td>
+              </tr>
+              <tr>
+                <td><strong>Speech &amp; Ocular Exam</strong></td>
+                <td>Listen to phrase repetition; test smooth pursuit and saccades</td>
+                <td><strong>Scanning dysarthria</strong> (paravermian/hemispheric) and gaze-evoked <strong>nystagmus</strong> (vestibulocerebellum).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="hy-summary-box">
+          <h4>⚡ USMLE High-Yield Summary</h4>
+          <ul>
+            <li><strong>Dysdiadochokinesia</strong> = impaired rapid alternating movements.</li>
+            <li><strong>Rebound phenomenon</strong> = loss of timely antagonist muscle braking when resistance is suddenly released.</li>
+            <li>Always verify that muscle strength (5/5) and primary sensation are intact before attributing clumsy movements to cerebellar disease.</li>
+          </ul>
+        </div>
+
+        <!-- VIGNETTES 5.2 -->
+        <div class="vignettes-section">
+          <div class="vignettes-header">🩺 Chunk 5.2: Clinical Vignettes (Module 5)</div>
+
+          <div class="question-card" data-qid="m5q1">
+            <div class="question-stem">
+              <span class="question-num">Question 1.</span>
+              A 52-year-old man is asked to rapidly pronate and supinate his right hand against his left palm. His movements on the right are irregular, clumsy, and uneven in rhythm despite 5/5 muscle strength and normal tone. Which clinical term best describes this finding?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Dysdiadochokinesia</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Hemiballismus</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>Lead-pipe rigidity</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Fasciculations</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> Dysdiadochokinesia is the impaired ability to perform rapid alternating movements smoothly and rhythmically due to defective timing of agonist and antagonist muscle groups in cerebellar hemisphere dysfunction.
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> Dysdiadochokinesia reflects impaired cerebellar timing of agonist-antagonist muscle switching during rapid alternating movements.
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card" data-qid="m5q2">
+            <div class="question-stem">
+              <span class="question-num">Question 2.</span>
+              A 57-year-old patient exhibits a wide-based gait and marked truncal swaying while sitting on the examination table. Muscle strength, deep tendon reflexes, and joint-position sense in the toes are completely normal. Which anatomical structure is most likely responsible for these findings?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Primary somatosensory cortex (postcentral gyrus)</span>
+              </button>
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Cerebellar vermis</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>Anterior horn cells</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Subthalamic nucleus</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> Truncal instability while sitting and a broad-based ataxic gait in the setting of preserved strength and intact proprioception localize to the midline cerebellum (vermis).
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> Midline vermian lesions impair axial posture and gait while sparing extremity strength and primary sensory modalities.
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card" data-qid="m5q3">
+            <div class="question-stem">
+              <span class="question-num">Question 3.</span>
+              A 68-year-old man can stand steadily with his feet together while his eyes are open, but sways severely and nearly falls as soon as he closes his eyes. Neurological exam reveals absent vibration and joint-position sense in both great toes. Which mechanism best explains his instability?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Selective degeneration of cerebellar Purkinje cells</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Autoantibodies directed against postsynaptic nicotinic acetylcholine receptors</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>Bilateral infarction of the primary motor cortex</span>
+              </button>
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Failure of ascending proprioceptive input needed for postural control</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> This patient has a classic positive Romberg sign and sensory ataxia due to dorsal column / large-fiber proprioceptive loss. While eyes are open, vision compensates for lost joint-position sense; closing the eyes removes visual compensation and unmasks severe postural instability.
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> A positive Romberg test indicates sensory (dorsal column/peripheral nerve) or vestibular ataxia rather than primary cerebellar pathology.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         MODULE 6: MAJOR CEREBELLAR DISORDERS
+         ========================================== -->
+    <div class="chunk-card">
+      <button class="chunk-header" onclick="toggleChunk(this)">
+        <div class="chunk-title-group">
+          <span class="module-badge">Module 6</span>
+          <span class="chunk-title">Major Cerebellar Disorders (Vascular, Toxic, Neoplastic &amp; Genetic)</span>
+        </div>
+        <span class="toggle-icon">Expand ▼</span>
+      </button>
+      <div class="chunk-body">
+        <div class="learning-objectives">
+          <h4>Learning Objectives</h4>
+          <ul>
+            <li>Differentiate PICA, AICA, and SCA cerebellar stroke syndromes.</li>
+            <li>Recognize alcohol-related anterior superior vermian degeneration and Wernicke encephalopathy.</li>
+            <li>Compare pediatric cerebellar tumors (medulloblastoma vs. pilocytic astrocytoma).</li>
+            <li>Explain the genetics and clinical presentation of Friedreich ataxia, spinocerebellar ataxias, and paraneoplastic cerebellar degeneration.</li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <h3>Chunk 6.1: Vascular Cerebellar Lesions</h3>
+          <p>Acute vertigo, nausea/vomiting, nystagmus, and inability to walk require urgent evaluation for posterior circulation stroke.</p>
+          <table class="med-table">
+            <thead>
+              <tr>
+                <th>Artery</th>
+                <th>Brainstem &amp; Cerebellar Territory</th>
+                <th>Classic Clinical Features</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>PICA (Posterior Inferior Cerebellar Artery)</strong></td>
+                <td>Inferior cerebellum &amp; dorsolateral medulla (Inferior cerebellar peduncle, vestibular nuclei, nucleus ambiguus, spinal trigeminal nucleus, spinothalamic tract, descending sympathetics)</td>
+                <td><strong>Lateral Medullary (Wallenberg) Syndrome:</strong> Vertigo, nystagmus, ipsilateral limb/gait ataxia, <strong>dysphagia, hoarseness, absent gag reflex</strong> (CN IX/X), ipsilateral facial pain/temp loss, contralateral body pain/temp loss, ipsilateral Horner syndrome.</td>
+              </tr>
+              <tr>
+                <td><strong>AICA (Anterior Inferior Cerebellar Artery)</strong></td>
+                <td>Middle/inferior cerebellum &amp; lateral pons (CN VII, CN VIII/labyrinthine artery, MCP, spinal trigeminal &amp; spinothalamic tracts)</td>
+                <td><strong>Lateral Pontine Syndrome:</strong> Vertigo, ataxia, <strong>ipsilateral facial paralysis (CN VII)</strong>, <strong>ipsilateral sensorineural deafness/tinnitus (CN VIII)</strong>, crossed pain/temp loss.</td>
+              </tr>
+              <tr>
+                <td><strong>SCA (Superior Cerebellar Artery)</strong></td>
+                <td>Superior cerebellum, superior cerebellar peduncle (SCP), dentate nucleus</td>
+                <td>Prominent <strong>ipsilateral limb dysmetria</strong>, intention tremor, scanning dysarthria, gait ataxia (typically spares lower cranial nerves).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section-block">
+          <h3>Chunk 6.2 &amp; 6.3: Alcoholic Degeneration &amp; Posterior Fossa Tumors</h3>
+          <ul>
+            <li><strong>Alcohol-Related Cerebellar Degeneration:</strong> Chronic alcohol toxicity causes Purkinje cell loss preferentially in the <strong>anterior superior vermis</strong>, presenting with progressive <strong>wide-based gait and lower-extremity/truncal ataxia</strong> (often sparing upper extremities and speech). Always evaluate for concurrent <strong>thiamine (B1) deficiency (Wernicke encephalopathy)</strong>: confusion, ophthalmoplegia/nystagmus, and ataxia.</li>
+            <li><strong>Medulloblastoma:</strong> Highly malignant embryonal (neuroectodermal) tumor in children. Arises in the <strong>midline (vermis)</strong>, causing truncal ataxia and fourth-ventricle compression (obstructive hydrocephalus: morning headache, vomiting, papilledema). Can seed the CSF (drop metastases).</li>
+            <li><strong>Pilocytic Astrocytoma:</strong> Benign (WHO Grade I), slow-growing glial tumor in children/young adults. Often arises in the <strong>cerebellar hemispheres</strong> (causing ipsilateral limb ataxia) and appears on MRI as a <strong>cystic lesion with an enhancing mural nodule</strong>.</li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <h3>Chunk 6.4: Inherited &amp; Paraneoplastic Ataxias</h3>
+          <ul>
+            <li><strong>Friedreich Ataxia:</strong> Autosomal recessive disorder caused by a <strong>GAA trinucleotide repeat expansion</strong> in the <em>FXN</em> (frataxin) gene on chromosome 9, leading to mitochondrial iron overload and oxidative damage. Affects the <strong>spinocerebellar tracts, dorsal columns, corticospinal tracts</strong>, and myocardium. Presents in adolescence with:
+              <ul>
+                <li>Gait and limb ataxia (spinocerebellar tracts)</li>
+                <li>Loss of vibration and proprioception + <strong>absent lower-limb deep tendon reflexes</strong> (dorsal columns/DRG)</li>
+                <li>Extensor plantar response / <strong>Babinski sign</strong> and spasticity (corticospinal tracts)</li>
+                <li><strong>Hypertrophic cardiomyopathy</strong> (most common cause of death), kyphoscoliosis, pes cavus, and diabetes mellitus.</li>
+              </ul>
+            </li>
+            <li><strong>Spinocerebellar Ataxias (SCAs):</strong> Mostly autosomal dominant disorders (many caused by CAG trinucleotide repeat expansions) featuring progressive adult-onset cerebellar atrophy, ataxia, dysarthria, and oculomotor abnormalities.</li>
+            <li><strong>Paraneoplastic Cerebellar Degeneration:</strong> Subacute, rapidly progressive pancerebellar syndrome (severe gait/limb ataxia, dysarthria, diplopia/nystagmus) driven by onconeural autoantibodies (e.g., <strong>anti-Yo</strong> in breast/ovarian/gynecologic cancers, <strong>anti-Hu</strong> or <strong>anti-P/Q-type VGCC</strong> in small-cell lung cancer) that result in widespread destruction of Purkinje cells.</li>
+          </ul>
+        </div>
+
+        <div class="hy-summary-box">
+          <h4>⚡ USMLE High-Yield Summary</h4>
+          <ul>
+            <li><strong>PICA stroke (Wallenberg):</strong> Dysphagia/hoarseness (nucleus ambiguus) + crossed pain/temp loss + Horner + ataxia.</li>
+            <li><strong>AICA stroke:</strong> Ipsilateral facial paralysis (CN VII) + ipsilateral hearing loss (labyrinthine artery / CN VIII) + ataxia.</li>
+            <li><strong>Chronic Alcohol Use:</strong> Atrophy of the <strong>anterior superior vermis</strong> → truncal/gait ataxia.</li>
+            <li><strong>Friedreich Ataxia:</strong> Autosomal recessive <strong>GAA</strong> repeat in <em>FXN</em> (frataxin) → ataxia + absent ankle jerks + Babinski sign + hypertrophic cardiomyopathy.</li>
+          </ul>
+        </div>
+
+        <!-- VIGNETTES 6.5 -->
+        <div class="vignettes-section">
+          <div class="vignettes-header">🩺 Chunk 6.5: Clinical Vignettes (Module 6)</div>
+
+          <div class="question-card" data-qid="m6q1">
+            <div class="question-stem">
+              <span class="question-num">Question 1.</span>
+              A 67-year-old man develops sudden-onset vertigo, intractable vomiting, and inability to walk. Examination reveals left-sided ptosis and miosis, hoarseness, dysphagia, reduced gag reflex, left-sided limb ataxia, and loss of pain and temperature sensation over the left side of the face and right side of the body. Occlusion of which vascular territory best explains his presentation?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Anterior cerebral artery territory</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Middle cerebral artery territory</span>
+              </button>
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>Posterior inferior cerebellar artery (PICA) territory</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Anterior spinal artery territory</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> This is the classic presentation of lateral medullary (Wallenberg) syndrome caused by PICA (or vertebral artery) occlusion. Involvement of the nucleus ambiguus causes dysphagia and hoarseness; the inferior cerebellar peduncle/vestibular nuclei cause ataxia and vertigo; descending sympathetics cause ipsilateral Horner syndrome; and the spinal trigeminal nucleus plus spinothalamic tract cause crossed pain/temperature loss.
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> PICA/lateral medullary stroke is distinguished from AICA/pontine stroke by bulbar symptoms (dysphagia, hoarseness, decreased gag reflex) from nucleus ambiguus damage.
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card" data-qid="m6q2">
+            <div class="question-stem">
+              <span class="question-num">Question 2.</span>
+              A 49-year-old man with a 25-year history of heavy alcohol use presents with a 6-month history of progressively unsteady gait. Examination shows a wide-based stance, marked truncal instability, and impaired heel-to-shin testing bilaterally, while finger-to-nose testing and speech are normal. Brain MRI shows selective atrophy of the anterior superior cerebellar vermis. Which diagnosis is most likely?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Acute anterior spinal artery infarction</span>
+              </button>
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Alcohol-related cerebellar degeneration</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>Myasthenia gravis</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Isolated optic neuritis</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> Chronic alcohol use and nutritional deficiency preferentially damage Purkinje cells in the anterior superior cerebellar vermis, which somatotopically controls the trunk and lower extremities. Consequently, patients present with wide-based gait and lower-limb/truncal ataxia with relative sparing of upper-limb coordination and speech.
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> Chronic alcoholism causes selective atrophy of the anterior superior cerebellar vermis, manifesting as lower-extremity and truncal gait ataxia.
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card" data-qid="m6q3">
+            <div class="question-stem">
+              <span class="question-num">Question 3.</span>
+              A 15-year-old boy presents with progressive gait ataxia and frequent falls. Examination reveals dysmetria, absent bilateral ankle and knee reflexes, bilateral Babinski signs, loss of vibration and joint-position sense in the feet, kyphoscoliosis, and a systolic murmur associated with concentric left ventricular hypertrophy. Which molecular mechanism is most likely responsible for his condition?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Autoantibodies directed against voltage-gated calcium channels</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Frameshift deletion in the dystrophin (DMD) gene</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>CTG trinucleotide repeat expansion in the DMPK gene</span>
+              </button>
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>GAA trinucleotide repeat expansion in the FXN gene</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> Friedreich ataxia is an autosomal recessive disorder caused by a GAA trinucleotide repeat expansion in the <em>FXN</em> gene encoding frataxin, an essential mitochondrial iron-binding protein. Degeneration of the spinocerebellar tracts (ataxia), dorsal columns/dorsal root ganglia (loss of proprioception and absent reflexes), and lateral corticospinal tracts (Babinski sign) occurs alongside hypertrophic cardiomyopathy.
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> Friedreich ataxia (GAA repeat expansion in FXN) combines cerebellar ataxia, dorsal column sensory loss, areflexia, Babinski signs, kyphoscoliosis, and hypertrophic cardiomyopathy.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         MODULE 7: FINAL INTEGRATION QUIZ & REVIEW
+         ========================================== -->
+    <div class="chunk-card">
+      <button class="chunk-header" onclick="toggleChunk(this)">
+        <div class="chunk-title-group">
+          <span class="module-badge">Final Review</span>
+          <span class="chunk-title">USMLE Step 1 Integration Quiz &amp; Master Review</span>
+        </div>
+        <span class="toggle-icon">Expand ▼</span>
+      </button>
+      <div class="chunk-body">
+        <div class="hy-summary-box">
+          <h4>⚡ Final High-Yield Rapid Checklist</h4>
+          <ul>
+            <li><strong>Lateral Hemisphere Lesion:</strong> Ipsilateral limb dysmetria, intention tremor, dysdiadochokinesia.</li>
+            <li><strong>Vermian Lesion:</strong> Truncal instability and broad-based gait ataxia.</li>
+            <li><strong>Flocculonodular Lesion:</strong> Vertigo, nystagmus, and postural imbalance.</li>
+            <li><strong>Peduncles:</strong> SCP = main output to contralateral VL thalamus/red nucleus; MCP = input from contralateral pontine nuclei; ICP = proprioceptive, vestibular, and inferior olivary climbing fiber input.</li>
+            <li><strong>Histology:</strong> Purkinje cells = GABAergic (inhibitory output to deep nuclei); Granule cells = Glutamatergic (excitatory parallel fibers).</li>
+          </ul>
+        </div>
+
+        <div class="vignettes-section" style="margin-top: 16px; border-top: none; padding-top: 0;">
+          <div class="vignettes-header">🏆 Final Integration Quiz (5 Questions)</div>
+
+          <div class="question-card" data-qid="fq1">
+            <div class="question-stem">
+              <span class="question-num">Integration Question 1.</span>
+              A 61-year-old woman develops right-sided dysmetria and intention tremor following an ischemic stroke confined to the right cerebellar hemisphere. Which neuroanatomical principle best accounts for why her motor signs appear on the right side of the body?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Cerebellar hemisphere lesions selectively damage ipsilateral peripheral motor nerves</span>
+              </button>
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Ascending cerebellar output pathways and descending corticospinal/rubrospinal tracts both cross the midline</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>The cerebellum receives no input from the contralateral cerebral cortex</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Corticospinal fibers remain entirely uncrossed from the cortex to the anterior horn</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> Efferents from the right deep cerebellar nuclei cross via the decussation of the superior cerebellar peduncle to reach the left VL thalamus and left motor cortex; the descending left corticospinal tract then crosses back to the right spinal cord at the pyramidal decussation.
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> Double decussation (superior cerebellar peduncle + medullary pyramids) ensures each cerebellar hemisphere coordinates the ipsilateral side of the body.
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card" data-qid="fq2">
+            <div class="question-stem">
+              <span class="question-num">Integration Question 2.</span>
+              A neuroscientist records intracellularly from a large neuron in the cerebellar cortex whose axon projects directly to the dentate nucleus and releases gamma-aminobutyric acid (GABA). Which neuron is being studied?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Granule cell</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Pontine nucleus neuron</span>
+              </button>
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>Purkinje cell</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Inferior olivary neuron</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> Purkinje cells are the GABAergic, inhibitory output neurons of the cerebellar cortex that project directly onto the deep cerebellar nuclei (including the dentate nucleus).
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> Purkinje cells are always GABAergic and inhibitory; deep cerebellar nuclei neurons provide the excitatory output leaving the cerebellum.
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card" data-qid="fq3">
+            <div class="question-stem">
+              <span class="question-num">Integration Question 3.</span>
+              A 44-year-old patient has progressive gait instability, impaired balance, and bidirectional gaze-evoked nystagmus caused by a lesion localized to the flocculonodular lobe. Which functional division of the cerebellum is primarily affected?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Vestibulocerebellum</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Cerebrocerebellum</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>Primary motor cortex</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Striatum of the basal ganglia</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> The flocculonodular lobe constitutes the main anatomical component of the vestibulocerebellum, regulating equilibrium, axial balance, and vestibulo-ocular eye movements.
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> Flocculonodular lobe = Vestibulocerebellum (balance and eye movement coordination).
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card" data-qid="fq4">
+            <div class="question-stem">
+              <span class="question-num">Integration Question 4.</span>
+              A patient has marked difficulty performing rapid alternating movements of the forearm and repeatedly overshoots the examiner's finger during finger-to-nose testing despite normal 5/5 grip and deltoid strength. Which physiological role is most directly impaired?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Generation of the resting membrane potential in skeletal muscle</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Transduction of auditory vibrations within the organ of Corti</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>Activation of Ia afferent fibers by muscle spindles</span>
+              </button>
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Coordination and temporal calibration of voluntary movement</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> Dysdiadochokinesia and dysmetria in a patient with normal strength are hallmark features of impaired cerebellar coordination and temporal calibration of movement.
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> Cerebellar disease impairs the smooth timing, scaling, and synergy of movements without causing primary corticospinal weakness.
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card" data-qid="fq5">
+            <div class="question-stem">
+              <span class="question-num">Integration Question 5.</span>
+              A 7-year-old child presents with progressive gait unsteadiness, frequent falls, and morning headaches. Brain MRI reveals a midline posterior fossa mass compressing the fourth ventricle. Compression of which cerebellar structure is most directly responsible for the child's truncal and gait instability?
+            </div>
+            <div class="options-list">
+              <button class="option-btn" data-correct="true" onclick="selectAnswer(this)">
+                <span class="option-letter">A</span>
+                <span>Cerebellar vermis</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">B</span>
+                <span>Optic chiasm</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">C</span>
+                <span>Primary auditory cortex (transverse temporal gyri of Heschl)</span>
+              </button>
+              <button class="option-btn" data-correct="false" onclick="selectAnswer(this)">
+                <span class="option-letter">D</span>
+                <span>Lumbar anterior horn</span>
+              </button>
+            </div>
+            <div class="feedback-panel">
+              <div class="explanation-block">
+                <strong>Explanation:</strong> Midline posterior fossa tumors in children (classically medulloblastoma) arise in the cerebellar vermis, causing truncal and gait ataxia along with obstructive hydrocephalus from fourth-ventricle compression.
+              </div>
+              <div class="hy-concept-tag">
+                <strong>High-Yield Concept:</strong> Pediatric midline cerebellar masses (medulloblastoma) damage the vermis and fastigial/flocculonodular pathways, producing truncal ataxia and obstructive hydrocephalus.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="bottom-footer">
+    <a href="https://instagram.com/doctors.speak" target="_blank" class="instagram-link">
+      <span>@doctors.speak</span>
+    </a>
+    <a href="https://kazdoctors.com/usmle/" class="back-btn">
+      <svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
+      <span>Go back</span>
+    </a>
+  </footer>
+
+  <!-- INTERACTIVE JAVASCRIPT -->
+  <script>
+    let answeredCount = 0;
+    let correctCount = 0;
+    const totalQuestions = document.querySelectorAll('.question-card').length;
+    document.getElementById('total-count').textContent = totalQuestions;
+
+    // Toggle individual collapsible chunk
+    function toggleChunk(headerBtn) {
+      const card = headerBtn.closest('.chunk-card');
+      const icon = headerBtn.querySelector('.toggle-icon');
+      const isOpen = card.classList.toggle('active');
+      icon.textContent = isOpen ? 'Collapse ▲' : 'Expand ▼';
+    }
+
+    // Expand or Collapse all chunks at once
+    function toggleAllChunks(expand) {
+      const cards = document.querySelectorAll('.chunk-card');
+      cards.forEach(card => {
+        const icon = card.querySelector('.toggle-icon');
+        if (expand) {
+          card.classList.add('active');
+          icon.textContent = 'Collapse ▲';
+        } else {
+          card.classList.remove('active');
+          icon.textContent = 'Expand ▼';
+        }
+      });
+    }
+
+    // Handle MCQ answer selection
+    function selectAnswer(btn) {
+      const card = btn.closest('.question-card');
+      if (card.dataset.answered === 'true') return;
+
+      card.dataset.answered = 'true';
+      answeredCount++;
+
+      const isCorrect = btn.dataset.correct === 'true';
+      if (isCorrect) {
+        correctCount++;
+        btn.classList.add('correct-choice');
+      } else {
+        btn.classList.add('wrong-choice');
+      }
+
+      // Highlight correct option and disable all buttons in this question
+      const allOptions = card.querySelectorAll('.option-btn');
+      allOptions.forEach(opt => {
+        opt.disabled = true;
+        if (opt.dataset.correct === 'true') {
+          opt.classList.add('correct-choice');
+        }
+      });
+
+      // Reveal explanation & high-yield concept
+      const feedback = card.querySelector('.feedback-panel');
+      feedback.classList.add('visible');
+
+      updateScoreBoard();
+    }
+
+    function updateScoreBoard() {
+      document.getElementById('answered-count').textContent = answeredCount;
+      document.getElementById('correct-count').textContent = correctCount;
+    }
+
+    // Reset all questions
+    function resetQuiz() {
+      answeredCount = 0;
+      correctCount = 0;
+      updateScoreBoard();
+
+      const cards = document.querySelectorAll('.question-card');
+      cards.forEach(card => {
+        delete card.dataset.answered;
+        const options = card.querySelectorAll('.option-btn');
+        options.forEach(opt => {
+          opt.disabled = false;
+          opt.classList.remove('correct-choice', 'wrong-choice');
+        });
+        const feedback = card.querySelector('.feedback-panel');
+        feedback.classList.remove('visible');
+      });
+    }
+
+    // Dynamically shuffle A, B, C, D options with balanced distribution
+    function shuffleAllQuestions() {
+      resetQuiz();
+      const letters = ['A', 'B', 'C', 'D'];
+      const cards = Array.from(document.querySelectorAll('.question-card'));
+
+      // Create an equally balanced target index array (0=A, 1=B, 2=C, 3=D)
+      const targetPositions = [];
+      for (let i = 0; i < cards.length; i++) {
+        targetPositions.push(i % 4);
+      }
+      // Fisher-Yates shuffle on target positions so A, B, C, D occur in equal proportions
+      for (let i = targetPositions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [targetPositions[i], targetPositions[j]] = [targetPositions[j], targetPositions[i]];
+      }
+
+      cards.forEach((card, idx) => {
+        const list = card.querySelector('.options-list');
+        const options = Array.from(list.querySelectorAll('.option-btn'));
+        const correctOpt = options.find(o => o.dataset.correct === 'true');
+        const distractors = options.filter(o => o.dataset.correct !== 'true');
+
+        // Shuffle distractors
+        for (let i = distractors.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [distractors[i], distractors[j]] = [distractors[j], distractors[i]];
+        }
+
+        // Insert correct option at the designated balanced position
+        const targetPos = targetPositions[idx];
+        const newOrder = [];
+        let dIndex = 0;
+        for (let pos = 0; pos < 4; pos++) {
+          if (pos === targetPos) {
+            newOrder.push(correctOpt);
+          } else {
+            newOrder.push(distractors[dIndex++]);
+          }
+        }
+
+        // Re-append and relabel A, B, C, D
+        list.innerHTML = '';
+        newOrder.forEach((opt, pos) => {
+          opt.querySelector('.option-letter').textContent = letters[pos];
+          list.appendChild(opt);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
