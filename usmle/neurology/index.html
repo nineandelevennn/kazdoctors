@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>USMLE preparation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --kz-blue: #00A1DE;
+            --kz-blue-dark: #0077A3;
+            --kz-blue-light: #EBF8FC;
+            --kz-gold: #FFC72C;
+            --bg-main: #F2F5F8;
+            --card-bg: #FFFFFF;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            overflow-y: auto;
+            background: var(--bg-main);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            user-select: none;
+        }
+
+        /* 1. Верхняя шапка во всю ширину */
+        header {
+            position: relative;
+            z-index: 1;
+            background: var(--kz-blue);
+            color: #FFFFFF;
+            text-align: center;
+            padding: 20px 16px 24px 16px;
+            box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Кнопка "Назад" в шапке */
+        header .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.78rem;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            transition: all 0.2s ease;
+        }
+
+        header .back-btn:active {
+            transform: scale(0.96);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        header .back-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--kz-gold);
+        }
+
+        .brand-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #FFFFFF;
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 0.8px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 8px;
+            text-decoration: none;
+        }
+
+        h1 {
+            font-size: 1.35rem;
+            font-weight: 900;
+            line-height: 1.2;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #FFFFFF;
+        }
+
+        .subtitle {
+            font-size: 0.78rem;
+            margin-top: 4px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--kz-gold);
+        }
+
+        /* 2. Основная зона с карточками */
+        main {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            max-width: 440px;
+            margin: 0 auto;
+            padding: 20px 16px;
+            flex-grow: 1;
+            justify-content: flex-start;
+        }
+
+        .trainer-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 14px 16px;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Акцентная синяя полоса слева (стиль референса) */
+        .trainer-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            background: var(--kz-blue);
+        }
+
+        .trainer-card:active {
+            transform: translateY(1px);
+            background: #FAFAFA;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-content {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .card-icon {
+            width: 46px;
+            height: 46px;
+            background: var(--kz-blue-light);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            border: 1px solid rgba(0, 161, 222, 0.15);
+        }
+
+        .card-text h2 {
+            font-size: 0.95rem;
+            font-weight: 800;
+            margin-bottom: 2px;
+            color: var(--text-dark);
+            line-height: 1.25;
+        }
+
+        .card-text p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.3;
+            font-weight: 600;
+        }
+
+        .arrow-icon {
+            width: 18px;
+            height: 18px;
+            fill: var(--kz-blue);
+            flex-shrink: 0;
+            margin-left: 8px;
+        }
+
+        /* 3. Подвал и кнопки внизу */
+        footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 10px 16px 20px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .instagram-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--kz-blue-dark);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.82rem;
+            padding: 8px 18px;
+            border-radius: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        /* Кнопка "Назад" в футере */
+        footer .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--kz-blue-dark);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.78rem;
+            padding: 8px 18px;
+            border-radius: 20px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        footer .back-btn:active {
+            transform: scale(0.96);
+            background: var(--bg-main);
+        }
+
+        footer .back-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--kz-blue);
+        }
+
+        @media (max-height: 640px) {
+            header { padding: 16px; }
+            h1 { font-size: 1.15rem; }
+            .subtitle { font-size: 0.72rem; }
+            .trainer-card { padding: 12px 14px; }
+            .card-icon { width: 40px; height: 40px; font-size: 1.15rem; }
+            .card-text h2 { font-size: 0.88rem; }
+            .card-text p { font-size: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <!-- Верхняя кнопка "Назад" -->
+        <a href="https://kazdoctors.com" class="back-btn">
+            <span>⬅️Go back</span>
+        </a>
+
+        <div class="brand-badge">@doctors.speak</div>
+        <h1>NEUROLOGY</h1>
+        <p class="subtitle">USMLE preparation</p>
+    </header>
+
+    <main>
+        <!-- Neurology week 3 -->
+        <a href="https://kazdoctors.com/usmle/neuroweek3/" class="trainer-card">
+            <div class="card-content">
+                <div class="card-icon">🧠</div>
+                <div class="card-text">
+                    <h2>SENSIBILITIES WEEK 3</h2>
+                    <p>ICH, Parkinson, dementias, demyelination, myelinosis</p>
+                </div>
+            </div>
+            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+        </a>
+
+        <!-- Neurology week 4 -->
+        <a href="https://kazdoctors.com/usmle/neuroweek4/" class="trainer-card">
+            <div class="card-content">
+                <div class="card-icon">🧠</div>
+                <div class="card-text">
+                    <h2>SENSIBILITIES WEEK 4</h2>
+                    <p>neurocutaneous, infections, sleep & seizures</p>
+                </div>
+            </div>
+            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+        </a>
+
+        <!-- Neurology week 6 -->
+        <a href="https://kazdoctors.com/usmle/eye_inflam/" class="trainer-card">
+            <div class="card-content">
+                <div class="card-icon">👀</div>
+                <div class="card-text">
+                    <h2>Eye Inflammation</h2>
+                    <p>S&S Week 6</p>
+                </div>
+            </div>
+            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+        </a>
+
+        <!-- Glaucoma -->
+        <a href="https://kazdoctors.com/usmle/glaucomaandlens/" class="trainer-card">
+            <div class="card-content">
+                <div class="card-icon">👁️</div>
+                <div class="card-text">
+                    <h2>Glaucoma and Lens</h2>
+                    <p>Week 6 Day 2</p>
+                </div>
+            </div>
+            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+        </a>
+
+        <!-- Cerebellum -->
+        <a href="https://kazdoctors.com/usmle/cerebellum/" class="trainer-card">
+            <div class="card-content">
+                <div class="card-icon">😩</div>
+                <div class="card-text">
+                    <h2>Cerebellum</h2>
+                    <p>Self-study</p>
+                </div>
+            </div>
+            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+        </a>
+
+        <!-- Go back -->
+        <a href="https://kazdoctors.com/usmle/" class="trainer-card">
+            <div class="card-content">
+                <div class="card-icon">⬅️</div>
+                <div class="card-text">
+                    <h2>Go Back</h2>
+                    <p>Back Go👍</p>
+                </div>
+            </div>
+            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+        </a>
+    </main>
+
+    <footer>
+        <a href="https://instagram.com/doctors.speak" target="_blank" class="instagram-link">
+            <span>@doctors.speak</span>
+        </a>
+
+        <!-- Нижняя кнопка "Назад" -->
+        <a href="https://kazdoctors.com/" class="back-btn">
+            <svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
+            <span>kazdoctors.com</span>
+        </a>
+    </footer>
+
+    <script>
+        const usmleQuestions = [
+            { field: "Neurology", q: "What triad presents with seizures, intellectual disability, and facial angiofibromas?", a: "Tuberous Sclerosis (associated with subependymal giant cell astrocytomas)." },
+            { field: "Microbiology", q: "Which Gram-positive rod displays 'tumbling motility' at room temperature?", a: "Listeria monocytogenes." },
+            { field: "Cardiology", q: "ST elevation in V1–V4 indicates an infarction in which artery?", a: "Left Anterior Descending (LAD) artery." },
+            { field: "Pharmacology", q: "Which drug class is first-line for acute treatment of anaphylaxis?", a: "Epinephrine (Alpha-1, Beta-1, Beta-2 agonist)." },
+            { field: "Biochemistry", q: "Deficiency of which enzyme causes Maple Syrup Urine Disease?", a: "Branched-chain alpha-ketoacid dehydrogenase." },
+            { field: "Pathology", q: "Psammoma bodies are classically seen in which thyroid carcinoma?", a: "Papillary thyroid carcinoma." },
+            { field: "Endocrinology", q: "What condition presents with Medullary thyroid carcinoma, Pheochromocytoma, and Mucosal neuromas?", a: "MEN 2B (associated with RET gene mutation)." },
+            { field: "Renal", q: "Which nephrotic syndrome is associated with anti-PLA2R antibodies?", a: "Membranous nephropathy." },
+            { field: "Hematology", q: "What is the hallmark cell type seen on blood smear in Hodgkin lymphoma?", a: "Reed-Sternberg cells ('owl-eye' appearance)." },
+            { field: "Immunology", q: "Bruton agammaglobulinemia is caused by a defect in which gene?", a: "BTK (Bruton tyrosine kinase) gene (X-linked recessive)." },
+            { field: "Pulmonology", q: "Curshmann spirals and Charcot-Leyden crystals in sputum are pathognomonic for what condition?", a: "Asthma." },
+            { field: "Gastrointestinal", q: "What is the most specific autoantibody for Celiac Disease?", a: "Anti-tissue transglutaminase (anti-tTG) IgA." },
+            { field: "Musculoskeletal", q: "Which nerve is at risk of injury in a mid-shaft fracture of the humerus?", a: "Radial nerve (causes wrist drop)." },
+            { field: "Reproductive", q: "Ovarian tumor containing thyroid tissue causing hyperthyroidism is known as what?", a: "Struma ovarii (a specialized teratoma)." },
+            { field: "Psychiatry", q: "What class of medication is first-line for OCD?", a: "SSRIs (Selective Serotonin Reuptake Inhibitors)." },
+            { field: "Pharmacology", q: "What antidote is given for acetaminophen toxicity?", a: "N-acetylcysteine (replenishes glutathione)." },
+            { field: "Cardiology", q: "Aschoff bodies and Anitschkow cells are characteristic of what condition?", a: "Acute Rheumatic Fever." },
+            { field: "Microbiology", q: "Which bacterium shows a 'safety pin' appearance on Wayson stain?", a: "Yersinia pestis." },
+            { field: "Renal", q: "Tram-track appearance on light microscopy of glomeruli indicates which condition?", a: "Membranoproliferative glomerulonephritis (MPGN)." },
+            { field: "Neurology", q: "Lewy bodies composed of alpha-synuclein in the substantia nigra are diagnostic for what?", a: "Parkinson Disease." },
+            { field: "Biochemistry", q: "What enzyme deficiency causes Lesch-Nyhan syndrome?", a: "HGPRT (Hypoxanthine-guanine phosphoribosyltransferase)." },
+            { field: "Endocrinology", q: "Cushing syndrome with hyperpigmentation and failure to suppress with high-dose dexamethasone suggests what source?", a: "Ectopic ACTH secretion (e.g., Small Cell Lung Carcinoma)." },
+            { field: "Gastrointestinal", q: "PAS-positive macrophages in the intestinal lamina propria indicate which disease?", a: "Whipple disease (Tropheryma whipplei)." },
+            { field: "Hematology", q: "A Auer rod inside a blast cell is pathognomonic for which leukemia?", a: "Acute Promyelocytic Leukemia (APL, M3 variant of AML)." },
+            { field: "Immunology", q: "DiGeorge syndrome results from a microdeletion at which chromosome location?", a: "22q11.2 deletion (failure of 3rd and 4th pharyngeal pouches)." },
+            { field: "Pathology", q: "Onchocerciasis ('river blindness') is transmitted by which vector?", a: "Blackfly (Simulium)." },
+            { field: "Pulmonology", q: "Eburnation and Heberden nodes are classic signs of what joint disorder?", a: "Osteoarthritis." },
+            { field: "Reproductive", q: "Koilocytic atypia on a Pap smear is characteristic of infection with which virus?", a: "HPV (Human Papillomavirus)." },
+            { field: "Psychiatry", q: "Wernicke encephalopathy triad includes confusion, ataxia, and what visual abnormality?", a: "Ophthalmoplegia / Nystagmus (due to B1/Thiamine deficiency)." },
+            { field: "Musculoskeletal", q: "Compression of which nerve causes carpal tunnel syndrome?", a: "Median nerve." },
+            { field: "Cardiology", q: "Pansystolic murmur loudest at the apex radiating to the axilla indicates what?", a: "Mitral Regurgitation." },
+            { field: "Pharmacology", q: "What drug causes grey baby syndrome in neonates?", a: "Chloramphenicol." },
+            { field: "Microbiology", q: "Which organism causes tinea versicolor with a 'spaghetti and meatballs' appearance on KOH mount?", a: "Malassezia furfur." },
+            { field: "Renal", q: "Epithelial cell casts with 'muddy brown' granular appearance indicate what renal condition?", a: "Acute Tubular Necrosis (ATN)." },
+            { field: "Neurology", q: "Bitemporal hemianopia is caused by compression of what structure?", a: "Optic chiasm (e.g., Pituitary adenoma)." },
+            { field: "Biochemistry", q: "Kayser-Fleischer rings in the cornea are indicative of which metabolic disease?", a: "Wilson Disease (ATP7B gene mutation, copper accumulation)." },
+            { field: "Endocrinology", q: "What is the primary treatment for Nephrogenic Diabetes Insipidus caused by Lithium?", a: "Amiloride." },
+            { field: "Gastrointestinal", q: "Apple-core lesion on barium enema is indicative of what malignancy?", a: "Colorectal Adenocarcinoma." },
+            { field: "Hematology", q: "Heinz bodies and bite cells are seen in which enzyme deficiency?", a: "G6PD deficiency." },
+            { field: "Immunology", q: "Wiskott-Aldrich syndrome triad: Eczema, Thrombocytopenia, and what else?", a: "Recurrent pyogenic infections (WATER: Wiskott-Aldrich, Thrombocytopenia, Eczema, Recurrent infections)." },
+            { field: "Pathology", q: "Kimmelstiel-Wilson nodules in the glomerulus are characteristic of what condition?", a: "Diabetic Nephropathy." },
+            { field: "Pulmonology", q: "Honeycombing on CT chest and interstitial fibrosis are hallmark features of what?", a: "Idiopathic Pulmonary Fibrosis." },
+            { field: "Reproductive", q: "Chocolate cyst of the ovary is associated with what condition?", a: "Endometriosis." },
+            { field: "Musculoskeletal", q: "Anti-Smith and anti-dsDNA antibodies are specific for which autoimmune disease?", a: "Systemic Lupus Erythematosus (SLE)." },
+            { field: "Pharmacology", q: "Which antiarrhythmic drug can cause pulmonary fibrosis, blue skin, and thyroid dysfunction?", a: "Amiodarone." },
+            { field: "Microbiology", q: "Ghon complex (subpleural nodule + hilar lymph node calcification) indicates primary infection with what?", a: "Mycobacterium tuberculosis." },
+            { field: "Cardiology", q: "Which congenital heart disease is characterized by a boot-shaped heart on chest X-ray?", a: "Tetralogy of Fallot." },
+            { field: "Neurology", q: "Subdural hematoma involves tearing of which vessels?", a: "Bridging veins." },
+            { field: "Gastrointestinal", q: "Mallory-Weiss tears are lacerations located at which anatomical junction?", a: "Gastroesophageal junction." },
+            { field: "Biochemistry", q: "Niemann-Pick disease is caused by a deficiency in which enzyme?", a: "Sphingomyelinase (presents with hepatosplenomegaly and cherry-red spot)." }
+        ];
+
+        function displayHourlyQuestion() {
+            const fieldEl = document.getElementById('fact-field');
+            if (!fieldEl) return;
+            const hourIndex = Math.floor(Date.now() / (1000 * 60 * 60));
+            const item = usmleQuestions[hourIndex % usmleQuestions.length];
+
+            fieldEl.textContent = item.field;
+            document.getElementById('fact-question').textContent = item.q;
+            document.getElementById('fact-answer').textContent = item.a;
+
+            const answerBox = document.getElementById('fact-answer-box');
+            const btn = document.getElementById('show-answer-btn');
+            answerBox.style.display = 'none';
+            btn.textContent = 'Show Answer';
+        }
+
+        function toggleAnswer() {
+            const answerBox = document.getElementById('fact-answer-box');
+            const btn = document.getElementById('show-answer-btn');
+
+            if (answerBox.style.display === 'none' || answerBox.style.display === '') {
+                answerBox.style.display = 'block';
+                btn.textContent = 'Hide Answer';
+            } else {
+                answerBox.style.display = 'none';
+                btn.textContent = 'Show Answer';
+            }
+        }
+
+        displayHourlyQuestion();
+    </script>
+</body>
+</html>
