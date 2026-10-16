@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>USMLE Step 1 Neurology - High-Yield Flashcards</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slide: {
+                            red: '#00A1DE',
+                            darkred: '#0077A3',
+                            light: '#EBF8FC',
+                            gold: '#FFC72C',
+                            bg: '#F2F5F8',
+                            card: '#FFFFFF',
+                            text: '#1E293B',
+                            subtext: '#64748B',
+                            border: '#E2E8F0'
+                        }
+                    },
+                    animation: {
+                        'pop': 'pop 0.2s ease-out'
+                    },
+                    keyframes: {
+                        pop: {
+                            '0%': { transform: 'scale(0.97)' },
+                            '100%': { transform: 'scale(1)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Lock screen to 100dvh with zero page scrolling on mobile */
+        html, body {
+            height: 100dvh;
+            width: 100vw;
+            overflow: hidden;
+            position: fixed;
+            touch-action: manipulation;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #F2F5F8;
+            color: #1E293B;
+        }
+
+        /* Fluid text sizing for mobile viewports */
+        .text-clamp-title {
+            font-size: clamp(0.9rem, 4vw, 1.25rem);
+        }
+        .text-clamp-prompt {
+            font-size: clamp(0.85rem, 3.8vw, 1.1rem);
+            line-height: 1.35;
+        }
+        .text-clamp-option {
+            font-size: clamp(0.78rem, 3.2vw, 0.92rem);
+            line-height: 1.25;
+        }
+
+        button, a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Custom subtle scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00A1DE;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-slide-bg text-slide-text flex flex-col justify-between select-none antialiased h-[100dvh] max-h-[100dvh] w-full p-0 m-0 border-box">
+
+    <!-- HEADER BANNER (INDEX-58 STYLE) -->
+    <header class="shrink-0 bg-slide-red text-white w-full shadow-[0_4px_14px_rgba(0,161,222,0.2)] py-2.5 px-3 sm:px-4">
+        <div class="max-w-md mx-auto flex items-center justify-between gap-2">
+            <!-- GO BACK BUTTON -->
+            <a href="https://kazdoctors.com/usmle" target="_self" class="inline-flex items-center gap-1 px-3 py-1 bg-white/20 hover:bg-white/30 text-white text-xs font-bold rounded-full border border-white/35 backdrop-blur-md transition-all active:scale-95 shrink-0">
+                <span>⬅️Go back</span>
+            </a>
+
+            <!-- CENTER LECTURE TITLE & BADGE -->
+            <div class="text-center flex-1 min-w-0 flex flex-col items-center">
+                <span class="inline-block bg-white/15 border border-white/30 text-white font-bold text-[10px] tracking-wider px-2.5 py-0.5 rounded-full mb-0.5">@doctors.speak</span>
+                <h1 class="font-black text-white text-clamp-title tracking-wide uppercase truncate w-full">NEUROLOGY</h1>
+                <p class="text-[9px] text-slide-gold font-extrabold tracking-widest uppercase truncate w-full">USMLE prep</p>
+            </div>
+
+            <!-- RESET STATS BUTTON -->
+            <button id="resetStatsBtn" class="px-2.5 py-1 bg-white/20 hover:bg-white/30 text-white text-xs font-bold rounded-full border border-white/35 backdrop-blur-md transition-all active:scale-95 shrink-0 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5 text-slide-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                <span class="hidden sm:inline">Reset</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN WRAPPER CONTAINER -->
+    <div class="flex-1 min-h-0 w-full max-w-md mx-auto flex flex-col justify-between px-2.5 py-2 sm:px-4 box-border">
+
+        <!-- DAY SELECTOR DROPDOWN & STATS BAR -->
+        <section class="shrink-0 flex flex-col gap-2 w-full my-0.5">
+            <!-- DAY SELECTOR -->
+            <div class="relative w-full">
+                <select id="daySelect" class="w-full bg-white text-slide-text font-bold text-xs sm:text-sm py-2 px-3 pr-8 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-slide-red appearance-none shadow-sm cursor-pointer transition-all">
+                    <option value="11">Day 11: Hydrocephalus & ICP</option>
+                    <option value="12">Day 12: Extrapyramidal System</option>
+                    <option value="13">Day 13: Neurodegenerative Disorders</option>
+                    <option value="14">Day 14: CNS Demyelination</option>
+                    <option value="15">Day 15: Myelinolysis & PRES</option>
+                    <option value="all" selected>All Days (11-15 Master Review)</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slide-red">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+                </div>
+            </div>
+
+            <!-- STATS DASHBOARD BAR -->
+            <div class="grid grid-cols-3 gap-2 w-full">
+                <!-- DONE STAT -->
+                <div class="bg-white border border-slate-200 rounded-xl p-1.5 flex flex-col items-center justify-center shadow-sm">
+                    <span class="text-[9px] uppercase font-bold text-slide-subtext tracking-wider">Done</span>
+                    <span id="statDone" class="text-base font-black text-slate-800">0</span>
+                </div>
+
+                <!-- ACCURACY STAT -->
+                <div class="bg-white border border-slate-200 rounded-xl p-1.5 flex flex-col items-center justify-center shadow-sm">
+                    <span class="text-[9px] uppercase font-bold text-slide-subtext tracking-wider">Correct</span>
+                    <div class="flex items-baseline gap-1">
+                        <span id="statCorrect" class="text-base font-black text-emerald-600">0</span>
+                        <span id="statAccuracy" class="text-[9px] text-slate-500 font-medium">(0%)</span>
+                    </div>
+                </div>
+
+                <!-- STREAK STAT -->
+                <div class="bg-white border border-slate-200 rounded-xl p-1.5 flex flex-col items-center justify-center shadow-sm">
+                    <span class="text-[9px] uppercase font-bold text-slide-subtext tracking-wider flex items-center gap-0.5">
+                        Streak
+                        <svg class="w-3 h-3 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-1.048c-2.5 1.249-4.2 3.824-4.2 6.551 0 2.228 1.135 4.103 2.8 5.15C8.3 13.9 7 15.65 7 17.5c0 .28.02.55.06.81a1 1 0 001.6.66c1.8-1.35 3.34-3.23 3.34-5.47 0-1.34-.5-2.55-1.35-3.48 1.8 1.34 3.35 3.23 3.35 5.47 0 1.25-.4 2.4-1.08 3.33a1 1 0 001.44 1.28c1.6-1.5 2.64-3.6 2.64-5.95 0-3.3-1.85-6.1-4.59-7.62z" clip-rule="evenodd"/></svg>
+                    </span>
+                    <span id="statStreak" class="text-base font-black text-amber-500">0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAIN QUESTION CARD CONTAINER -->
+        <main class="flex-1 min-h-0 w-full flex flex-col justify-between bg-white border border-slate-200 border-l-[5px] border-l-slide-red rounded-2xl p-3 shadow-[0_4px_12px_rgba(0,0,0,0.03)] relative overflow-hidden my-1">
+            
+            <!-- CARD HEADER INFO -->
+            <div class="shrink-0 flex items-center justify-between pb-1.5 border-b border-slate-200">
+                <span id="cardCategoryBadge" class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-slide-light text-slide-red border border-sky-200 rounded-full">
+                    Day 11
+                </span>
+                <span id="cardProgressText" class="text-[11px] font-semibold text-slate-500">
+                    Card 1 of 12
+                </span>
+            </div>
+
+            <!-- QUESTION PROMPT BOX -->
+            <div class="flex-1 min-h-0 flex items-center justify-center p-3 my-2 bg-slate-50 border border-slate-200 rounded-xl text-center shadow-inner overflow-y-auto">
+                <p id="questionPrompt" class="font-bold text-slate-900 text-clamp-prompt text-balance">
+                    Prompt loading...
+                </p>
+            </div>
+
+            <!-- OPTIONS GRID CONTAINER -->
+            <div id="optionsContainer" class="shrink-0 grid grid-cols-1 gap-2 my-1">
+                <!-- Dynamic 4 Option Buttons render here -->
+            </div>
+
+            <!-- EXPLANATION / KEY POINT FEEDBACK PANEL -->
+            <div id="explanationBox" class="shrink-0 hidden p-2.5 bg-slate-50 border border-slate-300 rounded-xl my-1 text-xs animate-pop overflow-y-auto max-h-[110px]">
+                <div class="flex items-center gap-1.5 font-bold mb-1" id="feedbackTitle">
+                    <!-- Correct/Incorrect indicator -->
+                </div>
+                <p id="explanationText" class="leading-relaxed text-[11px] sm:text-xs text-slate-700">
+                    Key point explanation...
+                </p>
+            </div>
+
+            <!-- NEXT QUESTION BUTTON CONTAINER -->
+            <div id="nextBtnContainer" class="shrink-0 hidden mt-1">
+                <button id="nextBtn" class="w-full py-2.5 px-4 bg-slide-red hover:bg-slide-darkred text-white font-bold text-xs sm:text-sm rounded-xl shadow-md active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <span>Next Question</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </button>
+            </div>
+
+        </main>
+
+        <!-- FOOTER INFO (INDEX-58 STYLE) -->
+        <footer class="shrink-0 flex items-center justify-center gap-2 py-1">
+            <a href="https://instagram.com/doctors.speak" target="_blank" class="inline-flex items-center gap-1 text-slide-darkred bg-white border border-slate-200 font-bold text-[11px] px-3 py-1 rounded-full shadow-sm hover:bg-slate-50 active:scale-95 transition-all">
+                <span>@doctors.speak</span>
+            </a>
+            <a href="https://kazdoctors.com/usmle" class="inline-flex items-center gap-1 text-slide-darkred bg-white border border-slate-200 font-bold text-[11px] px-3 py-1 rounded-full shadow-sm hover:bg-slate-50 active:scale-95 transition-all">
+                <svg class="w-3.5 h-3.5 fill-slide-red" viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
+                <span>Go back</span>
+            </a>
+        </footer>
+    </div>
+
+    <script>
+        const QUIZ_DATA = [
+            // DAY 11: Hydrocephalus & ICP
+            {
+                day: 11,
+                dayTitle: "Hydrocephalus & ICP",
+                prompt: "Structural obstruction to CSF flow within the ventricular system (e.g., aqueductal stenosis)",
+                answer: "Noncommunicating hydrocephalus",
+                explanation: "Noncommunicating (obstructive) hydrocephalus occurs when structural blockages within the ventricles impair CSF flow, leading to proximal dilation."
+            },
+            {
+                day: 11,
+                dayTitle: "Hydrocephalus & ICP",
+                prompt: "Impaired CSF absorption by arachnoid granulations into the dural venous sinuses",
+                answer: "Communicating hydrocephalus",
+                explanation: "Communicating hydrocephalus results from decreased CSF absorption via arachnoid granulations, affecting all ventricles equally."
+            },
+            {
+                day: 11,
+                dayTitle: "Hydrocephalus & ICP",
+                prompt: "Dilation of lateral + 3rd ventricles with a normal-sized 4th ventricle",
+                answer: "Aqueductal stenosis",
+                explanation: "Obstruction of the Aqueduct of Sylvius prevents CSF from exiting the 3rd ventricle to the 4th ventricle, dilating proximal structures."
+            },
+            {
+                day: 11,
+                dayTitle: "Hydrocephalus & ICP",
+                prompt: "Classic clinical triad: Gait disturbance + Urinary incontinence + Dementia ('Wet, Wobbly, Wacky')",
+                answer: "Normal-pressure hydrocephalus (NPH)",
+                explanation: "NPH presents with normal mean ICP and ventricular enlargement stretching corona radiata motor fibers, causing the classic triad."
+            },
+            {
+                day: 11,
+                dayTitle: "Hydrocephalus & ICP",
+                prompt: "Difficulty initiating walking with feet seemingly stuck to the floor ('magnetic' gait)",
+                answer: "Normal-pressure hydrocephalus (NPH)",
+                explanation: "Magnetic gait is a pathognomonic early feature of NPH caused by sacral/leg motor fiber distortion in the corona radiata."
+            },
+            {
+                day: 11,
+                dayTitle: "Hydrocephalus & ICP",
+                prompt: "Cystic enlargement of 4th ventricle + cerebellar vermis hypoplasia + posterior fossa enlargement",
+                answer: "Dandy-Walker malformation",
+                explanation: "Dandy-Walker malformation is a congenital failure of cerebellar vermis development combined with massive cystic expansion of the 4th ventricle."
+            },
+            {
+                day: 11,
+                dayTitle: "Hydrocephalus & ICP",
+                prompt: "Hypertension + Widened pulse pressure + Bradycardia + Irregular respirations",
+                answer: "Cushing triad (Increased ICP)",
+                explanation: "Cushing triad indicates dangerously elevated ICP triggering brainstem ischemia, sympathetic surge, and reflex vagal bradycardia."
+            },
+            {
+                day: 11,
+                dayTitle: "Hydrocephalus & ICP",
+                prompt: "Transtentorial herniation causing ipsilateral dilated/unreactive pupil (CN III) + contralateral hemiparesis",
+                answer: "Uncal herniation",
+                explanation: "Medial temporal lobe uncus herniates across tentorium, compressing ipsilateral CN III (pupil dilation) and cerebral peduncle (hemiparesis)."
+            },
+            {
+                day: 11,
+                dayTitle: "Hydrocephalus & ICP",
+                prompt: "Cingulate gyrus herniates under falx cerebri, compressing ACA and causing contralateral leg weakness",
+                answer: "Subfalcine herniation",
+                explanation: "Subfalcine herniation compromises the Anterior Cerebral Artery (ACA), leading to ischemia of the medial motor strip (lower limb weakness)."
+            },
+            {
+                day: 11,
+                dayTitle: "Hydrocephalus & ICP",
+                prompt: "Biconvex/lens-shaped hemorrhage on head CT + lucid interval following temporal bone fracture",
+                answer: "Epidural hematoma (Middle meningeal artery)",
+                explanation: "Rupture of the middle meningeal artery produces arterial bleeding between skull and dura, causing rapid compression after a brief lucid interval."
+            },
+            {
+                day: 11,
+                dayTitle: "Hydrocephalus & ICP",
+                prompt: "Crescent-shaped hemorrhage crossing suture lines on CT caused by tearing of bridging veins",
+                answer: "Subdural hematoma (Bridging veins)",
+                explanation: "Subdural hematoma involves low-pressure venous bleeding into the subdural space, commonly seen in elderly patients and chronic alcoholics."
+            },
+            {
+                day: 11,
+                dayTitle: "Hydrocephalus & ICP",
+                prompt: "Procedure strictly contraindicated in severe ICP or mass effect due to risk of fatal brain herniation",
+                answer: "Lumbar puncture",
+                explanation: "Lumbar puncture creates a pressure gradient across the brainstem/foramen magnum, potentially precipitating fatal tonsillar herniation."
+            },
+
+            // DAY 12: Extrapyramidal System
+            {
+                day: 12,
+                dayTitle: "Extrapyramidal System",
+                prompt: "Anatomical subcortical structure composed specifically of the Caudate nucleus + Putamen",
+                answer: "Striatum",
+                explanation: "The striatum (caudate + putamen) receives cortical input and delivers inhibitory GABAergic signals to the basal ganglia."
+            },
+            {
+                day: 12,
+                dayTitle: "Extrapyramidal System",
+                prompt: "Neurodegenerative loss of dopaminergic neurons in substantia nigra pars compacta",
+                answer: "Parkinson disease",
+                explanation: "Loss of nigrostriatal dopamine reduces direct pathway activation and increases indirect pathway inhibition, causing motor slowing."
+            },
+            {
+                day: 12,
+                dayTitle: "Extrapyramidal System",
+                prompt: "Classic motor triad: Resting tremor + Cogwheel rigidity + Bradykinesia",
+                answer: "Parkinson disease",
+                explanation: "Parkinson's features resting 'pill-rolling' tremor (4-6 Hz), cogwheel muscle stiffness, and progressive slowness of movement."
+            },
+            {
+                day: 12,
+                dayTitle: "Extrapyramidal System",
+                prompt: "Intracellular eosinophilic inclusions composed of aggregated alpha-synuclein",
+                answer: "Lewy bodies",
+                explanation: "Lewy bodies are toxic alpha-synuclein protein aggregates found in substantia nigra neurons in Parkinson disease."
+            },
+            {
+                day: 12,
+                dayTitle: "Extrapyramidal System",
+                prompt: "Autosomal dominant CAG repeat expansion leading to prominent caudate nucleus atrophy",
+                answer: "Huntington disease",
+                explanation: "Huntington disease causes trinucleotide repeat expansion on chromosome 4, selective GABAergic neuronal death, and caudate atrophy."
+            },
+            {
+                day: 12,
+                dayTitle: "Extrapyramidal System",
+                prompt: "Sudden, violent, uncontrolled flinging movements of an entire unilateral limb",
+                answer: "Hemiballismus (Subthalamic nucleus lesion)",
+                explanation: "Contralateral subthalamic nucleus destruction (often lacunar stroke) removes normal basal ganglia braking, causing violent wild flinging."
+            },
+            {
+                day: 12,
+                dayTitle: "Extrapyramidal System",
+                prompt: "Autosomal recessive mutation in ATP7B impairing copper excretion, producing Kayser-Fleischer rings",
+                answer: "Wilson disease",
+                explanation: "Wilson disease causes copper toxicity in liver, putamen/basal ganglia, and cornea (Kayser-Fleischer rings)."
+            },
+            {
+                day: 12,
+                dayTitle: "Extrapyramidal System",
+                prompt: "Repetitive involuntary chewing, lip-smacking, or facial grimacing following chronic neuroleptic exposure",
+                answer: "Tardive dyskinesia",
+                explanation: "Prolonged dopamine D2 receptor blockade induces extrapyramidal receptor hypersensitivity, generating involuntary orofacial chorea."
+            },
+            {
+                day: 12,
+                dayTitle: "Extrapyramidal System",
+                prompt: "Hyperthermia + Severe lead-pipe rigidity + Autonomic instability + High serum CK after antipsychotic therapy",
+                answer: "Neuroleptic malignant syndrome (NMS)",
+                explanation: "NMS is a life-threatening response to D2 dopamine blockade requiring immediate discontinuation, cooling, and dantrolene/bromocriptine."
+            },
+
+            // DAY 13: Neurodegenerative Disorders
+            {
+                day: 13,
+                dayTitle: "Neurodegenerative Disorders",
+                prompt: "Extracellular beta-amyloid plaques + Intracellular hyperphosphorylated tau neurofibrillary tangles",
+                answer: "Alzheimer disease",
+                explanation: "Alzheimer disease is characterized by extracellular Aβ oligomers/plaques and hyperphosphorylated tau tangles starting in temporal cortex."
+            },
+            {
+                day: 13,
+                dayTitle: "Neurodegenerative Disorders",
+                prompt: "Key basal forebrain cholinergic nucleus severely degenerated early in Alzheimer disease",
+                answer: "Nucleus basalis of Meynert",
+                explanation: "Loss of cholinergic projections from the nucleus basalis of Meynert directly impairs cortical memory processing in Alzheimer's."
+            },
+            {
+                day: 13,
+                dayTitle: "Neurodegenerative Disorders",
+                prompt: "Early behavioral disinhibition, personality changes, or aphasia with relative memory preservation",
+                answer: "Frontotemporal dementia (Pick disease)",
+                explanation: "FTD presents with early frontal/temporal lobe degeneration, hyperorality, disinhibition, and intracellular spherical tau Pick bodies."
+            },
+            {
+                day: 13,
+                dayTitle: "Neurodegenerative Disorders",
+                prompt: "Cognitive fluctuations + Detailed visual hallucinations + Parkinsonism + REM sleep behavior disorder",
+                answer: "Lewy body dementia",
+                explanation: "Dementia with Lewy Bodies features widespread cortical alpha-synuclein pathology causing visual hallucinations and parkinsonism."
+            },
+            {
+                day: 13,
+                dayTitle: "Neurodegenerative Disorders",
+                prompt: "Stepwise cognitive decline directly linked to multiple cerebral infarcts or microvascular disease",
+                answer: "Vascular dementia",
+                explanation: "Vascular dementia causes sudden or step-like functional drops corresponding to cumulative ischemic vessel damage."
+            },
+            {
+                day: 13,
+                dayTitle: "Neurodegenerative Disorders",
+                prompt: "Vertical supranuclear gaze palsy (downward gaze difficulty) + Early frequent backward falls",
+                answer: "Progressive supranuclear palsy (PSP)",
+                explanation: "PSP is a 4R-tauopathy affecting brainstem centers controlling vertical eye movements and postural stability."
+            },
+            {
+                day: 13,
+                dayTitle: "Neurodegenerative Disorders",
+                prompt: "Rapidly progressive dementia + Startle myoclonus + Spongiform encephalopathy + 14-3-3 CSF protein",
+                answer: "Creutzfeldt-Jakob disease (CJD)",
+                explanation: "CJD is a fatal prion disease causing misfolding of PrPC into PrPSc, rapid neurodegeneration, and startle myoclonus within months."
+            },
+            {
+                day: 13,
+                dayTitle: "Neurodegenerative Disorders",
+                prompt: "Simultaneous UMN signs (spasticity/hyperreflexia) + LMN signs (atrophy/fasciculations) with NO sensory deficits",
+                answer: "Amyotrophic lateral sclerosis (ALS)",
+                explanation: "ALS selectively degenerates anterior horn cells (LMN) and corticospinal tracts (UMN) while preserving sensory and oculomotor function."
+            },
+
+            // DAY 14: CNS Demyelination
+            {
+                day: 14,
+                dayTitle: "CNS Demyelination",
+                prompt: "Autoimmune demyelination of central nervous system separated in time and spatial location",
+                answer: "Multiple sclerosis (MS)",
+                explanation: "MS involves T-cell mediated autoimmune destruction of CNS myelin sheath and oligodendrocytes in young adults (predominantly female)."
+            },
+            {
+                day: 14,
+                dayTitle: "Neuro-ophthalmology / MS",
+                prompt: "Subacute painful monocular vision loss + Pain worse with eye movement + Central scotoma",
+                answer: "Optic neuritis",
+                explanation: "Optic neuritis is the classic initial presentation of MS, caused by inflammation of the optic nerve."
+            },
+            {
+                day: 14,
+                dayTitle: "Neuro-ophthalmology / MS",
+                prompt: "Impaired adduction of ipsilateral eye with horizontal nystagmus of contralateral abducting eye",
+                answer: "Internuclear ophthalmoplegia (MLF lesion)",
+                explanation: "INO occurs due to demyelination of the Medial Longitudinal Fasciculus (MLF), preventing lateral gaze coordination between CN VI and CN III."
+            },
+            {
+                day: 14,
+                dayTitle: "CNS Demyelination",
+                prompt: "Underlying cause of Internuclear Ophthalmoplegia (INO) when presenting in a young patient",
+                answer: "Multiple sclerosis",
+                explanation: "INO in young adults strongly points to MS; unilateral INO in older patients is more commonly due to lacunar brainstem stroke."
+            },
+            {
+                day: 14,
+                dayTitle: "CNS Demyelination",
+                prompt: "Electric shock-like sensation radiating down spine upon neck flexion (Lhermitte) & heat sensitivity (Uhthoff)",
+                answer: "Multiple sclerosis",
+                explanation: "Lhermitte sign reflects cervical cord demyelination; Uhthoff phenomenon occurs because elevated heat slows conduction through damaged axons."
+            },
+            {
+                day: 14,
+                dayTitle: "CNS Demyelination",
+                prompt: "Periventricular white matter demyelinating plaques perpendicular to lateral ventricles on brain MRI",
+                answer: "Dawson fingers (MS)",
+                explanation: "Dawson fingers represent inflammatory demyelination around small medullary venules running perpendicular to the ventricles."
+            },
+            {
+                day: 14,
+                dayTitle: "CNS Demyelination",
+                prompt: "CSF electrophoresis finding showing intrathecal IgG synthesis specific for MS diagnosis",
+                answer: "Oligoclonal bands",
+                explanation: "Oligoclonal IgG bands in CSF without corresponding serum bands indicate localized autoimmune B-cell activity within the CNS."
+            },
+            {
+                day: 14,
+                dayTitle: "Peripheral Demyelination",
+                prompt: "Ascending symmetric paralysis + Areflexia following Campylobacter jejuni enteritis",
+                answer: "Guillain-Barré syndrome (GBS)",
+                explanation: "GBS is an acute peripheral inflammatory demyelinating polyneuropathy (AIDP) due to molecular mimicry targeting Schwann cells."
+            },
+            {
+                day: 14,
+                dayTitle: "CNS Demyelination",
+                prompt: "Severe optic neuritis + Longitudinally extensive transverse myelitis + Autoantibodies against Aquaporin-4 (AQP4)",
+                answer: "Neuromyelitis optica (NMO / Devic)",
+                explanation: "NMO is an autoimmune disease targeting astrocytic aquaporin-4 water channels, causing optic nerve and severe cord demyelination."
+            },
+
+            // DAY 15: Myelinolysis & PRES
+            {
+                day: 15,
+                dayTitle: "Myelinolysis & PRES",
+                prompt: "Iatrogenic central pontine demyelination resulting from overly rapid correction of chronic hyponatremia",
+                answer: "Central pontine myelinolysis (CPM)",
+                explanation: "'From low to high, your pons will die': Rapid hypertonic correction draws fluid out of pontine glial cells, causing demyelination."
+            },
+            {
+                day: 15,
+                dayTitle: "Myelinolysis & PRES",
+                prompt: "Severe pontine myelinolysis impairing all corticospinal/corticobulbar motor tracts while sparing eye movements and alertness",
+                answer: "Locked-in syndrome",
+                explanation: "Patients with severe CPM develop quadriplegia, dysarthria, and dysphagia, communicating solely through vertical eye movements."
+            },
+            {
+                day: 15,
+                dayTitle: "Myelinolysis & PRES",
+                prompt: "Seizures + Visual disturbances + Encephalopathy + Parieto-occipital white matter vasogenic edema in severe HTN",
+                answer: "Posterior reversible encephalopathy syndrome (PRES)",
+                explanation: "Failed cerebral autoregulation during severe HTN or preeclampsia leads to posterior vasogenic edema and neuro symptoms."
+            },
+            {
+                day: 15,
+                dayTitle: "Myelinolysis & PRES",
+                prompt: "Essential medical step to completely reverse parieto-occipital vasogenic edema in PRES",
+                answer: "Prompt blood pressure control / Treating cause",
+                explanation: "PRES is inherently reversible if the triggering severe hypertension, preeclampsia, or immunosuppressant toxicity is promptly treated."
+            }
+        ];
+
+        let state = {
+            currentDay: 'all',
+            activeCards: [],
+            currentIndex: 0,
+            doneCount: 0,
+            correctCount: 0,
+            streakCount: 0,
+            isAnswered: false,
+            userSelectedOption: null
+        };
+
+        // DOM Cache
+        const daySelect = document.getElementById('daySelect');
+        const statDone = document.getElementById('statDone');
+        const statCorrect = document.getElementById('statCorrect');
+        const statAccuracy = document.getElementById('statAccuracy');
+        const statStreak = document.getElementById('statStreak');
+        const resetStatsBtn = document.getElementById('resetStatsBtn');
+
+        const cardCategoryBadge = document.getElementById('cardCategoryBadge');
+        const cardProgressText = document.getElementById('cardProgressText');
+        const questionPrompt = document.getElementById('questionPrompt');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const explanationBox = document.getElementById('explanationBox');
+        const feedbackTitle = document.getElementById('feedbackTitle');
+        const explanationText = document.getElementById('explanationText');
+        const nextBtnContainer = document.getElementById('nextBtnContainer');
+        const nextBtn = document.getElementById('nextBtn');
+
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Generate 4 options (1 correct, 3 wrong)
+        function generateOptions(currentCard) {
+            const correctAnswer = currentCard.answer;
+            const allPossibleWrong = QUIZ_DATA
+                .map(item => item.answer)
+                .filter(ans => ans !== correctAnswer);
+            
+            const uniqueWrong = Array.from(new Set(allPossibleWrong));
+            const shuffledWrong = shuffleArray(uniqueWrong).slice(0, 3);
+            return shuffleArray([correctAnswer, ...shuffledWrong]);
+        }
+
+        function filterCards() {
+            if (state.currentDay === 'all') {
+                state.activeCards = shuffleArray(QUIZ_DATA);
+            } else {
+                const dayNum = parseInt(state.currentDay, 10);
+                const filtered = QUIZ_DATA.filter(card => card.day === dayNum);
+                state.activeCards = shuffleArray(filtered);
+            }
+            state.currentIndex = 0;
+        }
+
+        function renderCard() {
+            if (state.activeCards.length === 0) return;
+
+            state.isAnswered = false;
+            state.userSelectedOption = null;
+
+            explanationBox.classList.add('hidden');
+            nextBtnContainer.classList.add('hidden');
+
+            const currentCard = state.activeCards[state.currentIndex];
+            
+            cardCategoryBadge.textContent = `Day ${currentCard.day}: ${currentCard.dayTitle}`;
+            cardProgressText.textContent = `Card ${state.currentIndex + 1} of ${state.activeCards.length}`;
+
+            questionPrompt.textContent = currentCard.prompt;
+
+            const options = generateOptions(currentCard);
+            optionsContainer.innerHTML = '';
+
+            options.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `w-full text-left p-2.5 sm:p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 active:scale-[0.98] transition-all flex items-start gap-2.5 text-clamp-option text-slate-900 font-medium cursor-pointer shadow-sm`;
+                
+                const letter = String.fromCharCode(65 + idx);
+                btn.innerHTML = `
+                    <span class="shrink-0 w-5 h-5 rounded-md bg-slide-light border border-sky-200 text-[11px] font-bold text-slide-red flex items-center justify-center mt-0.5">
+                        ${letter}
+                    </span>
+                    <span class="flex-1 text-balance">${optText}</span>
+                `;
+
+                btn.onclick = () => handleOptionSelect(optText, currentCard, btn, options);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function handleOptionSelect(selectedOption, currentCard, clickedBtn, options) {
+            if (state.isAnswered) return;
+            state.isAnswered = true;
+
+            const isCorrect = selectedOption === currentCard.answer;
+            state.doneCount++;
+
+            const optionButtons = optionsContainer.querySelectorAll('button');
+            
+            optionButtons.forEach(btn => {
+                btn.disabled = true;
+                btn.classList.remove('hover:bg-slate-50', 'active:scale-[0.98]', 'cursor-pointer');
+                btn.classList.add('cursor-default');
+
+                const textSpan = btn.querySelector('span:last-child');
+                const optText = textSpan ? textSpan.textContent.trim() : '';
+
+                if (optText === currentCard.answer) {
+                    // Highlight Correct Answer in Emerald Green
+                    btn.classList.remove('bg-white', 'border-slate-300');
+                    btn.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-950', 'ring-1', 'ring-emerald-500');
+                    const badge = btn.querySelector('span:first-child');
+                    if (badge) {
+                        badge.classList.remove('bg-slide-light', 'border-sky-200', 'text-slide-red');
+                        badge.classList.add('bg-emerald-600', 'border-emerald-600', 'text-white');
+                    }
+                }
+            });
+
+            if (isCorrect) {
+                state.correctCount++;
+                state.streakCount++;
+                
+                feedbackTitle.className = 'flex items-center gap-1.5 font-bold mb-1 text-emerald-700';
+                feedbackTitle.innerHTML = `
+                    <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                    <span>Correct! High-Yield Fact</span>
+                `;
+            } else {
+                state.streakCount = 0;
+                
+                // Highlight incorrect user choice in Red
+                clickedBtn.classList.remove('bg-white', 'border-slate-300');
+                clickedBtn.classList.add('bg-rose-50', 'border-rose-500', 'text-rose-950');
+                const badge = clickedBtn.querySelector('span:first-child');
+                if (badge) {
+                    badge.classList.remove('bg-slide-light', 'border-sky-200', 'text-slide-red');
+                    badge.classList.add('bg-rose-600', 'border-rose-600', 'text-white');
+                }
+
+                feedbackTitle.className = 'flex items-center gap-1.5 font-bold mb-1 text-rose-700';
+                feedbackTitle.innerHTML = `
+                    <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                    <span>Incorrect &bull; Key High-Yield Concept</span>
+                `;
+            }
+
+            updateStatsDisplay();
+
+            explanationText.textContent = currentCard.explanation;
+            explanationBox.classList.remove('hidden');
+            nextBtnContainer.classList.remove('hidden');
+        }
+
+        function updateStatsDisplay() {
+            statDone.textContent = state.doneCount;
+            statCorrect.textContent = state.correctCount;
+            
+            const accuracy = state.doneCount > 0 
+                ? Math.round((state.correctCount / state.doneCount) * 100) 
+                : 0;
+            statAccuracy.textContent = `(${accuracy}%)`;
+
+            statStreak.textContent = state.streakCount;
+        }
+
+        function nextQuestion() {
+            state.currentIndex++;
+            if (state.currentIndex >= state.activeCards.length) {
+                state.activeCards = shuffleArray(state.activeCards);
+                state.currentIndex = 0;
+            }
+            renderCard();
+        }
+
+        function resetStats() {
+            state.doneCount = 0;
+            state.correctCount = 0;
+            state.streakCount = 0;
+            updateStatsDisplay();
+            filterCards();
+            renderCard();
+        }
+
+        daySelect.addEventListener('change', (e) => {
+            state.currentDay = e.target.value;
+            filterCards();
+            renderCard();
+        });
+
+        nextBtn.addEventListener('click', nextQuestion);
+        resetStatsBtn.addEventListener('click', resetStats);
+
+        // Keyboard shortcuts (1-4 or A-D to choose option, Space/Enter for Next)
+        document.addEventListener('keydown', (e) => {
+            if (!state.isAnswered) {
+                const keyMap = { '1': 0, '2': 1, '3': 2, '4': 3, 'a': 0, 'b': 1, 'c': 2, 'd': 3 };
+                const idx = keyMap[e.key.toLowerCase()];
+                if (idx !== undefined) {
+                    const buttons = optionsContainer.querySelectorAll('button');
+                    if (buttons[idx]) buttons[idx].click();
+                }
+            } else {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    nextQuestion();
+                }
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            filterCards();
+            renderCard();
+            updateStatsDisplay();
+        });
+    </script>
+</body>
+</html>
