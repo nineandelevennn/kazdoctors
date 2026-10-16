@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USMLE Micro — Compare</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --kz-blue: #00A1DE;
+            --kz-blue-dark: #0077A3;
+            --kz-blue-light: #EBF8FC;
+            --kz-gold: #FFC72C;
+            --bg-main: #F2F5F8;
+            --card-bg: #FFFFFF;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.25s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Container minimum heights to eliminate layout jumping */
+        #question-box {
+            min-height: 120px;
+        }
+
+        #feedback-box {
+            min-height: 110px;
+        }
+        
+        /* Highlight styles for comparison table */
+        .diff-row {
+            background-color: #EBF8FC; /* Light kz-blue tint for differences */
+        }
+
+        .target-asked-row {
+            background-color: #FFF8E1 !important; /* Gold/yellow highlight for the asked question */
+            border-left: 4px solid #FFC72C;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="text-[#1E293B] min-h-screen flex flex-col justify-between bg-[#F2F5F8]">
+
+    <!-- HEADER (INDEX-58 STYLE) -->
+    <header class="bg-[#00A1DE] text-white text-center py-5 px-4 shadow-[0_4px_14px_rgba(0,161,222,0.2)] flex flex-col items-center relative z-50">
+        <a href="https://kazdoctors.com/usmle/" class="inline-flex items-center gap-1.5 text-white bg-white/[0.18] backdrop-blur-md border border-white/35 no-underline font-bold text-[0.78rem] px-3.5 py-1.5 rounded-[20px] mb-2.5 transition-all active:scale-95 hover:bg-white/30">
+            <span>⬅️Go back</span>
+        </a>
+        <div class="inline-block bg-white/15 backdrop-blur-md border border-white/30 text-white font-bold text-[0.75rem] tracking-[0.8px] px-3 py-1 rounded-[20px] mb-2">@doctors.speak</div>
+        <h1 class="text-[1.35rem] font-black leading-[1.2] uppercase tracking-[0.5px] text-white">USMLE preparation</h1>
+        <p class="text-[0.78rem] mt-1 font-extrabold tracking-[0.8px] uppercase text-[#FFC72C]">Microbiology (Viruses, Fungi, Parasites)</p>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-4xl w-full mx-auto px-3 sm:px-4 py-4 sm:py-6 flex-grow">
+        
+        <!-- TOP CONTROLS & SCORE -->
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-3 mb-4 sm:mb-6 bg-white p-3 sm:p-4 rounded-xl shadow-sm border border-gray-100">
+            <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
+                <a href="https://kazdoctors.com/usmle/" class="bg-white hover:bg-slate-50 text-[#0077A3] border border-[#E2E8F0] font-bold py-2 px-4 sm:px-6 rounded-xl shadow-sm transition-colors text-sm sm:text-base inline-block">
+                    Go Back
+                </a>
+               <button id="btn-new-comparison" class="bg-[#00A1DE] hover:bg-[#0077A3] active:bg-[#0077A3] text-white font-bold py-2 px-4 sm:px-6 rounded-xl shadow transition-colors text-sm sm:text-base">
+                    New Game
+                </button>
+            </div>
+
+            <!-- CATEGORY SELECTOR DROPDOWN -->
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+                <label for="category-select" class="text-xs sm:text-sm font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap">Category:</label>
+                <select id="category-select" class="w-full sm:w-auto bg-gray-50 border border-gray-300 text-gray-900 text-sm sm:text-base rounded-lg focus:ring-[#00A1DE] focus:border-[#00A1DE] p-2 font-semibold">
+                    <option value="viruses">Viruses</option>
+                    <option value="fungi">Fungi</option>
+                    <option value="parasites">Parasites</option>
+                </select>
+            </div>
+
+            <div id="score-display" class="text-base sm:text-xl font-bold text-gray-700 self-end sm:self-center">
+                Score: <span id="score-correct" class="text-green-600">0</span> / <span id="score-total" class="text-gray-800">0</span>
+            </div>
+        </div>
+
+        <!-- GAME AREA -->
+        <div id="game-area" class="bg-white rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] p-4 sm:p-8 fade-in border border-[#E2E8F0] border-l-[5px] border-l-[#00A1DE]">
+            
+            <!-- VS TITLE -->
+            <div class="text-center mb-4 sm:mb-6 border-b pb-3">
+                <div class="text-xs uppercase tracking-wider text-gray-400 font-bold mb-1">Comparing Pair</div>
+                <h2 class="text-xl sm:text-2xl font-bold text-gray-800 flex items-center justify-center gap-2 flex-wrap">
+                    <span id="org-a-name" class="text-blue-700 bg-blue-50 px-3 py-1 rounded-lg border border-blue-200">Organism A</span> 
+                    <span class="text-gray-400 font-normal text-sm sm:text-base">vs</span> 
+                    <span id="org-b-name" class="text-emerald-700 bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-200">Organism B</span>
+                </h2>
+            </div>
+
+            <!-- QUESTION BOX -->
+            <div id="question-box" class="flex flex-col items-center justify-center text-center mb-5">
+                <p class="text-sm sm:text-base text-gray-600 font-medium mb-2">Which organism has this characteristic?</p>
+                
+                <!-- Characteristic Badge -->
+<div class="w-full max-w-xl bg-[#EBF8FC] border-2 border-[#00A1DE]/30 text-[#1E293B] rounded-xl p-3 sm:p-4 text-center shadow-inner">
+    <span id="asked-field-label" class="text-[#0077A3] font-extrabold uppercase tracking-wider text-xs sm:text-sm block mb-1">Characteristic</span>
+    <span id="asked-field-value" class="text-base sm:text-xl font-extrabold text-[#1E293B] leading-snug">Value</span>
+</div>
+            </div>
+
+            <!-- ANSWER BUTTONS -->
+            <div id="answers-container" class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-5">
+                <button id="btn-ans-a" class="flex-1 bg-blue-50 hover:bg-blue-100 active:bg-blue-200 border-2 border-blue-300 text-blue-900 font-bold py-3.5 px-4 rounded-xl transition-all shadow-sm text-base sm:text-lg text-center">
+                    Organism A
+                </button>
+                <button id="btn-ans-b" class="flex-1 bg-emerald-50 hover:bg-emerald-100 active:bg-emerald-200 border-2 border-emerald-300 text-emerald-900 font-bold py-3.5 px-4 rounded-xl transition-all shadow-sm text-lg text-center">
+                    Organism B
+                </button>
+            </div>
+
+            <!-- FEEDBACK BOX -->
+            <div id="feedback-box" class="flex flex-col items-center justify-center text-center">
+                <div id="feedback-content" class="hidden w-full fade-in">
+                    <div id="feedback-status" class="text-xl sm:text-2xl font-bold mb-1"></div>
+                    <div id="feedback-explanation" class="text-gray-700 text-sm sm:text-base mb-3 leading-relaxed"></div>
+                    <button id="btn-next" class="bg-[#00A1DE] hover:bg-[#0077A3] text-white font-bold py-2.5 px-8 rounded-xl transition-colors shadow-md text-sm sm:text-base">
+                        Next Comparison →
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- COMPARISON TABLE -->
+        <div id="table-container" class="mt-6 bg-white rounded-xl shadow-lg overflow-hidden hidden fade-in border border-gray-200">
+            <div class="p-3 bg-[#00A1DE] text-white flex flex-row justify-between items-center px-4">
+                <h3 class="font-bold text-sm sm:text-base">Full Comparison Table</h3>
+                <span class="text-xs text-[#FFC72C] font-bold">Highlight = Asked feature</span>
+            </div>
+            <div class="overflow-x-auto max-w-full">
+                <table class="min-w-full text-left text-xs sm:text-sm whitespace-normal">
+                    <thead class="bg-gray-100 text-gray-700 border-b">
+                        <tr>
+                            <th class="px-3 sm:px-4 py-2.5 font-bold w-1/3">Characteristic</th>
+                            <th id="th-org-a" class="px-3 sm:px-4 py-2.5 font-bold w-1/3 text-blue-700">Organism A</th>
+                            <th id="th-org-b" class="px-3 sm:px-4 py-2.5 font-bold w-1/3 text-emerald-700">Organism B</th>
+                        </tr>
+                    </thead>
+                    <tbody id="comparison-tbody" class="divide-y divide-gray-200">
+                        <!-- Rows dynamically generated -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-2.5 bg-gray-50 text-xs text-gray-500 text-center border-t">
+                Light blue rows highlight differences. Gold row indicates the asked characteristic.
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="text-center pt-2.5 pb-5 px-4 flex flex-col items-center gap-2.5">
+        <a href="https://instagram.com/doctors.speak" target="_blank" class="inline-flex items-center gap-1.5 text-[#0077A3] no-underline font-bold text-[0.82rem] px-[18px] py-2 rounded-[20px] bg-white border border-[#E2E8F0] shadow-[0_2px_6px_rgba(0,0,0,0.02)]">
+            <span>@doctors.speak</span>
+        </a>
+        <a href="https://kazdoctors.com/usmle/" class="inline-flex items-center gap-1.5 text-[#0077A3] bg-white border border-[#E2E8F0] no-underline font-bold text-[0.78rem] px-[18px] py-2 rounded-[20px] transition-all active:scale-95 shadow-[0_2px_6px_rgba(0,0,0,0.02)]">
+            <svg class="w-4 h-4 fill-[#00A1DE]" viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
+            <span>Go back</span>
+        </a>
+    </footer>
+
+    <script>
+        /*
+         * =========================================================================
+         * DATABASES: VIRUSES, FUNGI, PARASITES
+         * =========================================================================
+         */
+
+        const fieldLabelsMap = {
+            viruses: {
+                genome: "Genome Structure",
+                capsid_symmetry: "Capsid Symmetry",
+                envelope: "Envelope Status",
+                replication_site: "Replication Site",
+                transmission: "Transmission Route",
+                major_diseases: "Major Clinical Diseases",
+                virulence_factors: "Key Virulence / Pathogenic Factors",
+                diagnosis_clues: "High-Yield Diagnostic Clues",
+                histology_cytology: "Histology / Cytology / Inclusions",
+                treatment: "First-Line Treatment / Prevention",
+                high_yield_notes: "USMLE High-Yield Association"
+            },
+            fungi: {
+                dimorphism: "Dimorphism / Morphology",
+                tissue_form: "Tissue Form (at 37°C)",
+                mold_form: "Mold/Environment Form (at 25°C)",
+                geographic_habitat: "Geographic / Environmental Habitat",
+                transmission: "Transmission Mode",
+                major_diseases: "Major Clinical Manifestations",
+                virulence_factors: "Virulence Factors",
+                diagnosis_clues: "Diagnostic Stain / Culture Clues",
+                histology_cytology: "Histopathology / Microscopic Findings",
+                treatment: "Treatment of Choice",
+                high_yield_notes: "USMLE High-Yield Association"
+            },
+            parasites: {
+                taxonomic_group: "Parasite Group",
+                infective_stage: "Infective Stage",
+                diagnostic_stage: "Diagnostic Stage",
+                vector_host: "Vector / Intermediate Host",
+                transmission: "Transmission Route",
+                major_diseases: "Major Clinical Manifestations",
+                virulence_factors: "Pathogenic Mechanisms / Virulence",
+                diagnosis_clues: "Lab Diagnosis Clues",
+                histology_cytology: "Histology / Stool / Blood Findings",
+                treatment: "Drug of Choice",
+                high_yield_notes: "USMLE High-Yield Association"
+            }
+        };
+
+        const databases = {
+            viruses: [
+                {
+                    name: "Herpes Simplex Virus 1 (HSV-1)",
+                    genome: "dsDNA, linear",
+                    capsid_symmetry: "Icosahedral",
+                    envelope: "Enveloped",
+                    replication_site: "Nucleus",
+                    transmission: "Respiratory secretions, direct contact with saliva/lesions",
+                    major_diseases: "Gingivostomatitis, herpes labialis, temporal lobe encephalitis, keratoconjunctivitis",
+                    virulence_factors: "Latency in trigeminal ganglion, cell-to-cell spread, ICP47 immune evasion",
+                    diagnosis_clues: "Temporal lobe edema on MRI, CSF RBCs, painful oral ulcers",
+                    histology_cytology: "Tzanck smear shows multinucleated giant cells; Cowdry A intranuclear inclusions",
+                    treatment: "Acyclovir, Valacyclovir",
+                    high_yield_notes: "Most common cause of sporadic fatal encephalitis in US (affects temporal lobes)"
+                },
+                {
+                    name: "Herpes Simplex Virus 2 (HSV-2)",
+                    genome: "dsDNA, linear",
+                    capsid_symmetry: "Icosahedral",
+                    envelope: "Enveloped",
+                    replication_site: "Nucleus",
+                    transmission: "Sexual contact, perinatal transmission during birth",
+                    major_diseases: "Painful genital herpes, neonatal herpes, aseptic meningitis",
+                    virulence_factors: "Latency in sacral ganglia, glycoprotein G envelope protein",
+                    diagnosis_clues: "Painful genital vesicular lesions with lymphadenopathy",
+                    histology_cytology: "Tzanck smear (+), multinucleated giant cells, Cowdry A inclusions",
+                    treatment: "Acyclovir, Valacyclovir",
+                    high_yield_notes: "Establishes latency in sacral dorsal root ganglia"
+                },
+                {
+                    name: "Varicella-Zoster Virus (VZV)",
+                    genome: "dsDNA, linear",
+                    capsid_symmetry: "Icosahedral",
+                    envelope: "Enveloped",
+                    replication_site: "Nucleus",
+                    transmission: "Respiratory droplets, direct contact with lesion fluid",
+                    major_diseases: "Chickenpox (primary), Herpes Zoster / Shingles (reactivation), postherpetic neuralgia",
+                    virulence_factors: "Latency in dorsal root/cranial nerve ganglia",
+                    diagnosis_clues: "Asynchronous lesions ('dewdrops on a rose petal'), dermatomal painful rash",
+                    histology_cytology: "Tzanck smear (+), multinucleated giant cells, Cowdry A inclusions",
+                    treatment: "Acyclovir, Famciclovir; VZV vaccine (live attenuated)",
+                    high_yield_notes: "Shingles reactivation follows a single dermatome; cranial nerve V1 involvement = Herpes Zoster Ophthalmicus"
+                },
+                {
+                    name: "Epstein-Barr Virus (EBV)",
+                    genome: "dsDNA, linear",
+                    capsid_symmetry: "Icosahedral",
+                    envelope: "Enveloped",
+                    replication_site: "Nucleus",
+                    transmission: "Respiratory secretions, saliva ('kissing disease')",
+                    major_diseases: "Infectious mononucleosis, Burkitt lymphoma, Nasopharyngeal carcinoma, CNS lymphoma in HIV",
+                    virulence_factors: "Binds CD21 on B cells; EBNA-1, LMP-1 oncogenes",
+                    diagnosis_clues: "Pharyngitis, splenomegaly, amoxicillin-induced maculopapular rash, heterophile antibodies (+)",
+                    histology_cytology: "Atypical reactive CD8+ T lymphocytes (Downey cells) on peripheral blood smear",
+                    treatment: "Supportive care",
+                    high_yield_notes: "Positive Monospot test (heterophile IgM antibody reacting with sheep RBCs)"
+                },
+                {
+                    name: "Cytomegalovirus (CMV)",
+                    genome: "dsDNA, linear",
+                    capsid_symmetry: "Icosahedral",
+                    envelope: "Enveloped",
+                    replication_site: "Nucleus",
+                    transmission: "Congenital, saliva, sexual contact, blood transfusions, organ transplants",
+                    major_diseases: "Congenital CMV (deafness, petechiae, periventricular calcifications), CMV retinitis in AIDS, esophagitis",
+                    virulence_factors: "Latency in mononuclear leukocytes (monocytes/macrophages), MHC-I downregulation",
+                    diagnosis_clues: "Mononucleosis-like syndrome with negative heterophile antibodies (Monospot negative)",
+                    histology_cytology: "Infected cells show 'Owl's eye' intranuclear inclusion bodies",
+                    treatment: "Ganciclovir, Foscarnet, Cidofovir",
+                    high_yield_notes: "Most common congenital viral infection in the US"
+                },
+                {
+                    name: "Human Papillomavirus (HPV)",
+                    genome: "dsDNA, circular",
+                    capsid_symmetry: "Icosahedral",
+                    envelope: "Non-enveloped (Naked)",
+                    replication_site: "Nucleus",
+                    transmission: "Direct skin-to-skin contact, sexual contact",
+                    major_diseases: "Cutaneous warts (1-4), Condyloma acuminata (6, 11), Cervical & anal carcinoma (16, 18)",
+                    virulence_factors: "E6 protein degrades p53; E7 protein degrades Rb protein",
+                    diagnosis_clues: "Pap smear screen, genital condylomas",
+                    histology_cytology: "Koilocytes (wrinkled hyperchromatic nuclei with clear perinuclear halo)",
+                    treatment: "Ablation/excision; Gardasil 9 vaccine (recombinant L1 protein)",
+                    high_yield_notes: "HPV 16 and 18 drive cervical cancer via tumor suppressor inhibition (E6/E7)"
+                },
+                {
+                    name: "Adenovirus",
+                    genome: "dsDNA, linear",
+                    capsid_symmetry: "Icosahedral",
+                    envelope: "Non-enveloped (Naked)",
+                    replication_site: "Nucleus",
+                    transmission: "Respiratory droplets, fecal-oral, direct conjunctival contact",
+                    major_diseases: "Febrile pharyngitis, acute hemorrhagic cystitis, epidemic keratoconjunctivitis ('shipyard eye')",
+                    virulence_factors: "Pentón base fibers attach to host cells and cause toxic effect",
+                    diagnosis_clues: "Outbreaks among military recruits, daycare centers, or public swimming pools",
+                    histology_cytology: "Basophilic intranuclear inclusion bodies in epithelial cells",
+                    treatment: "Supportive care; live oral vaccine for military recruits",
+                    high_yield_notes: "Classic etiology of acute hemorrhagic cystitis in young children"
+                },
+                {
+                    name: "Parvovirus B19",
+                    genome: "ssDNA, linear (single-stranded)",
+                    capsid_symmetry: "Icosahedral",
+                    envelope: "Non-enveloped (Naked)",
+                    replication_site: "Nucleus",
+                    transmission: "Respiratory secretions, transplacental, blood transfusion",
+                    major_diseases: "Erythema infectiosum (5th disease), aplastic crisis in sickle cell/spherocytosis, hydrops fetalis",
+                    virulence_factors: "Tropic for erythroid progenitor cells (binds P antigen)",
+                    diagnosis_clues: "'Slapped cheek' facial rash, symmetric arthralgias in adults, severe drop in Hb with low reticulocytes",
+                    histology_cytology: "Giant pronormoblasts with intranuclear inclusions in bone marrow",
+                    treatment: "Supportive care; transfusions for severe anemia",
+                    high_yield_notes: "Only clinically relevant DNA virus with single-stranded genome"
+                },
+                {
+                    name: "Hepatitis B Virus (HBV)",
+                    genome: "dsDNA, circular (partially double-stranded)",
+                    capsid_symmetry: "Icosahedral",
+                    envelope: "Enveloped",
+                    replication_site: "Nucleus & Cytoplasm (uses Reverse Transcriptase)",
+                    transmission: "Parenteral, sexual, perinatal (vertical)",
+                    major_diseases: "Acute/chronic hepatitis, cirrhosis, Hepatocellular Carcinoma (HCC), Polyarteritis Nodosa",
+                    virulence_factors: "HBx protein acts as transcriptional activator; HBsAg immune evasion",
+                    diagnosis_clues: "HBsAg (+), HBeAg (high infectivity), anti-HBc IgM (window period)",
+                    histology_cytology: "'Ground-glass' hepatocytes packed with surface antigen",
+                    treatment: "Tenofovir, Entecavir, PEG-interferon alpha; recombinant vaccine",
+                    high_yield_notes: "Hepadnavirus family; carries reverse transcriptase within virion to convert RNA intermediate to DNA"
+                },
+                {
+                    name: "Influenza Virus (Orthomyxovirus)",
+                    genome: "ssRNA (-), 8 segmented, linear",
+                    capsid_symmetry: "Helical",
+                    envelope: "Enveloped",
+                    replication_site: "Nucleus (unique among negative RNA viruses)",
+                    transmission: "Respiratory droplets",
+                    major_diseases: "Influenza, secondary bacterial pneumonia (S. aureus, S. pneumoniae)",
+                    virulence_factors: "Hemagglutinin (viral entry), Neuraminidase (viral release), Antigenic drift/shift",
+                    diagnosis_clues: "Sudden onset fever, myalgias, cough in winter months; risk of secondary post-viral bacterial pneumonia",
+                    histology_cytology: "Epithelial cell necrosis in tracheobronchial tree",
+                    treatment: "Oseltamivir/Zanamivir (neuraminidase inhibitors), Baloxavir",
+                    high_yield_notes: "Antigenic shift (reassortment of segments) causes pandemics; drift (point mutations) causes epidemics"
+                },
+                {
+                    name: "Measles Virus (Rubeola / Paramyxovirus)",
+                    genome: "ssRNA (-), linear, non-segmented",
+                    capsid_symmetry: "Helical",
+                    envelope: "Enveloped",
+                    replication_site: "Cytoplasm",
+                    transmission: "Respiratory droplets (highly contagious)",
+                    major_diseases: "Measles (3 Cs: Cough, Coryza, Conjunctivitis), SSPE (Subacute Sclerosing Panencephalitis years later)",
+                    virulence_factors: "HA protein, Fusion (F) protein causes syncytia formation",
+                    diagnosis_clues: "Koplik spots on buccal mucosa, descending maculopapular rash starting at hairline",
+                    histology_cytology: "Warthin-Starry giant cells (multinucleated giant cells with eosinophilic inclusions)",
+                    treatment: "Supportive + Vitamin A supplementation; MMR live vaccine",
+                    high_yield_notes: "Koplik spots (blue-white spots on red background near molars) are pathognomonic"
+                },
+                {
+                    name: "Rabies Virus (Rhabdovirus)",
+                    genome: "ssRNA (-), bullet-shaped, linear",
+                    capsid_symmetry: "Helical",
+                    envelope: "Enveloped",
+                    replication_site: "Cytoplasm",
+                    transmission: "Bites or aerosol contact from bats, raccoons, skunks, foxes",
+                    major_diseases: "Encephalitic (furious) rabies, paralytic rabies, fatal encephalomyelitis",
+                    virulence_factors: "Binds nicotinic acetylcholine receptors at neuromuscular junction, travels retrogradely via axoplasmic flow",
+                    diagnosis_clues: "Hydrophobia, aerophobia, hypersalivation, history of bat exposure",
+                    histology_cytology: "Negri bodies (eosinophilic cytoplasmic inclusion bodies in Purkinje cells / hippocampus)",
+                    treatment: "Post-exposure prophylaxis: Wound washing + Rabies IG + inactivated vaccine",
+                    high_yield_notes: "Travels retrograde along peripheral nerves to CNS; rabies vaccine given post-exposure due to long incubation"
+                },
+                {
+                    name: "Human Immunodeficiency Virus (HIV)",
+                    genome: "ssRNA (+), 2 diploid identical copies, linear",
+                    capsid_symmetry: "Conical / Icosahedral core",
+                    envelope: "Enveloped",
+                    replication_site: "Cytoplasm & Nucleus (Integrates provirus into host genome)",
+                    transmission: "Sexual, blood borne, perinatal, breast milk",
+                    major_diseases: "AIDS (CD4 < 200), opportunistic infections (PCP, Toxoplasma, Kaposi sarcoma)",
+                    virulence_factors: "gp120 (CD4 & CXCR4/CCR5 attachment), gp41 (fusion), Reverse Transcriptase, Integrase, Protease",
+                    diagnosis_clues: "Opportunistic infections, persistent lymphadenopathy, high viral load with low CD4 count",
+                    histology_cytology: "Multinucleated giant cells in CNS (HIV encephalopathy)",
+                    treatment: "ART combo: 2 NRTIs + Integrase Inhibitor (e.g., Bictegravir/Emtricitabine/Tenofovir)",
+                    high_yield_notes: "Homozygous CCR5 delta-32 mutation confers resistance to HIV-1 infection"
+                },
+                {
+                    name: "Rotavirus (Reovirus)",
+                    genome: "dsRNA, 11 segmented, linear",
+                    capsid_symmetry: "Icosahedral (double-layered)",
+                    envelope: "Non-enveloped (Naked)",
+                    replication_site: "Cytoplasm",
+                    transmission: "Fecal-oral route",
+                    major_diseases: "Severe infantile watery diarrhea, dehydration",
+                    virulence_factors: "NSP4 viral enterotoxin (causes secretory diarrhea via villus destruction)",
+                    diagnosis_clues: "Outbreak of severe watery diarrhea in infants/daycare centers during winter",
+                    histology_cytology: "Villus blunting and mononuclear infiltrate in small intestine",
+                    treatment: "Oral rehydration therapy; Live attenuated oral vaccine",
+                    high_yield_notes: "Most common cause of severe diarrhea in unvaccinated infants; vaccine has small risk of intussusception"
+                },
+                {
+                    name: "Poliovirus (Picornavirus)",
+                    genome: "ssRNA (+), linear",
+                    capsid_symmetry: "Icosahedral",
+                    envelope: "Non-enveloped (Naked)",
+                    replication_site: "Cytoplasm",
+                    transmission: "Fecal-oral route",
+                    major_diseases: "Poliomyelitis, asymmetric flaccid paralysis, aseptic meningitis",
+                    virulence_factors: "Destruction of anterior horn cells of spinal cord (lower motor neuron lesion)",
+                    diagnosis_clues: "Asymmetric flaccid paralysis with fasciculations and loss of reflexes, preserved sensation",
+                    histology_cytology: "Anterior horn cell necrosis and neuronophagia in spinal cord",
+                    treatment: "Salk (IPV, inactivated) or Sabin (OPV, live attenuated) vaccines",
+                    high_yield_notes: "Causes pure LMN signs by targeting anterior horn motor neurons"
+                }
+            ],
+            fungi: [
+                {
+                    name: "Histoplasma capsulatum",
+                    genome: "N/A (Fungal)",
+                    dimorphism: "Dimorphic (Mould in cold, Yeast in heat)",
+                    tissue_form: "Small oval intracellular yeast (2-4 µm) inside macrophages",
+                    mold_form: "Hyphae with tuberculate macroconidia",
+                    geographic_habitat: "Mississippi and Ohio River valleys; bat or bird droppings (caves, chicken coops)",
+                    transmission: "Inhalation of microconidia from contaminated soil",
+                    major_diseases: "Pulmonary histoplasmosis, erythema nodosum, disseminated disease in immunocompromised",
+                    virulence_factors: "Survives inside phagolysosomes of macrophages by modulating pH",
+                    diagnosis_clues: "Patient exposed to bat caves or bird roosts; urine/serum antigen test (+)",
+                    histology_cytology: "Macrophage filled with tiny intracellular yeast cells (smaller than RBC)",
+                    treatment: "Itraconazole for mild/moderate; Amphotericin B for severe/disseminated",
+                    high_yield_notes: "'Histo Hides in macrophages' — much smaller than red blood cell"
+                },
+                {
+                    name: "Blastomyces dermatitidis",
+                    genome: "N/A (Fungal)",
+                    dimorphism: "Dimorphic (Mould in cold, Yeast in heat)",
+                    tissue_form: "Broad-based budding yeast (8-15 µm, same size as RBC)",
+                    mold_form: "Branching hyphae with 'lollipop' conidia",
+                    geographic_habitat: "Eastern and Central US (Great Lakes, Ohio/Mississippi river basins, Saint Lawrence Seaway)",
+                    transmission: "Inhalation of conidia from moist soil/decaying wood",
+                    major_diseases: "Pulmonary infection, osteomyelitis, verrucous cutaneous skin lesions",
+                    virulence_factors: "BAD1 surface adhesion glycoprotein",
+                    diagnosis_clues: "Pneumonia plus skin lesions (ulcerative/verrucous) or bone pain in Great Lakes region",
+                    histology_cytology: "Large yeast cell with Broad-Based Budding and thick double-contoured wall",
+                    treatment: "Itraconazole for mild/moderate; Amphotericin B for severe",
+                    high_yield_notes: "'Broad-based Budding Blastomyces' — same size as RBC"
+                },
+                {
+                    name: "Coccidioides immitis",
+                    genome: "N/A (Fungal)",
+                    dimorphism: "Dimorphic (Mould in cold, Spherule in heat)",
+                    tissue_form: "Large spherule (20-60 µm) filled with endospores",
+                    mold_form: "Hyphae breaking into barrel-shaped arthroconidia",
+                    geographic_habitat: "Southwestern US (California, Arizona, San Joaquin Valley)",
+                    transmission: "Inhalation of arthroconidia aerosolized by dust storms or earthquakes",
+                    major_diseases: "Valley fever (fever, arthralgias, erythema nodosum), meningitis, bone lesions",
+                    virulence_factors: "Spherule resists phagocytosis; outer wall glycoprotein",
+                    diagnosis_clues: "Travel to Arizona/Desert Southwest, erythema nodosum ('desert bumps'), dust exposure",
+                    histology_cytology: "Spherule filled with endospores (much larger than RBC)",
+                    treatment: "Fluconazole/Itraconazole; Amphotericin B for severe/meningitis",
+                    high_yield_notes: "Forms SPHERULES containing endospores in tissue, NOT simple yeast cells"
+                },
+                {
+                    name: "Candida albicans",
+                    genome: "N/A (Fungal)",
+                    dimorphism: "Opportunistic (Pseudohyphae/hyphae in tissue, yeast at 20°C)",
+                    tissue_form: "Pseudohyphae, true hyphae, and budding yeasts",
+                    mold_form: "Budding yeast with pseudohyphae; germ tubes at 37°C in serum",
+                    geographic_habitat: "Normal human flora (skin, mucosal membranes, GI tract)",
+                    transmission: "Endogenous overgrowth (opportunistic)",
+                    major_diseases: "Oral thrush, vulvovaginitis, esophagitis (AIDS-defining), candidemia/endocarditis",
+                    virulence_factors: "Phenotypic switching, adhesins, biofilm formation, hyphal formation",
+                    diagnosis_clues: "White curd-like vaginal discharge (normal pH < 4.5), oral white plaques that scrape off",
+                    histology_cytology: "Germ tube positive at 37°C in serum; KOH preparation shows pseudohyphae and blastoconidia",
+                    treatment: "Fluconazole, Nystatin (swish/swallow), Topical azoles; Echinocandins (caspofungin) for systemic",
+                    high_yield_notes: "Forms TRUE HYPHAE (germ tubes) at 37°C; pseudohyphae and yeasts at 20°C"
+                },
+                {
+                    name: "Aspergillus fumigatus",
+                    genome: "N/A (Fungal)",
+                    dimorphism: "Mould only (Monomorphic)",
+                    tissue_form: "Septate hyphae with narrow acute-angle (45°) branching",
+                    mold_form: "Conidiophore with radiating chains of conidia",
+                    geographic_habitat: "Ubiquitous in environment, decaying vegetation, soil",
+                    transmission: "Inhalation of airborne conidia",
+                    major_diseases: "Allergic Bronchopulmonary Aspergillosis (ABPA), Aspergilloma ('fungus ball' in old TB cavity), Invasive Aspergillosis",
+                    virulence_factors: "Gliotoxin (immunosuppressive), elastase, catalase positive",
+                    diagnosis_clues: "Asthma patient with bronchiectasis and high IgE/eosinophils (ABPA), or hemoptysis with cavitary lesion",
+                    histology_cytology: "Septate hyphae branching at 45-degree acute angles",
+                    treatment: "Voriconazole for invasive; Itraconazole/Corticosteroids for ABPA",
+                    high_yield_notes: "Acute-angle (45°) branching septate hyphae; catalase positive (risk in CGD patients)"
+                },
+                {
+                    name: "Cryptococcus neoformans",
+                    genome: "N/A (Fungal)",
+                    dimorphism: "Monomorphic yeast",
+                    tissue_form: "Encapsulated round narrow-based budding yeast (5-10 µm)",
+                    mold_form: "Encapsulated yeast (no true mold form in clinical samples)",
+                    geographic_habitat: "Pigeon droppings and contaminated soil worldwide",
+                    transmission: "Inhalation of unencapsulated yeast spores",
+                    major_diseases: "Cryptococcal meningitis in HIV (CD4 < 100), pulmonary cryptococcosis",
+                    virulence_factors: "Thick glucuronoxylomannan polysaccharide capsule, laccase (melanin production)",
+                    diagnosis_clues: "AIDS patient with severe headache, increased ICP; CSF India ink (+), latex agglutination (+)",
+                    histology_cytology: "Mucicarmine stain highlights red capsule; India ink shows clear halo around yeast",
+                    treatment: "Amphotericin B + Flucytosine, followed by long-term Fluconazole maintenance",
+                    high_yield_notes: "Polysaccharide capsule is primary virulence factor; clear halo on India ink stain"
+                },
+                {
+                    name: "Mucor / Rhizopus species",
+                    genome: "N/A (Fungal)",
+                    dimorphism: "Mould only (Monomorphic)",
+                    tissue_form: "Broad, non-septate hyphae branching at wide/right angles (90°)",
+                    mold_form: "Sporangium containing sporangiospores",
+                    geographic_habitat: "Bread mold, decaying organic matter, soil",
+                    transmission: "Inhalation of sporangiospores into nasopharynx",
+                    major_diseases: "Rhinocerebral mucormycosis in ketoacidotic diabetic (DKA) or neutropenic patients",
+                    virulence_factors: "Ketone reductase allows growth in high glucose/acidic DKA conditions; angioinvasion",
+                    diagnosis_clues: "Diabetic in DKA with facial pain, black necrotic nasal eschar, proptosis, cranial nerve palsies",
+                    histology_cytology: "Ribbon-like non-septate hyphae branching at right angles (90 degrees); angioinvasion",
+                    treatment: "Surgical debridement + IV Amphotericin B or Isavuconazole",
+                    high_yield_notes: "Strong association with Diabetic Ketoacidosis (DKA); causes tissue necrosis via vascular invasion"
+                },
+                {
+                    name: "Pneumocystis jirovecii",
+                    genome: "N/A (Fungal)",
+                    dimorphism: "Atypical fungus (trophozoite and cyst forms)",
+                    tissue_form: "Cup-shaped or crushed ping-pong ball cysts",
+                    mold_form: "Does not grow on standard fungal media",
+                    geographic_habitat: "Ubiquitous worldwide",
+                    transmission: "Inhalation via airborne route",
+                    major_diseases: "Pneumocystis pneumonia (PCP) in AIDS patients with CD4 < 200",
+                    virulence_factors: "Major surface glycoprotein (MSG) antigenic variation",
+                    diagnosis_clues: "Dyspnea, dry cough, hypoxemia, bilateral ground-glass infiltrates on chest CT in HIV patient",
+                    histology_cytology: "Gomori methenamine silver (GMS) stain shows disc/cup-shaped cysts in BAL fluid",
+                    treatment: "Trimethoprim-sulfamethoxazole (TMP-SMX); add steroids if PaO2 < 70 mmHg",
+                    high_yield_notes: "AIDS-defining illness; cell wall lacks ergosterol (treated with TMP-SMX, not azoles)"
+                },
+                {
+                    name: "Sporothrix schenckii",
+                    genome: "N/A (Fungal)",
+                    dimorphism: "Dimorphic (Mould in cold, Yeast in heat)",
+                    tissue_form: "Cigar-shaped budding yeast cells",
+                    mold_form: "Hyphae with daisy-like clusters of conidia",
+                    geographic_habitat: "Rose thorns, sphagnum moss, soil, timber",
+                    transmission: "Traumatic cutaneous inoculation ('rose gardener's disease')",
+                    major_diseases: "Sporotrichosis (subcutaneous nodule spreading along draining lymphatics)",
+                    virulence_factors: "Melanin production, extracellular proteinases",
+                    diagnosis_clues: "Gardener pricked by rose thorn; nodular erythematous papules tracking along lymphatics",
+                    histology_cytology: "Cigar-shaped yeast; Asteroid bodies (Splendore-Hoeppli phenomenon) in tissue",
+                    treatment: "Itraconazole or Potassium Iodide ('SSKI')",
+                    high_yield_notes: "Ascending lymphangitis (nodules following lymphatic drainage); 'Rose gardener's disease'"
+                },
+                {
+                    name: "Malassezia furfur",
+                    genome: "N/A (Fungal)",
+                    dimorphism: "Dimorphic cutaneous fungus",
+                    tissue_form: "Short curved hyphae and round yeast cells",
+                    mold_form: "Lipid-dependent yeast/hyphae",
+                    geographic_habitat: "Normal skin flora (stratum corneum)",
+                    transmission: "Endogenous overgrowth in humid conditions or oily skin",
+                    major_diseases: "Tinea versicolor (pityriasis versicolor), seborrheic dermatitis",
+                    virulence_factors: "Inhibits tyrosinase via azelaic acid production → hypopigmentation",
+                    diagnosis_clues: "Hypopigmented or hyperpigmented macules on trunk/back, worse in warm weather",
+                    histology_cytology: "'Spaghetti and meatballs' appearance on KOH mount (short hyphae + yeast)",
+                    treatment: "Topical selenium sulfide or ketoconazole",
+                    high_yield_notes: "Azelaic acid produces patchy skin hypopigmentation; characteristic 'spaghetti and meatballs' KOH stain"
+                }
+            ],
+            parasites: [
+                {
+                    name: "Entamoeba histolytica",
+                    genome: "N/A (Protozoan)",
+                    taxonomic_group: "Ameba (Protozoa)",
+                    infective_stage: "Mature quadranucleate cyst",
+                    diagnostic_stage: "Cyst or trophozoite in stool",
+                    vector_host: "None (Human reservoir)",
+                    transmission: "Fecal-oral ingestion of cysts in contaminated food/water",
+                    major_diseases: "Amebic dysentery (bloody diarrhea), liver abscess ('anchovy paste' aspirate)",
+                    virulence_factors: "Amebic lectin, pore-forming peptides (amoebapore), cysteine proteases",
+                    diagnosis_clues: "Bloody diarrhea with tenesmus, solitary right lobe liver abscess with brownish fluid",
+                    histology_cytology: "Flask-shaped intestinal ulcers; Trophozoites with ingested red blood cells (erythrophagocytosis)",
+                    treatment: "Metronidazole (or Tinidazole) followed by Paromomycin or Iodoquinol (luminal agent)",
+                    high_yield_notes: "Erythrophagocytosis (RBCs inside trophozoite cytoplasm) is diagnostic"
+                },
+                {
+                    name: "Giardia lamblia",
+                    genome: "N/A (Protozoan)",
+                    taxonomic_group: "Flagellate (Protozoa)",
+                    infective_stage: "Cyst",
+                    diagnostic_stage: "Cyst or trophozoite in stool",
+                    vector_host: "Beavers, mammals (reservoir)",
+                    transmission: "Fecal-oral ingestion of cysts in unfiltered wilderness water",
+                    major_diseases: "Giardiasis (foul-smelling fatty diarrhea, bloating, flatulence, malabsorption)",
+                    virulence_factors: "Ventral adhesive disc attaches to duodenal brush border causing malabsorption",
+                    diagnosis_clues: "Hikers/campers drinking stream water; greasy, floating, foul-smelling diarrhea",
+                    histology_cytology: "Pear-shaped trophozoite with 2 nuclei and flagella ('owl face' appearance)",
+                    treatment: "Metronidazole",
+                    high_yield_notes: "Attaches to duodenum without mucosal invasion; leads to fat malabsorption"
+                },
+                {
+                    name: "Cryptosporidium parvum",
+                    genome: "N/A (Protozoan)",
+                    taxonomic_group: "Apicomplexa (Protozoa)",
+                    infective_stage: "Oocyst",
+                    diagnostic_stage: "Oocyst in stool",
+                    vector_host: "Cattle, humans",
+                    transmission: "Fecal-oral ingestion of oocysts in contaminated water/swimming pools",
+                    major_diseases: "Self-limiting watery diarrhea in immunocompetent; severe intractable diarrhea in AIDS",
+                    virulence_factors: "Intracellular but extracytoplasmic localization in intestinal epithelial brush border",
+                    diagnosis_clues: "Outbreaks associated with municipal water or swimming pools; severe profuse watery diarrhea in HIV",
+                    histology_cytology: "Acid-fast positive spherical oocysts (4-6 µm) in stool sample",
+                    treatment: "Nitazoxanide in immunocompetent; ART to boost CD4 count in AIDS",
+                    high_yield_notes: "Oocysts stain bright red with Modified Acid-Fast stain"
+                },
+                {
+                    name: "Toxoplasma gondii",
+                    genome: "N/A (Protozoan)",
+                    taxonomic_group: "Apicomplexa (Protozoa)",
+                    infective_stage: "Oocyst (cat feces) or Tissue Cyst / Bradyzoite (undercooked meat)",
+                    diagnostic_stage: "Tachyzoites / tissue cysts or Serology / PCR",
+                    vector_host: "Cats (definitive host)",
+                    transmission: "Ingestion of cysts in undercooked pork/lamb, exposure to cat feces, transplacental",
+                    major_diseases: "Brain abscesses in AIDS (multiple ring-enhancing lesions), Congenital Toxoplasmosis (triad)",
+                    virulence_factors: "Tachyzoite rapid multiplication; tissue cyst latency in brain and muscle",
+                    diagnosis_clues: "AIDS patient with focal neurological deficits and multiple ring-enhancing brain lesions on MRI",
+                    histology_cytology: "Crescent-shaped tachyzoites or tissue bradyzoite cysts in brain biopsy",
+                    treatment: "Sulfadiazine + Pyrimethamine (plus Leucovorin)",
+                    high_yield_notes: "Congenital triad: Chorioretinitis, Hydrocephalus, Intracranial calcifications"
+                },
+                {
+                    name: "Plasmodium falciparum",
+                    genome: "N/A (Protozoan)",
+                    taxonomic_group: "Apicomplexa (Protozoa)",
+                    infective_stage: "Sporozoite",
+                    diagnostic_stage: "Trophozoite / Ring stage / Gametocyte in blood smear",
+                    vector_host: "Female Anopheles mosquito",
+                    transmission: "Mosquito bite delivering sporozoites into bloodstream",
+                    major_diseases: "Severe malaria, cerebral malaria, blackwater fever (hemoglobinuria), acute renal failure",
+                    virulence_factors: "PfEMP-1 protein causes cytoadherence of RBCs to vascular endothelium (clogging microvasculature)",
+                    diagnosis_clues: "Irregular cyclic fever, dark urine, confusion/seizures, travel to sub-Saharan Africa",
+                    histology_cytology: "Thin and thick blood smears: banana/crescent-shaped gametocytes; multiple ring forms per RBC",
+                    treatment: "Artemether-lumefantrine or Atovaquone-proguanil; IV Artesunate for severe malaria",
+                    high_yield_notes: "PfEMP1 mediates microvascular sequestration; banana-shaped gametocytes on blood smear"
+                },
+                {
+                    name: "Plasmodium vivax / ovale",
+                    genome: "N/A (Protozoan)",
+                    taxonomic_group: "Apicomplexa (Protozoa)",
+                    infective_stage: "Sporozoite",
+                    diagnostic_stage: "Trophozoite / Schizont / Gametocyte in blood smear",
+                    vector_host: "Female Anopheles mosquito",
+                    transmission: "Mosquito bite",
+                    major_diseases: "Tertian malaria (fever spikes every 48 hours / days 1 and 3)",
+                    virulence_factors: "Hypnozoite dormant liver stage causing delayed relapses months to years later",
+                    diagnosis_clues: "Cyclic fever every 48 hours with relapsing history after initial resolution",
+                    histology_cytology: "Ameboid trophozoites, Schüffner dots (stippling) inside enlarged infected RBCs",
+                    treatment: "Chloroquine (or ACT) PLUS Primaquine (to eradicate liver hypnozoites)",
+                    high_yield_notes: "Primaquine is required to kill liver hypnozoites (test for G6PD deficiency first!)"
+                },
+                {
+                    name: "Trichomonas vaginalis",
+                    genome: "N/A (Protozoan)",
+                    taxonomic_group: "Flagellate (Protozoa)",
+                    infective_stage: "Trophozoite (no cyst stage)",
+                    diagnostic_stage: "Motile trophozoite in vaginal/urethral discharge",
+                    vector_host: "None (Human reservoir)",
+                    transmission: "Sexual transmission",
+                    major_diseases: "Trichomoniasis (vaginitis, cervicitis, urethritis)",
+                    virulence_factors: "Adheres to vaginal epithelium, raises vaginal pH (> 4.5)",
+                    diagnosis_clues: "Foul-smelling greenish-yellow frothy vaginal discharge, 'strawberry cervix', vaginal pH > 4.5",
+                    histology_cytology: "Wet mount shows motile flagellated trophozoites with corkscrew motility",
+                    treatment: "Metronidazole for BOTH patient and sexual partner",
+                    high_yield_notes: "Has NO cyst stage; must treat both patient and partner to prevent reinfection"
+                },
+                {
+                    name: "Enterobius vermicularis (Pinworm)",
+                    genome: "N/A (Helminth)",
+                    taxonomic_group: "Nematode (Roundworm)",
+                    infective_stage: "Embryonated egg",
+                    diagnostic_stage: "Egg on perianal tape mount",
+                    vector_host: "None (Humans only)",
+                    transmission: "Fecal-oral ingestion of eggs via contaminated hands/fomites",
+                    major_diseases: "Enterobiasis (intense perianal pruritus, especially at night)",
+                    virulence_factors: "Female worm migrates to perianal fold at night to deposit sticky eggs",
+                    diagnosis_clues: "Young child with nocturnal perianal itching; Scotch tape test",
+                    histology_cytology: "Oval eggs with one flattened side on clear adhesive tape",
+                    treatment: "Pyrantel pamoate or Albendazole (treat entire household)",
+                    high_yield_notes: "Diagnosed by 'Scotch Tape Test' in early morning before bathing"
+                },
+                {
+                    name: "Ascaris lumbricoides",
+                    genome: "N/A (Helminth)",
+                    taxonomic_group: "Nematode (Roundworm)",
+                    infective_stage: "Embryonated egg",
+                    diagnostic_stage: "Knobby/mammillated egg in stool",
+                    vector_host: "None",
+                    transmission: "Ingestion of eggs from soil contaminated with human feces",
+                    major_diseases: "Intestinal obstruction (bolus of worms), Loeffler syndrome (pulmonary eosinophilia)",
+                    virulence_factors: "Larval migration through gut wall → blood → lungs → trachea → swallowed to intestine",
+                    diagnosis_clues: "Child presenting with intestinal obstruction, or worm emerging from nose/mouth/anus",
+                    histology_cytology: "Oval eggs with thick, knobby (mammillated) golden-brown shell in stool",
+                    treatment: "Albendazole or Mebendazole",
+                    high_yield_notes: "Largest intestinal nematode; can cause mechanical bowel obstruction or biliary colic"
+                },
+                {
+                    name: "Strongyloides stercoralis",
+                    genome: "N/A (Helminth)",
+                    taxonomic_group: "Nematode (Roundworm)",
+                    infective_stage: "Filariform larva",
+                    diagnostic_stage: "Rhabditiform larva in stool (NOT eggs)",
+                    vector_host: "None",
+                    transmission: "Filariform larvae directly penetrate intact skin (bare feet on soil)",
+                    major_diseases: "Strongyloidiasis, hyperinfection syndrome in immunocompromised/corticosteroids",
+                    virulence_factors: "Autoinfection cycle (larvae mature in intestine and re-penetrate gut mucosa)",
+                    diagnosis_clues: "Patient on high-dose steroids developing overwhelming sepsis/gram-negative bacteremia",
+                    histology_cytology: "Rhabditiform (non-infective) larvae in stool samples (eggs hatch inside intestine)",
+                    treatment: "Ivermectin or Albendazole",
+                    high_yield_notes: "Stool shows LARVAE, not eggs; autoinfection can lead to hyperinfection in patients on steroids"
+                },
+                {
+                    name: "Taenia solium (Pork Tapeworm)",
+                    genome: "N/A (Helminth)",
+                    taxonomic_group: "Cestode (Tapeworm)",
+                    infective_stage: "Cysticercus (intestinal tapeworm) OR Egg (Neurocysticercosis)",
+                    diagnostic_stage: "Proglottids/eggs in stool (tapeworm) OR brain MRI/CT (cysticercosis)",
+                    vector_host: "Pigs (intermediate host)",
+                    transmission: "Undercooked pork containing cysticerci → Tapeworm; Ingestion of eggs in human feces → Neurocysticercosis",
+                    major_diseases: "Intestinal tapeworm infection; Neurocysticercosis (seizures, intracranial hypertension)",
+                    virulence_factors: "Cysticerci encyst in brain, eye, and muscle parenchyma causing calcified foci",
+                    diagnosis_clues: "Immigrant from Latin America presenting with new-onset adult seizures and 'swiss-cheese' lesions on CT",
+                    histology_cytology: "Scolex with hooks and 4 suckers; CT shows cystic lesions with central invaginated scolex",
+                    treatment: "Praziquantel for intestinal form; Albendazole + Steroids for Neurocysticercosis",
+                    high_yield_notes: "Ingesting EGGS causes Neurocysticercosis; ingested cysticerci in pork causes mild GI tapeworm"
+                },
+                {
+                    name: "Schistosoma mansoni / haematobium",
+                    genome: "N/A (Helminth)",
+                    taxonomic_group: "Trematode (Fluke)",
+                    infective_stage: "Cercaria",
+                    diagnostic_stage: "Characteristic egg in stool (mansoni) or urine (haematobium)",
+                    vector_host: "Freshwater snails (intermediate host)",
+                    transmission: "Free-swimming cercariae penetrate skin in freshwater",
+                    major_diseases: "S. mansoni: Hepatosplenomegaly, portal hypertension; S. haematobium: Hematuria, Squamous cell bladder cancer",
+                    virulence_factors: "Eggs elicit granulumatous inflammation and fibrosis in portal vein or bladder wall",
+                    diagnosis_clues: "Freshwater swimming history + painless terminal hematuria (S. haematobium) or portal hypertension (S. mansoni)",
+                    histology_cytology: "S. mansoni egg has Large Lateral Spine; S. haematobium egg has Large Terminal Spine",
+                    treatment: "Praziquantel",
+                    high_yield_notes: "Schistosoma haematobium egg has a TERMINAL spine and causes Squamous Cell Carcinoma of the bladder"
+                }
+            ]
+        };
+
+        // State Variables
+        let currentCategory = "viruses";
+        let currentOrgA = null;
+        let currentOrgB = null;
+        let currentQuestion = null;
+        let scoreCorrect = 0;
+        let scoreTotal = 0;
+
+        // DOM Elements
+        const categorySelect = document.getElementById('category-select');
+        const btnNew = document.getElementById('btn-new-comparison');
+        const spanScoreCorrect = document.getElementById('score-correct');
+        const spanScoreTotal = document.getElementById('score-total');
+
+        const orgANameDisplay = document.getElementById('org-a-name');
+        const orgBNameDisplay = document.getElementById('org-b-name');
+        
+        const askedFieldLabel = document.getElementById('asked-field-label');
+        const askedFieldValue = document.getElementById('asked-field-value');
+
+        const btnAnsA = document.getElementById('btn-ans-a');
+        const btnAnsB = document.getElementById('btn-ans-b');
+
+        const feedbackContent = document.getElementById('feedback-content');
+        const feedbackStatus = document.getElementById('feedback-status');
+        const feedbackExplanation = document.getElementById('feedback-explanation');
+        const btnNext = document.getElementById('btn-next');
+
+        const tableContainer = document.getElementById('table-container');
+        const thOrgA = document.getElementById('th-org-a');
+        const thOrgB = document.getElementById('th-org-b');
+        const comparisonTbody = document.getElementById('comparison-tbody');
+
+        // Helper Functions
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
+
+        function normalizeValue(val) {
+            if (!val) return "N/A";
+            return String(val).trim().toLowerCase();
+        }
+
+        function generateQuestion() {
+            // Hide feedback and table, reset buttons
+            feedbackContent.classList.add('hidden');
+            tableContainer.classList.add('hidden');
+            
+            btnAnsA.disabled = false;
+            btnAnsB.disabled = false;
+            btnAnsA.className = "flex-1 bg-blue-50 hover:bg-blue-100 active:bg-blue-200 border-2 border-blue-300 text-blue-900 font-bold py-3.5 px-4 rounded-xl transition-all shadow-sm text-base sm:text-lg text-center cursor-pointer";
+            btnAnsB.className = "flex-1 bg-emerald-50 hover:bg-emerald-100 active:bg-emerald-200 border-2 border-emerald-300 text-emerald-900 font-bold py-3.5 px-4 rounded-xl transition-all shadow-sm text-base sm:text-lg text-center cursor-pointer";
+
+            const currentDb = databases[currentCategory];
+            const currentFieldLabels = fieldLabelsMap[currentCategory];
+
+            // Pick 2 distinct organisms within the selected category
+            let idxA = getRandomInt(currentDb.length);
+            let idxB = getRandomInt(currentDb.length);
+            while (idxB === idxA) {
+                idxB = getRandomInt(currentDb.length);
+            }
+
+            currentOrgA = currentDb[idxA];
+            currentOrgB = currentDb[idxB];
+
+            // Find a field where they differ and values are valid
+            const fields = Object.keys(currentFieldLabels);
+            let validFields = [];
+
+            fields.forEach(field => {
+                const valA = currentOrgA[field];
+                const valB = currentOrgB[field];
+
+                const normA = normalizeValue(valA);
+                const normB = normalizeValue(valB);
+
+                // Ignore if values are identical, N/A on both, or missing
+                if (normA !== normB && normA !== "n/a" && normB !== "n/a" && normA !== "" && normB !== "") {
+                    validFields.push(field);
+                }
+            });
+
+            // If no distinct field, re-roll
+            if (validFields.length === 0) {
+                generateQuestion();
+                return;
+            }
+
+            // Pick a random field from valid ones
+            const chosenField = validFields[getRandomInt(validFields.length)];
+
+            // Pick target organism (A or B)
+            const targetChar = Math.random() < 0.5 ? 'A' : 'B';
+            const targetOrg = targetChar === 'A' ? currentOrgA : currentOrgB;
+
+            currentQuestion = {
+                field: chosenField,
+                targetChar: targetChar,
+                targetOrg: targetOrg,
+                value: targetOrg[chosenField]
+            };
+
+            // Update UI
+            orgANameDisplay.textContent = currentOrgA.name;
+            orgBNameDisplay.textContent = currentOrgB.name;
+
+            btnAnsA.textContent = currentOrgA.name;
+            btnAnsB.textContent = currentOrgB.name;
+
+            askedFieldLabel.textContent = currentFieldLabels[chosenField];
+            askedFieldValue.textContent = currentQuestion.value;
+        }
+
+        function renderComparisonTable() {
+            const currentFieldLabels = fieldLabelsMap[currentCategory];
+
+            thOrgA.textContent = currentOrgA.name;
+            thOrgB.textContent = currentOrgB.name;
+
+            comparisonTbody.innerHTML = '';
+
+            Object.keys(currentFieldLabels).forEach(field => {
+                const tr = document.createElement('tr');
+                
+                const valA = currentOrgA[field] || "N/A";
+                const valB = currentOrgB[field] || "N/A";
+
+                const normA = normalizeValue(valA);
+                const normB = normalizeValue(valB);
+
+                const isDifferent = normA !== normB;
+                const isAsked = field === currentQuestion.field;
+
+                if (isAsked) {
+                    tr.className = "target-asked-row";
+                } else if (isDifferent) {
+                    tr.className = "diff-row";
+                }
+
+                tr.innerHTML = `
+                    <td class="px-3 sm:px-4 py-2 font-medium text-gray-900">${currentFieldLabels[field]}</td>
+                    <td class="px-3 sm:px-4 py-2 text-gray-700">${valA}</td>
+                    <td class="px-3 sm:px-4 py-2 text-gray-700">${valB}</td>
+                `;
+
+                comparisonTbody.appendChild(tr);
+            });
+
+            tableContainer.classList.remove('hidden');
+        }
+
+        function checkAnswer(selectedChar) {
+            btnAnsA.disabled = true;
+            btnAnsB.disabled = true;
+
+            scoreTotal++;
+
+            const isCorrect = selectedChar === currentQuestion.targetChar;
+            if (isCorrect) scoreCorrect++;
+
+            spanScoreCorrect.textContent = scoreCorrect;
+            spanScoreTotal.textContent = scoreTotal;
+
+            // Highlight buttons
+            if (currentQuestion.targetChar === 'A') {
+                btnAnsA.className = "flex-1 bg-green-100 border-2 border-green-500 text-green-950 font-bold py-3.5 px-4 rounded-xl shadow-md text-base sm:text-lg text-center";
+                if (selectedChar === 'B') {
+                    btnAnsB.className = "flex-1 bg-red-100 border-2 border-red-400 text-red-950 font-bold py-3.5 px-4 rounded-xl shadow-sm text-base sm:text-lg text-center opacity-75";
+                }
+            } else {
+                btnAnsB.className = "flex-1 bg-green-100 border-2 border-green-500 text-green-950 font-bold py-3.5 px-4 rounded-xl shadow-md text-base sm:text-lg text-center";
+                if (selectedChar === 'A') {
+                    btnAnsA.className = "flex-1 bg-red-100 border-2 border-red-400 text-red-950 font-bold py-3.5 px-4 rounded-xl shadow-sm text-base sm:text-lg text-center opacity-75";
+                }
+            }
+
+            // Feedback Text
+            if (isCorrect) {
+                feedbackStatus.textContent = "Correct!";
+                feedbackStatus.className = "text-xl sm:text-2xl font-bold mb-1 text-green-600";
+            } else {
+                feedbackStatus.textContent = "Incorrect!";
+                feedbackStatus.className = "text-xl sm:text-2xl font-bold mb-1 text-red-600";
+            }
+
+            const currentFieldLabels = fieldLabelsMap[currentCategory];
+            const correctOrgName = currentQuestion.targetOrg.name;
+            const otherOrg = currentQuestion.targetChar === 'A' ? currentOrgB : currentOrgA;
+            const fieldName = currentFieldLabels[currentQuestion.field];
+
+            feedbackExplanation.innerHTML = `
+                <strong>${correctOrgName}</strong> has <em>"${currentQuestion.value}"</em> for ${fieldName}, 
+                whereas <strong>${otherOrg.name}</strong> has <em>"${otherOrg[currentQuestion.field] || 'N/A'}"</em>.
+            `;
+
+            feedbackContent.classList.remove('hidden');
+
+            renderComparisonTable();
+        }
+
+        // Event Listeners
+        categorySelect.addEventListener('change', (e) => {
+            currentCategory = e.target.value;
+            scoreCorrect = 0;
+            scoreTotal = 0;
+            spanScoreCorrect.textContent = scoreCorrect;
+            spanScoreTotal.textContent = scoreTotal;
+            generateQuestion();
+        });
+
+        btnAnsA.addEventListener('click', () => checkAnswer('A'));
+        btnAnsB.addEventListener('click', () => checkAnswer('B'));
+        btnNext.addEventListener('click', generateQuestion);
+        btnNew.addEventListener('click', () => {
+            scoreCorrect = 0;
+            scoreTotal = 0;
+            spanScoreCorrect.textContent = scoreCorrect;
+            spanScoreTotal.textContent = scoreTotal;
+            generateQuestion();
+        });
+
+        // Initialize Game
+        generateQuestion();
+    </script>
+</body>
+</html>
