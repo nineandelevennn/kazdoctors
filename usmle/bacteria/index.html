@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USMLE Bacteria — Compare</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --kz-blue: #00A1DE;
+            --kz-blue-dark: #0077A3;
+            --kz-blue-light: #EBF8FC;
+            --kz-gold: #FFC72C;
+            --bg-main: #F2F5F8;
+            --card-bg: #FFFFFF;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.25s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Container minimum heights to eliminate layout jumping */
+        #question-box {
+            min-height: 120px;
+        }
+
+        #feedback-box {
+            min-height: 110px;
+        }
+        
+        /* Highlight styles for comparison table */
+        .diff-row {
+            background-color: #EBF8FC; /* Light kz-blue tint for differences */
+        }
+
+        .target-asked-row {
+            background-color: #FFF8E1 !important; /* Gold/yellow highlight for the asked question */
+            border-left: 4px solid #FFC72C;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="text-[#1E293B] min-h-screen flex flex-col justify-between bg-[#F2F5F8]">
+
+    <!-- HEADER (INDEX-58 STYLE) -->
+    <header class="bg-[#00A1DE] text-white text-center py-5 px-4 shadow-[0_4px_14px_rgba(0,161,222,0.2)] flex flex-col items-center relative z-50">
+        <a href="https://kazdoctors.com/usmle/" class="inline-flex items-center gap-1.5 text-white bg-white/[0.18] backdrop-blur-md border border-white/35 no-underline font-bold text-[0.78rem] px-3.5 py-1.5 rounded-[20px] mb-2.5 transition-all active:scale-95 hover:bg-white/30">
+            <span>⬅️Go back</span>
+        </a>
+        <div class="inline-block bg-white/15 backdrop-blur-md border border-white/30 text-white font-bold text-[0.75rem] tracking-[0.8px] px-3 py-1 rounded-[20px] mb-2">@doctors.speak</div>
+        <h1 class="text-[1.35rem] font-black leading-[1.2] uppercase tracking-[0.5px] text-white">USMLE preparation</h1>
+        <p class="text-[0.78rem] mt-1 font-extrabold tracking-[0.8px] uppercase text-[#FFC72C]">Microbiology (bacteria)</p>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-4xl w-full mx-auto px-3 sm:px-4 py-4 sm:py-6 flex-grow">
+        
+        <!-- TOP CONTROLS & SCORE -->
+<div class="flex flex-row justify-between items-center mb-4 sm:mb-6 bg-white p-3 sm:p-4 rounded-xl shadow-sm border border-gray-100">
+            <div class="flex items-center gap-2">
+                <a href="https://kazdoctors.com/usmle/" class="bg-white hover:bg-slate-50 text-[#0077A3] border border-[#E2E8F0] font-bold py-2 px-4 sm:px-6 rounded-xl shadow-sm transition-colors text-sm sm:text-base inline-block">
+                    Go Back
+                </a>
+                <button id="btn-new-comparison" class="bg-[#00A1DE] hover:bg-[#0077A3] active:bg-[#0077A3] text-white font-bold py-2 px-4 sm:px-6 rounded-xl shadow transition-colors text-sm sm:text-base">
+                    New Game
+                </button>
+            </div>
+            <div id="score-display" class="text-base sm:text-xl font-bold text-gray-700">
+                Score: <span id="score-correct" class="text-green-600">0</span> / <span id="score-total" class="text-gray-800">0</span>
+            </div>
+        </div>
+
+        <!-- GAME AREA -->
+        <div id="game-area" class="bg-white rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] p-4 sm:p-8 fade-in border border-[#E2E8F0] border-l-[5px] border-l-[#00A1DE]">
+            
+            <!-- VS TITLE -->
+            <div class="text-center mb-4 sm:mb-6 border-b pb-3">
+                <div class="text-xs uppercase tracking-wider text-gray-400 font-bold mb-1">Comparing Pair</div>
+                <h2 class="text-xl sm:text-2xl font-bold text-gray-800 flex items-center justify-center gap-2 flex-wrap">
+                    <span id="bact-a-name" class="text-blue-700 bg-blue-50 px-3 py-1 rounded-lg border border-blue-200">Bacteria A</span> 
+                    <span class="text-gray-400 font-normal text-sm sm:text-base">vs</span> 
+                    <span id="bact-b-name" class="text-emerald-700 bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-200">Bacteria B</span>
+                </h2>
+            </div>
+
+            <!-- QUESTION BOX (Fixed height for stability) -->
+            <div id="question-box" class="flex flex-col items-center justify-center text-center mb-5">
+                <p class="text-sm sm:text-base text-gray-600 font-medium mb-2">Which organism has this characteristic?</p>
+                
+                <!-- Characteristic Badge -->
+                <div class="w-full max-w-xl bg-[#EBF8FC] border-2 border-[#00A1DE]/30 text-[#1E293B] rounded-xl p-3 sm:p-4 text-center shadow-inner">
+                    <span id="asked-field-label" class="text-[#0077A3] font-extrabold uppercase tracking-wider text-xs sm:text-sm block mb-1">Characteristic</span>
+                    <span id="asked-field-value" class="text-base sm:text-xl font-extrabold text-[#1E293B] leading-snug">Value</span>
+                </div>
+            </div>
+
+            <!-- ANSWER BUTTONS -->
+            <div id="answers-container" class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-5">
+                <button id="btn-ans-a" class="flex-1 bg-blue-50 hover:bg-blue-100 active:bg-blue-200 border-2 border-blue-300 text-blue-900 font-bold py-3.5 px-4 rounded-xl transition-all shadow-sm text-base sm:text-lg text-center">
+                    Bacteria A
+                </button>
+                <button id="btn-ans-b" class="flex-1 bg-emerald-50 hover:bg-emerald-100 active:bg-emerald-200 border-2 border-emerald-300 text-emerald-900 font-bold py-3.5 px-4 rounded-xl transition-all shadow-sm text-lg text-center">
+                    Bacteria B
+                </button>
+            </div>
+
+            <!-- FEEDBACK BOX (Fixed height to prevent jumping) -->
+            <div id="feedback-box" class="flex flex-col items-center justify-center text-center">
+                <div id="feedback-content" class="hidden w-full fade-in">
+                    <div id="feedback-status" class="text-xl sm:text-2xl font-bold mb-1"></div>
+                    <div id="feedback-explanation" class="text-gray-700 text-sm sm:text-base mb-3 leading-relaxed"></div>
+                    <button id="btn-next" class="bg-[#00A1DE] hover:bg-[#0077A3] text-white font-bold py-2.5 px-8 rounded-xl transition-colors shadow-md text-sm sm:text-base">
+                        Next Comparison →
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- COMPARISON TABLE (Shown right after answering each question) -->
+        <div id="table-container" class="mt-6 bg-white rounded-xl shadow-lg overflow-hidden hidden fade-in border border-gray-200">
+            <div class="p-3 bg-[#00A1DE] text-white flex flex-row justify-between items-center px-4">
+                <h3 class="font-bold text-sm sm:text-base">Full Comparison Table</h3>
+                <span class="text-xs text-[#FFC72C] font-bold">Highlight = Asked feature</span>
+            </div>
+            <div class="overflow-x-auto max-w-full">
+                <table class="min-w-full text-left text-xs sm:text-sm whitespace-normal">
+                    <thead class="bg-gray-100 text-gray-700 border-b">
+                        <tr>
+                            <th class="px-3 sm:px-4 py-2.5 font-bold w-1/3">Characteristic</th>
+                            <th id="th-bact-a" class="px-3 sm:px-4 py-2.5 font-bold w-1/3 text-blue-700">Bacteria A</th>
+                            <th id="th-bact-b" class="px-3 sm:px-4 py-2.5 font-bold w-1/3 text-emerald-700">Bacteria B</th>
+                        </tr>
+                    </thead>
+                    <tbody id="comparison-tbody" class="divide-y divide-gray-200">
+                        <!-- Rows dynamically generated -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-2.5 bg-gray-50 text-xs text-gray-500 text-center border-t">
+                Light blue rows highlight differences. Gold row indicates the asked characteristic.
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="text-center pt-2.5 pb-5 px-4 flex flex-col items-center gap-2.5">
+        <a href="https://instagram.com/doctors.speak" target="_blank" class="inline-flex items-center gap-1.5 text-[#0077A3] no-underline font-bold text-[0.82rem] px-[18px] py-2 rounded-[20px] bg-white border border-[#E2E8F0] shadow-[0_2px_6px_rgba(0,0,0,0.02)]">
+            <span>@doctors.speak</span>
+        </a>
+        <a href="https://kazdoctors.com/usmle/" class="inline-flex items-center gap-1.5 text-[#0077A3] bg-white border border-[#E2E8F0] no-underline font-bold text-[0.78rem] px-[18px] py-2 rounded-[20px] transition-all active:scale-95 shadow-[0_2px_6px_rgba(0,0,0,0.02)]">
+            <svg class="w-4 h-4 fill-[#00A1DE]" viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
+            <span>Go back</span>
+        </a>
+    </footer>
+
+    <script>
+        /*
+         * =========================================================================
+         * BACTERIA DATABASE
+         * =========================================================================
+         */
+
+        const bacteria = [
+            {
+                name: "Staphylococcus aureus",
+                gram: "Gram-positive",
+                morphology: "Cocci",
+                arrangement: "Clusters (grape-like)",
+                catalase: "Positive",
+                coagulase: "Positive",
+                hemolysis: "Beta",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "Resistant",
+                capsule: "Negative (microcapsule present)",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Non-motile",
+                growth_media: "Mannitol salt agar (yellow colonies)",
+                important_biochemical_tests: "Coagulase positive",
+                major_diseases: "Skin abscesses, pneumonia, osteomyelitis, endocarditis, toxic shock syndrome, food poisoning",
+                virulence_factors: "Protein A, coagulase, toxins, M protein-like clumping factor",
+                transmission: "Skin contact, nasal colonization, contaminated food",
+                diagnosis_clues: "Purulent abscesses, post-influenza pneumonia, acute endocarditis",
+                common_diagnoses: "Skin/soft-tissue infection, acute bacterial endocarditis",
+                treatment: "MSSA: Nafcillin/Oxacillin; MRSA: Vancomycin or other MRSA-active agents",
+                resistance: "MRSA: mecA → altered PBP (PBP2a)"
+            },
+            {
+                name: "Staphylococcus epidermidis",
+                gram: "Gram-positive",
+                morphology: "Cocci",
+                arrangement: "Clusters",
+                catalase: "Positive",
+                coagulase: "Negative",
+                hemolysis: "Gamma",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "Sensitive",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Non-motile",
+                growth_media: "Mannitol salt agar",
+                important_biochemical_tests: "Novobiocin sensitive",
+                major_diseases: "Prosthetic valve endocarditis, catheter infections, prosthetic joint infections",
+                virulence_factors: "Biofilm formation",
+                transmission: "Normal skin flora; introduction via medical devices",
+                diagnosis_clues: "Indolent infection involving prosthetic material",
+                common_diagnoses: "Prosthetic-device infection",
+                treatment: "Vancomycin if methicillin-resistant",
+                resistance: "Frequently methicillin-resistant"
+            },
+            {
+                name: "Staphylococcus saprophyticus",
+                gram: "Gram-positive",
+                morphology: "Cocci",
+                arrangement: "Clusters",
+                catalase: "Positive",
+                coagulase: "Negative",
+                hemolysis: "Gamma",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "Resistant",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Non-motile",
+                growth_media: "Mannitol salt agar",
+                important_biochemical_tests: "Novobiocin resistant",
+                major_diseases: "Urinary tract infection",
+                virulence_factors: "Adhesins",
+                transmission: "Normal flora; ascending urinary infection",
+                diagnosis_clues: "UTI in sexually active young woman",
+                common_diagnoses: "Acute cystitis",
+                treatment: "Nitrofurantoin or other appropriate UTI therapy",
+                resistance: "Novobiocin resistant"
+            },
+            {
+                name: "Streptococcus pyogenes",
+                gram: "Gram-positive",
+                morphology: "Cocci",
+                arrangement: "Chains",
+                catalase: "Negative",
+                coagulase: "N/A",
+                hemolysis: "Beta",
+                optochin: "Resistant",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Hyaluronic acid",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Non-motile",
+                growth_media: "Blood agar",
+                important_biochemical_tests: "PYR positive, bacitracin sensitive",
+                major_diseases: "Pharyngitis, impetigo, cellulitis, necrotizing fasciitis, scarlet fever, rheumatic fever, poststreptococcal glomerulonephritis",
+                virulence_factors: "M protein, streptolysin O, streptokinase, pyrogenic exotoxins",
+                transmission: "Respiratory droplets, direct contact",
+                diagnosis_clues: "Sore throat, sandpaper rash, strawberry tongue",
+                common_diagnoses: "Strep pharyngitis, scarlet fever",
+                treatment: "Penicillin",
+                resistance: "No significant penicillin resistance"
+            },
+            {
+                name: "Streptococcus agalactiae",
+                gram: "Gram-positive",
+                morphology: "Cocci",
+                arrangement: "Chains",
+                catalase: "Negative",
+                coagulase: "N/A",
+                hemolysis: "Beta",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Polysaccharide capsule",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Non-motile",
+                growth_media: "Blood agar",
+                important_biochemical_tests: "CAMP positive, hippurate positive",
+                major_diseases: "Neonatal sepsis, pneumonia, meningitis; maternal infections",
+                virulence_factors: "Capsule",
+                transmission: "Vertical transmission during childbirth",
+                diagnosis_clues: "Neonatal meningitis/sepsis",
+                common_diagnoses: "Neonatal group B strep disease",
+                treatment: "Penicillin/Ampicillin",
+                resistance: "Variable macrolide resistance"
+            },
+            {
+                name: "Streptococcus pneumoniae",
+                gram: "Gram-positive",
+                morphology: "Lancet-shaped diplococci",
+                arrangement: "Pairs",
+                catalase: "Negative",
+                coagulase: "N/A",
+                hemolysis: "Alpha",
+                optochin: "Sensitive",
+                bile_solubility: "Positive",
+                novobiocin: "N/A",
+                capsule: "Polysaccharide capsule",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Non-motile",
+                growth_media: "Blood agar",
+                important_biochemical_tests: "Optochin sensitive, bile soluble",
+                major_diseases: "Pneumonia, meningitis, otitis media, sinusitis",
+                virulence_factors: "Capsule, pneumolysin, IgA protease",
+                transmission: "Respiratory droplets",
+                diagnosis_clues: "Rust-colored sputum, meningitis, otitis media",
+                common_diagnoses: "Community-acquired pneumonia, meningitis",
+                treatment: "Penicillin if susceptible; ceftriaxone/other appropriate agents depending on site and resistance",
+                resistance: "Penicillin resistance via altered PBPs"
+            },
+            {
+                name: "Streptococcus viridans",
+                gram: "Gram-positive",
+                morphology: "Cocci",
+                arrangement: "Chains",
+                catalase: "Negative",
+                coagulase: "N/A",
+                hemolysis: "Alpha or gamma",
+                optochin: "Resistant",
+                bile_solubility: "Negative",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Non-motile",
+                growth_media: "Blood agar",
+                important_biochemical_tests: "Optochin resistant, bile insoluble",
+                major_diseases: "Dental caries, subacute endocarditis",
+                virulence_factors: "Dextran-mediated adherence to damaged valves",
+                transmission: "Normal oral flora",
+                diagnosis_clues: "Endocarditis after dental manipulation, damaged heart valves",
+                common_diagnoses: "Subacute bacterial endocarditis",
+                treatment: "Penicillin/ceftriaxone depending on susceptibility",
+                resistance: "Variable"
+            },
+            {
+                name: "Enterococcus faecalis",
+                gram: "Gram-positive",
+                morphology: "Cocci",
+                arrangement: "Pairs and short chains",
+                catalase: "Negative",
+                coagulase: "N/A",
+                hemolysis: "Gamma or alpha",
+                optochin: "Resistant",
+                bile_solubility: "Variable",
+                novobiocin: "Resistant",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Non-motile",
+                growth_media: "Bile-esculin agar; grows in 6.5% NaCl",
+                important_biochemical_tests: "Bile-esculin positive, PYR positive",
+                major_diseases: "UTIs, biliary infections, endocarditis",
+                virulence_factors: "Adhesins, biofilm",
+                transmission: "GI flora; endogenous or healthcare-associated",
+                diagnosis_clues: "Hospital-associated UTI or endocarditis",
+                common_diagnoses: "Enterococcal UTI/endocarditis",
+                treatment: "Ampicillin if susceptible; vancomycin for resistant isolates",
+                resistance: "VRE may have vanA/vanB-mediated vancomycin resistance"
+            },
+            {
+                name: "Bacillus anthracis",
+                gram: "Gram-positive",
+                morphology: "Large boxcar-shaped bacilli",
+                arrangement: "Chains",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "Gamma",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Poly-D-glutamate",
+                spores: "Positive",
+                oxygen: "Aerobic/facultative anaerobe",
+                motility: "Non-motile",
+                growth_media: "Blood agar; ground-glass colonies",
+                important_biochemical_tests: "Nonhemolytic, nonmotile",
+                major_diseases: "Cutaneous, inhalational, and GI anthrax",
+                virulence_factors: "Edema factor, lethal factor, protective antigen; capsule",
+                transmission: "Animal products, inhalation, ingestion, contaminated wounds",
+                diagnosis_clues: "Painless black eschar; widened mediastinum",
+                common_diagnoses: "Anthrax",
+                treatment: "Ciprofloxacin plus antitoxin for severe disease",
+                resistance: "Variable"
+            },
+            {
+                name: "Bacillus cereus",
+                gram: "Gram-positive",
+                morphology: "Large bacilli",
+                arrangement: "Chains",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "Beta",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Positive",
+                oxygen: "Aerobic/facultative anaerobe",
+                motility: "Motile",
+                growth_media: "Blood agar",
+                important_biochemical_tests: "Spore-forming, beta-hemolytic",
+                major_diseases: "Food poisoning; traumatic eye infections",
+                virulence_factors: "Emetic toxin, diarrheal toxins",
+                transmission: "Contaminated rice and other foods",
+                diagnosis_clues: "Rapid vomiting after reheated rice",
+                common_diagnoses: "Food poisoning",
+                treatment: "Supportive",
+                resistance: "Variable"
+            },
+            {
+                name: "Clostridium tetani",
+                gram: "Gram-positive",
+                morphology: "Bacilli with terminal spores",
+                arrangement: "Single/short chains",
+                catalase: "Negative",
+                coagulase: "N/A",
+                hemolysis: "Beta",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Positive, terminal",
+                oxygen: "Obligate anaerobe",
+                motility: "Motile",
+                growth_media: "Anaerobic culture",
+                important_biochemical_tests: "Terminal spores → drumstick appearance",
+                major_diseases: "Tetanus",
+                virulence_factors: "Tetanospasmin inhibits GABA and glycine release",
+                transmission: "Spores introduced through contaminated wounds",
+                diagnosis_clues: "Trismus, risus sardonicus, muscle rigidity",
+                common_diagnoses: "Tetanus",
+                treatment: "Tetanus immune globulin + metronidazole + wound care",
+                resistance: "N/A"
+            },
+            {
+                name: "Clostridium botulinum",
+                gram: "Gram-positive",
+                morphology: "Bacilli",
+                arrangement: "Single/short chains",
+                catalase: "Negative",
+                coagulase: "N/A",
+                hemolysis: "Variable",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Positive",
+                oxygen: "Obligate anaerobe",
+                motility: "Motile",
+                growth_media: "Anaerobic culture",
+                important_biochemical_tests: "Neurotoxin blocks acetylcholine release",
+                major_diseases: "Botulism, infant botulism",
+                virulence_factors: "Botulinum toxin cleaves SNARE proteins",
+                transmission: "Improperly canned foods; honey in infants; contaminated wounds",
+                diagnosis_clues: "Descending flaccid paralysis, diplopia, dysphagia",
+                common_diagnoses: "Foodborne/infant botulism",
+                treatment: "Botulinum antitoxin; supportive ventilation",
+                resistance: "N/A"
+            },
+            {
+                name: "Clostridium perfringens",
+                gram: "Gram-positive",
+                morphology: "Large boxcar-shaped bacilli",
+                arrangement: "Single/short chains",
+                catalase: "Negative",
+                coagulase: "N/A",
+                hemolysis: "Double-zone beta hemolysis",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Positive",
+                spores: "Positive",
+                oxygen: "Obligate anaerobe",
+                motility: "Non-motile",
+                growth_media: "Anaerobic blood agar",
+                important_biochemical_tests: "Lecithinase positive; reverse CAMP positive",
+                major_diseases: "Gas gangrene, food poisoning",
+                virulence_factors: "Alpha toxin (lecithinase/phospholipase C)",
+                transmission: "Traumatic wounds; contaminated meat",
+                diagnosis_clues: "Crepitus, myonecrosis, gas in tissue",
+                common_diagnoses: "Clostridial myonecrosis",
+                treatment: "Surgical debridement + penicillin + clindamycin",
+                resistance: "Variable"
+            },
+            {
+                name: "Clostridioides difficile",
+                gram: "Gram-positive",
+                morphology: "Bacilli",
+                arrangement: "Single/short chains",
+                catalase: "Negative",
+                coagulase: "N/A",
+                hemolysis: "Variable",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Positive",
+                oxygen: "Obligate anaerobe",
+                motility: "Motile",
+                growth_media: "CCFA; selective anaerobic media",
+                important_biochemical_tests: "Toxin A/B assays; NAAT",
+                major_diseases: "Antibiotic-associated diarrhea, pseudomembranous colitis, toxic megacolon",
+                virulence_factors: "Toxin A and toxin B",
+                transmission: "Fecal-oral; healthcare environment",
+                diagnosis_clues: "Watery diarrhea after antibiotics",
+                common_diagnoses: "C. difficile colitis",
+                treatment: "Oral vancomycin or fidaxomicin",
+                resistance: "Spores resistant to environmental conditions"
+            },
+            {
+                name: "Corynebacterium diphtheriae",
+                gram: "Gram-positive",
+                morphology: "Bacilli (club-shaped)",
+                arrangement: "V or Y shapes (Chinese letters)",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "N/A",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Non-motile",
+                growth_media: "Tellurite agar (black colonies), Löffler medium",
+                important_biochemical_tests: "Elek test detects toxin production",
+                major_diseases: "Diphtheria, myocarditis, neuropathy",
+                virulence_factors: "Diphtheria toxin inhibits EF-2",
+                transmission: "Respiratory droplets",
+                diagnosis_clues: "Gray pseudomembrane, bull neck",
+                common_diagnoses: "Respiratory diphtheria",
+                treatment: "Diphtheria antitoxin + erythromycin or penicillin",
+                resistance: "N/A"
+            },
+            {
+                name: "Listeria monocytogenes",
+                gram: "Gram-positive",
+                morphology: "Small bacilli/coccobacilli",
+                arrangement: "Single or short chains",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "Beta (narrow zone)",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Motile; tumbling at room temperature",
+                growth_media: "Cold enrichment; can grow at 4°C",
+                important_biochemical_tests: "CAMP positive; intracellular actin polymerization",
+                major_diseases: "Neonatal meningitis, meningitis in elderly/immunocompromised, gastroenteritis",
+                virulence_factors: "Listeriolysin O, ActA-mediated actin polymerization",
+                transmission: "Unpasteurized dairy, deli meats, transplacental",
+                diagnosis_clues: "Meningitis after contaminated food; pregnancy/neonatal disease",
+                common_diagnoses: "Listeriosis",
+                treatment: "Ampicillin ± gentamicin",
+                resistance: "Intrinsically resistant to cephalosporins"
+            },
+            {
+                name: "Mycobacterium tuberculosis",
+                gram: "Weakly Gram-positive; acid-fast",
+                morphology: "Slender bacilli",
+                arrangement: "Single/cords",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "N/A",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Obligate aerobe",
+                motility: "Non-motile",
+                growth_media: "Lowenstein-Jensen; Middlebrook",
+                important_biochemical_tests: "Acid-fast stain; niacin positive",
+                major_diseases: "Pulmonary TB, meningitis, Pott disease, miliary TB",
+                virulence_factors: "Cord factor; inhibition of phagolysosome fusion",
+                transmission: "Airborne droplets",
+                diagnosis_clues: "Apical cavitary lesions, night sweats, weight loss",
+                common_diagnoses: "Tuberculosis",
+                treatment: "RIPE: Rifampin + Isoniazid + Pyrazinamide + Ethambutol",
+                resistance: "MDR-TB and XDR-TB possible"
+            },
+            {
+                name: "Mycobacterium leprae",
+                gram: "Weakly Gram-positive; acid-fast",
+                morphology: "Slender bacilli",
+                arrangement: "Intracellular clusters",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "N/A",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Obligate aerobe",
+                motility: "Non-motile",
+                growth_media: "Cannot be cultured in standard artificial media",
+                important_biochemical_tests: "Acid-fast staining",
+                major_diseases: "Leprosy",
+                virulence_factors: "Invasion of Schwann cells",
+                transmission: "Prolonged close contact; respiratory droplets",
+                diagnosis_clues: "Hypopigmented skin lesions with sensory loss",
+                common_diagnoses: "Tuberculoid or lepromatous leprosy",
+                treatment: "Dapsone + rifampin ± clofazimine",
+                resistance: "Resistance possible"
+            },
+            {
+                name: "Nocardia asteroides",
+                gram: "Gram-positive",
+                morphology: "Branching filamentous bacilli",
+                arrangement: "Branching filaments",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "N/A",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Aerobic",
+                motility: "Non-motile",
+                growth_media: "Routine bacterial media; slow-growing",
+                important_biochemical_tests: "Weakly acid-fast",
+                major_diseases: "Pneumonia, brain abscess, disseminated infection",
+                virulence_factors: "Cell wall lipids; intracellular survival",
+                transmission: "Soil inhalation; traumatic inoculation",
+                diagnosis_clues: "Brain abscess in immunocompromised patient",
+                common_diagnoses: "Nocardiosis",
+                treatment: "Trimethoprim-sulfamethoxazole",
+                resistance: "Variable"
+            },
+            {
+                name: "Escherichia coli",
+                gram: "Gram-negative",
+                morphology: "Bacilli",
+                arrangement: "Single",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "Usually gamma",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "K1 capsule in neonatal strains",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Motile",
+                growth_media: "MacConkey agar; lactose fermenting pink colonies",
+                important_biochemical_tests: "Lactose fermenting, indole positive",
+                major_diseases: "UTI, neonatal meningitis, diarrhea, sepsis",
+                virulence_factors: "Fimbriae, LPS, various diarrheal toxins",
+                transmission: "Fecal-oral; ascending urinary infection",
+                diagnosis_clues: "Most common cause of uncomplicated UTI",
+                common_diagnoses: "UTI, neonatal meningitis, diarrheal disease",
+                treatment: "Depends on infection and susceptibility",
+                resistance: "ESBL and other resistance mechanisms common"
+            },
+            {
+                name: "Klebsiella pneumoniae",
+                gram: "Gram-negative",
+                morphology: "Bacilli",
+                arrangement: "Single",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "Usually gamma",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Prominent polysaccharide capsule",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Non-motile",
+                growth_media: "MacConkey agar; lactose fermenting",
+                important_biochemical_tests: "Urease positive; indole negative",
+                major_diseases: "Pneumonia, UTI, liver abscess, sepsis",
+                virulence_factors: "Thick capsule",
+                transmission: "GI flora; healthcare-associated",
+                diagnosis_clues: "Currant-jelly sputum; aspiration/alcohol use",
+                common_diagnoses: "Lobar pneumonia, UTI",
+                treatment: "Based on susceptibility",
+                resistance: "ESBL and carbapenemase-producing strains"
+            },
+            {
+                name: "Proteus mirabilis",
+                gram: "Gram-negative",
+                morphology: "Bacilli",
+                arrangement: "Single",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "Beta",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Highly motile; swarming",
+                growth_media: "Blood agar; MacConkey agar",
+                important_biochemical_tests: "Urease positive; H2S positive; indole negative",
+                major_diseases: "UTI, struvite kidney stones",
+                virulence_factors: "Urease, fimbriae",
+                transmission: "GI flora; ascending urinary infection",
+                diagnosis_clues: "Alkaline urine + staghorn calculi",
+                common_diagnoses: "Complicated UTI",
+                treatment: "Antibiotic based on susceptibility",
+                resistance: "Variable"
+            },
+            {
+                name: "Salmonella enterica",
+                gram: "Gram-negative",
+                morphology: "Bacilli",
+                arrangement: "Single",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "Usually gamma",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Vi capsule in S. Typhi",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Motile",
+                growth_media: "MacConkey; Hektoen/SS agar",
+                important_biochemical_tests: "H2S positive; non-lactose fermenting",
+                major_diseases: "Gastroenteritis, enteric fever, bacteremia, osteomyelitis in sickle cell disease",
+                virulence_factors: "Type III secretion systems; Vi capsule in S. Typhi",
+                transmission: "Undercooked poultry/eggs; fecal-oral",
+                diagnosis_clues: "Rose spots and relative bradycardia in typhoid",
+                common_diagnoses: "Salmonellosis, typhoid fever",
+                treatment: "Supportive for uncomplicated gastroenteritis; antibiotics for severe/typhoid disease",
+                resistance: "Increasing resistance"
+            },
+            {
+                name: "Shigella",
+                gram: "Gram-negative",
+                morphology: "Bacilli",
+                arrangement: "Single",
+                catalase: "Usually positive",
+                coagulase: "N/A",
+                hemolysis: "Gamma",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Non-motile",
+                growth_media: "MacConkey; Hektoen/SS agar",
+                important_biochemical_tests: "Non-lactose fermenting; H2S negative",
+                major_diseases: "Bacillary dysentery",
+                virulence_factors: "Shiga toxin (especially S. dysenteriae)",
+                transmission: "Fecal-oral; very low infectious dose",
+                diagnosis_clues: "Bloody diarrhea, fever, tenesmus",
+                common_diagnoses: "Shigellosis",
+                treatment: "Supportive; antibiotics in selected cases",
+                resistance: "Increasing multidrug resistance"
+            },
+            {
+                name: "Yersinia pestis",
+                gram: "Gram-negative",
+                morphology: "Coccobacilli",
+                arrangement: "Bipolar staining ('safety pin')",
+                catalase: "Positive",
+                coagulase: "Positive at 25°C",
+                hemolysis: "Negative",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "F1 capsule",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Non-motile",
+                growth_media: "Blood agar",
+                important_biochemical_tests: "Bipolar staining",
+                major_diseases: "Bubonic, septicemic, pneumonic plague",
+                virulence_factors: "F1 capsule, Yops proteins",
+                transmission: "Flea bite; respiratory droplets for pneumonic disease",
+                diagnosis_clues: "Painful buboes after rodent/flea exposure",
+                common_diagnoses: "Plague",
+                treatment: "Gentamicin or appropriate alternative",
+                resistance: "Variable"
+            },
+            {
+                name: "Vibrio cholerae",
+                gram: "Gram-negative",
+                morphology: "Curved/comma-shaped bacilli",
+                arrangement: "Single",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "Variable",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Motile",
+                growth_media: "TCBS agar; yellow colonies",
+                important_biochemical_tests: "Oxidase positive; grows in alkaline conditions",
+                major_diseases: "Cholera",
+                virulence_factors: "Cholera toxin → ↑cAMP via Gs",
+                transmission: "Contaminated water/food",
+                diagnosis_clues: "Profuse rice-water diarrhea",
+                common_diagnoses: "Cholera",
+                treatment: "Aggressive fluid/electrolyte replacement ± doxycycline/azithromycin",
+                resistance: "Variable"
+            },
+            {
+                name: "Campylobacter jejuni",
+                gram: "Gram-negative",
+                morphology: "Curved/S-shaped bacilli",
+                arrangement: "Pairs ('gull-wing')",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "Variable",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Microaerophilic",
+                motility: "Motile; darting",
+                growth_media: "Selective Campy media at 42°C",
+                important_biochemical_tests: "Oxidase positive",
+                major_diseases: "Inflammatory diarrhea, Guillain-Barré syndrome",
+                virulence_factors: "Invasion and cytolethal distending toxin",
+                transmission: "Undercooked poultry, unpasteurized milk",
+                diagnosis_clues: "Bloody diarrhea followed by ascending weakness",
+                common_diagnoses: "Campylobacter gastroenteritis",
+                treatment: "Supportive; azithromycin for severe disease",
+                resistance: "Fluoroquinolone resistance common"
+            },
+            {
+                name: "Helicobacter pylori",
+                gram: "Gram-negative",
+                morphology: "Curved/spiral bacilli",
+                arrangement: "Clusters",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "N/A",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Microaerophilic",
+                motility: "Motile; multiple flagella",
+                growth_media: "Specialized media",
+                important_biochemical_tests: "Urease positive",
+                major_diseases: "Peptic ulcer disease, gastritis, gastric adenocarcinoma, MALT lymphoma",
+                virulence_factors: "Urease, CagA, VacA",
+                transmission: "Fecal-oral/oral-oral",
+                diagnosis_clues: "Epigastric pain + urease-positive organism",
+                common_diagnoses: "Peptic ulcer disease",
+                treatment: "Combination eradication therapy with acid suppression + antibiotics",
+                resistance: "Clarithromycin resistance common"
+            },
+            {
+                name: "Pseudomonas aeruginosa",
+                gram: "Gram-negative",
+                morphology: "Bacilli",
+                arrangement: "Single",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "Beta",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Alginate biofilm",
+                spores: "Negative",
+                oxygen: "Obligate aerobe",
+                motility: "Motile",
+                growth_media: "MacConkey; grows at 42°C",
+                important_biochemical_tests: "Oxidase positive; non-lactose fermenter; blue-green pigment",
+                major_diseases: "Pneumonia, otitis externa, burn/wound infection, ecthyma gangrenosum, UTI",
+                virulence_factors: "Exotoxin A inhibits EF-2; elastase; biofilm",
+                transmission: "Water, healthcare environments",
+                diagnosis_clues: "CF patient with recurrent pneumonia; fruity odor",
+                common_diagnoses: "Hospital-acquired pneumonia, CF infection",
+                treatment: "Antipseudomonal beta-lactam ± additional agent",
+                resistance: "Extensive intrinsic/acquired resistance"
+            },
+            {
+                name: "Haemophilus influenzae",
+                gram: "Gram-negative",
+                morphology: "Small coccobacilli",
+                arrangement: "Single",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "N/A",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Type b capsule in Hib",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Non-motile",
+                growth_media: "Chocolate agar; requires factors X and V",
+                important_biochemical_tests: "Satellite growth around S. aureus",
+                major_diseases: "Epiglottitis, meningitis, otitis media, pneumonia",
+                virulence_factors: "PRP capsule, IgA protease",
+                transmission: "Respiratory droplets",
+                diagnosis_clues: "Unvaccinated child with epiglottitis",
+                common_diagnoses: "Hib epiglottitis/meningitis",
+                treatment: "Ceftriaxone/cefotaxime for invasive disease",
+                resistance: "Beta-lactamase production"
+            },
+            {
+                name: "Neisseria meningitidis",
+                gram: "Gram-negative",
+                morphology: "Diplococci",
+                arrangement: "Kidney-shaped pairs",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "N/A",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Polysaccharide capsule",
+                spores: "Negative",
+                oxygen: "Aerobic",
+                motility: "Non-motile",
+                growth_media: "Chocolate agar; Thayer-Martin",
+                important_biochemical_tests: "Oxidase positive; ferments glucose and maltose",
+                major_diseases: "Meningitis, meningococcemia, Waterhouse-Friderichsen syndrome",
+                virulence_factors: "Capsule, endotoxin, IgA protease",
+                transmission: "Respiratory droplets",
+                diagnosis_clues: "Meningitis + petechial/purpuric rash",
+                common_diagnoses: "Meningococcal meningitis/sepsis",
+                treatment: "Ceftriaxone/cefotaxime",
+                resistance: "Variable"
+            },
+            {
+                name: "Neisseria gonorrhoeae",
+                gram: "Gram-negative",
+                morphology: "Diplococci",
+                arrangement: "Intracellular kidney-shaped pairs",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "N/A",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Aerobic",
+                motility: "Non-motile",
+                growth_media: "Thayer-Martin/chocolate agar",
+                important_biochemical_tests: "Oxidase positive; ferments glucose only",
+                major_diseases: "Urethritis, cervicitis, PID, septic arthritis, neonatal conjunctivitis",
+                virulence_factors: "Pili, Opa proteins, antigenic variation",
+                transmission: "Sexual contact; perinatal",
+                diagnosis_clues: "Purulent urethral discharge; intracellular diplococci",
+                common_diagnoses: "Gonorrhea",
+                treatment: "Ceftriaxone",
+                resistance: "Increasing antimicrobial resistance"
+            },
+            {
+                name: "Bordetella pertussis",
+                gram: "Gram-negative",
+                morphology: "Small coccobacilli",
+                arrangement: "Single",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "N/A",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Obligate aerobe",
+                motility: "Non-motile",
+                growth_media: "Bordet-Gengou or Regan-Lowe agar",
+                important_biochemical_tests: "PCR; pertussis toxin increases cAMP",
+                major_diseases: "Whooping cough",
+                virulence_factors: "Pertussis toxin, adenylate cyclase toxin, tracheal cytotoxin",
+                transmission: "Respiratory droplets",
+                diagnosis_clues: "Paroxysmal cough + inspiratory whoop",
+                common_diagnoses: "Pertussis",
+                treatment: "Azithromycin",
+                resistance: "Variable"
+            },
+            {
+                name: "Legionella pneumophila",
+                gram: "Gram-negative",
+                morphology: "Thin bacilli",
+                arrangement: "Single",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "N/A",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Aerobic",
+                motility: "Motile",
+                growth_media: "BCYE agar",
+                important_biochemical_tests: "Urinary antigen detects L. pneumophila serogroup 1",
+                major_diseases: "Legionnaires disease, Pontiac fever",
+                virulence_factors: "Intracellular survival in macrophages",
+                transmission: "Aerosolized contaminated water",
+                diagnosis_clues: "Atypical pneumonia + diarrhea + hyponatremia",
+                common_diagnoses: "Legionnaires disease",
+                treatment: "Azithromycin or fluoroquinolone",
+                resistance: "Variable"
+            },
+            {
+                name: "Francisella tularensis",
+                gram: "Gram-negative",
+                morphology: "Small coccobacilli",
+                arrangement: "Single",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "Variable",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Facultative intracellular",
+                motility: "Non-motile",
+                growth_media: "Cysteine-enriched media",
+                important_biochemical_tests: "Requires cysteine",
+                major_diseases: "Tularemia",
+                virulence_factors: "Intracellular survival",
+                transmission: "Ticks, rabbits, inhalation",
+                diagnosis_clues: "Ulceroglandular disease after rabbit/tick exposure",
+                common_diagnoses: "Tularemia",
+                treatment: "Gentamicin or streptomycin",
+                resistance: "Intrinsic beta-lactam resistance"
+            },
+            {
+                name: "Brucella species",
+                gram: "Gram-negative",
+                morphology: "Small coccobacilli",
+                arrangement: "Single",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "N/A",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Aerobic/facultative intracellular",
+                motility: "Non-motile",
+                growth_media: "Blood agar; slow-growing",
+                important_biochemical_tests: "Oxidase and urease positive",
+                major_diseases: "Undulant fever, osteomyelitis, hepatosplenomegaly",
+                virulence_factors: "Intracellular survival",
+                transmission: "Unpasteurized dairy; animal exposure",
+                diagnosis_clues: "Undulating fever + livestock/unpasteurized dairy exposure",
+                common_diagnoses: "Brucellosis",
+                treatment: "Doxycycline + rifampin",
+                resistance: "Variable"
+            },
+            {
+                name: "Treponema pallidum",
+                gram: "Not reliably Gram-stained; spirochete",
+                morphology: "Spirochete",
+                arrangement: "Helical",
+                catalase: "Negative",
+                coagulase: "N/A",
+                hemolysis: "N/A",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Microaerophilic",
+                motility: "Motile; corkscrew",
+                growth_media: "Cannot be routinely cultured",
+                important_biochemical_tests: "RPR/VDRL; FTA-ABS",
+                major_diseases: "Syphilis",
+                virulence_factors: "Tissue invasion and immune evasion",
+                transmission: "Sexual contact; transplacental",
+                diagnosis_clues: "Painless chancre → rash involving palms/soles → tertiary disease",
+                common_diagnoses: "Syphilis",
+                treatment: "Penicillin G",
+                resistance: "No established penicillin resistance"
+            },
+            {
+                name: "Borrelia burgdorferi",
+                gram: "Poorly Gram-stained; spirochete",
+                morphology: "Spirochete",
+                arrangement: "Helical",
+                catalase: "Negative",
+                coagulase: "N/A",
+                hemolysis: "N/A",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Microaerophilic",
+                motility: "Motile",
+                growth_media: "Specialized media",
+                important_biochemical_tests: "Serology; two-tier testing",
+                major_diseases: "Lyme disease",
+                virulence_factors: "Outer surface proteins",
+                transmission: "Ixodes tick",
+                diagnosis_clues: "Erythema migrans; facial palsy; AV block; arthritis",
+                common_diagnoses: "Lyme disease",
+                treatment: "Doxycycline; ceftriaxone for selected neurologic/cardiac disease",
+                resistance: "N/A"
+            },
+            {
+                name: "Leptospira interrogans",
+                gram: "Poorly Gram-stained; spirochete",
+                morphology: "Thin spirochete",
+                arrangement: "Tightly coiled",
+                catalase: "Variable",
+                coagulase: "N/A",
+                hemolysis: "N/A",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Aerobic",
+                motility: "Highly motile",
+                growth_media: "Specialized media",
+                important_biochemical_tests: "Serology/PCR",
+                major_diseases: "Leptospirosis, Weil disease",
+                virulence_factors: "Endothelial invasion",
+                transmission: "Animal urine-contaminated freshwater",
+                diagnosis_clues: "Fever + conjunctival suffusion + jaundice/renal failure",
+                common_diagnoses: "Leptospirosis",
+                treatment: "Doxycycline or penicillin depending on severity",
+                resistance: "N/A"
+            },
+            {
+                name: "Chlamydia trachomatis",
+                gram: "Gram-negative-like; obligate intracellular",
+                morphology: "Small intracellular bacteria",
+                arrangement: "Intracellular inclusions",
+                catalase: "Negative",
+                coagulase: "N/A",
+                hemolysis: "N/A",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Obligate intracellular",
+                motility: "Non-motile",
+                growth_media: "Cell culture; NAAT commonly used",
+                important_biochemical_tests: "Elementary bodies and reticulate bodies",
+                major_diseases: "Urethritis, cervicitis, PID, neonatal conjunctivitis/pneumonia, LGV",
+                virulence_factors: "Intracellular replication",
+                transmission: "Sexual contact; perinatal",
+                diagnosis_clues: "Urethritis with no organisms on Gram stain",
+                common_diagnoses: "Chlamydial STI",
+                treatment: "Doxycycline; azithromycin in pregnancy",
+                resistance: "N/A"
+            },
+            {
+                name: "Mycoplasma pneumoniae",
+                gram: "No cell wall",
+                morphology: "Pleomorphic",
+                arrangement: "Variable",
+                catalase: "Negative",
+                coagulase: "N/A",
+                hemolysis: "Beta; variable",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Non-motile",
+                growth_media: "Specialized media; 'fried-egg' colonies",
+                important_biochemical_tests: "Cold agglutinins; PCR",
+                major_diseases: "Atypical pneumonia",
+                virulence_factors: "P1 adhesin; CARDS toxin",
+                transmission: "Respiratory droplets",
+                diagnosis_clues: "Walking pneumonia + bullous myringitis",
+                common_diagnoses: "Atypical pneumonia",
+                treatment: "Macrolide or doxycycline",
+                resistance: "Macrolide resistance occurs"
+            },
+            {
+                name: "Moraxella catarrhalis",
+                gram: "Gram-negative",
+                morphology: "Diplococci",
+                arrangement: "Pairs",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "N/A",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Aerobic",
+                motility: "Non-motile",
+                growth_media: "Blood/chocolate agar",
+                important_biochemical_tests: "Oxidase positive; butyrate esterase positive",
+                major_diseases: "Otitis media, sinusitis, COPD exacerbations",
+                virulence_factors: "Adhesins; beta-lactamase",
+                transmission: "Respiratory droplets",
+                diagnosis_clues: "Otitis/sinusitis in children",
+                common_diagnoses: "Otitis media, COPD exacerbation",
+                treatment: "Amoxicillin-clavulanate or other appropriate therapy",
+                resistance: "Beta-lactamase production common"
+            },
+            {
+                name: "Enterobacter species",
+                gram: "Gram-negative",
+                morphology: "Bacilli",
+                arrangement: "Single",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "Variable",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Variable",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Motile",
+                growth_media: "MacConkey agar; lactose fermenting",
+                important_biochemical_tests: "Inducible AmpC beta-lactamase",
+                major_diseases: "Hospital-acquired UTI, pneumonia, bacteremia",
+                virulence_factors: "Endotoxin; biofilm",
+                transmission: "Healthcare-associated",
+                diagnosis_clues: "Nosocomial infection with antibiotic resistance",
+                common_diagnoses: "Hospital-acquired infection",
+                treatment: "Based on susceptibility",
+                resistance: "AmpC and carbapenemase production"
+            },
+            {
+                name: "Serratia marcescens",
+                gram: "Gram-negative",
+                morphology: "Bacilli",
+                arrangement: "Single",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "Variable",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Motile",
+                growth_media: "MacConkey agar",
+                important_biochemical_tests: "Red pigment production at room temperature",
+                major_diseases: "UTI, pneumonia, bacteremia, endocarditis",
+                virulence_factors: "Biofilm, enzymes",
+                transmission: "Healthcare-associated",
+                diagnosis_clues: "Red/pink pigment on culture",
+                common_diagnoses: "Nosocomial infection",
+                treatment: "Based on susceptibility",
+                resistance: "AmpC beta-lactamase"
+            },
+            {
+                name: "Bacteroides fragilis",
+                gram: "Gram-negative",
+                morphology: "Bacilli",
+                arrangement: "Single",
+                catalase: "Variable",
+                coagulase: "N/A",
+                hemolysis: "Usually none",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Polysaccharide capsule",
+                spores: "Negative",
+                oxygen: "Obligate anaerobe",
+                motility: "Non-motile",
+                growth_media: "Anaerobic media",
+                important_biochemical_tests: "Bile resistant",
+                major_diseases: "Intra-abdominal abscesses, peritonitis",
+                virulence_factors: "Capsule, beta-lactamase",
+                transmission: "Normal GI flora; leakage after bowel injury",
+                diagnosis_clues: "Polymicrobial intra-abdominal infection",
+                common_diagnoses: "Intra-abdominal abscess",
+                treatment: "Metronidazole or beta-lactam/beta-lactamase inhibitor",
+                resistance: "Beta-lactamase production"
+            },
+            {
+                name: "Fusobacterium necrophorum",
+                gram: "Gram-negative",
+                morphology: "Pleomorphic fusiform bacilli",
+                arrangement: "Single",
+                catalase: "Negative",
+                coagulase: "N/A",
+                hemolysis: "Variable",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Obligate anaerobe",
+                motility: "Non-motile",
+                growth_media: "Anaerobic media",
+                important_biochemical_tests: "Anaerobic culture",
+                major_diseases: "Lemierre syndrome",
+                virulence_factors: "Leukotoxin",
+                transmission: "Normal oropharyngeal flora",
+                diagnosis_clues: "Pharyngitis followed by internal jugular thrombophlebitis",
+                common_diagnoses: "Lemierre syndrome",
+                treatment: "Metronidazole + appropriate broad-spectrum therapy",
+                resistance: "Variable"
+            },
+            {
+                name: "Streptococcus mutans",
+                gram: "Gram-positive",
+                morphology: "Cocci",
+                arrangement: "Chains",
+                catalase: "Negative",
+                coagulase: "N/A",
+                hemolysis: "Alpha",
+                optochin: "Resistant",
+                bile_solubility: "Negative",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Non-motile",
+                growth_media: "Blood agar",
+                important_biochemical_tests: "Dextran production",
+                major_diseases: "Dental caries",
+                virulence_factors: "Glucosyltransferase; dextran-mediated adherence",
+                transmission: "Oral flora; saliva",
+                diagnosis_clues: "Dental plaque and caries",
+                common_diagnoses: "Dental caries",
+                treatment: "Dental hygiene/fluoride and dental care",
+                resistance: "N/A"
+            },
+            {
+                name: "Staphylococcus aureus (toxin-mediated disease)",
+                gram: "Gram-positive",
+                morphology: "Cocci",
+                arrangement: "Clusters",
+                catalase: "Positive",
+                coagulase: "Positive",
+                hemolysis: "Beta",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "Resistant",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Non-motile",
+                growth_media: "Mannitol salt agar",
+                important_biochemical_tests: "Toxic shock: TSST-1; food poisoning: preformed enterotoxin",
+                major_diseases: "Toxic shock syndrome, scalded skin syndrome, food poisoning",
+                virulence_factors: "Superantigens, exfoliative toxin, enterotoxin",
+                transmission: "Colonization and contaminated food/tampons/wounds",
+                diagnosis_clues: "Fever + rash + hypotension; rapid vomiting after food",
+                common_diagnoses: "TSS, food poisoning",
+                treatment: "Source control + antistaphylococcal therapy",
+                resistance: "MRSA possible"
+            },
+            {
+                name: "Eikenella corrodens",
+                gram: "Gram-negative",
+                morphology: "Thin bacilli",
+                arrangement: "Single",
+                catalase: "Negative",
+                coagulase: "N/A",
+                hemolysis: "None",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Non-motile",
+                growth_media: "Blood/chocolate agar",
+                important_biochemical_tests: "Oxidase positive; pitting of agar",
+                major_diseases: "Human bite/wound infections",
+                virulence_factors: "Adhesins",
+                transmission: "Human oral flora; bites",
+                diagnosis_clues: "Clenched-fist injury",
+                common_diagnoses: "Human bite infection",
+                treatment: "Amoxicillin-clavulanate",
+                resistance: "Intrinsic resistance to clindamycin and metronidazole"
+            },
+            {
+                name: "Pasteurella multocida",
+                gram: "Gram-negative",
+                morphology: "Small coccobacilli",
+                arrangement: "Single",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "None",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Capsulated",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Non-motile",
+                growth_media: "Blood/chocolate agar",
+                important_biochemical_tests: "Oxidase positive; indole positive",
+                major_diseases: "Rapid cellulitis after animal bites",
+                virulence_factors: "Capsule",
+                transmission: "Cat/dog bites",
+                diagnosis_clues: "Rapidly developing cellulitis after cat bite",
+                common_diagnoses: "Animal bite infection",
+                treatment: "Amoxicillin-clavulanate",
+                resistance: "Variable"
+            },
+            {
+                name: "Aeromonas hydrophila",
+                gram: "Gram-negative",
+                morphology: "Bacilli",
+                arrangement: "Single",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "Beta",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Motile",
+                growth_media: "Blood agar",
+                important_biochemical_tests: "Oxidase positive",
+                major_diseases: "Diarrhea, wound infections",
+                virulence_factors: "Enterotoxins, cytotoxins",
+                transmission: "Freshwater exposure",
+                diagnosis_clues: "Wound infection after freshwater exposure",
+                common_diagnoses: "Aeromonas gastroenteritis/wound infection",
+                treatment: "Fluoroquinolone or other susceptible agent",
+                resistance: "Beta-lactam resistance common"
+            },
+            {
+                name: "Vibrio vulnificus",
+                gram: "Gram-negative",
+                morphology: "Curved bacilli",
+                arrangement: "Single",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "Beta",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Capsulated",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Motile",
+                growth_media: "TCBS agar",
+                important_biochemical_tests: "Oxidase positive; salt-requiring",
+                major_diseases: "Sepsis, severe wound infections",
+                virulence_factors: "Capsule, cytolysins",
+                transmission: "Raw oysters; seawater wound exposure",
+                diagnosis_clues: "Severe cellulitis/sepsis in patient with liver disease",
+                common_diagnoses: "Vibrio vulnificus sepsis",
+                treatment: "Doxycycline + ceftazidime or appropriate combination",
+                resistance: "Variable"
+            },
+            {
+                name: "Yersinia enterocolitica",
+                gram: "Gram-negative",
+                morphology: "Coccobacilli",
+                arrangement: "Single",
+                catalase: "Positive",
+                coagulase: "N/A",
+                hemolysis: "Variable",
+                optochin: "N/A",
+                bile_solubility: "N/A",
+                novobiocin: "N/A",
+                capsule: "Negative",
+                spores: "Negative",
+                oxygen: "Facultative anaerobe",
+                motility: "Motile at 25°C",
+                growth_media: "Cold enrichment; selective enteric media",
+                important_biochemical_tests: "Urease positive",
+                major_diseases: "Enterocolitis, pseudoappendicitis",
+                virulence_factors: "Yops proteins",
+                transmission: "Undercooked pork",
+                diagnosis_clues: "Terminal ileitis/mesenteric adenitis mimicking appendicitis",
+                common_diagnoses: "Yersinia gastroenteritis",
+                treatment: "Supportive; antibiotics for severe disease",
+                resistance: "Variable"
+            }
+        ];
+
+        const fieldLabels = {
+            gram: "Gram Stain",
+            morphology: "Morphology",
+            arrangement: "Arrangement",
+            catalase: "Catalase Test",
+            coagulase: "Coagulase Test",
+            hemolysis: "Hemolysis",
+            optochin: "Optochin Sensitivity",
+            bile_solubility: "Bile Solubility",
+            novobiocin: "Novobiocin Sensitivity",
+            capsule: "Capsule",
+            spores: "Spores",
+            oxygen: "Oxygen Requirement",
+            motility: "Motility",
+            growth_media: "Growth Media / Culture",
+            important_biochemical_tests: "Biochemical Tests",
+            major_diseases: "Major Diseases",
+            virulence_factors: "Virulence Factors",
+            transmission: "Transmission",
+            diagnosis_clues: "Diagnosis Clues",
+            common_diagnoses: "Common Diagnoses",
+            treatment: "Treatment",
+            resistance: "Resistance"
+        };
+
+        let currentBactA = null;
+        let currentBactB = null;
+        let currentQuestion = null;
+        let scoreCorrect = 0;
+        let scoreTotal = 0;
+
+        // DOM Elements
+        const btnNew = document.getElementById('btn-new-comparison');
+        const spanScoreCorrect = document.getElementById('score-correct');
+        const spanScoreTotal = document.getElementById('score-total');
+
+        const bactANameDisplay = document.getElementById('bact-a-name');
+        const bactBNameDisplay = document.getElementById('bact-b-name');
+        
+        const askedFieldLabel = document.getElementById('asked-field-label');
+        const askedFieldValue = document.getElementById('asked-field-value');
+
+        const btnAnsA = document.getElementById('btn-ans-a');
+        const btnAnsB = document.getElementById('btn-ans-b');
+
+        const feedbackContent = document.getElementById('feedback-content');
+        const feedbackStatus = document.getElementById('feedback-status');
+        const feedbackExplanation = document.getElementById('feedback-explanation');
+        const btnNext = document.getElementById('btn-next');
+
+        const tableContainer = document.getElementById('table-container');
+        const thBactA = document.getElementById('th-bact-a');
+        const thBactB = document.getElementById('th-bact-b');
+        const comparisonTbody = document.getElementById('comparison-tbody');
+
+        // Helper Functions
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
+
+        function normalizeValue(val) {
+            if (!val) return "N/A";
+            return String(val).trim().toLowerCase();
+        }
+
+        function generateQuestion() {
+            // Hide feedback and table, reset buttons
+            feedbackContent.classList.add('hidden');
+            tableContainer.classList.add('hidden');
+            
+            btnAnsA.disabled = false;
+            btnAnsB.disabled = false;
+            btnAnsA.className = "flex-1 bg-blue-50 hover:bg-blue-100 active:bg-blue-200 border-2 border-blue-300 text-blue-900 font-bold py-3.5 px-4 rounded-xl transition-all shadow-sm text-base sm:text-lg text-center cursor-pointer";
+            btnAnsB.className = "flex-1 bg-emerald-50 hover:bg-emerald-100 active:bg-emerald-200 border-2 border-emerald-300 text-emerald-900 font-bold py-3.5 px-4 rounded-xl transition-all shadow-sm text-base sm:text-lg text-center cursor-pointer";
+
+            // Pick 2 distinct bacteria
+            let idxA = getRandomInt(bacteria.length);
+            let idxB = getRandomInt(bacteria.length);
+            while (idxB === idxA) {
+                idxB = getRandomInt(bacteria.length);
+            }
+
+            currentBactA = bacteria[idxA];
+            currentBactB = bacteria[idxB];
+
+            // Find a field where they differ and values are valid
+            const fields = Object.keys(fieldLabels);
+            let validFields = [];
+
+            fields.forEach(field => {
+                const valA = currentBactA[field];
+                const valB = currentBactB[field];
+
+                const normA = normalizeValue(valA);
+                const normB = normalizeValue(valB);
+
+                // Ignore if values are identical, N/A on both, or missing
+                if (normA !== normB && normA !== "n/a" && normB !== "n/a" && normA !== "" && normB !== "") {
+                    validFields.push(field);
+                }
+            });
+
+            // If no distinct field, re-roll bacteria
+            if (validFields.length === 0) {
+                generateQuestion();
+                return;
+            }
+
+            // Pick a random field from valid ones
+            const chosenField = validFields[getRandomInt(validFields.length)];
+
+            // Pick target bacterium (A or B)
+            const targetChar = Math.random() < 0.5 ? 'A' : 'B';
+            const targetBact = targetChar === 'A' ? currentBactA : currentBactB;
+
+            currentQuestion = {
+                field: chosenField,
+                targetChar: targetChar,
+                targetBact: targetBact,
+                value: targetBact[chosenField]
+            };
+
+            // Update UI
+            bactANameDisplay.textContent = currentBactA.name;
+            bactBNameDisplay.textContent = currentBactB.name;
+
+            btnAnsA.textContent = currentBactA.name;
+            btnAnsB.textContent = currentBactB.name;
+
+            askedFieldLabel.textContent = fieldLabels[chosenField];
+            askedFieldValue.textContent = currentQuestion.value;
+        }
+
+        function renderComparisonTable() {
+            thBactA.textContent = currentBactA.name;
+            thBactB.textContent = currentBactB.name;
+
+            comparisonTbody.innerHTML = '';
+
+            Object.keys(fieldLabels).forEach(field => {
+                const tr = document.createElement('tr');
+                
+                const valA = currentBactA[field] || "N/A";
+                const valB = currentBactB[field] || "N/A";
+
+                const normA = normalizeValue(valA);
+                const normB = normalizeValue(valB);
+
+                const isDifferent = normA !== normB;
+                const isAsked = field === currentQuestion.field;
+
+                if (isAsked) {
+                    tr.className = "target-asked-row";
+                } else if (isDifferent) {
+                    tr.className = "diff-row";
+                }
+
+                tr.innerHTML = `
+                    <td class="px-3 sm:px-4 py-2 font-medium text-gray-900">${fieldLabels[field]}</td>
+                    <td class="px-3 sm:px-4 py-2 text-gray-700">${valA}</td>
+                    <td class="px-3 sm:px-4 py-2 text-gray-700">${valB}</td>
+                `;
+
+                comparisonTbody.appendChild(tr);
+            });
+
+            tableContainer.classList.remove('hidden');
+        }
+
+        function checkAnswer(selectedChar) {
+            btnAnsA.disabled = true;
+            btnAnsB.disabled = true;
+
+            scoreTotal++;
+
+            const isCorrect = selectedChar === currentQuestion.targetChar;
+            if (isCorrect) scoreCorrect++;
+
+            spanScoreCorrect.textContent = scoreCorrect;
+            spanScoreTotal.textContent = scoreTotal;
+
+            // Highlight buttons
+            if (currentQuestion.targetChar === 'A') {
+                btnAnsA.className = "flex-1 bg-green-100 border-2 border-green-500 text-green-950 font-bold py-3.5 px-4 rounded-xl shadow-md text-base sm:text-lg text-center";
+                if (selectedChar === 'B') {
+                    btnAnsB.className = "flex-1 bg-red-100 border-2 border-red-400 text-red-950 font-bold py-3.5 px-4 rounded-xl shadow-sm text-base sm:text-lg text-center opacity-75";
+                }
+            } else {
+                btnAnsB.className = "flex-1 bg-green-100 border-2 border-green-500 text-green-950 font-bold py-3.5 px-4 rounded-xl shadow-md text-base sm:text-lg text-center";
+                if (selectedChar === 'A') {
+                    btnAnsA.className = "flex-1 bg-red-100 border-2 border-red-400 text-red-950 font-bold py-3.5 px-4 rounded-xl shadow-sm text-base sm:text-lg text-center opacity-75";
+                }
+            }
+
+            // Feedback Text
+            if (isCorrect) {
+                feedbackStatus.textContent = "Correct!";
+                feedbackStatus.className = "text-xl sm:text-2xl font-bold mb-1 text-green-600";
+            } else {
+                feedbackStatus.textContent = "Incorrect!";
+                feedbackStatus.className = "text-xl sm:text-2xl font-bold mb-1 text-red-600";
+            }
+
+            const correctBactName = currentQuestion.targetBact.name;
+            const otherBact = currentQuestion.targetChar === 'A' ? currentBactB : currentBactA;
+            const fieldName = fieldLabels[currentQuestion.field];
+
+            feedbackExplanation.innerHTML = `
+                <strong>${correctBactName}</strong> has <em>"${currentQuestion.value}"</em> for ${fieldName}, 
+                whereas <strong>${otherBact.name}</strong> has <em>"${otherBact[currentQuestion.field] || 'N/A'}"</em>.
+            `;
+
+            feedbackContent.classList.remove('hidden');
+
+            renderComparisonTable();
+        }
+
+        // Event Listeners
+        btnAnsA.addEventListener('click', () => checkAnswer('A'));
+        btnAnsB.addEventListener('click', () => checkAnswer('B'));
+        btnNext.addEventListener('click', generateQuestion);
+        btnNew.addEventListener('click', () => {
+            scoreCorrect = 0;
+            scoreTotal = 0;
+            spanScoreCorrect.textContent = scoreCorrect;
+            spanScoreTotal.textContent = scoreTotal;
+            generateQuestion();
+        });
+
+        // Initialize Game
+        generateQuestion();
+    </script>
+</body>
+</html>
