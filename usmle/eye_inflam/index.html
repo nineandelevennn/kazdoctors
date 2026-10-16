@@ -1,0 +1,1939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>USMLE Ophthalmology & Neurology Quiz</title>
+       <link rel="preconnect" href="https://fonts.googleapis.com">
+       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+       <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+       <script src="https://cdn.tailwindcss.com"></script>
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+       <style>
+           :root {
+               --kz-blue: #00A1DE;
+               --kz-blue-dark: #0077A3;
+               --kz-blue-light: #EBF8FC;
+               --kz-gold: #FFC72C;
+               --bg-main: #F2F5F8;
+               --card-bg: #FFFFFF;
+               --text-dark: #1E293B;
+               --text-muted: #64748B;
+               --border-color: #E2E8F0;
+           }
+
+           body {
+               font-family: 'Montserrat', sans-serif;
+               background-color: var(--bg-main);
+               color: var(--text-dark);
+               touch-action: manipulation;
+               -webkit-tap-highlight-color: transparent;
+           }
+           /* Custom scrollbar for mobile fit */
+           ::-webkit-scrollbar {
+               width: 6px;
+               height: 6px;
+           }
+           ::-webkit-scrollbar-track {
+               background: #f1f5f9;
+           }
+           ::-webkit-scrollbar-thumb {
+               background: #00A1DE;
+               border-radius: 4px;
+           }
+
+           .slide-header-bg {
+               background-color: var(--kz-blue);
+           }
+
+           .item-card {
+               transition: all 0.2s ease-in-out;
+               user-select: none;
+               -webkit-user-select: none;
+           }
+
+           .item-card.selected {
+               border-color: #00A1DE !important;
+               background-color: #EBF8FC !important;
+               box-shadow: 0 0 0 2px #00A1DE;
+           }
+
+           .item-card.matched {
+               border-color: #2e7d32 !important;
+               background-color: #f1f8e9 !important;
+               opacity: 0.85;
+           }
+
+           .item-card.incorrect {
+               border-color: #c62828 !important;
+               background-color: #ffebee !important;
+           }
+
+           /* SVG Line overlay for matching visual connection */
+           #connections-svg {
+               position: absolute;
+               top: 0;
+               left: 0;
+               width: 100%;
+               height: 100%;
+               pointer-events: none;
+               z-index: 10;
+           }
+
+           .badge-number {
+               display: inline-flex;
+               align-items: center;
+               justify-content: center;
+               width: 22px;
+               height: 22px;
+               border-radius: 9999px;
+               font-size: 0.75rem;
+               font-weight: bold;
+           }
+       </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between text-[#1E293B] bg-[#F2F5F8]">
+
+       <!-- Top Header Banner (Styled like index-58.html) -->
+       <header class="slide-header-bg text-white text-center py-5 px-4 shadow-[0_4px_14px_rgba(0,161,222,0.2)] flex flex-col items-center relative z-20">
+           <a href="https://kazdoctors.com/usmle/neurology/" class="inline-flex items-center gap-1.5 text-white bg-white/[0.18] backdrop-blur-md border border-white/35 no-underline font-bold text-[0.78rem] px-3.5 py-1.5 rounded-[20px] mb-2.5 transition-all active:scale-95 hover:bg-white/30">
+               <span>⬅️Go back</span>
+           </a>
+           <div class="inline-block bg-white/15 backdrop-blur-md border border-white/30 text-white font-bold text-[0.75rem] tracking-[0.8px] px-3 py-1 rounded-[20px] mb-2">@doctors.speak</div>
+           <h1 class="text-[1.35rem] font-black leading-[1.2] uppercase tracking-[0.5px] text-white">USMLE preparation</h1>
+           <p class="text-[0.78rem] mt-1 font-extrabold tracking-[0.8px] uppercase text-[#FFC72C]">Ophthalmology &amp; Neurology — USMLE Step 1</p>
+       </header>
+
+       <!-- Main Container -->
+
+       <main class="flex-grow max-w-5xl w-full mx-auto p-3 sm:p-6">
+
+           <!-- MODE SELECTOR VIEW -->
+
+           <section id="selection-view" class="bg-white rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] border border-[#E2E8F0] border-l-[5px] border-l-[#00A1DE] p-4 sm:p-6 mb-6">
+
+               <div class="border-b border-gray-200 pb-3 mb-5">
+
+                   <h2 class="text-xl font-bold text-gray-800 flex items-center">
+
+                       <i class="fa-solid fa-graduation-cap text-[#00A1DE] mr-2.5"></i> Select Review Scope
+
+                   </h2>
+
+                   <p class="text-xs sm:text-sm text-gray-600 mt-1">Choose a specific disease, a clinical organ category, or "ALL RANDOM" mode to start the 4-stage matching quiz.</p>
+
+               </div>
+
+
+
+               <!-- Mode Selector Tabs -->
+
+               <div class="grid grid-cols-3 gap-2 mb-6">
+
+                   <button id="btn-tab-category" onclick="switchSelectionTab('category')" class="py-2 px-3 text-xs sm:text-sm font-semibold rounded-md border text-center transition bg-[#00A1DE] text-white border-[#00A1DE]">
+
+                       By Subclass
+
+                   </button>
+
+                   <button id="btn-tab-condition" onclick="switchSelectionTab('condition')" class="py-2 px-3 text-xs sm:text-sm font-semibold rounded-md border text-center transition bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200">
+
+                       Single Disease
+
+                   </button>
+
+                   <button id="btn-tab-random" onclick="switchSelectionTab('random')" class="py-2 px-3 text-xs sm:text-sm font-semibold rounded-md border text-center transition bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200">
+
+                       All Random (6)
+
+                   </button>
+
+               </div>
+
+
+
+               <!-- Category Select Box -->
+
+               <div id="panel-category" class="space-y-3">
+
+                   <label class="block text-xs font-bold uppercase tracking-wider text-gray-700">Subclass / System Category</label>
+
+                   <select id="select-category" class="w-full p-3 border border-gray-300 rounded-lg text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#00A1DE]">
+
+                       <option value="eyelid_lacrimal">Inflammatory Conditions of Eyelid & Lacrimal System</option>
+
+                       <option value="conjunctivitis">Types of Conjunctivitis</option>
+
+                       <option value="keratitis">Keratitis</option>
+
+                       <option value="uveitis">Anterior & Posterior Uveitis</option>
+
+                       <option value="tumors">Ocular Tumors & Neoplasms</option>
+
+                       <option value="toxins">Pharmacology & Ocular Adverse Effects</option>
+
+                   </select>
+
+               </div>
+
+
+
+               <!-- Single Condition Select Box -->
+
+               <div id="panel-condition" class="space-y-3 hidden">
+
+                   <label class="block text-xs font-bold uppercase tracking-wider text-gray-700">Select Single Condition</label>
+
+                   <select id="select-condition" class="w-full p-3 border border-gray-300 rounded-lg text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#00A1DE]">
+
+                       <!-- Dynamically filled -->
+
+                   </select>
+
+               </div>
+
+
+
+               <!-- Random Info Box -->
+
+               <div id="panel-random" class="space-y-3 hidden p-4 bg-[#EBF8FC] border border-[#00A1DE]/30 rounded-lg text-xs sm:text-sm text-[#0077A3]">
+
+                   <p><i class="fa-solid fa-dice mr-1.5 font-bold"></i> <strong>Random Mode Active:</strong> 6 random topics will be selected across all ophthalmology & neuro-ophthalmology high-yield topics.</p>
+
+               </div>
+
+
+
+               <!-- Start Quiz Button -->
+
+               <div class="mt-6">
+
+                   <button onclick="startQuiz()" class="w-full py-3.5 bg-[#00A1DE] hover:bg-[#0077A3] text-white font-bold text-sm sm:text-base rounded-lg shadow transition duration-150 flex items-center justify-center space-x-2">
+
+                       <span>Start Matching Stage 1</span>
+
+                       <i class="fa-solid fa-arrow-right text-xs"></i>
+
+                   </button>
+
+               </div>
+
+           </section>
+
+
+
+           <!-- QUIZ WORKSPACE VIEW -->
+
+           <section id="quiz-view" class="hidden relative space-y-4">
+
+               <div class="flex flex-wrap items-center justify-between gap-2">
+                   <a href="https://kazdoctors.com/usmle/neurology" class="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-100 transition">
+                       <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Go back
+                   </a>
+                   <button type="button" onclick="restartGame()" class="inline-flex items-center gap-2 rounded-md bg-[#00A1DE] px-4 py-2 text-sm font-bold text-white shadow hover:bg-[#0077A3] transition">
+                       <i class="fa-solid fa-rotate-right" aria-hidden="true"></i> Restart Game
+                   </button>
+               </div>
+
+               <!-- Stage Status Header -->
+
+               <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+
+                   <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+
+                       <div class="flex items-center space-x-2">
+
+                           <span id="stage-badge" class="bg-[#00A1DE] text-white text-xs font-black uppercase px-2.5 py-1 rounded">Stage 1 of 4</span>
+
+                           <h2 id="stage-title" class="text-base sm:text-lg font-bold text-gray-900">Stage 1: Definitions</h2>
+
+                       </div>
+
+                       <div class="text-xs text-gray-500 font-medium">
+
+                           Total Items: <span id="item-count-indicator" class="font-bold text-gray-800">0</span>
+
+                       </div>
+
+                   </div>
+
+
+
+                   <!-- Stage Progress Bar -->
+
+                   <div class="w-full bg-gray-200 rounded-full h-2 mb-2 overflow-hidden">
+
+                       <div id="stage-progress-bar" class="bg-[#00A1DE] h-2 rounded-full transition-all duration-300" style="width: 25%"></div>
+
+                   </div>
+
+
+
+                   <p id="stage-instruction" class="text-xs text-gray-600 italic">
+
+                       Tap a condition on the left, then tap its matching definition on the right.
+
+                   </p>
+
+               </div>
+
+
+
+               <!-- Matching Cards Board -->
+
+               <div class="relative bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-5 min-h-[380px]">
+
+                   <!-- Interactive Canvas SVG for lines -->
+
+                   <svg id="connections-svg"></svg>
+
+
+
+                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 relative z-10">
+
+                       <!-- Left Column: Conditions -->
+
+                       <div class="space-y-3">
+
+                           <h3 class="text-xs font-extrabold uppercase tracking-wider text-gray-700 bg-gray-100 p-2 rounded border border-gray-200 flex justify-between items-center">
+
+                               <span><i class="fa-solid fa-stethoscope mr-1.5 text-[#00A1DE]"></i> Conditions</span>
+
+                               <span class="text-[10px] text-gray-500 lowercase font-normal">(Tap to select)</span>
+
+                           </h3>
+
+                           <div id="left-column" class="space-y-2.5">
+
+                               <!-- Injected dynamically -->
+
+                           </div>
+
+                       </div>
+
+
+
+                       <!-- Right Column: Matches -->
+
+                       <div class="space-y-3">
+
+                           <h3 class="text-xs font-extrabold uppercase tracking-wider text-gray-700 bg-gray-100 p-2 rounded border border-gray-200 flex justify-between items-center">
+
+                               <span id="right-column-title"><i class="fa-solid fa-list-check mr-1.5 text-[#00A1DE]"></i> Definitions</span>
+
+                               <span class="text-[10px] text-gray-500 lowercase font-normal">(Tap to match)</span>
+
+                           </h3>
+
+                           <div id="right-column" class="space-y-2.5">
+
+                               <!-- Injected dynamically -->
+
+                           </div>
+
+                       </div>
+
+
+
+                   </div>
+
+               </div>
+
+
+
+               <!-- Submit Stage Controls -->
+
+               <div class="flex items-center justify-between bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+
+                   <button onclick="resetCurrentStageMatches()" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-md border border-gray-300 transition">
+
+                       <i class="fa-solid fa-rotate-left mr-1"></i> Clear Selection
+
+                   </button>
+
+                   <button id="btn-submit-stage" onclick="submitStageAnswers()" class="px-6 py-2.5 bg-[#00A1DE] hover:bg-[#0077A3] text-white text-sm font-bold rounded-md shadow transition">
+
+                       Submit & Review <i class="fa-solid fa-check mr-1"></i>
+
+                   </button>
+
+               </div>
+
+
+
+           </section>
+
+
+
+           <!-- EXPLANATIONS & HIGHLIGHTS MODAL/SECTION -->
+
+           <section id="explanation-modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+
+               <div class="bg-white rounded-lg shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col border-2 border-[#00A1DE]">
+
+                   <!-- Modal Header (Slide Style) -->
+
+                   <div class="slide-header-bg text-white px-5 py-3 flex items-center justify-between rounded-t-md">
+
+                       <div>
+
+                           <span class="text-[10px] font-black uppercase tracking-widest bg-white text-[#00A1DE] px-2 py-0.5 rounded">High-Yield Revision</span>
+
+                           <h3 class="text-lg font-bold text-white mt-0.5" id="explanation-modal-title">Stage 1 Completed - High Yield Review</h3>
+
+                       </div>
+
+                       <div id="modal-score-badge" class="bg-white text-[#00A1DE] px-3 py-1 rounded-full text-xs font-black">
+
+                           Score: 100%
+
+                       </div>
+
+                   </div>
+
+
+
+                   <!-- Modal Body Scrollable -->
+
+                   <div class="p-4 sm:p-6 overflow-y-auto space-y-4 flex-grow bg-gray-50 text-xs sm:text-sm text-gray-800" id="explanation-content">
+
+                       <!-- Dynamic review populated here -->
+
+                   </div>
+
+
+
+                   <!-- Modal Footer -->
+                   <div class="bg-white border-t border-gray-200 p-4 flex flex-wrap justify-between items-center gap-2 rounded-b-md">
+                       <div class="flex flex-wrap gap-2">
+                           <button type="button" onclick="restartGame()" class="px-3 py-2 bg-[#EBF8FC] hover:bg-sky-100 text-[#0077A3] text-xs font-bold rounded border border-[#00A1DE]/30">
+                               <i class="fa-solid fa-rotate-right mr-1" aria-hidden="true"></i> Restart Game
+                           </button>
+                           <button type="button" onclick="closeExplanationModal()" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 text-xs font-bold rounded">
+                               Review Matches On Screen
+                           </button>
+                       </div>
+                       <button id="btn-next-stage" onclick="advanceToNextStage()" class="px-6 py-2.5 bg-[#00A1DE] hover:bg-[#0077A3] text-white text-xs sm:text-sm font-bold rounded shadow flex items-center space-x-1.5">
+                           <span>Continue to Next Stage</span>
+                           <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                       </button>
+                   </div>
+
+               </div>
+
+           </section>
+
+
+           <!-- FINAL SUMMARY SCREEN -->
+
+           <section id="summary-view" class="hidden bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-6">
+
+               <div class="flex flex-wrap items-center justify-between gap-2">
+                   <a href="https://kazdoctors.com/usmle/neurology/" class="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-100 transition">
+                       <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Go back
+                   </a>
+                   <button type="button" onclick="restartGame()" class="inline-flex items-center gap-2 rounded-md bg-[#00A1DE] px-4 py-2 text-sm font-bold text-white shadow hover:bg-[#0077A3] transition">
+                       <i class="fa-solid fa-rotate-right" aria-hidden="true"></i> Restart Game
+                   </button>
+               </div>
+
+               <div class="text-center space-y-2 border-b border-gray-200 pb-5">
+
+                   <div class="inline-flex items-center justify-center w-16 h-16 bg-[#EBF8FC] text-[#00A1DE] rounded-full text-2xl font-black mb-2">
+
+                       <i class="fa-solid fa-award"></i>
+
+                   </div>
+
+                   <h2 class="text-2xl font-extrabold text-gray-900">Quiz Completed!</h2>
+
+                   <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto">You have worked through all 4 stages of Ophthalmology & Neuro-Ophthalmology high-yield matches.</p>
+
+               </div>
+
+
+
+               <!-- Score Summary Cards -->
+
+               <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+
+                   <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+
+                       <span class="text-[10px] text-gray-500 uppercase font-bold block">Overall Accuracy</span>
+
+                       <span id="final-accuracy" class="text-lg sm:text-xl font-black text-[#00A1DE]">0%</span>
+
+                   </div>
+
+                   <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+
+                       <span class="text-[10px] text-gray-500 uppercase font-bold block">Correct Pairs</span>
+
+                       <span id="final-score-count" class="text-lg sm:text-xl font-black text-gray-800">0 / 0</span>
+
+                   </div>
+
+                   <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+
+                       <span class="text-[10px] text-gray-500 uppercase font-bold block">Stages Passed</span>
+
+                       <span class="text-lg sm:text-xl font-black text-emerald-600">4 / 4</span>
+
+                   </div>
+
+                   <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+
+                       <span class="text-[10px] text-gray-500 uppercase font-bold block">Topics Tested</span>
+
+                       <span id="final-topic-count" class="text-lg sm:text-xl font-black text-gray-800">0</span>
+
+                   </div>
+
+               </div>
+
+
+
+               <!-- Detailed Breakdown Accordion -->
+
+               <div class="space-y-3">
+
+                   <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider">Detailed Master Notes</h3>
+
+                   <div id="final-summary-notes" class="space-y-3 max-h-[350px] overflow-y-auto pr-2">
+
+                       <!-- Dynamic notes -->
+
+                   </div>
+
+               </div>
+
+
+
+               <!-- Reset Actions -->
+
+               <div class="pt-4 flex flex-col sm:flex-row gap-3">
+
+                   <button onclick="restartSameQuiz()" class="flex-1 py-3 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-bold rounded-lg border border-gray-300">
+
+                       <i class="fa-solid fa-rotate-right mr-1"></i> Retake Current Selection
+
+                   </button>
+
+                   <button onclick="returnToSelection()" class="flex-1 py-3 bg-[#00A1DE] hover:bg-[#0077A3] text-white text-sm font-bold rounded-lg shadow">
+
+                       <i class="fa-solid fa-list mr-1"></i> Choose New Subtopic
+
+                   </button>
+
+               </div>
+
+           </section>
+
+
+
+       </main>
+
+
+
+       <footer class="text-center pt-2.5 pb-5 px-4 flex flex-col items-center gap-2.5">
+           <a href="https://instagram.com/doctors.speak" target="_blank" class="inline-flex items-center gap-1.5 text-[#0077A3] no-underline font-bold text-[0.82rem] px-[18px] py-2 rounded-[20px] bg-white border border-[#E2E8F0] shadow-[0_2px_6px_rgba(0,0,0,0.02)]">
+               <span>@doctors.speak</span>
+           </a>
+           <a href="https://kazdoctors.com/usmle/neurology/" class="inline-flex items-center gap-1.5 text-[#0077A3] bg-white border border-[#E2E8F0] no-underline font-bold text-[0.78rem] px-[18px] py-2 rounded-[20px] transition-all active:scale-95 shadow-[0_2px_6px_rgba(0,0,0,0.02)]">
+               <svg class="w-4 h-4 fill-[#00A1DE]" viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
+               <span>Go back</span>
+           </a>
+       </footer>
+
+       <script>
+
+           /* Comprehensive High-Yield USMLE Ophthalmology Database */
+
+           const DISEASE_DATABASE = [
+
+               // Eyelid & Lacrimal
+
+               {
+
+                   id: "blepharitis",
+
+                   name: "Blepharitis",
+
+                   category: "eyelid_lacrimal",
+
+                   stage1_def: "Chronic, bilateral inflammation of the eyelid margins.",
+
+                   stage2_pres: "Greasy eyelashes, crusting, eyelid margin erythema, grittiness, secondary dry eyes.",
+
+                   stage3_etio: "Anterior: S. aureus or seborrheic dermatitis. Posterior: Meibomian gland dysfunction (rosacea).",
+
+                   stage4_mgmt: "Eyelid hygiene (warm compresses, baby shampoo scrub), topical erythromycin or oral doxycycline.",
+
+                   explanation: "Posterior blepharitis involves lipid layer alteration due to meibomian gland obstruction, strongly associated with ocular rosacea."
+
+               },
+
+               {
+
+                   id: "hordeolum",
+
+                   name: "Hordeolum (Stye)",
+
+                   category: "eyelid_lacrimal",
+
+                   stage1_def: "Acute, localized, PAINFUL abscess of an eyelid gland.",
+
+                   stage2_pres: "Painful, tender, red localized nodule at eyelid margin or tarsal plate.",
+
+                   stage3_etio: "Acute infection primarily caused by Staphylococcus aureus.",
+
+                   stage4_mgmt: "Warm compresses 4x daily. Incision and drainage if recalcitrant.",
+
+                   explanation: "Always painful! External stye involves Glands of Zeis/Moll; internal stye involves Meibomian gland."
+
+               },
+
+               {
+
+                   id: "chalazion",
+
+                   name: "Chalazion",
+
+                   category: "eyelid_lacrimal",
+
+                   stage1_def: "Chronic, PAINLESS granulomatous inflammation of a Meibomian gland.",
+
+                   stage2_pres: "Painless, firm, non-tender nodule inside the eyelid.",
+
+                   stage3_etio: "Obstruction of Meibomian gland with lipid extravasation into surrounding tissue.",
+
+                   stage4_mgmt: "Warm compresses. Intralesional steroid injection or surgical curettage if persistent.",
+
+                   explanation: "Histology shows lipogranuloma with giant cells surrounding lipid spaces. Painless vs. painful hordeolum."
+
+               },
+
+               {
+
+                   id: "dacryocystitis",
+
+                   name: "Dacryocystitis",
+
+                   category: "eyelid_lacrimal",
+
+                   stage1_def: "Infection and inflammation of the lacrimal sac.",
+
+                   stage2_pres: "Erythema, swelling, tenderness INFEROMEDIAL to medial canthus; pus expression.",
+
+                   stage3_etio: "Nasolacrimal duct obstruction leading to secondary S. aureus or S. pneumoniae infection.",
+
+                   stage4_mgmt: "Systemic oral/IV antibiotics. Surgical Dacryocystorhinostomy (DCR) for chronic obstruction.",
+
+                   explanation: "Located inferomedially! Do not confuse with dacryoadenitis (lacrimal GLAND, supratemporal location)."
+
+               },
+
+
+
+               // Conjunctivitis
+
+               {
+
+                   id: "viral_conjunctivitis",
+
+                   name: "Viral Conjunctivitis",
+
+                   category: "conjunctivitis",
+
+                   stage1_def: "Highly contagious viral inflammation of the bulbar/palpebral conjunctiva.",
+
+                   stage2_pres: "Watery discharge, follicular conjunctivitis, tender PREAURICULAR LYMPHADENOPATHY.",
+
+                   stage3_etio: "Adenovirus (Serotypes 3, 7 for Pharyngoconjunctival fever; 8, 19, 37 for EKC).",
+
+                   stage4_mgmt: "Self-limiting; cold compresses, artificial tears. Hand hygiene to prevent outbreak.",
+
+                   explanation: "Adenovirus is most common cause overall. Tender preauricular node is the hallmark clue."
+
+               },
+
+               {
+
+                   id: "bacterial_conjunctivitis",
+
+                   name: "Bacterial Conjunctivitis",
+
+                   category: "conjunctivitis",
+
+                   stage1_def: "Acute bacterial infection of the conjunctiva with purulent exudate.",
+
+                   stage2_pres: "Thick yellow-green PURULENT discharge; eyelids glued shut upon waking.",
+
+                   stage3_etio: "Staphylococcus aureus, Streptococcus pneumoniae, Haemophilus influenzae.",
+
+                   stage4_mgmt: "Topical antibiotic drops (Erythromycin, Trimethoprim-Polymyxin B, Fluoroquinolones).",
+
+                   explanation: "Purulent discharge distinguishes it from viral (watery) and allergic (itchy)."
+
+               },
+
+               {
+
+                   id: "allergic_conjunctivitis",
+
+                   name: "Allergic Conjunctivitis",
+
+                   category: "conjunctivitis",
+
+                   stage1_def: "IgE-mediated hypersensitivity reaction of the ocular surface.",
+
+                   stage2_pres: "Bilateral severe ITCHING (pruritus), watery discharge, conjunctival chemosis.",
+
+                   stage3_etio: "Type I Hypersensitivity reaction to environmental allergens; mast cell degranulation.",
+
+                   stage4_mgmt: "Topical dual-action antihistamine / mast cell stabilizer (Olopatadine, Ketotifen).",
+
+                   explanation: "Cobblestoning (papillary hypertrophy) on palpebral conjunctiva. Eosinophils on scraping."
+
+               },
+
+               {
+
+                   id: "gonococcal_neonatal",
+
+                   name: "Neonatal Gonococcal Ophthalmia",
+
+                   category: "conjunctivitis",
+
+                   stage1_def: "Hyperacute, severe conjunctivitis appearing early in newborns.",
+
+                   stage2_pres: "Profuse purulent discharge at 2-5 DAYS of life; eyelid swelling; risk of corneal ulceration.",
+
+                   stage3_etio: "Neisseria gonorrhoeae vertical transmission during passage through infected birth canal.",
+
+                   stage4_mgmt: "Prophylaxis: Topical Erythromycin ointment at birth. Treatment: Single-dose IM Ceftriaxone.",
+
+                   explanation: "Appears rapidly on Days 2-5. Gram-negative diplococci. Threatens corneal perforation if delayed."
+
+               },
+
+               {
+
+                   id: "chlamydial_neonatal",
+
+                   name: "Neonatal Chlamydial Ophthalmia",
+
+                   category: "conjunctivitis",
+
+                   stage1_def: "Subacute mucopurulent conjunctivitis in newborns occurring 1-2 weeks post-birth.",
+
+                   stage2_pres: "Mucopurulent discharge and palpebral swelling appearing at 5-14 DAYS of life.",
+
+                   stage3_etio: "Chlamydia trachomatis serotypes D-K acquired during birth.",
+
+                   stage4_mgmt: "ORAL Erythromycin (systemic required due to risk of chlamydial pneumonia).",
+
+                   explanation: "Topical prophylaxis is ineffective for Chlamydia! Watch for infantile pyloric stenosis with oral erythromycin."
+
+               },
+
+               {
+
+                   id: "trachoma",
+
+                   name: "Trachoma",
+
+                   category: "conjunctivitis",
+
+                   stage1_def: "Chronic, recurrent follicular keratoconjunctivitis leading to preventable blindness.",
+
+                   stage2_pres: "Follicular inflammation, conjunctival scarring, entropion (inward eyelid turn), trichiasis.",
+
+                   stage3_etio: "Chlamydia trachomatis serotypes A, B, Ba, and C.",
+
+                   stage4_mgmt: "SAFE strategy: Surgery (for trichiasis), Antibiotics (oral Azithromycin), Facial cleanliness, Environmental improvement.",
+
+                   explanation: "Leading cause of preventable blindness worldwide. Trichiasis (lashes scratching cornea) causes blindness."
+
+               },
+
+
+
+               // Keratitis
+
+               {
+
+                   id: "hsv_keratitis",
+
+                   name: "HSV Keratitis",
+
+                   category: "keratitis",
+
+                   stage1_def: "Infectious corneal ulceration caused by Herpes Simplex Virus.",
+
+                   stage2_pres: "Unilateral red eye, photophobia, DENDRITIC ULCER with terminal bulbs on fluorescein stain.",
+
+                   stage3_etio: "Reactivation of HSV latent in Trigeminal (V1) ganglion.",
+
+                   stage4_mgmt: "Topical Trifluridine/Ganciclovir or oral Acyclovir. CONTRAINDICATED: Topical Steroids!",
+
+                   explanation: "Topical steroids in dendritic HSV cause corneal melting and geographic ulceration!"
+
+               },
+
+               {
+
+                   id: "hzo",
+
+                   name: "Herpes Zoster Ophthalmicus",
+
+                   category: "keratitis",
+
+                   stage1_def: "Varicella-Zoster Virus reactivation in the V1 ophthalmic branch.",
+
+                   stage2_pres: "Dermatomal painful vesicular rash on forehead, HUTCHINSON SIGN (tip of nose lesion).",
+
+                   stage3_etio: "Reactivation of VZV latent in the trigeminal ganglion.",
+
+                   stage4_mgmt: "Oral High-dose Acyclovir or Valacyclovir within 72 hours of rash onset.",
+
+                   explanation: "Hutchinson sign (vesicle on tip of nose) indicates nasociliary branch V1 involvement and ocular damage risk."
+
+               },
+
+               {
+
+                   id: "pseudomonas_keratitis",
+
+                   name: "Pseudomonas Keratitis",
+
+                   category: "keratitis",
+
+                   stage1_def: "Rapidly destructive bacterial corneal ulcer common in contact lens wearers.",
+
+                   stage2_pres: "Rapidly progressive corneal opacity, greenish purulent discharge, hypopyon, corneal melting.",
+
+                   stage3_etio: "Pseudomonas aeruginosa infection secondary to contaminated contact lens or solution.",
+
+                   stage4_mgmt: "Immediate intensive topical fluoroquinolone drops (Moxifloxacin/Ciprofloxacin).",
+
+                   explanation: "Pseudomonas secretes collagenase and endotoxins causing 'melting' corneal ulceration."
+
+               },
+
+
+
+               // Uveitis
+
+               {
+
+                   id: "anterior_uveitis",
+
+                   name: "Anterior Uveitis (Iritis)",
+
+                   category: "uveitis",
+
+                   stage1_def: "Inflammation of the iris and ciliary body (anterior segment).",
+
+                   stage2_pres: "Deep eye pain, photophobia, ciliary flush, small miotic irregular pupil, HYPOPYON.",
+
+                   stage3_etio: "Strongly associated with HLA-B27 diseases (Ankylosing Spondylitis, Reactive Arthritis, IBD), Sarcoidosis.",
+
+                   stage4_mgmt: "Topical Corticosteroid drops + Cycloplegic agents (Atropine/Cyclopentolate to relieve spasm).",
+
+                   explanation: "Pupil is small/irregular due to posterior synechiae. Cycloplegics relax ciliary body pain."
+
+               },
+
+               {
+
+                   id: "toxoplasma_retinitis",
+
+                   name: "Toxoplasma Chorioretinitis",
+
+                   category: "uveitis",
+
+                   stage1_def: "Necrotizing posterior retinitis with secondary vitreous inflammation.",
+
+                   stage2_pres: "Painless floaters, blurry vision, 'HEADLIGHT IN THE FOG' appearance on fundoscopy.",
+
+                   stage3_etio: "Reactivation of Toxoplasma gondii cysts. Congenital: Chorioretinitis, Hydrocephalus, Intracranial calcifications.",
+
+                   stage4_mgmt: "Pyrimethamine + Sulfadiazine + Folinic acid (leucovorin rescue).",
+
+                   explanation: "Most common cause of posterior uveitis in immunocompetent host. Congenital triad is classical."
+
+               },
+
+               {
+
+                   id: "cmv_retinitis",
+
+                   name: "CMV Retinitis",
+
+                   category: "uveitis",
+
+                   stage1_def: "Full-thickness necrotizing viral retinitis in severely immunocompromised patients.",
+
+                   stage2_pres: "Painless visual loss, floaters, 'PIZZA-PIE' fundus appearance (retinal hemorrhages + fluffy white exudates).",
+
+                   stage3_etio: "Cytomegalovirus infection in HIV patients with CD4 count < 50/mm³.",
+
+                   stage4_mgmt: "Intravitreal or IV Ganciclovir, Foscarnet, or Cidofovir; plus ART for HIV.",
+
+                   explanation: "High risk of retinal detachment. CD4 < 50 is key high-yield threshold."
+
+               },
+
+
+
+               // Tumors
+
+               {
+
+                   id: "retinoblastoma",
+
+                   name: "Retinoblastoma",
+
+                   category: "tumors",
+
+                   stage1_def: "Most common primary intraocular malignancy in children.",
+
+                   stage2_pres: "LEUKOCORIA (white pupillary reflex), strabismus, chalky calcifications on CT/US.",
+
+                   stage3_etio: "Mutation of RB1 gene on 13q14 (Rb protein inhibits E2F G1->S transition). Hereditary = bilateral.",
+
+                   stage4_mgmt: "Chemotherapy, focal therapy (laser/cryo). Avoid radiation (risk of secondary OSTEOSARCOMA).",
+
+                   explanation: "Flexner-Wintersteiner rosettes on histology. High incidence of osteosarcoma later in life."
+
+               },
+
+               {
+
+                   id: "uveal_melanoma",
+
+                   name: "Uveal Melanoma",
+
+                   category: "tumors",
+
+                   stage1_def: "Most common primary intraocular tumor in ADULTS.",
+
+                   stage2_pres: "Painless vision loss, visual field defect, pigmented collar-button choroidal mass.",
+
+                   stage3_etio: "Malignant transformation of neural crest-derived melanocytes in the uveal tract (choroid).",
+
+                   stage4_mgmt: "Plaque radiotherapy or enucleation. High propensity for HEMATOGENOUS METASTASIS TO LIVER.",
+
+                   explanation: "Metastatizes almost exclusively to the LIVER. Uvea lacks lymphatic drainage."
+
+               },
+
+
+
+               // Toxins & Drugs
+
+               {
+
+                   id: "methanol_toxicity",
+
+                   name: "Methanol Toxicity",
+
+                   category: "toxins",
+
+                   stage1_def: "Toxic ingestion leading to severe metabolic acidosis and optic nerve damage.",
+
+                   stage2_pres: "Blurry vision ('snowstorm vision'), optic disc hyperemia/edema, central scotoma, coma.",
+
+                   stage3_etio: "Metabolized by ADH to FORMIC ACID, which inhibits cytochrome oxidase in optic nerve.",
+
+                   stage4_mgmt: "Fomepizole (inhibits ADH), ethanol, sodium bicarbonate for acidosis, hemodialysis.",
+
+                   explanation: "Formic acid causes optic papillitis and putaminal necrosis in the brain."
+
+               },
+
+               {
+
+                   id: "ethambutol_toxicity",
+
+                   name: "Ethambutol Toxicity",
+
+                   category: "toxins",
+
+                   stage1_def: "Adverse drug effect from TB therapy causing optic nerve dysfunction.",
+
+                   stage2_pres: "Progressive, painless bilateral vision decrease, RED-GREEN COLOR BLINDNESS.",
+
+                   stage3_etio: "Retrobulbar optic neuritis secondary to antimycobacterial drug Ethambutol.",
+
+                   stage4_mgmt: "Immediate discontinuation of Ethambutol. Check baseline visual acuity and color vision.",
+
+                   explanation: "Mnemonic: 'E'thambutol for 'E'ye (Optic neuritis, Red-Green dyschromatopsia)."
+
+               }
+
+           ];
+
+
+
+           /* Global App State */
+
+           // Fisher-Yates shuffle: unbiased, reusable, and does not mutate the input.
+           function shuffleArray(items) {
+               const result = [...items];
+               for (let i = result.length - 1; i > 0; i--) {
+                   const j = Math.floor(Math.random() * (i + 1));
+                   [result[i], result[j]] = [result[j], result[i]];
+               }
+               return result;
+           }
+
+           let quizState = {
+
+               mode: 'category', // 'category', 'condition', 'random'
+
+               selectedCategory: 'eyelid_lacrimal',
+
+               selectedConditionId: 'blepharitis',
+
+               activeConditions: [],
+
+               currentStage: 1, // 1: Def, 2: Pres, 3: Etio, 4: Mgmt
+
+               userMatches: {}, // leftId -> rightId
+
+               selectedLeftId: null,
+
+               selectedRightId: null,
+
+               stageScores: [0, 0, 0, 0],
+
+               stageTotals: [0, 0, 0, 0]
+
+           };
+
+
+
+           window.onload = function() {
+
+               populateConditionDropdown();
+
+               switchSelectionTab('category');
+
+               // Recalculate SVG overlay line on window resize
+
+               window.addEventListener('resize', drawConnectionLines);
+
+           };
+
+
+
+           function populateConditionDropdown() {
+
+               const select = document.getElementById('select-condition');
+
+               select.innerHTML = '';
+
+               DISEASE_DATABASE.forEach(item => {
+
+                   const opt = document.createElement('option');
+
+                   opt.value = item.id;
+
+                   opt.textContent = `${item.name} (${getCategoryLabel(item.category)})`;
+
+                   select.appendChild(opt);
+
+               });
+
+           }
+
+
+
+           function getCategoryLabel(catKey) {
+
+               switch(catKey) {
+
+                   case 'eyelid_lacrimal': return 'Eyelid & Lacrimal';
+
+                   case 'conjunctivitis': return 'Conjunctivitis';
+
+                   case 'keratitis': return 'Keratitis';
+
+                   case 'uveitis': return 'Uveitis';
+
+                   case 'tumors': return 'Tumors';
+
+                   case 'toxins': return 'Toxins & Drugs';
+
+                   default: return 'General';
+
+               }
+
+           }
+
+
+
+           function switchSelectionTab(tabType) {
+
+               quizState.mode = tabType;
+
+               // Button Styles
+
+               ['category', 'condition', 'random'].forEach(t => {
+
+                   const btn = document.getElementById(`btn-tab-${t}`);
+
+                   const panel = document.getElementById(`panel-${t}`);
+
+                   if (t === tabType) {
+
+                       btn.className = "py-2 px-3 text-xs sm:text-sm font-semibold rounded-md border text-center transition bg-[#00A1DE] text-white border-[#00A1DE]";
+
+                       panel.classList.remove('hidden');
+
+                   } else {
+
+                       btn.className = "py-2 px-3 text-xs sm:text-sm font-semibold rounded-md border text-center transition bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200";
+
+                       panel.classList.add('hidden');
+
+                   }
+
+               });
+
+           }
+
+
+
+           function startQuiz() {
+
+               // Determine active conditions based on selection mode
+
+               if (quizState.mode === 'category') {
+
+                   const catVal = document.getElementById('select-category').value;
+
+                   quizState.activeConditions = DISEASE_DATABASE.filter(d => d.category === catVal);
+
+               } else if (quizState.mode === 'condition') {
+
+                   const condId = document.getElementById('select-condition').value;
+
+                   quizState.activeConditions = DISEASE_DATABASE.filter(d => d.id === condId);
+
+               } else if (quizState.mode === 'random') {
+
+                   // Shuffle array and pick 6
+
+                   const shuffled = shuffleArray(DISEASE_DATABASE);
+
+                   quizState.activeConditions = shuffled.slice(0, 6);
+
+               }
+
+
+
+               if (quizState.activeConditions.length === 0) {
+
+                   alert("Please select a valid option.");
+
+                   return;
+
+               }
+
+
+
+               // Reset scores
+
+               quizState.currentStage = 1;
+
+               quizState.stageScores = [0, 0, 0, 0];
+
+               quizState.stageTotals = [0, 0, 0, 0];
+
+
+
+               document.getElementById('selection-view').classList.add('hidden');
+
+               document.getElementById('summary-view').classList.add('hidden');
+
+               document.getElementById('quiz-view').classList.remove('hidden');
+
+
+
+               loadStage(1);
+
+           }
+
+
+
+           function loadStage(stageNum) {
+
+               quizState.currentStage = stageNum;
+
+               quizState.userMatches = {};
+
+               quizState.selectedLeftId = null;
+
+               quizState.selectedRightId = null;
+
+
+
+               // UI Header Updates
+
+               const stageNames = [
+
+                   "Stage 1: Definitions",    
+
+                   "Stage 2: Presentations & Clues",    
+
+                   "Stage 3: Etiology & Mechanism",    
+
+                   "Stage 4: Management & Treatment"
+
+               ];
+
+               const stageInstructions = [
+
+                   "Match each condition on the left to its correct clinical definition on the right.",
+
+                   "Match each condition on the left to its physical exam clues and key presentations.",
+
+                   "Match each condition on the left to its underlying etiology, pathogen, or mechanism.",
+
+                   "Match each condition on the left to its first-line management or key treatment rule."
+
+               ];
+
+               const rightTitles = [
+
+                   "Definitions", "Clinical Clues", "Etiology / Mechanism", "Management / Treatment"
+
+               ];
+
+
+
+               document.getElementById('stage-badge').textContent = `Stage ${stageNum} of 4`;
+
+               document.getElementById('stage-title').textContent = stageNames[stageNum - 1];
+
+               document.getElementById('stage-instruction').textContent = stageInstructions[stageNum - 1];
+
+               document.getElementById('right-column-title').innerHTML = `<i class="fa-solid fa-list-check mr-1.5 text-[#00A1DE]"></i> ${rightTitles[stageNum - 1]}`;
+
+               document.getElementById('stage-progress-bar').style.width = `${(stageNum / 4) * 100}%`;
+
+               document.getElementById('item-count-indicator').textContent = quizState.activeConditions.length;
+
+
+
+               renderMatchingBoard();
+
+           }
+
+
+
+           function renderMatchingBoard() {
+
+               const leftCol = document.getElementById('left-column');
+
+               const rightCol = document.getElementById('right-column');
+
+
+
+               leftCol.innerHTML = '';
+
+               rightCol.innerHTML = '';
+
+
+
+               // Left items (Conditions) - original or shuffled
+
+               const leftItems = shuffleArray(quizState.activeConditions);
+
+
+
+               // Right items (Stage content) - shuffled independently
+
+               const rightItems = [...quizState.activeConditions].map(item => {
+
+                   let text = "";
+
+                   if (quizState.currentStage === 1) text = item.stage1_def;
+
+                   else if (quizState.currentStage === 2) text = item.stage2_pres;
+
+                   else if (quizState.currentStage === 3) text = item.stage3_etio;
+
+                   else if (quizState.currentStage === 4) text = item.stage4_mgmt;
+
+
+
+                   return {
+
+                       id: item.id, // target disease ID
+
+                       text: text
+
+                   };
+
+               });
+
+               const shuffledRightItems = shuffleArray(rightItems);
+
+
+
+               // Build Left Cards
+
+               leftItems.forEach(item => {
+
+                   const el = document.createElement('div');
+
+                   el.id = `left-${item.id}`;
+
+                   el.dataset.id = item.id;
+
+                   el.className = "item-card bg-gray-50 border-2 border-gray-200 rounded-lg p-3 text-xs sm:text-sm font-bold text-gray-800 cursor-pointer hover:border-gray-400 flex items-center justify-between";
+
+                   el.innerHTML = `
+
+                       <span>${item.name}</span>
+
+                       <span class="badge-holder"></span>
+
+                   `;
+
+                   el.onclick = () => handleLeftClick(item.id);
+
+                   leftCol.appendChild(el);
+
+               });
+
+
+
+               // Build Right Cards
+
+               shuffledRightItems.forEach((item, index) => {
+
+                   const el = document.createElement('div');
+
+                   el.id = `right-${item.id}`;
+
+                   el.dataset.id = item.id;
+
+                   el.className = "item-card bg-gray-50 border-2 border-gray-200 rounded-lg p-3 text-xs sm:text-sm font-normal text-gray-700 cursor-pointer hover:border-gray-400 flex items-start justify-between space-x-2";
+
+                   el.innerHTML = `
+
+                       <span class="flex-grow">${item.text}</span>
+
+                       <span class="badge-holder"></span>
+
+                   `;
+
+                   el.onclick = () => handleRightClick(item.id);
+
+                   rightCol.appendChild(el);
+
+               });
+
+
+
+               // Clear SVG lines
+
+               clearConnectionLines();
+
+           }
+
+
+
+           function handleLeftClick(diseaseId) {
+
+               // Toggle selection
+
+               if (quizState.selectedLeftId === diseaseId) {
+
+                   quizState.selectedLeftId = null;
+
+               } else {
+
+                   quizState.selectedLeftId = diseaseId;
+
+               }
+
+
+
+               // If a right item is already selected, form a match
+
+               if (quizState.selectedLeftId && quizState.selectedRightId) {
+
+                   formPair(quizState.selectedLeftId, quizState.selectedRightId);
+
+                   quizState.selectedLeftId = null;
+
+                   quizState.selectedRightId = null;
+
+               }
+
+
+
+               updateCardStyles();
+
+           }
+
+
+
+           function handleRightClick(diseaseId) {
+
+               // Toggle selection
+
+               if (quizState.selectedRightId === diseaseId) {
+
+                   quizState.selectedRightId = null;
+
+               } else {
+
+                   quizState.selectedRightId = diseaseId;
+
+               }
+
+
+
+               // If a left item is selected, form a match
+
+               if (quizState.selectedLeftId && quizState.selectedRightId) {
+
+                   formPair(quizState.selectedLeftId, quizState.selectedRightId);
+
+                   quizState.selectedLeftId = null;
+
+                   quizState.selectedRightId = null;
+
+               }
+
+
+
+               updateCardStyles();
+
+           }
+
+
+
+           function formPair(leftId, rightId) {
+
+               // Remove any previous links that involved this leftId or rightId
+
+               Object.keys(quizState.userMatches).forEach(lId => {
+
+                   if (lId === leftId || quizState.userMatches[lId] === rightId) {
+
+                       delete quizState.userMatches[lId];
+
+                   }
+
+               });
+
+
+
+               // Save new match
+
+               quizState.userMatches[leftId] = rightId;
+
+           }
+
+
+
+           function updateCardStyles() {
+
+               // Reset state highlights for all cards
+
+               document.querySelectorAll('.item-card').forEach(card => {
+
+                   card.classList.remove('selected', 'matched');
+
+                   const badgeHolder = card.querySelector('.badge-holder');
+
+                   if (badgeHolder) badgeHolder.innerHTML = '';
+
+               });
+
+
+
+               // Highlight selected left card
+
+               if (quizState.selectedLeftId) {
+
+                   const el = document.getElementById(`left-${quizState.selectedLeftId}`);
+
+                   if (el) el.classList.add('selected');
+
+               }
+
+
+
+               // Highlight selected right card
+
+               if (quizState.selectedRightId) {
+
+                   const el = document.getElementById(`right-${quizState.selectedRightId}`);
+
+                   if (el) el.classList.add('selected');
+
+               }
+
+
+
+               // Apply 'matched' styles and link numeric badges
+
+               let pairIndex = 1;
+
+               Object.keys(quizState.userMatches).forEach(leftId => {
+
+                   const rightId = quizState.userMatches[leftId];
+
+                   const leftEl = document.getElementById(`left-${leftId}`);
+
+                   const rightEl = document.getElementById(`right-${rightId}`);
+
+
+
+                   if (leftEl && rightEl) {
+
+                       leftEl.classList.add('matched');
+
+                       rightEl.classList.add('matched');
+
+
+
+                       const badgeHtml = `<span class="badge-number bg-[#00A1DE] text-white">${pairIndex}</span>`;
+
+                       leftEl.querySelector('.badge-holder').innerHTML = badgeHtml;
+
+                       rightEl.querySelector('.badge-holder').innerHTML = badgeHtml;
+
+
+
+                       pairIndex++;
+
+                   }
+
+               });
+
+
+
+               drawConnectionLines();
+
+           }
+
+
+
+           function resetCurrentStageMatches() {
+
+               quizState.userMatches = {};
+
+               quizState.selectedLeftId = null;
+
+               quizState.selectedRightId = null;
+
+               updateCardStyles();
+
+           }
+
+
+
+           function drawConnectionLines() {
+
+               const svg = document.getElementById('connections-svg');
+
+               const board = svg.parentElement;
+
+               const boardRect = board.getBoundingClientRect();
+
+
+
+               svg.setAttribute('width', boardRect.width);
+
+               svg.setAttribute('height', boardRect.height);
+
+               svg.innerHTML = '';
+
+
+
+               // Only draw lines on md+ screens to avoid messy overlaps on small vertical screens
+
+               if (window.innerWidth < 768) return;
+
+
+
+               Object.keys(quizState.userMatches).forEach(leftId => {
+
+                   const rightId = quizState.userMatches[leftId];
+
+                   const leftEl = document.getElementById(`left-${leftId}`);
+
+                   const rightEl = document.getElementById(`right-${rightId}`);
+
+
+
+                   if (leftEl && rightEl) {
+
+                       const lRect = leftEl.getBoundingClientRect();
+
+                       const rRect = rightEl.getBoundingClientRect();
+
+
+
+                       const x1 = lRect.right - boardRect.left;
+
+                       const y1 = lRect.top + lRect.height / 2 - boardRect.top;
+
+                       const x2 = rRect.left - boardRect.left;
+
+                       const y2 = rRect.top + rRect.height / 2 - boardRect.top;
+
+
+
+                       const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+
+                       line.setAttribute('x1', x1);
+
+                       line.setAttribute('y1', y1);
+
+                       line.setAttribute('x2', x2);
+
+                       line.setAttribute('y2', y2);
+
+                       line.setAttribute('stroke', '#00A1DE');
+
+                       line.setAttribute('stroke-width', '2');
+
+                       line.setAttribute('stroke-dasharray', '4');
+
+                       svg.appendChild(line);
+
+                   }
+
+               });
+
+           }
+
+
+
+           function clearConnectionLines() {
+
+               const svg = document.getElementById('connections-svg');
+
+               svg.innerHTML = '';
+
+           }
+
+
+
+           function submitStageAnswers() {
+
+               // Ignore duplicate submissions while the review modal is open.
+               const reviewModal = document.getElementById('explanation-modal');
+               if (!reviewModal.classList.contains('hidden')) return;
+
+               const totalItems = quizState.activeConditions.length;
+
+               const matchedCount = Object.keys(quizState.userMatches).length;
+
+
+
+               if (matchedCount < totalItems) {
+
+                   if (!confirm(`You have only matched ${matchedCount} out of ${totalItems} items. Do you want to submit anyway?`)) {
+
+                       return;
+
+                   }
+
+               }
+
+
+
+               // Calculate accuracy for current stage
+
+               let correctCount = 0;
+
+               quizState.activeConditions.forEach(cond => {
+
+                   const matchedRightId = quizState.userMatches[cond.id];
+
+                   if (matchedRightId === cond.id) {
+
+                       correctCount++;
+
+                   }
+
+               });
+
+
+
+               quizState.stageScores[quizState.currentStage - 1] = correctCount;
+
+               quizState.stageTotals[quizState.currentStage - 1] = totalItems;
+
+
+
+               showStageExplanations(correctCount, totalItems);
+
+           }
+
+
+
+           function showStageExplanations(correct, total) {
+
+               const percentage = Math.round((correct / total) * 100);
+
+               document.getElementById('modal-score-badge').textContent = `Score: ${correct}/${total} (${percentage}%)`;
+
+               document.getElementById('explanation-modal-title').textContent = `Stage ${quizState.currentStage} High-Yield Review`;
+
+
+
+               const container = document.getElementById('explanation-content');
+
+               container.innerHTML = '';
+
+
+
+               quizState.activeConditions.forEach(cond => {
+
+                   const userChoiceId = quizState.userMatches[cond.id];
+
+                   const isCorrect = userChoiceId === cond.id;
+
+
+
+                   let stagePrompt = "";
+
+                   let correctAns = "";
+
+                   if (quizState.currentStage === 1) { stagePrompt = "Definition"; correctAns = cond.stage1_def; }
+
+                   else if (quizState.currentStage === 2) { stagePrompt = "Clinical Clues"; correctAns = cond.stage2_pres; }
+
+                   else if (quizState.currentStage === 3) { stagePrompt = "Etiology / Mechanism"; correctAns = cond.stage3_etio; }
+
+                   else if (quizState.currentStage === 4) { stagePrompt = "Management"; correctAns = cond.stage4_mgmt; }
+
+
+
+                   const card = document.createElement('div');
+
+                   card.className = `p-3.5 rounded-lg border ${isCorrect ? 'bg-emerald-50 border-emerald-300' : 'bg-red-50 border-red-300'}`;
+
+                   card.innerHTML = `
+
+                       <div class="flex items-center justify-between mb-1.5">
+
+                           <span class="font-bold text-sm ${isCorrect ? 'text-emerald-900' : 'text-red-900'}">
+
+                               <i class="fa-solid ${isCorrect ? 'fa-circle-check text-emerald-600' : 'fa-circle-xmark text-red-600'} mr-1.5"></i>
+
+                               ${cond.name}
+
+                           </span>
+
+                           <span class="text-[10px] uppercase font-black px-2 py-0.5 rounded ${isCorrect ? 'bg-emerald-200 text-emerald-800' : 'bg-red-200 text-red-800'}">
+
+                               ${isCorrect ? 'Correct Match' : 'Incorrect'}
+
+                           </span>
+
+                       </div>
+
+                       <div class="space-y-1 text-gray-700 text-xs">
+
+                           <p><strong>Correct ${stagePrompt}:</strong> ${correctAns}</p>
+
+                           <p class="text-gray-600 italic bg-white p-2 rounded border border-gray-200 mt-1">
+
+                               <strong>High-Yield Pearl:</strong> ${cond.explanation}
+
+                           </p>
+
+                       </div>
+
+                   `;
+
+                   container.appendChild(card);
+
+               });
+
+
+
+               // Adjust button text for last stage
+
+               const btnNext = document.getElementById('btn-next-stage');
+
+               if (quizState.currentStage === 4) {
+
+                   btnNext.innerHTML = `<span>View Final Results</span> <i class="fa-solid fa-trophy"></i>`;
+
+               } else {
+
+                   btnNext.innerHTML = `<span>Continue to Stage ${quizState.currentStage + 1}</span> <i class="fa-solid fa-arrow-right"></i>`;
+
+               }
+
+
+
+               document.getElementById('explanation-modal').classList.remove('hidden');
+
+           }
+
+
+
+           function closeExplanationModal() {
+
+               document.getElementById('explanation-modal').classList.add('hidden');
+
+           }
+
+
+
+           function advanceToNextStage() {
+
+               closeExplanationModal();
+
+               if (quizState.currentStage < 4) {
+
+                   loadStage(quizState.currentStage + 1);
+
+               } else {
+
+                   showFinalSummary();
+
+               }
+
+           }
+
+
+
+           function showFinalSummary() {
+
+               document.getElementById('quiz-view').classList.add('hidden');
+
+               document.getElementById('summary-view').classList.remove('hidden');
+
+
+
+               const totalScore = quizState.stageScores.reduce((a, b) => a + b, 0);
+
+               const totalPossible = quizState.stageTotals.reduce((a, b) => a + b, 0);
+
+               const accuracy = totalPossible > 0 ? Math.round((totalScore / totalPossible) * 100) : 0;
+
+
+
+               document.getElementById('final-accuracy').textContent = `${accuracy}%`;
+
+               document.getElementById('final-score-count').textContent = `${totalScore} / ${totalPossible}`;
+
+               document.getElementById('final-topic-count').textContent = quizState.activeConditions.length;
+
+
+
+               const notesContainer = document.getElementById('final-summary-notes');
+
+               notesContainer.innerHTML = '';
+
+
+
+               quizState.activeConditions.forEach(cond => {
+
+                   const card = document.createElement('div');
+
+                   card.className = "bg-gray-50 border border-gray-200 rounded-lg p-3 text-xs space-y-1.5";
+
+                   card.innerHTML = `
+
+                       <h4 class="font-bold text-gray-900 text-sm text-[#00A1DE]">${cond.name}</h4>
+
+                       <p><strong>Definition:</strong> ${cond.stage1_def}</p>
+
+                       <p><strong>Presentation:</strong> ${cond.stage2_pres}</p>
+
+                       <p><strong>Etiology/Mechanism:</strong> ${cond.stage3_etio}</p>
+
+                       <p><strong>Management:</strong> ${cond.stage4_mgmt}</p>
+
+                   `;
+
+                   notesContainer.appendChild(card);
+
+               });
+
+           }
+
+
+
+           function restartGame() {
+               const confirmed = window.confirm(
+                   "Return to the beginning and choose a topic again? Your current answers and scores will be lost."
+               );
+               if (!confirmed) return;
+
+               // Reset all quiz progress and return to the initial topic-selection screen.
+               quizState.mode = 'category';
+               quizState.selectedCategory = 'eyelid_lacrimal';
+               quizState.selectedConditionId = 'blepharitis';
+               quizState.activeConditions = [];
+               quizState.currentStage = 1;
+               quizState.userMatches = {};
+               quizState.selectedLeftId = null;
+               quizState.selectedRightId = null;
+               quizState.stageScores = [0, 0, 0, 0];
+               quizState.stageTotals = [0, 0, 0, 0];
+
+               document.getElementById('explanation-modal').classList.add('hidden');
+               document.getElementById('summary-view').classList.add('hidden');
+               document.getElementById('quiz-view').classList.add('hidden');
+               document.getElementById('selection-view').classList.remove('hidden');
+
+               // Restore the default choices shown when the page first opens.
+               document.getElementById('select-category').value = 'eyelid_lacrimal';
+               document.getElementById('select-condition').value = 'blepharitis';
+               switchSelectionTab('category');
+               window.scrollTo({ top: 0, behavior: 'smooth' });
+           }
+
+           // Retake the same topic set from Stage 1 without returning to topic selection.
+           function restartSameQuiz() {
+               const confirmed = window.confirm(
+                   "Retake the current selection from Stage 1? Your current answers and scores will be lost."
+               );
+               if (!confirmed) return;
+
+               quizState.currentStage = 1;
+               quizState.userMatches = {};
+               quizState.selectedLeftId = null;
+               quizState.selectedRightId = null;
+               quizState.stageScores = [0, 0, 0, 0];
+               quizState.stageTotals = [0, 0, 0, 0];
+
+               document.getElementById('explanation-modal').classList.add('hidden');
+               document.getElementById('summary-view').classList.add('hidden');
+               document.getElementById('selection-view').classList.add('hidden');
+               document.getElementById('quiz-view').classList.remove('hidden');
+               loadStage(1);
+               window.scrollTo({ top: 0, behavior: 'smooth' });
+           }
+
+           function returnToSelection() {
+               document.getElementById('explanation-modal').classList.add('hidden');
+               document.getElementById('summary-view').classList.add('hidden');
+               document.getElementById('quiz-view').classList.add('hidden');
+               document.getElementById('selection-view').classList.remove('hidden');
+           }
+
+       </script>
+
+</body>
+
+</html>
