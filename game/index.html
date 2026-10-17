@@ -536,23 +536,23 @@ const soundStart = new Audio('https://kazdoctors.com/start.mp3');
   // для любого нужного диапазона очков!
   function getPlayerLevel(score) {
     if (score >= 25) {
-      return currentLang === 'ru' ? "читер!" : "читер!";
+      return currentLang === 'ru' ? "не может быть!🤯" : "мүмкін емес!🤯";
     } else if (score >= 22) { // от 22 до 24
-      return currentLang === 'ru' ? "задр!!" : "задр!!";
+      return currentLang === 'ru' ? "вау!!!🔥🔥" : "вау!!!🔥🔥";
     } else if (score >= 19) { // от 19 до 21
-      return currentLang === 'ru' ? "монстр!" : "монстр!";
+      return currentLang === 'ru' ? "впечатляет😮" : "таңқаларлық😮";
     } else if (score >= 16) { // от 16 до 18
-      return currentLang === 'ru' ? "машина!" : "машина!";
+      return currentLang === 'ru' ? "ема🤩" : "ема🤩";
     } else if (score >= 13) { // от 13 до 15
-      return currentLang === 'ru' ? "зверь" : "аң (зверь)";
+      return currentLang === 'ru' ? "машина!🦾" : "не деген машина!🦾";
     } else if (score >= 10) { // от 10 до 12
-      return currentLang === 'ru' ? "мощный" : "мықты";
+      return currentLang === 'ru' ? "ее👍👍" : "ее👍👍";
     } else if (score >= 7) {  // от 7 до 9
-      return currentLang === 'ru' ? "красавчик" : "жарадың";
+      return currentLang === 'ru' ? "норм👍" : "жарадың👍";
     } else if (score >= 4) {  // от 4 до 6
-      return currentLang === 'ru' ? "средне" : "орташа";
+      return currentLang === 'ru' ? "соу соу🫤" : "соу соу🫤";
     } else {                  // от 0 до 3 (включая 1-3)
-      return currentLang === 'ru' ? "новичок" : "жаңадан бастаушы";
+      return currentLang === 'ru' ? "ойбай 😂" : "ойбай 😂";
     }
   }
 
@@ -821,7 +821,7 @@ const soundStart = new Audio('https://kazdoctors.com/start.mp3');
 
     sCtx.fillStyle = '#FFFFFF';
     sCtx.font = '900 44px Montserrat, sans-serif';
-    sCtx.fillText('🏃‍♂️ DOCTOR RUNNER', 360, 165);
+    sCtx.fillText('🏃‍♂️ RUNNING DOCTOR', 360, 165);
 
     // 5. Центральный блок с результатом игрока
     sCtx.fillStyle = 'rgba(255, 255, 255, 0.08)';
@@ -871,7 +871,7 @@ const soundStart = new Audio('https://kazdoctors.com/start.mp3');
     // 6. Адрес сайта внизу под результатом
     sCtx.fillStyle = '#FFFFFF';
     sCtx.font = '700 22px Montserrat, sans-serif';
-    sCtx.fillText(currentLang === 'ru' ? 'Проверь свой медицинский английский на:' : 'Медициналық ағылшын деңгейіңді тексер:', 360, 775);
+    sCtx.fillText(currentLang === 'ru' ? 'Улучши свой медицинский английский на:' : 'Медициналық ағылшын деңгейіңді жақсарт:', 360, 775);
 
     sCtx.fillStyle = '#FFC72C';
     sCtx.font = '900 36px Montserrat, sans-serif';
@@ -886,7 +886,7 @@ const soundStart = new Audio('https://kazdoctors.com/start.mp3');
         try {
           await navigator.share({
             files: [file],
-            title: 'Doctor Runner — kazdoctors.com'
+            title: 'Running doctor game — kazdoctors.com'
           });
           return;
         } catch (err) {
