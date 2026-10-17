@@ -276,12 +276,21 @@
 
     <!-- 2. ЛОГИКА JAVASCRIPT ДЛЯ SUPABASE -->
     <script>
-        // Замените эти значения на ваши данные из Supabase
         const SUPABASE_URL = 'https://jjfkiqmqoscnodcvdktf.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ';
 
         // Инициализация клиентом Supabase
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Получение или создание уникального ID для текущего браузера/устройства
+        function getDeviceUUID() {
+            let deviceId = localStorage.getItem('app_device_id');
+            if (!deviceId) {
+                deviceId = 'dev_' + Math.random().toString(36).substring(2, 10) + '_' + Date.now().toString(36);
+                localStorage.setItem('app_device_id', deviceId);
+            }
+            return deviceId;
+        }
 
         // Функция входа
         async function handleLogin(event) {
@@ -304,10 +313,53 @@
                     alert('Ошибка входа: ' + error.message);
                     btn.disabled = false;
                     btn.textContent = 'Войти';
-                } else {
-                    // Успешно вошли -> перенаправляем на главную страницу
-                    window.location.href = 'index.html';
+                    return;
                 }
+
+                const user = data.user;
+                const deviceId = getDeviceUUID();
+
+                // Проверяем профиль пользователя в базе (срок подписки и устройство)
+                const { data: profile, error: profileError } = await supabaseClient
+                    .from('profiles')
+                    .select('subscription_expires_at')
+                    .eq('id', user.id)
+                    .single();
+
+                // Если записи в таблице profiles еще нет — создаем её (даем 1 месяц доступа с момента первого входа)
+                if (profileError && profileError.code === 'PGRST116') {
+                    const nextMonth = new Date();
+                    nextMonth.setMonth(nextMonth.getMonth() + 1);
+
+                    await supabaseClient.from('profiles').insert({
+                        id: user.id,
+                        email: user.email,
+                        current_device_id: deviceId,
+                        subscription_expires_at: nextMonth.toISOString()
+                    });
+                } else if (profile) {
+                    // Проверяем, не истек ли месячный доступ
+                    if (profile.subscription_expires_at) {
+                        const expiresAt = new Date(profile.subscription_expires_at);
+                        if (new Date() > expiresAt) {
+                            alert('Ваш месячный доступ истек! Пожалуйста, свяжитесь с нами для продления подписки.');
+                            await supabaseClient.auth.signOut();
+                            btn.disabled = false;
+                            btn.textContent = 'Войти';
+                            return;
+                        }
+                    }
+
+                    // Если доступ активен — перезаписываем устройство на текущее (выбивая старые сессии)
+                    await supabaseClient
+                        .from('profiles')
+                        .update({ current_device_id: deviceId })
+                        .eq('id', user.id);
+                }
+
+                // Успешно вошли и прошли все проверки -> перенаправляем на главную страницу
+                window.location.href = 'index.html';
+
             } catch (err) {
                 console.error('Ошибка:', err);
                 alert('Не удалось подключиться к серверу');
