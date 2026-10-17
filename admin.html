@@ -142,7 +142,8 @@
             text-transform: uppercase;
         }
 
-        .form-group input {
+        .form-group input,
+        .form-group select {
             width: 100%;
             padding: 12px 14px;
             border-radius: 10px;
@@ -155,7 +156,8 @@
             transition: border-color 0.2s;
         }
 
-        .form-group input:focus {
+        .form-group input:focus,
+        .form-group select:focus {
             border-color: var(--kz-blue);
         }
 
@@ -240,7 +242,7 @@
         <!-- Блок формы добавления пользователя -->
         <div id="adminFormCard" class="admin-card" style="display: none;">
             <div class="card-title">
-                <span>👤</span> Добавить участника
+                <span>👤</span> Добавить / Продлить участника
             </div>
 
             <div id="alertMessage" class="alert"></div>
@@ -252,12 +254,23 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="userPassword">Пароль</label>
+                    <label for="userPassword">Пароль (для новых)</label>
                     <input type="password" id="userPassword" placeholder="Минимум 6 символов" minlength="6" required>
                 </div>
 
+                <div class="form-group">
+                    <label for="subDuration">Срок доступа (подписки)</label>
+                    <select id="subDuration" required>
+                        <option value="3_days">3 дня (Пробный доступ)</option>
+                        <option value="1_month" selected>1 месяц</option>
+                        <option value="3_months">3 месяца</option>
+                        <option value="6_months">6 месяцев</option>
+                        <option value="12_months">12 месяцев (1 год)</option>
+                    </select>
+                </div>
+
                 <button type="submit" id="submitBtn" class="btn-submit">
-                    Добавить участника
+                    Сохранить и выдать доступ
                 </button>
             </form>
         </div>
@@ -281,7 +294,6 @@
 
             const user = data.session.user;
 
-            // Проверяем роль админа (проверяем app_metadata или user_metadata)
             const isAdmin = 
                 user?.app_metadata?.role === "admin" || 
                 user?.user_metadata?.role === "admin" ||
@@ -311,12 +323,38 @@
             document.getElementById("alertMessage").style.display = "none";
         }
 
+        // Расчет даты окончания подписки
+        function calculateExpiryDate(durationCode) {
+            const date = new Date();
+            switch (durationCode) {
+                case "3_days":
+                    date.setDate(date.getDate() + 3);
+                    break;
+                case "1_month":
+                    date.setMonth(date.getMonth() + 1);
+                    break;
+                case "3_months":
+                    date.setMonth(date.getMonth() + 3);
+                    break;
+                case "6_months":
+                    date.setMonth(date.getMonth() + 6);
+                    break;
+                case "12_months":
+                    date.setFullYear(date.getFullYear() + 1);
+                    break;
+                default:
+                    date.setMonth(date.getMonth() + 1);
+            }
+            return date.toISOString();
+        }
+
         async function createUser(e) {
             e.preventDefault();
             hideAlert();
 
-            const email = document.getElementById("userEmail").value.trim();
+            const email = document.getElementById("userEmail").value.trim().toLowerCase();
             const password = document.getElementById("userPassword").value;
+            const duration = document.getElementById("subDuration").value;
             const submitBtn = document.getElementById("submitBtn");
 
             submitBtn.disabled = true;
@@ -324,7 +362,9 @@
 
             try {
                 const { data: { session } } = await supabaseClient.auth.getSession();
+                const expiresAt = calculateExpiryDate(duration);
 
+                // 1. Пытаемся создать пользователя через вашу Edge Function
                 const response = await fetch(`${SUPABASE_URL}/functions/v1/create-user`, {
                     method: 'POST',
                     headers: {
@@ -336,18 +376,43 @@
 
                 const result = await response.json();
 
-                if (!response.ok) {
+                // Если ошибка НЕ связана с тем, что юзер уже существует — выдаем ошибку
+                const isAlreadyRegistered = result.error && (
+                    result.error.toLowerCase().includes("already") || 
+                    result.error.toLowerCase().includes("registered") ||
+                    result.error.toLowerCase().includes("exists")
+                );
+
+                if (!response.ok && !isAlreadyRegistered) {
                     throw new Error(result.error || "Ошибка при создании пользователя");
                 }
 
-                showAlert(`Участник ${email} успешно создан!`, "success");
+                // 2. Записываем или обновляем срок подписки в таблице profiles по email
+                const { error: dbError } = await supabaseClient
+                    .from('profiles')
+                    .upsert({
+                        email: email,
+                        subscription_expires_at: expiresAt
+                    }, { onConflict: 'email' });
+
+                if (dbError) {
+                    throw new Error("Аккаунт создан, но не удалось сохранить срок подписки: " + dbError.message);
+                }
+
+                const formattedDate = new Date(expiresAt).toLocaleDateString('ru-RU');
+                if (isAlreadyRegistered) {
+                    showAlert(`Подписка для ${email} успешно продлена до ${formattedDate}!`, "success");
+                } else {
+                    showAlert(`Участник ${email} создан! Доступ открыт до ${formattedDate}.`, "success");
+                }
+
                 document.getElementById("addUserForm").reset();
 
             } catch (err) {
                 showAlert(err.message, "error");
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = "Добавить участника";
+                submitBtn.textContent = "Сохранить и выдать доступ";
             }
         }
 
