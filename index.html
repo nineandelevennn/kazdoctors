@@ -714,12 +714,78 @@
 
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+    // Генерация уникального ID устройства для защиты от мульти-входа
+    function getDeviceUUID() {
+        let deviceId = localStorage.getItem('app_device_id');
+        if (!deviceId) {
+            deviceId = 'dev_' + Math.random().toString(36).substring(2, 10) + '_' + Date.now().toString(36);
+            localStorage.setItem('app_device_id', deviceId);
+        }
+        return deviceId;
+    }
+
+    // Проверка: 1 устройство + не истек ли месячный доступ
+    async function verifyUserAccess(user) {
+        const localDeviceId = getDeviceUUID();
+
+        const { data: profile, error } = await supabaseClient
+            .from('profiles')
+            .select('current_device_id, subscription_expires_at')
+            .eq('id', user.id)
+            .single();
+
+        // Если профиля еще нет в таблице — создаем его с доступом на 1 месяц
+        if (error && error.code === 'PGRST116') {
+            const nextMonth = new Date();
+            nextMonth.setMonth(nextMonth.getMonth() + 1);
+
+            await supabaseClient.from('profiles').insert({
+                id: user.id,
+                email: user.email,
+                current_device_id: localDeviceId,
+                subscription_expires_at: nextMonth.toISOString()
+            });
+            return true;
+        }
+
+        if (!profile) return true;
+
+        // 1. Проверяем, доступен ли еще вход по времени (месячный лимит)
+        if (profile.subscription_expires_at) {
+            const expiresAt = new Date(profile.subscription_expires_at);
+            if (new Date() > expiresAt) {
+                alert("Ваш месячный доступ истек! Пожалуйста, продлите подписку.");
+                await supabaseClient.auth.signOut();
+                showLoggedOut();
+                return false;
+            }
+        }
+
+        // 2. Проверяем, совпадает ли устройство с активным
+        if (!profile.current_device_id) {
+            await supabaseClient
+                .from('profiles')
+                .update({ current_device_id: localDeviceId })
+                .eq('id', user.id);
+        } else if (profile.current_device_id !== localDeviceId) {
+            alert("В ваш аккаунт выполнен вход с другого устройства. Сессия на этом устройстве завершена.");
+            await supabaseClient.auth.signOut();
+            showLoggedOut();
+            return false;
+        }
+
+        return true;
+    }
+
     async function checkAuth() {
         const { data, error } = await supabaseClient.auth.getSession();
         if (error) { console.error("Auth error:", error); return; }
 
         if (data.session) {
-            showLoggedIn(data.session.user);
+            const isAccessValid = await verifyUserAccess(data.session.user);
+            if (isAccessValid) {
+                showLoggedIn(data.session.user);
+            }
         } else {
             showLoggedOut();
         }
@@ -773,6 +839,13 @@
     }
 
     checkAuth();
+    // Фоновая проверка каждые 30 секунд
+    setInterval(async () => {
+        const { data } = await supabaseClient.auth.getSession();
+        if (data && data.session) {
+            await verifyUserAccess(data.session.user);
+        }
+    }, 30000);
 </script>
 
 <script>
@@ -832,7 +905,6 @@ const words = [
     let lastHourEpoch = -1;
     let currentWordIndex = -1;
 
-    // Функция для псевдослучайного перемешивания на основе текущего часа
     function getHourlyRandomIndex(hourEpoch, length) {
         let h = hourEpoch ^ 0xdeadbeef;
         h = Math.imul(h ^ (h >>> 16), 2246822507);
