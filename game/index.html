@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Doctor Runner — @doctors.speak</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --bg-main: #F0F6FA;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --green: #10B981;
+      --red: #EF4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #EBF8FC 0%, var(--bg-main) 60%);
+      color: var(--text-dark);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .game-wrapper {
+      background: var(--card-bg);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 420px;
+      overflow: hidden;
+      box-shadow: 0 12px 32px rgba(0, 119, 163, 0.12);
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* Шапка игры */
+    .header {
+      background: linear-gradient(135deg, #0093CC 0%, var(--kz-blue) 70%);
+      color: #FFFFFF;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .home-btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 6px 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+    }
+
+    .lang-switch {
+      display: flex;
+      background: rgba(0, 0, 0, 0.18);
+      border-radius: 18px;
+      padding: 2px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 800;
+      font-size: 0.72rem;
+      padding: 5px 10px;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .lang-btn.active {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Панель очков и слова */
+    .hud {
+      padding: 12px 16px;
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border-color);
+      z-index: 10;
+    }
+
+    .stats-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .stats-row strong {
+      color: var(--text-dark);
+    }
+
+    .target-word-box {
+      background: var(--kz-blue-light);
+      border: 2px solid rgba(0, 161, 222, 0.3);
+      border-left: 6px solid var(--kz-gold);
+      border-radius: 14px;
+      padding: 10px 12px;
+      text-align: center;
+    }
+
+    .target-label {
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--kz-blue-dark);
+      letter-spacing: 0.8px;
+    }
+
+    .target-word {
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--text-dark);
+      margin-top: 2px;
+    }
+
+    /* Игровой холст */
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      height: 430px;
+      background: #334155;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Оверлеи (Старт / Конец игры) */
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.82);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      text-align: center;
+      color: #FFFFFF;
+      z-index: 20;
+    }
+
+    .overlay.hidden {
+      display: none;
+    }
+
+    .overlay-icon {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    .overlay-title {
+      font-size: 1.4rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      color: var(--kz-gold);
+      margin-bottom: 8px;
+    }
+
+    .overlay-text {
+      font-size: 0.85rem;
+      line-height: 1.45;
+      color: #E2E8F0;
+      margin-bottom: 18px;
+    }
+
+    .score-card {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 14px;
+      padding: 12px 20px;
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    .score-card div {
+      font-size: 0.82rem;
+      margin: 4px 0;
+    }
+
+    .btn-primary {
+      width: 100%;
+      background: linear-gradient(135deg, var(--kz-gold) 0%, #FFD75E 100%);
+      color: var(--text-dark);
+      border: none;
+      padding: 13px;
+      border-radius: 16px;
+      font-weight: 900;
+      font-size: 0.92rem;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(255, 199, 44, 0.3);
+      margin-bottom: 10px;
+      transition: transform 0.15s;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.97);
+    }
+
+    .btn-secondary {
+      width: 100%;
+      background: rgba(0, 161, 222, 0.25);
+      color: #FFFFFF;
+      border: 1px solid var(--kz-blue);
+      padding: 11px;
+      border-radius: 16px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+    }
+
+    /* Нижние кнопки для удобства на мобильных */
+    .controls-bar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 12px 16px;
+      background: #F8FAFC;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .lane-btn {
+      background: #FFFFFF;
+      border: 2px solid var(--kz-blue);
+      color: var(--kz-blue-dark);
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 12px;
+      border-radius: 14px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 3px 8px rgba(0, 161, 222, 0.08);
+    }
+
+    .lane-btn:active {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="game-wrapper">
+    <!-- Шапка -->
+    <header class="header">
+      <a href="index.html" class="home-btn" id="uiBack">← Назад</a>
+      <div style="font-weight: 900; font-size: 0.85rem;">🏃‍♂️ DOCTOR RUN</div>
+      <div class="lang-switch">
+        <button id="btnRu" class="lang-btn active" onclick="setLang('ru')">RU</button>
+        <button id="btnKz" class="lang-btn" onclick="setLang('kz')">KZ</button>
+      </div>
+    </header>
+
+    <!-- Панель со словом и очками -->
+    <div class="hud">
+      <div class="stats-row">
+        <span><span id="uiScoreLbl">Счет:</span> <strong id="scoreVal">0</strong></span>
+        <span><span id="uiBestLbl">Рекорд:</span> <strong id="bestVal">0</strong> 🏆</span>
+        <span><span id="uiSpeedLbl">Скорость:</span> <strong id="speedVal" style="color: var(--kz-blue);">x1.0</strong> ⚡</span>
+      </div>
+      <div class="target-word-box">
+        <div class="target-label" id="uiTranslatePrompt">Выберите правильный перевод:</div>
+        <div class="target-word" id="currentEnWord">Ready?</div>
+      </div>
+    </div>
+
+    <!-- Холст с игрой -->
+    <div class="canvas-container">
+      <canvas id="gameCanvas" width="400" height="430"></canvas>
+
+      <!-- Стартовый экран -->
+      <div id="startOverlay" class="overlay">
+        <div class="overlay-icon">🩺</div>
+        <div class="overlay-title" id="uiStartTitle">Медицинский забег</div>
+        <p class="overlay-text" id="uiStartDesc">
+          Доктор бежит на вызов! Сверху появляется термин на английском. Перестраивайтесь на нужную полосу дороги с правильным переводом.<br><br>С каждым верным ответом темп растет!
+        </p>
+        <button class="btn-primary" id="uiStartBtn" onclick="startGame()">Начать забег ➔</button>
+      </div>
+
+      <!-- Экран поражения -->
+      <div id="gameOverOverlay" class="overlay hidden">
+        <div class="overlay-icon">🚑</div>
+        <div class="overlay-title" id="uiOverTitle">Забег окончен!</div>
+        <p class="overlay-text" id="overReasonText"></p>
+        
+        <div class="score-card">
+          <div><span id="uiFinalScoreLbl">Ваш результат:</span> <strong id="finalScore" style="color: var(--kz-gold); font-size: 1.1rem;">0</strong></div>
+          <div><span id="uiBestScoreLbl">Лучший рекорд:</span> <strong id="finalBest">0</strong> 🏆</div>
+        </div>
+
+        <button class="btn-primary" id="uiRetryBtn" onclick="startGame()">🔄 Побежали еще раз</button>
+        <button class="btn-secondary" id="uiShareBtn" onclick="shareScore()">📤 Поделиться результатом</button>
+      </div>
+    </div>
+
+    <!-- Кнопки управления полосами -->
+    <div class="controls-bar">
+      <button class="lane-btn" onclick="moveDoctor(0)">⬅ <span id="uiLeftBtn">Левая полоса</span></button>
+      <button class="lane-btn" onclick="moveDoctor(1)"><span id="uiRightBtn">Правая полоса</span> ➡</button>
+    </div>
+  </div>
+
+<script>
+  // =========================================================================
+  // 1. БАЗА СЛОВ (ЗДЕСЬ МОЖНО ЛЕГКО ДОБАВЛЯТЬ ИЛИ МЕНЯТЬ СЛОВА)
+  // =========================================================================
+  const wordDatabase = [
+    // Анатомия
+    { en: "Heart", ru: "Сердце", kz: "Жүрек" },
+    { en: "Lung", ru: "Лёгкое", kz: "Өкпе" },
+    { en: "Liver", ru: "Печень", kz: "Бауыр" },
+    { en: "Kidney", ru: "Почка", kz: "Бүйрек" },
+    { en: "Stomach", ru: "Желудок", kz: "Асқазан" },
+    { en: "Brain", ru: "Головной мозг", kz: "Ми" },
+    { en: "Bone", ru: "Кость", kz: "Сүйек" },
+    { en: "Joint", ru: "Сустав", kz: "Буын" },
+    { en: "Muscle", ru: "Мышца", kz: "Бұлшықет" },
+    { en: "Thyroid", ru: "Щитовидная железа", kz: "Қалқанша без" },
+
+    // Клиника
+    { en: "Fever", ru: "Лихорадка", kz: "Қызба" },
+    { en: "Cough", ru: "Кашель", kz: "Жөтел" },
+    { en: "Edema", ru: "Отек", kz: "Ісіну" },
+    { en: "Nausea", ru: "Тошнота", kz: "Жүрек айну" },
+    { en: "Dizziness", ru: "Головокружение", kz: "Бас айналу" },
+    { en: "Rash", ru: "Сыпь", kz: "Бөртпе" },
+    { en: "Fatigue", ru: "Утомляемость", kz: "Шаршау" },
+    { en: "Dyspnea", ru: "Одышка", kz: "Ентігу" },
+    { en: "Inflammation", ru: "Воспаление", kz: "Қабыну" },
+    { en: "Insomnia", ru: "Бессонница", kz: "Ұйқысыздық" },
+
+    // Академические термины
+    { en: "Increase", ru: "Увеличение", kz: "Өсу / Ұлғаю" },
+    { en: "Decline", ru: "Снижение", kz: "Төмендеу" },
+    { en: "Evidence", ru: "Доказательство", kz: "Дәлел" },
+    { en: "Evaluate", ru: "Оценивать", kz: "Бағалау" },
+    { en: "Prevalence", ru: "Распространенность", kz: "Таралуы" },
+    { en: "Beneficial", ru: "Полезный", kz: "Пайдалы" },
+    { en: "Significant", ru: "Значимый", kz: "Маңызды" },
+    { en: "Complication", ru: "Осложнение", kz: "Асқыну" },
+    { en: "Prognosis", ru: "Прогноз", kz: "Болжам" },
+    { en: "Recurrence", ru: "Рецидив", kz: "Қайталану" }
+  ];
+
+  // =========================================================================
+  // 2. ПЕРЕВОДЫ ИНТЕРФЕЙСА (RU / KZ)
+  // =========================================================================
+  let currentLang = 'ru';
+
+  const uiTexts = {
+    ru: {
+      back: "← Назад",
+      score: "Счет:",
+      best: "Рекорд:",
+      speed: "Темп:",
+      prompt: "Выберите правильный перевод:",
+      startTitle: "Медицинский забег",
+      startDesc: "Доктор бежит на вызов! Сверху появляется термин на английском. Перестраивайтесь на нужную полосу дороги с правильным переводом.<br><br>С каждым верным ответом скорость растет!",
+      startBtn: "Начать забег ➔",
+      overTitle: "Забег окончен!",
+      finalScore: "Ваш результат:",
+      bestScore: "Лучший рекорд:",
+      retryBtn: "🔄 Побежали еще раз",
+      shareBtn: "📤 Поделиться результатом",
+      leftBtn: "Левая",
+      rightBtn: "Правая",
+      correctMsg: "Правильный перевод"
+    },
+    kz: {
+      back: "← Артқа",
+      score: "Ұпай:",
+      best: "Рекорд:",
+      speed: "Қарқын:",
+      prompt: "Дұрыс аударманы таңдаңыз:",
+      startTitle: "Медициналық жүгіріс",
+      startDesc: "Дәрігер шақыртуға бара жатыр! Жоғарыда ағылшынша термин шығады. Дұрыс аудармасы бар жол жолағына ауысыңыз.<br><br>Әр дұрыс жауап сайын жылдамдық артады!",
+      startBtn: "Жүгіруді бастау ➔",
+      overTitle: "Ойын аяқталды!",
+      finalScore: "Сіздің нәтижеңіз:",
+      bestScore: "Үздік рекорд:",
+      retryBtn: "🔄 Қайта жүгіру",
+      shareBtn: "📤 Нәтижемен бөлісу",
+      leftBtn: "Сол жақ",
+      rightBtn: "Оң жақ",
+      correctMsg: "Дұрыс аударма"
+    }
+  };
+
+  function setLang(lang) {
+    currentLang = lang;
+    document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
+    document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
+
+    const t = uiTexts[lang];
+    document.getElementById('uiBack').textContent = t.back;
+    document.getElementById('uiScoreLbl').textContent = t.score;
+    document.getElementById('uiBestLbl').textContent = t.best;
+    document.getElementById('uiSpeedLbl').textContent = t.speed;
+    document.getElementById('uiTranslatePrompt').textContent = t.prompt;
+    document.getElementById('uiStartTitle').textContent = t.startTitle;
+    document.getElementById('uiStartDesc').innerHTML = t.startDesc;
+    document.getElementById('uiStartBtn').textContent = t.startBtn;
+    document.getElementById('uiOverTitle').textContent = t.overTitle;
+    document.getElementById('uiFinalScoreLbl').textContent = t.finalScore;
+    document.getElementById('uiBestScoreLbl').textContent = t.bestScore;
+    document.getElementById('uiRetryBtn').textContent = t.retryBtn;
+    document.getElementById('uiShareBtn').textContent = t.shareBtn;
+    document.getElementById('uiLeftBtn').textContent = t.leftBtn;
+    document.getElementById('uiRightBtn').textContent = t.rightBtn;
+
+    // Если ворота уже летят, сразу меняем язык текста на них
+    if (gate.wordObj) {
+      gate.leftText = gate.correctLane === 0 ? gate.wordObj[currentLang] : gate.wrongObj[currentLang];
+      gate.rightText = gate.correctLane === 1 ? gate.wordObj[currentLang] : gate.wrongObj[currentLang];
+    }
+  }
+
+  // =========================================================================
+  // 3. ДВИЖОК ИГРЫ НА HTML5 CANVAS
+  // =========================================================================
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+
+  const LANE_X = [130, 270]; // Координаты центров левой и правой полос дороги
+
+  let isPlaying = false;
+  let score = 0;
+  let bestScore = parseInt(localStorage.getItem('docRunnerBest') || '0', 10);
+  document.getElementById('bestVal').textContent = bestScore;
+
+  let baseSpeed = 2.6;
+  let currentSpeed = baseSpeed;
+  let roadDashOffset = 0;
+  let animTick = 0;
+
+  // Объект доктора
+  const doctor = {
+    lane: 0,
+    x: LANE_X[0],
+    targetX: LANE_X[0],
+    y: 345
+  };
+
+  // Объект приближающихся ворот с переводом
+  const gate = {
+    y: -100,
+    height: 58,
+    wordObj: null,
+    wrongObj: null,
+    leftText: "",
+    rightText: "",
+    correctLane: 0,
+    passed: false
+  };
+
+  function moveDoctor(laneIndex) {
+    if (!isPlaying) return;
+    doctor.lane = laneIndex;
+    doctor.targetX = LANE_X[laneIndex];
+  }
+
+  // Управление с клавиатуры (стрелки или A / D)
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A' || e.key === 'ф') {
+      moveDoctor(0);
+    } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D' || e.key === 'в') {
+      moveDoctor(1);
+    }
+  });
+
+  // Управление касанием прямо по левой/правой части холста
+  canvas.addEventListener('pointerdown', (e) => {
+    if (!isPlaying) return;
+    const rect = canvas.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    if (clickX < rect.width / 2) {
+      moveDoctor(0);
+    } else {
+      moveDoctor(1);
+    }
+  });
+
+  // Генерация нового слова и ворот
+  function spawnGate() {
+    gate.y = -80;
+    gate.passed = false;
+
+    const correctIdx = Math.floor(Math.random() * wordDatabase.length);
+    let wrongIdx = Math.floor(Math.random() * wordDatabase.length);
+    while (wrongIdx === correctIdx) {
+      wrongIdx = Math.floor(Math.random() * wordDatabase.length);
+    }
+
+    gate.wordObj = wordDatabase[correctIdx];
+    gate.wrongObj = wordDatabase[wrongIdx];
+    gate.correctLane = Math.random() < 0.5 ? 0 : 1;
+
+    gate.leftText = gate.correctLane === 0 ? gate.wordObj[currentLang] : gate.wrongObj[currentLang];
+    gate.rightText = gate.correctLane === 1 ? gate.wordObj[currentLang] : gate.wrongObj[currentLang];
+
+    document.getElementById('currentEnWord').textContent = gate.wordObj.en;
+  }
+
+  function startGame() {
+    score = 0;
+    currentSpeed = baseSpeed;
+    doctor.lane = 0;
+    doctor.x = LANE_X[0];
+    doctor.targetX = LANE_X[0];
+
+    updateHud();
+    document.getElementById('startOverlay').classList.add('hidden');
+    document.getElementById('gameOverOverlay').classList.add('hidden');
+
+    spawnGate();
+    isPlaying = true;
+  }
+
+  function endGame() {
+    isPlaying = false;
+    if (score > bestScore) {
+      bestScore = score;
+      localStorage.setItem('docRunnerBest', bestScore);
+    }
+    updateHud();
+
+    const t = uiTexts[currentLang];
+    const correctTranslation = gate.wordObj[currentLang];
+    document.getElementById('overReasonText').innerHTML = 
+      `<strong>${gate.wordObj.en}</strong> — ${t.correctMsg}: <span style="color: var(--kz-gold); font-weight: 800;">«${correctTranslation}»</span>`;
+    
+    document.getElementById('finalScore').textContent = score;
+    document.getElementById('finalBest').textContent = bestScore;
+    document.getElementById('gameOverOverlay').classList.remove('hidden');
+  }
+
+  function updateHud() {
+    document.getElementById('scoreVal').textContent = score;
+    document.getElementById('bestVal').textContent = bestScore;
+    const speedMultiplier = (currentSpeed / baseSpeed).toFixed(1);
+    document.getElementById('speedVal').textContent = `x${speedMultiplier}`;
+  }
+
+  // Шеринг результата для соцсетей и мессенджеров
+  function shareScore() {
+    const shareText = currentLang === 'ru'
+      ? `🏃‍♂️🩺 Я набрал ${score} очков в медицинском раннере на @doctors.speak! Сможешь обогнать меня?`
+      : `🏃‍♂️🩺 Мен @doctors.speak медициналық ойынында ${score} ұпай жинадым! Менің рекордымды жаңарта аласың ба?`;
+
+    if (navigator.share) {
+      navigator.share({
+        title: 'Doctor Runner — @doctors.speak',
+        text: shareText,
+        url: window.location.href
+      }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(shareText + " " + window.location.href);
+      alert(currentLang === 'ru' ? "Результат скопирован! Отправьте друзьям." : "Нәтиже көшірілді! Достарыңызға жіберіңіз.");
+    }
+  }
+
+  // Отрисовка дороги и обочины
+  function drawRoad() {
+    // Зеленый газон по бокам
+    ctx.fillStyle = "#0F766E";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Бордюры (желто-голубые полосы в стиле сайта)
+    ctx.fillStyle = "#FFC72C";
+    ctx.fillRect(52, 0, 8, canvas.height);
+    ctx.fillRect(340, 0, 8, canvas.height);
+
+    // Асфальт (2 полосы)
+    ctx.fillStyle = "#334155";
+    ctx.fillRect(60, 0, 280, canvas.height);
+
+    // Центральная прерывистая разметка
+    ctx.strokeStyle = "#F8FAFC";
+    ctx.lineWidth = 4;
+    ctx.setLineDash([28, 24]);
+    ctx.lineDashOffset = -roadDashOffset;
+    ctx.beginPath();
+    ctx.moveTo(200, -40);
+    ctx.lineTo(200, canvas.height + 40);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  // Отрисовка ворот с вариантами перевода
+  function drawGates() {
+    if (!gate.wordObj) return;
+
+    const drawSingleBanner = (centerX, text) => {
+      const w = 124;
+      const h = gate.height;
+      const x = centerX - w / 2;
+      const y = gate.y;
+
+      // Тень
+      ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
+      ctx.beginPath();
+      ctx.roundRect(x + 2, y + 5, w, h, 12);
+      ctx.fill();
+
+      // Плашка
+      ctx.fillStyle = "#FFFFFF";
+      ctx.strokeStyle = "#00A1DE";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.roundRect(x, y, w, h, 12);
+      ctx.fill();
+      ctx.stroke();
+
+      // Золотая шапочка плашки
+      ctx.fillStyle = "#FFC72C";
+      ctx.beginPath();
+      ctx.roundRect(x + 1.5, y + 1.5, w - 3, 10, [10, 10, 0, 0]);
+      ctx.fill();
+
+      // Текст перевода (с автопереносом, если слово длинное)
+      ctx.fillStyle = "#1E293B";
+      ctx.font = "800 12.5px Montserrat";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      const words = text.split(' ');
+      if (words.length > 1 && text.length > 11) {
+        const mid = Math.ceil(words.length / 2);
+        const line1 = words.slice(0, mid).join(' ');
+        const line2 = words.slice(mid).join(' ');
+        ctx.fillText(line1, centerX, y + h / 2 - 4, w - 10);
+        ctx.fillText(line2, centerX, y + h / 2 + 11, w - 10);
+      } else {
+        ctx.fillText(text, centerX, y + h / 2 + 4, w - 10);
+      }
+    };
+
+    drawSingleBanner(LANE_X[0], gate.leftText);
+    drawSingleBanner(LANE_X[1], gate.rightText);
+  }
+
+  // Отрисовка бегущего доктора
+  function drawDoctor() {
+    const x = doctor.x;
+    const y = doctor.y;
+    const swing = isPlaying ? Math.sin(animTick * 0.28) * 7 : 0;
+
+    ctx.save();
+
+    // Тень под ногами
+    ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+    ctx.beginPath();
+    ctx.ellipse(x, y + 32, 20, 7, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Ноги (синие брюки хирурга, двигаются в противофазе)
+    ctx.fillStyle = "#0284C7";
+    ctx.beginPath();
+    ctx.roundRect(x - 12, y + 12 + swing, 9, 18, 4);
+    ctx.roundRect(x + 3, y + 12 - swing, 9, 18, 4);
+    ctx.fill();
+
+    // Белый медицинский халат (туловище)
+    ctx.fillStyle = "#FFFFFF";
+    ctx.strokeStyle = "#CBD5E1";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.roundRect(x - 16, y - 14, 32, 30, 8);
+    ctx.fill();
+    ctx.stroke();
+
+    // Голубая форма под халатом (V-вырез)
+    ctx.fillStyle = "#00A1DE";
+    ctx.beginPath();
+    ctx.moveTo(x - 6, y - 14);
+    ctx.lineTo(x + 6, y - 14);
+    ctx.lineTo(x, y - 2);
+    ctx.closePath();
+    ctx.fill();
+
+    // Стетоскоп на шее
+    ctx.strokeStyle = "#1E293B";
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.arc(x, y - 10, 9, 0.2, Math.PI - 0.2);
+    ctx.stroke();
+
+    // Золотой бейджик/медальон стетоскопа
+    ctx.fillStyle = "#FFC72C";
+    ctx.beginPath();
+    ctx.arc(x + 8, y - 3, 3.5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Руки (двигаются при беге)
+    ctx.fillStyle = "#F8FAFC";
+    ctx.beginPath();
+    ctx.roundRect(x - 22, y - 10 - swing * 0.7, 7, 20, 4);
+    ctx.roundRect(x + 15, y - 10 + swing * 0.7, 7, 20, 4);
+    ctx.fill();
+
+    // Голова
+    ctx.fillStyle = "#FDE68A";
+    ctx.beginPath();
+    ctx.arc(x, y - 24, 12, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Медицинская шапочка (голубая с крестиком)
+    ctx.fillStyle = "#00A1DE";
+    ctx.beginPath();
+    ctx.arc(x, y - 26, 12.5, Math.PI, 0);
+    ctx.fill();
+
+    // Красный крестик на шапочке
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(x - 1.5, y - 35, 3, 7);
+    ctx.fillRect(x - 3.5, y - 33, 7, 3);
+
+    ctx.restore();
+  }
+
+  // Главный цикл обновления и отрисовки (60 кадров в секунду)
+  function gameLoop() {
+    if (isPlaying) {
+      animTick++;
+      roadDashOffset = (roadDashOffset + currentSpeed * 1.4) % 52;
+
+      // Плавное перестроение доктора между полосами
+      doctor.x += (doctor.targetX - doctor.x) * 0.22;
+
+      // Движение ворот вниз
+      gate.y += currentSpeed;
+
+      // Проверка столкновения с воротами
+      if (!gate.passed && gate.y + gate.height >= doctor.y - 25 && gate.y <= doctor.y + 15) {
+        gate.passed = true;
+        if (doctor.lane === gate.correctLane) {
+          // Правильная дорога!
+          score++;
+          // Плавное увеличение скорости с каждым правильным ответом (максимум до 8.5)
+          currentSpeed = Math.min(8.5, currentSpeed + 0.22);
+          updateHud();
+          spawnGate();
+        } else {
+          // Ошибка!
+          endGame();
+        }
+      }
+    }
+
+    // Отрисовка кадра
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawRoad();
+    drawGates();
+    drawDoctor();
+
+    requestAnimationFrame(gameLoop);
+  }
+
+  // Запускаем отрисовку первого кадра при загрузке
+  requestAnimationFrame(gameLoop);
+</script>
+</body>
+</html>
