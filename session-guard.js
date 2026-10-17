@@ -1,6 +1,5 @@
 // Файл: session-guard.js
 
-// 1. Получение или генерация уникального ID браузера/устройства
 function getDeviceUUID() {
     let deviceId = localStorage.getItem('app_device_id');
     if (!deviceId) {
@@ -10,47 +9,31 @@ function getDeviceUUID() {
     return deviceId;
 }
 
-// 2. Функция для записи устройства при логине (вызывайте её в login.html после успешного signInWithPassword)
-window.registerNewDeviceSession = async function() {
-    if (typeof supabaseClient === 'undefined') return;
-    const { data: { session } } = await supabaseClient.auth.getSession();
-    if (!session) return;
-
-    const deviceId = getDeviceUUID();
-    await supabaseClient
-        .from('profiles')
-        .upsert({ 
-            id: session.user.id, 
-            email: session.user.email,
-            current_device_id: deviceId 
-        }, { onConflict: 'id' });
-};
-
-// 3. Главная проверка: 1 устройство + проверка месячного доступа
 async function verifyUserAccess() {
     if (typeof supabaseClient === 'undefined') return;
 
     const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
-    if (sessionError || !session) return; // Если пользователь не залогинен, ничего не делаем
+    if (sessionError || !session) return; // Если не вошел, страницу блокирует ваш стандартный код
 
     const user = session.user;
+    const userEmail = user.email.toLowerCase();
     const localDeviceId = getDeviceUUID();
 
-    // Получаем данные профиля из базы
+    // Ищем профиль пользователя по его email
     const { data: profile, error } = await supabaseClient
         .from('profiles')
-        .select('current_device_id, subscription_expires_at')
-        .eq('id', user.id)
+        .select('id, current_device_id, subscription_expires_at')
+        .eq('email', userEmail)
         .single();
 
-    // Если записи в profiles еще нет — создаем её (даем 1 месяц доступа по умолчанию)
+    // Если записи еще нет в таблице — создаем со сроком 1 месяц по умолчанию
     if (error && error.code === 'PGRST116') {
         const nextMonth = new Date();
         nextMonth.setMonth(nextMonth.getMonth() + 1);
 
         await supabaseClient.from('profiles').insert({
             id: user.id,
-            email: user.email,
+            email: userEmail,
             current_device_id: localDeviceId,
             subscription_expires_at: nextMonth.toISOString()
         });
@@ -59,35 +42,32 @@ async function verifyUserAccess() {
 
     if (!profile) return;
 
-    // ПРОВЕРКА 1: Доступен ли еще вход по времени (месячный лимит доступа)
+    // 1. ПРОВЕРКА СРОКА ПОДПИСКИ
     if (profile.subscription_expires_at) {
         const expiresAt = new Date(profile.subscription_expires_at);
-        const now = new Date();
-
-        if (now > expiresAt) {
-            alert("Ваш месячный доступ истек! Пожалуйста, продлите подписку для продолжения занятий.");
+        if (new Date() > expiresAt) {
+            alert("Срок вашей подписки истек! Пожалуйста, обратитесь к администратору для продления доступа.");
             await supabaseClient.auth.signOut();
             window.location.href = '/login.html';
             return;
         }
     }
 
-    // ПРОВЕРКА 2: Не зашли ли в аккаунт с другого устройства одновременно
+    // 2. ПРОВЕРКА ОДНОГО УСТРОЙСТВА
     if (!profile.current_device_id) {
-        // Если поле пустое, привязываем текущее устройство
         await supabaseClient
             .from('profiles')
-            .update({ current_device_id: localDeviceId })
-            .eq('id', user.id);
+            .update({ id: user.id, current_device_id: localDeviceId })
+            .eq('email', userEmail);
     } else if (profile.current_device_id !== localDeviceId) {
-        alert("В ваш аккаунт выполнен вход с другого устройства. Одновременное использование с нескольких устройств запрещено.");
+        alert("В ваш аккаунт выполнен вход с другого устройства. Одновременный доступ запрещен.");
         await supabaseClient.auth.signOut();
         window.location.href = '/login.html';
         return;
     }
 }
 
-// Запускаем проверку при открытии страницы и каждые 30 секунд в фоне
+// Запускаем при открытии страницы и каждые 30 секунд
 document.addEventListener("DOMContentLoaded", () => {
     verifyUserAccess();
     setInterval(verifyUserAccess, 30000);
