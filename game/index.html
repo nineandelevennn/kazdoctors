@@ -78,6 +78,31 @@
       border: 1px solid rgba(255, 255, 255, 0.35);
     }
 
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sound-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #FFFFFF;
+      font-size: 0.85rem;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.15s;
+    }
+
+    .sound-btn:active {
+      transform: scale(0.92);
+    }
+
     .lang-switch {
       display: flex;
       background: rgba(0, 0, 0, 0.18);
@@ -327,9 +352,12 @@
     <header class="header">
       <a href="https://kazdoctors.com" class="home-btn" id="uiBack">← Назад</a>
       <div style="font-weight: 900; font-size: 0.85rem;">🏃‍♂️ DOCTOR RUN</div>
-      <div class="lang-switch">
-        <button id="btnRu" class="lang-btn active" onclick="setLang('ru')">RU</button>
-        <button id="btnKz" class="lang-btn" onclick="setLang('kz')">KZ</button>
+      <div class="header-controls">
+        <button id="soundToggleBtn" class="sound-btn" onclick="toggleSound()" title="Звук">🔊</button>
+        <div class="lang-switch">
+          <button id="btnRu" class="lang-btn active" onclick="setLang('ru')">RU</button>
+          <button id="btnKz" class="lang-btn" onclick="setLang('kz')">KZ</button>
+        </div>
       </div>
     </header>
 
@@ -376,7 +404,7 @@
         </div>
 
         <button class="btn-primary" id="uiRetryBtn" onclick="startGame()">🔄 Побежали еще раз</button>
-        <button class="btn-secondary" id="uiShareBtn" onclick="shareScore()">📸 Показать результат кому-то</button>
+        <button class="btn-secondary" id="uiShareBtn" onclick="shareScore()">📸 Отправить скриншот результата</button>
       </div>
     </div>
 
@@ -389,7 +417,33 @@
 
 <script>
   // =========================================================================
-  // 1. БАЗА СЛОВ (ЗДЕСЬ МОЖНО ЛЕГКО ДОБАВЛЯТЬ ИЛИ МЕНЯТЬ СЛОВА)
+  // 1. ЗВУКОВЫЕ ЭФФЕКТЫ (СТАРТ, ПРАВИЛЬНЫЙ ОТВЕТ, ОШИБКА)
+  // =========================================================================
+  const soundStart = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+  const soundCorrect = new Audio('https://assets.mixkit.co/active_storage/sfx/2700/2700-preview.mp3');
+  const soundWrong = new Audio('https://assets.mixkit.co/active_storage/sfx/2658/2658-preview.mp3');
+
+  soundStart.volume = 0.4;
+  soundCorrect.volume = 0.5;
+  soundWrong.volume = 0.4;
+
+  let isSoundEnabled = localStorage.getItem('docRunnerSound') !== 'off';
+  document.getElementById('soundToggleBtn').textContent = isSoundEnabled ? '🔊' : '🔇';
+
+  function toggleSound() {
+    isSoundEnabled = !isSoundEnabled;
+    localStorage.setItem('docRunnerSound', isSoundEnabled ? 'on' : 'off');
+    document.getElementById('soundToggleBtn').textContent = isSoundEnabled ? '🔊' : '🔇';
+  }
+
+  function playEffect(audioObj) {
+    if (!isSoundEnabled) return;
+    audioObj.currentTime = 0;
+    audioObj.play().catch(() => {});
+  }
+
+  // =========================================================================
+  // 2. БАЗА СЛОВ (ЗДЕСЬ МОЖНО ЛЕГКО ДОБАВЛЯТЬ ИЛИ МЕНЯТЬ СЛОВА)
   // =========================================================================
   const wordDatabase = [
     // Анатомия
@@ -475,12 +529,11 @@
   ];
 
   // =========================================================================
-  // 2. НАСТРОЙКА НАЗВАНИЙ УРОВНЕЙ (ЗВАНИЙ)
+  // 3. НАСТРОЙКА НАЗВАНИЙ УРОВНЕЙ (ЗВАНИЙ)
   // =========================================================================
   // КАК МЕНЯТЬ НАЗВАНИЯ УРОВНЕЙ:
-  // Просто измените текст в кавычках после ru: и kz: для нужного диапазона очков!
-  // Например, если хотите переименовать "задр!!" (22-24 очка) в "профессор!",
-  // просто напишите: return currentLang === 'ru' ? "профессор!" : "профессор!";
+  // Просто измените текст в кавычках после ? (для русского) и после : (для казахского)
+  // для любого нужного диапазона очков!
   function getPlayerLevel(score) {
     if (score >= 25) {
       return currentLang === 'ru' ? "читер!" : "читер!";
@@ -504,7 +557,7 @@
   }
 
   // =========================================================================
-  // 3. ПЕРЕВОДЫ ИНТЕРФЕЙСА (RU / KZ)
+  // 4. ПЕРЕВОДЫ ИНТЕРФЕЙСА (RU / KZ)
   // =========================================================================
   let currentLang = 'ru';
   let playerName = localStorage.getItem('docRunnerName') || '';
@@ -525,7 +578,7 @@
       overTitle: "Забег окончен!",
       bestScore: "Лучший рекорд:",
       retryBtn: "🔄 Побежали еще раз",
-      shareBtn: "📸 Показать результат кому-то",
+      shareBtn: "📸 Отправить скриншот результата",
       leftBtn: "Левая",
       rightBtn: "Правая",
       correctMsg: "Правильный перевод"
@@ -544,7 +597,7 @@
       overTitle: "Ойын аяқталды!",
       bestScore: "Үздік рекорд:",
       retryBtn: "🔄 Қайта жүгіру",
-      shareBtn: "📸 Нәтижелермен бөлісу",
+      shareBtn: "📸 Нәтиже скриншотын жіберу",
       leftBtn: "Сол жақ",
       rightBtn: "Оң жақ",
       correctMsg: "Дұрыс аударма"
@@ -584,7 +637,7 @@
   }
 
   // =========================================================================
-  // 4. ДВИЖОК ИГРЫ НА HTML5 CANVAS
+  // 5. ДВИЖОК ИГРЫ НА HTML5 CANVAS
   // =========================================================================
   const canvas = document.getElementById('gameCanvas');
   const ctx = canvas.getContext('2d');
@@ -666,6 +719,8 @@
   }
 
   function startGame() {
+    playEffect(soundStart);
+
     const inputVal = document.getElementById('playerNameInput').value.trim();
     playerName = inputVal || uiTexts[currentLang].defaultName;
     if (inputVal) {
@@ -707,6 +762,8 @@
   }
 
   function endGame() {
+    playEffect(soundWrong);
+
     isPlaying = false;
     if (score > bestScore) {
       bestScore = score;
@@ -725,7 +782,7 @@
   }
 
   // =========================================================================
-  // 5. ГЕНЕРАЦИЯ КАРТИНКИ-СКРИНШОТА РЕЗУЛЬТАТА И ОТПРАВКА
+  // 6. ГЕНЕРАЦИЯ КАРТИНКИ-СКРИНШОТА РЕЗУЛЬТАТА И ОТПРАВКА
   // =========================================================================
   async function shareScore() {
     const levelTitle = getPlayerLevel(score).toUpperCase();
@@ -833,7 +890,6 @@
           });
           return;
         } catch (err) {
-          // Если пользователь отменил меню шаринга, ничего не делаем
           if (err.name === 'AbortError') return;
         }
       }
@@ -1000,6 +1056,7 @@
         gate.passed = true;
         if (doctor.lane === gate.correctLane) {
           score++;
+          playEffect(soundCorrect);
           currentSpeed = Math.min(8.5, currentSpeed + 0.22);
           updateHud();
           spawnGate();
