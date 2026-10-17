@@ -829,16 +829,25 @@ const words = [
         { en: "Subsequent", kz: "Кейінгі", ru: "Последующий", cat: "academic" }
     ];
 
-    let lastHourIndex = -1;
+    let lastHourEpoch = -1;
+    let currentWordIndex = -1;
+
+    // Функция для псевдослучайного перемешивания на основе текущего часа
+    function getHourlyRandomIndex(hourEpoch, length) {
+        let h = hourEpoch ^ 0xdeadbeef;
+        h = Math.imul(h ^ (h >>> 16), 2246822507);
+        h = Math.imul(h ^ (h >>> 13), 3266489909);
+        return ((h ^= h >>> 16) >>> 0) % length;
+    }
 
     function updateWordOfTheHour() {
         const now = new Date();
         const currentHourEpoch = Math.floor(now.getTime() / (1000 * 60 * 60));
-        const wordIndex = currentHourEpoch % words.length;
 
-        if (wordIndex !== lastHourIndex) {
-            lastHourIndex = wordIndex;
-            const currentWord = words[wordIndex];
+        if (currentHourEpoch !== lastHourEpoch) {
+            lastHourEpoch = currentHourEpoch;
+            currentWordIndex = getHourlyRandomIndex(currentHourEpoch, words.length);
+            const currentWord = words[currentWordIndex];
             
             document.getElementById('wothTerm').textContent = currentWord.en;
             document.getElementById('quizFeedback').textContent = "";
@@ -887,7 +896,7 @@ const words = [
             if (btn === selectedBtn) {
                 btn.classList.add(isCorrect ? 'correct' : 'incorrect');
             } else if (isCorrect === false) {
-                const currentWord = words[lastHourIndex];
+                const currentWord = words[currentWordIndex];
                 const correctText = `${currentWord.kz} / ${currentWord.ru}`;
                 if (btn.textContent === correctText) {
                     btn.classList.add('correct');
