@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>@doctors.speak — Определитель уровня медицинского английского</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kzblue: {
+                            light: '#EBF8FC',
+                            DEFAULT: '#00A1DE',
+                            dark: '#0077A3',
+                        },
+                        kzgold: {
+                            light: '#FFFBEB',
+                            DEFAULT: '#FFC72C',
+                            dark: '#D9A000',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: radial-gradient(circle at top, #EBF8FC 0%, #F0F6FA 60%);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .fade-in { animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .passage-scroll::-webkit-scrollbar { width: 6px; }
+        .passage-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 8px; }
+        .passage-scroll::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 8px; }
+    </style>
+</head>
+<body class="text-slate-800 min-h-full flex flex-col antialiased selection:bg-kzblue selection:text-white">
+
+    <!-- Шапка в стиле @doctors.speak -->
+    <header class="bg-gradient-to-r from-[#0093CC] via-[#00A1DE] to-[#22B8CF] text-white sticky top-0 z-40 shadow-md">
+        <div class="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between gap-2">
+            <!-- Кнопка Назад на kazdoctors.com -->
+            <a href="https://kazdoctors.com" class="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 active:scale-95 border border-white/40 text-white font-bold text-xs sm:text-sm px-3.5 py-2 rounded-full transition">
+                <i class="fa-solid fa-arrow-left text-xs"></i>
+                <span data-i18n="backBtn">Назад</span>
+            </a>
+
+            <!-- Бейдж бренда -->
+            <div class="flex items-center gap-2">
+                <span class="font-extrabold tracking-tight text-sm sm:text-base bg-white/20 border border-white/35 px-3.5 py-1.5 rounded-full">
+                    ✨ @doctors.speak
+                </span>
+            </div>
+
+            <!-- Переключатель языка (RU / KZ) -->
+            <div class="flex items-center bg-black/15 p-1 rounded-full border border-white/35">
+                <button id="langRuBtn" onclick="app.setLanguage('ru')" class="px-3 py-1 rounded-full text-xs font-extrabold transition-all bg-white text-[#0077A3] shadow-sm">
+                    RU
+                </button>
+                <button id="langKzBtn" onclick="app.setLanguage('kz')" class="px-3 py-1 rounded-full text-xs font-extrabold transition-all text-white/85 hover:text-white">
+                    KZ
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Основной контейнер -->
+    <main class="flex-1 max-w-3xl w-full mx-auto px-4 py-6 sm:py-10 flex flex-col justify-center">
+
+        <!-- Всплывающее уведомление -->
+        <div id="toastBox" class="fixed top-20 right-4 z-50 hidden max-w-sm bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl border border-slate-700 flex items-center gap-3 text-xs sm:text-sm font-bold">
+            <i class="fa-solid fa-circle-exclamation text-kzgold"></i>
+            <span id="toastText"></span>
+        </div>
+
+        <!-- ==================== ЭКРАН 1: СТАРТ ==================== -->
+        <section id="welcomeScreen" class="fade-in bg-white rounded-3xl border border-slate-200 shadow-lg p-6 sm:p-9">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-kzgold-light border border-kzgold-dark/30 text-kzgold-dark text-xs font-extrabold uppercase tracking-wide mb-4">
+                <i class="fa-solid fa-bolt"></i>
+                <span data-i18n="welcomeTag">Клиническая диагностика знаний • 7 минут</span>
+            </div>
+
+            <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mb-3" data-i18n="welcomeTitle">
+                Узнайте свой реальный уровень медицинского английского
+            </h1>
+            <p class="text-slate-600 text-xs sm:text-sm font-medium leading-relaxed mb-7" data-i18n="welcomeDesc">
+                Тест разработан специально для практикующих врачей, резидентов и студентов медвузов. Система выберет 12 клинических задач из 4 блоков, чтобы проверить, насколько уверенно вы готовы читать гайдлайны и общаться с иностранными пациентами.
+            </p>
+
+            <!-- 4 блока проверки -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-7">
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 border-l-4 border-l-kzblue flex items-start gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-kzblue-light text-kzblue-dark flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                        <i class="fa-solid fa-stethoscope text-sm"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xs sm:text-sm font-extrabold text-slate-900" data-i18n="pillar1Title">Терминология (3 вопроса)</h3>
+                        <p class="text-xs text-slate-500 mt-0.5 font-medium" data-i18n="pillar1Desc">Сложные греко-латинские корни, симптомы и дифдиагностика понятий</p>
+                    </div>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 border-l-4 border-l-kzgold flex items-start gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-kzgold-light text-kzgold-dark flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                        <i class="fa-solid fa-spell-check text-sm"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xs sm:text-sm font-extrabold text-slate-900" data-i18n="pillar2Title">Мед. грамматика (2 вопроса)</h3>
+                        <p class="text-xs text-slate-500 mt-0.5 font-medium" data-i18n="pillar2Desc">Сбор анамнеза без ошибок, выписки и клинические протоколы</p>
+                    </div>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 border-l-4 border-l-kzgold flex items-start gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-kzgold-light text-kzgold-dark flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                        <i class="fa-solid fa-user-injured text-sm"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xs sm:text-sm font-extrabold text-slate-900" data-i18n="pillar3Title">Речь пациентов (3 вопроса)</h3>
+                        <p class="text-xs text-slate-500 mt-0.5 font-medium" data-i18n="pillar3Desc">Разговорные фразы, сленг и жалобы реальных пациентов</p>
+                    </div>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 border-l-4 border-l-kzblue flex items-start gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-kzblue-light text-kzblue-dark flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                        <i class="fa-solid fa-file-Waveform text-sm"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xs sm:text-sm font-extrabold text-slate-900" data-i18n="pillar4Title">Клинические тексты (4 вопроса)</h3>
+                        <p class="text-xs text-slate-500 mt-0.5 font-medium" data-i18n="pillar4Desc">Детальный разбор историй болезни и статей (требует чтения текста!)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Правила -->
+            <div class="bg-kzblue-light border border-kzblue/30 rounded-2xl p-4 mb-6 flex items-start gap-3 text-xs text-kzblue-dark font-semibold">
+                <i class="fa-solid fa-clock text-kzblue text-sm mt-0.5"></i>
+                <div class="leading-relaxed" data-i18n="welcomeRules">
+                    <strong>Важно:</strong> На каждый вопрос дается от 45 до 75 секунд. Вопросы и варианты ответов отображаются на выбранном вами языке (RU / KZ), а проверяемые английские фразы и клинические выписки — в оригинале на английском.
+                </div>
+            </div>
+
+            <!-- Форма старта -->
+            <form id="startForm" onsubmit="app.handleStartTest(event)" class="space-y-4">
+                <div>
+                    <label for="userNameInput" class="block text-xs font-extrabold uppercase tracking-wider text-slate-600 mb-2" data-i18n="nameLabel">
+                        Ваше имя *
+                    </label>
+                    <div class="relative">
+                        <i class="fa-regular fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input 
+                            type="text" 
+                            id="userNameInput" 
+                            required 
+                            maxlength="50"
+                            class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-slate-50 border border-slate-300 text-slate-900 font-bold text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-kzblue focus:border-kzblue transition"
+                            placeholder="Например: Доктор Алиев / Алия"
+                        >
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-kzgold to-[#FFD55A] hover:brightness-105 text-slate-900 border border-kzgold-dark font-black text-sm sm:text-base uppercase tracking-wide shadow-md transition flex items-center justify-center gap-2.5 active:scale-[0.99]">
+                    <span data-i18n="startBtn">Начать тестирование</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+        </section>
+
+        <!-- ==================== ЭКРАН 2: ПРОХОЖДЕНИЕ ТЕСТА ==================== -->
+        <section id="quizScreen" class="hidden fade-in bg-white rounded-3xl border border-slate-200 shadow-lg overflow-hidden">
+            
+            <!-- Верхняя панель прогресса -->
+            <div class="bg-slate-900 text-white p-4 sm:px-7 flex flex-col gap-3">
+                <div class="flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-2.5">
+                        <span id="questionCounter" class="text-xs font-black uppercase tracking-wider px-3 py-1 rounded-xl bg-kzblue text-white">
+                            1 / 12
+                        </span>
+                        <span id="categoryBadge" class="text-xs font-bold text-slate-200 truncate max-w-[190px] sm:max-w-md">
+                            Терминология
+                        </span>
+                    </div>
+
+                    <!-- Таймер вопроса -->
+                    <div class="flex items-center gap-2 bg-slate-800 px-3 py-1 rounded-xl border border-slate-700">
+                        <i class="fa-regular fa-clock text-kzgold text-xs"></i>
+                        <span id="timerText" class="font-mono text-xs sm:text-sm font-extrabold text-white">00:45</span>
+                    </div>
+                </div>
+
+                <!-- Полоса прогресса -->
+                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                    <div id="wizardProgressBar" class="bg-kzgold h-full transition-all duration-300" style="width: 8.33%"></div>
+                </div>
+            </div>
+
+            <!-- Полоса убывания времени на вопрос -->
+            <div class="w-full bg-slate-100 h-1.5 overflow-hidden">
+                <div id="questionTimerBar" class="bg-kzblue h-full transition-all duration-1000 ease-linear" style="width: 100%"></div>
+            </div>
+
+            <!-- Тело вопроса -->
+            <div class="p-5 sm:p-8">
+                
+                <!-- Блок текста для чтения (показывается только в 4 блоке) -->
+                <div id="readingPassageBox" class="hidden mb-6 bg-kzblue-light/70 border border-kzblue/30 border-l-4 border-l-kzblue rounded-2xl p-4 sm:p-5">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-[11px] font-black uppercase tracking-wider text-kzblue-dark flex items-center gap-1.5">
+                            <i class="fa-solid fa-book-medical"></i>
+                            <span data-i18n="readingHeader">Clinical Extract (Read Carefully)</span>
+                        </span>
+                    </div>
+                    <p id="readingPassageText" class="text-xs sm:text-sm text-slate-800 leading-relaxed font-semibold passage-scroll max-h-56 overflow-y-auto pr-1 select-none"></p>
+                </div>
+
+                <!-- Текст вопроса (На РУС или КАЗ в зависимости от выбранного режима) -->
+                <h2 id="questionPrompt" class="text-base sm:text-lg font-extrabold text-slate-900 leading-snug mb-6 border-l-4 border-kzgold pl-3.5">
+                    Загрузка вопроса...
+                </h2>
+
+                <!-- Варианты ответов -->
+                <div id="optionsContainer" class="space-y-3 mb-7"></div>
+
+                <!-- Кнопка Далее -->
+                <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+                    <span class="text-xs font-semibold text-slate-400" data-i18n="noBackHint">Ответ фиксируется без возврата</span>
+                    <button id="nextQuestionBtn" onclick="app.submitCurrentAnswer()" disabled class="px-6 py-3.5 rounded-2xl bg-kzblue hover:bg-kzblue-dark disabled:bg-slate-200 disabled:text-slate-400 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider transition flex items-center gap-2 cursor-pointer disabled:cursor-not-allowed shadow-sm">
+                        <span data-i18n="nextBtn">Далее</span>
+                        <i class="fa-solid fa-chevron-right text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== ЭКРАН 3: РЕЗУЛЬТАТЫ И ПЕРЕХОД НА ТАРИФЫ ==================== -->
+        <section id="resultScreen" class="hidden fade-in space-y-6">
+            
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-lg p-6 sm:p-9">
+                
+                <!-- Таймер повторного прохождения -->
+                <div id="cooldownBanner" class="mb-6 bg-slate-100 border border-slate-200 rounded-2xl p-3.5 px-4 flex flex-wrap items-center justify-between gap-2 text-xs font-semibold text-slate-600">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-lock text-kzblue-dark"></i>
+                        <span data-i18n="cooldownNotice">Следующая попытка будет доступна через:</span>
+                    </div>
+                    <span id="cooldownTimerDisplay" class="font-mono font-extrabold text-slate-900 bg-white px-3 py-1 rounded-xl border border-slate-200">59:59</span>
+                </div>
+
+                <!-- Заголовок результата -->
+                <div class="text-center max-w-xl mx-auto mb-7">
+                    <span class="inline-block text-xs font-black uppercase tracking-widest text-kzblue bg-kzblue-light px-3 py-1 rounded-full mb-2" data-i18n="resultCompletedTag">Диагностика завершена</span>
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900">
+                        <span id="resultUserName">Доктор</span>, <span data-i18n="resultTitleSuffix">ваш разбор готов!</span>
+                    </h2>
+                </div>
+
+                <!-- Блок очков и уровня -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-stretch mb-7">
+                    
+                    <!-- Счетчик правильных ответов -->
+                    <div class="md:col-span-5 bg-slate-900 text-white rounded-2xl p-6 flex flex-col items-center justify-center text-center border-b-4 border-kzgold">
+                        <div class="w-24 h-24 rounded-full border-4 border-kzgold flex flex-col items-center justify-center mb-3 bg-slate-800">
+                            <span id="scoreFraction" class="text-3xl font-black text-kzgold">0 / 12</span>
+                        </div>
+                        <span class="text-xs font-extrabold text-slate-200 uppercase tracking-wider" data-i18n="correctCountLabel">Правильных ответов</span>
+                        <span id="scorePercentText" class="text-xs text-slate-400 font-semibold mt-1">0% точность</span>
+                    </div>
+
+                    <!-- Описание уровня -->
+                    <div class="md:col-span-7 bg-kzblue-light/60 border border-kzblue/30 border-l-4 border-l-kzblue rounded-2xl p-6 flex flex-col justify-center">
+                        <span class="text-xs font-extrabold uppercase tracking-wider text-kzblue-dark mb-1" data-i18n="estimatedLevelLabel">Ваш текущий уровень</span>
+                        <div id="levelTitle" class="text-xl sm:text-2xl font-black text-slate-900 mb-2">
+                            B1+ — Клинический практик
+                        </div>
+                        <p id="levelDescription" class="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed"></p>
+                    </div>
+                </div>
+
+                <!-- Дисклеймер -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 mb-7 flex items-start gap-3">
+                    <i class="fa-solid fa-circle-info text-kzblue mt-0.5 text-sm"></i>
+                    <p class="text-xs text-slate-500 font-medium leading-relaxed" data-i18n="disclaimerText">
+                        <strong>Обратите внимание:</strong> Данный тест проверяет базовое восприятие клинических текстов, лексики и жалоб пациентов. Для полной уверенности в разговорной речи на приеме и на международных стажировках важна системная практика.
+                    </p>
+                </div>
+
+                <!-- Продающий блок с переходом на kazdoctors.com/tarifs -->
+                <div class="bg-gradient-to-br from-[#0077A3] via-[#0093CC] to-[#00A1DE] rounded-3xl p-6 sm:p-8 text-white flex flex-col items-center text-center shadow-xl relative overflow-hidden">
+                    <span class="inline-block text-[11px] font-black uppercase tracking-wider px-3.5 py-1 rounded-full bg-kzgold text-slate-900 mb-3 shadow-sm" data-i18n="ctaBadge">
+                        🔥 Следующий шаг к росту
+                    </span>
+                    <h3 class="text-xl sm:text-2xl font-black text-white max-w-xl leading-tight mb-3" data-i18n="ctaTitle">
+                        Не позволяйте языковому барьеру ограничивать вашу медицинскую карьеру!
+                    </h3>
+                    <p class="text-xs sm:text-sm text-white/90 max-w-xl font-medium leading-relaxed mb-6" data-i18n="ctaDesc">
+                        Читайте оригинальные гайдлайны в день их выхода, уверенно собирайте анамнез на английском и готовьтесь к стажировкам за рубежом вместе с закрытой платформой и индивидуальными занятиями @doctors.speak.
+                    </p>
+
+                    <a href="https://kazdoctors.com/tarifs" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-kzgold to-[#FFD55A] hover:brightness-105 text-slate-900 border-2 border-white/40 font-black text-sm sm:text-base uppercase tracking-wide shadow-lg transition flex items-center justify-center gap-2.5 active:scale-95">
+                        <span data-i18n="ctaBtn">🚀 Выбрать тариф и начать обучение</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Футер -->
+    <footer class="py-5 text-center text-xs font-semibold text-slate-400 border-t border-slate-200/60 bg-white/70">
+        <div class="max-w-3xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <span>&copy; <a href="https://kazdoctors.com" class="hover:text-kzblue underline">kazdoctors.com</a> • @doctors.speak</span>
+            <span data-i18n="footerNote">Medical English Assessment</span>
+        </div>
+    </footer>
+
+    <!-- ==================== ЛОГИКА И БАЗА ВОПРОСОВ (RU / KZ) ==================== -->
+    <script>
+        /**
+         * ПЕРЕВОДЫ ИНТЕРФЕЙСА (РУССКИЙ И КАЗАХСКИЙ)
+         */
+        const I18N = {
+            ru: {
+                backBtn: "Назад",
+                welcomeTag: "Клиническая диагностика знаний • 7 минут",
+                welcomeTitle: "Узнайте свой реальный уровень медицинского английского",
+                welcomeDesc: "Тест разработан специально для практикующих врачей, резидентов и студентов медвузов. Система случайным образом выберет 12 клинических задач из 4 блоков, чтобы проверить, насколько уверенно вы понимаете статьи, гайдлайны и англоязычных пациентов.",
+                pillar1Title: "Терминология (3 вопроса)",
+                pillar1Desc: "Сложные симптомы, клинические состояния и похожие термины",
+                pillar2Title: "Мед. грамматика (2 вопроса)",
+                pillar2Desc: "Сбор анамнеза без ошибок, выписки и клинические протоколы",
+                pillar3Title: "Речь пациентов (3 вопроса)",
+                pillar3Desc: "Разговорные фразы, идиомы и жалобы реальных пациентов",
+                pillar4Title: "Клинические тексты (4 вопроса)",
+                pillar4Desc: "Детальный разбор выписок и исследований (требует чтения текста!)",
+                welcomeRules: "<strong>Обратите внимание:</strong> На каждый вопрос дается от 45 до 75 секунд. Вопросы задаются на выбранном вами языке (RU / KZ), а проверяемые английские фразы и клинические тексты даются в оригинале.",
+                nameLabel: "Ваше имя или обращение *",
+                namePlaceholder: "Например: Д-р Алиев / Алия",
+                startBtn: "Начать тестирование",
+                readingHeader: "Клинический текст (Внимательно прочитайте перед ответом)",
+                noBackHint: "Ответ фиксируется без возможности возврата",
+                nextBtn: "Далее",
+                finishBtn: "Узнать результат",
+                cooldownNotice: "Повторное прохождение будет доступно через:",
+                resultCompletedTag: "Диагностика завершена",
+                resultTitleSuffix: "ваш результат готов!",
+                correctCountLabel: "Правильных ответов",
+                accuracySuffix: "% точность",
+                estimatedLevelLabel: "Ориентировочный уровень",
+                disclaimerText: "<strong>Обратите внимание:</strong> Данный результат показывает ваш текущий навык понимания медицинской лексики и клинических текстов. Чтобы свободно говорить с пациентами и коллегами на английском, важна регулярная речевая практика.",
+                ctaBadge: "🔥 Следующий шаг к вашей цели",
+                ctaTitle: "Не позволяйте языковому барьеру тормозить вашу карьеру врача!",
+                ctaDesc: "Читайте международные гайдлайны в оригинале, уверенно опрашивайте пациентов и откройте полный доступ ко всем тренажерам, видеоурокам и занятиям на платформе @doctors.speak.",
+                ctaBtn: "🚀 Посмотреть тарифы и прокачать Medical English",
+                footerNote: "Система оценки знаний @doctors.speak",
+                enterNameError: "Пожалуйста, введите ваше имя перед началом теста.",
+                categories: {
+                    terminology: "Блок 1: Медицинская терминология",
+                    grammar: "Блок 2: Грамматика в клинике",
+                    patient: "Блок 3: Речь и жалобы пациентов",
+                    reading: "Блок 4: Чтение клинических текстов"
+                },
+                levels: {
+                    low: {
+                        title: "A1–A2 — Начальный уровень (Medical Starter)",
+                        desc: "Вы знаете отдельные базовые слова, но легко путаетесь в похожих клинических терминах, разговорных жалобах пациентов и деталях англоязычных выписок. Вам идеально подойдет пошаговое обучение с нуля по нашей системе тренажеров и уроков."
+                    },
+                    mid: {
+                        title: "B1 — Уверенный базовый (Clinical Practitioner)",
+                        desc: "Хорошая база! Вы улавливаете общий смысл клинических текстов и знаете основную терминологию, но теряете баллы на нюансах грамматики опроса пациента и тонкостях научных статей. Системная практика поможет вам быстро выйти на уверенный уровень B2/C1."
+                    },
+                    high: {
+                        title: "B2–C1 — Продвинутый уровень (Advanced Clinician)",
+                        desc: "Отличный результат! Вы внимательно читаете клинические выписки, не попадаетесь на уловки в терминах и понимаете идиомы пациентов. Наши продвинутые курсы, подготовка к USMLE/IELTS и индивидуальные занятия помогут вам довести разговорный навык до совершенства."
+                    }
+                }
+            },
+            kz: {
+                backBtn: "Артқа",
+                welcomeTag: "Білімді клиникалық диагностикалау • 7 минут",
+                welcomeTitle: "Медициналық ағылшын тілінің нақты деңгейін анықтаңыз",
+                welcomeDesc: "Тест тәжірибелік дәрігерлерге, резиденттерге және медициналық ЖОО студенттеріне арналған. Жүйе мақалаларды, гайдлайндарды және науқастардың шағымдарын қаншалықты жақсы түсінетініңізді тексеру үшін 4 блоктан кездейсоқ 12 клиникалық тапсырма таңдайды.",
+                pillar1Title: "Терминология (3 сұрақ)",
+                pillar1Desc: "Күрделі симптомдар, клиникалық жағдайлар және ұқсас терминдер",
+                pillar2Title: "Мед. грамматика (2 сұрақ)",
+                pillar2Desc: "Анамнезді қатесіз жинау, ауру тарихы және клиникалық хаттамалар",
+                pillar3Title: "Науқастар тілі (3 сұрақ)",
+                pillar3Desc: "Ауызекі сөз тіркестері, идиомалар және науқастардың шағымдары",
+                pillar4Title: "Клиникалық мәтіндер (4 сұрақ)",
+                pillar4Desc: "Үзінділер мен зерттеулерді талдау (мәтінді мұқият оқуды талап етеді!)",
+                welcomeRules: "<strong>Назар аударыңыз:</strong> Әр сұраққа 45-тен 75 секундқа дейін уақыт беріледі. Сұрақтар сіз таңдаған тілде (RU / KZ) қойылады, ал тексерілетін ағылшынша фразалар мен клиникалық мәтіндер түпнұсқада беріледі.",
+                nameLabel: "Сіздің есіміңіз *",
+                namePlaceholder: "Мысалы: Д-р Әлиев / Әлия",
+                startBtn: "Тестілеуді бастау",
+                readingHeader: "Клиникалық мәтін (Жауап бермес бұрын мұқият оқып шығыңыз)",
+                noBackHint: "Жауап артқа қайту мүмкіндігінсіз бекітіледі",
+                nextBtn: "Келесі",
+                finishBtn: "Нәтижені білу",
+                cooldownNotice: "Тестті қайта тапсыру уақыты:",
+                resultCompletedTag: "Диагностика аяқталды",
+                resultTitleSuffix: "сіздің нәтижеңіз дайын!",
+                correctCountLabel: "Дұрыс жауаптар",
+                accuracySuffix: "% дәлдік",
+                estimatedLevelLabel: "Болжамды деңгейіңіз",
+                disclaimerText: "<strong>Назар аударыңыз:</strong> Бұл нәтиже медициналық лексика мен клиникалық мәтіндерді түсінудің ағымдағы деңгейін көрсетеді. Науқастармен және шетелдік әріптестермен еркін сөйлесу үшін жүйелі тәжірибе қажет.",
+                ctaBadge: "🔥 Мақсатыңызға келесі қадам",
+                ctaTitle: "Тілдік кедергінің дәрігерлік мансабыңызды тежеуіне жол бермеңіз!",
+                ctaDesc: "Халықаралық гайдлайндарды түпнұсқада оқыپ, науқастардан ағылшынша еркін анамнез жинаңыз. @doctors.speak платформасындағы барлық тренажерлерге, видеосабақтарға және жеке сабақтарға толық қол жеткізіңіз.",
+                ctaBtn: "🚀 Тарифтерді көру және оқуды бастау",
+                footerNote: "@doctors.speak білімді бағалау жүйесі",
+                enterNameError: "Тестті бастамас бұрын есіміңізді енгізіңіз.",
+                categories: {
+                    terminology: "1-блок: Медициналық терминология",
+                    grammar: "2-блок: Клиникалық грамматика",
+                    patient: "3-блок: Науқастардың ауызекі тілі",
+                    reading: "4-блок: Клиникалық мәтіндерді оқу"
+                },
+                levels: {
+                    low: {
+                        title: "A1–A2 — Бастапқы деңгей (Medical Starter)",
+                        desc: "Сіз жекелеген базалық сөздерді білесіз, бірақ ұқсас клиникалық терминдерде, науқастардың ауызекі шағымдарында және ағылшынша үзінділерде қиналасыз. Сізге біздің тренажерлер мен сабақтар жүйесі арқылы нөлден бастап кезең-кезеңімен оқу өте қолайлы."
+                    },
+                    mid: {
+                        title: "B1 — Орташа клиникалық деңгей (Clinical Practitioner)",
+                        desc: "Жақсы база! Сіз клиникалық мәтіндердің жалпы мағынасын түсінесіз, бірақ науқастан сұхбат алу грамматикасы мен ғылыми мақалалардың нақты детальдарында қателесесіз. Жүйелі дайындық сізді B2/C1 деңгейіне тез шығарады."
+                    },
+                    high: {
+                        title: "B2–C1 — Жоғары деңгей (Advanced Clinician)",
+                        desc: "Керемет нәтиже! Сіз клиникалық үзінділерді мұқият оқисыз, күрделі терминдерді ажырата аласыз және науқастардың идиомаларын жақсы түсінесіз. Біздің жоғары деңгейлі курстарымыз бен жеке сабақтарымыз ауызекі сөйлеу дағдысын мінсіз деңгейге жеткізуге көмектеседі."
+                    }
+                }
+            }
+        };
+
+        /**
+         * БАНК ВОПРОСОВ (НА РУССКОМ И КАЗАХСКОМ ЯЗЫКАХ С НЕОЧЕВИДНЫМИ ВАРИАНТАМИ ОТВЕТОВ)
+         * В Блоке 4 (reading) вопросы составлены так, что ответить без чтения самого текста невозможно!
+         */
+        const QUESTION_BANK = {
+            // ==================== БЛОК 1: ТЕРМИНОЛОГИЯ ====================
+            terminology: [
+                {
+                    id: "term_1",
+                    prompt: {
+                        ru: "Врач отметил в осмотре симптом «orthopnea». На что именно жалуется пациент?",
+                        kz: "Дәрігер тексеру кезінде «orthopnea» симптомын белгіледі. Пациент нақты неге шағымданады?"
+                    },
+                    options: {
+                        ru: [
+                            "Одышка, возникающая или усиливающаяся в горизонтальном положении (лежа на спине)",
+                            "Одышка, возникающая исключительно при переходе в вертикальное положение (стоя)",
+                            "Внезапная остановка дыхания во время глубокой фазы сна",
+                            "Учащенное поверхностное дыхание при физической нагрузке"
+                        ],
+                        kz: [
+                            "Көлденең жатқанда (шалқасынан жатқанда) пайда болатын немесе күшейетін ентігу",
+                            "Тек тік тұрғанда (вертикальды қалыпта) пайда болатын ентігу",
+                            "Терең ұйқы фазасында тыныс алудың кенеттен тоқтауы",
+                            "Физикалық жүктеме кезіндегі жиі үстірт тыныс алу"
+                        ]
+                    },
+                    correct: 0
+                },
+                {
+                    id: "term_2",
+                    prompt: {
+                        ru: "Не перепутайте похожие термины: чем клинически отличается «dysphagia» от «dysphasia»?",
+                        kz: "Ұқсас терминдерді шатастырмаңыз: клиникада «dysphagia» мен «dysphasia» терминдерінің айырмашылығы неде?"
+                    },
+                    options: {
+                        ru: [
+                            "Dysphagia — затруднение глотания; dysphasia — нарушение речи",
+                            "Dysphagia — нарушение речи; dysphasia — расстройство пищеварения",
+                            "Dysphagia — боль при жевании; dysphasia — осиплость голоса",
+                            "Dysphagia — нарушение координации движений; dysphasia — затруднение дыхания"
+                        ],
+                        kz: [
+                            "Dysphagia — жұтынудың қиындауы; dysphasia — сөйлеу бұзылысы",
+                            "Dysphagia — сөйлеу бұзылысы; dysphasia — ас қорыту бұзылысы",
+                            "Dysphagia — шайнау кезіндегі ауырсыну; dysphasia — дауыстың қарлығуы",
+                            "Dysphagia — қозғалыс үйлесімінің бұзылуы; dysphasia — тыныс алудың қиындауы"
+                        ]
+                    },
+                    correct: 0
+                },
+                {
+                    id: "term_3",
+                    prompt: {
+                        ru: "В истории болезни указано: «iatrogenic pneumothorax». Что означает термин «iatrogenic» в данном контексте?",
+                        kz: "Ауру тарихында «iatrogenic pneumothorax» деп көрсетілген. Осы контексте «iatrogenic» термині нені білдіреді?"
+                    },
+                    options: {
+                        ru: [
+                            "Возникший как непреднамеренное осложнение медицинских манипуляций (например, катетеризации подключичной вены)",
+                            "Возникший спонтанно без видимой внешней или внутренней причины",
+                            "Развившийся внутри больницы спустя 48 часов после госпитализации",
+                            "Вызванный врожденной аномалией соединительной ткани легких"
+                        ],
+                        kz: [
+                            "Медициналық манипуляциялардың (мысалы, бұғанаасты венасын катетеризациялау) асқынуы ретінде пайда болған",
+                            "Ешқандай сыртқы немесе ішкі себепсіз өздігінен (спонтанды) пайда болған",
+                            "Ауруханаға жатқызылғаннан кейін 48 сағаттан соң пайда болған ауруханаішілік жағдай",
+                            "Өкпенің дәнекер тінінің туа біткен аномалиясынан туындаған"
+                        ]
+                    },
+                    correct: 0
+                },
+                {
+                    id: "term_4",
+                    prompt: {
+                        ru: "Что означает клинический термин «hematemesis», указанный в листе приемного покоя?",
+                        kz: "Қабылдау бөлімінің парағында көрсетілген «hematemesis» клиникалық термині нені білдіреді?"
+                    },
+                    options: {
+                        ru: [
+                            "Рвота кровью (при кровотечении из верхних отделов ЖКТ)",
+                            "Кровохарканье (откашливание крови из дыхательных путей)",
+                            "Наличие свежей алой крови в стуле",
+                            "Носовое кровотечение из переднего отдела перегородки"
+                        ],
+                        kz: [
+                            "Қан құсу (АІЖ жоғарғы бөліктерінен қан кету кезінде)",
+                            "Қан түкіру (тыныс алу жолдарынан жөтелгенде қан шығу)",
+                            "Нәжісте алқызыл қанның болуы",
+                            "Мұрын қалқасының алдыңғы бөлігінен қан кету"
+                        ]
+                    },
+                    correct: 0
+                },
+                {
+                    id: "term_5",
+                    prompt: {
+                        ru: "В хирургическом протоколе запланирована операция «cholecystolithotomy». В чем заключается эта процедура?",
+                        kz: "Хирургиялық хаттамада «cholecystolithotomy» отасы жоспарланған. Бұл процедураның мәні неде?"
+                    },
+                    options: {
+                        ru: [
+                            "Рассечение желчного пузыря для удаления камней с сохранением самого органа",
+                            "Полное хирургическое удаление желчного пузыря вместе с конкрементами",
+                            "Дробление камней в общем желчном протоке ультразвуком",
+                            "Наложение соустья между желчным пузырем и двенадцатиперстной кишкой"
+                        ],
+                        kz: [
+                            "Ағзаның өзін сақтай отырып, тастарды алу үшін өт қабын кесу",
+                            "Өт қабын тастармен бірге толық хирургиялық жолмен алып тастау",
+                            "Жалпы өт жолындағы тастарды ультрадыбыспен уату",
+                            "Өт қабы мен он екі елі ішек арасында анастомоз салу"
+                        ]
+                    },
+                    correct: 0
+                },
+                {
+                    id: "term_6",
+                    prompt: {
+                        ru: "При неврологическом осмотре выявлен симптом «diplopia». Что именно беспокоит пациента?",
+                        kz: "Неврологиялық тексеру кезінде «diplopia» симптомы анықталды. Пациентті нақты не мазалайды?"
+                    },
+                    options: {
+                        ru: [
+                            "Двоение одного объекта в глазах",
+                            "Выпадение половины поля зрения на обоих глазах",
+                            "Опущение верхнего века из-за слабости мышцы",
+                            "Непроизвольные ритмичные колебательные движения глазных яблок"
+                        ],
+                        kz: [
+                            "Көзге бір заттың қосарланып көрінуі",
+                            "Екі көзде де көру аймағының жартысының жоғалуы",
+                            "Бұлшықет әлсіздігінен жоғарғы қабақтың салбырап түсуі",
+                            "Көз алмасының еріксіз ырғақты тербелмелі қозғалысы"
+                        ]
+                    },
+                    correct: 0
+                }
+            ],
+
+            // ==================== БЛОК 2: МЕДИЦИНСКАЯ ГРАММАТИКА ====================
+            grammar: [
+                {
+                    id: "gram_1",
+                    prompt: {
+                        ru: "Пациент сидит перед вами на приеме и жалуется на головокружение, которое началось 3 дня назад и продолжается до сих пор. Выберите грамматически безупречный вопрос врача:",
+                        kz: "Пациент қабылдауда отыр және 3 күн бұрын басталып, әлі де жалғасып жатқан бас айналуға шағымданады. Дәрігердің грамматикалық тұрғыдан мінсіз сұрағын таңдаңыз:"
+                    },
+                    options: {
+                        ru: [
+                            "How long have you been experiencing these dizzy spells?",
+                            "Since when are you experiencing these dizzy spells?",
+                            "How long time did you had these dizzy spells?",
+                            "How long do you experience these dizzy spells now?"
+                        ],
+                        kz: [
+                            "How long have you been experiencing these dizzy spells?",
+                            "Since when are you experiencing these dizzy spells?",
+                            "How long time did you had these dizzy spells?",
+                            "How long do you experience these dizzy spells now?"
+                        ]
+                    },
+                    correct: 0
+                },
+                {
+                    id: "gram_2",
+                    prompt: {
+                        ru: "Выберите правильную форму для выписного эпикриза: «До того как бригада скорой помощи прибыла на вызов, пациент уже принял две таблетки нитроглицерина под язык».",
+                        kz: "Шығару эпикризі үшін дұрыс форманы таңдаңыз: «Жедел жәрдем бригадасы келгенге дейін, пациент тіл астына нитроглицериннің екі таблеткасын қабылдап қойған»."
+                    },
+                    options: {
+                        ru: [
+                            "By the time the paramedics arrived, the patient had already taken two sublingual nitroglycerin tablets.",
+                            "When the paramedics arrived, the patient has already took two sublingual nitroglycerin tablets.",
+                            "Before the paramedics were arriving, the patient already takes two sublingual nitroglycerin tablets.",
+                            "By the time the paramedics had arrived, the patient was already taking two sublingual nitroglycerin tablets."
+                        ],
+                        kz: [
+                            "By the time the paramedics arrived, the patient had already taken two sublingual nitroglycerin tablets.",
+                            "When the paramedics arrived, the patient has already took two sublingual nitroglycerin tablets.",
+                            "Before the paramedics were arriving, the patient already takes two sublingual nitroglycerin tablets.",
+                            "By the time the paramedics had arrived, the patient was already taking two sublingual nitroglycerin tablets."
+                        ]
+                    },
+                    correct: 0
+                },
+                {
+                    id: "gram_3",
+                    prompt: {
+                        ru: "Как грамматически правильно оформить условное предложение в клиническом протоколе: «Если сатурация упадет ниже 90%, немедленно начните оксигенотерапию»?",
+                        kz: "Клиникалық хаттамада шартты сөйлемді грамматикалық тұрғыдан қалай дұрыс жазу керек: «Егер сатурация 90%-дан төмен түссе, дереу оксигенотерапияны бастаңыз»?"
+                    },
+                    options: {
+                        ru: [
+                            "If the oxygen saturation drops below 90%, initiate supplemental oxygen immediately.",
+                            "If the oxygen saturation will drop below 90%, initiate supplemental oxygen immediately.",
+                            "In case the oxygen saturation would drop below 90%, you will initiate supplemental oxygen.",
+                            "Unless the oxygen saturation drops below 90%, initiate supplemental oxygen immediately."
+                        ],
+                        kz: [
+                            "If the oxygen saturation drops below 90%, initiate supplemental oxygen immediately.",
+                            "If the oxygen saturation will drop below 90%, initiate supplemental oxygen immediately.",
+                            "In case the oxygen saturation would drop below 90%, you will initiate supplemental oxygen.",
+                            "Unless the oxygen saturation drops below 90%, initiate supplemental oxygen immediately."
+                        ]
+                    },
+                    correct: 0
+                },
+                {
+                    id: "gram_4",
+                    prompt: {
+                        ru: "Выберите правильный предлог и герундий для истории болезни: «Пациент поступил в отделение неотложной помощи после того, как потерял сознание на работе».",
+                        kz: "Ауру тарихы үшін дұрыс предлог пен герундийді таңдаңыз: «Пациент жұмысында есінен танып қалғаннан кейін жедел жәрдем бөліміне түсті»."
+                    },
+                    options: {
+                        ru: [
+                            "The patient was admitted to the emergency department after losing consciousness at work.",
+                            "The patient was admitted in the emergency department after lost consciousness at work.",
+                            "The patient admitted to the emergency department after to lose consciousness at work.",
+                            "The patient was admitted at the emergency department after he has lost consciousness at work."
+                        ],
+                        kz: [
+                            "The patient was admitted to the emergency department after losing consciousness at work.",
+                            "The patient was admitted in the emergency department after lost consciousness at work.",
+                            "The patient admitted to the emergency department after to lose consciousness at work.",
+                            "The patient was admitted at the emergency department after he has lost consciousness at work."
+                        ]
+                    },
+                    correct: 0
+                }
+            ],
+
+            // ==================== БЛОК 3: РЕЧЬ ПАЦИЕНТОВ (ИДИОМЫ И ЖАЛОБЫ) ====================
+            patient: [
+                {
+                    id: "pat_1",
+                    prompt: {
+                        ru: "На приеме пациентка говорит: «Doctor, my ankle has completely ballooned up since yesterday». Что она имеет в виду?",
+                        kz: "Қабылдауда пациент: «Doctor, my ankle has completely ballooned up since yesterday» дейді. Ол нені меңзеп тұр?"
+                    },
+                    options: {
+                        ru: [
+                            "В области голеностопа появился сильный отек (swelling / edema)",
+                            "Сустав полностью заклинило и он не сгибается",
+                            "В области лодыжки ощущается резкая пульсирующая боль",
+                            "Кожа над суставом покраснела и покрылась пузырями"
+                        ],
+                        kz: [
+                            "Тобық аймағы қатты ісініп кетті (swelling / edema)",
+                            "Буын толығымен сіресіп қалды және бүгілмейді",
+                            "Тобық аймағында өткір солқылдаған ауырсыну сезіледі",
+                            "Буын үстіндегі тері қызарып, күлдіреп кетті"
+                        ]
+                    },
+                    correct: 0
+                },
+                {
+                    id: "pat_2",
+                    prompt: {
+                        ru: "Пациент жалуется гастроэнтерологу: «I’ve been feeling really stopped up for almost a week». Какой симптом он описывает?",
+                        kz: "Пациент гастроэнтерологқа шағымданады: «I’ve been feeling really stopped up for almost a week». Ол қандай симптомды сипаттап отыр?"
+                    },
+                    options: {
+                        ru: [
+                            "Запор (constipation)",
+                            "Чувство раннего насыщения после пары ложек еды (early satiety)",
+                            "Затруднение прохождения твердой пищи по пищеводу",
+                            "Заложенность носа и отек пазух"
+                        ],
+                        kz: [
+                            "Іш қату (constipation)",
+                            "Аздаған тамақтан кейін тез тою сезімі (early satiety)",
+                            "Қатты тамақтың өңеш арқылы өтуінің қиындауы",
+                            "Мұрынның бітелуі және қуыстардың ісінуі"
+                        ]
+                    },
+                    correct: 0
+                },
+                {
+                    id: "pat_3",
+                    prompt: {
+                        ru: "Пожилой британский пациент говорит: «I’ve been having some trouble with my waterworks lately, especially at night». О какой системе органов идет речь?",
+                        kz: "Егде жастағы британдық пациент: «I’ve been having some trouble with my waterworks lately, especially at night» дейді. Қай ағзалар жүйесі туралы айтылып тұр?"
+                    },
+                    options: {
+                        ru: [
+                            "Мочевыделительная система (проблемы с мочеиспусканием)",
+                            "Слезоотделительная система (избыточное слезотечение ночью)",
+                            "Сердечно-сосудистая система (ночные отеки нижних конечностей)",
+                            "Вегетативная нервная система (профузная ночная потливость)"
+                        ],
+                        kz: [
+                            "Зәр шығару жүйесі (кіші дәретке барудың қиындауы)",
+                            "Көз жасы жүйесі (түнде көзден жас ағу)",
+                            "Жүрек-қан тамырлары жүйесі (аяқтың түнгі ісінуі)",
+                            "Вегетативті жүйке жүйесі (түнгі қатты тершеңдік)"
+                        ]
+                    },
+                    correct: 0
+                },
+                {
+                    id: "pat_4",
+                    prompt: {
+                        ru: "Пациент говорит: «I stood up too quickly from the couch and suddenly blacked out for a few seconds». Какой медицинский термин соответствует фразе «blacked out»?",
+                        kz: "Пациент: «I stood up too quickly from the couch and suddenly blacked out for a few seconds» дейді. «Blacked out» тіркесіне қай медициналық термин сәйкес келеді?"
+                    },
+                    options: {
+                        ru: [
+                            "Syncope (кратковременная потеря сознания / обморок)",
+                            "Scotoma (появление темного пятна перед глазами без потери сознания)",
+                            "Vertigo (ощущение вращения предметов вокруг)",
+                            "Transient global amnesia (временная потеря памяти на события)"
+                        ],
+                        kz: [
+                            "Syncope (қысқа мерзімді естен тану / талып қалу)",
+                            "Scotoma (есін жоғалтпай көз алдында қара дақтың пайда болуы)",
+                            "Vertigo (айналадағы заттардың айналу сезімі)",
+                            "Transient global amnesia (оқиғаларды уақытша ұмытып қалу)"
+                        ]
+                    },
+                    correct: 0
+                },
+                {
+                    id: "pat_5",
+                    prompt: {
+                        ru: "Мама на педиатрическом приеме говорит: «My son has been feeling under the weather and threw up twice this morning». Что произошло с ребенком?",
+                        kz: "Педиатр қабылдауында анасы: «My son has been feeling under the weather and threw up twice this morning» дейді. Балаға не болды?"
+                    },
+                    options: {
+                        ru: [
+                            "Он чувствовал общее недомогание, и утром его дважды вырвало",
+                            "Он переохладился на улице, и утром у него дважды поднялась температура",
+                            "У него началась сезонная аллергия с двумя приступами удушья",
+                            "Он плохо спал из-за погоды и дважды падал в обморок утром"
+                        ],
+                        kz: [
+                            "Ол өзін жайсыз сезінді (әлсіздік) және таңертең екі рет құсты",
+                            "Ол далада тоңып қалды және таңертең дене қызуы екі рет көтерілді",
+                            "Онда маусымдық аллергия басталып, таңертең екі рет тұншығу ұстамасы болды",
+                            "Ауа райына байланысты нашар ұйықтап, таңертең екі рет есінен танды"
+                        ]
+                    },
+                    correct: 0
+                },
+                {
+                    id: "pat_6",
+                    prompt: {
+                        ru: "Пациентка описывает боль: «I have pins and needles in my fingertips that shoot up my wrist». Как это переводится на клинический язык?",
+                        kz: "Пациент ауырсынуды былай сипаттайды: «I have pins and needles in my fingertips that shoot up my wrist». Бұл клиникалық тілге қалай аударылады?"
+                    },
+                    options: {
+                        ru: [
+                            "Парестезия (покалывание/мурашки) в кончиках пальцев, простреливающая в запястье",
+                            "Тупая ноющая боль в суставах пальцев, сковывающая движения в кисти",
+                            "Острая жгучая боль под ногтями, усиливающаяся при сгибании локтя",
+                            "Мелкий тремор пальцев рук при попытке удержать мелкие предметы"
+                        ],
+                        kz: [
+                            "Саусақ ұштарындағы білезікке қарай шаншып берілетін парестезия (шаншу/ұю)",
+                            "Саусақ буындарындағы қол қозғалысын шектейтін сыздап ауырсыну",
+                            "Тырнақ астындағы шынтақты бүккенде күшейетін ашып ауырсыну",
+                            "Ұсақ заттарды ұстауға тырысқанда саусақтардың дірілдеуі (тремор)"
+                        ]
+                    },
+                    correct: 0
+                }
+            ],
+
+            // ==================== БЛОК 4: ЧТЕНИЕ КЛИНИЧЕСКИХ ТЕКСТОВ ====================
+            // ВСЕ вопросы требуют обязательного чтения деталей текста (ответить по общим знаниям медицины нельзя!)
+            reading: [
+                {
+                    id: "read_1",
+                    passage: "CASE EXTRACT 1: A 62-year-old female with a history of atrial fibrillation (on apixaban) and osteoarthritis presented to the ED with a 2-day history of melena and progressive exertional fatigue. She denied hematemesis or abdominal pain, though she admitted to taking over-the-counter naproxen twice daily for knee pain over the past three weeks. On arrival, her BP was 96/62 mmHg, HR was 112 bpm, and initial hemoglobin was 7.8 g/dL (down from 12.4 g/dL two months prior). Apixaban and naproxen were immediately withheld, intravenous pantoprazole was initiated, and she received 1 unit of packed red blood cells prior to urgent upper endoscopy.",
+                    prompt: {
+                        ru: "Согласно тексту Case Extract 1, какой препарат пациентка самостоятельно принимала последние три недели, что спровоцировало данное состояние?",
+                        kz: "Case Extract 1 мәтініне сәйкес, пациент соңғы үш апта бойы өз бетінше қандай препарат қабылдап, осы жағдайға себеп болды?"
+                    },
+                    options: {
+                        ru: [
+                            "Безрецептурный напроксен дважды в день из-за боли в колене",
+                            "Двойную дозу апиксабана из-за пропущенных приемов",
+                            "Таблетированный пантопразол без назначения врача",
+                            "Аспирин и клопидогрел для профилактики тромбоза"
+                        ],
+                        kz: [
+                            "Тізе ауырсынуына байланысты күніне екі рет рецептсіз напроксен",
+                            "Уақытылы ішпегендіктен апиксабанның қосарланған дозасын",
+                            "Дәрігердің тағайындауынсыз таблетка түріндегі пантопразолды",
+                            "Тромбоздың алдын алу үшін аспирин мен клопидогрелді"
+                        ]
+                    },
+                    correct: 0
+                },
+                {
+                    id: "read_2",
+                    passage: "CASE EXTRACT 1: A 62-year-old female with a history of atrial fibrillation (on apixaban) and osteoarthritis presented to the ED with a 2-day history of melena and progressive exertional fatigue. She denied hematemesis or abdominal pain, though she admitted to taking over-the-counter naproxen twice daily for knee pain over the past three weeks. On arrival, her BP was 96/62 mmHg, HR was 112 bpm, and initial hemoglobin was 7.8 g/dL (down from 12.4 g/dL two months prior). Apixaban and naproxen were immediately withheld, intravenous pantoprazole was initiated, and she received 1 unit of packed red blood cells prior to urgent upper endoscopy.",
+                    prompt: {
+                        ru: "Какие симптомы пациентка в Case Extract 1 прямо ОТРИЦАЛА при поступлении в приемное отделение?",
+                        kz: "Case Extract 1 мәтінінде пациент қабылдау бөліміне түскен кезде қандай симптомдарды тікелей ЖОҚҚА ШЫҒАРДЫ?"
+                    },
+                    options: {
+                        ru: [
+                            "Рвоту кровью (hematemesis) и боль в животе (abdominal pain)",
+                            "Черный дегтеобразный стул (melena) и слабость при нагрузке",
+                            "Боль в коленном суставе и учащенное сердцебиение",
+                            "Головокружение и потерю сознания"
+                        ],
+                        kz: [
+                            "Қан құсуды (hematemesis) және іштің ауырсынуын (abdominal pain)",
+                            "Қара май тәрізді нәжісті (melena) және жүктеме кезіндегі шаршауды",
+                            "Тізе буынының ауырсынуын және жүрек соғысының жиілеуін",
+                            "Бас айналуды және естен тануды"
+                        ]
+                    },
+                    correct: 0
+                },
+                {
+                    id: "read_3",
+                    passage: "RESEARCH ABSTRACT 2: In a 24-week multicenter randomized trial, 600 adults with refractory chronic migraine were allocated (2:1) to receive either monthly subcutaneous injections of a novel CGRP-receptor monoclonal antibody (n=400) or matching placebo (n=200). At baseline, patients averaged 16.2 migraine days per month. By week 24, mean monthly migraine days decreased by 6.4 days in the active treatment group compared with 3.8 days in the placebo group (p < 0.001). However, 14% of patients in the active arm experienced injection-site erythema, and 4 patients discontinued treatment early due to severe constipation, whereas no discontinuations occurred in the placebo cohort.",
+                    prompt: {
+                        ru: "Внимательно проверьте данные Research Abstract 2: почему 4 пациента из группы активного препарата досрочно прекратили участие в исследовании?",
+                        kz: "Research Abstract 2 деректерін мұқият тексеріңіз: белсенді препарат тобындағы 4 пациент неліктен зерттеуге қатысуды мерзімінен бұрын тоқтатты?"
+                    },
+                    options: {
+                        ru: [
+                            "Из-за развития выраженного запора (severe constipation)",
+                            "Из-за покраснения в месте инъекции (injection-site erythema), возникшего у 14%",
+                            "Из-за полного отсутствия снижения частоты приступов мигрени",
+                            "Из-за анафилактического шока после первой подкожной инъекции"
+                        ],
+                        kz: [
+                            "Айқын іш қатудың (severe constipation) дамуына байланысты",
+                            "14%-ында пайда болған инъекция орнының қызаруына (injection-site erythema) байланысты",
+                            "Мигрень ұстамаларының жиілігі мүлдем төмендемегендіктен",
+                            "Алғашқы тері астына инъекциядан кейінгі анафилактикалық шокқа байланысты"
+                        ]
+                    },
+                    correct: 0
+                },
+                {
+                    id: "read_4",
+                    passage: "RESEARCH ABSTRACT 2: In a 24-week multicenter randomized trial, 600 adults with refractory chronic migraine were allocated (2:1) to receive either monthly subcutaneous injections of a novel CGRP-receptor monoclonal antibody (n=400) or matching placebo (n=200). At baseline, patients averaged 16.2 migraine days per month. By week 24, mean monthly migraine days decreased by 6.4 days in the active treatment group compared with 3.8 days in the placebo group (p < 0.001). However, 14% of patients in the active arm experienced injection-site erythema, and 4 patients discontinued treatment early due to severe constipation, whereas no discontinuations occurred in the placebo cohort.",
+                    prompt: {
+                        ru: "Согласно Research Abstract 2, каков был результат в группе ПЛАЦЕБО к 24-й неделе исследования?",
+                        kz: "Research Abstract 2 мәтініне сәйкес, зерттеудің 24-аптасында ПЛАЦЕБО тобындағы нәтиже қандай болды?"
+                    },
+                    options: {
+                        ru: [
+                            "Среднее число дней с мигренью в месяц сократилось на 3,8 дня, и никто не прервал лечение досрочно",
+                            "Частота мигрени осталась неизменной (16,2 дня в месяц) у всех 200 пациентов",
+                            "Среднее число дней с мигренью снизилось на 6,4 дня, но у 14% появилась эритема",
+                            "Из 200 человек в группе плацебо 4 пациента выбыли из-за побочных эффектов"
+                        ],
+                        kz: [
+                            "Айына мигреньмен ауыратын күндердің орташа саны 3,8 күнге қысқарды және ешкім емді мерзімінен бұрын тоқтатпады",
+                            "Барлық 200 пациентте мигрень жиілігі өзгеріссіз қалды (айына 16,2 күн)",
+                            "Мигрень күндерінің орташа саны 6,4 күнге азайды, бірақ 14%-ында эритема пайда болды",
+                            "Плацебо тобындағы 200 адамның 4-еуі жанама әсерлерге байланысты шығып қалды"
+                        ]
+                    },
+                    correct: 0
+                },
+                {
+                    id: "read_5",
+                    passage: "DISCHARGE NOTE 3: A 45-year-old male was admitted with acute calculous cholecystitis and underwent laparoscopic cholecystectomy within 24 hours. Due to dense pericholecystic adhesions, a surgical drain was placed in the subhepatic space and removed on postoperative day 2 after producing minimal serous output. Although his temperature spiked to 38.2°C on the first night (attributed to basal atelectasis), his WBC count normalized without extending empiric antibiotics beyond the single preoperative dose. He is discharged on day 3 on a regular diet, with advice to avoid lifting weights over 5 kg for 4 weeks.",
+                    prompt: {
+                        ru: "Согласно Discharge Note 3, чем врачи объяснили подъем температуры до 38,2°C у пациента в первую ночь после операции?",
+                        kz: "Discharge Note 3 мәтініне сәйкес, дәрігерлер отадан кейінгі бірінші түнде пациенттің температурасының 38,2°C-қа дейін көтерілуін немен түсіндірді?"
+                    },
+                    options: {
+                        ru: [
+                            "Базальным ателектазом легких (basal atelectasis), поэтому дополнительные антибиотики не назначались",
+                            "Нагноением в подпеченочном пространстве из-за спаек, потребовавшим установки дренажа",
+                            "Реакцией на предоперационную дозу антибиотика",
+                            "Острым холангитом из-за оставшегося конкремента в протоке"
+                        ],
+                        kz: [
+                            "Өкпенің базальды ателектазымен (basal atelectasis), сондықтан қосымша антибиотиктер тағайындалмады",
+                            "Дренаж орнатуды талап еткен бауырасты кеңістігіндегі іріңдеумен",
+                            "Ота алдындағы антибиотик дозасына аллергиялық реакциямен",
+                            "Өт жолында қалып қойған тастан туындаған жедел холангитпен"
+                        ]
+                    },
+                    correct: 0
+                },
+                {
+                    id: "read_6",
+                    passage: "DISCHARGE NOTE 3: A 45-year-old male was admitted with acute calculous cholecystitis and underwent laparoscopic cholecystectomy within 24 hours. Due to dense pericholecystic adhesions, a surgical drain was placed in the subhepatic space and removed on postoperative day 2 after producing minimal serous output. Although his temperature spiked to 38.2°C on the first night (attributed to basal atelectasis), his WBC count normalized without extending empiric antibiotics beyond the single preoperative dose. He is discharged on day 3 on a regular diet, with advice to avoid lifting weights over 5 kg for 4 weeks.",
+                    prompt: {
+                        ru: "Какая тактика в отношении антибиотиков и диеты была применена к пациенту согласно Discharge Note 3?",
+                        kz: "Discharge Note 3 мәтініне сәйкес, пациентке антибиотиктер мен диета бойынша қандай тактика қолданылды?"
+                    },
+                    options: {
+                        ru: [
+                            "Он получил только одну дозу антибиотика до операции и выписан на 3-й день с обычным питанием (regular diet)",
+                            "Он получал антибиотики внутривенно все 3 дня и выписан на строгой обезжиренной жидкой диете",
+                            "Ему отменили антибиотики на 2-й день после удаления дренажа и назначили голод на 4 недели",
+                            "Ему продлили курс таблетированных антибиотиков на 4 недели после выписки"
+                        ],
+                        kz: [
+                            "Ол ота алдында антибиотиктің бір ғана дозасын алды және 3-ші күні кәдімгі тамақтану тәртібімен (regular diet) шығарылды",
+                            "Ол 3 күн бойы көктамыр ішіне антибиотиктер алды және қатаң майсыз сұйық диетамен шығарылды",
+                            "Дренажды алғаннан кейін 2-ші күні антибиотиктер тоқтатылды",
+                            "Шығарылғаннан кейін таблеткадағы антибиотиктер курсы 4 аптаға ұзартылды"
+                        ]
+                    },
+                    correct: 0
+                }
+            ]
+        };
+
+        /**
+         * ОСНОВНОЙ КЛАСС ПРИЛОЖЕНИЯ
+         */
+        class MedPlacementApp {
+            constructor() {
+                this.lang = localStorage.getItem('doc_test_lang') || 'ru';
+                this.STORAGE_KEY = 'doctors_speak_test_lock_v2';
+                this.COOLDOWN_MS = 60 * 60 * 1000; // 1 час
+
+                this.userName = '';
+                this.activeQuestions = [];
+                this.currentIndex = 0;
+                this.selectedOptionIndex = null;
+                this.score = 0;
+
+                this.questionTimerInterval = null;
+                this.timeRemaining = 0;
+                this.maxQuestionTime = 45;
+                this.cooldownInterval = null;
+
+                this.init();
+            }
+
+            init() {
+                this.setLanguage(this.lang);
+                this.checkExistingCooldown();
+            }
+
+            shuffleArray(arr) {
+                const copy = [...arr];
+                for (let i = copy.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [copy[i], copy[j]] = [copy[j], copy[i]];
+                }
+                return copy;
+            }
+
+            setLanguage(langCode) {
+                this.lang = langCode;
+                localStorage.setItem('doc_test_lang', langCode);
+                document.documentElement.lang = langCode === 'kz' ? 'kk' : 'ru';
+
+                const ruBtn = document.getElementById('langRuBtn');
+                const kzBtn = document.getElementById('langKzBtn');
+                if (langCode === 'ru') {
+                    ruBtn.className = "px-3 py-1 rounded-full text-xs font-extrabold transition-all bg-white text-[#0077A3] shadow-sm";
+                    kzBtn.className = "px-3 py-1 rounded-full text-xs font-extrabold transition-all text-white/85 hover:text-white";
+                } else {
+                    kzBtn.className = "px-3 py-1 rounded-full text-xs font-extrabold transition-all bg-white text-[#0077A3] shadow-sm";
+                    ruBtn.className = "px-3 py-1 rounded-full text-xs font-extrabold transition-all text-white/85 hover:text-white";
+                }
+
+                const dict = I18N[this.lang];
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if (dict[key]) {
+                        el.innerHTML = dict[key];
+                    }
+                });
+
+                const nameInput = document.getElementById('userNameInput');
+                if (nameInput) nameInput.placeholder = dict.namePlaceholder;
+
+                if (!document.getElementById('quizScreen').classList.contains('hidden')) {
+                    this.renderCurrentQuestion(false);
+                }
+                if (!document.getElementById('resultScreen').classList.contains('hidden')) {
+                    this.renderSavedResultDetails();
+                }
+            }
+
+            showToast(msg) {
+                const box = document.getElementById('toastBox');
+                const text = document.getElementById('toastText');
+                text.textContent = msg;
+                box.classList.remove('hidden');
+                setTimeout(() => box.classList.add('hidden'), 3500);
+            }
+
+            checkExistingCooldown() {
+                try {
+                    const raw = localStorage.getItem(this.STORAGE_KEY);
+                    if (!raw) return false;
+
+                    const saved = JSON.parse(raw);
+                    const now = Date.now();
+                    if (now - saved.timestamp < this.COOLDOWN_MS) {
+                        this.userName = saved.userName;
+                        this.score = saved.score;
+                        this.showResultScreen(saved.timestamp);
+                        return true;
+                    } else {
+                        localStorage.removeItem(this.STORAGE_KEY);
+                        return false;
+                    }
+                } catch (e) {
+                    return false;
+                }
+            }
+
+            buildRandomTestSession() {
+                const pickRandom = (list, count, categoryKey) => {
+                    const shuffledQuestions = this.shuffleArray(list).slice(0, count);
+                    return shuffledQuestions.map(q => {
+                        const indices = [0, 1, 2, 3];
+                        const shuffledIndices = this.shuffleArray(indices);
+                        return {
+                            id: q.id,
+                            category: categoryKey,
+                            passage: q.passage || null,
+                            prompt: q.prompt,
+                            optionsRu: shuffledIndices.map(i => q.options.ru[i]),
+                            optionsKz: shuffledIndices.map(i => q.options.kz[i]),
+                            correctShuffledIndex: shuffledIndices.indexOf(q.correct)
+                        };
+                    });
+                };
+
+                const termQs = pickRandom(QUESTION_BANK.terminology, 3, 'terminology');
+                const gramQs = pickRandom(QUESTION_BANK.grammar, 2, 'grammar');
+                const patQs  = pickRandom(QUESTION_BANK.patient, 3, 'patient');
+                const readQs = pickRandom(QUESTION_BANK.reading, 4, 'reading');
+
+                this.activeQuestions = [
+                    ...this.shuffleArray([...termQs, ...gramQs, ...patQs]),
+                    ...readQs
+                ];
+            }
+
+            handleStartTest(e) {
+                e.preventDefault();
+                if (this.checkExistingCooldown()) return;
+
+                const input = document.getElementById('userNameInput');
+                const trimmedName = input.value.trim();
+                if (!trimmedName) {
+                    this.showToast(I18N[this.lang].enterNameError);
+                    return;
+                }
+
+                this.userName = trimmedName;
+                this.score = 0;
+                this.currentIndex = 0;
+                this.buildRandomTestSession();
+
+                document.getElementById('welcomeScreen').classList.add('hidden');
+                document.getElementById('resultScreen').classList.add('hidden');
+                document.getElementById('quizScreen').classList.remove('hidden');
+
+                this.renderCurrentQuestion(true);
+            }
+
+            renderCurrentQuestion(resetTimer = true) {
+                const q = this.activeQuestions[this.currentIndex];
+                if (!q) return;
+                const total = this.activeQuestions.length;
+                const dict = I18N[this.lang];
+
+                if (resetTimer) {
+                    this.selectedOptionIndex = null;
+                }
+
+                document.getElementById('questionCounter').textContent = `${this.currentIndex + 1} / ${total}`;
+                document.getElementById('categoryBadge').textContent = dict.categories[q.category];
+                document.getElementById('wizardProgressBar').style.width = `${((this.currentIndex + 1) / total) * 100}%`;
+
+                const nextBtnSpan = document.querySelector('#nextQuestionBtn span');
+                nextBtnSpan.textContent = (this.currentIndex === total - 1) ? dict.finishBtn : dict.nextBtn;
+
+                const passageBox = document.getElementById('readingPassageBox');
+                const passageText = document.getElementById('readingPassageText');
+                if (q.passage) {
+                    passageBox.classList.remove('hidden');
+                    passageText.textContent = q.passage;
+                } else {
+                    passageBox.classList.add('hidden');
+                    passageText.textContent = '';
+                }
+
+                // Вопрос на выбранном языке (RU или KZ)
+                document.getElementById('questionPrompt').textContent = q.prompt[this.lang];
+
+                // Варианты ответа на выбранном языке
+                const currentOptions = this.lang === 'ru' ? q.optionsRu : q.optionsKz;
+                const optionsContainer = document.getElementById('optionsContainer');
+                optionsContainer.innerHTML = '';
+                const letters = ['A', 'B', 'C', 'D'];
+
+                currentOptions.forEach((optText, idx) => {
+                    const isSelected = (this.selectedOptionIndex === idx);
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.onclick = () => this.selectOption(idx);
+
+                    if (isSelected) {
+                        btn.className = "option-btn w-full text-left p-4 rounded-2xl border-2 border-kzblue bg-kzblue-light/60 transition-all flex items-center gap-3.5 shadow-sm";
+                        btn.innerHTML = `
+                            <span class="opt-letter w-8 h-8 rounded-xl bg-kzblue text-white font-extrabold text-xs flex items-center justify-center shrink-0">
+                                ${letters[idx]}
+                            </span>
+                            <span class="text-xs sm:text-sm font-bold text-slate-900 leading-snug">${optText}</span>
+                        `;
+                    } else {
+                        btn.className = "option-btn w-full text-left p-4 rounded-2xl border-2 border-slate-200 hover:border-kzblue bg-white hover:bg-slate-50 transition-all flex items-center gap-3.5 group";
+                        btn.innerHTML = `
+                            <span class="opt-letter w-8 h-8 rounded-xl bg-slate-100 group-hover:bg-kzblue-light text-slate-600 group-hover:text-kzblue-dark font-extrabold text-xs flex items-center justify-center shrink-0 transition">
+                                ${letters[idx]}
+                            </span>
+                            <span class="text-xs sm:text-sm font-semibold text-slate-800 leading-snug">${optText}</span>
+                        `;
+                    }
+                    optionsContainer.appendChild(btn);
+                });
+
+                document.getElementById('nextQuestionBtn').disabled = (this.selectedOptionIndex === null);
+
+                if (resetTimer) {
+                    const durationSec = q.category === 'reading' ? 75 : 45;
+                    this.startQuestionTimer(durationSec);
+                }
+            }
+
+            selectOption(index) {
+                this.selectedOptionIndex = index;
+                this.renderCurrentQuestion(false);
+            }
+
+            startQuestionTimer(seconds) {
+                if (this.questionTimerInterval) clearInterval(this.questionTimerInterval);
+                this.maxQuestionTime = seconds;
+                this.timeRemaining = seconds;
+
+                const timerBar = document.getElementById('questionTimerBar');
+                timerBar.style.transition = 'none';
+                timerBar.style.width = '100%';
+                this.updateTimerDisplay();
+
+                void timerBar.offsetWidth;
+                timerBar.style.transition = 'width 1s linear';
+
+                this.questionTimerInterval = setInterval(() => {
+                    this.timeRemaining--;
+                    this.updateTimerDisplay();
+
+                    const pct = Math.max(0, (this.timeRemaining / this.maxQuestionTime) * 100);
+                    timerBar.style.width = `${pct}%`;
+
+                    if (this.timeRemaining <= 0) {
+                        clearInterval(this.questionTimerInterval);
+                        this.submitCurrentAnswer(true);
+                    }
+                }, 1000);
+            }
+
+            updateTimerDisplay() {
+                const secs = Math.max(0, this.timeRemaining);
+                const mins = Math.floor(secs / 60);
+                const remSecs = secs % 60;
+                const formatted = `${mins.toString().padStart(2, '0')}:${remSecs.toString().padStart(2, '0')}`;
+                const timerText = document.getElementById('timerText');
+                timerText.textContent = formatted;
+                if (secs <= 10) {
+                    timerText.classList.add('text-kzgold');
+                } else {
+                    timerText.classList.remove('text-kzgold');
+                }
+            }
+
+            submitCurrentAnswer(isTimeout = false) {
+                if (this.questionTimerInterval) clearInterval(this.questionTimerInterval);
+
+                const currentQ = this.activeQuestions[this.currentIndex];
+                if (!isTimeout && this.selectedOptionIndex === currentQ.correctShuffledIndex) {
+                    this.score++;
+                }
+
+                if (this.currentIndex < this.activeQuestions.length - 1) {
+                    this.currentIndex++;
+                    this.renderCurrentQuestion(true);
+                } else {
+                    this.finishTest();
+                }
+            }
+
+            finishTest() {
+                const completionTimestamp = Date.now();
+                const payload = {
+                    userName: this.userName,
+                    score: this.score,
+                    total: this.activeQuestions.length,
+                    timestamp: completionTimestamp
+                };
+
+                try {
+                    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(payload));
+                } catch (e) {}
+
+                this.showResultScreen(completionTimestamp);
+            }
+
+            showResultScreen(timestamp) {
+                document.getElementById('welcomeScreen').classList.add('hidden');
+                document.getElementById('quizScreen').classList.add('hidden');
+                document.getElementById('resultScreen').classList.remove('hidden');
+
+                this.renderSavedResultDetails();
+                this.startCooldownCountdown(timestamp);
+            }
+
+            renderSavedResultDetails() {
+                const dict = I18N[this.lang];
+                const total = 12;
+                const pct = Math.round((this.score / total) * 100);
+
+                document.getElementById('resultUserName').textContent = this.userName;
+                document.getElementById('scoreFraction').textContent = `${this.score} / ${total}`;
+                document.getElementById('scorePercentText').textContent = `${pct}${dict.accuracySuffix}`;
+
+                let levelBucket = dict.levels.low;
+                if (this.score >= 10) {
+                    levelBucket = dict.levels.high;
+                } else if (this.score >= 6) {
+                    levelBucket = dict.levels.mid;
+                }
+
+                document.getElementById('levelTitle').textContent = levelBucket.title;
+                document.getElementById('levelDescription').textContent = levelBucket.desc;
+            }
+
+            startCooldownCountdown(completionTimestamp) {
+                if (this.cooldownInterval) clearInterval(this.cooldownInterval);
+
+                const updateClock = () => {
+                    const now = Date.now();
+                    const remainingMs = (completionTimestamp + this.COOLDOWN_MS) - now;
+
+                    if (remainingMs <= 0) {
+                        clearInterval(this.cooldownInterval);
+                        localStorage.removeItem(this.STORAGE_KEY);
+                        location.reload();
+                        return;
+                    }
+
+                    const totalSeconds = Math.floor(remainingMs / 1000);
+                    const mins = Math.floor(totalSeconds / 60);
+                    const secs = totalSeconds % 60;
+                    document.getElementById('cooldownTimerDisplay').textContent = 
+                        `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                };
+
+                updateClock();
+                this.cooldownInterval = setInterval(updateClock, 1000);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            window.app = new MedPlacementApp();
+        });
+    </script>
+</body>
+</html>
