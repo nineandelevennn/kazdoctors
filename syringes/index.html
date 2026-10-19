@@ -67,13 +67,14 @@
     .header {
       background: linear-gradient(135deg, var(--kz-blue) 0%, #0088bb 100%);
       color: #FFFFFF;
-      padding: 12px 16px;
+      padding: 12px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
       flex-shrink: 0;
       z-index: 10;
+      gap: 6px;
     }
 
     .home-btn {
@@ -82,42 +83,71 @@
       color: #FFFFFF;
       text-decoration: none;
       font-weight: 700;
-      font-size: 0.75rem;
-      padding: 6px 12px;
+      font-size: 0.74rem;
+      padding: 6px 11px;
       border-radius: 20px;
       display: inline-flex;
       align-items: center;
       gap: 4px;
+      white-space: nowrap;
     }
 
     .header-right {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .brand {
       font-weight: 800;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: #FFFFFF;
       background: rgba(255, 255, 255, 0.18);
-      padding: 5px 10px;
+      padding: 5px 9px;
       border-radius: 20px;
       border: 1px solid rgba(255, 255, 255, 0.35);
+      white-space: nowrap;
+    }
+
+    .lang-switch {
+      display: flex;
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 20px;
+      padding: 2px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 800;
+      font-size: 0.68rem;
+      padding: 4px 7px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: #FFFFFF;
+      color: var(--kz-blue-dark);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
     }
 
     .sound-btn {
       background: rgba(255, 255, 255, 0.2);
       border: 1px solid rgba(255, 255, 255, 0.35);
       color: #FFFFFF;
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
     }
 
     /* Экраны */
@@ -266,7 +296,7 @@
       background: var(--card-bg);
       border: 2px solid var(--border-color);
       border-radius: 16px;
-      padding: 12px 10px;
+      padding: 10px 8px;
       text-align: center;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -275,7 +305,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 92px;
+      min-height: 94px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
     }
 
@@ -294,30 +324,31 @@
     }
 
     .bin-dir {
-      font-size: 0.65rem;
+      font-size: 0.63rem;
       font-weight: 800;
       color: var(--text-muted);
       text-transform: uppercase;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     .bin-icon {
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       margin-bottom: 2px;
     }
 
     .bin-title {
-      font-size: 0.86rem;
+      font-size: 0.82rem;
       font-weight: 900;
       color: var(--text-dark);
-      line-height: 1.2;
+      line-height: 1.15;
     }
 
     .bin-sub {
-      font-size: 0.68rem;
+      font-size: 0.66rem;
       font-weight: 600;
       color: var(--text-muted);
-      margin-top: 2px;
+      margin-top: 3px;
+      line-height: 1.15;
     }
 
     /* Центральная арена, куда вылетает термин из шприца */
@@ -329,7 +360,7 @@
       align-items: center;
       justify-content: center;
       perspective: 800px;
-      my: 6px;
+      margin: 6px 0;
     }
 
     .progress-dots {
@@ -363,10 +394,10 @@
       border: 2px solid var(--kz-blue);
       border-bottom: 5px solid var(--kz-blue-dark);
       border-radius: 22px;
-      padding: 18px 22px;
-      width: 90%;
-      max-width: 310px;
-      min-height: 95px;
+      padding: 18px 20px;
+      width: 92%;
+      max-width: 320px;
+      min-height: 96px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -420,10 +451,11 @@
     }
 
     .pill-word {
-      font-size: 1.35rem;
+      font-size: 1.22rem;
       font-weight: 900;
       color: var(--text-dark);
       word-break: break-word;
+      line-height: 1.25;
     }
 
     /* Нижний блок: Шприц и кнопки Влево/Вправо */
@@ -449,7 +481,7 @@
       border-radius: 16px;
       border: none;
       font-weight: 900;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -552,7 +584,7 @@
 
     .score-item span {
       display: block;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
@@ -583,9 +615,10 @@
       background: #FFFFFF;
       padding: 8px 10px;
       border-radius: 10px;
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       font-weight: 600;
       border-left: 4px solid var(--green);
+      gap: 8px;
     }
 
     .review-item.wrong {
@@ -599,7 +632,7 @@
     }
 
     .review-cat {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: var(--text-muted);
       text-align: right;
     }
@@ -608,11 +641,15 @@
 <body>
 
   <div class="card">
-    <!-- Шапка -->
+    <!-- Шапка с переключателем языка RU | KZ в правом верхнем углу -->
     <header class="header">
-      <a href="https://kazdoctors.com/" class="home-btn">⬅ Назад</a>
+      <a href="https://kazdoctors.com/" class="home-btn" id="backBtn">⬅ Назад</a>
       <div class="header-right">
         <div class="brand">@doctors.speak</div>
+        <div class="lang-switch">
+          <button id="langRu" class="lang-btn active" onclick="setLanguage('ru')">RU</button>
+          <button id="langKz" class="lang-btn" onclick="setLanguage('kz')">KZ</button>
+        </div>
         <button id="soundToggle" class="sound-btn" onclick="toggleSound()" title="Звук">🔊</button>
       </div>
     </header>
@@ -622,26 +659,26 @@
       <div class="start-box">
         <div class="hero-icon">💉</div>
         <h1 class="start-title">Syringe Sort</h1>
-        <p class="start-desc">Распределяйте медицинские и академические термины из шприца в нужную группу налево или направо!</p>
+        <p class="start-desc" id="startDesc">Распределяйте медицинские и академические термины из шприца в нужную группу налево или направо!</p>
 
-        <div class="rules-list">
-          <div>🎯 <strong>8 уникальных терминов</strong> в каждом раунде.</div>
+        <div class="rules-list" id="rulesList">
+          <div>🎯 <strong>8 уникальных терминов</strong> в каждом раунде (27 тем, 520+ слов).</div>
           <div>⚖️ Клинические группы сравниваются только с клиническими, а академические — с академическими.</div>
           <div>⏱️ С каждым новым раундом <strong>время на ответ уменьшается</strong>!</div>
           <div>⚠️ Ошибки проверяются в конце раунда: при 8/8 вы переходите дальше, при ошибке — игра завершается, а все верные ответы суммируются в общий счет.</div>
         </div>
       </div>
 
-      <button class="primary-btn" onclick="startNewGame()">Начать игру 🚀</button>
+      <button class="primary-btn" id="startBtn" onclick="startNewGame()">Начать игру 🚀</button>
     </div>
 
     <!-- ЭКРАН 2: ИГРА -->
     <div id="gameScreen" class="screen">
       <div class="top-hud">
         <div class="stats-bar">
-          <span>Раунд: <strong id="roundNum">1</strong></span>
+          <span><span id="lblRound">Раунд:</span> <strong id="roundNum">1</strong></span>
           <span id="roundTypeBadge" class="badge-type">Clinical</span>
-          <span>Счет: <strong id="liveScore" style="color: var(--kz-blue-dark);">0</strong></span>
+          <span><span id="lblScore">Счет:</span> <strong id="liveScore" style="color: var(--kz-blue-dark);">0</strong></span>
         </div>
         <div class="timer-track">
           <div id="timerBar" class="timer-fill"></div>
@@ -651,14 +688,14 @@
       <!-- Две группы (слева и справа) -->
       <div class="bins-row">
         <div class="bin-card left-bin" id="leftBin" onclick="handleChoice('left')">
-          <div class="bin-dir">⬅ Влево</div>
+          <div class="bin-dir" id="lblLeftDir">⬅ Влево</div>
           <div class="bin-icon" id="leftIcon">🫀</div>
           <div class="bin-title" id="leftTitle">Cardiology</div>
           <div class="bin-sub" id="leftSub">Кардиология</div>
         </div>
 
         <div class="bin-card right-bin" id="rightBin" onclick="handleChoice('right')">
-          <div class="bin-dir">Вправо ➔</div>
+          <div class="bin-dir" id="lblRightDir">Вправо ➔</div>
           <div class="bin-icon" id="rightIcon">🫁</div>
           <div class="bin-title" id="rightTitle">Pulmonology</div>
           <div class="bin-sub" id="rightSub">Пульмонология</div>
@@ -678,42 +715,36 @@
       <!-- Нижняя зона: Кнопки + Шприц по центру -->
       <div class="bottom-controls">
         <div class="syringe-stage">
-          <button class="sort-btn left" onclick="handleChoice('left')">⬅ LEFT</button>
+          <button class="sort-btn left" id="btnLeftAction" onclick="handleChoice('left')">⬅ LEFT</button>
 
           <!-- Векторный шприц -->
           <div class="syringe-wrap" id="syringeWrap">
             <div class="drop-spark"></div>
             <svg class="syringe-svg" viewBox="0 0 80 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <!-- Игла и носик сверху (смотрят вверх на карточку слова) -->
               <rect x="38" y="2" width="4" height="16" rx="2" fill="#94A3B8"/>
               <rect x="33" y="16" width="14" height="8" rx="3" fill="#0077A3"/>
               
-              <!-- Поршень (двигается при нажатии) -->
               <g id="plungerGroup">
                 <rect x="36" y="78" width="8" height="38" fill="#CBD5E1"/>
                 <rect x="22" y="114" width="36" height="8" rx="4" fill="#0077A3"/>
                 <rect x="24" y="72" width="32" height="8" rx="3" fill="#0077A3"/>
               </g>
 
-              <!-- Цилиндр шприца -->
               <rect x="22" y="24" width="36" height="68" rx="6" fill="#EBF8FC" stroke="#00A1DE" stroke-width="3"/>
-              <!-- Жидкость внутри шприца -->
               <rect x="25" y="38" width="30" height="36" fill="#00A1DE" fill-opacity="0.28"/>
               <rect x="25" y="52" width="30" height="22" fill="#FFC72C" fill-opacity="0.45"/>
 
-              <!-- Деления шкалы на шприце -->
               <line x1="28" y1="34" x2="36" y2="34" stroke="#0077A3" stroke-width="2" stroke-linecap="round"/>
               <line x1="28" y1="44" x2="34" y2="44" stroke="#0077A3" stroke-width="2" stroke-linecap="round"/>
               <line x1="28" y1="54" x2="36" y2="54" stroke="#0077A3" stroke-width="2" stroke-linecap="round"/>
               <line x1="28" y1="64" x2="34" y2="64" stroke="#0077A3" stroke-width="2" stroke-linecap="round"/>
               <line x1="28" y1="74" x2="36" y2="74" stroke="#0077A3" stroke-width="2" stroke-linecap="round"/>
 
-              <!-- Упоры для пальцев внизу цилиндра -->
               <rect x="14" y="88" width="52" height="6" rx="3" fill="#00A1DE"/>
             </svg>
           </div>
 
-          <button class="sort-btn right" onclick="handleChoice('right')">RIGHT ➔</button>
+          <button class="sort-btn right" id="btnRightAction" onclick="handleChoice('right')">RIGHT ➔</button>
         </div>
       </div>
     </div>
@@ -729,21 +760,21 @@
 
         <div class="score-banner">
           <div class="score-item">
-            <span>В этом раунде</span>
+            <span id="lblInRound">В этом раунде</span>
             <strong id="roundScoreVal">8 / 8</strong>
           </div>
           <div class="score-item">
-            <span>Общий счет</span>
+            <span id="lblTotalScore">Общий счет</span>
             <strong id="totalScoreVal">8</strong>
           </div>
           <div class="score-item">
-            <span>Рекорд</span>
+            <span id="lblBestScore">Рекорд</span>
             <strong id="bestScoreVal" style="color: var(--kz-gold-dark);">8</strong>
           </div>
         </div>
 
         <div>
-          <div style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase;">
+          <div id="lblReviewHeader" style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase;">
             Разбор терминов раунда:
           </div>
           <div class="review-list" id="reviewList"></div>
@@ -757,148 +788,474 @@
 
 <script>
   // =========================================================================
-  // 1. БАНК ТЕРМИНОВ (Легко пополнять новыми группами и словами!)
-  // type: 'clinical' (сравниваются только с clinical)
-  // type: 'academic' (сравниваются только с academic)
-  // В каждой группе должно быть минимум 7-8 слов.
+  // 0. ЛОКАЛИЗАЦИЯ ИНТЕРФЕЙСА (RU / KZ)
+  // =========================================================================
+  let currentLang = 'ru';
+
+  const UI_TEXT = {
+    ru: {
+      back: "⬅ Назад",
+      startDesc: "Распределяйте медицинские и академические термины из шприца в нужную группу налево или направо!",
+      rulesHtml: `
+        <div>🎯 <strong>8 уникальных терминов</strong> в каждом раунде (27 тем, 520+ слов).</div>
+        <div>⚖️ Клинические группы сравниваются только с клиническими, а академические — с академическими.</div>
+        <div>⏱️ С каждым новым раундом <strong>время на ответ уменьшается</strong>!</div>
+        <div>⚠️ Ошибки проверяются в конце раунда: при 8/8 вы переходите дальше, при ошибке — игра завершается, а все верные ответы суммируются в общий счет.</div>
+      `,
+      startBtn: "Начать игру 🚀",
+      round: "Раунд:",
+      score: "Счет:",
+      clinicalBadge: "🩺 Клиника",
+      academicBadge: "📚 Академика",
+      leftDir: "⬅ Влево",
+      rightDir: "Вправо ➔",
+      btnLeft: "⬅ ВЛЕВО",
+      btnRight: "ВПРАВО ➔",
+      termCounter: (idx, total) => `Термин ${idx} / ${total}`,
+      inRound: "В этом раунде",
+      totalScore: "Общий счет",
+      bestScore: "Рекорд",
+      reviewHeader: "Разбор терминов раунда:",
+      winTitle: (r) => `Раунд ${r} пройден!`,
+      winSub: "Отличная работа! Все 8 из 8 верны. В следующем раунде скорость увеличится!",
+      winBtn: (r) => `Раунд ${r} (Быстрее!) ➔`,
+      loseTitle: "Игра окончена!",
+      loseSub: (c, tot, score) => `В этом раунде вы угадали ${c} из ${tot}. Ваш итоговый счет: ${score}.`,
+      loseBtn: "Сыграть заново 🔄"
+    },
+    kz: {
+      back: "⬅ Артқа",
+      startDesc: "Шприцтен шыққан медициналық және академиялық терминдерді сол немесе оң жақтағы топқа бөліңіз!",
+      rulesHtml: `
+        <div>🎯 Әр раундта <strong>8 бірегей термин</strong> (27 тақырып, 520+ сөз).</div>
+        <div>⚖️ Клиникалық топтар тек клиникалықпен, ал академиялық топтар тек академиялықпен салыстырылады.</div>
+        <div>⏱️ Әр жаңа раунд сайын <strong>жауап беру уақыты азаяды</strong>!</div>
+        <div>⚠️ Қателер раунд соңында тексеріледі: 8/8 болса келесі раундқа өтесіз, қате болса — ойын аяқталып, барлық дұрыс жауаптар жалпы есепке қосылады.</div>
+      `,
+      startBtn: "Ойынды бастау 🚀",
+      round: "Раунд:",
+      score: "Есеп:",
+      clinicalBadge: "🩺 Клиника",
+      academicBadge: "📚 Академиялық",
+      leftDir: "⬅ Солға",
+      rightDir: "Оңға ➔",
+      btnLeft: "⬅ СОЛҒА",
+      btnRight: "ОҢҒА ➔",
+      termCounter: (idx, total) => `Термин ${idx} / ${total}`,
+      inRound: "Осы раундта",
+      totalScore: "Жалпы есеп",
+      bestScore: "Рекорд",
+      reviewHeader: "Раунд терминдеріне талдау:",
+      winTitle: (r) => `Раунд ${r} өтілді!`,
+      winSub: "Керемет! 8-ден 8 дұрыс. Келесі раундта жылдамдық артады!",
+      winBtn: (r) => `Раунд ${r} (Жылдамырақ!) ➔`,
+      loseTitle: "Ойын аяқталды!",
+      loseSub: (c, tot, score) => `Бұл раундта ${tot} сөздің ${c}-ін таптыңыз. Қорытынды ұпай: ${score}.`,
+      loseBtn: "Қайта ойнау 🔄"
+    }
+  };
+
+  // =========================================================================
+  // 1. РАСШИРЕННЫЙ БАНК ТЕРМИНОВ (27 ГРУПП, 522 УНИКАЛЬНЫХ ТЕРМИНА БЕЗ ПОВТОРОВ)
   // =========================================================================
   const TERM_BANK = [
-    // -------------------- КЛИНИЧЕСКИЕ ГРУППЫ (clinical) --------------------
+    // -------------------- КЛИНИЧЕСКИЕ ГРУППЫ (1..14) --------------------
     {
       id: "cardiology",
       type: "clinical",
       title: "Cardiology",
-      subtitle: "Кардиология",
+      subtitle: { ru: "Кардиология", kz: "Кардиология" },
       icon: "🫀",
       terms: [
         "Heart", "Ventricle", "Tachycardia", "Aorta", "Myocardium",
         "Arrhythmia", "Atrium", "Bradycardia", "Murmur", "Pericardium",
-        "Palpitations", "Angina", "Coronary artery", "Mitral valve"
+        "Palpitations", "Angina", "Coronary artery", "Mitral valve",
+        "Cardiomyopathy", "Myocarditis", "Endocarditis", "Ischemia",
+        "Electrocardiogram", "Hypertension", "Hypotension", "Aneurysm",
+        "Stenosis", "Regurgitation", "Fibrillation", "Defibrillator",
+        "Pacemaker", "Systole", "Diastole", "Cardiac output"
       ]
     },
     {
       id: "pulmonology",
       type: "clinical",
       title: "Pulmonology",
-      subtitle: "Пульмонология",
+      subtitle: { ru: "Пульмонология", kz: "Пульмонология" },
       icon: "🫁",
       terms: [
         "Lung", "Dyspnea", "Cough", "Bronchitis", "Alveoli",
         "Asthma", "Pneumonia", "Wheezing", "Sputum", "Trachea",
-        "Pleura", "Hypoxia", "Hemoptysis", "Bronchioles"
+        "Pleura", "Hypoxia", "Hemoptysis", "Bronchioles",
+        "Emphysema", "Pneumothorax", "Bronchiectasis", "Pulmonary fibrosis",
+        "Spirometry", "Bronchodilator", "Thoracentesis", "Inhaler",
+        "Ventilator", "Airway obstruction", "Respiratory failure", "Pleural effusion",
+        "Lung capacity", "Pulmonary embolism", "Atelectasis", "Oxygen saturation"
       ]
     },
     {
       id: "gastroenterology",
       type: "clinical",
       title: "Gastroenterology",
-      subtitle: "Гастроэнтерология",
+      subtitle: { ru: "Гастроэнтерология", kz: "Гастроэнтерология" },
       icon: "🫃",
       terms: [
         "Stomach", "Liver", "Nausea", "Diarrhea", "Esophagus",
         "Cirrhosis", "Heartburn", "Jaundice", "Pancreas", "Duodenum",
-        "Vomiting", "Constipation", "Gallbladder", "Appendicitis"
+        "Vomiting", "Constipation", "Gallbladder", "Appendicitis",
+        "Gastritis", "Peptic ulcer", "Colitis", "Ileum",
+        "Jejunum", "Peristalsis", "Steatorrhea", "Melena",
+        "Hematemesis", "Diverticulitis", "Bowel obstruction", "Malabsorption",
+        "Gastric mucosa", "Intestinal villi", "Gastroenteritis", "Esophageal stricture"
       ]
     },
     {
       id: "neurology",
       type: "clinical",
       title: "Neurology",
-      subtitle: "Неврология",
+      subtitle: { ru: "Неврология", kz: "Неврология" },
       icon: "🧠",
       terms: [
         "Brain", "Seizure", "Stroke", "Migraine", "Numbness",
         "Paralysis", "Tremor", "Meningitis", "Concussion", "Cortex",
-        "Sciatica", "Epilepsy", "Dizziness", "Neuropathy"
+        "Sciatica", "Epilepsy", "Dizziness", "Neuropathy",
+        "Cerebellum", "Synapse", "Aphasia", "Ataxia",
+        "Myelin", "Neuralgia", "Demyelination", "Electromyography",
+        "Amnesia", "Neurotransmitter", "Cerebrospinal fluid", "Neurodegeneration",
+        "Encephalopathy", "Paresthesia", "Dysarthria", "Neuroplasticity"
       ]
     },
     {
       id: "nephrology",
       type: "clinical",
       title: "Nephrology & Urology",
-      subtitle: "Нефрология и урология",
+      subtitle: { ru: "Нефрология и урология", kz: "Нефрология және урология" },
       icon: "🫘",
       terms: [
         "Kidney", "Ureter", "Bladder", "Hematuria", "Dialysis",
         "Nephron", "Dysuria", "Proteinuria", "Creatinine", "Urethra",
-        "Renal calculi", "Oliguria", "Pyelonephritis", "Cystitis"
+        "Renal calculi", "Oliguria", "Pyelonephritis", "Cystitis",
+        "Glomerulus", "Renal cortex", "Renal pelvis", "Hydronephrosis",
+        "Nephritis", "Azotemia", "Urinary retention", "Nocturia",
+        "Lithotripsy", "Renal failure", "Urinalysis", "Renal artery",
+        "Peritoneal dialysis", "Glomerular filtration", "Urolithiasis", "Renal tubule"
       ]
     },
     {
       id: "dermatology",
       type: "clinical",
       title: "Dermatology",
-      subtitle: "Дерматология",
+      subtitle: { ru: "Дерматология", kz: "Дерматология" },
       icon: "🖐️",
       terms: [
         "Skin", "Rash", "Eczema", "Psoriasis", "Epidermis",
         "Pruritus", "Urticaria", "Melanoma", "Blister", "Dermis",
-        "Acne", "Alopecia", "Erythema", "Lesion"
+        "Acne", "Alopecia", "Erythema", "Lesion",
+        "Vitiligo", "Rosacea", "Keratin", "Comedone",
+        "Seborrhea", "Lichenification", "Keloid", "Telangiectasia",
+        "Hyperpigmentation", "Hypopigmentation", "Nail dystrophy", "Folliculitis",
+        "Skin biopsy", "Stratum corneum", "Melanocyte", "Sebaceous gland"
+      ]
+    },
+    {
+      id: "endocrinology",
+      type: "clinical",
+      title: "Endocrinology",
+      subtitle: { ru: "Эндокринология", kz: "Эндокринология" },
+      icon: "🦋",
+      terms: [
+        "Thyroid gland", "Adrenal cortex", "Pituitary gland", "Insulin resistance",
+        "Hyperthyroidism", "Hypothyroidism", "Cortisol", "Aldosterone",
+        "Parathyroid hormone", "Acromegaly", "Goiter", "Thyrotoxicosis",
+        "Cushing syndrome", "Addison disease", "Glucagon", "Endocrine pancreas",
+        "Pheochromocytoma", "Somatostatin"
+      ]
+    },
+    {
+      id: "hematology",
+      type: "clinical",
+      title: "Hematology",
+      subtitle: { ru: "Гематология", kz: "Гематология" },
+      icon: "🩸",
+      terms: [
+        "Erythrocyte", "Leukocyte", "Platelet", "Hemoglobin",
+        "Hematocrit", "Thrombocytopenia", "Leukopenia", "Polycythemia",
+        "Hemophilia", "Coagulation", "Reticulocyte", "Pancytopenia",
+        "Bone marrow", "Lymphocyte", "Neutrophil", "Sickle cell disease",
+        "Thalassemia", "Coagulopathy"
+      ]
+    },
+    {
+      id: "orthopedics",
+      type: "clinical",
+      title: "Orthopedics",
+      subtitle: { ru: "Ортопедия", kz: "Ортопедия" },
+      icon: "🦴",
+      terms: [
+        "Femur", "Tibia", "Fibula", "Patella",
+        "Cartilage", "Ligament", "Tendon", "Fracture",
+        "Dislocation", "Scoliosis", "Lordosis", "Kyphosis",
+        "Osteoarthritis", "Osteoporosis", "Arthroplasty", "Meniscus",
+        "Rotator cuff", "Spinal fusion"
+      ]
+    },
+    {
+      id: "ophthalmology",
+      type: "clinical",
+      title: "Ophthalmology",
+      subtitle: { ru: "Офтальмология", kz: "Офтальмология" },
+      icon: "👁️",
+      terms: [
+        "Retina", "Cornea", "Iris", "Pupil",
+        "Optic nerve", "Cataract", "Glaucoma", "Astigmatism",
+        "Myopia", "Hyperopia", "Presbyopia", "Macula",
+        "Conjunctivitis", "Retinal detachment", "Fundoscopy", "Photoreceptor",
+        "Diplopia", "Visual acuity"
+      ]
+    },
+    {
+      id: "otolaryngology",
+      type: "clinical",
+      title: "Otolaryngology",
+      subtitle: { ru: "Оториноларингология", kz: "Оториноларингология" },
+      icon: "👂",
+      terms: [
+        "Tympanic membrane", "Cochlea", "Eardrum", "Tinnitus",
+        "Otitis media", "Mastoiditis", "Tonsillitis", "Adenoid hypertrophy",
+        "Sinusitis", "Nasal polyp", "Laryngitis", "Epistaxis",
+        "Audiometry", "Otosclerosis", "Rhinorrhea", "Pharyngitis",
+        "Tympanometry", "Ossiculoplasty"
+      ]
+    },
+    {
+      id: "oncology",
+      type: "clinical",
+      title: "Oncology",
+      subtitle: { ru: "Онкология", kz: "Онкология" },
+      icon: "🎗️",
+      terms: [
+        "Carcinoma", "Sarcoma", "Metastasis", "Malignancy",
+        "Benign tumor", "Biopsy specimen", "Chemotherapy", "Radiotherapy",
+        "Immunotherapy", "Tumor marker", "Carcinogenesis", "Oncogene",
+        "Tumor suppressor", "Neoplasm", "Remission", "Recurrence",
+        "Brachytherapy", "Neoadjuvant therapy"
+      ]
+    },
+    {
+      id: "infectious_diseases",
+      type: "clinical",
+      title: "Infectious Diseases",
+      subtitle: { ru: "Инфекционные болезни", kz: "Жұқпалы аурулар" },
+      icon: "🦠",
+      terms: [
+        "Pathogen", "Bacteremia", "Viremia", "Sepsis",
+        "Antigen", "Antibody", "Virulence", "Incubation period",
+        "Antimicrobial resistance", "Vaccine", "Seroconversion", "Parasitology",
+        "Fungemia", "Zoonosis", "Nosocomial infection", "Vector-borne disease",
+        "Opportunistic infection", "Viral load"
+      ]
+    },
+    {
+      id: "gynecology",
+      type: "clinical",
+      title: "Gynecology & Obstetrics",
+      subtitle: { ru: "Гинекология и акушерство", kz: "Гинекология және акушерлік" },
+      icon: "🤰",
+      terms: [
+        "Endometrium", "Myometrium", "Ovulation", "Menstruation",
+        "Cervix", "Ovary", "Fallopian tube", "Placenta",
+        "Amniotic fluid", "Gestation", "Preeclampsia", "Eclampsia",
+        "Ectopic pregnancy", "Endometriosis", "Leiomyoma", "Colposcopy",
+        "Parturition", "Cervical dysplasia"
       ]
     },
 
-    // -------------------- АКАДЕМИЧЕСКИЕ ГРУППЫ (academic) --------------------
+    // -------------------- АКАДЕМИЧЕСКИЕ ГРУППЫ (15..27) --------------------
     {
       id: "growth",
       type: "academic",
       title: "Growth / Increase",
-      subtitle: "Рост и увеличение",
+      subtitle: { ru: "Рост и увеличение", kz: "Өсу және ұлғаю" },
       icon: "📈",
       terms: [
         "Increase", "Grow", "Elevate", "Rise", "Expand",
         "Surge", "Escalate", "Peak", "Accelerate", "Amplify",
-        "Soar", "Boost", "Maximize", "Proliferate"
+        "Soar", "Boost", "Maximize", "Proliferate",
+        "Accumulate", "Intensify", "Multiply", "Broaden",
+        "Heighten", "Strengthen", "Enlarge", "Extend",
+        "Compound", "Reinforce", "Mount", "Mushroom"
       ]
     },
     {
       id: "decrease",
       type: "academic",
       title: "Decrease / Decline",
-      subtitle: "Снижение и спад",
+      subtitle: { ru: "Снижение и спад", kz: "Төмендеу және құлдырау" },
       icon: "📉",
       terms: [
         "Decrease", "Drop", "Shrink", "Decline", "Diminish",
         "Reduce", "Plummet", "Deteriorate", "Subside", "Deplete",
-        "Minimize", "Contract", "Lower", "Wane"
+        "Minimize", "Contract", "Lower", "Wane",
+        "Recede", "Taper", "Dwindle", "Erode",
+        "Slacken", "Abate", "Dampen", "Weaken",
+        "Fall off", "Undermine"
       ]
     },
     {
       id: "similarity",
       type: "academic",
       title: "Similarity & Addition",
-      subtitle: "Сходство и дополнение",
+      subtitle: { ru: "Сходство и дополнение", kz: "Ұқсастық және толықтыру" },
       icon: "🤝",
       terms: [
         "Similarly", "Likewise", "Furthermore", "Moreover", "In addition",
         "Equally", "Correspondingly", "Besides", "By the same token", "Additionally",
-        "Analogously", "As well as", "Along with", "Not only... but also"
+        "Analogously", "As well as", "Along with", "Not only... but also",
+        "In the same way", "Comparable to", "In parallel", "Together with",
+        "Coupled with", "Not to mention", "Added to this", "In a similar fashion",
+        "Corresponding to", "In conjunction with", "Matching", "Just as"
       ]
     },
     {
       id: "contrast",
       type: "academic",
       title: "Contrast & Opposition",
-      subtitle: "Противопоставление",
+      subtitle: { ru: "Противопоставление", kz: "Қарама-қарсы қою" },
       icon: "⚡",
       terms: [
         "In contrast", "However", "On the contrary", "Conversely", "Whereas",
         "Nevertheless", "Despite", "Although", "Unlike", "On the other hand",
-        "Nonetheless", "Even though", "Alternatively", "Instead"
+        "Nonetheless", "Even though", "Alternatively", "Instead",
+        "Yet", "Still", "Regardless", "Albeit",
+        "Rather than", "In spite of", "For all that", "That said",
+        "By comparison", "Be that as it may", "Contrarily", "Differing from"
       ]
     },
     {
       id: "cause_effect",
       type: "academic",
       title: "Cause & Effect",
-      subtitle: "Причина и следствие",
+      subtitle: { ru: "Причина и следствие", kz: "Себеп пен салдар" },
       icon: "🔗",
       terms: [
         "Therefore", "Consequently", "As a result", "Due to", "Stem from",
         "Lead to", "Trigger", "Induce", "Hence", "Thus",
-        "Owing to", "Bring about", "Result in", "Account for"
+        "Owing to", "Bring about", "Result in", "Account for",
+        "Derive from", "Give rise to", "Bring on", "Because of",
+        "On account of", "Prompt", "Provoke", "Facilitate",
+        "Contribute to", "Be attributable to", "Set off", "Be responsible for",
+        "Engender", "Precipitate"
+      ]
+    },
+    {
+      id: "sequence",
+      type: "academic",
+      title: "Sequence & Order",
+      subtitle: { ru: "Последовательность и порядок", kz: "Реттілік пен тәртіп" },
+      icon: "🔢",
+      terms: [
+        "Initially", "Subsequently", "Previously", "Eventually",
+        "Thereafter", "Meanwhile", "Simultaneously", "First and foremost",
+        "To begin with", "In the interim", "At the outset", "In the final stage",
+        "Following this", "Prior to"
+      ]
+    },
+    {
+      id: "examples",
+      type: "academic",
+      title: "Examples & Illustration",
+      subtitle: { ru: "Примеры и иллюстрация", kz: "Мысалдар мен иллюстрация" },
+      icon: "💡",
+      terms: [
+        "For instance", "To illustrate", "As exemplified by", "A case in point",
+        "In particular", "Namely", "To demonstrate", "As evidenced by",
+        "Consider", "Specifically", "As demonstrated by", "One such example",
+        "By way of illustration", "To cite an example"
+      ]
+    },
+    {
+      id: "emphasis",
+      type: "academic",
+      title: "Emphasis & Importance",
+      subtitle: { ru: "Акцент и значимость", kz: "Екпін және маңыздылық" },
+      icon: "❗",
+      terms: [
+        "Above all", "Most importantly", "Indeed", "Undoubtedly",
+        "Notably", "Significantly", "It is worth noting", "Of particular importance",
+        "Crucially", "Especially", "In fact", "Without a doubt",
+        "A key consideration", "Of great significance"
+      ]
+    },
+    {
+      id: "uncertainty",
+      type: "academic",
+      title: "Uncertainty & Probability",
+      subtitle: { ru: "Неопределённость и вероятность", kz: "Белгісіздік және ықтималдық" },
+      icon: "🎲",
+      terms: [
+        "Possibly", "Presumably", "Apparently", "Arguably",
+        "Conceivably", "Tentatively", "Plausibly", "In all likelihood",
+        "To some extent", "It seems that", "There is a possibility", "May indicate",
+        "Could suggest", "Cannot be ruled out"
+      ]
+    },
+    {
+      id: "evidence",
+      type: "academic",
+      title: "Evidence & Research",
+      subtitle: { ru: "Доказательства и исследования", kz: "Дәлелдер мен зерттеулер" },
+      icon: "🔬",
+      terms: [
+        "Empirical data", "Findings", "Survey results", "Sample size",
+        "Peer-reviewed", "Methodology", "Statistical significance", "Correlation coefficient",
+        "Longitudinal study", "Control group", "Experimental design", "Data collection",
+        "Research hypothesis", "Reproducibility"
+      ]
+    },
+    {
+      id: "evaluation",
+      type: "academic",
+      title: "Evaluation & Assessment",
+      subtitle: { ru: "Оценка и анализ", kz: "Бағалау және талдау" },
+      icon: "⚖️",
+      terms: [
+        "Assess", "Evaluate", "Appraise", "Examine",
+        "Scrutinize", "Interpret", "Quantify", "Validate",
+        "Verify", "Benchmark", "Critique", "Weigh up",
+        "Determine the merits", "Measure effectiveness"
+      ]
+    },
+    {
+      id: "conclusion",
+      type: "academic",
+      title: "Conclusion & Summary",
+      subtitle: { ru: "Заключение и обобщение", kz: "Қорытынды және жинақтау" },
+      icon: "🏁",
+      terms: [
+        "In summary", "To conclude", "All things considered", "In closing",
+        "On balance", "Ultimately", "Taken together", "In brief",
+        "In essence", "The foregoing suggests", "In retrospect", "To recapitulate",
+        "In a nutshell", "The overall picture"
+      ]
+    },
+    {
+      id: "purpose",
+      type: "academic",
+      title: "Purpose & Intention",
+      subtitle: { ru: "Цель и намерение", kz: "Мақсат пен ниет" },
+      icon: "🎯",
+      terms: [
+        "In order to", "With the aim of", "For the purpose of", "So as to",
+        "With a view to", "Intend to", "Seek to", "Aim to",
+        "Designed to", "With the intention of", "For the sake of", "To that end",
+        "In pursuit of", "With the objective of"
       ]
     }
   ];
+
+  // Автоматическая страховка от любых дубликатов внутри групп при инициализации
+  TERM_BANK.forEach(group => {
+    group.terms = [...new Set(group.terms)];
+  });
 
   // =========================================================================
   // 2. ЗВУКОВОЙ ДВИЖОК (Web Audio API — работает без внешних файлов)
@@ -986,27 +1343,72 @@
   }
 
   // =========================================================================
-  // 3. ИГРОВАЯ ЛОГИКА И СОСТОЯНИЕ
+  // 3. ИГРОВАЯ ЛОГИКА И ПЕРЕКЛЮЧЕНИЕ ЯЗЫКА (RU / KZ)
   // =========================================================================
   const TERMS_PER_ROUND = 8;
-  const BASE_TIME_MS = 5000; // Начальное время на 1 слово (4.2 сек)
-  const MIN_TIME_MS = 1500;  // Минимальный предел времени на высоких раундах (1.4 сек)
-  const TIME_STEP_MS = 250;  // На сколько мс уменьшается время каждый новый раунд
+  const BASE_TIME_MS = 5000;
+  const MIN_TIME_MS = 1500;
+  const TIME_STEP_MS = 250;
 
   let currentRound = 1;
   let totalScore = 0;
   let bestScore = parseInt(localStorage.getItem('syringeBestScore') || '0', 10);
 
+  let currentRoundType = 'clinical';
   let leftGroup = null;
   let rightGroup = null;
-  let roundDeck = [];      // Массив из 8 объектов { word, correctSide, groupTitle }
-  let roundResults = [];   // Ответы игрока в текущем раунде
+  let roundDeck = [];
+  let roundResults = [];
   let currentTermIndex = 0;
   let isTransitioning = false;
 
   let wordTimeLimit = BASE_TIME_MS;
   let timerStart = 0;
   let timerRAF = null;
+  let lastRoundPerfect = false;
+  let lastCorrectInRound = 0;
+
+  function setLanguage(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+
+    document.getElementById('langRu').classList.toggle('active', lang === 'ru');
+    document.getElementById('langKz').classList.toggle('active', lang === 'kz');
+
+    const t = UI_TEXT[lang];
+    document.getElementById('backBtn').textContent = t.back;
+    document.getElementById('startDesc').textContent = t.startDesc;
+    document.getElementById('rulesList').innerHTML = t.rulesHtml;
+    document.getElementById('startBtn').textContent = t.startBtn;
+
+    document.getElementById('lblRound').textContent = t.round;
+    document.getElementById('lblScore').textContent = t.score;
+    document.getElementById('lblLeftDir').textContent = t.leftDir;
+    document.getElementById('lblRightDir').textContent = t.rightDir;
+    document.getElementById('btnLeftAction').textContent = t.btnLeft;
+    document.getElementById('btnRightAction').textContent = t.btnRight;
+
+    document.getElementById('lblInRound').textContent = t.inRound;
+    document.getElementById('lblTotalScore').textContent = t.totalScore;
+    document.getElementById('lblBestScore').textContent = t.bestScore;
+    document.getElementById('lblReviewHeader').textContent = t.reviewHeader;
+
+    // Обновляем активный экран игры, если раунд уже запущен
+    if (leftGroup && rightGroup) {
+      document.getElementById('roundTypeBadge').textContent =
+        currentRoundType === 'clinical' ? t.clinicalBadge : t.academicBadge;
+      document.getElementById('leftSub').textContent = leftGroup.subtitle[lang];
+      document.getElementById('rightSub').textContent = rightGroup.subtitle[lang];
+
+      const shownIndex = Math.min(currentTermIndex + 1, TERMS_PER_ROUND);
+      document.getElementById('pillCounter').textContent = t.termCounter(shownIndex, TERMS_PER_ROUND);
+    }
+
+    // Обновляем экран результатов, если он открыт
+    if (document.getElementById('resultScreen').classList.contains('active')) {
+      updateResultTexts();
+    }
+  }
 
   function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -1031,22 +1433,23 @@
 
   function startRound() {
     showScreen('gameScreen');
+    const t = UI_TEXT[currentLang];
 
     // Уменьшаем время на раздумье с каждым новым раундом
     wordTimeLimit = Math.max(MIN_TIME_MS, BASE_TIME_MS - (currentRound - 1) * TIME_STEP_MS);
 
     // 1. Случайно выбираем тип раунда: 'clinical' или 'academic'
     const types = ['clinical', 'academic'];
-    const chosenType = types[Math.floor(Math.random() * types.length)];
+    currentRoundType = types[Math.floor(Math.random() * types.length)];
 
     // 2. Берем две разные случайные группы ТОЛЬКО этого типа
-    const matchingGroups = shuffleArray(TERM_BANK.filter(g => g.type === chosenType));
+    const matchingGroups = shuffleArray(TERM_BANK.filter(g => g.type === currentRoundType));
     leftGroup = matchingGroups[0];
     rightGroup = matchingGroups[1];
 
     // 3. Определяем сплит между левой и правой группой: минимум 1 слово из другой группы (от 1-7 до 7-1)
-    const leftCount = Math.floor(Math.random() * (TERMS_PER_ROUND - 1)) + 1; // 1..7
-    const rightCount = TERMS_PER_ROUND - leftCount;                          // 7..1
+    const leftCount = Math.floor(Math.random() * (TERMS_PER_ROUND - 1)) + 1;
+    const rightCount = TERMS_PER_ROUND - leftCount;
 
     // 4. Выбираем уникальные слова без повторов внутри каждой группы
     const leftWords = shuffleArray(leftGroup.terms).slice(0, leftCount).map(w => ({
@@ -1069,17 +1472,17 @@
     // Обновляем интерфейс раунда
     document.getElementById('roundNum').textContent = currentRound;
     document.getElementById('liveScore').textContent = totalScore;
-    
+
     const badge = document.getElementById('roundTypeBadge');
-    badge.textContent = chosenType === 'clinical' ? '🩺 Clinical' : '📚 Academic';
+    badge.textContent = currentRoundType === 'clinical' ? t.clinicalBadge : t.academicBadge;
 
     document.getElementById('leftIcon').textContent = leftGroup.icon;
     document.getElementById('leftTitle').textContent = leftGroup.title;
-    document.getElementById('leftSub').textContent = leftGroup.subtitle;
+    document.getElementById('leftSub').textContent = leftGroup.subtitle[currentLang];
 
     document.getElementById('rightIcon').textContent = rightGroup.icon;
     document.getElementById('rightTitle').textContent = rightGroup.title;
-    document.getElementById('rightSub').textContent = rightGroup.subtitle;
+    document.getElementById('rightSub').textContent = rightGroup.subtitle[currentLang];
 
     renderProgressDots();
     spawnNextTerm();
@@ -1106,6 +1509,7 @@
     isTransitioning = false;
     renderProgressDots();
 
+    const t = UI_TEXT[currentLang];
     const currentItem = roundDeck[currentTermIndex];
     const pill = document.getElementById('termPill');
 
@@ -1117,7 +1521,7 @@
     setTimeout(() => syringe.classList.remove('push'), 220);
 
     pill.className = 'term-pill spawn';
-    document.getElementById('pillCounter').textContent = `Term ${currentTermIndex + 1} / ${TERMS_PER_ROUND}`;
+    document.getElementById('pillCounter').textContent = t.termCounter(currentTermIndex + 1, TERMS_PER_ROUND);
     document.getElementById('pillWord').textContent = currentItem.word;
 
     startWordTimer();
@@ -1192,44 +1596,50 @@
   // =========================================================================
   // 4. ПРОВЕРКА В КОНЦЕ РАУНДА И ПОДСЧЕТ ОЧКОВ
   // =========================================================================
-  let lastRoundPerfect = false;
-
-  function finishRound() {
-    cancelAnimationFrame(timerRAF);
-
-    const correctInRound = roundResults.filter(r => r.isCorrect).length;
-    totalScore += correctInRound;
-
-    if (totalScore > bestScore) {
-      bestScore = totalScore;
-      localStorage.setItem('syringeBestScore', bestScore.toString());
-    }
-
-    lastRoundPerfect = (correctInRound === TERMS_PER_ROUND);
-
-    // Заполняем экран итогов
-    document.getElementById('roundScoreVal').textContent = `${correctInRound} / ${TERMS_PER_ROUND}`;
-    document.getElementById('totalScoreVal').textContent = totalScore;
-    document.getElementById('bestScoreVal').textContent = bestScore;
-
+  function updateResultTexts() {
+    const t = UI_TEXT[currentLang];
     const resEmoji = document.getElementById('resEmoji');
     const resTitle = document.getElementById('resTitle');
     const resSubtitle = document.getElementById('resSubtitle');
     const resBtn = document.getElementById('resActionBtn');
 
     if (lastRoundPerfect) {
-      playSound('roundWin');
       resEmoji.textContent = '🔥';
-      resTitle.textContent = `Раунд ${currentRound} пройден!`;
-      resSubtitle.textContent = `Отличная работа! Все 8 из 8 верны. В следующем раунде скорость увеличится!`;
-      resBtn.textContent = `Раунд ${currentRound + 1} (Быстрее!) ➔`;
+      resTitle.textContent = t.winTitle(currentRound);
+      resSubtitle.textContent = t.winSub;
+      resBtn.textContent = t.winBtn(currentRound + 1);
+    } else {
+      resEmoji.textContent = '🛑';
+      resTitle.textContent = t.loseTitle;
+      resSubtitle.textContent = t.loseSub(lastCorrectInRound, TERMS_PER_ROUND, totalScore);
+      resBtn.textContent = t.loseBtn;
+    }
+  }
+
+  function finishRound() {
+    cancelAnimationFrame(timerRAF);
+
+    lastCorrectInRound = roundResults.filter(r => r.isCorrect).length;
+    totalScore += lastCorrectInRound;
+
+    if (totalScore > bestScore) {
+      bestScore = totalScore;
+      localStorage.setItem('syringeBestScore', bestScore.toString());
+    }
+
+    lastRoundPerfect = (lastCorrectInRound === TERMS_PER_ROUND);
+
+    document.getElementById('roundScoreVal').textContent = `${lastCorrectInRound} / ${TERMS_PER_ROUND}`;
+    document.getElementById('totalScoreVal').textContent = totalScore;
+    document.getElementById('bestScoreVal').textContent = bestScore;
+
+    if (lastRoundPerfect) {
+      playSound('roundWin');
     } else {
       playSound('gameOver');
-      resEmoji.textContent = '🛑';
-      resTitle.textContent = 'Игра окончена!';
-      resSubtitle.textContent = `В этом раунде вы угадали ${correctInRound} из ${TERMS_PER_ROUND}. Ваш итоговый счет: ${totalScore}.`;
-      resBtn.textContent = 'Сыграть заново 🔄';
     }
+
+    updateResultTexts();
 
     // Выводим список всех 8 слов раунда с отметками
     const list = document.getElementById('reviewList');
