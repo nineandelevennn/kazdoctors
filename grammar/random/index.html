@@ -633,369 +633,1793 @@
       }
     */
 
-    const questionBank = [
-      // ==================== GRAMMAR: LEVEL A1 ====================
-      {
-        category: "grammar", level: "A1", topic: "Grammar • To Be in Clinical Status", format: "mcq",
-        question: "The patient ____ febrile and tachycardic right now.",
-        correctOption: "is",
-        distractors: ["are", "does", "have"],
-        explanation: "'Febrile' and 'tachycardic' are adjectives describing the singular subject ('The patient'), so we use the verb 'to be' -> 'is'."
-      },
-      {
-        category: "grammar", level: "A1", topic: "Grammar • There is / There are", format: "mcq",
-        question: "____ no signs of acute inflammation on the chest X-ray.",
-        correctOption: "There are",
-        distractors: ["There is", "It is", "They have"],
-        explanation: "Plural noun 'signs' requires the plural existential structure 'There are'."
-      },
-      {
-        category: "grammar", level: "A1", topic: "Grammar • Present Simple Questions", format: "mcq",
-        question: "Where exactly ____ the pain?",
-        correctOption: "do you feel",
-        distractors: ["you feel", "are you feel", "feels you"],
-        explanation: "In Present Simple questions with 'you' and main verb 'feel', we must use the auxiliary verb 'do': 'Where exactly do you feel...'."
-      },
-      {
-        category: "grammar", level: "A1", topic: "Grammar • Present Simple Routine", format: "mcq",
-        question: "The beta-blocker ____ the heart rate and blood pressure.",
-        correctOption: "reduces",
-        distractors: ["reduce", "is reduce", "reducing"],
-        explanation: "For a singular 3rd person subject ('The beta-blocker') stating a pharmacological fact, add -s in Present Simple ('reduces')."
-      },
-      {
-        category: "grammar", level: "A1", topic: "Grammar • Sentence Builder", format: "builder",
-        question: "Build a natural question to ask about fever:",
-        chunks: ["Do you", "have a", "high fever", "today?"],
-        correctOption: "Do you have a high fever today?",
-        explanation: "Standard A1 question order: Auxiliary (Do) + Subject (you) + Verb (have) + Object (a high fever) + Time (today?)."
-      },
-      {
-        category: "grammar", level: "A1", topic: "Grammar • Countable vs Uncountable", format: "mcq",
-        question: "How ____ fluid does the child drink per day?",
-        correctOption: "much",
-        distractors: ["many", "few", "lot"],
-        explanation: "'Fluid' is uncountable here, so we ask 'How much fluid...?'."
-      },
+  const questionBank = [
+  // =========================================================================
+  // 1. GRAMMAR: LEVEL A1 (25 Questions)
+  // =========================================================================
+  {
+    category: "grammar", level: "A1", topic: "Grammar • To Be in Clinical Status", format: "mcq",
+    question: "The patient ____ febrile and tachycardic right now.",
+    correctOption: "is",
+    distractors: ["are", "does", "have"],
+    explanation: "'Febrile' and 'tachycardic' are adjectives describing the singular subject ('The patient'), so we use 'is'."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • There is / There are", format: "mcq",
+    question: "____ no signs of acute inflammation on the chest X-ray.",
+    correctOption: "There are",
+    distractors: ["There is", "It is", "They have"],
+    explanation: "Plural noun 'signs' requires the plural existential structure 'There are'."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • Present Simple Questions", format: "mcq",
+    question: "Where exactly ____ the pain?",
+    correctOption: "do you feel",
+    distractors: ["you feel", "are you feel", "feels you"],
+    explanation: "In Present Simple questions with 'you' and main verb 'feel', we must use the auxiliary verb 'do'."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • Present Simple Routine", format: "mcq",
+    question: "The beta-blocker ____ the heart rate and blood pressure.",
+    correctOption: "reduces",
+    distractors: ["reduce", "is reduce", "reducing"],
+    explanation: "For a singular 3rd person subject ('The beta-blocker'), add -s in Present Simple ('reduces')."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • Sentence Builder", format: "builder",
+    question: "Build a natural question to ask about fever:",
+    chunks: ["Do you", "have a", "high fever", "today?"],
+    correctOption: "Do you have a high fever today?",
+    explanation: "Standard A1 question order: Auxiliary (Do) + Subject (you) + Verb (have) + Object (a high fever) + Time (today?)."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • Countable vs Uncountable", format: "mcq",
+    question: "How ____ fluid does the child drink per day?",
+    correctOption: "much",
+    distractors: ["many", "few", "lot"],
+    explanation: "'Fluid' is uncountable here, so we ask 'How much fluid...?'."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • To Be (Plural Subjects)", format: "mcq",
+    question: "Both lungs ____ clear to auscultation.",
+    correctOption: "are",
+    distractors: ["is", "do", "has"],
+    explanation: "Plural subject ('Both lungs') requires the plural form of 'to be' -> 'are'."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • Have / Has in Symptoms", format: "mcq",
+    question: "The child ____ a runny nose and a mild cough.",
+    correctOption: "has",
+    distractors: ["have", "is having", "haves"],
+    explanation: "Singular third-person subject ('The child') takes 'has' in Present Simple."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • Present Simple Negative", format: "mcq",
+    question: "The patient ____ smoke or drink alcohol.",
+    correctOption: "does not",
+    distractors: ["do not", "is not", "not"],
+    explanation: "Negative Present Simple for 'the patient' (he/she) uses 'does not' + base verb."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • Yes/No Questions", format: "mcq",
+    question: "____ the pain spread to your left arm?",
+    correctOption: "Does",
+    distractors: ["Do", "Is", "Has"],
+    explanation: "Singular subject ('the pain') with base verb ('spread') requires auxiliary 'Does'."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • Present Continuous Now", format: "mcq",
+    question: "The nurse ____ the patient's blood pressure right now.",
+    correctOption: "is checking",
+    distractors: ["checks", "check", "are checking"],
+    explanation: "An action happening 'right now' requires Present Continuous ('is checking')."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • Possessive Adjectives", format: "mcq",
+    question: "Can you open ____ mouth and say 'Ah', please?",
+    correctOption: "your",
+    distractors: ["you", "yours", "you're"],
+    explanation: "Before a noun ('mouth'), we use the possessive adjective 'your'."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • Prepositions of Time", format: "mcq",
+    question: "The low-grade fever usually gets worse ____ the evening.",
+    correctOption: "in",
+    distractors: ["on", "at", "by"],
+    explanation: "We use 'in' with parts of the day: in the morning, in the afternoon, in the evening (but 'at night')."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • Prepositions of Time", format: "mcq",
+    question: "The patient often wakes up with a sour taste ____ night.",
+    correctOption: "at",
+    distractors: ["in", "on", "to"],
+    explanation: "Standard time preposition collocation: 'at night'."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • Imperatives in Advice", format: "mcq",
+    question: "____ plenty of fluids and get enough rest.",
+    correctOption: "Drink",
+    distractors: ["To drink", "Drinks", "Drinking"],
+    explanation: "Medical instructions and advice use the imperative (base form of the verb: 'Drink')."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • Negative Imperatives", format: "mcq",
+    question: "____ take this medication on an empty stomach.",
+    correctOption: "Do not",
+    distractors: ["Not to", "Does not", "No"],
+    explanation: "Negative instructions start with 'Do not (Don't)' + base verb."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • Articles in Symptoms", format: "mcq",
+    question: "I have ____ bad cough and a sore throat.",
+    correctOption: "a",
+    distractors: ["an", "the", "—"],
+    explanation: "In English, common acute symptoms like 'a cough', 'a headache', 'a fever', and 'a sore throat' take the indefinite article 'a'."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • Can for Ability", format: "mcq",
+    question: "____ you point to the area where it hurts?",
+    correctOption: "Can",
+    distractors: ["Are", "Do", "Have"],
+    explanation: "'Can you + base verb?' is used for polite clinical requests during examination."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • Countable Plural", format: "mcq",
+    question: "How ____ cigarettes do you smoke a day?",
+    correctOption: "many",
+    distractors: ["much", "long", "often"],
+    explanation: "'Cigarettes' is a countable plural noun, so we use 'How many'."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • Frequency Question", format: "mcq",
+    question: "How ____ do you take your painkillers?",
+    correctOption: "often",
+    distractors: ["many", "long", "much"],
+    explanation: "'How often' asks about frequency of medication intake."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • There is (Singular)", format: "mcq",
+    question: "____ a small swelling on the right knee.",
+    correctOption: "There is",
+    distractors: ["There are", "They are", "Have"],
+    explanation: "Singular noun phrase ('a small swelling') requires 'There is'."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • Object Pronouns", format: "mcq",
+    question: "Here is your prescription. Take ____ to the pharmacy downstairs.",
+    correctOption: "it",
+    distractors: ["them", "him", "her"],
+    explanation: "Singular inanimate noun ('your prescription') is replaced by the object pronoun 'it'."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • Sentence Builder", format: "builder",
+    question: "Build a polite opening question for a consultation:",
+    chunks: ["What", "brings you", "in", "today?"],
+    correctOption: "What brings you in today?",
+    explanation: "Standard opening chunk: 'What brings you in today?'."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • Sentence Builder", format: "builder",
+    question: "Build a question about allergies:",
+    chunks: ["Are you", "allergic to", "any", "medications?"],
+    correctOption: "Are you allergic to any medications?",
+    explanation: "Adjective 'allergic' requires the verb 'to be' ('Are you') + preposition 'to'."
+  },
+  {
+    category: "grammar", level: "A1", topic: "Grammar • Sentence Builder", format: "builder",
+    question: "Build a basic treatment instruction:",
+    chunks: ["Take one", "tablet", "twice a", "day."],
+    correctOption: "Take one tablet twice a day.",
+    explanation: "Standard dosage instruction order: Verb (Take) + Dose (one tablet) + Frequency (twice a day)."
+  },
 
-      // ==================== GRAMMAR: LEVEL A2 ====================
-      {
-        category: "grammar", level: "A2", topic: "Grammar • Past Simple", format: "mcq",
-        question: "The patient ____ severe abdominal pain two hours ago.",
-        correctOption: "developed",
-        distractors: ["has developed", "develops", "was develop"],
-        explanation: "'Two hours ago' is a finished past time marker, which strictly requires Past Simple ('developed')."
-      },
-      {
-        category: "grammar", level: "A2", topic: "Grammar • Present Perfect (Anamnesis)", format: "mcq",
-        question: "How long ____ this dry cough?",
-        correctOption: "have you had",
-        distractors: ["do you have", "did you had", "you have"],
-        explanation: "For a symptom that started in the past and continues up to the present moment, use Present Perfect ('have you had')."
-      },
-      {
-        category: "grammar", level: "A2", topic: "Grammar • Since vs For", format: "mcq",
-        question: "She has experienced severe migraine attacks ____ Monday morning.",
-        correctOption: "since",
-        distractors: ["for", "from", "during"],
-        explanation: "'Since' is used with a specific starting point in time (Monday morning), while 'for' is used with a duration (for 3 days)."
-      },
-      {
-        category: "grammar", level: "A2", topic: "Grammar • Modals of Advice", format: "mcq",
-        question: "You ____ avoid heavy and spicy meals before lying down.",
-        correctOption: "should",
-        distractors: ["must to", "are able", "ought"],
-        explanation: "'Should + base verb' (without 'to') is the standard way to give clinical lifestyle recommendations."
-      },
-      {
-        category: "grammar", level: "A2", topic: "Grammar • Comparatives", format: "mcq",
-        question: "Today the swelling in the left ankle is much ____ than yesterday.",
-        correctOption: "worse",
-        distractors: ["more bad", "badder", "worst"],
-        explanation: "The comparative form of 'bad' is irregular: bad -> worse -> the worst."
-      },
-      {
-        category: "grammar", level: "A2", topic: "Grammar • Sentence Builder", format: "builder",
-        question: "Assemble the clinical history sentence:",
-        chunks: ["The patient", "was admitted", "to the hospital", "yesterday."],
-        correctOption: "The patient was admitted to the hospital yesterday.",
-        explanation: "Word order: Subject (The patient) + Passive Verb (was admitted) + Place (to the hospital) + Time (yesterday)."
-      },
+  // =========================================================================
+  // 2. GRAMMAR: LEVEL A2 (25 Questions)
+  // =========================================================================
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Past Simple", format: "mcq",
+    question: "The patient ____ severe abdominal pain two hours ago.",
+    correctOption: "developed",
+    distractors: ["has developed", "develops", "was develop"],
+    explanation: "'Two hours ago' is a finished past time marker, which strictly requires Past Simple ('developed')."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Present Perfect (Anamnesis)", format: "mcq",
+    question: "How long ____ this dry cough?",
+    correctOption: "have you had",
+    distractors: ["do you have", "did you had", "you have"],
+    explanation: "For a symptom that started in the past and continues up to now, use Present Perfect ('have you had')."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Since vs For", format: "mcq",
+    question: "She has experienced severe migraine attacks ____ Monday morning.",
+    correctOption: "since",
+    distractors: ["for", "from", "during"],
+    explanation: "'Since' is used with a specific starting point in time (Monday morning)."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Modals of Advice", format: "mcq",
+    question: "You ____ avoid heavy and spicy meals before lying down.",
+    correctOption: "should",
+    distractors: ["must to", "are able", "ought"],
+    explanation: "'Should + base verb' (without 'to') is the standard way to give lifestyle recommendations."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Comparatives", format: "mcq",
+    question: "Today the swelling in the left ankle is much ____ than yesterday.",
+    correctOption: "worse",
+    distractors: ["more bad", "badder", "worst"],
+    explanation: "The comparative form of 'bad' is irregular: bad -> worse -> the worst."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Sentence Builder", format: "builder",
+    question: "Assemble the clinical history sentence:",
+    chunks: ["The patient", "was admitted", "to the hospital", "yesterday."],
+    correctOption: "The patient was admitted to the hospital yesterday.",
+    explanation: "Word order: Subject + Passive Verb (was admitted) + Place + Time."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Past Simple Questions", format: "mcq",
+    question: "When ____ the symptoms start?",
+    correctOption: "did",
+    distractors: ["do", "were", "have"],
+    explanation: "Asking about the specific past moment when symptoms began requires Past Simple ('When did... start?')."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Past Simple Irregular", format: "mcq",
+    question: "The patient ____ ibuprofen this morning, but it didn't help.",
+    correctOption: "took",
+    distractors: ["taked", "has take", "taken"],
+    explanation: "Past Simple of 'take' is 'took'."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Present Perfect Experience", format: "mcq",
+    question: "____ you ever had any major surgeries in the past?",
+    correctOption: "Have",
+    distractors: ["Did", "Were", "Do"],
+    explanation: "Questions about life experience up to the present ('ever') use Present Perfect: 'Have you ever had...?'."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • For with Duration", format: "mcq",
+    question: "He has felt exhausted ____ the last two weeks.",
+    correctOption: "for",
+    distractors: ["since", "during", "ago"],
+    explanation: "'For' is used before a period/duration of time ('for the last two weeks')."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Past Continuous Context", format: "mcq",
+    question: "The patient twisted his knee while he ____ football.",
+    correctOption: "was playing",
+    distractors: ["played", "is playing", "plays"],
+    explanation: "A longer background action in the past interrupted by a short event ('twisted') uses Past Continuous ('was playing')."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Going to for Plans", format: "mcq",
+    question: "I ____ prescribe an antibiotic eye drop for your conjunctivitis.",
+    correctOption: "am going to",
+    distractors: ["will to", "going to", "am go to"],
+    explanation: "'Be going to + base verb' expresses the doctor's immediate clinical intention/plan."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Have to (Necessity)", format: "mcq",
+    question: "You ____ fast for 8 hours before the blood glucose test.",
+    correctOption: "have to",
+    distractors: ["must to", "has to", "should to"],
+    explanation: "'Have to + base verb' expresses a mandatory clinical preparation rule."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Superlatives", format: "mcq",
+    question: "What was the ____ temperature you measured at home?",
+    correctOption: "highest",
+    distractors: ["higher", "most high", "high"],
+    explanation: "After 'the', we use the superlative form ('the highest temperature')."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Indefinite Pronouns", format: "mcq",
+    question: "Does ____ make the pain better or worse?",
+    correctOption: "anything",
+    distractors: ["nothing", "somebody", "anywhere"],
+    explanation: "In general questions about triggers/relieving factors, we use 'anything'."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Gerund after Prepositions", format: "mcq",
+    question: "The patient complains of shortness of breath after ____ upstairs.",
+    correctOption: "walking",
+    distractors: ["walk", "to walk", "walked"],
+    explanation: "After a preposition ('after', 'before', 'without'), verbs always take the -ing form (gerund)."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Infinitive of Purpose", format: "mcq",
+    question: "We will run some blood tests ____ check your kidney function.",
+    correctOption: "to",
+    distractors: ["for", "so", "by"],
+    explanation: "To express purpose ('in order to'), use the to-infinitive ('to check')."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Quantifiers (A little / A few)", format: "mcq",
+    question: "The patient coughed up ____ yellowish sputum this morning.",
+    correctOption: "a little",
+    distractors: ["a few", "many", "several"],
+    explanation: "'Sputum' is uncountable, so we use 'a little' (whereas 'a few' is for countable nouns)."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Quantifiers (A few)", format: "mcq",
+    question: "She has lost ____ kilograms over the past month without dieting.",
+    correctOption: "a few",
+    distractors: ["a little", "much", "amount of"],
+    explanation: "'Kilograms' is countable plural, so we use 'a few'."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Past Simple Passive", format: "mcq",
+    question: "His appendix ____ removed when he was sixteen.",
+    correctOption: "was",
+    distractors: ["were", "did", "has"],
+    explanation: "Singular subject ('His appendix') in a past passive event ('when he was 16') takes 'was removed'."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Used to for Past Habits", format: "mcq",
+    question: "I ____ smoke a pack a day, but I quit three years ago.",
+    correctOption: "used to",
+    distractors: ["use to", "am used to", "was use to"],
+    explanation: "'Used to + base verb' describes a past habit that has ended."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Sentence Builder", format: "builder",
+    question: "Build a question about onset mode:",
+    chunks: ["Did the pain", "start", "suddenly or", "gradually?"],
+    correctOption: "Did the pain start suddenly or gradually?",
+    explanation: "Past Simple question: Did + subject (the pain) + base verb (start) + adverbs."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Sentence Builder", format: "builder",
+    question: "Build a question about family history:",
+    chunks: ["Does anyone", "in your family", "have", "diabetes?"],
+    correctOption: "Does anyone in your family have diabetes?",
+    explanation: "'Anyone' is grammatically singular, so it requires 'Does anyone... have?'."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Sentence Builder", format: "builder",
+    question: "Build a Present Perfect question about medication:",
+    chunks: ["Have you", "taken anything", "for the", "pain?"],
+    correctOption: "Have you taken anything for the pain?",
+    explanation: "Present Perfect ('Have you taken...') connects a recent action with the current symptom status."
+  },
+  {
+    category: "grammar", level: "A2", topic: "Grammar • Sentence Builder", format: "builder",
+    question: "Assemble the doctor's treatment plan:",
+    chunks: ["I am going", "to prescribe", "medication for", "your blood pressure."],
+    correctOption: "I am going to prescribe medication for your blood pressure.",
+    explanation: "Structure: [I am going to + base verb + object]."
+  },
 
-      // ==================== GRAMMAR: LEVEL B1 ====================
-      {
-        category: "grammar", level: "B1", topic: "Grammar • Zero Conditional", format: "mcq",
-        question: "If the spinal cord is damaged, the patient ____ function below the injury.",
-        correctOption: "loses",
-        distractors: ["would lose", "would have lost", "lost"],
-        explanation: "Zero Conditional [If + Present Simple, Present Simple] describes universal anatomical and physiological facts."
-      },
-      {
-        category: "grammar", level: "B1", topic: "Grammar • First Conditional", format: "mcq",
-        question: "If sputum production increases, we ____ for a bacterial infection.",
-        correctOption: "will check",
-        distractors: ["checked", "would check", "would have checked"],
-        explanation: "First Conditional [If + Present Simple, will + verb] expresses a realistic clinical plan for the near future."
-      },
-      {
-        category: "grammar", level: "B1", topic: "Grammar • Second Conditional", format: "mcq",
-        question: "If the tendon ____ completely torn, the patient wouldn't move the joint at all.",
-        correctOption: "were",
-        distractors: ["is", "will be", "has been"],
-        explanation: "Second Conditional [If + Past Simple/were, would + verb] describes a hypothetical or unreal present condition."
-      },
-      {
-        category: "grammar", level: "B1", topic: "Grammar • Passive Voice in Guidelines", format: "mcq",
-        question: "Prophylactic antibiotics ____ 30 minutes prior to the surgical incision.",
-        correctOption: "are administered",
-        distractors: ["administer", "have administer", "are administering"],
-        explanation: "Clinical protocols frequently use Present Simple Passive ('are administered') to focus on the procedure rather than the performer."
-      },
-      {
-        category: "grammar", level: "B1", topic: "Grammar • Present Perfect Continuous", format: "mcq",
-        question: "The child ____ poorly for the past three days due to a sore throat.",
-        correctOption: "has been eating",
-        distractors: ["is eating", "eats", "was eaten"],
-        explanation: "Present Perfect Continuous ('has been eating') emphasizes an ongoing action that started 3 days ago and still continues."
-      },
-      {
-        category: "grammar", level: "B1", topic: "Grammar • Sentence Builder", format: "builder",
-        question: "Build a First Conditional clinical sentence:",
-        chunks: ["If the swelling", "doesn't go down,", "we will consider", "a steroid injection."],
-        correctOption: "If the swelling doesn't go down, we will consider a steroid injection.",
-        explanation: "First Conditional structure: [If + Present Simple negative], [we will + base verb + object]."
-      },
+  // =========================================================================
+  // 3. GRAMMAR: LEVEL B1 (25 Questions)
+  // =========================================================================
+  {
+    category: "grammar", level: "B1", topic: "Grammar • Zero Conditional", format: "mcq",
+    question: "If the spinal cord is damaged, the patient ____ function below the injury.",
+    correctOption: "loses",
+    distractors: ["would lose", "would have lost", "lost"],
+    explanation: "Zero Conditional [If + Present Simple, Present Simple] describes universal anatomical facts."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • First Conditional", format: "mcq",
+    question: "If sputum production increases, we ____ for a bacterial infection.",
+    correctOption: "will check",
+    distractors: ["checked", "would check", "would have checked"],
+    explanation: "First Conditional [If + Present Simple, will + verb] expresses a realistic clinical plan."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • Second Conditional", format: "mcq",
+    question: "If the tendon ____ completely torn, the patient wouldn't move the joint at all.",
+    correctOption: "were",
+    distractors: ["is", "will be", "has been"],
+    explanation: "Second Conditional [If + Past Simple/were, would + verb] describes an unreal present condition."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • Passive Voice in Guidelines", format: "mcq",
+    question: "Prophylactic antibiotics ____ 30 minutes prior to the surgical incision.",
+    correctOption: "are administered",
+    distractors: ["administer", "have administer", "are administering"],
+    explanation: "Clinical protocols use Present Simple Passive ('are administered') to focus on the action."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • Present Perfect Continuous", format: "mcq",
+    question: "The child ____ poorly for the past three days due to a sore throat.",
+    correctOption: "has been eating",
+    distractors: ["is eating", "eats", "was eaten"],
+    explanation: "Present Perfect Continuous ('has been eating') emphasizes an ongoing action over a period up to now."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • Sentence Builder", format: "builder",
+    question: "Build a First Conditional clinical sentence:",
+    chunks: ["If the swelling", "doesn't go down,", "we will consider", "a steroid injection."],
+    correctOption: "If the swelling doesn't go down, we will consider a steroid injection.",
+    explanation: "First Conditional: [If + Present Simple negative], [we will + base verb + object]."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • Past Perfect in Case Reports", format: "mcq",
+    question: "By the time the ambulance arrived, the patient ____ consciousness.",
+    correctOption: "had regained",
+    distractors: ["has regained", "regains", "was regain"],
+    explanation: "An action completed before another past point ('By the time the ambulance arrived') requires Past Perfect ('had regained')."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • Modal Passive", format: "mcq",
+    question: "In patients with severe renal failure, the drug dosage ____ reduced.",
+    correctOption: "must be",
+    distractors: ["must", "must been", "has must"],
+    explanation: "Modal Passive structure is [modal + be + Past Participle] -> 'must be reduced'."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • Reported Speech (Statements)", format: "mcq",
+    question: "The patient stated that the chest pain ____ after heavy meals.",
+    correctOption: "worsened",
+    distractors: ["worsens", "will worsen", "is worsen"],
+    explanation: "In reported speech after a past reporting verb ('stated'), Present Simple shifts back to Past Simple ('worsened')."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • Reported Speech (Questions)", format: "mcq",
+    question: "The physician asked the patient whether he ____ any blood thinners.",
+    correctOption: "was taking",
+    distractors: ["is taking", "was he taking", "takes"],
+    explanation: "Indirect/reported questions use affirmative word order (Subject + Verb) and backshift ('was taking')."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • Defining Relative Clauses", format: "mcq",
+    question: "The esophagus is the muscular tube ____ connects the mouth to the stomach.",
+    correctOption: "which (that)",
+    distractors: ["who", "whom", "whose"],
+    explanation: "For organs and anatomical structures (things), we use the relative pronoun 'which' or 'that'."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • Relative Pronoun (Whose)", format: "mcq",
+    question: "Patients ____ blood pressure remains uncontrolled require combination therapy.",
+    correctOption: "whose",
+    distractors: ["who", "which", "whom"],
+    explanation: "'Whose' shows possession ('patients whose blood pressure...')."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • Unless in Clinical Warnings", format: "mcq",
+    question: "The infection will spread ____ broad-spectrum antibiotics are started immediately.",
+    correctOption: "unless",
+    distractors: ["if", "despite", "because"],
+    explanation: "'Unless' means 'if not' ('if broad-spectrum antibiotics are not started')."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • As soon as (Time Clauses)", format: "mcq",
+    question: "We will adjust the insulin dose as soon as the lab results ____ available.",
+    correctOption: "are",
+    distractors: ["will be", "would be", "were"],
+    explanation: "In future time clauses after 'as soon as', 'when', 'until', we use Present Simple ('are'), never 'will'."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • Be Used To + -ing", format: "mcq",
+    question: "Night-shift residents are used to ____ under high levels of stress.",
+    correctOption: "working",
+    distractors: ["work", "worked", "be work"],
+    explanation: "'Be used to' (be accustomed to) is followed by a noun or gerund (-ing form: 'working')."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • Verb + Gerund (Avoid)", format: "mcq",
+    question: "Patients with gastroesophageal reflux should avoid ____ down right after meals.",
+    correctOption: "lying",
+    distractors: ["to lie", "lie", "laid"],
+    explanation: "The verb 'avoid' is always followed by a gerund (-ing form: 'avoid lying down')."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • Causative (Have something done)", format: "mcq",
+    question: "You should have your intraocular pressure ____ once a year.",
+    correctOption: "measured",
+    distractors: ["measure", "measuring", "to measure"],
+    explanation: "Causative structure [have + object + Past Participle] ('have your pressure measured') means a specialist performs the test for you."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • Present Perfect Passive", format: "mcq",
+    question: "Three new cases of measles ____ reported in the district this week.",
+    correctOption: "have been",
+    distractors: ["has been", "were being", "are being"],
+    explanation: "Unfinished time period ('this week') + plural passive subject ('Three new cases') requires 'have been reported'."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • So that (Purpose)", format: "mcq",
+    question: "The tablet is coated ____ it does not irritate the gastric mucosa.",
+    correctOption: "so that",
+    distractors: ["in order to", "because of", "despite"],
+    explanation: "Before a full clause (Subject + Verb: 'it does not irritate'), purpose is expressed with 'so that'."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • Despite vs Although", format: "mcq",
+    question: "____ taking high-dose analgesics, the patient still experienced severe back pain.",
+    correctOption: "Despite",
+    distractors: ["Although", "However", "Even though"],
+    explanation: "'Despite' / 'In spite of' is followed by a noun or -ing form ('Despite taking...'), whereas 'Although' requires a subject + verb."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar •Modals of Possibility", format: "mcq",
+    question: "Unexplained weight loss and night sweats ____ indicate an underlying malignancy.",
+    correctOption: "may",
+    distractors: ["must to", "ought", "are"],
+    explanation: "'May / might / could + base verb' expresses clinical possibility in differential diagnosis."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • Sentence Builder", format: "builder",
+    question: "Build a Second Conditional clinical hypothesis:",
+    chunks: ["If I were", "the attending physician,", "I would order", "an urgent MRI."],
+    correctOption: "If I were the attending physician, I would order an urgent MRI.",
+    explanation: "Second Conditional: [If I were + role], [I would + base verb]."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • Sentence Builder", format: "builder",
+    question: "Build a Present Perfect Continuous question:",
+    chunks: ["How long", "have you been", "feeling", "short of breath?"],
+    correctOption: "How long have you been feeling short of breath?",
+    explanation: "Present Perfect Continuous question: How long + have + subject + been + V-ing?"
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • Sentence Builder", format: "builder",
+    question: "Assemble the passive guideline recommendation:",
+    chunks: ["Blood glucose levels", "should be monitored", "regularly", "in diabetic patients."],
+    correctOption: "Blood glucose levels should be monitored regularly in diabetic patients.",
+    explanation: "Modal Passive structure: Subject + should be + V3 (monitored) + adverb."
+  },
+  {
+    category: "grammar", level: "B1", topic: "Grammar • Sentence Builder", format: "builder",
+    question: "Assemble the polite clarification sentence:",
+    chunks: ["Let me make sure", "I understood", "your complaints", "correctly."],
+    correctOption: "Let me make sure I understood your complaints correctly.",
+    explanation: "Standard OSCE active-listening chunk: 'Let me make sure I understood... correctly'."
+  },
 
-      // ==================== GRAMMAR: LEVEL B2 ====================
-      {
-        category: "grammar", level: "B2", topic: "Grammar • Third Conditional", format: "mcq",
-        question: "If she had received thrombolysis earlier, the stroke effects ____ less severe.",
-        correctOption: "would have been",
-        distractors: ["would be", "will be", "were"],
-        explanation: "Third Conditional [If + Past Perfect, would have + V3] evaluates an unreal past scenario and its past outcome."
-      },
-      {
-        category: "grammar", level: "B2", topic: "Grammar • Mixed Conditional", format: "mcq",
-        question: "If the patient had complied with antihypertensive therapy, he ____ in the ICU right now.",
-        correctOption: "would not be",
-        distractors: ["will not be", "would not have been", "was not"],
-        explanation: "Mixed Conditional: Past unreal condition (If + Past Perfect) affecting the present state ('right now' -> would + base verb)."
-      },
-      {
-        category: "grammar", level: "B2", topic: "Grammar • Past Modals of Deduction", format: "mcq",
-        question: "The acute rash ____ been triggered by penicillin, as it appeared 15 minutes after the injection.",
-        correctOption: "must have",
-        distractors: ["should have", "must to", "can have"],
-        explanation: "'Must have + V3' expresses a strong logical deduction/certainty about a past clinical event."
-      },
-      {
-        category: "grammar", level: "B2", topic: "Grammar • Subjunctive in Recommendations", format: "mcq",
-        question: "The oncology board recommended that the patient ____ neoadjuvant chemotherapy immediately.",
-        correctOption: "undergo",
-        distractors: ["undergoes", "underwent", "to undergo"],
-        explanation: "After 'recommend/suggest/insist that...', formal medical English uses the bare infinitive (subjunctive): 'that the patient undergo'."
-      },
-      {
-        category: "grammar", level: "B2", topic: "Grammar • Inversion in Academic Style", format: "mcq",
-        question: "Not only ____ blood pressure, but the drug also improves renal outcomes.",
-        correctOption: "does it lower",
-        distractors: ["it lowers", "lowers it", "is it lower"],
-        explanation: "When a sentence starts with 'Not only...', we use auxiliary inversion: 'Not only does it lower...'."
-      },
-      {
-        category: "grammar", level: "B2", topic: "Grammar • Sentence Builder", format: "builder",
-        question: "Assemble the Third Conditional clinical review:",
-        chunks: ["If the spinal cord", "had been damaged,", "he would have", "lost sensation."],
-        correctOption: "If the spinal cord had been damaged, he would have lost sensation.",
-        explanation: "Third Conditional Passive: [If + had been + V3], [Subject + would have + V3]."
-      },
+  // =========================================================================
+  // 4. GRAMMAR: LEVEL B2 (25 Questions)
+  // =========================================================================
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Third Conditional", format: "mcq",
+    question: "If she had received thrombolysis earlier, the stroke effects ____ less severe.",
+    correctOption: "would have been",
+    distractors: ["would be", "will be", "were"],
+    explanation: "Third Conditional [If + Past Perfect, would have + V3] evaluates an unreal past scenario."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Mixed Conditional", format: "mcq",
+    question: "If the patient had complied with antihypertensive therapy, he ____ in the ICU right now.",
+    correctOption: "would not be",
+    distractors: ["will not be", "would not have been", "was not"],
+    explanation: "Mixed Conditional: Past unreal condition (If + Past Perfect) affecting the present state ('right now' -> would + base verb)."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Past Modals of Deduction", format: "mcq",
+    question: "The acute rash ____ been triggered by penicillin, as it appeared 15 minutes after the injection.",
+    correctOption: "must have",
+    distractors: ["should have", "must to", "can have"],
+    explanation: "'Must have + V3' expresses strong logical certainty about a past clinical event."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Subjunctive in Recommendations", format: "mcq",
+    question: "The oncology board recommended that the patient ____ neoadjuvant chemotherapy immediately.",
+    correctOption: "undergo",
+    distractors: ["undergoes", "underwent", "to undergo"],
+    explanation: "After 'recommend/suggest/insist that...', formal medical English uses the bare infinitive (subjunctive): 'undergo'."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Inversion in Academic Style", format: "mcq",
+    question: "Not only ____ blood pressure, but the drug also improves renal outcomes.",
+    correctOption: "does it lower",
+    distractors: ["it lowers", "lowers it", "is it lower"],
+    explanation: "When a sentence starts with 'Not only...', we use auxiliary inversion: 'Not only does it lower...'."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Sentence Builder", format: "builder",
+    question: "Assemble the Third Conditional clinical review:",
+    chunks: ["If the spinal cord", "had been damaged,", "he would have", "lost sensation."],
+    correctOption: "If the spinal cord had been damaged, he would have lost sensation.",
+    explanation: "Third Conditional Passive: [If + had been + V3], [Subject + would have + V3]."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Conditional Inversion (Had)", format: "mcq",
+    question: "____ the hemorrhage been detected earlier, emergency surgery would not have been necessary.",
+    correctOption: "Had",
+    distractors: ["If", "Were", "Should"],
+    explanation: "Formal Third Conditional inversion omits 'if' and places 'Had' first: 'Had the hemorrhage been detected...'."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Conditional Inversion (Should)", format: "mcq",
+    question: "____ the patient develop signs of anaphylaxis, administer intramuscular epinephrine immediately.",
+    correctOption: "Should",
+    distractors: ["Would", "Had", "Were"],
+    explanation: "In formal clinical guidelines, 'Should + subject + base verb' replaces 'If the patient should develop...'."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Past Modal of Criticism (Should have)", format: "mcq",
+    question: "The baseline ECG ____ performed prior to initiating antiarrhythmic therapy, but it was omitted.",
+    correctOption: "should have been",
+    distractors: ["must have been", "would be", "should be"],
+    explanation: "'Should have been + V3' indicates an essential past procedure that was regrettably not done."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Past Modal (Could not have)", format: "mcq",
+    question: "The infection ____ originated from the catheter, as the culture came back completely sterile.",
+    correctOption: "could not have",
+    distractors: ["must not have", "should not have", "may not"],
+    explanation: "'Could not have + V3' expresses logical impossibility in the past."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Participle Clauses", format: "mcq",
+    question: "____ with chest pain and diaphoresis, the 58-year-old male was rushed to the cath lab.",
+    correctOption: "Presenting",
+    distractors: ["Presented", "To present", "Present"],
+    explanation: "Active present participle ('Presenting with...') means 'Because/When he presented with...'."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Past Participle Clauses", format: "mcq",
+    question: "____ intravenously, the medication achieves peak plasma concentration within five minutes.",
+    correctOption: "Administered",
+    distractors: ["Administering", "To administer", "Having administer"],
+    explanation: "Passive past participle ('Administered intravenously...') means 'When it is administered intravenously...'."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Perfect Participle Clause", format: "mcq",
+    question: "____ failed conservative management for six months, the patient was scheduled for arthroplasty.",
+    correctOption: "Having",
+    distractors: ["Being", "Had", "To have"],
+    explanation: "'Having + V3' ('Having failed...') emphasizes that one action was completed before the main past action."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Impersonal Passive Reporting", format: "mcq",
+    question: "Autoimmune thyroiditis is thought ____ triggered by a combination of genetic and environmental factors.",
+    correctOption: "to be",
+    distractors: ["being", "that it is", "be"],
+    explanation: "Impersonal passive structure: [Subject + is thought/believed/known + to be + V3]."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Perfect Infinitive in Reporting", format: "mcq",
+    question: "The outbreak is reported ____ originated from a contaminated water supply last month.",
+    correctOption: "to have",
+    distractors: ["to be", "having", "that had"],
+    explanation: "When the reported event happened before the reporting verb, we use the perfect infinitive ('is reported to have originated')."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Cleft Sentences for Emphasis", format: "mcq",
+    question: "____ the progressive loss of beta-cell function that ultimately leads to insulin dependence.",
+    correctOption: "It is",
+    distractors: ["There is", "What is", "That is"],
+    explanation: "An It-cleft sentence ('It is [X] that...') highlights the specific pathophysiological mechanism."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Negative Inversion (Rarely)", format: "mcq",
+    question: "Rarely ____ such a rapid resolution of symptoms without surgical intervention.",
+    correctOption: "do we observe",
+    distractors: ["we observe", "we do observe", "observe we"],
+    explanation: "Starting a sentence with a negative/restrictive adverb ('Rarely', 'Seldom', 'Never') requires auxiliary inversion ('do we observe')."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Future Perfect in Prognosis", format: "mcq",
+    question: "By the end of this 14-day regimen, the pathogen ____ completely eradicated.",
+    correctOption: "will have been",
+    distractors: ["will be", "has been", "would be"],
+    explanation: "'By the end of...' looks ahead to a completed action in the future -> Future Perfect Passive ('will have been eradicated')."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Preposition + Relative Pronoun", format: "mcq",
+    question: "The clinical trial ____ these guidelines are based included over 12,000 patients.",
+    correctOption: "on which",
+    distractors: ["which", "in that", "whom"],
+    explanation: "We say 'based ON a trial', so in formal academic style it becomes 'the trial on which these guidelines are based'."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Quantifier + of + Relative", format: "mcq",
+    question: "The study enrolled 200 subjects, none of ____ developed severe adverse events.",
+    correctOption: "whom",
+    distractors: ["who", "which", "them"],
+    explanation: "For people ('subjects') after a preposition ('none of...'), formal grammar requires 'whom' ('none of whom')."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar •Subjunctive after 'It is essential'", format: "mcq",
+    question: "It is imperative that the sterile field ____ maintained throughout the entire procedure.",
+    correctOption: "be",
+    distractors: ["is", "was", "to be"],
+    explanation: "After 'It is imperative/essential/vital that...', the passive subjunctive uses bare 'be' ('that the field be maintained')."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Sentence Builder", format: "builder",
+    question: "Assemble the formal inverted conditional:",
+    chunks: ["Should the symptoms", "persist,", "further diagnostic tests", "will be required."],
+    correctOption: "Should the symptoms persist, further diagnostic tests will be required.",
+    explanation: "Formal First Conditional inversion: [Should + subject + base verb, future passive main clause]."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Sentence Builder", format: "builder",
+    question: "Assemble the academic passive reporting sentence:",
+    chunks: ["This mutation", "is known", "to increase", "cancer risk."],
+    correctOption: "This mutation is known to increase cancer risk.",
+    explanation: "Structure: [Subject + is known + to-infinitive + object]."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Sentence Builder", format: "builder",
+    question: "Assemble the negative inversion sentence:",
+    chunks: ["Not only does", "the drug reduce pain,", "but it also", "curbs inflammation."],
+    correctOption: "Not only does the drug reduce pain, but it also curbs inflammation.",
+    explanation: "Structure: [Not only + does + subject + base verb, but it also + verb]."
+  },
+  {
+    category: "grammar", level: "B2", topic: "Grammar • Sentence Builder", format: "builder",
+    question: "Assemble the past modal deduction sentence:",
+    chunks: ["The patient", "must have", "misunderstood", "the dosage instructions."],
+    correctOption: "The patient must have misunderstood the dosage instructions.",
+    explanation: "Past deduction structure: [Subject + must have + Past Participle + object]."
+  },
 
-      // ==================== CLINICAL VOCABULARY (Context & Translation) ====================
-      {
-        category: "clinical", level: "A1", topic: "Clinical • Symptoms Translation", format: "mcq",
-        question: "Which clinical term corresponds to 'Одышка / Тыныс алудың тарылуы'?",
-        correctOption: "Dyspnea (Shortness of breath)",
-        distractors: ["Dysphagia (Difficulty swallowing)", "Dysuria (Painful urination)", "Dyspepsia (Indigestion)"],
-        explanation: "Dyspnea = shortness of breath; Dysphagia = swallowing difficulty; Dysuria = painful urination."
-      },
-      {
-        category: "clinical", level: "A1", topic: "Clinical • Pain Character", format: "context",
-        question: "Patient: 'It feels like my head is beating in rhythm with my heart.' How do we describe this pain?",
-        correctOption: "Throbbing pain",
-        distractors: ["Dull aching pain", "Burning sensation", "Cramping pain"],
-        explanation: "'Throbbing' means pulsating or beating rhythmically (typical for migraine or vascular headache)."
-      },
-      {
-        category: "clinical", level: "A2", topic: "Clinical • GI Context", format: "context",
-        question: "A patient with peptic ulcer disease presents with black, tarry stools. This sign is called ____.",
-        correctOption: "Melena",
-        distractors: ["Hematemesis", "Hemoptysis", "Steatorrhea"],
-        explanation: "Melena = black tarry stool due to upper GI bleeding. Hematemesis = vomiting blood. Hemoptysis = coughing up blood."
-      },
-      {
-        category: "clinical", level: "A2", topic: "Clinical • Pulmonology Context", format: "context",
-        question: "During auscultation of an asthmatic patient, high-pitched whistling sounds are heard on expiration: ____.",
-        correctOption: "Wheezing",
-        distractors: ["Epistaxis", "Nocturia", "Pruritus"],
-        explanation: "'Wheezing' refers to the high-pitched whistling breath sound caused by narrowed airways in asthma or COPD."
-      },
-      {
-        category: "clinical", level: "A2", topic: "Clinical • Pharmacology Terms", format: "context",
-        question: "Ibuprofen and paracetamol bought without a doctor's prescription are called ____ medications.",
-        correctOption: "over-the-counter (OTC)",
-        distractors: ["intravenous (IV)", "neoadjuvant", "nosocomial"],
-        explanation: "Over-the-counter (OTC) drugs can be purchased directly at a pharmacy without a prescription."
-      },
-      {
-        category: "clinical", level: "B1", topic: "Clinical • Cardiology Context", format: "context",
-        question: "When blood leaks backward through a heart valve that does not close properly, it is called ____.",
-        correctOption: "Regurgitation",
-        distractors: ["Stenosis", "Peristalsis", "Atelectasis"],
-        explanation: "Regurgitation = backward flow through a leaky valve; Stenosis = narrowing/stiffening of a valve."
-      },
-      {
-        category: "clinical", level: "B1", topic: "Clinical • Neurology Context", format: "context",
-        question: "After a left-hemisphere stroke, the patient is unable to understand or produce speech. This condition is ____.",
-        correctOption: "Aphasia",
-        distractors: ["Ataxia", "Alopecia", "Anemia"],
-        explanation: "Aphasia = impairment of language/speech; Ataxia = loss of coordination and balance."
-      },
-      {
-        category: "clinical", level: "B1", topic: "Clinical • Nephrology Context", format: "context",
-        question: "A 24-hour urine output of less than 400 mL in an adult patient is clinically defined as ____.",
-        correctOption: "Oliguria",
-        distractors: ["Polyuria", "Nocturia", "Hematuria"],
-        explanation: "Oliguria = decreased urine output (<400 mL/day); Polyuria = excessive urination; Hematuria = blood in urine."
-      },
-      {
-        category: "clinical", level: "B1", topic: "Clinical • Infectious Diseases", format: "context",
-        question: "A pneumonia acquired by a patient 72 hours after being admitted to the hospital is a ____ infection.",
-        correctOption: "nosocomial (hospital-acquired)",
-        distractors: ["vector-borne", "zoonotic", "congenital"],
-        explanation: "Nosocomial infection = hospital-acquired infection developing ≥48 hours after admission."
-      },
-      {
-        category: "clinical", level: "B2", topic: "Clinical • Hematology Context", format: "context",
-        question: "A simultaneous reduction in red blood cells, white blood cells, and platelets in the peripheral blood is ____.",
-        correctOption: "Pancytopenia",
-        distractors: ["Polycythemia", "Thrombocytosis", "Leukocytosis"],
-        explanation: "'Pan-' (all) + 'cyto' (cells) + '-penia' (deficiency) = deficiency of all three cellular blood components."
-      },
-      {
-        category: "clinical", level: "B2", topic: "Clinical • Oncology Context", format: "context",
-        question: "Chemotherapy given BEFORE the main surgical resection to shrink a malignant tumor is called ____ therapy.",
-        correctOption: "neoadjuvant",
-        distractors: ["palliative", "palliative-only", "empiric"],
-        explanation: "Neoadjuvant therapy is administered before primary surgery to reduce tumor size; adjuvant is given after surgery."
-      },
-      {
-        category: "clinical", level: "B2", topic: "Clinical • Obstetrics Context", format: "context",
-        question: "New-onset hypertension and proteinuria after 20 weeks of gestation indicate ____.",
-        correctOption: "Preeclampsia",
-        distractors: ["Ectopic pregnancy", "Endometriosis", "Leiomyoma"],
-        explanation: "Preeclampsia is characterized by gestational hypertension (>140/90) and proteinuria/organ dysfunction after 20 weeks."
-      },
-      {
-        category: "clinical", level: "B2", topic: "Clinical • Sentence Builder", format: "builder",
-        question: "Build a clinical safety-netting instruction for the patient:",
-        chunks: ["If you develop", "shortness of breath,", "come back for", "a reassessment."],
-        correctOption: "If you develop shortness of breath, come back for a reassessment.",
-        explanation: "Standard OSCE safety-netting phrase: [If you develop + red-flag symptom, come back for a reassessment]."
-      },
+  // =========================================================================
+  // 5. CLINICAL VOCABULARY: LEVEL A1 (20 Questions)
+  // =========================================================================
+  {
+    category: "clinical", level: "A1", topic: "Clinical • Symptoms Translation", format: "mcq",
+    question: "Which clinical term corresponds to 'Одышка / Тыныс алудың тарылуы'?",
+    correctOption: "Dyspnea (Shortness of breath)",
+    distractors: ["Dysphagia (Difficulty swallowing)", "Dysuria (Painful urination)", "Dyspepsia (Indigestion)"],
+    explanation: "Dyspnea = shortness of breath; Dysphagia = swallowing difficulty; Dysuria = painful urination."
+  },
+  {
+    category: "clinical", level: "A1", topic: "Clinical • Pain Character", format: "context",
+    question: "Patient: 'It feels like my head is beating in rhythm with my heart.' How do we describe this pain?",
+    correctOption: "Throbbing pain",
+    distractors: ["Dull aching pain", "Burning sensation", "Cramping pain"],
+    explanation: "'Throbbing' means pulsating or beating rhythmically (typical for migraine)."
+  },
+  {
+    category: "clinical", level: "A1", topic: "Clinical • Basic Symptoms", format: "mcq",
+    question: "How do you translate 'Тошнота и рвота / Жүрек айну және құсу'?",
+    correctOption: "Nausea and vomiting",
+    distractors: ["Dizziness and fainting", "Cough and sputum", "Chills and sweating"],
+    explanation: "Nausea = feeling sick to the stomach; Vomiting (emesis) = throwing up."
+  },
+  {
+    category: "clinical", level: "A1", topic: "Clinical • Fever Types", format: "context",
+    question: "A temperature of 37.5°C in the evening is described as a ____ fever.",
+    correctOption: "low-grade (mild)",
+    distractors: ["lethal", "chronic", "radiating"],
+    explanation: "A slightly elevated body temperature (37.3–38.0°C) is called a low-grade or mild fever."
+  },
+  {
+    category: "clinical", level: "A1", topic: "Clinical • Cough Types", format: "context",
+    question: "Patient: 'I cough a lot, but nothing comes up.' What type of cough is this?",
+    correctOption: "A dry (non-productive) cough",
+    distractors: ["A productive (wet) cough", "A barking croup", "Hemoptysis"],
+    explanation: "A cough without phlegm/mucus is called a dry or non-productive cough."
+  },
+  {
+    category: "clinical", level: "A1", topic: "Clinical • Cough with Mucus", format: "context",
+    question: "When a patient coughs up phlegm or mucus, the cough is described as ____.",
+    correctOption: "productive (wet)",
+    distractors: ["dry", "sharp", "throbbing"],
+    explanation: "A productive cough brings up mucus/sputum from the airways."
+  },
+  {
+    category: "clinical", level: "A1", topic: "Clinical • Nasal Symptoms", format: "mcq",
+    question: "How does a patient usually say 'У меня насморк / Мұрнымнан су ағып тұр'?",
+    correctOption: "I have a runny nose",
+    distractors: ["I have a bleeding nose", "I have a broken nose", "I have a dry mouth"],
+    explanation: "'A runny nose' (clinical term: rhinorrhea) is the everyday phrase used by patients."
+  },
+  {
+    category: "clinical", level: "A1", topic: "Clinical • Pain Intensity", format: "context",
+    question: "If a patient rates their pain as 2 out of 10, the pain is ____.",
+    correctOption: "mild",
+    distractors: ["moderate", "severe", "excruciating"],
+    explanation: "Pain scale: 1–3 = mild, 4–6 = moderate, 7–10 = severe."
+  },
+  {
+    category: "clinical", level: "A1", topic: "Clinical • Pain Intensity (8/10)", format: "context",
+    question: "If a patient rates their abdominal pain as 8 out of 10, the pain is ____.",
+    correctOption: "severe",
+    distractors: ["mild", "slight", "minimal"],
+    explanation: "A score of 7 to 10 on the numerical rating scale corresponds to severe pain."
+  },
+  {
+    category: "clinical", level: "A1", topic: "Clinical • Pain Character (Sharp)", format: "context",
+    question: "Patient: 'It feels like a knife stabbing me in the right side.' This pain is ____.",
+    correctOption: "sharp (stabbing)",
+    distractors: ["dull", "burning", "tingling"],
+    explanation: "Sudden, intense, knife-like pain is described as sharp or stabbing."
+  },
+  {
+    category: "clinical", level: "A1", topic: "Clinical • Skin Symptoms", format: "context",
+    question: "After taking penicillin, red itchy spots appeared on the patient's skin. He developed a ____.",
+    correctOption: "rash",
+    distractors: ["fracture", "sprain", "cough"],
+    explanation: "'A rash' is an area of irritated, red, or bumpy skin, common in allergic reactions."
+  },
+  {
+    category: "clinical", level: "A1", topic: "Clinical • General Symptoms", format: "context",
+    question: "Patient: 'I feel completely exhausted all the time, even after sleeping.' This symptom is ____.",
+    correctOption: "fatigue (tiredness)",
+    distractors: ["nausea", "heartburn", "numbness"],
+    explanation: "Constant lack of energy not relieved by rest is called fatigue."
+  },
+  {
+    category: "clinical", level: "A1", topic: "Clinical • Bowel Movements", format: "mcq",
+    question: "Frequent, loose, watery bowel movements are called ____.",
+    correctOption: "diarrhea",
+    distractors: ["constipation", "heartburn", "jaundice"],
+    explanation: "Diarrhea = loose, watery stools; Constipation = difficulty emptying the bowels."
+  },
+  {
+    category: "clinical", level: "A1", topic: "Clinical • Bowel Movements (Constipation)", format: "mcq",
+    question: "Difficulty passing stools or going to the toilet less than 3 times a week is ____.",
+    correctOption: "constipation",
+    distractors: ["diarrhea", "incontinence", "nausea"],
+    explanation: "Constipation refers to infrequent or hard-to-pass bowel movements."
+  },
+  {
+    category: "clinical", level: "A1", topic: "Clinical • Vision Symptoms", format: "context",
+    question: "A diabetic patient says: 'I cannot see clearly; everything looks out of focus.' He has ____.",
+    correctOption: "blurred vision",
+    distractors: ["hearing loss", "joint stiffness", "chest tightness"],
+    explanation: "'Blurred (or blurry) vision' is lack of sharpness of vision."
+  },
+  {
+    category: "clinical", level: "A1", topic: "Clinical • Heartburn", format: "context",
+    question: "A burning feeling in the chest behind the breastbone after eating is commonly called ____.",
+    correctOption: "heartburn",
+    distractors: ["palpitations", "wheezing", "vertigo"],
+    explanation: "Heartburn (pyrosis) is a burning sensation in the central chest caused by acid reflux."
+  },
+  {
+    category: "clinical", level: "A1", topic: "Clinical • Edema", format: "mcq",
+    question: "What is the everyday English word for 'Edema' (отек / ісіну)?",
+    correctOption: "Swelling",
+    distractors: ["Bleeding", "Bruising", "Itching"],
+    explanation: "Doctors say 'edema', while patients usually say 'swelling' (e.g., swollen ankles)."
+  },
+  {
+    category: "clinical", level: "A1", topic: "Clinical • Pruritus", format: "mcq",
+    question: "What is the everyday patient word for 'Pruritus' (зуд / қышу)?",
+    correctOption: "Itching",
+    distractors: ["Burning", "Numbness", "Sweating"],
+    explanation: "Pruritus is the medical term for itching."
+  },
+  {
+    category: "clinical", level: "A1", topic: "Clinical • Syncope", format: "mcq",
+    question: "What is the everyday word for 'Syncope' (обморок / естен тану)?",
+    correctOption: "Fainting (passing out)",
+    distractors: ["Vomiting", "Shivering", "Choking"],
+    explanation: "Syncope is the medical term for fainting or passing out (temporary loss of consciousness)."
+  },
+  {
+    category: "clinical", level: "A1", topic: "Clinical • Sentence Builder", format: "builder",
+    question: "Build a pain scale question:",
+    chunks: ["On a scale", "from 0 to 10,", "how bad", "is the pain?"],
+    correctOption: "On a scale from 0 to 10, how bad is the pain?",
+    explanation: "Standard pain severity question in patient interviews."
+  },
 
-      // ==================== ACADEMIC VOCABULARY (Articles, Guidelines & IELTS) ====================
-      {
-        category: "academic", level: "A2", topic: "Academic • Growth & Increase", format: "context",
-        question: "Global rates of type 2 diabetes continue to ____ rapidly due to sedentary lifestyles.",
-        correctOption: "rise (increase)",
-        distractors: ["shrink", "subside", "diminish"],
-        explanation: "'Rise' / 'increase' denotes upward growth, whereas shrink, subside, and diminish all mean to decrease."
-      },
-      {
-        category: "academic", level: "A2", topic: "Academic • Giving Examples", format: "context",
-        question: "Cardiovascular risk factors — ____, smoking, hypertension, and dyslipidemia — must be addressed early.",
-        correctOption: "namely (for instance)",
-        distractors: ["conversely", "nonetheless", "subsequently"],
-        explanation: "'Namely' and 'for instance' introduce specific examples of the group just mentioned."
-      },
-      {
-        category: "academic", level: "B1", topic: "Academic • Contrast & Opposition", format: "context",
-        question: "Oral decongestants relieve nasal congestion quickly; ____, they may elevate blood pressure in hypertensive patients.",
-        correctOption: "however (nevertheless)",
-        distractors: ["furthermore", "similarly", "consequently"],
-        explanation: "'However' / 'nevertheless' introduces a contrasting side effect or limitation."
-      },
-      {
-        category: "academic", level: "B1", topic: "Academic • Cause & Effect", format: "context",
-        question: "Severe dehydration can ____ acute kidney injury if fluid balance is not restored promptly.",
-        correctOption: "lead to (precipitate)",
-        distractors: ["stem from", "derive from", "recede from"],
-        explanation: "'Lead to' / 'precipitate' points from the cause (dehydration) to the effect (acute kidney injury)."
-      },
-      {
-        category: "academic", level: "B1", topic: "Academic • Decline & Reduction", format: "context",
-        question: "Following intravenous paracetamol, the patient's fever began to ____ within 45 minutes.",
-        correctOption: "subside (abate)",
-        distractors: ["escalate", "proliferate", "surge"],
-        explanation: "'Subside' and 'abate' are classic clinical/academic verbs meaning to become less intense or severe."
-      },
-      {
-        category: "academic", level: "B1", topic: "Academic • Sequence in Studies", format: "context",
-        question: "Baseline blood samples were collected ____ the administration of the experimental drug.",
-        correctOption: "prior to (before)",
-        distractors: ["thereafter", "subsequently", "eventually"],
-        explanation: "'Prior to' is the formal academic equivalent of 'before'."
-      },
-      {
-        category: "academic", level: "B1", topic: "Academic • Similarity & Addition", format: "context",
-        question: "Regular aerobic exercise improves insulin sensitivity; ____, it reduces systemic inflammation.",
-        correctOption: "furthermore (moreover)",
-        distractors: ["on the contrary", "despite this", "conversely"],
-        explanation: "'Furthermore' / 'moreover' adds a second supporting benefit in the same direction."
-      },
-      {
-        category: "academic", level: "B2", topic: "Academic • Research Methodology", format: "context",
-        question: "To evaluate long-term cardiovascular outcomes over 10 years, the authors conducted a ____.",
-        correctOption: "longitudinal cohort study",
-        distractors: ["cross-sectional survey", "single case report", "vitro assay"],
-        explanation: "A 'longitudinal study' follows the same group of subjects over an extended period of time."
-      },
-      {
-        category: "academic", level: "B2", topic: "Academic • Uncertainty & Hedging", format: "context",
-        question: "Elevated C-reactive protein levels ____ an underlying inflammatory process, though further tests are required.",
-        correctOption: "may indicate (could suggest)",
-        distractors: ["undoubtedly prove", "completely rule out", "never cause"],
-        explanation: "Academic hedging ('may indicate', 'could suggest') is used when laboratory findings are non-specific."
-      },
-      {
-        category: "academic", level: "B2", topic: "Academic • Epidemiological Terms", format: "context",
-        question: "The total proportion of a population found to have a specific condition at a given time is its ____.",
-        correctOption: "prevalence",
-        distractors: ["reproducibility", "virulence", "methodology"],
-        explanation: "'Prevalence' = total existing cases in a population; 'Incidence' = rate of new cases over a period."
-      },
-      {
-        category: "academic", level: "B2", topic: "Academic • Evaluation Verbs", format: "context",
-        question: "The ethics committee ____ the trial protocol to ensure patient safety and data integrity.",
-        correctOption: "scrutinized (evaluated)",
-        distractors: ["dwindled", "slackened", "triggered"],
-        explanation: "To 'scrutinize' means to examine or inspect closely and thoroughly."
-      },
-      {
-        category: "academic", level: "B2", topic: "Academic • Conclusion & Summary", format: "context",
-        question: "____, early mobilization after orthopedic surgery significantly shortens hospital stay.",
-        correctOption: "Taken together (In summary)",
-        distractors: ["At the outset", "In the interim", "For instance"],
-        explanation: "'Taken together' / 'In summary' is used at the end of an abstract or discussion to synthesize findings."
-      },
-      {
-        category: "academic", level: "B2", topic: "Academic • Sentence Builder", format: "builder",
-        question: "Assemble the academic conclusion from a research abstract:",
-        chunks: ["These findings", "suggest that", "early intervention", "reduces mortality."],
-        correctOption: "These findings suggest that early intervention reduces mortality.",
-        explanation: "Standard PubMed abstract structure: [These findings suggest that + Noun Phrase + Verb + Object]."
-      }
-    ];
+  // =========================================================================
+  // 6. CLINICAL VOCABULARY: LEVEL A2 (20 Questions)
+  // =========================================================================
+  {
+    category: "clinical", level: "A2", topic: "Clinical • GI Context", format: "context",
+    question: "A patient with peptic ulcer disease presents with black, tarry stools. This sign is called ____.",
+    correctOption: "Melena",
+    distractors: ["Hematemesis", "Hemoptysis", "Steatorrhea"],
+    explanation: "Melena = black tarry stool due to upper GI bleeding."
+  },
+  {
+    category: "clinical", level: "A2", topic: "Clinical • Pulmonology Context", format: "context",
+    question: "During auscultation of an asthmatic patient, high-pitched whistling sounds are heard on expiration: ____.",
+    correctOption: "Wheezing",
+    distractors: ["Epistaxis", "Nocturia", "Pruritus"],
+    explanation: "'Wheezing' refers to the high-pitched whistling breath sound caused by narrowed airways."
+  },
+  {
+    category: "clinical", level: "A2", topic: "Clinical • Pharmacology Terms", format: "context",
+    question: "Ibuprofen and paracetamol bought without a doctor's prescription are called ____ medications.",
+    correctOption: "over-the-counter (OTC)",
+    distractors: ["intravenous (IV)", "neoadjuvant", "nosocomial"],
+    explanation: "Over-the-counter (OTC) drugs can be purchased directly without a prescription."
+  },
+  {
+    category: "clinical", level: "A2", topic: "Clinical • Symptom Course", format: "context",
+    question: "If a pain is not constant, but appears and disappears periodically, we say it ____.",
+    correctOption: "comes and goes (is intermittent)",
+    distractors: ["radiates", "exacerbates", "persists constantly"],
+    explanation: "'Comes and goes' is the natural patient phrase for intermittent symptoms."
+  },
+  {
+    category: "clinical", level: "A2", topic: "Clinical • Pain Radiation", format: "context",
+    question: "In sciatica, lower back pain ____ down the back of the leg to the foot.",
+    correctOption: "radiates (spreads)",
+    distractors: ["subsides", "triggers", "vomits"],
+    explanation: "When pain travels from its origin to another body part, it 'radiates' or 'spreads'."
+  },
+  {
+    category: "clinical", level: "A2", topic: "Clinical • Exacerbating Factors", format: "mcq",
+    question: "Which verb means 'ухудшать / обострять симптом' (make a symptom worse)?",
+    correctOption: "To exacerbate (aggravate)",
+    distractors: ["To alleviate (relieve)", "To auscultate", "To palpate"],
+    explanation: "Exacerbate/aggravate = make worse; Alleviate/relieve = make better."
+  },
+  {
+    category: "clinical", level: "A2", topic: "Clinical • Relieving Factors", format: "context",
+    question: "Sitting upright and taking antacids help to ____ the burning chest discomfort.",
+    correctOption: "relieve (alleviate)",
+    distractors: ["exacerbate", "provoke", "radiate"],
+    explanation: "'Relieve' or 'alleviate' means to reduce or ease pain/symptoms."
+  },
+  {
+    category: "clinical", level: "A2", topic: "Clinical • ENT Symptoms", format: "mcq",
+    question: "What is the clinical term for a 'nosebleed' (носовое кровотечение / мұрыннан қан кету)?",
+    correctOption: "Epistaxis",
+    distractors: ["Hemoptysis", "Hematemesis", "Hematuria"],
+    explanation: "Epistaxis = nosebleed; Hemoptysis = coughing blood; Hematemesis = vomiting blood; Hematuria = blood in urine."
+  },
+  {
+    category: "clinical", level: "A2", topic: "Clinical • Hearing Symptoms", format: "context",
+    question: "A constant ringing or buzzing sound in the ears is called ____.",
+    correctOption: "Tinnitus",
+    distractors: ["Vertigo", "Otitis", "Sinusitis"],
+    explanation: "Tinnitus is the perception of ringing, buzzing, or hissing in the ears."
+  },
+  {
+    category: "clinical", level: "A2", topic: "Clinical • Urinary Symptoms", format: "context",
+    question: "Waking up multiple times at night specifically to urinate is called ____.",
+    correctOption: "Nocturia",
+    distractors: ["Dysuria", "Anuria", "Enuresis"],
+    explanation: "Nocturia is excessive urination at night (common in diabetes, BPH, or heart failure)."
+  },
+  {
+    category: "clinical", level: "A2", topic: "Clinical • Hepatobiliary Signs", format: "context",
+    question: "Yellowish discoloration of the skin and the whites of the eyes due to high bilirubin is ____.",
+    correctOption: "Jaundice (icterus)",
+    distractors: ["Cyanosis", "Pallor", "Erythema"],
+    explanation: "Jaundice = yellow skin/sclerae; Cyanosis = bluish skin; Pallor = pale skin; Erythema = redness."
+  },
+  {
+    category: "clinical", level: "A2", topic: "Clinical • Hypoxia Sign", format: "context",
+    question: "Bluish discoloration of the lips and fingertips due to low oxygen saturation is ____.",
+    correctOption: "Cyanosis",
+    distractors: ["Jaundice", "Vitiligo", "Urticaria"],
+    explanation: "Cyanosis indicates tissue hypoxia / deoxygenated hemoglobin."
+  },
+  {
+    category: "clinical", level: "A2", topic: "Clinical • Cardiology Symptoms", format: "context",
+    question: "Patient: 'I feel like my heart is racing, pounding, or skipping a beat.' This symptom is ____.",
+    correctOption: "Palpitations",
+    distractors: ["Claudication", "Orthopnea", "Heartburn"],
+    explanation: "Palpitations refer to an unpleasant awareness of one's own heartbeat."
+  },
+  {
+    category: "clinical", level: "A2", topic: "Clinical • Neurology Symptoms", format: "context",
+    question: "A 'pins and needles' tingling sensation or loss of feeling in the hands and feet is ____.",
+    correctOption: "Numbness and paresthesia",
+    distractors: ["Aphasia and ataxia", "Spasticity and tremor", "rigidity"],
+    explanation: "Numbness = loss of sensation; Paresthesia = tingling ('pins and needles')."
+  },
+  {
+    category: "clinical", level: "A2", topic: "Clinical • Orthopedics", format: "context",
+    question: "A tear or stretching of the tough fibrous tissue that connects bone to bone in a joint is a ____.",
+    correctOption: "ligament sprain",
+    distractors: ["bone fracture", "cartilage tumor", "muscle hernia"],
+    explanation: "Ligaments connect bone to bone (sprain); tendons connect muscle to bone (strain)."
+  },
+  {
+    category: "clinical", level: "A2", topic: "Clinical • Pediatrics Birth History", format: "context",
+    question: "When taking a pediatric history, asking 'Was the baby born at 39–40 weeks?' is asking if the baby was ____.",
+    correctOption: "born full-term",
+    distractors: ["born premature", "hospitalized", "vaccinated"],
+    explanation: "'Full-term' means born between 39 and 40 weeks of gestation."
+  },
+  {
+    category: "clinical", level: "A2", topic: "Clinical • Dermatology", format: "context",
+    question: "Raised, red, intensely itchy welts on the skin caused by an allergic reaction are called hives or ____.",
+    correctOption: "Urticaria",
+    distractors: ["Psoriasis", "Alopecia", "Melanoma"],
+    explanation: "Urticaria is the medical term for hives."
+  },
+  {
+    category: "clinical", level: "A2", topic: "Clinical • Endocrine Symptoms", format: "context",
+    question: "Excessive, unquenchable thirst (drinking 4 liters of water a day) in diabetes is called ____.",
+    correctOption: "Polydipsia",
+    distractors: ["Polyphagia", "Polyuria", "Dysphagia"],
+    explanation: "The classic 3 Ps of diabetes: Polydipsia (thirst), Polyuria (urination), Polyphagia (hunger)."
+  },
+  {
+    category: "clinical", level: "A2", topic: "Clinical • Sentence Builder", format: "builder",
+    question: "Build a question about aggravating factors:",
+    chunks: ["Does anything", "make the", "pain", "worse?"],
+    correctOption: "Does anything make the pain worse?",
+    explanation: "Natural question for E (Exacerbating factors) in the SOCRATES mnemonic."
+  },
+  {
+    category: "clinical", level: "A2", topic: "Clinical • Sentence Builder", format: "builder",
+    question: "Build a question about pain radiation:",
+    chunks: ["Does the pain", "spread to", "other parts", "of your body?"],
+    correctOption: "Does the pain spread to other parts of your body?",
+    explanation: "Standard question for R (Radiation) in the SOCRATES mnemonic."
+  },
+
+  // =========================================================================
+  // 7. CLINICAL VOCABULARY: LEVEL B1 (20 Questions)
+  // =========================================================================
+  {
+    category: "clinical", level: "B1", topic: "Clinical • Cardiology Context", format: "context",
+    question: "When blood leaks backward through a heart valve that does not close properly, it is called ____.",
+    correctOption: "Regurgitation",
+    distractors: ["Stenosis", "Peristalsis", "Atelectasis"],
+    explanation: "Regurgitation = backward flow through a leaky valve; Stenosis = narrowing of a valve."
+  },
+  {
+    category: "clinical", level: "B1", topic: "Clinical • Neurology Context", format: "context",
+    question: "After a left-hemisphere stroke, the patient is unable to understand or produce speech. This condition is ____.",
+    correctOption: "Aphasia",
+    distractors: ["Ataxia", "Alopecia", "Anemia"],
+    explanation: "Aphasia = impairment of language/speech; Ataxia = loss of coordination."
+  },
+  {
+    category: "clinical", level: "B1", topic: "Clinical • Nephrology Context", format: "context",
+    question: "A 24-hour urine output of less than 400 mL in an adult patient is clinically defined as ____.",
+    correctOption: "Oliguria",
+    distractors: ["Polyuria", "Nocturia", "Hematuria"],
+    explanation: "Oliguria = decreased urine output (<400 mL/day)."
+  },
+  {
+    category: "clinical", level: "B1", topic: "Clinical • Infectious Diseases", format: "context",
+    question: "A pneumonia acquired by a patient 72 hours after being admitted to the hospital is a ____ infection.",
+    correctOption: "nosocomial (hospital-acquired)",
+    distractors: ["vector-borne", "zoonotic", "congenital"],
+    explanation: "Nosocomial infection = hospital-acquired infection developing ≥48 hours after admission."
+  },
+  {
+    category: "clinical", level: "B1", topic: "Clinical • Pulmonology Procedures", format: "context",
+    question: "To remove excess fluid from the pleural space using a needle, the physician performs a ____.",
+    correctOption: "Thoracentesis",
+    distractors: ["Spirometry", "Bronchoscopy", "Colposcopy"],
+    explanation: "Thoracentesis (pleural tap) is the aspiration of fluid from the pleural cavity."
+  },
+  {
+    category: "clinical", level: "B1", topic: "Clinical • Respiratory Bleeding", format: "context",
+    question: "A patient with tuberculosis or lung cancer who is coughing up blood presents with ____.",
+    correctOption: "Hemoptysis",
+    distractors: ["Hematemesis", "Epistaxis", "Melena"],
+    explanation: "Hemoptysis is the expectoration (coughing up) of blood from the respiratory tract."
+  },
+  {
+    category: "clinical", level: "B1", topic: "Clinical • GI Malabsorption", format: "context",
+    question: "Pale, bulky, foul-smelling stools that float due to excess fat content are known as ____.",
+    correctOption: "Steatorrhea",
+    distractors: ["Melena", "Hematochezia", "Peristalsis"],
+    explanation: "Steatorrhea indicates fat malabsorption (e.g., in chronic pancreatitis or celiac disease)."
+  },
+  {
+    category: "clinical", level: "B1", topic: "Clinical • Neurology Coordination", format: "context",
+    question: "Damage to the cerebellum typically results in an unsteady, staggering gait and poor coordination called ____.",
+    correctOption: "Ataxia",
+    distractors: ["Aphasia", "Amnesia", "Neuralgia"],
+    explanation: "Ataxia is impaired coordination of voluntary muscle movements, characteristic of cerebellar lesions."
+  },
+  {
+    category: "clinical", level: "B1", topic: "Clinical • Urology Procedures", format: "context",
+    question: "Using focused shock waves to break down kidney stones into smaller fragments is called ____.",
+    correctOption: "Lithotripsy",
+    distractors: ["Dialysis", "Urinalysis", "Nephrectomy"],
+    explanation: "Extracorporeal shock wave lithotripsy (ESWL) crushes renal calculi non-invasively."
+  },
+  {
+    category: "clinical", level: "B1", topic: "Clinical • Endocrinology Signs", format: "context",
+    question: "An abnormal enlargement of the thyroid gland visible as a swelling in the anterior neck is a ____.",
+    correctOption: "Goiter",
+    distractors: ["Keloid", "Comedone", "Tophus"],
+    explanation: "A goiter is an enlarged thyroid gland."
+  },
+  {
+    category: "clinical", level: "B1", topic: "Clinical • Orthopedics Procedures", format: "context",
+    question: "Surgical replacement of a severely damaged hip or knee joint with an artificial prosthesis is ____.",
+    correctOption: "Arthroplasty",
+    distractors: ["Arthroscopy", "Spinal fusion", "Dislocation"],
+    explanation: "Total joint replacement surgery is medically termed arthroplasty."
+  },
+  {
+    category: "clinical", level: "B1", topic: "Clinical • Ophthalmology", format: "context",
+    question: "Increased intraocular pressure leading to progressive optic nerve damage and visual field loss is ____.",
+    correctOption: "Glaucoma",
+    distractors: ["Cataract", "Astigmatism", "Conjunctivitis"],
+    explanation: "Glaucoma damages the optic nerve, often associated with elevated intraocular pressure; cataract is lens opacity."
+  },
+  {
+    category: "clinical", level: "B1", topic: "Clinical • Ophthalmology Symptoms", format: "context",
+    question: "A patient with a cranial nerve palsy complains of seeing two images of a single object, known as ____.",
+    correctOption: "Diplopia (double vision)",
+    distractors: ["Myopia", "Presbyopia", "Photophobia"],
+    explanation: "Diplopia is the medical term for double vision."
+  },
+  {
+    category: "clinical", level: "B1", topic: "Clinical • Oncology Terms", format: "context",
+    question: "A growth that does NOT invade surrounding tissues or metastasize to distant organs is a ____.",
+    correctOption: "benign tumor",
+    distractors: ["malignant neoplasm", "metastatic sarcoma", "invasive carcinoma"],
+    explanation: "Benign tumors remain localized and non-cancerous, unlike malignant tumors."
+  },
+  {
+    category: "clinical", level: "B1", topic: "Clinical • Infectious Transmission", format: "context",
+    question: "Malaria, dengue, and Lyme disease — which are transmitted by mosquitoes or ticks — are ____.",
+    correctOption: "vector-borne diseases",
+    distractors: ["nosocomial infections", "autoimmune disorders", "hereditary syndromes"],
+    explanation: "Vectors are living organisms (mosquitoes, ticks, fleas) that transmit pathogens between hosts."
+  },
+  {
+    category: "clinical", level: "B1", topic: "Clinical • Heart Failure Symptom", format: "context",
+    question: "Shortness of breath that occurs specifically when the patient lies flat and improves when sitting up is ____.",
+    correctOption: "Orthopnea",
+    distractors: ["Bradycardia", "Claudication", "Dysphagia"],
+    explanation: "Orthopnea is dyspnea in the recumbent (lying flat) position, classic for left-sided heart failure."
+  },
+  {
+    category: "clinical", level: "B1", topic: "Clinical • Dermatology Lesions", format: "context",
+    question: "A thick, raised scar that grows beyond the boundaries of the original skin wound is a ____.",
+    correctOption: "Keloid",
+    distractors: ["Comedone", "Blister", "Vitiligo"],
+    explanation: "Keloids are overgrowths of scar tissue extending past the initial injury site."
+  },
+  {
+    category: "clinical", level: "B1", topic: "Clinical • Spine Deformities", format: "context",
+    question: "An abnormal lateral (sideways) curvature of the spine, often diagnosed in adolescents, is ____.",
+    correctOption: "Scoliosis",
+    distractors: ["Osteoporosis", "Osteoarthritis", "Meniscus tear"],
+    explanation: "Scoliosis = lateral curvature of the spine."
+  },
+  {
+    category: "clinical", level: "B1", topic: "Clinical • Sentence Builder", format: "builder",
+    question: "Build a softening phrase to explain a diagnosis:",
+    chunks: ["Based on", "your symptoms,", "it looks like", "you have bronchitis."],
+    correctOption: "Based on your symptoms, it looks like you have bronchitis.",
+    explanation: "Softening phrase ('Based on your symptoms, it looks like...') avoids sounding abrupt."
+  },
+  {
+    category: "clinical", level: "B1", topic: "Clinical • Sentence Builder", format: "builder",
+    question: "Build an empathetic clinical response:",
+    chunks: ["I can see", "why you are", "concerned", "about this."],
+    correctOption: "I can see why you are concerned about this.",
+    explanation: "Validating the patient's feelings builds strong clinical rapport."
+  },
+
+  // =========================================================================
+  // 8. CLINICAL VOCABULARY: LEVEL B2 (20 Questions)
+  // =========================================================================
+  {
+    category: "clinical", level: "B2", topic: "Clinical • Hematology Context", format: "context",
+    question: "A simultaneous reduction in red blood cells, white blood cells, and platelets in the peripheral blood is ____.",
+    correctOption: "Pancytopenia",
+    distractors: ["Polycythemia", "Thrombocytosis", "Leukocytosis"],
+    explanation: "'Pan-' (all) + 'cyto' (cells) + '-penia' (deficiency) = deficiency of all three cellular blood lines."
+  },
+  {
+    category: "clinical", level: "B2", topic: "Clinical • Oncology Context", format: "context",
+    question: "Chemotherapy given BEFORE the main surgical resection to shrink a malignant tumor is called ____ therapy.",
+    correctOption: "neoadjuvant",
+    distractors: ["palliative", "adjuvant-only", "empiric"],
+    explanation: "Neoadjuvant therapy is administered before primary surgery to reduce tumor size."
+  },
+  {
+    category: "clinical", level: "B2", topic: "Clinical • Obstetrics Context", format: "context",
+    question: "New-onset hypertension and proteinuria after 20 weeks of gestation indicate ____.",
+    correctOption: "Preeclampsia",
+    distractors: ["Ectopic pregnancy", "Endometriosis", "Leiomyoma"],
+    explanation: "Preeclampsia is gestational hypertension with proteinuria/end-organ dysfunction after 20 weeks."
+  },
+  {
+    category: "clinical", level: "B2", topic: "Clinical • Sentence Builder", format: "builder",
+    question: "Build a clinical safety-netting instruction for the patient:",
+    chunks: ["If you develop", "shortness of breath,", "come back for", "a reassessment."],
+    correctOption: "If you develop shortness of breath, come back for a reassessment.",
+    explanation: "Standard OSCE safety-netting phrase."
+  },
+  {
+    category: "clinical", level: "B2", topic: "Clinical • Endocrinology Tumors", format: "context",
+    question: "A catecholamine-secreting tumor of the adrenal medulla causing episodic hypertension, headaches, and sweating is a ____.",
+    correctOption: "Pheochromocytoma",
+    distractors: ["Craniopharyngioma", "Leiomyoma", "Adenoid hypertrophy"],
+    explanation: "Pheochromocytoma secretes epinephrine/norepinephrine, causing paroxysmal hypertension."
+  },
+  {
+    category: "clinical", level: "B2", topic: "Clinical • Nephrology Pathology", format: "context",
+    question: "Swelling and distension of the renal pelvis and calyces due to obstruction of urine outflow is ____.",
+    correctOption: "Hydronephrosis",
+    distractors: ["Glomerulonephritis", "Azotemia", "Lithotripsy"],
+    explanation: "Hydronephrosis ('water inside the kidney') results from urinary tract obstruction (e.g., by a stone)."
+  },
+  {
+    category: "clinical", level: "B2", topic: "Clinical • Pulmonology Pathology", format: "context",
+    question: "Partial or complete collapse of the lung parenchyma or a lobe due to airway obstruction is ____.",
+    correctOption: "Atelectasis",
+    distractors: ["Bronchiectasis", "Emphysema", "Thoracentesis"],
+    explanation: "Atelectasis = alveolar/lung collapse; Bronchiectasis = permanent dilation of bronchi."
+  },
+  {
+    category: "clinical", level: "B2", topic: "Clinical • Neurology Pathology", format: "context",
+    question: "Multiple sclerosis is an autoimmune disorder characterized by the destruction of the protective covering of nerve fibers, known as ____.",
+    correctOption: "Demyelination",
+    distractors: ["Neuroplasticity", "Revascularization", "Lichenification"],
+    explanation: "Demyelination is the loss of the myelin sheath insulating central nervous system axons."
+  },
+  {
+    category: "clinical", level: "B2", topic: "Clinical • Speech Disorders", format: "context",
+    question: "Slurred or slow speech caused by weakness or poor coordination of the speech muscles (with intact language comprehension) is ____.",
+    correctOption: "Dysarthria",
+    distractors: ["Receptive aphasia", "Amnesia", "Dysphagia"],
+    explanation: "Dysarthria is a motor speech articulation disorder, whereas aphasia is a central language processing disorder."
+  },
+  {
+    category: "clinical", level: "B2", topic: "Clinical • Oncology Radiation", format: "context",
+    question: "Internal radiation therapy in which radioactive seeds or sources are placed directly inside or next to the tumor is ____.",
+    correctOption: "Brachytherapy",
+    distractors: ["Immunotherapy", "Chemotherapy", "Teletherapy"],
+    explanation: "Brachytherapy delivers localized radiation from implants placed directly within the tumor tissue."
+  },
+  {
+    category: "clinical", level: "B2", topic: "Clinical • Infectious Immunology", format: "context",
+    question: "The development of detectable specific antibodies in the blood serum as a result of infection or immunization is ____.",
+    correctOption: "Seroconversion",
+    distractors: ["Virulence", "Bacteremia", "Incubation"],
+    explanation: "Seroconversion marks the transition from seronegative to seropositive status."
+  },
+  {
+    category: "clinical", level: "B2", topic: "Clinical • Opportunistic Infections", format: "context",
+    question: "Pneumocystis pneumonia in an immunocompromised patient with advanced HIV is a classic example of an ____.",
+    correctOption: "opportunistic infection",
+    distractors: ["autoimmune reaction", "zoonotic vector", "idiopathic fibrosis"],
+    explanation: "Opportunistic infections occur more frequently and severely in individuals with weakened immune systems."
+  },
+  {
+    category: "clinical", level: "B2", topic: "Clinical • Gynecology", format: "context",
+    question: "Implantation of a fertilized ovum outside the uterine cavity, most commonly in the fallopian tube, is an ____.",
+    correctOption: "ectopic pregnancy",
+    distractors: ["endometriosis", "cervical dysplasia", "placenta previa"],
+    explanation: "An ectopic pregnancy occurs when the embryo implants outside the endometrium."
+  },
+  {
+    category: "clinical", level: "B2", topic: "Clinical • Ophthalmology Emergencies", format: "context",
+    question: "A sudden shower of floaters, flashes of light (photopsia), and a 'curtain' falling over the visual field are hallmark signs of ____.",
+    correctOption: "retinal detachment",
+    distractors: ["presbyopia", "astigmatism", "blepharitis"],
+    explanation: "Retinal detachment is an ophthalmic emergency presenting with floaters, flashes, and a curtain-like shadow."
+  },
+  {
+    category: "clinical", level: "B2", topic: "Clinical • Dermatology Signs", format: "context",
+    question: "Thickening and leathery induration of the skin with exaggerated skin markings caused by chronic scratching is ____.",
+    correctOption: "Lichenification",
+    distractors: ["Telangiectasia", "Vitiligo", "Alopecia"],
+    explanation: "Lichenification results from habitual scratching or rubbing in chronic eczema/dermatitis."
+  },
+  {
+    category: "clinical", level: "B2", topic: "Clinical • Cardiology Hemodynamics", format: "context",
+    question: "The total volume of blood pumped by the left ventricle into the systemic circulation per minute (Stroke Volume × Heart Rate) is ____.",
+    correctOption: "Cardiac output",
+    distractors: ["Ejection fraction", "Pulse pressure", "Diastolic filling"],
+    explanation: "Cardiac Output (CO) = Stroke Volume (SV) × Heart Rate (HR), measured in L/min."
+  },
+  {
+    category: "clinical", level: "B2", topic: "Clinical • Hematology Lab", format: "context",
+    question: "Immature, non-nucleated red blood cells released from the bone marrow that reflect erythropoietic activity are ____.",
+    correctOption: "Reticulocytes",
+    distractors: ["Megakaryocytes", "Neutrophils", "Lymphocytes"],
+    explanation: "The reticulocyte count measures how rapidly the bone marrow is producing and releasing new RBCs."
+  },
+  {
+    category: "clinical", level: "B2", topic: "Clinical • Otolaryngology", format: "context",
+    question: "Abnormal bone remodeling in the middle ear that immobilizes the stapes and causes conductive hearing loss is ____.",
+    correctOption: "Otosclerosis",
+    distractors: ["Epistaxis", "Rhinorrhea", "Pharyngitis"],
+    explanation: "Otosclerosis causes fixation of the stapes footplate, leading to progressive conductive hearing loss."
+  },
+  {
+    category: "clinical", level: "B2", topic: "Clinical • Sentence Builder", format: "builder",
+    question: "Build a Teach-Back comprehension check:",
+    chunks: ["Can you tell me", "in your own words", "how you will", "take this medication?"],
+    correctOption: "Can you tell me in your own words how you will take this medication?",
+    explanation: "The 'Teach-Back' technique verifies patient comprehension without making them feel tested."
+  },
+  {
+    category: "clinical", level: "B2", topic: "Clinical • Sentence Builder", format: "builder",
+    question: "Build a patient-friendly explanation of Type 2 Diabetes:",
+    chunks: ["Your body is not", "using insulin effectively,", "so sugar builds up", "in your blood."],
+    correctOption: "Your body is not using insulin effectively, so sugar builds up in your blood.",
+    explanation: "Clear, jargon-free explanation of insulin resistance for patients."
+  },
+
+  // =========================================================================
+  // 9. ACADEMIC VOCABULARY: LEVELS A2, B1, B2 (70 Questions)
+  // =========================================================================
+  {
+    category: "academic", level: "A2", topic: "Academic • Growth & Increase", format: "context",
+    question: "Global rates of type 2 diabetes continue to ____ rapidly due to sedentary lifestyles.",
+    correctOption: "rise (increase)",
+    distractors: ["shrink", "subside", "diminish"],
+    explanation: "'Rise' / 'increase' denotes upward growth, whereas shrink, subside, and diminish mean to decrease."
+  },
+  {
+    category: "academic", level: "A2", topic: "Academic • Giving Examples", format: "context",
+    question: "Cardiovascular risk factors — ____, smoking, hypertension, and dyslipidemia — must be addressed early.",
+    correctOption: "namely (for instance)",
+    distractors: ["conversely", "nonetheless", "subsequently"],
+    explanation: "'Namely' and 'for instance' introduce specific examples of the group just mentioned."
+  },
+  {
+    category: "academic", level: "A2", topic: "Academic • Basic Purpose", format: "context",
+    question: "Patients were instructed to keep a symptom diary ____ track migraine frequency.",
+    correctOption: "in order to",
+    distractors: ["because of", "in contrast to", "regardless of"],
+    explanation: "'In order to + base verb' expresses the clear purpose of an action."
+  },
+  {
+    category: "academic", level: "A2", topic: "Academic • Sequence (Beginning)", format: "context",
+    question: "____, all participants completed a comprehensive baseline questionnaire.",
+    correctOption: "Initially (To begin with)",
+    distractors: ["Ultimately", "In closing", "In summary"],
+    explanation: "'Initially' / 'To begin with' marks the first step of a study protocol."
+  },
+  {
+    category: "academic", level: "A2", topic: "Academic • Basic Cause", format: "context",
+    question: "Three patients withdrew from the clinical trial ____ mild gastrointestinal side effects.",
+    correctOption: "because of (due to)",
+    distractors: ["so as to", "in spite of", "similarly to"],
+    explanation: "'Because of' / 'due to' + noun phrase introduces the reason for withdrawal."
+  },
+  {
+    category: "academic", level: "A2", topic: "Academic • Basic Addition", format: "context",
+    question: "The new protocol reduces operating time. ____, it lowers the risk of postoperative bleeding.",
+    correctOption: "In addition (Additionally)",
+    distractors: ["Instead", "On the contrary", "However"],
+    explanation: "'In addition' / 'Additionally' adds a second positive point."
+  },
+  {
+    category: "academic", level: "A2", topic: "Academic • Basic Decrease", format: "context",
+    question: "Public health campaigns aim to ____ the consumption of trans fats and sugary drinks.",
+    correctOption: "reduce (lower)",
+    distractors: ["amplify", "escalate", "boost"],
+    explanation: "'Reduce' and 'lower' mean to decrease."
+  },
+  {
+    category: "academic", level: "A2", topic: "Academic • Emphasis", format: "context",
+    question: "Hand hygiene is beneficial for all staff, ____ in intensive care units.",
+    correctOption: "especially (in particular)",
+    distractors: ["conversely", "previously", "tentatively"],
+    explanation: "'Especially' / 'in particular' singles out the most important setting."
+  },
+  {
+    category: "academic", level: "A2", topic: "Academic • Basic Conclusion", format: "context",
+    question: "____, the data confirm that early vaccination prevents severe complications.",
+    correctOption: "To conclude (In summary)",
+    distractors: ["For instance", "Meanwhile", "At the outset"],
+    explanation: "'To conclude' / 'In summary' signals the final takeaway."
+  },
+  {
+    category: "academic", level: "A2", topic: "Academic • Basic Research Nouns", format: "context",
+    question: "The ____ of the study was to compare two different antihypertensive regimens.",
+    correctOption: "objective (aim)",
+    distractors: ["prevalence", "decline", "symptom"],
+    explanation: "The 'objective' or 'aim' is the main goal of a scientific study."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Contrast & Opposition", format: "context",
+    question: "Oral decongestants relieve nasal congestion quickly; ____, they may elevate blood pressure in hypertensive patients.",
+    correctOption: "however (nevertheless)",
+    distractors: ["furthermore", "similarly", "consequently"],
+    explanation: "'However' / 'nevertheless' introduces a contrasting limitation."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Cause & Effect", format: "context",
+    question: "Severe dehydration can ____ acute kidney injury if fluid balance is not restored promptly.",
+    correctOption: "lead to (precipitate)",
+    distractors: ["stem from", "derive from", "recede from"],
+    explanation: "'Lead to' / 'precipitate' points from the cause to the effect."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Decline & Reduction", format: "context",
+    question: "Following intravenous paracetamol, the patient's fever began to ____ within 45 minutes.",
+    correctOption: "subside (abate)",
+    distractors: ["escalate", "proliferate", "surge"],
+    explanation: "'Subside' and 'abate' mean to become less intense or severe."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Sequence in Studies", format: "context",
+    question: "Baseline blood samples were collected ____ the administration of the experimental drug.",
+    correctOption: "prior to (before)",
+    distractors: ["thereafter", "subsequently", "eventually"],
+    explanation: "'Prior to' is the formal academic equivalent of 'before'."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Similarity & Addition", format: "context",
+    question: "Regular aerobic exercise improves insulin sensitivity; ____, it reduces systemic inflammation.",
+    correctOption: "furthermore (moreover)",
+    distractors: ["on the contrary", "despite this", "conversely"],
+    explanation: "'Furthermore' / 'moreover' adds a supporting argument."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Cause Origin (Stem from)", format: "context",
+    question: "Many medication errors ____ poor communication during hospital handovers.",
+    correctOption: "stem from (derive from)",
+    distractors: ["lead to", "result in", "give rise to"],
+    explanation: "'Stem from' / 'derive from' points back to the root cause ('errors come from poor communication')."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Consequence (Therefore)", format: "context",
+    question: "The sample size was relatively small; ____, the results should be interpreted with caution.",
+    correctOption: "therefore (consequently)",
+    distractors: ["likewise", "whereas", "nonetheless"],
+    explanation: "'Therefore' / 'consequently' introduces a logical conclusion or result."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Simultaneous Events", format: "context",
+    question: "Patients received intravenous fluids while ____ undergoing continuous cardiac monitoring.",
+    correctOption: "simultaneously",
+    distractors: ["previously", "subsequently", "formerly"],
+    explanation: "'Simultaneously' means happening at the exact same time."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Subsequent Events", format: "context",
+    question: "The patient was stabilized in the emergency department and ____ transferred to the ICU.",
+    correctOption: "subsequently (thereafter)",
+    distractors: ["initially", "prior to", "conversely"],
+    explanation: "'Subsequently' / 'thereafter' means 'afterwards' or 'next in sequence'."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Direct Contrast (Whereas)", format: "context",
+    question: "Type 1 diabetes is characterized by absolute insulin deficiency, ____ Type 2 primarily involves insulin resistance.",
+    correctOption: "whereas (while)",
+    distractors: ["therefore", "moreover", "for instance"],
+    explanation: "'Whereas' directly contrasts two clinical entities within the same sentence."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Similarity (Likewise)", format: "context",
+    question: "Maternal smoking restricts fetal growth; ____, passive exposure to secondhand smoke increases neonatal risks.",
+    correctOption: "similarly (likewise)",
+    distractors: ["on the contrary", "nevertheless", "instead"],
+    explanation: "'Similarly' / 'likewise' draws a parallel between two comparable findings."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Growth Verbs (Accumulate)", format: "context",
+    question: "In hepatic failure, toxic metabolites ____ in the bloodstream and cross the blood-brain barrier.",
+    correctOption: "accumulate (build up)",
+    distractors: ["dwindle", "taper", "subside"],
+    explanation: "To 'accumulate' means to gradually gather or build up in quantity."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Tapering Dose", format: "context",
+    question: "High-dose corticosteroids should not be stopped abruptly; instead, the dose must be ____ gradually.",
+    correctOption: "tapered (reduced)",
+    distractors: ["escalated", "amplified", "multiplied"],
+    explanation: "In clinical pharmacology, 'to taper a dose' means to reduce it step by step to prevent withdrawal."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Deterioration", format: "context",
+    question: "Without mechanical ventilation, the patient's respiratory status began to ____ rapidly.",
+    correctOption: "deteriorate (worsen)",
+    distractors: ["strengthen", "flourish", "reinforce"],
+    explanation: "To 'deteriorate' means to become progressively worse."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Research Sample Size", format: "context",
+    question: "A larger ____ is required to achieve sufficient statistical power in the phase III trial.",
+    correctOption: "sample size",
+    distractors: ["case report", "incubation period", "viral load"],
+    explanation: "'Sample size' (n) refers to the number of participants enrolled in a study."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Control Group", format: "context",
+    question: "In a randomized controlled trial, the experimental group receives the active drug, while the ____ receives a placebo.",
+    correctOption: "control group",
+    distractors: ["target organ", "vital sign", "cohort bias"],
+    explanation: "The 'control group' serves as the baseline comparison group receiving standard care or placebo."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Peer Review", format: "context",
+    question: "The findings were published in a reputable ____ medical journal.",
+    correctOption: "peer-reviewed",
+    distractors: ["over-the-counter", "self-limiting", "water-soluble"],
+    explanation: "A 'peer-reviewed' journal subjects submitted manuscripts to independent evaluation by experts in the field."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Purpose (With the aim of)", format: "context",
+    question: "The screening program was launched ____ detecting colorectal cancer at an early stage.",
+    correctOption: "with the aim of (for the purpose of)",
+    distractors: ["in spite of", "as a result of", "in contrast to"],
+    explanation: "'With the aim of + V-ing' expresses the strategic objective of an initiative."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Assessment Verbs", format: "context",
+    question: "The primary endpoint was to ____ the efficacy and safety of the novel anticoagulant.",
+    correctOption: "evaluate (assess)",
+    distractors: ["undermine", "slacken", "erode"],
+    explanation: "'Evaluate', 'assess', and 'appraise' are core academic verbs for measuring clinical outcomes."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Emphasis (Notably)", format: "context",
+    question: "Adverse events were mild across all groups; ____, no cases of severe hypoglycemia occurred.",
+    correctOption: "notably (most importantly)",
+    distractors: ["conversely", "reluctantly", "formerly"],
+    explanation: "'Notably' highlights an especially important or striking observation."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Sentence Builder", format: "builder",
+    question: "Assemble the academic contrast sentence:",
+    chunks: ["Although the drug", "is effective,", "it may cause", "mild drowsiness."],
+    correctOption: "Although the drug is effective, it may cause mild drowsiness.",
+    explanation: "Concession structure: [Although + Subject + Verb, Main Clause]."
+  },
+  {
+    category: "academic", level: "B1", topic: "Academic • Sentence Builder", format: "builder",
+    question: "Assemble the purpose statement from a study introduction:",
+    chunks: ["This study", "was designed to", "evaluate long-term", "survival rates."],
+    correctOption: "This study was designed to evaluate long-term survival rates.",
+    explanation: "Standard academic introduction phrase: 'This study was designed to evaluate...'."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Research Methodology", format: "context",
+    question: "To evaluate long-term cardiovascular outcomes over 10 years, the authors conducted a ____.",
+    correctOption: "longitudinal cohort study",
+    distractors: ["cross-sectional survey", "single case report", "vitro assay"],
+    explanation: "A 'longitudinal study' follows the same group of subjects over an extended period."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Uncertainty & Hedging", format: "context",
+    question: "Elevated C-reactive protein levels ____ an underlying inflammatory process, though further tests are required.",
+    correctOption: "may indicate (could suggest)",
+    distractors: ["undoubtedly prove", "completely rule out", "never cause"],
+    explanation: "Academic hedging ('may indicate', 'could suggest') is used when findings are non-specific."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Epidemiological Terms", format: "context",
+    question: "The total proportion of a population found to have a specific condition at a given time is its ____.",
+    correctOption: "prevalence",
+    distractors: ["reproducibility", "virulence", "methodology"],
+    explanation: "'Prevalence' = total existing cases in a population."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Evaluation Verbs", format: "context",
+    question: "The ethics committee ____ the trial protocol to ensure patient safety and data integrity.",
+    correctOption: "scrutinized (evaluated)",
+    distractors: ["dwindled", "slackened", "triggered"],
+    explanation: "To 'scrutinize' means to examine or inspect closely and thoroughly."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Conclusion & Summary", format: "context",
+    question: "____, early mobilization after orthopedic surgery significantly shortens hospital stay.",
+    correctOption: "Taken together (In summary)",
+    distractors: ["At the outset", "In the interim", "For instance"],
+    explanation: "'Taken together' / 'In summary' synthesizes findings at the end of a discussion."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Sentence Builder", format: "builder",
+    question: "Assemble the academic conclusion from a research abstract:",
+    chunks: ["These findings", "suggest that", "early intervention", "reduces mortality."],
+    correctOption: "These findings suggest that early intervention reduces mortality.",
+    explanation: "Standard PubMed abstract structure: [These findings suggest that + Noun Phrase + Verb + Object]."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Statistical Significance", format: "context",
+    question: "A p-value of less than 0.05 indicates that the observed difference between groups is ____.",
+    correctOption: "statistically significant",
+    distractors: ["clinically negligible", "purely anecdotal", "mutually exclusive"],
+    explanation: "In biostatistics, p < 0.05 is the conventional threshold for 'statistical significance'."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Reproducibility", format: "context",
+    question: "For a diagnostic assay to be adopted globally, its results must demonstrate high ____ across different laboratories.",
+    correctOption: "reproducibility (reliability)",
+    distractors: ["amortization", "lethality", "steatorrhea"],
+    explanation: "'Reproducibility' is the ability of an experiment or assay to be replicated with consistent results."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Empirical Evidence", format: "context",
+    question: "Clinical guidelines must be grounded in rigorous ____ rather than anecdotal experience.",
+    correctOption: "empirical data (evidence)",
+    distractors: ["subjective bias", "unverified rumor", "placebo effect"],
+    explanation: "'Empirical data' refers to evidence acquired by observation or experimentation."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Proliferation", format: "context",
+    question: "Malignant transformation is characterized by the uncontrolled ____ of abnormal cells.",
+    correctOption: "proliferation (multiplication)",
+    distractors: ["depletion", "abatement", "attenuation"],
+    explanation: "'Proliferation' refers to rapid reproduction or multiplication of cells."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Depletion", format: "context",
+    question: "Prolonged loop diuretic therapy can lead to severe ____ of intracellular potassium and magnesium.",
+    correctOption: "depletion",
+    distractors: ["amplification", "escalation", "reinforcement"],
+    explanation: "'Depletion' means exhaustion or severe reduction of stores/levels."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Undermine", format: "context",
+    question: "Poor patient adherence can ____ the effectiveness of even the most potent antiretroviral regimen.",
+    correctOption: "undermine (weaken)",
+    distractors: ["bolster", "validate", "corroborate"],
+    explanation: "To 'undermine' means to weaken or subvert gradually."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Corroborate & Validate", format: "context",
+    question: "Larger multicenter trials are needed to ____ these preliminary findings.",
+    correctOption: "validate (corroborate)",
+    distractors: ["dwindle", "precipitate", "erode"],
+    explanation: "To 'validate' or 'corroborate' means to confirm or support with new evidence."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Hedging (Cannot be ruled out)", format: "context",
+    question: "Although the initial PCR test was negative, early-stage infection ____.",
+    correctOption: "cannot be ruled out",
+    distractors: ["is 100% impossible", "is undeniably proven", "must be ignored"],
+    explanation: "'Cannot be ruled out' is a key clinical and academic phrase meaning 'cannot be excluded as a possibility'."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Attribution (Be attributable to)", format: "context",
+    question: "The observed decline in stroke mortality is largely ____ improved hypertension control.",
+    correctOption: "attributable to (due to)",
+    distractors: ["irrespective of", "contrary to", "devoid of"],
+    explanation: "'Be attributable to' formally links an outcome to its underlying cause."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Conjunction (In conjunction with)", format: "context",
+    question: "Pharmacotherapy should be used ____ lifestyle modifications for optimal glycemic control.",
+    correctOption: "in conjunction with (together with)",
+    distractors: ["in lieu of", "at the expense of", "regardless of"],
+    explanation: "'In conjunction with' means 'in combination with' or 'working together with'."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Concession (Albeit)", format: "context",
+    question: "The novel therapy produced a statistically significant, ____ modest, reduction in tumor size.",
+    correctOption: "albeit (although)",
+    distractors: ["whereas", "therefore", "moreover"],
+    explanation: "'Albeit' ('although it is') is used before an adjective/adverb phrase to introduce a concession."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Time (In the interim)", format: "context",
+    question: "The patient awaits a compatible kidney donor; ____, she undergoes hemodialysis three times a week.",
+    correctOption: "in the interim (meanwhile)",
+    distractors: ["at the outset", "prior to this", "in retrospect"],
+    explanation: "'In the interim' means 'in the meantime / during the intervening period'."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Retrospect", format: "context",
+    question: "____, the subtle ST-segment elevation on the initial ECG was an early sign of myocardial ischemia.",
+    correctOption: "In retrospect (Looking back)",
+    distractors: ["At the outset", "In pursuit of", "So as to"],
+    explanation: "'In retrospect' means when looking back and reviewing a past event with current knowledge."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Exemplify", format: "context",
+    question: "The rise of multidrug-resistant bacteria, ____ by MRSA, poses a major global health threat.",
+    correctOption: "as exemplified (demonstrated)",
+    distractors: ["as contradicted", "as subsided", "as receded"],
+    explanation: "'As exemplified by...' introduces a prime, representative example."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Quantify", format: "context",
+    question: "Real-time PCR was utilized to ____ the exact viral load in plasma samples.",
+    correctOption: "quantify (measure)",
+    distractors: ["speculate", "dampen", "slacken"],
+    explanation: "To 'quantify' means to express or measure the exact numerical amount of something."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Plausibility", format: "context",
+    question: "There is a ____ biological mechanism linking chronic sleep deprivation to impaired glucose tolerance.",
+    correctOption: "plausible (conceivable)",
+    distractors: ["negligible", "redundant", "obsolete"],
+    explanation: "'Plausible' means reasonable, credible, or biologically believable."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Tentative Conclusions", format: "context",
+    question: "Given the small cohort, we can only draw ____ conclusions regarding long-term efficacy.",
+    correctOption: "tentative (preliminary)",
+    distractors: ["definitive", "irreversible", "exhaustive"],
+    explanation: "'Tentative' conclusions are provisional/preliminary and subject to further confirmation."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • On balance", format: "context",
+    question: "____, the cardiovascular benefits of statin therapy far outweigh the small risk of myopathy.",
+    correctOption: "On balance (All things considered)",
+    distractors: ["By way of illustration", "In the interim", "Prior to"],
+    explanation: "'On balance' is used when weighing pros and cons to state the overall conclusion."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Facilitate", format: "context",
+    question: "Ultrasound guidance ____ accurate needle placement during central venous catheterization.",
+    correctOption: "facilitates (enables)",
+    distractors: ["impedes", "hinders", "precludes"],
+    explanation: "To 'facilitate' means to make a process or procedure easier and more achievable."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Precipitate", format: "context",
+    question: "Abrupt withdrawal of beta-blockers may ____ rebound tachycardia or angina.",
+    correctOption: "precipitate (trigger)",
+    distractors: ["alleviate", "mitigate", "appease"],
+    explanation: "In medicine, to 'precipitate' means to cause an acute condition to happen suddenly."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Mitigate", format: "context",
+    question: "Co-administration of a proton pump inhibitor helps ____ the risk of NSAID-induced gastric ulcers.",
+    correctOption: "mitigate (reduce)",
+    distractors: ["exacerbate", "aggravate", "compound"],
+    explanation: "To 'mitigate' means to make less severe, serious, or painful."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Compound (Verb)", format: "context",
+    question: "Underlying renal insufficiency was ____ by the administration of nephrotoxic contrast media.",
+    correctOption: "compounded (worsened)",
+    distractors: ["alleviated", "resolved", "rectified"],
+    explanation: "To 'compound' a problem means to make an already bad situation even worse by adding another factor."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Paramount / Crucial", format: "context",
+    question: "Maintaining airway patency is ____ in the initial management of trauma patients.",
+    correctOption: "of paramount importance (crucial)",
+    distractors: ["of negligible value", "tentatively optional", "in retrospect"],
+    explanation: "'Of paramount importance' / 'crucial' means more important than anything else."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Coupled with", format: "context",
+    question: "Advanced age, ____ multiple comorbidities, significantly increases surgical mortality.",
+    correctOption: "coupled with (combined with)",
+    distractors: ["rather than", "in contrast to", "devoid of"],
+    explanation: "'Coupled with' links two factors that act together to produce an effect."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Irrespective of", format: "context",
+    question: "All patients benefited from the intervention, ____ their baseline age or sex.",
+    correctOption: "irrespective of (regardless of)",
+    distractors: ["on account of", "by means of", "with a view to"],
+    explanation: "'Irrespective of' / 'regardless of' means without being affected by a particular factor."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Correlation vs Causation", format: "context",
+    question: "Observational studies can demonstrate a strong statistical ____, but they cannot prove direct causation.",
+    correctOption: "correlation (association)",
+    distractors: ["intervention", "auscultation", "resuscitation"],
+    explanation: "Correlation/association shows that two variables move together, not necessarily that one causes the other."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Discrepancy", format: "context",
+    question: "The authors investigated the ____ between self-reported medication adherence and actual pill counts.",
+    correctOption: "discrepancy (difference)",
+    distractors: ["similarity", "redundancy", "homogeneity"],
+    explanation: "A 'discrepancy' is a lack of compatibility or an unexpected difference between two facts/measurements."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Adverse Events", format: "context",
+    question: "The phase I clinical trial primarily assessed the safety profile and dose-limiting ____ of the compound.",
+    correctOption: "adverse events (toxicities)",
+    distractors: ["therapeutic cures", "inclusion criteria", "placebo controls"],
+    explanation: "'Adverse events' (AEs) is the standard clinical trial term for untoward medical occurrences or side effects."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Inclusion / Exclusion Criteria", format: "context",
+    question: "Pregnant women and patients with severe hepatic impairment were omitted based on the study's ____.",
+    correctOption: "exclusion criteria",
+    distractors: ["primary endpoints", "statistical power", "informed consent"],
+    explanation: "'Exclusion criteria' are characteristics that disqualify prospective subjects from joining a clinical trial."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Sentence Builder", format: "builder",
+    question: "Assemble the academic hedging statement:",
+    chunks: ["These results", "should be", "interpreted", "with caution."],
+    correctOption: "These results should be interpreted with caution.",
+    explanation: "Classic discussion-section phrase acknowledging study limitations."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Sentence Builder", format: "builder",
+    question: "Assemble the academic call for further research:",
+    chunks: ["Further randomized trials", "are warranted", "to confirm", "these findings."],
+    correctOption: "Further randomized trials are warranted to confirm these findings.",
+    explanation: "'Are warranted' is the standard formal way to say 'are needed/justified' in medical papers."
+  },
+  {
+    category: "academic", level: "B2", topic: "Academic • Sentence Builder", format: "builder",
+    question: "Assemble the cause-and-effect academic sentence:",
+    chunks: ["Chronic inflammation", "contributes to", "the pathogenesis of", "atherosclerosis."],
+    correctOption: "Chronic inflammation contributes to the pathogenesis of atherosclerosis.",
+    explanation: "Structure: [Subject + contributes to + the pathogenesis of + condition]."
+  }
+];
 
     // =========================================================================
     // 3. ЛОГИКА ИГРЫ, КОЛОДЫ БЕЗ ПОВТОРОВ И ТАЙМЕРА ШТУРМА (1 МИНУТА)
