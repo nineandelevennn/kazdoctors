@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>@doctors.speak — Medical Reading & Guidelines Trainer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --green: #16A34A;
+      --red: #EF4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 500px;
+      min-height: 720px;
+      max-height: 96vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-color);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
+      flex-shrink: 0;
+    }
+
+    .home-btn {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.76rem;
+      padding: 6px 12px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .home-btn:active {
+      transform: scale(0.96);
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .brand {
+      font-weight: 800;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+    }
+
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+      padding: 14px 16px;
+      gap: 10px;
+      overflow-y: auto;
+    }
+
+    /* Переключатель режимов: Разбор vs Спринт 3 мин */
+    .mode-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--bg-main);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid var(--border-color);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      border: none;
+      background: transparent;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--card-bg);
+      color: var(--kz-blue-dark);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .tab-btn.rush-active {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      box-shadow: 0 2px 8px rgba(217, 160, 0, 0.25);
+    }
+
+    /* Фильтры уровней и типов заданий IELTS */
+    .filters-row {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .mode-select {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      border-radius: 10px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--kz-blue-dark);
+      background: var(--kz-blue-light);
+      outline: none;
+      font-size: 0.74rem;
+      cursor: pointer;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 8px;
+      background: var(--bg-main);
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .timer-badge {
+      background: #FEF2F2;
+      color: var(--red);
+      border: 1px solid #FECACA;
+      padding: 3px 8px;
+      border-radius: 8px;
+      font-weight: 900;
+      font-size: 0.8rem;
+      display: none;
+    }
+
+    .timer-badge.visible {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Блок медицинского текста / абзаца из статьи */
+    .reading-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 14px;
+      border: 1px solid var(--border-color);
+      border-left: 6px solid var(--kz-blue);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .tags-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .level-tag {
+      display: inline-block;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      font-size: 0.66rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .task-tag {
+      display: inline-block;
+      background: #FFFBEB;
+      color: var(--kz-gold-dark);
+      border: 1px solid rgba(217, 160, 0, 0.35);
+      font-size: 0.66rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 10px;
+      text-transform: uppercase;
+    }
+
+    .passage-source {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .passage-box {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 0.84rem;
+      font-weight: 500;
+      color: #1E293B;
+      line-height: 1.55;
+      text-align: left;
+      max-height: 210px;
+      overflow-y: auto;
+    }
+
+    .question-prompt {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.35;
+      padding-top: 4px;
+      border-top: 1px dashed var(--border-color);
+    }
+
+    /* Сетка вариантов ответа */
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 8px;
+    }
+
+    /* Для True/False/Not Given делаем компактную сетку в 3 кнопки в ряд, если текст короткий */
+    .options-grid.tfng-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+
+    .option-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      line-height: 1.3;
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .options-grid.tfng-layout .option-btn {
+      justify-content: center;
+      text-align: center;
+      font-weight: 800;
+      font-size: 0.78rem;
+      padding: 10px 6px;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background-color: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+    }
+
+    .option-btn.correct {
+      background-color: #DCFCE7 !important;
+      border-color: #22C55E !important;
+      color: #15803D !important;
+      font-weight: 700;
+    }
+
+    .option-btn.wrong {
+      background-color: #FEE2E2 !important;
+      border-color: #EF4444 !important;
+      color: #B91C1C !important;
+      font-weight: 700;
+    }
+
+    .explanation-box {
+      background-color: var(--kz-blue-light);
+      border-left: 4px solid var(--kz-blue);
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      color: var(--kz-blue-dark);
+      margin-bottom: 8px;
+      line-height: 1.42;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+    }
+
+    .explanation-box.answered {
+      background-color: #E0F2FE;
+      border-left-color: var(--kz-blue-dark);
+    }
+
+    .next-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      font-weight: 800;
+      padding: 12px;
+      border-radius: 20px;
+      font-size: 0.92rem;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      border: 1px solid var(--kz-gold-dark);
+      cursor: pointer;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      min-height: 44px;
+    }
+
+    .next-btn.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* Модальное окно итогов Спринта */
+    .rush-modal {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px 16px;
+      flex-grow: 1;
+      gap: 12px;
+      overflow-y: auto;
+    }
+
+    .rush-modal.active {
+      display: flex;
+    }
+
+    .rush-summary-card {
+      background: var(--kz-blue-light);
+      border: 2px solid rgba(0, 161, 222, 0.25);
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      justify-content: space-around;
+      text-align: center;
+    }
+
+    .rush-stat span {
+      display: block;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .rush-stat strong {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--kz-blue-dark);
+    }
+
+    .mistakes-list {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 10px;
+      max-height: 270px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mistake-item {
+      background: #FFFFFF;
+      border-left: 4px solid var(--red);
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      line-height: 1.35;
+    }
+
+    .secondary-btn {
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      border: none;
+      padding: 11px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 0.84rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <div class="card">
+    <!-- Header -->
+    <header class="header">
+      <a href="https://kazdoctors.com/" class="home-btn">⬅ Go back</a>
+      <div class="brand">@doctors.speak</div>
+    </header>
+
+    <!-- ОСНОВНОЙ ЭКРАН ТРЕНАЖЕРА ЧТЕНИЯ -->
+    <div id="gameScreen" class="game-container">
+      
+      <div>
+        <!-- Выбор режима: Без времени (для записи разборов) или Спринт 3 мин -->
+        <div class="mode-tabs">
+          <button id="tabPractice" class="tab-btn active" onclick="setGameMode('practice')">🎓 Разбор (Без времени)</button>
+          <button id="tabRush" class="tab-btn" onclick="setGameMode('rush')">⚡ Спринт (3 мин)</button>
+        </div>
+
+        <!-- Фильтры: Уровень сложности и Тип вопроса IELTS -->
+        <div class="filters-row">
+          <select id="levelSelect" class="mode-select" onchange="resetDeckAndLoad()">
+            <option value="all">🔥 Все уровни (Levels 1–3)</option>
+            <option value="1">Level 1 — Вопросы на русском</option>
+            <option value="2">Level 2 — English Medium</option>
+            <option value="3">Level 3 — Advanced PubMed</option>
+          </select>
+
+          <select id="typeSelect" class="mode-select" onchange="resetDeckAndLoad()">
+            <option value="all">🎲 Все типы заданий</option>
+            <option value="tfng">✅ True / False / Not Given</option>
+            <option value="heading">📌 Best Title / Heading</option>
+            <option value="gist">💡 Main Idea / Meaning</option>
+            <option value="match">🔍 Match Info / Detail</option>
+          </select>
+        </div>
+
+        <!-- Панель очков и таймера -->
+        <div class="stats">
+          <span id="timerBadge" class="timer-badge">⏱️ <span id="timeLeft">3:00</span></span>
+          <span>Total: <strong id="totalCount">0</strong></span>
+          <span>Correct: <strong id="correctCount" style="color:#16A34A;">0</strong></span>
+          <span>Streak: <strong id="streakCount" style="color:#D9A000;">0 🔥</strong></span>
+        </div>
+      </div>
+
+      <!-- Карточка с текстом и вопросом -->
+      <div class="reading-card">
+        <div class="tags-row">
+          <span id="levelTag" class="level-tag">Level 1</span>
+          <span id="taskTag" class="task-tag">True / False / Not Given</span>
+        </div>
+        <div id="sourceLabel" class="passage-source">📄 Clinical Guideline Excerpt</div>
+        <div id="passageText" class="passage-box">Loading passage...</div>
+        <div id="questionText" class="question-prompt">Loading question...</div>
+      </div>
+
+      <!-- Варианты ответов и объяснение -->
+      <div>
+        <div id="optionsGrid" class="options-grid"></div>
+        
+        <div id="explanationBox" class="explanation-box">
+          <div><strong>💡 Разбор / Explanation:</strong> <span id="explanationText">Внимательно прочитайте отрывок и выберите ответ.</span></div>
+        </div>
+
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Следующий текст / Next ➔</button>
+      </div>
+
+    </div>
+
+    <!-- ЭКРАН ИТОГОВ СПРИНТА ЗА 3 МИНУТЫ -->
+    <div id="rushResultScreen" class="rush-modal">
+      <div style="text-align: center;">
+        <div style="font-size: 2.5rem;">📖</div>
+        <h2 style="font-size: 1.25rem; font-weight: 900;">Спринт завершен! (3 минуты)</h2>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Ваш результат по скоростному чтению статей:</p>
+      </div>
+
+      <div class="rush-summary-card">
+        <div class="rush-stat">
+          <span>Верно</span>
+          <strong id="rushFinalCorrect" style="color: var(--green);">0</strong>
+        </div>
+        <div class="rush-stat">
+          <span>Всего текстов</span>
+          <strong id="rushFinalTotal">0</strong>
+        </div>
+        <div class="rush-stat">
+          <span>Рекорд</span>
+          <strong id="rushBestScore" style="color: var(--kz-gold-dark);">0</strong>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase;">
+          Разбор ошибок из спринта:
+        </div>
+        <div id="rushMistakesList" class="mistakes-list"></div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <button class="next-btn visible" onclick="startRushMode()">🔄 Новый спринт (3 мин)</button>
+        <button class="secondary-btn" onclick="setGameMode('practice')">🎓 Вернуться в режим без времени</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. АВТОРИЗАЦИЯ SUPABASE
+    // =========================================================================
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function checkAuth() {
+      try {
+        const { data, error } = await supabaseClient.auth.getSession();
+        if (error || !data.session) {
+          window.location.href = "/login.html";
+          return;
+        }
+        initTrainer();
+      } catch (e) {
+        console.warn("Preview mode:", e);
+        initTrainer();
+      }
+    }
+
+    // =========================================================================
+    // 2. БАЗА ТЕКСТОВ И ЗАДАНИЙ (IELTS MEDICAL READING & GUIDELINES)
+    // =========================================================================
+    /*
+      КАК ДОБАВЛЯТЬ НОВЫЕ ТЕКСТЫ:
+      {
+        level: 1 | 2 | 3,
+          // 1 = Короткие клинические тексты на английском, вопросы и разбор на РУССКОМ
+          // 2 = Тексты средней сложности (гайдлайны), вопросы и ответы на АНГЛИЙСКОМ
+          // 3 = Сложные реалистичные абстракты PubMed/ESC/WHO, вопросы IELTS Band 7.5-9.0
+        type: "tfng" | "heading" | "gist" | "match",
+          // "tfng"    = True / False / Not Given
+          // "heading" = Выбрать лучший заголовок (Which title fits best)
+          // "gist"    = Смысл параграфа / главная идея (Main idea / Author's purpose)
+          // "match"   = Найти конкретный факт / деталь (Match information)
+        source: "Название источника или темы (отображается над текстом)",
+        passage: "Текст отрывка на английском языке",
+        question: "Формулировка вопроса или утверждения",
+        options: ["Вариант 1", "Вариант 2", ...], // Для tfng порядок сохраняется, для остальных перемешивается
+        correctAnswer: "Точный текст правильного ответа из массива options",
+        explanation: "Подробное объяснение, почему этот ответ верный (со ссылкой на строчки текста)."
+      }
+    */
+
+    const readingBank = [
+      // =======================================================================
+      // LEVEL 1: ВОПРОСЫ И ОБЪЯСНЕНИЯ НА РУССКОМ ЯЗЫКЕ (Проверка понимания)
+      // =======================================================================
+      {
+        level: 1,
+        type: "tfng",
+        typeLabel: "True / False / Not Given",
+        source: "Clinical Guideline • Acute Bronchitis",
+        passage: "Acute bronchitis is a self-limiting inflammation of the large airways in the lungs, most commonly triggered by a viral infection. Because bacteria are rarely the cause, routine treatment with antibiotics is not recommended for otherwise healthy adults. Instead, management focuses on symptomatic relief, including adequate hydration, rest, and over-the-counter antitussives if nocturnal cough disrupts sleep.",
+        question: "Утверждение: «Всем взрослым пациентам с острым бронхитом необходимо профилактически назначать антибиотики».",
+        options: ["TRUE (Правда)", "FALSE (Ложь)", "NOT GIVEN (Не сказано)"],
+        correctAnswer: "FALSE (Ложь)",
+        explanation: "В тексте прямо сказано противоположное: «routine treatment with antibiotics is not recommended for otherwise healthy adults» (рутинное лечение антибиотиками не рекомендуется, так как причина чаще всего вирусная)."
+      },
+      {
+        level: 1,
+        type: "tfng",
+        typeLabel: "True / False / Not Given",
+        source: "Pharmacology • Metformin Administration",
+        passage: "Metformin remains the first-line oral pharmacotherapy for patients newly diagnosed with type 2 diabetes mellitus. To minimize common gastrointestinal adverse effects such as nausea, abdominal cramping, and diarrhea, clinicians advise taking the medication with meals and starting at a low dose of 500 mg once daily before gradually titrating upward.",
+        question: "Утверждение: «Прием метформина во время еды помогает снизить риск побочных эффектов со стороны ЖКТ».",
+        options: ["TRUE (Правда)", "FALSE (Ложь)", "NOT GIVEN (Не сказано)"],
+        correctAnswer: "TRUE (Правда)",
+        explanation: "Полностью совпадает с текстом: «To minimize common gastrointestinal adverse effects... clinicians advise taking the medication with meals»."
+      },
+      {
+        level: 1,
+        type: "tfng",
+        typeLabel: "True / False / Not Given",
+        source: "Emergency Medicine • Anaphylaxis",
+        passage: "Intramuscular epinephrine injected into the mid-outer thigh (vastus lateralis) is the cornerstone of initial management for acute anaphylaxis. Antihistamines and corticosteroids may be administered as adjunctive therapy to prevent biphasic reactions, but they must never delay or replace the immediate administration of epinephrine.",
+        question: "Утверждение: «У детей до 5 лет адреналин при анафилаксии следует вводить исключительно в дельтовидную мышцу плеча».",
+        options: ["TRUE (Правда)", "FALSE (Ложь)", "NOT GIVEN (Не сказано)"],
+        correctAnswer: "NOT GIVEN (Не сказано)",
+        explanation: "В отрывке указано место введения — переднебоковая поверхность бедра (mid-outer thigh), но нет никаких упоминаний о детях до 5 лет или дельтовидной мышце. Это классический случай NOT GIVEN."
+      },
+      {
+        level: 1,
+        type: "heading",
+        typeLabel: "Выбор заголовка (Best Title)",
+        source: "Cardiology • Lifestyle Modification",
+        passage: "Dietary sodium restriction plays a pivotal role in the non-pharmacological management of primary hypertension. Reducing daily salt intake to less than 5 grams per day has been shown to lower systolic blood pressure by 4 to 5 mmHg in hypertensive individuals. When combined with the DASH diet rich in potassium, fruits, and vegetables, the antihypertensive effect is further amplified.",
+        question: "Какой заголовок лучше всего отражает суть этого параграфа?",
+        options: [
+          "Роль ограничения соли и диеты в снижении артериального давления",
+          "Хирургические методы лечения резистентной гипертонии",
+          "Побочные эффекты калийсберегающих диуретиков",
+          "Причины развития гипотонии у спортсменов"
+        ],
+        correctAnswer: "Роль ограничения соли и диеты в снижении артериального давления",
+        explanation: "Весь параграф посвящен ограничению натрия/соли (sodium restriction < 5 g/day) и диете DASH для снижения систолического давления."
+      },
+      {
+        level: 1,
+        type: "heading",
+        typeLabel: "Выбор заголовка (Best Title)",
+        source: "Hospital Infection Control",
+        passage: "Catheter-associated urinary tract infections (CAUTIs) represent one of the most frequent nosocomial complications worldwide. The single most effective preventive measure is avoiding unnecessary catheterization and removing indwelling urinary catheters as soon as they are no longer clinically indicated. Daily assessment of catheter necessity by the medical team significantly reduces infection rates.",
+        question: "Выберите наиболее точный заголовок для данного отрывка:",
+        options: [
+          "Профилактика катетер-ассоциированных инфекций мочевыводящих путей",
+          "Сравнение пероральных и внутривенных уросептиков",
+          "Техника проведения ударно-волновой литотрипсии",
+          "Лабораторная диагностика хронического пиелонефрита"
+        ],
+        correctAnswer: "Профилактика катетер-ассоциированных инфекций мочевыводящих путей",
+        explanation: "Ключевые слова отрывка: CAUTIs (катетер-ассоциированные ИМП), «most effective preventive measure» (главная мера профилактики — своевременное удаление катетера)."
+      },
+      {
+        level: 1,
+        type: "gist",
+        typeLabel: "Главная мысль (Paragraph Meaning)",
+        source: "Gastroenterology • GERD Management",
+        passage: "Patients experiencing nocturnal gastroesophageal reflux are advised to elevate the head of their bed by 15 to 20 centimeters and avoid consuming meals within three hours prior to bedtime. Simply stacking extra pillows is generally ineffective, as it bends the patient at the waist and may actually increase intra-abdominal pressure.",
+        question: "В чем заключается главный практический смысл этого абзаца?",
+        options: [
+          "Для борьбы с ночным рефлюксом нужно приподнять изголовье самой кровати и не есть за 3 часа до сна, а просто подкладывать высокие подушки неэффективно.",
+          "Пациентам с ГЭРБ необходимо спать исключительно сидя в кресле после плотного ужина.",
+          "Прием антацидов на ночь полностью заменяет необходимость соблюдать диету.",
+          "Повышение внутрибрюшного давления помогает быстрее переваривать жирную пищу."
+        ],
+        correctAnswer: "Для борьбы с ночным рефлюксом нужно приподнять изголовье самой кровати и не есть за 3 часа до сна, а просто подкладывать высокие подушки неэффективно.",
+        explanation: "В тексте объясняется разница между подъемом изголовья кровати (elevate the head of their bed) и использованием лишних подушек (stacking extra pillows), которые сгибают туловище в талии и повышают внутрибрюшное давление."
+      },
+      {
+        level: 1,
+        type: "gist",
+        typeLabel: "Главная мысль (Paragraph Meaning)",
+        source: "Pediatrics • Fever Phobia",
+        passage: "In pediatric practice, antipyretics such as paracetamol or ibuprofen are indicated primarily to relieve the child's discomfort rather than to normalize body temperature at all costs. Fever itself is a physiological immune response that inhibits viral replication. Parents should be reassured that a moderate fever in a well-hydrated, alert child does not cause brain damage.",
+        question: "Какова основная цель назначения жаропонижающих детям согласно данному протоколу?",
+        options: [
+          "Облегчить дискомфорт и самочувствие ребенка, а не сбить цифры на градуснике до 36.6°C любой ценой.",
+          "Предотвратить повреждение головного мозга при температуре 38.0°C.",
+          "Ускорить размножение вирусов в верхних дыхательных путях.",
+          "Полностью заменить питьевой режим в первые сутки болезни."
+        ],
+        correctAnswer: "Облегчить дискомфорт и самочувствие ребенка, а не сбить цифры на градуснике до 36.6°C любой ценой.",
+        explanation: "Фраза «indicated primarily to relieve the child's discomfort rather than to normalize body temperature at all costs» прямо указывает на то, что мы лечим состояние ребенка, а не цифры на термометре."
+      },
+      {
+        level: 1,
+        type: "match",
+        typeLabel: "Поиск деталей (Match Info)",
+        source: "Endocrinology • Hypothyroidism",
+        passage: "Levothyroxine should be taken on an empty stomach, ideally 30 to 60 minutes before breakfast, with a full glass of water. Concomitant administration with calcium carbonate, ferrous sulfate (iron supplements), or proton pump inhibitors can markedly impair its intestinal absorption. Therefore, these agents should be separated from levothyroxine intake by at least four hours.",
+        question: "Какой интервал времени необходимо соблюдать между приемом левотироксина и препаратами железа или кальция?",
+        options: [
+          "Не менее 4 часов (at least four hours)",
+          "Ровно 15 минут после ужина",
+          "Принимать одновременно в одной ложке",
+          "Не менее 24 часов"
+        ],
+        correctAnswer: "Не менее 4 часов (at least four hours)",
+        explanation: "В последнем предложении указано: «these agents should be separated from levothyroxine intake by at least four hours», так как железо и кальций нарушают всасывание гормона в кишечнике."
+      },
+      {
+        level: 1,
+        type: "match",
+        typeLabel: "Поиск деталей (Match Info)",
+        source: "Surgery • Acute Appendicitis",
+        passage: "Classic acute appendicitis typically begins with poorly localized periumbilical pain associated with anorexia and low-grade fever. Within 6 to 12 hours, as the parietal peritoneum becomes inflamed, the pain migrates to the right lower quadrant (McBurney's point) and becomes sharp and well-localized, worsening with movement or coughing.",
+        question: "Что происходит с болью при остром аппендиците через 6–12 часов от начала заболевания?",
+        options: [
+          "Она смещается в правую нижнюю часть живота (точку Мак-Берни) и становится острой и четко локализованной.",
+          "Она полностью проходит самостоятельно после приема воды.",
+          "Она перемещается из правой подвздошной области в левую руку и челюсть.",
+          "Она превращается в безболезненное вздутие живота."
+        ],
+        correctAnswer: "Она смещается в правую нижнюю часть живота (точку Мак-Берни) и становится острой и четко локализованной.",
+        explanation: "В тексте: «Within 6 to 12 hours... the pain migrates to the right lower quadrant (McBurney's point) and becomes sharp and well-localized»."
+      },
+      {
+        level: 1,
+        type: "tfng",
+        typeLabel: "True / False / Not Given",
+        source: "Neurology • Migraine Aura",
+        passage: "Approximately one-quarter of patients with migraine experience a transient neurological phase known as aura, which precedes the headache onset by 20 to 60 minutes. Visual phenomena—such as flickering zig-zag lines (fortification spectra) or blind spots (scotomas)—account for over 90% of all aura presentations.",
+        question: "Утверждение: «У каждого пациента с мигренью (в 100% случаев) перед головной болью возникает зрительная аура».",
+        options: ["TRUE (Правда)", "FALSE (Ложь)", "NOT GIVEN (Не сказано)"],
+        correctAnswer: "FALSE (Ложь)",
+        explanation: "В первом предложении указано: «Approximately one-quarter (около четверти / 25%) of patients with migraine experience... aura», а не 100% пациентов."
+      },
+
+      // =======================================================================
+      // LEVEL 2: ENGLISH MEDIUM (Вопросы и тексты в формате IELTS на английском)
+      // =======================================================================
+      {
+        level: 2,
+        type: "tfng",
+        typeLabel: "True / False / Not Given",
+        source: "ESC Guidelines • Atrial Fibrillation",
+        passage: "Direct oral anticoagulants (DOACs), such as apixaban and rivaroxaban, are preferred over vitamin K antagonists (warfarin) for stroke prevention in patients with non-valvular atrial fibrillation. However, DOACs remain strictly contraindicated in patients with mechanical prosthetic heart valves or moderate-to-severe mitral stenosis, where warfarin continues to be the agent of choice.",
+        question: "Statement: Direct oral anticoagulants (DOACs) are recommended as the first-choice therapy for patients with mechanical heart valves.",
+        options: ["TRUE", "FALSE", "NOT GIVEN"],
+        correctAnswer: "FALSE",
+        explanation: "The passage explicitly states that 'DOACs remain strictly contraindicated in patients with mechanical prosthetic heart valves, where warfarin continues to be the agent of choice'."
+      },
+      {
+        level: 2,
+        type: "tfng",
+        typeLabel: "True / False / Not Given",
+        source: "Pulmonology • Asthma vs COPD",
+        passage: "Spirometry before and after the inhalation of a short-acting bronchodilator is essential for differentiating asthma from chronic obstructive pulmonary disease (COPD). Significant airflow reversibility—defined as an increase in FEV1 of more than 12% and 200 mL from baseline—strongly favors a diagnosis of asthma, whereas persistent, poorly reversible airflow limitation is characteristic of COPD.",
+        question: "Statement: Spirometry must always be performed in the morning before the patient eats breakfast.",
+        options: ["TRUE", "FALSE", "NOT GIVEN"],
+        correctAnswer: "NOT GIVEN",
+        explanation: "The text discusses performing spirometry before and after a bronchodilator, and defines the FEV1 threshold (>12% and 200 mL), but mentions nothing about time of day or fasting."
+      },
+      {
+        level: 2,
+        type: "tfng",
+        typeLabel: "True / False / Not Given",
+        source: "Nephrology • Contrast-Induced Nephropathy",
+        passage: "Patients with pre-existing chronic kidney disease (eGFR < 45 mL/min/1.73m²) are at heightened risk of acute kidney injury following the intravascular administration of iodinated contrast media. Intravenous volume expansion with isotonic saline prior to and after the imaging procedure remains the most consistently supported prophylactic measure.",
+        question: "Statement: Pre-hydration with intravenous isotonic saline helps protect high-risk patients from contrast-induced kidney injury.",
+        options: ["TRUE", "FALSE", "NOT GIVEN"],
+        correctAnswer: "TRUE",
+        explanation: "This matches the final sentence: 'Intravenous volume expansion with isotonic saline... remains the most consistently supported prophylactic measure'."
+      },
+      {
+        level: 2,
+        type: "heading",
+        typeLabel: "Best Title / Heading",
+        source: "Infectious Diseases • Antimicrobial Stewardship",
+        passage: "Empirical broad-spectrum intravenous antibiotics are lifesaving in the initial hours of septic shock. Nevertheless, once microbiological culture and sensitivity results become available at 48 to 72 hours, clinicians should narrow the antibiotic spectrum to target the specific isolated pathogen. This practice, termed de-escalation, minimizes collateral damage to the host microbiome and curbs the emergence of multidrug-resistant organisms.",
+        question: "Which of the following titles best summarizes this paragraph?",
+        options: [
+          "The Rationale and Timing of Antibiotic De-escalation",
+          "Mechanisms of Viral Replication in Immunocompromised Hosts",
+          "Surgical Drainage of Deep Tissue Abscesses",
+          "Prevalence of Fungal Infections in Outpatient Clinics"
+        ],
+        correctAnswer: "The Rationale and Timing of Antibiotic De-escalation",
+        explanation: "The paragraph defines 'de-escalation' (narrowing broad-spectrum antibiotics after 48–72h culture results) and explains why it is done (reducing resistance and microbiome damage)."
+      },
+      {
+        level: 2,
+        type: "heading",
+        typeLabel: "Best Title / Heading",
+        source: "Orthopedics • Osteoporosis Screening",
+        passage: "Dual-energy X-ray absorptiometry (DEXA) of the lumbar spine and femoral neck is the gold standard for quantifying bone mineral density (BMD). According to WHO criteria, a T-score between -1.0 and -2.5 indicates osteopenia, whereas a T-score of -2.5 or lower establishes a diagnosis of osteoporosis, warranting pharmacological intervention to prevent fragility fractures.",
+        question: "Choose the most suitable heading for this excerpt:",
+        options: [
+          "Diagnostic Thresholds for Bone Mineral Density on DEXA Scans",
+          "Rehabilitation Protocols Following Total Knee Arthroplasty",
+          "Surgical Management of Open Tibial Fractures",
+          "Dietary Vitamin C Deficiency in Pediatric Populations"
+        ],
+        correctAnswer: "Diagnostic Thresholds for Bone Mineral Density on DEXA Scans",
+        explanation: "The passage focuses on DEXA scanning and the specific WHO T-score cutoffs for osteopenia (-1.0 to -2.5) and osteoporosis (≤ -2.5)."
+      },
+      {
+        level: 2,
+        type: "gist",
+        typeLabel: "Main Idea / Meaning",
+        source: "Gastroenterology • Celiac Disease Diagnosis",
+        passage: "When evaluating a patient for suspected celiac disease, serological testing for IgA tissue transglutaminase (tTG-IgA) and duodenal mucosal biopsy must be performed while the patient is still consuming a gluten-containing diet. Initiating a self-prescribed gluten-free diet prior to diagnostic workup leads to mucosal healing and declining antibody titers, frequently resulting in false-negative test outcomes.",
+        question: "What is the main clinical warning conveyed in this passage?",
+        options: [
+          "Patients must not stop eating gluten before diagnostic tests are completed, as doing so can cause false-negative results.",
+          "Duodenal biopsy is no longer needed if the patient has already started a gluten-free diet.",
+          "Celiac disease antibodies permanently remain high even after 10 years of strict dietary avoidance.",
+          "All patients with abdominal pain should immediately eliminate gluten before seeing a gastroenterologist."
+        ],
+        correctAnswer: "Patients must not stop eating gluten before diagnostic tests are completed, as doing so can cause false-negative results.",
+        explanation: "The text warns that starting a gluten-free diet prior to testing lowers antibody titers and heals mucosa, leading to 'false-negative test outcomes'."
+      },
+      {
+        level: 2,
+        type: "gist",
+        typeLabel: "Main Idea / Meaning",
+        source: "Psychiatry & Sleep Medicine • Insomnia",
+        passage: "Cognitive behavioral therapy for insomnia (CBT-I) is endorsed by international sleep guidelines as the first-line treatment for chronic primary insomnia in adults. While hypnotic medications (such as zolpidem or benzodiazepines) provide rapid short-term symptom relief, their use beyond four weeks is discouraged due to risks of tolerance, dependence, daytime sedation, and rebound insomnia upon discontinuation.",
+        question: "What can be inferred from the passage regarding hypnotic medications?",
+        options: [
+          "They are useful only for brief periods, whereas CBT-I is preferred for long-term management of chronic insomnia.",
+          "They are completely safe for lifelong daily use in elderly patients.",
+          "They cure the root psychological causes of insomnia more effectively than CBT-I.",
+          "They have zero side effects when discontinued abruptly after six months."
+        ],
+        correctAnswer: "They are useful only for brief periods, whereas CBT-I is preferred for long-term management of chronic insomnia.",
+        explanation: "CBT-I is the 'first-line treatment', while hypnotics are limited to short-term use (<4 weeks) due to tolerance, dependence, and rebound insomnia."
+      },
+      {
+        level: 2,
+        type: "match",
+        typeLabel: "Match Info / Detail",
+        source: "Hematology • Iron Deficiency Anemia",
+        passage: "Following the initiation of oral ferrous sulfate therapy for iron deficiency anemia, reticulocytosis typically peaks within 7 to 10 days, and hemoglobin levels normalize within 6 to 8 weeks. However, oral iron supplementation must be continued for an additional 3 to 6 months after hemoglobin normalization in order to fully replenish depleted bone marrow ferritin stores.",
+        question: "According to the text, why must iron therapy continue for 3 to 6 months AFTER hemoglobin returns to normal?",
+        options: [
+          "To fully restore depleted iron (ferritin) reserves in the bone marrow.",
+          "Because hemoglobin takes 6 months to show any initial increase.",
+          "To prevent the bone marrow from producing reticulocytes.",
+          "To lower serum ferritin levels below baseline."
+        ],
+        correctAnswer: "To fully restore depleted iron (ferritin) reserves in the bone marrow.",
+        explanation: "The final clause states: '...in order to fully replenish depleted bone marrow ferritin stores'."
+      },
+      {
+        level: 2,
+        type: "match",
+        typeLabel: "Match Info / Detail",
+        source: "Neurology • Acute Ischemic Stroke",
+        passage: "Intravenous alteplase (recombinant tissue plasminogen activator) significantly improves functional outcomes in acute ischemic stroke when administered within 4.5 hours of symptom onset. Prior to infusion, a non-contrast head CT scan is mandatory to exclude intracranial hemorrhage, which represents an absolute contraindication to thrombolytic therapy.",
+        question: "What is the mandatory prerequisite before giving intravenous alteplase to a stroke patient?",
+        options: [
+          "Performing a non-contrast head CT scan to rule out bleeding in the brain.",
+          "Waiting at least 12 hours to see if symptoms resolve spontaneously.",
+          "Administering high-dose intramuscular heparin first.",
+          "Performing a lumbar puncture in every patient."
+        ],
+        correctAnswer: "Performing a non-contrast head CT scan to rule out bleeding in the brain.",
+        explanation: "The text states: 'Prior to infusion, a non-contrast head CT scan is mandatory to exclude intracranial hemorrhage'."
+      },
+      {
+        level: 2,
+        type: "tfng",
+        typeLabel: "True / False / Not Given",
+        source: "Ophthalmology • Diabetic Retinopathy",
+        passage: "Because early-stage diabetic retinopathy is frequently asymptomatic, annual dilated fundus examination is recommended for all patients with type 2 diabetes starting at the time of diagnosis. Tight glycemic control (HbA1c < 7.0%) and blood pressure management substantially delay both the onset and progression of microvascular retinal complications.",
+        question: "Statement: Patients with type 2 diabetes only need an eye examination once they begin noticing blurry vision.",
+        options: ["TRUE", "FALSE", "NOT GIVEN"],
+        correctAnswer: "FALSE",
+        explanation: "Because early retinopathy is 'frequently asymptomatic', annual screening is required 'starting at the time of diagnosis', before visual symptoms appear."
+      },
+
+      // =======================================================================
+      // LEVEL 3: ADVANCED PUBMED & GUIDELINES (IELTS Band 7.5–9.0)
+      // =======================================================================
+      {
+        level: 3,
+        type: "tfng",
+        typeLabel: "True / False / Not Given",
+        source: "NEJM / Cardiology • SGLT2 Inhibitors in Heart Failure",
+        passage: "In a multicenter, double-blind, placebo-controlled trial involving 4,744 patients with heart failure and a reduced ejection fraction (HFrEF), dapagliflozin reduced the composite primary endpoint of worsening heart failure or cardiovascular death by 26% (hazard ratio, 0.74; 95% CI, 0.65 to 0.85; p < 0.001). Notably, the magnitude of clinical benefit was virtually identical in patients with type 2 diabetes and in those without diabetes, suggesting that the cardioprotective mechanism extends beyond glycemic lowering.",
+        question: "Statement: Dapagliflozin improved cardiovascular outcomes exclusively in heart failure patients who also had type 2 diabetes.",
+        options: ["TRUE", "FALSE", "NOT GIVEN"],
+        correctAnswer: "FALSE",
+        explanation: "The abstract explicitly states that 'the magnitude of clinical benefit was virtually identical in patients with type 2 diabetes and in those without diabetes'."
+      },
+      {
+        level: 3,
+        type: "tfng",
+        typeLabel: "True / False / Not Given",
+        source: "Lancet Oncology • Liquid Biopsy (ctDNA)",
+        passage: "Circulating tumor DNA (ctDNA) analysis offers a non-invasive modality for detecting minimal residual disease (MRD) following curative-intent resection of stage II–III colorectal carcinoma. While post-operative ctDNA positivity is a robust predictor of recurrence (hazard ratio > 10), current prospective trials have not yet established whether escalating adjuvant chemotherapy intensity in ctDNA-positive patients translates into superior 5-year overall survival.",
+        question: "Statement: Post-operative ctDNA testing is currently cheaper than conventional contrast-enhanced CT imaging.",
+        options: ["TRUE", "FALSE", "NOT GIVEN"],
+        correctAnswer: "NOT GIVEN",
+        explanation: "The passage discusses the prognostic value of ctDNA for recurrence and survival in colorectal cancer, but makes no mention of financial cost or price comparisons with CT scans."
+      },
+      {
+        level: 3,
+        type: "tfng",
+        typeLabel: "True / False / Not Given",
+        source: "Critical Care • Restrictive vs Liberal Transfusion",
+        passage: "In hemodynamically stable critically ill adults without active myocardial ischemia, a restrictive red-cell transfusion strategy (triggering transfusion at a hemoglobin concentration < 7.0 g/dL) is at least as effective as—and potentially superior to—a liberal strategy (threshold < 10.0 g/dL), while significantly reducing exposure to allogeneic blood products and transfusion-related acute lung injury (TRALI).",
+        question: "Statement: For stable ICU patients without active cardiac ischemia, waiting until hemoglobin drops below 7.0 g/dL before transfusing is safe and reduces blood product usage.",
+        options: ["TRUE", "FALSE", "NOT GIVEN"],
+        correctAnswer: "TRUE",
+        explanation: "This accurately paraphrases the passage: the restrictive strategy (< 7.0 g/dL) is at least as effective as the liberal strategy (< 10.0 g/dL) and reduces blood exposure and TRALI."
+      },
+      {
+        level: 3,
+        type: "heading",
+        typeLabel: "Best Title / Heading",
+        source: "Epidemiology & Methodology • Observational Bias",
+        passage: "When interpreting non-randomized observational cohort studies, clinicians must remain vigilant regarding confounding by indication. This systematic bias arises when patients with more severe baseline disease are preferentially prescribed a specific therapy, making the treatment itself appear statistically associated with higher mortality or adverse outcomes unless rigorous multivariable propensity-score matching is applied.",
+        question: "Which heading best captures the core methodological concept of this paragraph?",
+        options: [
+          "Understanding Confounding by Indication in Observational Research",
+          "Superiority of Single-Center Case Reports over Meta-Analyses",
+          "Pharmacokinetics of Hepatically Cleared Anticoagulants",
+          "Ethical Guidelines for Pediatric Informed Consent"
+        ],
+        correctAnswer: "Understanding Confounding by Indication in Observational Research",
+        explanation: "The entire paragraph defines and explains 'confounding by indication' in non-randomized observational studies and how sicker patients receiving a drug can skew mortality statistics."
+      },
+      {
+        level: 3,
+        type: "heading",
+        typeLabel: "Best Title / Heading",
+        source: "Immunology • Cytokine Release Syndrome",
+        passage: "Chimeric antigen receptor (CAR) T-cell therapy has revolutionized the management of relapsed B-cell malignancies; however, its clinical utility is tempered by cytokine release syndrome (CRS). Driven by massive supraphysiological activation of T-cells and macrophages, severe CRS manifests with high fever, capillary leak, vasodilatory shock, and multiorgan dysfunction, necessitating prompt intervention with the IL-6 receptor antagonist tocilizumab.",
+        question: "Select the most appropriate title for this academic excerpt:",
+        options: [
+          "Pathophysiology and Targeted Management of CAR T-Cell-Induced Cytokine Release Syndrome",
+          "Long-Term Surgical Outcomes in Early-Stage Melanoma",
+          "Prevention of Radiation Dermatitis in Breast Cancer Patients",
+          "Role of Probiotics in Preventing Antibiotic-Associated Diarrhea"
+        ],
+        correctAnswer: "Pathophysiology and Targeted Management of CAR T-Cell-Induced Cytokine Release Syndrome",
+        explanation: "The passage covers CAR T-cell efficacy, the mechanism/symptoms of Cytokine Release Syndrome (CRS), and its targeted treatment with tocilizumab."
+      },
+      {
+        level: 3,
+        type: "gist",
+        typeLabel: "Main Idea / Meaning",
+        source: "JAMA Internal Medicine • Overdiagnosis in Screening",
+        passage: "Widespread implementation of high-sensitivity neck ultrasonography has led to a dramatic surge in the reported incidence of papillary thyroid microcarcinoma over the past तीन decades. Paradoxically, thyroid cancer-specific mortality has remained virtually unchanged during the same period. This discrepancy strongly implies that intensive screening predominantly uncovers indolent, subclinical lesions—a phenomenon termed overdiagnosis—exposing patients to unnecessary thyroidectomies and lifelong hormone replacement.",
+        question: "What is the author's primary argument regarding widespread thyroid ultrasound screening?",
+        options: [
+          "It largely detects harmless, slow-growing tumors without reducing mortality, leading to unnecessary surgeries.",
+          "It has successfully cut thyroid cancer mortality in half over the last thirty years.",
+          "It should be performed every six months on all healthy children and young adults.",
+          "It is not sensitive enough to detect small papillary microcarcinomas."
+        ],
+        correctAnswer: "It largely detects harmless, slow-growing tumors without reducing mortality, leading to unnecessary surgeries.",
+        explanation: "Rising incidence with unchanged mortality demonstrates 'overdiagnosis' of indolent (harmless/slow-growing) lesions, causing unnecessary surgeries."
+      },
+      {
+        level: 3,
+        type: "gist",
+        typeLabel: "Main Idea / Meaning",
+        source: "Hepatology • Non-Alcoholic Steatohepatitis (MASLD)",
+        passage: "Although liver biopsy remains the reference standard for grading necroinflammation and staging fibrosis in metabolic dysfunction-associated steatohepatitis (MASH), its invasiveness, sampling variability, and risk of bleeding preclude its use for routine population screening. Consequently, clinical pathways increasingly rely on two-step non-invasive algorithms combining the FIB-4 serum index with vibration-controlled transient elastography (FibroScan) to stratify patient risk.",
+        question: "Why are clinicians shifting toward FIB-4 and transient elastography instead of routine liver biopsy?",
+        options: [
+          "Because liver biopsy is invasive and carries procedural risks, making non-invasive two-step algorithms more practical for routine risk stratification.",
+          "Because transient elastography is an invasive surgical procedure that removes liver tissue.",
+          "Because FIB-4 completely cures hepatic fibrosis without the need for lifestyle changes.",
+          "Because liver biopsy cannot detect fibrosis or inflammation under a microscope."
+        ],
+        correctAnswer: "Because liver biopsy is invasive and carries procedural risks, making non-invasive two-step algorithms more practical for routine risk stratification.",
+        explanation: "The passage notes that biopsy's 'invasiveness, sampling variability, and risk of bleeding preclude its use for routine population screening', driving adoption of FIB-4 + elastography."
+      },
+      {
+        level: 3,
+        type: "match",
+        typeLabel: "Match Info / Detail",
+        source: "Obstetrics & Gynecology • Magnesium Sulfate in Eclampsia",
+        passage: "Intramuscular or intravenous magnesium sulfate is the anticonvulsant of choice for both preventing and controlling eclamptic seizures in women with severe preeclampsia. Because magnesium is excreted almost exclusively by the kidneys, oliguria (< 30 mL/hour) significantly increases the hazard of magnesium toxicity. Clinicians must closely monitor deep tendon2 reflexes, respiratory rate, and urine output, keeping calcium gluconate readily available at the bedside as a specific physiological antidote.",
+        question: "According to the guideline, what is the earliest clinical sign/parameter monitored alongside respiratory rate and urine output to detect magnesium toxicity, and what is the antidote?",
+        options: [
+          "Deep tendon reflexes are monitored; calcium gluconate serves as the specific antidote.",
+          "Pupil dilation is monitored; naloxone serves as the antidote.",
+          "Liver transaminases are monitored; N-acetylcysteine is the antidote.",
+          "Blood glucose is monitored; glucagon is the antidote."
+        ],
+        correctAnswer: "Deep tendon reflexes are monitored; calcium gluconate serves as the specific antidote.",
+        explanation: "The final sentence specifies monitoring 'deep tendon reflexes, respiratory rate, and urine output, keeping calcium gluconate readily available... as a specific physiological antidote'."
+      },
+      {
+        level: 3,
+        type: "match",
+        typeLabel: "Match Info / Detail",
+        source: "Biostatistics • Confidence Intervals & Null Value",
+        passage: "When evaluating a randomized clinical trial that reports a relative risk (RR) or hazard ratio (HR), a 95% confidence interval (CI) that crosses the null value of 1.0 indicates that the observed difference between the intervention and control arms is not statistically significant at the alpha = 0.05 level. For instance, an HR of 0.82 (95% CI, 0.64 to 1.06) means the data are compatible with both a 36% risk reduction and a 6% risk increase.",
+        question: "Why is a Hazard Ratio of 0.82 with a 95% Confidence Interval of 0.64 to 1.06 considered NOT statistically significant?",
+        options: [
+          "Because the confidence interval includes (crosses) the null value of 1.0.",
+          "Because 0.82 is greater than 1.0.",
+          "Because the sample size was zero.",
+          "Because relative risk can never be used in randomized trials."
+        ],
+        correctAnswer: "Because the confidence interval includes (crosses) the null value of 1.0.",
+        explanation: "The range 0.64 to 1.06 crosses 1.0 ('crosses the null value of 1.0'), meaning the result is not statistically significant (p > 0.05)."
+      },
+      {
+        level: 3,
+        type: "match",
+        typeLabel: "Match Info / Detail",
+        source: "Nephrology & Cardiology • Hyperkalemia Emergency",
+        passage: "In severe hyperkalemia (serum potassium > 6.5 mmol/L) accompanied by electrocardiographic changes such as peaked T waves or QRS widening, immediate intravenous administration of calcium gluconate is indicated to stabilize the myocardial cell membrane threshold potential. Crucially, calcium does not lower serum potassium concentration; therefore, it must be followed promptly by agents that shift potassium intracellularly (insulin plus glucose, nebulized albuterol) and modalities that eliminate potassium from the body.",
+        question: "What is the exact physiological role of intravenous calcium gluconate in acute hyperkalemia with ECG changes?",
+        options: [
+          "It stabilizes the cardiac muscle membrane to prevent arrhythmias, without actually lowering serum potassium levels.",
+          "It excretes potassium through the kidneys within 2 minutes.",
+          "It shifts potassium into liver cells permanently.",
+          "It widens the QRS complex to slow down the heart."
+        ],
+        correctAnswer: "It stabilizes the cardiac muscle membrane to prevent arrhythmias, without actually lowering serum potassium levels.",
+        explanation: "The passage highlights that calcium gluconate is given 'to stabilize the myocardial cell membrane... Crucially, calcium does not lower serum potassium concentration'."
+      }
+    ];
+
+    // =========================================================================
+    // 3. ЛОГИКА РАБОТЫ ТРЕНАЖЕРА И СПРИНТ-ТАЙМЕРА (3 МИНУТЫ)
+    // =========================================================================
+    let gameMode = 'practice'; // 'practice' | 'rush'
+    let deck = [];
+    let deckIndex = 0;
+
+    let total = 0;
+    let correct = 0;
+    let streak = 0;
+    let currentItem = null;
+    let answered = false;
+
+    const RUSH_DURATION = 180; // 3 минуты (180 сек) на скоростное чтение
+    let rushTimeLeft = RUSH_DURATION;
+    let rushTimerInterval = null;
+    let rushMistakes = [];
+    let bestRushScore = parseInt(localStorage.getItem('medReadingBestRush') || '0', 10);
+
+    function shuffleArray(array) {
+      let arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function initTrainer() {
+      resetDeckAndLoad();
+    }
+
+    function setGameMode(mode) {
+      clearInterval(rushTimerInterval);
+      gameMode = mode;
+
+      document.getElementById('rushResultScreen').classList.remove('active');
+      document.getElementById('gameScreen').style.display = 'flex';
+
+      const tabPractice = document.getElementById('tabPractice');
+      const tabRush = document.getElementById('tabRush');
+      const timerBadge = document.getElementById('timerBadge');
+
+      if (mode === 'rush') {
+        tabPractice.classList.remove('active');
+        tabRush.classList.add('rush-active');
+        timerBadge.classList.add('visible');
+        startRushMode();
+      } else {
+        tabRush.classList.remove('rush-active');
+        tabPractice.classList.add('active');
+        timerBadge.classList.remove('visible');
+        total = 0;
+        correct = 0;
+        streak = 0;
+        updateStatsUI();
+        resetDeckAndLoad();
+      }
+    }
+
+    function startRushMode() {
+      clearInterval(rushTimerInterval);
+      document.getElementById('rushResultScreen').classList.remove('active');
+      document.getElementById('gameScreen').style.display = 'flex';
+
+      total = 0;
+      correct = 0;
+      streak = 0;
+      rushMistakes = [];
+      rushTimeLeft = RUSH_DURATION;
+      document.getElementById('timeLeft').textContent = formatTime(rushTimeLeft);
+      updateStatsUI();
+
+      resetDeckAndLoad();
+
+      rushTimerInterval = setInterval(() => {
+        rushTimeLeft--;
+        document.getElementById('timeLeft').textContent = formatTime(rushTimeLeft);
+        if (rushTimeLeft <= 0) {
+          endRushMode();
+        }
+      }, 1000);
+    }
+
+    function endRushMode() {
+      clearInterval(rushTimerInterval);
+      document.getElementById('gameScreen').style.display = 'none';
+      document.getElementById('rushResultScreen').classList.add('active');
+
+      if (correct > bestRushScore) {
+        bestRushScore = correct;
+        localStorage.setItem('medReadingBestRush', bestRushScore.toString());
+      }
+
+      document.getElementById('rushFinalCorrect').textContent = correct;
+      document.getElementById('rushFinalTotal').textContent = total;
+      document.getElementById('rushBestScore').textContent = bestRushScore;
+
+      const list = document.getElementById('rushMistakesList');
+      list.innerHTML = '';
+
+      if (rushMistakes.length === 0) {
+        list.innerHTML = `<div style="text-align:center; padding: 14px; color: var(--green); font-weight: 800;">🎉 Блестяще! Ни одной ошибки при чтении!</div>`;
+      } else {
+        rushMistakes.forEach(m => {
+          const item = document.createElement('div');
+          item.className = 'mistake-item';
+          item.innerHTML = `
+            <div style="font-weight: 800; color: var(--text-dark); margin-bottom: 3px;">${m.question}</div>
+            <div style="color: var(--green); font-weight: 700;">✓ Правильно: ${m.correctAnswer}</div>
+            <div style="color: var(--text-muted); margin-top: 2px;">💡 ${m.explanation}</div>
+          `;
+          list.appendChild(item);
+        });
+      }
+    }
+
+    function buildFilteredDeck() {
+      const lvl = document.getElementById('levelSelect').value;
+      const typ = document.getElementById('typeSelect').value;
+
+      let filtered = readingBank.filter(item => {
+        const matchLvl = (lvl === 'all') || (item.level === parseInt(lvl, 10));
+        const matchTyp = (typ === 'all') || (item.type === typ);
+        return matchLvl && matchTyp;
+      });
+
+      if (filtered.length === 0) {
+        filtered = [...readingBank];
+      }
+
+      deck = shuffleArray(filtered);
+      deckIndex = 0;
+    }
+
+    function resetDeckAndLoad() {
+      buildFilteredDeck();
+      nextQuestion();
+    }
+
+    function updateStatsUI() {
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('correctCount').textContent = correct;
+      document.getElementById('streakCount').textContent = `${streak} 🔥`;
+    }
+
+    function nextQuestion() {
+      answered = false;
+
+      if (deckIndex >= deck.length) {
+        buildFilteredDeck();
+      }
+
+      currentItem = deck[deckIndex];
+      deckIndex++;
+
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.classList.remove('visible');
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.remove('answered');
+      document.getElementById('explanationText').textContent =
+        gameMode === 'rush'
+          ? "⚡ Спринт-режим: найдите ключевую мысль в тексте как можно быстрее!"
+          : (currentItem.level === 1
+              ? "Прочитайте английский отрывок и ответьте на вопрос на русском языке."
+              : "Read the medical passage carefully and select the best answer.");
+
+      const levelNames = {
+        1: "Level 1 • RU Вопросы",
+        2: "Level 2 • EN Medium",
+        3: "Level 3 • PubMed Pro"
+      };
+      document.getElementById('levelTag').textContent = levelNames[currentItem.level] || `Level ${currentItem.level}`;
+      document.getElementById('taskTag').textContent = currentItem.typeLabel;
+      document.getElementById('sourceLabel').textContent = `📄 ${currentItem.source}`;
+      document.getElementById('passageText').textContent = currentItem.passage;
+      document.getElementById('passageText').scrollTop = 0;
+      document.getElementById('questionText').textContent = currentItem.question;
+
+      const optionsGrid = document.getElementById('optionsGrid');
+      optionsGrid.innerHTML = '';
+
+      // Для True/False/Not Given сохраняем стандартный порядок кнопок, для остальных перемешиваем
+      let displayOptions = currentItem.type === 'tfng'
+        ? [...currentItem.options]
+        : shuffleArray(currentItem.options);
+
+      if (currentItem.type === 'tfng' && currentItem.level > 1) {
+        optionsGrid.classList.add('tfng-layout');
+      } else {
+        optionsGrid.classList.remove('tfng-layout');
+      }
+
+      currentItem.computedCorrectIndex = displayOptions.indexOf(currentItem.correctAnswer);
+
+      displayOptions.forEach((optText, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = (currentItem.type === 'tfng' && currentItem.level > 1)
+          ? optText
+          : `${String.fromCharCode(65 + index)}) ${optText}`;
+        btn.onclick = () => selectOption(btn, index);
+        optionsGrid.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedBtn, selectedIndex) {
+      if (answered) return;
+      answered = true;
+
+      const isCorrect = (selectedIndex === currentItem.computedCorrectIndex);
+
+      if (isCorrect) {
+        selectedBtn.classList.add('correct');
+      } else {
+        selectedBtn.classList.add('wrong');
+        const allBtns = document.querySelectorAll('.option-btn');
+        if (allBtns[currentItem.computedCorrectIndex]) {
+          allBtns[currentItem.computedCorrectIndex].classList.add('correct');
+        }
+      }
+
+      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+      total++;
+      if (isCorrect) {
+        correct++;
+        streak++;
+      } else {
+        streak = 0;
+        if (gameMode === 'rush') {
+          rushMistakes.push(currentItem);
+        }
+      }
+
+      updateStatsUI();
+
+      if (gameMode === 'rush') {
+        setTimeout(() => {
+          if (rushTimeLeft > 0) nextQuestion();
+        }, 450);
+      } else {
+        const expBox = document.getElementById('explanationBox');
+        expBox.classList.add('answered');
+        document.getElementById('explanationText').textContent =
+          `${isCorrect ? '✅ Верно! ' : `❌ Правильный ответ: "${currentItem.correctAnswer}". `}${currentItem.explanation}`;
+        document.getElementById('nextBtn').classList.add('visible');
+      }
+    }
+
+    checkAuth();
+  </script>
+  <script src="/session-guard.js"></script>
+</body>
+</html>
