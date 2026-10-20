@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>@doctors.speak — Medical English Hub (Grammar & Vocabulary)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --green: #16A34A;
+      --red: #EF4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px 10px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 460px;
+      min-height: 700px;
+      max-height: 96vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-color);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
+      flex-shrink: 0;
+    }
+
+    .home-btn {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.76rem;
+      padding: 6px 12px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .home-btn:active {
+      transform: scale(0.96);
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .brand {
+      font-weight: 800;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+    }
+
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+      padding: 14px 16px;
+      gap: 10px;
+      overflow-y: auto;
+    }
+
+    /* Переключатель режимов: Разбор vs Штурм 1 мин */
+    .mode-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--bg-main);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid var(--border-color);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      border: none;
+      background: transparent;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--card-bg);
+      color: var(--kz-blue-dark);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .tab-btn.rush-active {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      box-shadow: 0 2px 8px rgba(217, 160, 0, 0.25);
+    }
+
+    /* Фильтры тем и уровней */
+    .filters-row {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .mode-select {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      border-radius: 10px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--kz-blue-dark);
+      background: var(--kz-blue-light);
+      outline: none;
+      font-size: 0.76rem;
+      cursor: pointer;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-top: 8px;
+      background: var(--bg-main);
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .timer-badge {
+      background: #FEF2F2;
+      color: var(--red);
+      border: 1px solid #FECACA;
+      padding: 3px 8px;
+      border-radius: 8px;
+      font-weight: 900;
+      font-size: 0.82rem;
+      display: none;
+    }
+
+    .timer-badge.visible {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Карточка вопроса */
+    .term-box {
+      margin: 2px 0;
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 14px 16px;
+      border: 1px solid var(--border-color);
+      border-left: 6px solid var(--kz-gold-dark);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      text-align: center;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .tags-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .level-tag {
+      display: inline-block;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .topic-tag {
+      display: inline-block;
+      background: #FFFBEB;
+      color: var(--kz-gold-dark);
+      border: 1px solid rgba(217, 160, 0, 0.3);
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 10px;
+    }
+
+    .term-title {
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.4;
+      min-height: 2.6em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Интерактивный конструктор предложений (Sentence Builder) */
+    .builder-zone {
+      width: 100%;
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .builder-zone.visible {
+      display: flex;
+    }
+
+    .builder-answer-Slot {
+      min-height: 46px;
+      background: var(--bg-main);
+      border: 2px dashed var(--kz-blue);
+      border-radius: 12px;
+      padding: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .builder-pool {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      padding: 4px 0;
+    }
+
+    .word-chip {
+      background: #FFFFFF;
+      border: 1px solid var(--kz-blue);
+      color: var(--kz-blue-dark);
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 6px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+      transition: transform 0.12s ease, background 0.12s ease;
+    }
+
+    .word-chip:active {
+      transform: scale(0.94);
+    }
+
+    .word-chip.in-slot {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+    }
+
+    .check-builder-btn {
+      background: var(--kz-blue-dark);
+      color: #FFFFFF;
+      border: none;
+      padding: 10px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.84rem;
+      cursor: pointer;
+    }
+
+    /* Сетка вариантов ответа (MCQ) */
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .option-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      line-height: 1.3;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background-color: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+    }
+
+    .option-btn.correct {
+      background-color: #DCFCE7 !important;
+      border-color: #22C55E !important;
+      color: #15803D !important;
+      font-weight: 700;
+    }
+
+    .option-btn.wrong {
+      background-color: #FEE2E2 !important;
+      border-color: #EF4444 !important;
+      color: #B91C1C !important;
+      font-weight: 700;
+    }
+
+    .explanation-box {
+      background-color: var(--kz-blue-light);
+      border-left: 4px solid var(--kz-blue);
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      color: var(--kz-blue-dark);
+      margin-bottom: 8px;
+      line-height: 1.4;
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+    }
+
+    .explanation-box.answered {
+      background-color: #E0F2FE;
+      border-left-color: var(--kz-blue-dark);
+    }
+
+    .next-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      font-weight: 800;
+      padding: 12px;
+      border-radius: 20px;
+      font-size: 0.92rem;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      border: 1px solid var(--kz-gold-dark);
+      cursor: pointer;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      min-height: 44px;
+    }
+
+    .next-btn.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* Модальное окно итогов Штурма (Puzzle Rush Summary) */
+    .rush-modal {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px 16px;
+      flex-grow: 1;
+      gap: 12px;
+      overflow-y: auto;
+    }
+
+    .rush-modal.active {
+      display: flex;
+    }
+
+    .rush-summary-card {
+      background: var(--kz-blue-light);
+      border: 2px solid rgba(0, 161, 222, 0.25);
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      justify-content: space-around;
+      text-align: center;
+    }
+
+    .rush-stat span {
+      display: block;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .rush-stat strong {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--kz-blue-dark);
+    }
+
+    .mistakes-list {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 10px;
+      max-height: 270px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mistake-item {
+      background: #FFFFFF;
+      border-left: 4px solid var(--red);
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.76rem;
+      line-height: 1.35;
+    }
+  </style>
+</head>
+<body>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <div class="card">
+    <!-- Header -->
+    <header class="header">
+      <a href="https://kazdoctors.com/grammar/" class="home-btn">⬅ Go back</a>
+      <div class="brand">@doctors.speak</div>
+    </header>
+
+    <!-- ОСНОВНОЙ ЭКРАН ТРЕНАЖЕРА -->
+    <div id="gameScreen" class="game-container">
+      
+      <div>
+        <!-- Выбор режима: Без времени (для записи объяснений) или Штурм 1 мин (как на Chess.com) -->
+        <div class="mode-tabs">
+          <button id="tabPractice" class="tab-btn active" onclick="setGameMode('practice')">🎓 Разбор (Без времени)</button>
+          <button id="tabRush" class="tab-btn" onclick="setGameMode('rush')">⚡ Штурм (1 мин)</button>
+        </div>
+
+        <!-- Фильтры: Раздел и Уровень CEFR -->
+        <div class="filters-row">
+          <select id="categorySelect" class="mode-select" onchange="resetDeckAndLoad()">
+            <option value="all">🎲 All Random (Все разделы)</option>
+            <option value="grammar">📐 Only Grammar</option>
+            <option value="clinical">🩺 Clinical Vocabulary</option>
+            <option value="academic">📚 Academic Vocabulary</option>
+          </select>
+
+          <select id="levelSelect" class="mode-select" onchange="resetDeckAndLoad()">
+            <option value="all">🔥 All Levels (A1–B2)</option>
+            <option value="A1">Level A1</option>
+            <option value="A2">Level A2</option>
+            <option value="B1">Level B1</option>
+            <option value="B2">Level B2</option>
+          </select>
+        </div>
+
+        <!-- Панель очков и таймера -->
+        <div class="stats">
+          <span id="timerBadge" class="timer-badge">⏱️ <span id="timeLeft">60</span>s</span>
+          <span>Total: <strong id="totalCount">0</strong></span>
+          <span>Correct: <strong id="correctCount" style="color:#16A34A;">0</strong></span>
+          <span>Streak: <strong id="streakCount" style="color:#D9A000;">0 🔥</strong></span>
+        </div>
+      </div>
+
+      <!-- Поле вопроса -->
+      <div class="term-box">
+        <div class="tags-row">
+          <span id="levelTag" class="level-tag">B1</span>
+          <span id="topicTag" class="topic-tag">Grammar • Conditionals</span>
+        </div>
+        <div id="questionText" class="term-title">Loading question...</div>
+
+        <!-- Интерактивный конструктор предложений (показывается только для format: 'builder') -->
+        <div id="builderZone" class="builder-zone">
+          <div id="builderSlot" class="builder-answer-Slot"></div>
+          <div id="builderPool" class="builder-pool"></div>
+          <button id="checkBuilderBtn" class="check-builder-btn" onclick="submitBuilderAnswer()">Check sentence ✓</button>
+        </div>
+      </div>
+
+      <!-- Варианты ответов и объяснение -->
+      <div>
+        <div id="optionsGrid" class="options-grid"></div>
+        
+        <div id="explanationBox" class="explanation-box">
+          <div><strong>💡 Explanation:</strong> <span id="explanationText">Choose the correct answer!</span></div>
+        </div>
+
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next ➔</button>
+      </div>
+
+    </div>
+
+    <!-- ЭКРАН ИТОГОВ ШТУРМА ЗА 1 МИНУТУ -->
+    <div id="rushResultScreen" class="rush-modal">
+      <div style="text-align: center;">
+        <div style="font-size: 2.5rem;">⚡</div>
+        <h2 style="font-size: 1.25rem; font-weight: 900;">Время вышло! (1 минута)</h2>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Отличный штурм! Вот ваш результат:</p>
+      </div>
+
+      <div class="rush-summary-card">
+        <div class="rush-stat">
+          <span>Верно</span>
+          <strong id="rushFinalCorrect" style="color: var(--green);">0</strong>
+        </div>
+        <div class="rush-stat">
+          <span>Всего решено</span>
+          <strong id="rushFinalTotal">0</strong>
+        </div>
+        <div class="rush-stat">
+          <span>Рекорд</span>
+          <strong id="rushBestScore" style="color: var(--kz-gold-dark);">0</strong>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase;">
+          Разбор ошибок из штурма:
+        </div>
+        <div id="rushMistakesList" class="mistakes-list"></div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <button class="next-btn visible" onclick="startRushMode()">🔄 Новый штурм (1 мин)</button>
+        <button class="check-builder-btn" style="background: var(--kz-blue-light); color: var(--kz-blue-dark);" onclick="setGameMode('practice')">🎓 Вернуться в режим разбора</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. АВТОРИЗАЦИЯ SUPABASE (Из вашего шаблона)
+    // =========================================================================
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function checkAuth() {
+      try {
+        const { data, error } = await supabaseClient.auth.getSession();
+        if (error || !data.session) {
+          window.location.href = "/login.html";
+          return;
+        }
+        initTrainer();
+      } catch (e) {
+        console.warn("Preview mode:", e);
+        initTrainer();
+      }
+    }
+
+    // =========================================================================
+    // 2. КАК ДОБАВЛЯТЬ И РЕДАКТИРОВАТЬ ВОПРОСЫ В БАЗЕ (ИНСТРУКЦИЯ)
+    // =========================================================================
+    /*
+      Каждый объект внутри массива questionBank имеет простую структуру:
+      {
+        category: "grammar" | "clinical" | "academic",  // Раздел
+        level: "A1" | "A2" | "B1" | "B2",               // Уровень CEFR
+        topic: "Past Simple vs Present Perfect",        // Подпись темы на плашке
+        format: "mcq" | "context" | "builder",          // Тип задания:
+           // - "mcq" или "context": тест с 4 вариантами (1 правильный + 3 в distractors)
+           // - "builder": интерактивная сборка предложения по клику на слова из массива chunks!
+        question: "Текст вопроса или мини-кейса с пропуском ____",
+        correctOption: "Правильный ответ",
+        distractors: ["Неверный 1", "Неверный 2", "Неверный 3"], // Нужно для format: "mcq" и "context"
+        chunks: ["Часть 1", "часть 2", "часть 3"],               // Нужно ТОЛЬКО для format: "builder"
+        explanation: "Пояснение, которое появляется после ответа."
+      }
+    */
+
+    const questionBank = [
+      // ==================== GRAMMAR: LEVEL A1 ====================
+      {
+        category: "grammar", level: "A1", topic: "Grammar • To Be in Clinical Status", format: "mcq",
+        question: "The patient ____ febrile and tachycardic right now.",
+        correctOption: "is",
+        distractors: ["are", "does", "have"],
+        explanation: "'Febrile' and 'tachycardic' are adjectives describing the singular subject ('The patient'), so we use the verb 'to be' -> 'is'."
+      },
+      {
+        category: "grammar", level: "A1", topic: "Grammar • There is / There are", format: "mcq",
+        question: "____ no signs of acute inflammation on the chest X-ray.",
+        correctOption: "There are",
+        distractors: ["There is", "It is", "They have"],
+        explanation: "Plural noun 'signs' requires the plural existential structure 'There are'."
+      },
+      {
+        category: "grammar", level: "A1", topic: "Grammar • Present Simple Questions", format: "mcq",
+        question: "Where exactly ____ the pain?",
+        correctOption: "do you feel",
+        distractors: ["you feel", "are you feel", "feels you"],
+        explanation: "In Present Simple questions with 'you' and main verb 'feel', we must use the auxiliary verb 'do': 'Where exactly do you feel...'."
+      },
+      {
+        category: "grammar", level: "A1", topic: "Grammar • Present Simple Routine", format: "mcq",
+        question: "The beta-blocker ____ the heart rate and blood pressure.",
+        correctOption: "reduces",
+        distractors: ["reduce", "is reduce", "reducing"],
+        explanation: "For a singular 3rd person subject ('The beta-blocker') stating a pharmacological fact, add -s in Present Simple ('reduces')."
+      },
+      {
+        category: "grammar", level: "A1", topic: "Grammar • Sentence Builder", format: "builder",
+        question: "Build a natural question to ask about fever:",
+        chunks: ["Do you", "have a", "high fever", "today?"],
+        correctOption: "Do you have a high fever today?",
+        explanation: "Standard A1 question order: Auxiliary (Do) + Subject (you) + Verb (have) + Object (a high fever) + Time (today?)."
+      },
+      {
+        category: "grammar", level: "A1", topic: "Grammar • Countable vs Uncountable", format: "mcq",
+        question: "How ____ fluid does the child drink per day?",
+        correctOption: "much",
+        distractors: ["many", "few", "lot"],
+        explanation: "'Fluid' is uncountable here, so we ask 'How much fluid...?'."
+      },
+
+      // ==================== GRAMMAR: LEVEL A2 ====================
+      {
+        category: "grammar", level: "A2", topic: "Grammar • Past Simple", format: "mcq",
+        question: "The patient ____ severe abdominal pain two hours ago.",
+        correctOption: "developed",
+        distractors: ["has developed", "develops", "was develop"],
+        explanation: "'Two hours ago' is a finished past time marker, which strictly requires Past Simple ('developed')."
+      },
+      {
+        category: "grammar", level: "A2", topic: "Grammar • Present Perfect (Anamnesis)", format: "mcq",
+        question: "How long ____ this dry cough?",
+        correctOption: "have you had",
+        distractors: ["do you have", "did you had", "you have"],
+        explanation: "For a symptom that started in the past and continues up to the present moment, use Present Perfect ('have you had')."
+      },
+      {
+        category: "grammar", level: "A2", topic: "Grammar • Since vs For", format: "mcq",
+        question: "She has experienced severe migraine attacks ____ Monday morning.",
+        correctOption: "since",
+        distractors: ["for", "from", "during"],
+        explanation: "'Since' is used with a specific starting point in time (Monday morning), while 'for' is used with a duration (for 3 days)."
+      },
+      {
+        category: "grammar", level: "A2", topic: "Grammar • Modals of Advice", format: "mcq",
+        question: "You ____ avoid heavy and spicy meals before lying down.",
+        correctOption: "should",
+        distractors: ["must to", "are able", "ought"],
+        explanation: "'Should + base verb' (without 'to') is the standard way to give clinical lifestyle recommendations."
+      },
+      {
+        category: "grammar", level: "A2", topic: "Grammar • Comparatives", format: "mcq",
+        question: "Today the swelling in the left ankle is much ____ than yesterday.",
+        correctOption: "worse",
+        distractors: ["more bad", "badder", "worst"],
+        explanation: "The comparative form of 'bad' is irregular: bad -> worse -> the worst."
+      },
+      {
+        category: "grammar", level: "A2", topic: "Grammar • Sentence Builder", format: "builder",
+        question: "Assemble the clinical history sentence:",
+        chunks: ["The patient", "was admitted", "to the hospital", "yesterday."],
+        correctOption: "The patient was admitted to the hospital yesterday.",
+        explanation: "Word order: Subject (The patient) + Passive Verb (was admitted) + Place (to the hospital) + Time (yesterday)."
+      },
+
+      // ==================== GRAMMAR: LEVEL B1 ====================
+      {
+        category: "grammar", level: "B1", topic: "Grammar • Zero Conditional", format: "mcq",
+        question: "If the spinal cord is damaged, the patient ____ function below the injury.",
+        correctOption: "loses",
+        distractors: ["would lose", "would have lost", "lost"],
+        explanation: "Zero Conditional [If + Present Simple, Present Simple] describes universal anatomical and physiological facts."
+      },
+      {
+        category: "grammar", level: "B1", topic: "Grammar • First Conditional", format: "mcq",
+        question: "If sputum production increases, we ____ for a bacterial infection.",
+        correctOption: "will check",
+        distractors: ["checked", "would check", "would have checked"],
+        explanation: "First Conditional [If + Present Simple, will + verb] expresses a realistic clinical plan for the near future."
+      },
+      {
+        category: "grammar", level: "B1", topic: "Grammar • Second Conditional", format: "mcq",
+        question: "If the tendon ____ completely torn, the patient wouldn't move the joint at all.",
+        correctOption: "were",
+        distractors: ["is", "will be", "has been"],
+        explanation: "Second Conditional [If + Past Simple/were, would + verb] describes a hypothetical or unreal present condition."
+      },
+      {
+        category: "grammar", level: "B1", topic: "Grammar • Passive Voice in Guidelines", format: "mcq",
+        question: "Prophylactic antibiotics ____ 30 minutes prior to the surgical incision.",
+        correctOption: "are administered",
+        distractors: ["administer", "have administer", "are administering"],
+        explanation: "Clinical protocols frequently use Present Simple Passive ('are administered') to focus on the procedure rather than the performer."
+      },
+      {
+        category: "grammar", level: "B1", topic: "Grammar • Present Perfect Continuous", format: "mcq",
+        question: "The child ____ poorly for the past three days due to a sore throat.",
+        correctOption: "has been eating",
+        distractors: ["is eating", "eats", "was eaten"],
+        explanation: "Present Perfect Continuous ('has been eating') emphasizes an ongoing action that started 3 days ago and still continues."
+      },
+      {
+        category: "grammar", level: "B1", topic: "Grammar • Sentence Builder", format: "builder",
+        question: "Build a First Conditional clinical sentence:",
+        chunks: ["If the swelling", "doesn't go down,", "we will consider", "a steroid injection."],
+        correctOption: "If the swelling doesn't go down, we will consider a steroid injection.",
+        explanation: "First Conditional structure: [If + Present Simple negative], [we will + base verb + object]."
+      },
+
+      // ==================== GRAMMAR: LEVEL B2 ====================
+      {
+        category: "grammar", level: "B2", topic: "Grammar • Third Conditional", format: "mcq",
+        question: "If she had received thrombolysis earlier, the stroke effects ____ less severe.",
+        correctOption: "would have been",
+        distractors: ["would be", "will be", "were"],
+        explanation: "Third Conditional [If + Past Perfect, would have + V3] evaluates an unreal past scenario and its past outcome."
+      },
+      {
+        category: "grammar", level: "B2", topic: "Grammar • Mixed Conditional", format: "mcq",
+        question: "If the patient had complied with antihypertensive therapy, he ____ in the ICU right now.",
+        correctOption: "would not be",
+        distractors: ["will not be", "would not have been", "was not"],
+        explanation: "Mixed Conditional: Past unreal condition (If + Past Perfect) affecting the present state ('right now' -> would + base verb)."
+      },
+      {
+        category: "grammar", level: "B2", topic: "Grammar • Past Modals of Deduction", format: "mcq",
+        question: "The acute rash ____ been triggered by penicillin, as it appeared 15 minutes after the injection.",
+        correctOption: "must have",
+        distractors: ["should have", "must to", "can have"],
+        explanation: "'Must have + V3' expresses a strong logical deduction/certainty about a past clinical event."
+      },
+      {
+        category: "grammar", level: "B2", topic: "Grammar • Subjunctive in Recommendations", format: "mcq",
+        question: "The oncology board recommended that the patient ____ neoadjuvant chemotherapy immediately.",
+        correctOption: "undergo",
+        distractors: ["undergoes", "underwent", "to undergo"],
+        explanation: "After 'recommend/suggest/insist that...', formal medical English uses the bare infinitive (subjunctive): 'that the patient undergo'."
+      },
+      {
+        category: "grammar", level: "B2", topic: "Grammar • Inversion in Academic Style", format: "mcq",
+        question: "Not only ____ blood pressure, but the drug also improves renal outcomes.",
+        correctOption: "does it lower",
+        distractors: ["it lowers", "lowers it", "is it lower"],
+        explanation: "When a sentence starts with 'Not only...', we use auxiliary inversion: 'Not only does it lower...'."
+      },
+      {
+        category: "grammar", level: "B2", topic: "Grammar • Sentence Builder", format: "builder",
+        question: "Assemble the Third Conditional clinical review:",
+        chunks: ["If the spinal cord", "had been damaged,", "he would have", "lost sensation."],
+        correctOption: "If the spinal cord had been damaged, he would have lost sensation.",
+        explanation: "Third Conditional Passive: [If + had been + V3], [Subject + would have + V3]."
+      },
+
+      // ==================== CLINICAL VOCABULARY (Context & Translation) ====================
+      {
+        category: "clinical", level: "A1", topic: "Clinical • Symptoms Translation", format: "mcq",
+        question: "Which clinical term corresponds to 'Одышка / Тыныс алудың тарылуы'?",
+        correctOption: "Dyspnea (Shortness of breath)",
+        distractors: ["Dysphagia (Difficulty swallowing)", "Dysuria (Painful urination)", "Dyspepsia (Indigestion)"],
+        explanation: "Dyspnea = shortness of breath; Dysphagia = swallowing difficulty; Dysuria = painful urination."
+      },
+      {
+        category: "clinical", level: "A1", topic: "Clinical • Pain Character", format: "context",
+        question: "Patient: 'It feels like my head is beating in rhythm with my heart.' How do we describe this pain?",
+        correctOption: "Throbbing pain",
+        distractors: ["Dull aching pain", "Burning sensation", "Cramping pain"],
+        explanation: "'Throbbing' means pulsating or beating rhythmically (typical for migraine or vascular headache)."
+      },
+      {
+        category: "clinical", level: "A2", topic: "Clinical • GI Context", format: "context",
+        question: "A patient with peptic ulcer disease presents with black, tarry stools. This sign is called ____.",
+        correctOption: "Melena",
+        distractors: ["Hematemesis", "Hemoptysis", "Steatorrhea"],
+        explanation: "Melena = black tarry stool due to upper GI bleeding. Hematemesis = vomiting blood. Hemoptysis = coughing up blood."
+      },
+      {
+        category: "clinical", level: "A2", topic: "Clinical • Pulmonology Context", format: "context",
+        question: "During auscultation of an asthmatic patient, high-pitched whistling sounds are heard on expiration: ____.",
+        correctOption: "Wheezing",
+        distractors: ["Epistaxis", "Nocturia", "Pruritus"],
+        explanation: "'Wheezing' refers to the high-pitched whistling breath sound caused by narrowed airways in asthma or COPD."
+      },
+      {
+        category: "clinical", level: "A2", topic: "Clinical • Pharmacology Terms", format: "context",
+        question: "Ibuprofen and paracetamol bought without a doctor's prescription are called ____ medications.",
+        correctOption: "over-the-counter (OTC)",
+        distractors: ["intravenous (IV)", "neoadjuvant", "nosocomial"],
+        explanation: "Over-the-counter (OTC) drugs can be purchased directly at a pharmacy without a prescription."
+      },
+      {
+        category: "clinical", level: "B1", topic: "Clinical • Cardiology Context", format: "context",
+        question: "When blood leaks backward through a heart valve that does not close properly, it is called ____.",
+        correctOption: "Regurgitation",
+        distractors: ["Stenosis", "Peristalsis", "Atelectasis"],
+        explanation: "Regurgitation = backward flow through a leaky valve; Stenosis = narrowing/stiffening of a valve."
+      },
+      {
+        category: "clinical", level: "B1", topic: "Clinical • Neurology Context", format: "context",
+        question: "After a left-hemisphere stroke, the patient is unable to understand or produce speech. This condition is ____.",
+        correctOption: "Aphasia",
+        distractors: ["Ataxia", "Alopecia", "Anemia"],
+        explanation: "Aphasia = impairment of language/speech; Ataxia = loss of coordination and balance."
+      },
+      {
+        category: "clinical", level: "B1", topic: "Clinical • Nephrology Context", format: "context",
+        question: "A 24-hour urine output of less than 400 mL in an adult patient is clinically defined as ____.",
+        correctOption: "Oliguria",
+        distractors: ["Polyuria", "Nocturia", "Hematuria"],
+        explanation: "Oliguria = decreased urine output (<400 mL/day); Polyuria = excessive urination; Hematuria = blood in urine."
+      },
+      {
+        category: "clinical", level: "B1", topic: "Clinical • Infectious Diseases", format: "context",
+        question: "A pneumonia acquired by a patient 72 hours after being admitted to the hospital is a ____ infection.",
+        correctOption: "nosocomial (hospital-acquired)",
+        distractors: ["vector-borne", "zoonotic", "congenital"],
+        explanation: "Nosocomial infection = hospital-acquired infection developing ≥48 hours after admission."
+      },
+      {
+        category: "clinical", level: "B2", topic: "Clinical • Hematology Context", format: "context",
+        question: "A simultaneous reduction in red blood cells, white blood cells, and platelets in the peripheral blood is ____.",
+        correctOption: "Pancytopenia",
+        distractors: ["Polycythemia", "Thrombocytosis", "Leukocytosis"],
+        explanation: "'Pan-' (all) + 'cyto' (cells) + '-penia' (deficiency) = deficiency of all three cellular blood components."
+      },
+      {
+        category: "clinical", level: "B2", topic: "Clinical • Oncology Context", format: "context",
+        question: "Chemotherapy given BEFORE the main surgical resection to shrink a malignant tumor is called ____ therapy.",
+        correctOption: "neoadjuvant",
+        distractors: ["palliative", "palliative-only", "empiric"],
+        explanation: "Neoadjuvant therapy is administered before primary surgery to reduce tumor size; adjuvant is given after surgery."
+      },
+      {
+        category: "clinical", level: "B2", topic: "Clinical • Obstetrics Context", format: "context",
+        question: "New-onset hypertension and proteinuria after 20 weeks of gestation indicate ____.",
+        correctOption: "Preeclampsia",
+        distractors: ["Ectopic pregnancy", "Endometriosis", "Leiomyoma"],
+        explanation: "Preeclampsia is characterized by gestational hypertension (>140/90) and proteinuria/organ dysfunction after 20 weeks."
+      },
+      {
+        category: "clinical", level: "B2", topic: "Clinical • Sentence Builder", format: "builder",
+        question: "Build a clinical safety-netting instruction for the patient:",
+        chunks: ["If you develop", "shortness of breath,", "come back for", "a reassessment."],
+        correctOption: "If you develop shortness of breath, come back for a reassessment.",
+        explanation: "Standard OSCE safety-netting phrase: [If you develop + red-flag symptom, come back for a reassessment]."
+      },
+
+      // ==================== ACADEMIC VOCABULARY (Articles, Guidelines & IELTS) ====================
+      {
+        category: "academic", level: "A2", topic: "Academic • Growth & Increase", format: "context",
+        question: "Global rates of type 2 diabetes continue to ____ rapidly due to sedentary lifestyles.",
+        correctOption: "rise (increase)",
+        distractors: ["shrink", "subside", "diminish"],
+        explanation: "'Rise' / 'increase' denotes upward growth, whereas shrink, subside, and diminish all mean to decrease."
+      },
+      {
+        category: "academic", level: "A2", topic: "Academic • Giving Examples", format: "context",
+        question: "Cardiovascular risk factors — ____, smoking, hypertension, and dyslipidemia — must be addressed early.",
+        correctOption: "namely (for instance)",
+        distractors: ["conversely", "nonetheless", "subsequently"],
+        explanation: "'Namely' and 'for instance' introduce specific examples of the group just mentioned."
+      },
+      {
+        category: "academic", level: "B1", topic: "Academic • Contrast & Opposition", format: "context",
+        question: "Oral decongestants relieve nasal congestion quickly; ____, they may elevate blood pressure in hypertensive patients.",
+        correctOption: "however (nevertheless)",
+        distractors: ["furthermore", "similarly", "consequently"],
+        explanation: "'However' / 'nevertheless' introduces a contrasting side effect or limitation."
+      },
+      {
+        category: "academic", level: "B1", topic: "Academic • Cause & Effect", format: "context",
+        question: "Severe dehydration can ____ acute kidney injury if fluid balance is not restored promptly.",
+        correctOption: "lead to (precipitate)",
+        distractors: ["stem from", "derive from", "recede from"],
+        explanation: "'Lead to' / 'precipitate' points from the cause (dehydration) to the effect (acute kidney injury)."
+      },
+      {
+        category: "academic", level: "B1", topic: "Academic • Decline & Reduction", format: "context",
+        question: "Following intravenous paracetamol, the patient's fever began to ____ within 45 minutes.",
+        correctOption: "subside (abate)",
+        distractors: ["escalate", "proliferate", "surge"],
+        explanation: "'Subside' and 'abate' are classic clinical/academic verbs meaning to become less intense or severe."
+      },
+      {
+        category: "academic", level: "B1", topic: "Academic • Sequence in Studies", format: "context",
+        question: "Baseline blood samples were collected ____ the administration of the experimental drug.",
+        correctOption: "prior to (before)",
+        distractors: ["thereafter", "subsequently", "eventually"],
+        explanation: "'Prior to' is the formal academic equivalent of 'before'."
+      },
+      {
+        category: "academic", level: "B1", topic: "Academic • Similarity & Addition", format: "context",
+        question: "Regular aerobic exercise improves insulin sensitivity; ____, it reduces systemic inflammation.",
+        correctOption: "furthermore (moreover)",
+        distractors: ["on the contrary", "despite this", "conversely"],
+        explanation: "'Furthermore' / 'moreover' adds a second supporting benefit in the same direction."
+      },
+      {
+        category: "academic", level: "B2", topic: "Academic • Research Methodology", format: "context",
+        question: "To evaluate long-term cardiovascular outcomes over 10 years, the authors conducted a ____.",
+        correctOption: "longitudinal cohort study",
+        distractors: ["cross-sectional survey", "single case report", "vitro assay"],
+        explanation: "A 'longitudinal study' follows the same group of subjects over an extended period of time."
+      },
+      {
+        category: "academic", level: "B2", topic: "Academic • Uncertainty & Hedging", format: "context",
+        question: "Elevated C-reactive protein levels ____ an underlying inflammatory process, though further tests are required.",
+        correctOption: "may indicate (could suggest)",
+        distractors: ["undoubtedly prove", "completely rule out", "never cause"],
+        explanation: "Academic hedging ('may indicate', 'could suggest') is used when laboratory findings are non-specific."
+      },
+      {
+        category: "academic", level: "B2", topic: "Academic • Epidemiological Terms", format: "context",
+        question: "The total proportion of a population found to have a specific condition at a given time is its ____.",
+        correctOption: "prevalence",
+        distractors: ["reproducibility", "virulence", "methodology"],
+        explanation: "'Prevalence' = total existing cases in a population; 'Incidence' = rate of new cases over a period."
+      },
+      {
+        category: "academic", level: "B2", topic: "Academic • Evaluation Verbs", format: "context",
+        question: "The ethics committee ____ the trial protocol to ensure patient safety and data integrity.",
+        correctOption: "scrutinized (evaluated)",
+        distractors: ["dwindled", "slackened", "triggered"],
+        explanation: "To 'scrutinize' means to examine or inspect closely and thoroughly."
+      },
+      {
+        category: "academic", level: "B2", topic: "Academic • Conclusion & Summary", format: "context",
+        question: "____, early mobilization after orthopedic surgery significantly shortens hospital stay.",
+        correctOption: "Taken together (In summary)",
+        distractors: ["At the outset", "In the interim", "For instance"],
+        explanation: "'Taken together' / 'In summary' is used at the end of an abstract or discussion to synthesize findings."
+      },
+      {
+        category: "academic", level: "B2", topic: "Academic • Sentence Builder", format: "builder",
+        question: "Assemble the academic conclusion from a research abstract:",
+        chunks: ["These findings", "suggest that", "early intervention", "reduces mortality."],
+        correctOption: "These findings suggest that early intervention reduces mortality.",
+        explanation: "Standard PubMed abstract structure: [These findings suggest that + Noun Phrase + Verb + Object]."
+      }
+    ];
+
+    // =========================================================================
+    // 3. ЛОГИКА ИГРЫ, КОЛОДЫ БЕЗ ПОВТОРОВ И ТАЙМЕРА ШТУРМА (1 МИНУТА)
+    // =========================================================================
+    let gameMode = 'practice'; // 'practice' (без времени) | 'rush' (штурм 60 сек)
+    let deck = [];
+    let deckIndex = 0;
+
+    let total = 0;
+    let correct = 0;
+    let streak = 0;
+    let currentQuestion = null;
+    let answered = false;
+
+    // Переменные для конструктора предложений (Builder)
+    let builderSelectedIndices = [];
+
+    // Переменные для режима Штурма (Puzzle Rush 60s)
+    const RUSH_DURATION = 60;
+    let rushTimeLeft = RUSH_DURATION;
+    let rushTimerInterval = null;
+    let rushMistakes = [];
+    let bestRushScore = parseInt(localStorage.getItem('medHubBestRush') || '0', 10);
+
+    function shuffleArray(array) {
+      let arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function initTrainer() {
+      resetDeckAndLoad();
+    }
+
+    function setGameMode(mode) {
+      clearInterval(rushTimerInterval);
+      gameMode = mode;
+
+      document.getElementById(' rushResultScreen')?.classList.remove('active');
+      document.getElementById('rushResultScreen').classList.remove('active');
+      document.getElementById('gameScreen').style.display = 'flex';
+
+      const tabPractice = document.getElementById('tabPractice');
+      const tabRush = document.getElementById('tabRush');
+      const timerBadge = document.getElementById('timerBadge');
+
+      if (mode === 'rush') {
+        tabPractice.classList.remove('active');
+        tabRush.classList.add('rush-active');
+        timerBadge.classList.add('visible');
+        startRushMode();
+      } else {
+        tabRush.classList.remove('rush-active');
+        tabPractice.classList.add('active');
+        timerBadge.classList.remove('visible');
+        total = 0;
+        correct = 0;
+        streak = 0;
+        updateStatsUI();
+        resetDeckAndLoad();
+      }
+    }
+
+    function startRushMode() {
+      clearInterval(rushTimerInterval);
+      document.getElementById('rushResultScreen').classList.remove('active');
+      document.getElementById('gameScreen').style.display = 'flex';
+
+      total = 0;
+      correct = 0;
+      streak = 0;
+      rushMistakes = [];
+      rushTimeLeft = RUSH_DURATION;
+      document.getElementById('timeLeft').textContent = rushTimeLeft;
+      updateStatsUI();
+
+      resetDeckAndLoad();
+
+      rushTimerInterval = setInterval(() => {
+        rushTimeLeft--;
+        document.getElementById('timeLeft').textContent = rushTimeLeft;
+        if (rushTimeLeft <= 0) {
+          endRushMode();
+        }
+      }, 1000);
+    }
+
+    function endRushMode() {
+      clearInterval(rushTimerInterval);
+      document.getElementById('gameScreen').style.display = 'none';
+      document.getElementById('rushResultScreen').classList.add('active');
+
+      if (correct > bestRushScore) {
+        bestRushScore = correct;
+        localStorage.setItem('medHubBestRush', bestRushScore.toString());
+      }
+
+      document.getElementById('rushFinalCorrect').textContent = correct;
+      document.getElementById('rushFinalTotal').textContent = total;
+      document.getElementById('rushBestScore').textContent = bestRushScore;
+
+      const list = document.getElementById('rushMistakesList');
+      list.innerHTML = '';
+
+      if (rushMistakes.length === 0) {
+        list.innerHTML = `<div style="text-align:center; padding: 14px; color: var(--green); font-weight: 800;">🎉 Безупречно! Ни одной ошибки за минуту!</div>`;
+      } else {
+        rushMistakes.forEach(m => {
+          const item = document.createElement('div');
+          item.className = 'mistake-item';
+          item.innerHTML = `
+            <div style="font-weight: 800; color: var(--text-dark); margin-bottom: 3px;">${m.question}</div>
+            <div style="color: var(--green); font-weight: 700;">✓ Правильно: ${m.correctOption}</div>
+            <div style="color: var(--text-muted); margin-top: 2px;">💡 ${m.explanation}</div>
+          `;
+          list.appendChild(item);
+        });
+      }
+    }
+
+    // Формирует колоду по выбранным фильтрам и перемешивает её без повторов
+    function buildFilteredDeck() {
+      const cat = document.getElementById('categorySelect').value;
+      const lvl = document.getElementById('levelSelect').value;
+
+      let filtered = questionBank.filter(q => {
+        const matchCat = (cat === 'all') || (q.category === cat);
+        const matchLvl = (lvl === 'all') || (q.level === lvl);
+        // В режиме скоростного штурма оставляем только тестовые вопросы (mcq/context) для высокой скорости
+        const matchFormat = (gameMode === 'rush') ? (q.format !== 'builder') : true;
+        return matchCat && matchLvl && matchFormat;
+      });
+
+      if (filtered.length === 0) {
+        filtered = questionBank.filter(q => gameMode === 'rush' ? q.format !== 'builder' : true);
+      }
+
+      deck = shuffleArray(filtered);
+      deckIndex = 0;
+    }
+
+    function resetDeckAndLoad() {
+      buildFilteredDeck();
+      nextQuestion();
+    }
+
+    function updateStatsUI() {
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('correctCount').textContent = correct;
+      document.getElementById('streakCount').textContent = `${streak} 🔥`;
+    }
+
+    function nextQuestion() {
+      answered = false;
+
+      // Если дошли до конца перемешанной колоды — перемешиваем заново
+      if (deckIndex >= deck.length) {
+        buildFilteredDeck();
+      }
+
+      currentQuestion = deck[deckIndex];
+      deckIndex++;
+
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.classList.remove('visible');
+
+      const expBox = document.getElementById('explanationBox');
+      expBox.classList.remove('answered');
+      document.getElementById('explanationText').textContent =
+        gameMode === 'rush'
+          ? "⚡ Режим штурма: выбирайте ответ как можно быстрее!"
+          : "Выберите ответ или соберите фразу для разбора.";
+
+      document.getElementById('levelTag').textContent = `Level ${currentQuestion.level}`;
+      document.getElementById('topicTag').textContent = currentQuestion.topic;
+      document.getElementById('questionText').textContent = currentQuestion.question;
+
+      const builderZone = document.getElementById('builderZone');
+      const optionsGrid = document.getElementById('optionsGrid');
+
+      if (currentQuestion.format === 'builder' && currentQuestion.chunks) {
+        // Отрисовка интерактивного конструктора предложений
+        optionsGrid.style.display = 'none';
+        builderZone.classList.add('visible');
+        initSentenceBuilder(currentQuestion.chunks);
+      } else {
+        // Отрисовка вариантов A, B, C, D
+        builderZone.classList.remove('visible');
+        optionsGrid.style.display = 'flex';
+        optionsGrid.innerHTML = '';
+
+        const allOptions = [currentQuestion.correctOption, ...currentQuestion.distractors];
+        const shuffledOptions = shuffleArray(allOptions);
+        currentQuestion.computedCorrectIndex = shuffledOptions.indexOf(currentQuestion.correctOption);
+
+        shuffledOptions.forEach((optText, index) => {
+          const btn = document.createElement('button');
+          btn.className = 'option-btn';
+          btn.textContent = `${String.fromCharCode(65 + index)}) ${optText}`;
+          btn.onclick = () => selectOption(btn, index);
+          optionsGrid.appendChild(btn);
+        });
+      }
+    }
+
+    // Логика интерактивной сборки предложений по клику
+    function initSentenceBuilder(chunks) {
+      currentQuestion.shuffledChunks = shuffleArray(chunks);
+      builderSelectedIndices = [];
+      document.getElementById('checkBuilderBtn').style.display = 'block';
+      renderBuilderState();
+    }
+
+    function renderBuilderState() {
+      const slot = document.getElementById('builderSlot');
+      const pool = document.getElementById('builderPool');
+      slot.innerHTML = '';
+      pool.innerHTML = '';
+
+      // Слова, которые уже добавлены в ответ
+      builderSelectedIndices.forEach((chunkIdx, pos) => {
+        const chip = document.createElement('button');
+        chip.className = 'word-chip in-slot';
+        chip.textContent = currentQuestion.shuffledChunks[chunkIdx];
+        chip.onclick = () => {
+          if (answered) return;
+          builderSelectedIndices.splice(pos, 1);
+          renderBuilderState();
+        };
+        slot.appendChild(chip);
+      });
+
+      // Оставшиеся слова в пуле
+      currentQuestion.shuffledChunks.forEach((text, idx) => {
+        if (builderSelectedIndices.includes(idx)) return;
+        const chip = document.createElement('button');
+        chip.className = 'word-chip';
+        chip.textContent = text;
+        chip.onclick = () => {
+          if (answered) return;
+          builderSelectedIndices.push(idx);
+          renderBuilderState();
+        };
+        pool.appendChild(chip);
+      });
+    }
+
+    function submitBuilderAnswer() {
+      if (answered) return;
+      answered = true;
+
+      const userSentence = builderSelectedIndices.map(i => currentQuestion.shuffledChunks[i]).join(' ').trim();
+      const isCorrect = (userSentence.toLowerCase() === currentQuestion.correctOption.toLowerCase());
+
+      document.getElementById('checkBuilderBtn').style.display = 'none';
+      const slot = document.getElementById('builderSlot');
+      slot.style.borderColor = isCorrect ? '#22C55E' : '#EF4444';
+      slot.style.backgroundColor = isCorrect ? '#DCFCE7' : '#FEE2E2';
+
+      processAnswerResult(isCorrect);
+    }
+
+    function selectOption(selectedBtn, selectedIndex) {
+      if (answered) return;
+      answered = true;
+
+      const isCorrect = (selectedIndex === currentQuestion.computedCorrectIndex);
+
+      if (isCorrect) {
+        selectedBtn.classList.add('correct');
+      } else {
+        selectedBtn.classList.add('wrong');
+        const allBtns = document.querySelectorAll('.option-btn');
+        if (allBtns[currentQuestion.computedCorrectIndex]) {
+          allBtns[currentQuestion.computedCorrectIndex].classList.add('correct');
+        }
+      }
+
+      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+      processAnswerResult(isCorrect);
+    }
+
+    function processAnswerResult(isCorrect) {
+      total++;
+      if (isCorrect) {
+        correct++;
+        streak++;
+      } else {
+        streak = 0;
+        if (gameMode === 'rush') {
+          rushMistakes.push(currentQuestion);
+        }
+      }
+
+      updateStatsUI();
+
+      if (gameMode === 'rush') {
+        // В режиме Штурма автоматически переходим к следующему вопросу через 350 мс
+        setTimeout(() => {
+          if (rushTimeLeft > 0) nextQuestion();
+        }, 350);
+      } else {
+        // В режиме Разбора показываем подробное объяснение и кнопку Next
+        const expBox = document.getElementById('explanationBox');
+        expBox.classList.add('answered');
+        document.getElementById('explanationText').textContent =
+          `${isCorrect ? '✅ Верно! ' : `❌ Правильный ответ: "${currentQuestion.correctOption}". `}${currentQuestion.explanation}`;
+        document.getElementById('nextBtn').classList.add('visible');
+      }
+    }
+
+    checkAuth();
+  </script>
+  <script src="/session-guard.js"></script>
+</body>
+</html>
