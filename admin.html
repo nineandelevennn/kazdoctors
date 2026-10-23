@@ -161,6 +161,40 @@
             border-color: var(--kz-blue);
         }
 
+        .password-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-wrapper input {
+            padding-right: 44px;
+        }
+
+        .toggle-pass-btn {
+            position: absolute;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 4px;
+            color: var(--text-muted);
+        }
+
+        .duration-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .match-hint {
+            font-size: 0.73rem;
+            font-weight: 700;
+            min-height: 16px;
+            margin-top: 2px;
+        }
+
         .btn-submit {
             width: 100%;
             padding: 12px;
@@ -254,19 +288,32 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="userPassword">Пароль (для новых)</label>
-                    <input type="password" id="userPassword" placeholder="Минимум 6 символов" minlength="6" required>
+                    <label for="userPassword">Пароль (только для новых)</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="userPassword" placeholder="Минимум 6 символов" minlength="6" oninput="checkPasswordsMatch()">
+                        <button type="button" class="toggle-pass-btn" onclick="togglePassword('userPassword')">👁️</button>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="subDuration">Срок доступа (подписки)</label>
-                    <select id="subDuration" required>
-                        <option value="3_days">3 дня (Пробный доступ)</option>
-                        <option value="1_month" selected>1 месяц</option>
-                        <option value="3_months">3 месяца</option>
-                        <option value="6_months">6 месяцев</option>
-                        <option value="12_months">12 месяцев (1 год)</option>
-                    </select>
+                    <label for="userPasswordConfirm">Повторите пароль</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="userPasswordConfirm" placeholder="Повторите пароль" minlength="6" oninput="checkPasswordsMatch()">
+                        <button type="button" class="toggle-pass-btn" onclick="togglePassword('userPasswordConfirm')">👁️</button>
+                    </div>
+                    <div id="matchHint" class="match-hint"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Срок доступа (произвольный)</label>
+                    <div class="duration-row">
+                        <input type="number" id="subAmount" value="1" min="1" required>
+                        <select id="subUnit" required>
+                            <option value="days">Дней</option>
+                            <option value="months" selected>Месяцев</option>
+                            <option value="years">Лет</option>
+                        </select>
+                    </div>
                 </div>
 
                 <button type="submit" id="submitBtn" class="btn-submit">
@@ -323,27 +370,58 @@
             document.getElementById("alertMessage").style.display = "none";
         }
 
-        // Расчет даты окончания подписки
-        function calculateExpiryDate(durationCode) {
+        // Переключение видимости пароля
+        function togglePassword(elementId) {
+            const input = document.getElementById(elementId);
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        // Проверка совпадения паролей
+        function checkPasswordsMatch() {
+            const p1 = document.getElementById('userPassword').value;
+            const p2 = document.getElementById('userPasswordConfirm').value;
+            const hint = document.getElementById('matchHint');
+
+            if (!p1 && !p2) {
+                hint.textContent = '';
+                return true;
+            }
+
+            if (p1 && p1.length < 6) {
+                hint.textContent = '⚠️ Пароль должен содержать минимум 6 символов';
+                hint.style.color = 'var(--danger-color)';
+                return false;
+            }
+
+            if (p1 === p2) {
+                hint.textContent = '✅ Пароли совпадают';
+                hint.style.color = 'var(--success-color)';
+                return true;
+            } else {
+                hint.textContent = '❌ Пароли не совпадают';
+                hint.style.color = 'var(--danger-color)';
+                return false;
+            }
+        }
+
+        // Расчет произвольной даты окончания подписки
+        function calculateCustomExpiryDate() {
+            const amount = parseInt(document.getElementById("subAmount").value, 10) || 1;
+            const unit = document.getElementById("subUnit").value;
             const date = new Date();
-            switch (durationCode) {
-                case "3_days":
-                    date.setDate(date.getDate() + 3);
+
+            switch (unit) {
+                case "days":
+                    date.setDate(date.getDate() + amount);
                     break;
-                case "1_month":
-                    date.setMonth(date.getMonth() + 1);
+                case "months":
+                    date.setMonth(date.getMonth() + amount);
                     break;
-                case "3_months":
-                    date.setMonth(date.getMonth() + 3);
-                    break;
-                case "6_months":
-                    date.setMonth(date.getMonth() + 6);
-                    break;
-                case "12_months":
-                    date.setFullYear(date.getFullYear() + 1);
+                case "years":
+                    date.setFullYear(date.getFullYear() + amount);
                     break;
                 default:
-                    date.setMonth(date.getMonth() + 1);
+                    date.setMonth(date.getMonth() + amount);
             }
             return date.toISOString();
         }
@@ -354,40 +432,62 @@
 
             const email = document.getElementById("userEmail").value.trim().toLowerCase();
             const password = document.getElementById("userPassword").value;
-            const duration = document.getElementById("subDuration").value;
+            const passwordConfirm = document.getElementById("userPasswordConfirm").value;
             const submitBtn = document.getElementById("submitBtn");
+
+            // Проверяем пароли только если они введены
+            if ((password || passwordConfirm) && password !== passwordConfirm) {
+                showAlert("Введенные пароли не совпадают!", "error");
+                return;
+            }
 
             submitBtn.disabled = true;
             submitBtn.textContent = "Сохранение...";
 
             try {
                 const { data: { session } } = await supabaseClient.auth.getSession();
-                const expiresAt = calculateExpiryDate(duration);
+                const expiresAt = calculateCustomExpiryDate();
 
-                // 1. Пытаемся создать пользователя через вашу Edge Function
-                const response = await fetch(`${SUPABASE_URL}/functions/v1/create-user`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${session.access_token}`
-                    },
-                    body: JSON.stringify({ email, password })
-                });
+                let isAlreadyRegistered = false;
 
-                const result = await response.json();
+                // Если введен пароль — пытаемся создать нового пользователя через Edge Function
+                if (password) {
+                    const response = await fetch(`${SUPABASE_URL}/functions/v1/create-user`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${session.access_token}`
+                        },
+                        body: JSON.stringify({ email, password })
+                    });
 
-                // Если ошибка НЕ связана с тем, что юзер уже существует — выдаем ошибку
-                const isAlreadyRegistered = result.error && (
-                    result.error.toLowerCase().includes("already") || 
-                    result.error.toLowerCase().includes("registered") ||
-                    result.error.toLowerCase().includes("exists")
-                );
+                    const result = await response.json();
 
-                if (!response.ok && !isAlreadyRegistered) {
-                    throw new Error(result.error || "Ошибка при создании пользователя");
+                    isAlreadyRegistered = result.error && (
+                        result.error.toLowerCase().includes("already") || 
+                        result.error.toLowerCase().includes("registered") ||
+                        result.error.toLowerCase().includes("exists")
+                    );
+
+                    if (!response.ok && !isAlreadyRegistered) {
+                        throw new Error(result.error || "Ошибка при создании пользователя");
+                    }
+                } else {
+                    // Пароль не введен — значит это продление существующего по email. 
+                    // Проверим, есть ли он в таблице profiles
+                    const { data: existingProfile } = await supabaseClient
+                        .from('profiles')
+                        .select('email')
+                        .eq('email', email)
+                        .maybeSingle();
+
+                    if (!existingProfile) {
+                        throw new Error("Пользователь не найден в базе. Для создания нового учетного запишите пароль.");
+                    }
+                    isAlreadyRegistered = true;
                 }
 
-                // 2. Записываем или обновляем срок подписки в таблице profiles по email
+                // Обновляем/записываем срок подписки в таблице profiles по email
                 const { error: dbError } = await supabaseClient
                     .from('profiles')
                     .upsert({
@@ -396,17 +496,18 @@
                     }, { onConflict: 'email' });
 
                 if (dbError) {
-                    throw new Error("Аккаунт создан, но не удалось сохранить срок подписки: " + dbError.message);
+                    throw new Error("Не удалось сохранить срок подписки: " + dbError.message);
                 }
 
                 const formattedDate = new Date(expiresAt).toLocaleDateString('ru-RU');
-                if (isAlreadyRegistered) {
-                    showAlert(`Подписка для ${email} успешно продлена до ${formattedDate}!`, "success");
+                if (isAlreadyRegistered || !password) {
+                    showAlert(`Подписка для ${email} успешно обновлена до ${formattedDate}!`, "success");
                 } else {
                     showAlert(`Участник ${email} создан! Доступ открыт до ${formattedDate}.`, "success");
                 }
 
                 document.getElementById("addUserForm").reset();
+                document.getElementById("matchHint").textContent = "";
 
             } catch (err) {
                 showAlert(err.message, "error");
