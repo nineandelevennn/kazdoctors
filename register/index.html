@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Регистрация — Doctors Speak</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --kz-blue: #00A1DE;
+            --kz-blue-dark: #0077A3;
+            --kz-blue-light: #EBF8FC;
+            --kz-gold: #FFC72C;
+            --kz-gold-dark: #D9A000;
+            --bg-main: #F0F6FA;
+            --card-bg: #FFFFFF;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+            --green: #10B981;
+            --red: #EF4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: radial-gradient(circle at top, #EBF8FC 0%, var(--bg-main) 65%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .auth-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 12px 32px rgba(0, 119, 163, 0.1);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .auth-header {
+            background: linear-gradient(150deg, #0093CC 0%, var(--kz-blue) 60%, #22B8CF 100%);
+            color: #FFFFFF;
+            padding: 24px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .back-link {
+            position: absolute;
+            left: 16px;
+            top: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #FFFFFF;
+            text-decoration: none;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 16px;
+        }
+
+        .brand-pill {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #FFFFFF;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 16px;
+            margin-bottom: 8px;
+            margin-top: 10px;
+        }
+
+        .auth-header h1 {
+            font-size: 1.3rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .auth-header p {
+            font-size: 0.76rem;
+            color: var(--kz-gold);
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .auth-body {
+            padding: 24px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-group label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .password-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1.5px solid var(--border-color);
+            background: #F8FAFC;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            outline: none;
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .password-wrapper .form-input {
+            padding-right: 44px;
+        }
+
+        .form-input:focus {
+            border-color: var(--kz-blue);
+            background: #FFFFFF;
+        }
+
+        .toggle-pass-btn {
+            position: absolute;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 4px;
+            color: var(--text-muted);
+        }
+
+        .match-hint {
+            font-size: 0.73rem;
+            font-weight: 700;
+            min-height: 16px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--kz-gold) 0%, #FFD55A 100%);
+            color: var(--text-dark);
+            border: 1px solid var(--kz-gold-dark);
+            padding: 13px;
+            border-radius: 16px;
+            font-size: 0.9rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(217, 160, 0, 0.24);
+            transition: transform 0.15s ease, opacity 0.2s ease;
+            margin-top: 4px;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .status-box {
+            display: none;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            line-height: 1.4;
+            text-align: center;
+        }
+
+        .status-box.error {
+            display: block;
+            background: #FEF2F2;
+            color: #991B1B;
+            border: 1px solid #FECACA;
+        }
+
+        .status-box.success {
+            display: block;
+            background: #ECFDF5;
+            color: #065F46;
+            border: 1px solid #A7F3D0;
+        }
+
+        .auth-footer {
+            text-align: center;
+            padding-top: 8px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .auth-footer a {
+            color: var(--kz-blue-dark);
+            font-weight: 800;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-card">
+        <div class="auth-header">
+            <a href="index.html" class="back-link">⬅ На главную</a>
+            <div class="brand-pill">✨ @doctors.speak</div>
+            <h1>Регистрация</h1>
+            <p>Создайте аккаунт на платформе</p>
+        </div>
+
+        <form id="registerForm" class="auth-body" onsubmit="handleRegister(event)">
+            <div id="statusBox" class="status-box"></div>
+
+            <div class="input-group">
+                <label for="emailInput">Ваш Email</label>
+                <input type="email" id="emailInput" class="form-input" placeholder="doctor@example.com" required autocomplete="email">
+            </div>
+
+            <div class="input-group">
+                <label for="pass1Input">Придумайте пароль (мин. 6 символов)</label>
+                <div class="password-wrapper">
+                    <input type="password" id="pass1Input" class="form-input" placeholder="••••••••" minlength="6" required oninput="checkPasswordsMatch()">
+                    <button type="button" class="toggle-pass-btn" onclick="togglePassword('pass1Input')">👁️</button>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="pass2Input">Повторите пароль</label>
+                <div class="password-wrapper">
+                    <input type="password" id="pass2Input" class="form-input" placeholder="••••••••" minlength="6" required oninput="checkPasswordsMatch()">
+                    <button type="button" class="toggle-pass-btn" onclick="togglePassword('pass2Input')">👁️</button>
+                </div>
+                <div id="matchHint" class="match-hint"></div>
+            </div>
+
+            <button type="submit" id="submitBtn" class="submit-btn">✍️ Создать аккаунт</button>
+
+            <div class="auth-footer">
+                Уже есть аккаунт? <a href="login.html">Войти (Login)</a>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        function getDeviceUUID() {
+            let deviceId = localStorage.getItem('app_device_id');
+            if (!deviceId) {
+                deviceId = 'dev_' + Math.random().toString(36).substring(2, 10) + '_' + Date.now().toString(36);
+                localStorage.setItem('app_device_id', deviceId);
+            }
+            return deviceId;
+        }
+
+        function togglePassword(inputId) {
+            const el = document.getElementById(inputId);
+            el.type = el.type === 'password' ? 'text' : 'password';
+        }
+
+        function checkPasswordsMatch() {
+            const p1 = document.getElementById('pass1Input').value;
+            const p2 = document.getElementById('pass2Input').value;
+            const hint = document.getElementById('matchHint');
+
+            if (!p2) {
+                hint.textContent = '';
+                return false;
+            }
+
+            if (p1.length < 6) {
+                hint.textContent = '⚠️ Пароль должен содержать минимум 6 символов';
+                hint.style.color = 'var(--red)';
+                return false;
+            }
+
+            if (p1 === p2) {
+                hint.textContent = '✅ Пароли совпадают';
+                hint.style.color = 'var(--green)';
+                return true;
+            } else {
+                hint.textContent = '❌ Пароли не совпадают';
+                hint.style.color = 'var(--red)';
+                return false;
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('emailInput').value.trim();
+            const pass1 = document.getElementById('pass1Input').value;
+            const pass2 = document.getElementById('pass2Input').value;
+            const statusBox = document.getElementById('statusBox');
+            const submitBtn = document.getElementById('submitBtn');
+
+            statusBox.className = 'status-box';
+            statusBox.textContent = '';
+
+            // Двойная проверка совпадения паролей
+            if (pass1 !== pass2) {
+                statusBox.className = 'status-box error';
+                statusBox.textContent = '❌ Пароли не совпадают! Пожалуйста, проверьте ввод.';
+                return;
+            }
+
+            if (pass1.length < 6) {
+                statusBox.className = 'status-box error';
+                statusBox.textContent = '❌ Пароль должен состоять минимум из 6 символов.';
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Создаем аккаунт...';
+
+            try {
+                // 1. Регистрация пользователя в Supabase Auth
+                const { data, error } = await supabaseClient.auth.signUp({
+                    email: email,
+                    password: pass1
+                });
+
+                if (error) {
+                    throw error;
+                }
+
+                // 2. Создаем профиль в таблице profiles БЕЗ подписки (subscription_expires_at: null)
+                if (data && data.user) {
+                    await supabaseClient.from('profiles').upsert({
+                        id: data.user.id,
+                        email: email,
+                        current_device_id: getDeviceUUID(),
+                        subscription_expires_at: null // Подписка не активна, пока админ не продлит доступ
+                    });
+                }
+
+                statusBox.className = 'status-box success';
+                statusBox.innerHTML = `
+                    ✅ <strong>Аккаунт успешно создан!</strong><br>
+                    Ваш email: <b>${email}</b>.<br>
+                    Для активации полного доступа к закрытым тренажерам напишите администратору или перейдите на главную страницу.
+                    <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 6px;">
+                        <a href="https://wa.me/77081595038?text=Здравствуйте!%20Я%20зарегистрировался%20на%20сайте%20kazdoctors.com%20(${encodeURIComponent(email)}),%20хочу%20активировать%20доступ" target="_blank" style="background:#10B981; color:#fff; padding:9px; border-radius:10px; text-decoration:none; font-weight:800;">💬 Активировать доступ (WhatsApp)</a>
+                        <a href="index.html" style="background:var(--kz-blue); color:#fff; padding:9px; border-radius:10px; text-decoration:none; font-weight:800;">🏠 Перейти на главную</a>
+                    </div>
+                `;
+                submitBtn.textContent = '✅ Готово';
+
+            } catch (err) {
+                statusBox.className = 'status-box error';
+                statusBox.textContent = '❌ Ошибка: ' + (err.message || 'Не удалось зарегистрировать аккаунт.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '✍️ Создать аккаунт';
+            }
+        }
+    </script>
+</body>
+</html>
