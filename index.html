@@ -44,7 +44,7 @@
         justify-content: space-between;
     }
 
-    /* 1. Шапка сайта (Стилистика флага Казахстана с мягким свечением) */
+    /* 1. Шапка сайта */
     header {
         position: relative;
         z-index: 1;
@@ -58,7 +58,6 @@
         overflow: hidden;
     }
 
-    /* Декоративный солнечный блик в шапке */
     header::after {
         content: '';
         position: absolute;
@@ -71,7 +70,6 @@
         pointer-events: none;
     }
 
-    /* Кнопка плашки со ссылкой на Instagram */
     .brand-badge {
         display: inline-flex;
         align-items: center;
@@ -226,7 +224,7 @@
         min-height: 20px;
     }
 
-    /* Складывающиеся категории (Аккордеоны) — Единый цвет линии var(--kz-blue) */
+    /* Складывающиеся категории (Аккордеоны) */
     details.category-group {
         background: var(--card-bg);
         border-radius: 18px;
@@ -257,7 +255,6 @@
         display: none;
     }
 
-    /* ТАКАЯ ЖЕ ЛИНИЯ, КАК У КНОПКИ "ЦЕНЫ" */
     summary.category-header::before {
         content: '';
         position: absolute;
@@ -308,7 +305,7 @@
         gap: 10px;
     }
 
-    /* Карточки тренажеров — Единый цвет линии var(--kz-blue) */
+    /* Карточки тренажеров */
     .trainer-card {
         display: flex;
         align-items: center;
@@ -335,7 +332,6 @@
         transform: scale(0.99);
     }
 
-    /* ЛИНИЯ СЛЕВА НА ВСЕХ КАРТОЧКАХ */
     .trainer-card::before {
         content: '';
         position: absolute;
@@ -444,19 +440,48 @@
         transform: scale(0.97);
     }
 
-    #authArea { margin-top: 14px; text-align: center; }
-    #loginButton, #logoutButton {
-        display: inline-block;
-        padding: 8px 20px;
+    /* Блок кнопок Входа и Регистрации (одинаковый компактный стиль) */
+    #authArea {
+        margin-top: 14px;
+        text-align: center;
+    }
+
+    #guestActions {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .auth-btn, #logoutButton {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        padding: 8px 18px;
         border-radius: 20px;
         border: 1px solid rgba(255, 255, 255, 0.5);
         background: var(--card-bg);
         color: var(--kz-blue-dark);
-        font-size: 0.78rem;
+        font-size: 0.76rem;
         font-weight: 800;
         text-decoration: none;
         cursor: pointer;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transition: transform 0.15s ease;
+    }
+
+    .auth-btn.register-btn {
+        background: rgba(255, 255, 255, 0.22);
+        color: #FFFFFF;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
+    .auth-btn:active, #logoutButton:active {
+        transform: scale(0.96);
     }
 
     #userArea { display: none; }
@@ -485,7 +510,7 @@
 <script>
   if (window.Telegram && window.Telegram.WebApp) {
     window.Telegram.WebApp.ready();
-    window.Telegram.WebApp.expand(); // Разворачивает на весь экран!
+    window.Telegram.WebApp.expand();
   }
 </script> 
 </head>
@@ -494,21 +519,22 @@
 
     <header>
         <a href="https://instagram.com/doctors.speak" target="_blank" rel="noopener noreferrer" class="brand-badge">✨ @doctors.speak</a>
-        <h1>Medical English</h1>
+        <h1>MEDICAL ENGLISH</h1>
         <p class="subtitle">BECOME INTERNATIONAL!</p>
         
         <div id="authArea">
-            <a href="login.html" id="loginButton">🔐 LOGIN</a>
+            <!-- Кнопки для гостя (прячутся обе, когда человек вошел в аккаунт) -->
+            <div id="guestActions">
+                <a href="login.html" id="loginButton" class="auth-btn">🔐 LOGIN</a>
+                <a href="register.html" id="registerButton" class="auth-btn register-btn">✍️ REGISTER</a>
+            </div>
+
+            <!-- Блок авторизованного пользователя -->
             <div id="userArea">
                 <span id="welcomeMessage"></span>
                 <button id="logoutButton" onclick="logout()">🚪 LOG OUT</button>
             </div>
         </div>
-
-        <a href="https://wa.me/77081595038" target="_blank" class="instagram-link">
-            <span>☑️ Регистрация (Whatsapp) </span>
-        </a>
-        
     </header>
 
     <main>
@@ -524,8 +550,6 @@
             </div>
             <div class="quiz-feedback" id="quizFeedback"></div>
         </div>
-
-            <div class="category-body">
         
         <!-- ==================== 1. КАТЕГОРИЯ: VOCABULARY ==================== -->
         <details class="category-group">
@@ -635,14 +659,14 @@
             </div>
         </details>
 
-        <!-- ==================== 3. КАТЕГОРИЯ: MEDICAL SKILLS ==================== -->
+        <!-- ==================== 3. КАТЕГОРИЯ: MEDICAL SKILLS (включая USMLE) ==================== -->
         <details class="category-group">
             <summary class="category-header">
                 <div class="card-content">
                     <div class="card-icon">🗣️</div>
                     <div class="card-text">
                         <h2>MEDICAL SKILLS <span class="badge-pill">Практика</span></h2>
-                        <p>How to interview patients in English</p>
+                        <p>Patient interviewing & USMLE prep</p>
                     </div>
                 </div>
                 <div class="chevron-box">
@@ -651,7 +675,7 @@
             </summary>
 
             <div class="category-body">
-                <!-- Второе видео YouTube (Увеличенный размер 100%) -->
+                <!-- Второе видео YouTube -->
                 <div class="video-card">
                     <div class="video-container" style="padding-top: 100%;">
                         <iframe 
@@ -674,10 +698,8 @@
                     </div>
                     <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
                 </a>
-            </div>
 
- <div class="category-body">
-                <!-- Третье видео YouTube (Грамматика) -->
+                <!-- Третье видео YouTube -->
                 <div class="video-card">
                     <div class="video-container">
                         <iframe 
@@ -688,13 +710,41 @@
                         </iframe>
                     </div>
                 </div>
-            
+
+                <!-- USMLE (перенесено внутрь Medical Skills) -->
+                <a href="./usmle/" class="trainer-card">
+                    <div class="card-content">
+                        <div class="card-icon">📚</div>
+                        <div class="card-text">
+                            <h2>USMLE PREPARATION</h2>
+                            <p>Тренажеры USMLE</p>
+                        </div>
+                    </div>
+                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                </a>
+            </div>
         </details>
 
-                                <!-- Игра -->
+        <!-- ==================== 4. КАТЕГОРИЯ: GAMES (Игры) ==================== -->
+        <details class="category-group">
+            <summary class="category-header">
+                <div class="card-content">
+                    <div class="card-icon">🎮</div>
+                    <div class="card-text">
+                        <h2>MEDICAL GAMES <span class="badge-pill">2 игры</span></h2>
+                        <p>Interactive medical vocabulary games</p>
+                    </div>
+                </div>
+                <div class="chevron-box">
+                    <svg class="chevron-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                </div>
+            </summary>
+
+            <div class="category-body">
+                <!-- Игра 1: Run Doctor -->
                 <a href="./game/" class="trainer-card">
                     <div class="card-content">
-                        <div class="card-icon">🎮</div>
+                        <div class="card-icon">🏃‍♂️</div>
                         <div class="card-text">
                             <h2>GAME: Run Doctor!</h2>
                             <p>check your vocabulary!</p>
@@ -703,9 +753,10 @@
                     <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
                 </a>
 
-                                <a href="./syringes/" class="trainer-card">
+                <!-- Игра 2: Syringe Shots -->
+                <a href="./syringes/" class="trainer-card">
                     <div class="card-content">
-                        <div class="card-icon">🎮</div>
+                        <div class="card-icon">💉</div>
                         <div class="card-text">
                             <h2>GAME: Syringe Shots</h2>
                             <p>check your vocabulary!</p>
@@ -713,39 +764,28 @@
                     </div>
                     <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
                 </a>
+            </div>
+        </details>
 
-                
-                                                <!-- Тест -->
-                <a href="./test/" class="trainer-card">
-                    <div class="card-content">
-                        <div class="card-icon">📝</div>
-                        <div class="card-text">
-                            <h2>ENGLISH TEST</h2>
-                            <p>проверь свой мед.английский!</p>
-                        </div>
-                    </div>
-                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-                </a>
+        <!-- Тест -->
+        <a href="./test/" class="trainer-card">
+            <div class="card-content">
+                <div class="card-icon">📝</div>
+                <div class="card-text">
+                    <h2>ENGLISH TEST</h2>
+                    <p>проверь свой мед.английский!</p>
+                </div>
+            </div>
+            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+        </a>
 
-        <!-- Тарифы (всегда на виду, с той же линией var(--kz-blue)) -->
+        <!-- Тарифы -->
         <a href="./tarifs/" class="trainer-card">
             <div class="card-content">
                 <div class="card-icon">💎</div>
                 <div class="card-text">
                     <h2>ТАРИФТЕР / ТАРИФЫ</h2>
                     <p>Жеке сабақтар, материалдар / индивидуальные занятия и материалы</p>
-                </div>
-            </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
-
-                <!-- USMLE -->
-        <a href="./usmle/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">📚</div>
-                <div class="card-text">
-                    <h2>USMLE PREPARATION</h2>
-                    <p>Тренажеры USMLE</p>
                 </div>
             </div>
             <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -781,7 +821,7 @@
         return deviceId;
     }
 
-    // Проверка: 1 устройство + не истек ли месячный доступ
+    // Проверка: 1 устройство + наличие активной подписки (subscription_expires_at)
     async function verifyUserAccess(user) {
         const localDeviceId = getDeviceUUID();
 
@@ -791,34 +831,21 @@
             .eq('id', user.id)
             .single();
 
-        // Если профиля еще нет в таблице — создаем его с доступом на 1 месяц
+        // Если профиля еще нет в таблице — создаем его БЕЗ подписки (subscription_expires_at: null),
+        // чтобы доступ появлялся только тогда, когда вы сами продлите его в Supabase!
         if (error && error.code === 'PGRST116') {
-            const nextMonth = new Date();
-            nextMonth.setMonth(nextMonth.getMonth() + 1);
-
             await supabaseClient.from('profiles').insert({
                 id: user.id,
                 email: user.email,
                 current_device_id: localDeviceId,
-                subscription_expires_at: nextMonth.toISOString()
+                subscription_expires_at: null
             });
-            return true;
+            return { sessionValid: true, hasActiveSub: false };
         }
 
-        if (!profile) return true;
+        if (!profile) return { sessionValid: true, hasActiveSub: false };
 
-        // 1. Проверяем, доступен ли еще вход по времени (месячный лимит)
-        if (profile.subscription_expires_at) {
-            const expiresAt = new Date(profile.subscription_expires_at);
-            if (new Date() > expiresAt) {
-                alert("Ваш месячный доступ истек! Пожалуйста, продлите подписку.");
-                await supabaseClient.auth.signOut();
-                showLoggedOut();
-                return false;
-            }
-        }
-
-        // 2. Проверяем, совпадает ли устройство с активным
+        // Проверяем, совпадает ли устройство с активным
         if (!profile.current_device_id) {
             await supabaseClient
                 .from('profiles')
@@ -828,10 +855,19 @@
             alert("В ваш аккаунт выполнен вход с другого устройства. Сессия на этом устройстве завершена.");
             await supabaseClient.auth.signOut();
             showLoggedOut();
-            return false;
+            return { sessionValid: false, hasActiveSub: false };
         }
 
-        return true;
+        // Проверяем, выдана ли подписка администратором и не истекла ли она
+        let hasActiveSub = false;
+        if (profile.subscription_expires_at) {
+            const expiresAt = new Date(profile.subscription_expires_at);
+            if (new Date() <= expiresAt) {
+                hasActiveSub = true;
+            }
+        }
+
+        return { sessionValid: true, hasActiveSub: hasActiveSub };
     }
 
     async function checkAuth() {
@@ -839,31 +875,40 @@
         if (error) { console.error("Auth error:", error); return; }
 
         if (data.session) {
-            const isAccessValid = await verifyUserAccess(data.session.user);
-            if (isAccessValid) {
-                showLoggedIn(data.session.user);
+            const access = await verifyUserAccess(data.session.user);
+            if (access.sessionValid) {
+                showLoggedIn(data.session.user, access.hasActiveSub);
             }
         } else {
             showLoggedOut();
         }
     }
 
-    function showLoggedIn(user) {
-        document.getElementById("loginButton").style.display = "none";
+    function showLoggedIn(user, hasActiveSub) {
+        // Прячем обе кнопки (LOGIN и REGISTER)
+        document.getElementById("guestActions").style.display = "none";
         document.getElementById("userArea").style.display = "block";
-        document.getElementById("welcomeMessage").textContent = "Welcome, " + (user.email || "student") + " 👋";
+        document.getElementById("welcomeMessage").textContent =
+            "Welcome, " + (user.email || "student") + (hasActiveSub ? " 👋" : " (Free account)");
 
-        document.getElementById("clinicalIcon").textContent = "🩺";
-        document.getElementById("clinicalStatus").textContent = "for work with patients!";
+        // Открываем замочки только если у пользователя активна подписка
+        if (hasActiveSub) {
+            document.getElementById("clinicalIcon").textContent = "🩺";
+            document.getElementById("clinicalStatus").textContent = "for work with patients!";
 
-        document.getElementById("academicIcon").textContent = "📚";
-        document.getElementById("academicStatus").textContent = "for articles and IELTS!";
+            document.getElementById("academicIcon").textContent = "📚";
+            document.getElementById("academicStatus").textContent = "for articles and IELTS!";
 
-        document.getElementById("grammarIcon").textContent = "📖";
-        document.getElementById("grammarStatus").textContent = "full practice!";
+            document.getElementById("grammarIcon").textContent = "📖";
+            document.getElementById("grammarStatus").textContent = "full practice!";
 
-        document.getElementById("interviewIcon").textContent = "🗣️";
-        document.getElementById("interviewStatus").textContent = "for working with patients!";
+            document.getElementById("interviewIcon").textContent = "🗣️";
+            document.getElementById("interviewStatus").textContent = "for working with patients!";
+        } else {
+            document.getElementById("clinicalIcon").textContent = "🔒";
+            document.getElementById("academicIcon").textContent = "🔒";
+            document.getElementById("grammarIcon").textContent = "🔒";
+        }
 
         if (!document.getElementById("adminBtn")) {
             const adminBtn = document.createElement("a");
@@ -876,7 +921,7 @@
     }
 
     function showLoggedOut() {
-        document.getElementById("loginButton").style.display = "inline-block";
+        document.getElementById("guestActions").style.display = "inline-flex";
         document.getElementById("userArea").style.display = "none";
 
         document.getElementById("clinicalIcon").textContent = "🔒";
@@ -886,7 +931,7 @@
         document.getElementById("grammarIcon").textContent = "🔒";
         document.getElementById("grammarStatus").textContent = "full practice!";
         document.getElementById("interviewIcon").textContent = "🗣️";
-        document.getElementById("interviewStatus").textContent = "for work with patients!";
+        document.getElementById("interviewStatus").textContent = "for working with patients!";
     }
 
     async function logout() {
@@ -896,7 +941,6 @@
     }
 
     checkAuth();
-    // Фоновая проверка каждые 30 секунд
     setInterval(async () => {
         const { data } = await supabaseClient.auth.getSession();
         if (data && data.session) {
@@ -981,7 +1025,6 @@ const words = [
             document.getElementById('wothTerm').textContent = currentWord.en;
             document.getElementById('quizFeedback').textContent = "";
 
-            // Generate 3 options: 1 correct and 2 random distractors FROM THE SAME CATEGORY
             const correctOptionText = `${currentWord.kz} / ${currentWord.ru}`;
             const sameCategoryWords = words.filter(w => w.cat === currentWord.cat && w.en !== currentWord.en);
             
@@ -994,7 +1037,6 @@ const words = [
                 }
             }
 
-            // Shuffle options
             options.sort(() => Math.random() - 0.5);
 
             const optionsContainer = document.getElementById('quizOptions');
