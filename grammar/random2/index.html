@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>@doctors.speak — B1–B2 Grammar Trainer & Grammar Rush</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --green: #16A34A;
+      --green-bg: #DCFCE7;
+      --red: #EF4444;
+      --red-bg: #FEE2E2;
+      --purple-bg: #F3E8FF;
+      --purple-text: #7E22CE;
+      --zoom-zone-height: 225px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px;
+    }
+
+    /* Главная карточка: спроектирована так, чтобы в нижней части всегда оставалось место под окно Zoom */
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 470px;
+      height: 730px;
+      max-height: 97vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+      border: 1px solid var(--border-color);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Компактная шапка */
+    .header {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 3px 10px rgba(0, 161, 222, 0.18);
+      flex-shrink: 0;
+    }
+
+    .home-btn {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.72rem;
+      padding: 5px 11px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .home-btn:active {
+      transform: scale(0.96);
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .brand {
+      font-weight: 800;
+      font-size: 0.76rem;
+      letter-spacing: 0.4px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 4px 11px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+    }
+
+    /* Верхняя рабочая область (Все упражнения находятся ВЫШЕ окна Zoom) */
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: flex-start;
+      padding: 10px 14px 8px;
+      gap: 7px;
+      overflow-y: auto;
+    }
+
+    /* Переключатель режимов: Разбор vs Grammar Rush 1 мин */
+    .mode-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--bg-main);
+      padding: 3px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .tab-btn {
+      border: none;
+      background: transparent;
+      padding: 6px 8px;
+      border-radius: 9px;
+      font-size: 0.73rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--card-bg);
+      color: var(--kz-blue-dark);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    }
+
+    .tab-btn.rush-active {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      box-shadow: 0 2px 8px rgba(217, 160, 0, 0.28);
+    }
+
+    /* Фильтры грамматических тем, тематики (Med/Pop) и уровней B1-B2 */
+    .filters-row {
+      display: grid;
+      grid-template-columns: 1.35fr 0.9fr 0.75fr;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .mode-select {
+      width: 100%;
+      padding: 5px 6px;
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      border-radius: 9px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--kz-blue-dark);
+      background: var(--kz-blue-light);
+      outline: none;
+      font-size: 0.68rem;
+      cursor: pointer;
+    }
+
+    /* Компактная строка статистики и таймера */
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      background: var(--bg-main);
+      padding: 5px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      flex-shrink: 0;
+    }
+
+    .timer-badge {
+      background: #FEF2F2;
+      color: var(--red);
+      border: 1px solid #FECACA;
+      padding: 2px 7px;
+      border-radius: 7px;
+      font-weight: 900;
+      font-size: 0.75rem;
+      display: none;
+    }
+
+    .timer-badge.visible {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      animation: pulseTimer 1s infinite alternate;
+    }
+
+    @keyframes pulseTimer {
+      from { transform: scale(1); }
+      to { transform: scale(1.04); }
+    }
+
+    /* =====================================================================
+       КАРТОЧКА ВОПРОСА, КОТОРАЯ ПРЕВРАЩАЕТСЯ В "ВЕРНО/НЕВЕРНО + ОБЪЯСНЕНИЕ"
+       ===================================================================== */
+    .term-box {
+      background: var(--card-bg);
+      border-radius: 14px;
+      padding: 10px 12px;
+      border: 1px solid var(--border-color);
+      border-left: 5px solid var(--kz-gold-dark);
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.03);
+      text-align: center;
+      min-height: 122px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.22s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    /* Состояние карточки при правильном ответе */
+    .term-box.state-correct {
+      background: #F0FDF4;
+      border-color: #86EFAC;
+      border-left: 6px solid var(--green);
+      text-align: left;
+      align-items: stretch;
+      justify-content: space-between;
+    }
+
+    /* Состояние карточки при неправильном ответе */
+    .term-box.state-wrong {
+      background: #FEF2F2;
+      border-color: #FCA5A5;
+      border-left: 6px solid var(--red);
+      text-align: left;
+      align-items: stretch;
+      justify-content: space-between;
+    }
+
+    .tags-row {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 6px;
+    }
+
+    .level-tag {
+      display: inline-block;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      font-size: 0.62rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 8px;
+      text-transform: uppercase;
+    }
+
+    .topic-tag {
+      display: inline-block;
+      background: #FFFBEB;
+      color: var(--kz-gold-dark);
+      border: 1px solid rgba(217, 160, 0, 0.3);
+      font-size: 0.62rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 8px;
+    }
+
+    .theme-tag {
+      display: inline-block;
+      font-size: 0.62rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 8px;
+    }
+
+    .theme-tag.med {
+      background: #E0F2FE;
+      color: #0369A1;
+      border: 1px solid #BAE6FD;
+    }
+
+    .theme-tag.pop {
+      background: var(--purple-bg);
+      color: var(--purple-text);
+      border: 1px solid #E9D5FF;
+    }
+
+    .term-title {
+      font-size: 0.86rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.35;
+    }
+
+    /* Блок обратной связи внутри карточки вопроса (появляется после выбора ответа) */
+    .feedback-view {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      width: 100%;
+    }
+
+    .feedback-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .feedback-status {
+      font-size: 0.78rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .feedback-status.correct {
+      color: #15803D;
+    }
+
+    .feedback-status.wrong {
+      color: #B91C1C;
+    }
+
+    .peek-question-btn {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid var(--border-color);
+      color: var(--text-dark);
+      font-size: 0.62rem;
+      font-weight: 800;
+      padding: 3px 7px;
+      border-radius: 7px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .completed-sentence {
+      font-size: 0.73rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      background: rgba(255, 255, 255, 0.7);
+      padding: 4px 7px;
+      border-radius: 7px;
+      line-height: 1.3;
+    }
+
+    .completed-sentence .ans-highlight {
+      text-decoration: underline;
+      font-weight: 900;
+      color: var(--kz-blue-dark);
+    }
+
+    .feedback-explanation {
+      font-size: 0.73rem;
+      font-weight: 600;
+      color: #1E293B;
+      line-height: 1.32;
+    }
+
+    /* Сетка вариантов ответа (компактная, чтобы всё помещалось НАД Zoom) */
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .option-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 7px 11px;
+      border-radius: 11px;
+      font-size: 0.77rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      line-height: 1.25;
+      min-height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background-color: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+    }
+
+    .option-btn.correct {
+      background-color: var(--green-bg) !important;
+      border-color: #22C55E !important;
+      color: #15803D !important;
+      font-weight: 800;
+    }
+
+    .option-btn.wrong {
+      background-color: var(--red-bg) !important;
+      border-color: #EF4444 !important;
+      color: #B91C1C !important;
+      font-weight: 800;
+    }
+
+    /* Кнопка Next прямо под вариантами (над окном Zoom!) */
+    .next-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      font-weight: 900;
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      box-shadow: 0 3px 10px rgba(217, 160, 0, 0.25);
+      border: 1px solid var(--kz-gold-dark);
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: transform 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .next-btn.visible {
+      display: flex;
+    }
+
+    .next-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* =====================================================================
+       ЭКРАН ИТОГОВ GRAMMAR RUSH (1 МИНУТА) — ТОЖЕ ВЫШЕ ЗОНЫ ZOOM
+       ===================================================================== */
+    .rush-modal {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px 14px;
+      flex-grow: 1;
+      gap: 8px;
+      overflow-y: auto;
+    }
+
+    .rush-modal.active {
+      display: flex;
+    }
+
+    .rush-summary-card {
+      background: var(--kz-blue-light);
+      border: 1.5px solid rgba(0, 161, 222, 0.25);
+      border-radius: 12px;
+      padding: 8px 10px;
+      display: flex;
+      justify-content: space-around;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .rush-stat span {
+      display: block;
+      font-size: 0.62rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .rush-stat strong {
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: var(--kz-blue-dark);
+    }
+
+    .mistakes-list {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 7px;
+      max-height: 165px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex-grow: 1;
+    }
+
+    .mistake-item {
+      background: #FFFFFF;
+      border-left: 4px solid var(--red);
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 0.68rem;
+      line-height: 1.3;
+    }
+
+    .rush-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .rush-btn-primary {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      font-weight: 800;
+      font-size: 0.74rem;
+      padding: 8px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .rush-btn-secondary {
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      border: 1px solid rgba(0, 161, 222, 0.3);
+      font-weight: 800;
+      font-size: 0.74rem;
+      padding: 8px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    /* =====================================================================
+       НИЖНЯЯ ЗОНА ДЛЯ ОКНА ZOOM (ZOOM WINDOW SAFE ZONE)
+       ===================================================================== */
+    .zoom-safe-zone {
+      height: var(--zoom-zone-height);
+      min-height: var(--zoom-zone-height);
+      background: #18181B;
+      border-top: 2px dashed #475569;
+      margin: 0 10px 10px;
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #94A3B8;
+      position: relative;
+      flex-shrink: 0;
+      user-select: none;
+      transition: height 0.2s ease, min-height 0.2s ease;
+    }
+
+    .zoom-safe-zone.collapsed {
+      height: 32px;
+      min-height: 32px;
+      background: var(--bg-main);
+      border: 1px dashed var(--border-color);
+      color: var(--text-muted);
+    }
+
+    .zoom-zone-title {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #E2E8F0;
+      letter-spacing: 0.3px;
+      margin-bottom: 3px;
+    }
+
+    .zoom-zone-sub {
+      font-size: 0.65rem;
+      color: #64748B;
+      font-weight: 600;
+      text-align: center;
+      padding: 0 16px;
+    }
+
+    .zoom-safe-zone.collapsed .zoom-zone-title,
+    .zoom-safe-zone.collapsed .zoom-zone-sub {
+      display: none;
+    }
+
+    .zoom-toggle-btn {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #CBD5E1;
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .zoom-safe-zone.collapsed .zoom-toggle-btn {
+      position: static;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <div class="card">
+    <!-- Шапка -->
+    <header class="header">
+      <a href="https://kazdoctors.com/grammar/" class="home-btn">⬅ Go back</a>
+      <div class="brand">@doctors.speak • B1–B2 Grammar</div>
+    </header>
+
+    <!-- ОСНОВНОЙ ЭКРАН ТРЕНАЖЕРА (Находится строго ВЫШЕ окна Zoom) -->
+    <div id="gameScreen" class="game-container">
+      
+      <!-- Переключатель режимов -->
+      <div class="mode-tabs">
+        <button id="tabPractice" class="tab-btn active" onclick="setGameMode('practice')">🎓 Разбор (Без времени)</button>
+        <button id="tabRush" class="tab-btn" onclick="setGameMode('rush')">⚡ Grammar Rush (1 мин)</button>
+      </div>
+
+      <!-- Фильтры: Грамматическая тема, Контент (75% Med / 25% Pop), Уровень (B1–B2) -->
+      <div class="filters-row">
+        <select id="topicSelect" class="mode-select" onchange="resetDeckAndLoad()">
+          <option value="all">🎲 Все темы (All Topics)</option>
+          <option value="conditionals">🔀 Conditionals (1st–3rd, Mixed)</option>
+          <option value="passive">🛡️ Passive & Causative</option>
+          <option value="modals">🔍 Modals & Past Deduction</option>
+          <option value="tenses">⏳ Perfect & Narrative Tenses</option>
+          <option value="clauses">🔗 Relative & Participle Clauses</option>
+          <option value="inversion_subj">⚡ Subjunctive & Inversion</option>
+          <option value="gerund_linkers">🧩 Gerunds & Linkers</option>
+        </select>
+
+        <select id="themeSelect" class="mode-select" onchange="resetDeckAndLoad()">
+          <option value="all">🎭 75% Med + 25% Pop</option>
+          <option value="medical">🩺 Medical (38)</option>
+          <option value="pop">🎬 Pop Culture (12)</option>
+        </select>
+
+        <select id="levelSelect" class="mode-select" onchange="resetDeckAndLoad()">
+          <option value="all">🔥 B1–B2 (50)</option>
+          <option value="B1">Level B1 (25)</option>
+          <option value="B2">Level B2 (25)</option>
+        </select>
+      </div>
+
+      <!-- Панель статистики и таймера -->
+      <div class="stats">
+        <span id="timerBadge" class="timer-badge">⏱️ <span id="timeLeft">60</span>s</span>
+        <span>Вопрос: <strong id="deckProgress">1/50</strong></span>
+        <span>Всего: <strong id="totalCount">0</strong></span>
+        <span>Верно: <strong id="correctCount" style="color:var(--green);">0</strong></span>
+        <span>Серия: <strong id="streakCount" style="color:var(--kz-gold-dark);">0 🔥</strong></span>
+      </div>
+
+      <!-- КАРТОЧКА ВОПРОСА -> ТРАНСФОРМИРУЕТСЯ В "ВЕРНО/НЕВЕРНО + ОБЪЯСНЕНИЕ" -->
+      <div id="termBox" class="term-box">
+        <!-- Состояние 1: Просмотр вопроса -->
+        <div id="questionView">
+          <div class="tags-row">
+            <span id="levelTag" class="level-tag">LEVEL B1</span>
+            <span id="themeTag" class="theme-tag med">🩺 Medical</span>
+            <span id="topicTag" class="topic-tag">Conditionals</span>
+          </div>
+          <div id="questionText" class="term-title">Loading grammar question...</div>
+        </div>
+
+        <!-- Состояние 2: После выбора ответа карточка превращается в Разбор -->
+        <div id="feedbackView" class="feedback-view">
+          <div class="feedback-header">
+            <div id="feedbackStatus" class="feedback-status correct">✅ Верно!</div>
+            <button id="peekQuestionBtn" class="peek-question-btn" onclick="toggleQuestionPeek()">👁 Показать вопрос</button>
+          </div>
+          <div id="completedSentence" class="completed-sentence"></div>
+          <div id="feedbackExplanation" class="feedback-explanation"></div>
+        </div>
+      </div>
+
+      <!-- Варианты ответов A, B, C, D -->
+      <div id="optionsGrid" class="options-grid"></div>
+
+      <!-- Кнопка перехода к следующему вопросу (расположена прямо над окном Zoom) -->
+      <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Следующий вопрос (Next) ➔</button>
+
+    </div>
+
+    <!-- ЭКРАН ИТОГОВ GRAMMAR RUSH (1 МИНУТА) -->
+    <div id="rushResultScreen" class="rush-modal">
+      <div style="text-align: center;">
+        <h2 style="font-size: 1.02rem; font-weight: 900;">⚡ Grammar Rush завершён! (1 мин)</h2>
+        <p style="font-size: 0.7rem; color: var(--text-muted);">Отличная скорость! Вот ваша статистика и разбор ошибок:</p>
+      </div>
+
+      <div class="rush-summary-card">
+        <div class="rush-stat">
+          <span>Верно</span>
+          <strong id="rushFinalCorrect" style="color: var(--green);">0</strong>
+        </div>
+        <div class="rush-stat">
+          <span>Всего решено</span>
+          <strong id="rushFinalTotal">0</strong>
+        </div>
+        <div class="rush-stat">
+          <span>Рекорд (1 мин)</span>
+          <strong id="rushBestScore" style="color: var(--kz-gold-dark);">0</strong>
+        </div>
+      </div>
+
+      <div id="rushMistakesList" class="mistakes-list"></div>
+
+      <div class="rush-actions">
+        <button class="rush-btn-primary" onclick="startRushMode()">🔄 Новый Rush (1 мин)</button>
+        <button class="rush-btn-secondary" onclick="setGameMode('practice')">🎓 В режим разбора</button>
+      </div>
+    </div>
+
+    <!-- НИЖНЯЯ ЗОНА ПОД ОКНО ZOOM (225px) -->
+    <div id="zoomSafeZone" class="zoom-safe-zone">
+      <button id="zoomToggleBtn" class="zoom-toggle-btn" onclick="toggleZoomZone()">Свернуть зону Zoom ▾</button>
+      <div class="zoom-zone-title">🎥 Место для окна Zoom (Alikhan K)</div>
+      <div class="zoom-zone-sub">Перетащите видео-окно Zoom сюда — все вопросы, варианты A–D и разбор находятся выше и не перекрываются</div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. АВТОРИЗАЦИЯ SUPABASE (С поддержкой предпросмотра)
+    // =========================================================================
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+    async function checkAuth() {
+      if (!supabaseClient) {
+        initTrainer();
+        return;
+      }
+      try {
+        const { data, error } = await supabaseClient.auth.getSession();
+        if (error || !data.session) {
+          // Если запускаем локально или в превью — не блокируем работу тренажера
+          if (window.location.hostname === "kazdoctors.com") {
+            window.location.href = "/login.html";
+            return;
+          }
+        }
+        initTrainer();
+      } catch (e) {
+        console.warn("Preview mode active:", e);
+        initTrainer();
+      }
+    }
+
+    // =========================================================================
+    // 2. БАЗА ИЗ 50 ВОПРОСОВ ПО ГРАММАТИКЕ УРОВНЕЙ B1 И B2
+    //    - 38 вопросов (76% ≈ 75%) — Медицина (Medical)
+    //    - 12 вопросов (24% ≈ 25%) — Поп-культура (Marvel, Harry Potter, Anime, Movies)
+    //    - Строго уровни B1 (25 вопросов) и B2 (25 вопросов)
+    // =========================================================================
+    const questionBank = [
+      // -----------------------------------------------------------------------
+      // ТЕМА 1: CONDITIONALS (1st, 2nd, 3rd, Mixed, Inverted, Unless) — 8 вопросов
+      // -----------------------------------------------------------------------
+      {
+        id: 1, level: "B1", theme: "medical", topicGroup: "conditionals",
+        topicLabel: "First Conditional",
+        question: "If the patient's oxygen saturation ____ below 90%, we will initiate supplemental oxygen therapy immediately.",
+        correctOption: "drops",
+        distractors: ["will drop", "dropped", "would drop"],
+        explanation: "В условных предложениях 1-го типа (First Conditional) после 'If' для реального будущего условия используется Present Simple ('drops'), а не 'will'."
+      },
+      {
+        id: 2, level: "B1", theme: "medical", topicGroup: "conditionals",
+        topicLabel: "Unless in Clinical Warnings",
+        question: "The localized skin infection will continue to spread ____ broad-spectrum antibiotics are started today.",
+        correctOption: "unless",
+        distractors: ["if", "despite", "whereas"],
+        explanation: "'Unless' означает 'если не' (if not): инфекция продолжит распространяться, если сегодня не будут начаты антибиотики."
+      },
+      {
+        id: 3, level: "B1", theme: "medical", topicGroup: "conditionals",
+        topicLabel: "Second Conditional",
+        question: "If the Achilles tendon ____ completely ruptured, the patient would not be able to plantarflex the foot at all.",
+        correctOption: "were",
+        distractors: ["is", "will be", "has been"],
+        explanation: "Во 2-м типе условных предложений (Second Conditional — нереальная ситуация в настоящем) в придаточном с 'If' используется Past Simple / Subjunctive 'were'."
+      },
+      {
+        id: 4, level: "B1", theme: "pop", topicGroup: "conditionals",
+        topicLabel: "Second Conditional • Harry Potter",
+        question: "If Harry Potter ____ fluent Parseltongue, he wouldn't be able to open the Chamber of Secrets.",
+        correctOption: "didn't speak",
+        distractors: ["doesn't speak", "won't speak", "hadn't spoken"],
+        explanation: "Second Conditional описывает гипотетическое условие в настоящем/общем плане: [If + Past Simple ('didn't speak'), would + инфинитив]."
+      },
+      {
+        id: 5, level: "B2", theme: "medical", topicGroup: "conditionals",
+        topicLabel: "Third Conditional",
+        question: "If the ischemic stroke patient had received intravenous thrombolysis within the 4.5-hour window, neurological recovery ____ significantly better.",
+        correctOption: "would have been",
+        distractors: ["would be", "will have been", "was"],
+        explanation: "Third Conditional [If + Past Perfect, would have + V3] используется для разбора упущенных клинических возможностей в прошлом."
+      },
+      {
+        id: 6, level: "B2", theme: "medical", topicGroup: "conditionals",
+        topicLabel: "Mixed Conditional",
+        question: "If the patient had complied with his prescribed antihypertensive regimen over the past year, he ____ in the ICU with a hypertensive crisis right now.",
+        correctOption: "would not be",
+        distractors: ["would not have been", "will not be", "is not"],
+        explanation: "Mixed Conditional: прошлое нереальное условие (If + Past Perfect) влияет на результат в настоящем моменте ('right now' -> would not be)."
+      },
+      {
+        id: 7, level: "B2", theme: "medical", topicGroup: "conditionals",
+        topicLabel: "Inverted Conditional (Should)",
+        question: "____ the patient develop any signs of anaphylaxis such as stridor or hypotension, administer intramuscular epinephrine immediately.",
+        correctOption: "Should",
+        distractors: ["Had", "Were", "Would"],
+        explanation: "Формальная инверсия 1-го типа в клинических протоколах: 'Should the patient develop...' заменяет 'If the patient should develop...'."
+      },
+      {
+        id: 8, level: "B2", theme: "pop", topicGroup: "conditionals",
+        topicLabel: "Inverted 3rd Conditional • Marvel",
+        question: "____ Doctor Strange not surrendered the Time Stone to Thanos on Titan, Iron Man wouldn't have survived to save the universe in Endgame.",
+        correctOption: "Had",
+        distractors: ["If", "Should", "Were"],
+        explanation: "Формальная инверсия 3-го условного предложения: союз 'If' опускается, а вспомогательный глагол 'Had' выносится вперед ('Had Doctor Strange not surrendered...')."
+      },
+
+      // -----------------------------------------------------------------------
+      // ТЕМА 2: PASSIVE VOICE, CAUSATIVE & IMPERSONAL REPORTING — 8 вопросов
+      // -----------------------------------------------------------------------
+      {
+        id: 9, level: "B1", theme: "medical", topicGroup: "passive",
+        topicLabel: "Present Simple Passive",
+        question: "According to surgical guidelines, prophylactic antibiotics ____ intravenously 30 to 60 minutes prior to the skin incision.",
+        correctOption: "are administered",
+        distractors: ["administer", "have administered", "are administering"],
+        explanation: "В клинических рекомендациях для описания регулярных стандартов используется Present Simple Passive: 'are administered'."
+      },
+      {
+        id: 10, level: "B1", theme: "medical", topicGroup: "passive",
+        topicLabel: "Present Perfect Passive",
+        question: "Four new cases of hospital-acquired pneumonia ____ reported in the surgical ward since Monday.",
+        correctOption: "have been",
+        distractors: ["has been", "were being", "are"],
+        explanation: "Маркер 'since Monday' связывает прошлое с настоящим, а подлежащее во множественном числе ('Four new cases') требует Present Perfect Passive: 'have been reported'."
+      },
+      {
+        id: 11, level: "B1", theme: "medical", topicGroup: "passive",
+        topicLabel: "Causative (Have something done)",
+        question: "Patients over 45 with a family history of glaucoma should have their intraocular pressure ____ at least once a year.",
+        correctOption: "measured",
+        distractors: ["measure", "measuring", "to measure"],
+        explanation: "Каузативная конструкция [have + объект + V3 (Past Participle)] ('have their pressure measured') означает, что процедуру пациенту выполняет специалист."
+      },
+      {
+        id: 12, level: "B1", theme: "pop", topicGroup: "passive",
+        topicLabel: "Past Simple Passive • Anime (AOT)",
+        question: "In Attack on Titan, Wall Maria ____ breached by the Colossal Titan in the year 845, forcing humanity to retreat.",
+        correctOption: "was",
+        distractors: ["has been", "had", "were"],
+        explanation: "Завершённое событие в прошлом с конкретной датой ('in the year 845') и единственным числом ('Wall Maria') требует Past Simple Passive: 'was breached'."
+      },
+      {
+        id: 13, level: "B2", theme: "medical", topicGroup: "passive",
+        topicLabel: "Impersonal Passive (To be)",
+        question: "Autoimmune thyroiditis is widely thought ____ triggered by a complex interaction between genetic susceptibility and environmental factors.",
+        correctOption: "to be",
+        distractors: ["being", "that it is", "to have"],
+        explanation: "Безличная академическая конструкция [is thought / believed / known + to be + V3] используется для описания общепринятых механизмов патогенеза."
+      },
+      {
+        id: 14, level: "B2", theme: "medical", topicGroup: "passive",
+        topicLabel: "Perfect Passive Infinitive",
+        question: "The foodborne outbreak is reported ____ originated from a contaminated batch of dairy products last month.",
+        correctOption: "to have",
+        distractors: ["to be", "having", "that had"],
+        explanation: "Так как вспышка началась в прошлом ('last month') раньше момента сообщения ('is reported'), используется перфектный инфинитив: 'to have originated'."
+      },
+      {
+        id: 15, level: "B2", theme: "medical", topicGroup: "passive",
+        topicLabel: "Past Continuous Passive",
+        question: "While the patient ____ prepared for emergency laparotomy, the blood bank cross-matched four units of packed red blood cells.",
+        correctOption: "was being",
+        distractors: ["was", "has been", "had been"],
+        explanation: "Для длительного пассивного действия в прошлом, на фоне которого произошло другое событие ('while...'), используется Past Continuous Passive ('was being prepared')."
+      },
+      {
+        id: 16, level: "B2", theme: "pop", topicGroup: "passive",
+        topicLabel: "Causative • Marvel (Wolverine)",
+        question: "During the Weapon X program, Wolverine had his entire skeletal system ____ with indestructible adamantium.",
+        correctOption: "reinforced",
+        distractors: ["reinforce", "reinforcing", "to reinforce"],
+        explanation: "Конструкция [had + something + V3] ('had his skeletal system reinforced') показывает действие, произведённое над персонажем."
+      },
+
+      // -----------------------------------------------------------------------
+      // ТЕМА 3: MODALS OF DEDUCTION & PAST MODALS — 7 вопросов
+      // -----------------------------------------------------------------------
+      {
+        id: 17, level: "B1", theme: "medical", topicGroup: "modals",
+        topicLabel: "Modals of Possibility",
+        question: "Unexplained weight loss, drenching night sweats, and painless lymphadenopathy ____ indicate an underlying lymphoma.",
+        correctOption: "may",
+        distractors: ["must to", "ought", "have to"],
+        explanation: "В дифференциальной диагностике для выражения вероятности используется модальный глагол 'may / might / could' + инфинитив без 'to'."
+      },
+      {
+        id: 18, level: "B1", theme: "medical", topicGroup: "modals",
+        topicLabel: "Modal Passive (Must be)",
+        question: "In patients with severe chronic kidney disease, the dosage of renally excreted antibiotics ____ carefully adjusted.",
+        correctOption: "must be",
+        distractors: ["must", "must to be", "should been"],
+        explanation: "Пассивная форма с модальным глаголом строится по схеме [modal + be + V3]: 'must be adjusted'."
+      },
+      {
+        id: 19, level: "B1", theme: "pop", topicGroup: "modals",
+        topicLabel: "Present Deduction • SpongeBob",
+        question: "Patrick Star has been staring at a closed Krusty Krab door for three hours; he ____ realize that the restaurant is closed on Sundays.",
+        correctOption: "can't",
+        distractors: ["mustn't to", "shouldn't have", "may not to"],
+        explanation: "Для логического вывода о том, что что-то невозможно в настоящем ('не может быть, чтобы он понимал'), используется 'can't + base verb'."
+      },
+      {
+        id: 20, level: "B2", theme: "medical", topicGroup: "modals",
+        topicLabel: "Past Deduction (Must have V3)",
+        question: "The generalized urticarial rash ____ been triggered by the intravenous contrast, as it erupted within ten minutes of the CT scan.",
+        correctOption: "must have",
+        distractors: ["should have", "could not", "must"],
+        explanation: "'Must have + V3' выражает высокую степень логической уверенности врача относительно причины уже случившегося в прошлом события."
+      },
+      {
+        id: 21, level: "B2", theme: "medical", topicGroup: "modals",
+        topicLabel: "Past Impossibility (Could not have)",
+        question: "The bloodstream infection ____ originated from the central venous catheter, because the tip culture came back completely sterile.",
+        correctOption: "could not have",
+        distractors: ["must not have", "should not have", "might not"],
+        explanation: "'Could not have + V3' выражает логическую невозможность в прошлом ('инфекция никак не могла начаться от катетера, так как посев стерилен')."
+      },
+      {
+        id: 22, level: "B2", theme: "medical", topicGroup: "modals",
+        topicLabel: "Past Criticism (Should have been)",
+        question: "A baseline 12-lead ECG ____ performed prior to initiating antiarrhythmic therapy, but unfortunately it was omitted during night shift.",
+        correctOption: "should have been",
+        distractors: ["must have been", "would have been", "ought to be"],
+        explanation: "'Should have been + V3' указывает на обязательную процедуру в прошлом, которая по ошибке не была выполнена."
+      },
+      {
+        id: 23, level: "B2", theme: "pop", topicGroup: "modals",
+        topicLabel: "Past Deduction • Death Note",
+        question: "Detective L immediately deduced that Kira ____ had access to confidential police files, because the criminals died right after their names were broadcast.",
+        correctOption: "must have",
+        distractors: ["should have", "needn't have", "can't have"],
+        explanation: "'Must have + V3' ('must have had access') выражает уверенную дедукцию о факте в прошлом на основе улик."
+      },
+
+      // -----------------------------------------------------------------------
+      // ТЕМА 4: PERFECT & NARRATIVE TENSES — 8 вопросов
+      // -----------------------------------------------------------------------
+      {
+        id: 24, level: "B1", theme: "medical", topicGroup: "tenses",
+        topicLabel: "Present Perfect Continuous",
+        question: "The pediatric patient ____ poorly for the past four days due to painful ulcerative lesions in the oropharynx.",
+        correctOption: "has been eating",
+        distractors: ["is eating", "eats", "had eaten"],
+        explanation: "Длительное действие, начавшееся в прошлом ('for the past four days') и продолжающееся до сих пор, требует Present Perfect Continuous ('has been eating')."
+      },
+      {
+        id: 25, level: "B1", theme: "medical", topicGroup: "tenses",
+        topicLabel: "Past Perfect in Case Reports",
+        question: "By the time the emergency medical team arrived at the scene, the patient ____ spontaneous consciousness.",
+        correctOption: "had regained",
+        distractors: ["has regained", "regained", "was regaining"],
+        explanation: "Предлог 'By the time + Past Simple' требует Past Perfect ('had regained') для действия, завершившегося раньше другого момента в прошлом."
+      },
+      {
+        id: 26, level: "B1", theme: "medical", topicGroup: "tenses",
+        topicLabel: "Future Time Clauses",
+        question: "We will titrate the patient's insulin infusion rate as soon as the arterial blood gas results ____ available.",
+        correctOption: "are",
+        distractors: ["will be", "would be", "were"],
+        explanation: "В придаточных времени после 'as soon as', 'when', 'until' для будущего действия всегда используется Present Simple ('are'), а не 'will be'."
+      },
+      {
+        id: 27, level: "B1", theme: "pop", topicGroup: "tenses",
+        topicLabel: "Present Perfect Continuous • One Piece",
+        question: "Monkey D. Luffy and the Straw Hat Pirates ____ for the legendary One Piece treasure for over two decades of anime history.",
+        correctOption: "have been searching",
+        distractors: ["are searching", "searched", "had searched"],
+        explanation: "Действие, начавшееся в прошлом и активно продолжающееся в настоящем ('for over two decades'), требует Present Perfect Continuous ('have been searching')."
+      },
+      {
+        id: 28, level: "B1", theme: "pop", topicGroup: "tenses",
+        topicLabel: "Past Perfect • Lord of the Rings",
+        question: "By the time Frodo and Sam finally reached Mount Doom, the One Ring ____ almost all of Frodo's physical and mental strength.",
+        correctOption: "had drained",
+        distractors: ["has drained", "drains", "was drained"],
+        explanation: "Конструкция 'By the time + Past Simple' указывает на предпрошедшее время — Past Perfect ('had drained')."
+      },
+      {
+        id: 29, level: "B2", theme: "medical", topicGroup: "tenses",
+        topicLabel: "Future Perfect Passive",
+        question: "By the end of this 14-day triple-therapy regimen, Helicobacter pylori ____ completely eradicated from the gastric mucosa.",
+        correctOption: "will have been",
+        distractors: ["will be", "has been", "would be"],
+        explanation: "Маркер 'By the end of...' указывает на результат к определенному моменту в будущем -> Future Perfect Passive ('will have been eradicated')."
+      },
+      {
+        id: 30, level: "B2", theme: "medical", topicGroup: "tenses",
+        topicLabel: "Past Perfect Continuous",
+        question: "Prior to his hospital admission for acute liver failure, the patient ____ excessive doses of paracetamol for nearly a week.",
+        correctOption: "had been taking",
+        distractors: ["has been taking", "was taking", "is taking"],
+        explanation: "Длительный процесс в прошлом, который продолжался вплоть до другого прошлого события ('Prior to his hospital admission'), требует Past Perfect Continuous ('had been taking')."
+      },
+      {
+        id: 31, level: "B2", theme: "medical", topicGroup: "tenses",
+        topicLabel: "Reported Speech Backshift",
+        question: "During the psychiatric consultation, the patient admitted that he ____ his mood stabilizer three weeks earlier.",
+        correctOption: "had discontinued",
+        distractors: ["has discontinued", "discontinues", "will discontinue"],
+        explanation: "В косвенной речи после глагола в прошедшем времени ('admitted') действие, произошедшее еще раньше ('three weeks earlier'), переходит в Past Perfect ('had discontinued')."
+      },
+
+      // -----------------------------------------------------------------------
+      // ТЕМА 5: RELATIVE & PARTICIPLE CLAUSES — 7 вопросов
+      // -----------------------------------------------------------------------
+      {
+        id: 32, level: "B1", theme: "medical", topicGroup: "clauses",
+        topicLabel: "Relative Pronoun (Whose)",
+        question: "Hypertensive patients ____ blood pressure remains uncontrolled despite triple therapy should be screened for secondary hypertension.",
+        correctOption: "whose",
+        distractors: ["who", "which", "whom"],
+        explanation: "Относительное местоимение 'whose' показывает принадлежность ('пациенты, чьё артериальное давление остаётся неконтролируемым')."
+      },
+      {
+        id: 33, level: "B1", theme: "medical", topicGroup: "clauses",
+        topicLabel: "Defining Relative Clauses",
+        question: "The cochlea is the spiral-shaped cavity of the inner ear ____ converts mechanical sound vibrations into nerve impulses.",
+        correctOption: "which (that)",
+        distractors: ["who", "whom", "where"],
+        explanation: "Для неодушевлённых анатомических структур в качестве подлежащего придаточного предложения используется 'which' или 'that'."
+      },
+      {
+        id: 34, level: "B1", theme: "pop", topicGroup: "clauses",
+        topicLabel: "Relative Pronoun (Whose) • Spider-Man",
+        question: "Peter Parker is a teenage superhero ____ Uncle Ben taught him that with great power comes great responsibility.",
+        correctOption: "whose",
+        distractors: ["who's", "whom", "which"],
+        explanation: "Перед существительным ('Uncle Ben') для выражения принадлежности используется 'whose' (а не 'who's' = who is)."
+      },
+      {
+        id: 35, level: "B2", theme: "medical", topicGroup: "clauses",
+        topicLabel: "Present Participle Clause",
+        question: "____ to the emergency department with crushing substernal chest pain and diaphoresis, the 62-year-old male was rushed to the cath lab.",
+        correctOption: "Presenting",
+        distractors: ["Presented", "To present", "Present"],
+        explanation: "Активное причастие настоящего времени ('Presenting to the ED...') заменяет придаточное 'When/Because he presented to the ED...'."
+      },
+      {
+        id: 36, level: "B2", theme: "medical", topicGroup: "clauses",
+        topicLabel: "Past Participle Clause",
+        question: "____ sublingually, nitroglycerin bypasses first-pass hepatic metabolism and relieves angina within two to three minutes.",
+        correctOption: "Administered",
+        distractors: ["Administering", "Having administer", "To administer"],
+        explanation: "Пассивное причастие прошедшего времени ('Administered sublingually...') означает 'Когда он вводится сублингвально...'."
+      },
+      {
+        id: 37, level: "B2", theme: "medical", topicGroup: "clauses",
+        topicLabel: "Perfect Participle Clause",
+        question: "____ failed six months of conservative physical therapy, the patient with severe knee osteoarthritis was scheduled for total arthroplasty.",
+        correctOption: "Having",
+        distractors: ["Being", "Had", "To have"],
+        explanation: "Перфектное причастие 'Having + V3' ('Having failed...') подчеркивает, что безуспешная консервативная терапия предшествовала решению об операции."
+      },
+      {
+        id: 38, level: "B2", theme: "medical", topicGroup: "clauses",
+        topicLabel: "Quantifier + Relative (Whom)",
+        question: "The phase II clinical trial enrolled 180 oncology patients, none of ____ experienced grade 4 hematological toxicity.",
+        correctOption: "whom",
+        distractors: ["who", "which", "them"],
+        explanation: "После предлога ('none of...') по отношению к людям ('patients') в академическом стиле используется строго 'whom' ('none of whom')."
+      },
+
+      // -----------------------------------------------------------------------
+      // ТЕМА 6: SUBJUNCTIVE & NEGATIVE INVERSION — 6 вопросов
+      // -----------------------------------------------------------------------
+      {
+        id: 39, level: "B2", theme: "medical", topicGroup: "inversion_subj",
+        topicLabel: "Subjunctive in Guidelines",
+        question: "The multidisciplinary tumor board recommended that the patient ____ neoadjuvant chemotherapy prior to surgical resection.",
+        correctOption: "undergo",
+        distractors: ["undergoes", "underwent", "to undergo"],
+        explanation: "После глаголов 'recommend / suggest / insist that...' в формальном медицинском английском используется Subjunctive — начальная форма глагола без окончания -s ('undergo')."
+      },
+      {
+        id: 40, level: "B2", theme: "medical", topicGroup: "inversion_subj",
+        topicLabel: "Passive Subjunctive (Be)",
+        question: "To prevent catheter-related bloodstream infections, it is imperative that strict aseptic technique ____ maintained throughout the procedure.",
+        correctOption: "be",
+        distractors: ["is", "was", "will be"],
+        explanation: "После конструкций 'It is imperative / essential / vital that...' пассивный Subjunctive использует неизменяемую форму 'be' ('that technique be maintained')."
+      },
+      {
+        id: 41, level: "B2", theme: "medical", topicGroup: "inversion_subj",
+        topicLabel: "Negative Inversion (Not only)",
+        question: "Not only ____ glycemic control in type 2 diabetes, but the SGLT2 inhibitor also reduces the risk of heart failure hospitalization.",
+        correctOption: "does the drug improve",
+        distractors: ["the drug improves", "improves the drug", "is the drug improve"],
+        explanation: "Когда предложение начинается с 'Not only...', используется обратный порядок слов (инверсия) со вспомогательным глаголом: 'Not only does the drug improve...'."
+      },
+      {
+        id: 42, level: "B2", theme: "medical", topicGroup: "inversion_subj",
+        topicLabel: "Negative Inversion (Rarely)",
+        question: "Rarely ____ such a rapid and complete resolution of severe myocarditis without mechanical circulatory support.",
+        correctOption: "do clinicians observe",
+        distractors: ["clinicians observe", "clinicians do observe", "observe clinicians"],
+        explanation: "Отрицательные и ограничительные наречия в начале предложения ('Rarely', 'Seldom', 'Never') требуют вопросительного порядка слов: 'Rarely do clinicians observe...'."
+      },
+      {
+        id: 43, level: "B2", theme: "pop", topicGroup: "inversion_subj",
+        topicLabel: "Subjunctive • Harry Potter",
+        question: "Professor McGonagall insisted that Harry and Ron ____ examined by Madam Pomfrey in the hospital wing immediately after the duel.",
+        correctOption: "be",
+        distractors: ["are", "were", "to be"],
+        explanation: "После 'insisted that...' в пассивном залоге используется форма сослагательного наклонения Subjunctive: 'be examined'."
+      },
+      {
+        id: 44, level: "B2", theme: "pop", topicGroup: "inversion_subj",
+        topicLabel: "Negative Inversion • Sherlock Holmes",
+        question: "Seldom ____ a criminal mastermind as calculating and elusive as Professor Moriarty.",
+        correctOption: "had Sherlock Holmes encountered",
+        distractors: ["Sherlock Holmes had encountered", "encountered Sherlock Holmes", "did Sherlock Holmes encountered"],
+        explanation: "После 'Seldom' в начале предложения требуется инверсия: вспомогательный глагол 'had' ставится перед подлежащим ('had Sherlock Holmes encountered')."
+      },
+
+      // -----------------------------------------------------------------------
+      // ТЕМА 7: GERUNDS, INFINITIVES & ADVANCED LINKERS — 6 вопросов
+      // -----------------------------------------------------------------------
+      {
+        id: 45, level: "B1", theme: "medical", topicGroup: "gerund_linkers",
+        topicLabel: "Be Used To + Gerund",
+        question: "Experienced emergency medicine residents are used to ____ life-saving clinical decisions under extreme time pressure.",
+        correctOption: "making",
+        distractors: ["make", "made", "be making"],
+        explanation: "В конструкции 'be used to' (иметь привычку / быть привыкшим к чему-то) 'to' является предлогом, поэтому после него ставится герундий с окончанием -ing ('making')."
+      },
+      {
+        id: 46, level: "B1", theme: "medical", topicGroup: "gerund_linkers",
+        topicLabel: "Verb + Gerund (Avoid)",
+        question: "Patients diagnosed with gastroesophageal reflux disease (GERD) should avoid ____ down for at least three hours after meals.",
+        correctOption: "lying",
+        distractors: ["to lie", "lie", "laying"],
+        explanation: "После глагола 'avoid' всегда употребляется герундий (-ing форма): 'avoid lying down'."
+      },
+      {
+        id: 47, level: "B1", theme: "medical", topicGroup: "gerund_linkers",
+        topicLabel: "Despite vs Although",
+        question: "____ receiving high-dose intravenous analgesics, the patient with acute pancreatitis continued to report severe epigastric pain.",
+        correctOption: "Despite",
+        distractors: ["Although", "Even though", "However"],
+        explanation: "Перед герундием ('receiving...') или существительным используется предлог 'Despite / In spite of', тогда как после 'Although' нужны подлежащее и сказуемое."
+      },
+      {
+        id: 48, level: "B1", theme: "medical", topicGroup: "gerund_linkers",
+        topicLabel: "So that (Purpose Clause)",
+        question: "Enteric-coated aspirin is formulated ____ the tablet dissolves in the small intestine rather than irritating the gastric mucosa.",
+        correctOption: "so that",
+        distractors: ["in order to", "because of", "despite"],
+        explanation: "Перед полным придаточным цели (подлежащее + глагол: 'the tablet dissolves') используется союз 'so that'."
+      },
+      {
+        id: 49, level: "B1", theme: "pop", topicGroup: "gerund_linkers",
+        topicLabel: "Despite + Gerund • Naruto",
+        question: "____ being shunned by the entire Hidden Leaf Village in his childhood, Naruto Uzumaki never gave up on his dream of becoming Hokage.",
+        correctOption: "Despite",
+        distractors: ["Although", "Even though", "Whereas"],
+        explanation: "Перед герундием ('being shunned...') для выражения уступки ('несмотря на то, что его избегали') используется 'Despite'."
+      },
+      {
+        id: 50, level: "B2", theme: "pop", topicGroup: "gerund_linkers",
+        topicLabel: "Contrast (Whereas) • Marvel",
+        question: "Tony Stark relies on advanced nanotechnology and engineering to fight threats, ____ Thor channels ancient Asgardian lightning.",
+        correctOption: "whereas",
+        distractors: ["despite", "consequently", "moreover"],
+        explanation: "Союз 'whereas' (в то время как / тогда как) идеально сопоставляет два контрастных факта внутри одного сложного предложения."
+      }
+    ];
+
+    // =========================================================================
+    // 3. ЛОГИКА ИГРЫ, ТРАНСФОРМАЦИИ ВОПРОСА В ОБЪЯСНЕНИЕ И GRAMMAR RUSH (1 МИН)
+    // =========================================================================
+    let gameMode = 'practice'; // 'practice' | 'rush'
+    let deck = [];
+    let deckIndex = 0;
+
+    let total = 0;
+    let correct = 0;
+    let streak = 0;
+    let currentQuestion = null;
+    let answered = false;
+    let peekingOriginalQuestion = false;
+
+    // Таймер и данные для Grammar Rush (1 минута)
+    const RUSH_DURATION = 60;
+    let rushTimeLeft = RUSH_DURATION;
+    let rushTimerInterval = null;
+    let rushMistakes = [];
+    let bestRushScore = parseInt(localStorage.getItem('doctorsSpeakBestGrammarRush') || '0', 10);
+
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function initTrainer() {
+      resetDeckAndLoad();
+    }
+
+    function toggleZoomZone() {
+      const zone = document.getElementById('zoomSafeZone');
+      const btn = document.getElementById('zoomToggleBtn');
+      zone.classList.toggle('collapsed');
+      if (zone.classList.contains('collapsed')) {
+        btn.textContent = "🎥 Развернуть зону для окна Zoom (225px) ▴";
+      } else {
+        btn.textContent = "Свернуть зону Zoom ▾";
+      }
+    }
+
+    function setGameMode(mode) {
+      clearInterval(rushTimerInterval);
+      gameMode = mode;
+
+      document.getElementById('rushResultScreen').classList.remove('active');
+      document.getElementById('gameScreen').style.display = 'flex';
+
+      const tabPractice = document.getElementById('tabPractice');
+      const tabRush = document.getElementById('tabRush');
+      const timerBadge = document.getElementById('timerBadge');
+
+      if (mode === 'rush') {
+        tabPractice.classList.remove('active');
+        tabRush.classList.add('rush-active');
+        timerBadge.classList.add('visible');
+        startRushMode();
+      } else {
+        tabRush.classList.remove('rush-active');
+        tabPractice.classList.add('active');
+        timerBadge.classList.remove('visible');
+        total = 0;
+        correct = 0;
+        streak = 0;
+        updateStatsUI();
+        resetDeckAndLoad();
+      }
+    }
+
+    function startRushMode() {
+      clearInterval(rushTimerInterval);
+      document.getElementById('rushResultScreen').classList.remove('active');
+      document.getElementById('gameScreen').style.display = 'flex';
+
+      total = 0;
+      correct = 0;
+      streak = 0;
+      rushMistakes = [];
+      rushTimeLeft = RUSH_DURATION;
+      document.getElementById('timeLeft').textContent = rushTimeLeft;
+      updateStatsUI();
+
+      resetDeckAndLoad();
+
+      rushTimerInterval = setInterval(() => {
+        rushTimeLeft--;
+        document.getElementById('timeLeft').textContent = rushTimeLeft;
+        if (rushTimeLeft <= 0) {
+          endRushMode();
+        }
+      }, 1000);
+    }
+
+    function endRushMode() {
+      clearInterval(rushTimerInterval);
+      document.getElementById('gameScreen').style.display = 'none';
+      document.getElementById('rushResultScreen').classList.add('active');
+
+      if (correct > bestRushScore) {
+        bestRushScore = correct;
+        localStorage.setItem('doctorsSpeakBestGrammarRush', bestRushScore.toString());
+      }
+
+      document.getElementById('rushFinalCorrect').textContent = correct;
+      document.getElementById('rushFinalTotal').textContent = total;
+      document.getElementById('rushBestScore').textContent = bestRushScore;
+
+      const list = document.getElementById('rushMistakesList');
+      list.innerHTML = '';
+
+      if (rushMistakes.length === 0) {
+        list.innerHTML = `<div style="text-align:center; padding: 14px; color: var(--green); font-weight: 800; font-size: 0.78rem;">🎉 Идеально! Ни одной ошибки в Grammar Rush!</div>`;
+      } else {
+        rushMistakes.forEach(m => {
+          const item = document.createElement('div');
+          item.className = 'mistake-item';
+          item.innerHTML = `
+            <div style="font-weight: 800; color: var(--text-dark); margin-bottom: 2px;">${m.question}</div>
+            <div style="color: var(--green); font-weight: 800;">✓ Ответ: ${m.correctOption} <span style="color:var(--text-muted); font-weight:600;">(Выбрано: ${m.userChoice})</span></div>
+            <div style="color: var(--text-muted); margin-top: 2px;">💡 ${m.explanation}</div>
+          `;
+          list.appendChild(item);
+        });
+      }
+    }
+
+    function buildFilteredDeck() {
+      const topic = document.getElementById('topicSelect').value;
+      const theme = document.getElementById('themeSelect').value;
+      const lvl = document.getElementById('levelSelect').value;
+
+      let filtered = questionBank.filter(q => {
+        const matchTopic = (topic === 'all') || (q.topicGroup === topic);
+        const matchTheme = (theme === 'all') || (q.theme === theme);
+        const matchLvl = (lvl === 'all') || (q.level === lvl);
+        return matchTopic && matchTheme && matchLvl;
+      });
+
+      if (filtered.length === 0) {
+        filtered = [...questionBank];
+      }
+
+      deck = shuffleArray(filtered);
+      deckIndex = 0;
+    }
+
+    function resetDeckAndLoad() {
+      buildFilteredDeck();
+      nextQuestion();
+    }
+
+    function updateStatsUI() {
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('correctCount').textContent = correct;
+      document.getElementById('streakCount').textContent = `${streak} 🔥`;
+      if (deck.length > 0) {
+        document.getElementById('deckProgress').textContent = `${deckIndex}/${deck.length}`;
+      }
+    }
+
+    function nextQuestion() {
+      answered = false;
+      peekingOriginalQuestion = false;
+
+      if (deckIndex >= deck.length) {
+        buildFilteredDeck();
+      }
+
+      currentQuestion = deck[deckIndex];
+      deckIndex++;
+      updateStatsUI();
+
+      // Сброс карточки вопроса в исходный режим чтения задания
+      const termBox = document.getElementById('termBox');
+      termBox.classList.remove('state-correct', 'state-wrong');
+      document.getElementById('questionView').style.display = 'block';
+      document.getElementById('feedbackView').style.display = 'none';
+      document.getElementById('nextBtn').classList.remove('visible');
+
+      // Бейджи уровня, темы и категории (Medical vs Pop Culture)
+      document.getElementById('levelTag').textContent = `LEVEL ${currentQuestion.level}`;
+      document.getElementById('topicTag').textContent = currentQuestion.topicLabel;
+
+      const themeTag = document.getElementById('themeTag');
+      if (currentQuestion.theme === 'pop') {
+        themeTag.className = 'theme-tag pop';
+        themeTag.textContent = '🎬 Pop Culture';
+      } else {
+        themeTag.className = 'theme-tag med';
+        themeTag.textContent = '🩺 Medical';
+      }
+
+      document.getElementById('questionText').textContent = currentQuestion.question;
+
+      // Рендер 4 вариантов ответа (A, B, C, D)
+      const optionsGrid = document.getElementById('optionsGrid');
+      optionsGrid.innerHTML = '';
+
+      const allOptions = [currentQuestion.correctOption, ...currentQuestion.distractors];
+      const shuffledOptions = shuffleArray(allOptions);
+      currentQuestion.computedCorrectIndex = shuffledOptions.indexOf(currentQuestion.correctOption);
+      currentQuestion.shuffledOptions = shuffledOptions;
+
+      shuffledOptions.forEach((optText, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerHTML = `<span><strong>${String.fromCharCode(65 + index)})</strong> ${optText}</span><span class="opt-icon"></span>`;
+        btn.onclick = () => selectOption(btn, index, optText);
+        optionsGrid.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedBtn, selectedIndex, selectedText) {
+      if (answered) return;
+      answered = true;
+
+      const isCorrect = (selectedIndex === currentQuestion.computedCorrectIndex);
+      const allBtns = document.querySelectorAll('.option-btn');
+
+      if (isCorrect) {
+        selectedBtn.classList.add('correct');
+        selectedBtn.querySelector('.opt-icon').textContent = '✓';
+      } else {
+        selectedBtn.classList.add('wrong');
+        selectedBtn.querySelector('.opt-icon').textContent = '✗';
+        if (allBtns[currentQuestion.computedCorrectIndex]) {
+          allBtns[currentQuestion.computedCorrectIndex].classList.add('correct');
+          allBtns[currentQuestion.computedCorrectIndex].querySelector('.opt-icon').textContent = '✓';
+        }
+      }
+
+      allBtns.forEach(btn => btn.disabled = true);
+
+      // Подсчёт очков
+      total++;
+      if (isCorrect) {
+        correct++;
+        streak++;
+      } else {
+        streak = 0;
+        if (gameMode === 'rush') {
+          rushMistakes.push({
+            ...currentQuestion,
+            userChoice: selectedText
+          });
+        }
+      }
+      updateStatsUI();
+
+      if (gameMode === 'rush') {
+        // В режиме Grammar Rush: мгновенная подсветка и переход через 360 мс
+        setTimeout(() => {
+          if (rushTimeLeft > 0) nextQuestion();
+        }, 360);
+      } else {
+        // В режиме Разбора: сам блок вопроса превращается в блок "Верно/Неверно + Объяснение"
+        transformQuestionIntoExplanation(isCorrect);
+        document.getElementById('nextBtn').classList.add('visible');
+      }
+    }
+
+    function transformQuestionIntoExplanation(isCorrect) {
+      const termBox = document.getElementById('termBox');
+      termBox.classList.remove('state-correct', 'state-wrong');
+      termBox.classList.add(isCorrect ? 'state-correct' : 'state-wrong');
+
+      document.getElementById('questionView').style.display = 'none';
+      const feedbackView = document.getElementById('feedbackView');
+      feedbackView.style.display = 'flex';
+
+      const statusEl = document.getElementById('feedbackStatus');
+      if (isCorrect) {
+        statusEl.className = 'feedback-status correct';
+        statusEl.textContent = `✅ Верно! (${currentQuestion.correctOption})`;
+      } else {
+        statusEl.className = 'feedback-status wrong';
+        statusEl.textContent = `❌ Неверно! Ответ: ${currentQuestion.correctOption}`;
+      }
+
+      // Формируем готовое предложение со вставленным правильным ответом
+      const filledSentence = currentQuestion.question.replace(
+        '____',
+        `<span class="ans-highlight">${currentQuestion.correctOption}</span>`
+      );
+      document.getElementById('completedSentence').innerHTML = filledSentence;
+      document.getElementById('feedbackExplanation').innerHTML = `<strong>💡 Разбор:</strong> ${currentQuestion.explanation}`;
+      document.getElementById('peekQuestionBtn').textContent = '👁 Вопрос с пропуском';
+    }
+
+    // Позволяет в 1 клик переключиться обратно на исходный текст задания, если нужно во время урока
+    function toggleQuestionPeek() {
+      if (!answered) return;
+      peekingOriginalQuestion = !peekingOriginalQuestion;
+      const qView = document.getElementById('questionView');
+      const fView = document.getElementById('feedbackView');
+
+      if (peekingOriginalQuestion) {
+        qView.style.display = 'block';
+        fView.style.display = 'none';
+        // Добавим маленькую кнопку возврата к объяснению прямо в questionText, если нужно
+      } else {
+        qView.style.display = 'none';
+        fView.style.display = 'flex';
+      }
+    }
+
+    // Позволяет кликом по самой карточке вопроса переключаться между вопросом и разбором после ответа
+    document.getElementById('questionView').addEventListener('click', () => {
+      if (answered && peekingOriginalQuestion) {
+        toggleQuestionPeek();
+      }
+    });
+
+    // Горячие клавиши 1-4 / A-D и Enter/Space для быстрой работы во время Zoom-урока
+    document.addEventListener('keydown', (e) => {
+      if (document.getElementById('rushResultScreen').classList.contains('active')) return;
+
+      if (!answered) {
+        const keyMap = { '1': 0, '2': 1, '3': 2, '4': 3, 'a': 0, 'b': 1, 'c': 2, 'd': 3 };
+        const idx = keyMap[e.key.toLowerCase()];
+        if (idx !== undefined) {
+          const btns = document.querySelectorAll('.option-btn');
+          if (btns[idx]) btns[idx].click();
+        }
+      } else if (gameMode === 'practice' && (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight')) {
+        e.preventDefault();
+        nextQuestion();
+      }
+    });
+
+    checkAuth();
+  </script>
+  <script src="/session-guard.js"></script>
+</body>
+</html>
