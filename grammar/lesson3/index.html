@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>@doctors.speak — Lesson 3: Past Simple & Present Perfect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Подключение Supabase SDK для проверки подписки -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --kz-gold-light: #FFFBEB;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --success-bg: #DCFCE7;
+      --success-border: #22C55E;
+      --success-text: #15803D;
+      --error-bg: #FEE2E2;
+      --error-border: #EF4444;
+      --error-text: #B91C1C;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 40px;
+    }
+
+    /* Верхняя шапка с кнопкой назад и переключателем RU/KZ */
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+      color: #FFFFFF;
+      padding: 16px 20px 22px 20px;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-top {
+      max-width: 820px;
+      margin: 0 auto 12px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 20px;
+      padding: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 800;
+      font-size: 0.74rem;
+      padding: 5px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+    }
+
+    .header-title-box {
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .lesson-badge {
+      display: inline-block;
+      background: rgba(255, 199, 44, 0.2);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    header p {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* Навигация по разделам урока */
+    .section-nav {
+      width: 100%;
+      max-width: 820px;
+      margin: 14px auto 0 auto;
+      padding: 0 14px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .nav-pill {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 9px 6px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .nav-pill.active {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      border-color: var(--kz-blue-dark);
+      box-shadow: 0 4px 12px rgba(0, 161, 222, 0.25);
+    }
+
+    /* Основной контейнер */
+    main {
+      width: 100%;
+      max-width: 820px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-section {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .tab-section.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Карточки теории */
+    .card-block {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-block::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: var(--kz-blue);
+    }
+
+    .card-block.gold::before {
+      background: var(--kz-gold-dark);
+    }
+
+    .card-block h2 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-block p {
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+
+    /* Сравнение двух времен */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .comp-box {
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-main);
+    }
+
+    .comp-box.past {
+      border-top: 4px solid var(--kz-blue);
+      background: var(--kz-blue-light);
+    }
+
+    .comp-box.perfect {
+      border-top: 4px solid var(--kz-gold-dark);
+      background: var(--kz-gold-light);
+    }
+
+    .comp-title {
+      font-size: 0.88rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .comp-formula {
+      display: inline-block;
+      background: #FFFFFF;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      border: 1px dashed var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .clinical-quote {
+      background: #FFFFFF;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 0.82rem;
+      border-left: 3px solid var(--text-dark);
+      margin-top: 8px;
+      line-height: 1.45;
+    }
+
+    /* Таблица формул */
+    .grammar-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 0.78rem;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .grammar-table th {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: 800;
+    }
+
+    .grammar-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border-color);
+      background: #FFFFFF;
+      line-height: 1.45;
+    }
+
+    .grammar-table tr:nth-child(even) td {
+      background: #F8FAFC;
+    }
+
+    /* Спойлер для Used to / Be used to */
+    details.tenses-spoiler {
+      margin-top: 12px;
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 10px 14px;
+    }
+
+    details.tenses-spoiler summary {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      cursor: pointer;
+      list-style: none;
+    }
+
+    /* Быстрые микро-упражнения внутри теории (Quick Check) */
+    .quick-check {
+      background: #F8FAFC;
+      border: 1px dashed var(--kz-blue);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .qc-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .qc-question {
+      font-size: 0.86rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+    }
+
+    .qc-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .qc-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .qc-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background: var(--kz-blue-light);
+    }
+
+    .qc-btn.correct {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    .qc-btn.wrong {
+      background: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    .qc-feedback {
+      display: none;
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      line-height: 1.35;
+    }
+
+    /* Теги слов-маркеров */
+    .markers-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .marker-chip {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 5px 11px;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .marker-chip b {
+      color: var(--kz-blue-dark);
+    }
+
+    /* Интерактивный клинический кейс (Case Report Box) */
+    .case-box {
+      background: #FFFFFF;
+      border: 2px solid #CBD5E1;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .case-header {
+      background: #1E293B;
+      color: #FFFFFF;
+      padding: 10px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .case-controls {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .hl-btn {
+      border: none;
+      padding: 5px 10px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .hl-btn.ps { background: #BAE6FD; color: #0369A1; }
+    .hl-btn.pp { background: #FDE68A; color: #92400E; }
+    .hl-btn.all { background: rgba(255,255,255,0.2); color: #FFFFFF; }
+
+    .case-body {
+      padding: 14px;
+      font-size: 0.83rem;
+      line-height: 1.65;
+      color: #334155;
+    }
+
+    .v-ps, .v-pp {
+      padding: 1px 5px;
+      border-radius: 5px;
+      transition: all 0.2s ease;
+    }
+
+    .case-body.show-ps .v-ps {
+      background: #BAE6FD;
+      color: #0369A1;
+      font-weight: 800;
+      border-bottom: 2px solid #0284C7;
+    }
+
+    .case-body.show-pp .v-pp {
+      background: #FDE68A;
+      color: #92400E;
+      font-weight: 800;
+      border-bottom: 2px solid #D97706;
+    }
+
+    /* Карточки словаря */
+    .vocab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+      gap: 10px;
+    }
+
+    .vocab-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .vocab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .vocab-word {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+    }
+
+    .speak-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 161, 222, 0.3);
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+    }
+
+    .vocab-trans {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .vocab-example {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--bg-main);
+      padding: 7px 9px;
+      border-radius: 8px;
+      line-height: 1.35;
+    }
+
+    /* Кнопка перехода к следующему разделу или тренажеру */
+    .action-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      border-radius: 16px;
+      padding: 13px 18px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    @media (max-width: 560px) {
+      .section-nav {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      header h1 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ШАПКА УРОКА -->
+  <header>
+    <div class="header-top">
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅ К списку уроков</a>
+      <div class="lang-switch">
+        <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
+        <button class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
+      </div>
+    </div>
+    <div class="header-title-box">
+      <span class="lesson-badge">Lesson 3 • A1–B1 Medical English</span>
+      <h1 id="uiTitle">Past Simple vs Present Perfect</h1>
+      <p id="uiSubtitle">Как отличать архивные факты анамнеза от событий, которые влияют на состояние пациента прямо сейчас</p>
+    </div>
+  </header>
+
+  <!-- НАВИГАЦИЯ ПО ЭТАПАМ УРОКА -->
+  <nav class="section-nav">
+    <button class="nav-pill active" onclick="showTab(0)" id="nav0">1. Смысл и Формулы</button>
+    <button class="nav-pill" onclick="showTab(1)" id="nav1">2. Маркеры и Кейс</button>
+    <button class="nav-pill" onclick="showTab(2)" id="nav2">3. Словарь (13 слов)</button>
+    <button class="nav-pill" onclick="showTab(3)" id="nav3">4. Упражнения</button>
+  </nav>
+
+  <!-- ОСНОВНОЙ КОНТЕНТ -->
+  <main>
+    <!-- ВКЛАДКА 1: СМЫСЛ И ФОРМУЛЫ -->
+    <section class="tab-section active" id="tab0"></section>
+
+    <!-- ВКЛАДКА 2: МАРКЕРЫ И РАЗБОР КЛИНИЧЕСКОГО КЕЙСА -->
+    <section class="tab-section" id="tab1"></section>
+
+    <!-- ВКЛАДКА 3: СЛОВАРЬ С ПРИМЕРАМИ -->
+    <section class="tab-section" id="tab2">
+      <div class="card-block">
+        <h2 id="uiVocabTitle">💊 Клинический словарь урока (13 терминов)</h2>
+        <p id="uiVocabDesc">Нажмите 🔊, чтобы прослушать произношение. Все примеры взяты из реальной врачебной практики и показывают работу Past Simple и Present Perfect.</p>
+        <div class="vocab-grid" id="vocabGrid"></div>
+      </div>
+      <button class="action-btn" onclick="showTab(3)" id="uiToExBtn">Перейти к упражнениям урока ➔</button>
+    </section>
+
+    <!-- ВКЛАДКА 4: ПРАКТИКУМ (EXERCISE 1 & 2 ИЗ PDF) -->
+    <section class="tab-section" id="tab3">
+      <div class="card-block gold">
+        <h2 id="uiEx1Title">✍️ Упражнение 1: Выберите правильное время (Present Perfect или Past Simple)</h2>
+        <p id="uiEx1Desc">Найдите в предложении маркер времени или оцените связь с настоящим моментом:</p>
+        <div id="ex1Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+      </div>
+
+      <div class="card-block">
+        <h2 id="uiEx2Title">🩺 Упражнение 2: Раскройте скобки в клинических ситуациях</h2>
+        <p id="uiEx2Desc">Поставьте глагол в скобках в форму Present Perfect или Past Simple:</p>
+        <div id="ex2Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+      </div>
+
+      <a href="./past/" class="action-btn" id="uiGoTrainerBtn">🎯 Запустить игровой тренажер по Уроку 3 ➔</a>
+    </section>
+  </main>
+
+  <script>
+    // =========================================================================
+    // 1. ПРОВЕРКА ДОСТУПА ПО ПОДПИСКЕ ЧЕРЕЗ SUPABASE (по образцу index-86)
+    // =========================================================================
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+    async function checkAuth() {
+      if (!supabaseClient || window.location.protocol === 'file:') return;
+      try {
+        const { data, error } = await supabaseClient.auth.getSession();
+        if (error || !data.session) {
+          window.location.href = "/login.html";
+        }
+      } catch (e) {
+        console.warn("Auth check error:", e);
+      }
+    }
+    checkAuth();
+
+    // =========================================================================
+    // 2. БАЗА ДАННЫХ УРОКА 3 (НА РУССКОМ И КАЗАХСКОМ ЯЗЫКАХ)
+    // =========================================================================
+    const LESSON3_DATA = {
+      ui: {
+        backBtn: { ru: "⬅ К списку уроков", kz: "⬅ Сабақтар тізіміне" },
+        title: {
+          ru: "Past Simple vs Present Perfect",
+          kz: "Past Simple және Present Perfect"
+        },
+        subtitle: {
+          ru: "События в прошлом: «просто факт в архиве» или «результат, важный для диагноза прямо сейчас»",
+          kz: "Өткен шақтағы оқиғалар: «жай ғана өткен дерек» немесе «дәл қазіргі диагнозға әсер ететін нәтиже»"
+        },
+        nav: [
+          { ru: "1. Смысл и Формулы", kz: "1. Мағынасы мен Формула" },
+          { ru: "2. Маркеры и Кейс", kz: "2. Маркерлер мен Кейс" },
+          { ru: "3. Словарь (13 слов)", kz: "3. Сөздік (13 сөз)" },
+          { ru: "4. Упражнения", kz: "4. Жаттығулар" }
+        ],
+        vocabTitle: {
+          ru: "💊 Клинический словарь урока (13 терминов)",
+          kz: "💊 Сабақтың клиникалық сөздігі (13 термин)"
+        },
+        vocabDesc: {
+          ru: "Нажмите 🔊 для прослушивания произношения. Обратите внимание на выбор Past Simple и Present Perfect в примерах.",
+          kz: "Дұрыс айтылуын тыңдау үшін 🔊 басыңыз. Мысалдардағы Past Simple мен Present Perfect таңдауына назар аударыңыз."
+        },
+        toExBtn: {
+          ru: "Перейти к шагу 4: Быстрые упражнения ➔",
+          kz: "4-қадамға өту: Жылдам жаттығулар ➔"
+        },
+        ex1Title: {
+          ru: "✍️ Упражнение 1: Выберите правильную форму (Present Perfect vs Past Simple)",
+          kz: "✍️ 1-жаттығу: Дұрыс форманы таңдаңыз (Present Perfect vs Past Simple)"
+        },
+        ex1Desc: {
+          ru: "Ориентируйтесь на маркеры времени (at 8 a.m., for the last two days, so far, when she was younger):",
+          kz: "Уақыт маркерлеріне (at 8 a.m., for the last two days, so far, when she was younger) назар аударыңыз:"
+        },
+        ex2Title: {
+          ru: "🩺 Упражнение 2: Раскройте скобки в клинических ситуациях",
+          kz: "🩺 2-жаттығу: Клиникалық жағдайларда жақшаны ашыңыз"
+        },
+        ex2Desc: {
+          ru: "Выберите верную грамматическую конструкцию для пропусков:",
+          kz: "Бос орындарға сәйкес келетін грамматикалық форманы таңдаңыз:"
+        },
+        goTrainerBtn: {
+          ru: "🎯 Перейти к основному тренажеру Урока 3 ➔",
+          kz: "🎯 3-сабақтың негізгі тренажеріне өту ➔"
+        }
+      },
+
+      // ВКЛАДКА 1: СМЫСЛ И ФОРМУЛЫ
+      tab0Html: {
+        ru: `
+          <div class="card-block">
+            <h2>🩻 В чем суть разницы? Кейс со снимком рентгена и Kaspi Жұма</h2>
+            <p>В русском и казахском языках мы говорим одинаково: <b>«Пациент прошел рентгенографию»</b>. Но для врача критически важно: этот снимок <b>свежий и относится к текущему заболеванию</b> или пациент делал его <b>в 2019 году</b> просто для медосмотра? В английском эту разницу передает выбор между <b>Past Simple</b> и <b>Present Perfect</b>:</p>
+
+            <div class="comparison-grid">
+              <div class="comp-box past">
+                <div class="comp-title">
+                  <span>📁 Past Simple</span>
+                  <span style="font-size:0.72rem; color:var(--kz-blue-dark);">«АРХИВ ПРОШЛОГО»</span>
+                </div>
+                <span class="comp-formula">Subject + DID (V2 / V-ed)</span>
+                <p style="font-size:0.8rem;">Мы «просто» рассказываем о событии в завершенном прошлом (вчера, в 8 утра, в прошлом году). Связь с настоящим моментом оборвана или не важна.</p>
+                <div class="clinical-quote">
+                  <b>"The patient underwent many investigations, could not find the diagnosis, and then died."</b><br>
+                  <span style="color:var(--text-muted); font-size:0.75rem;">История полностью осталась в прошлом (пациент умер, обследования больше не актуальны).</span>
+                </div>
+              </div>
+
+              <div class="comp-box perfect">
+                <div class="comp-title">
+                  <span>⚡ Present Perfect</span>
+                  <span style="font-size:0.72rem; color:var(--kz-gold-dark);">«ВАЖНО ПРЯМО СЕЙЧАС»</span>
+                </div>
+                <span class="comp-formula">Subject + HAVE / HAS + DONE (V3)</span>
+                <p style="font-size:0.8rem;">Событие произошло в прошлом, но его <b>результат налицо прямо сейчас</b> (свежий рентген на столе, пациент уже принял препарат и ждет эффекта).</p>
+                <div class="clinical-quote">
+                  <b>"The patient has undergone many investigations, but we are still clueless about his diagnosis."</b><br>
+                  <span style="color:var(--text-muted); font-size:0.75rem;">Пациент уже прошел обследования к текущему моменту, и мы прямо сейчас ищем диагноз!</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="clinical-quote" style="border-left-color: var(--kz-gold-dark); margin-top: 12px;">
+              📱 <b>Жизненная аналогия («Kaspi Жұма»):</b><br>
+              • Если друг говорит: <i>«Я купил iPhone на Kaspi Жұма»</i>, но в руках у него сейчас старый Samsung — это <b>Past Simple</b> (<i>I bought an iPhone</i> — когда-то купил, но сейчас его уже нет).<br>
+              • Если он протягивает вам новый или только что разбитый iPhone в руках — это <b>Present Perfect</b> (<i>I have bought / I have broken my iPhone</i> — вот он результат перед глазами!).
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Быстрая проверка понимания</span>
+              <div class="qc-question">Вы смотрите на свежий снимок грудной клетки в ординаторской и говорите коллеге: «Смотри на рентген — бактерии инфильтрировали нижнюю долю левого легкого!» Какое время выберете?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Верно! Снимок перед нами (Look at the X-ray!), результат инфильтрации актуален прямо сейчас -> Present Perfect (have/has infiltrated).')">Present Perfect (результат на снимке прямо сейчас)</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Past Simple подошел бы для архивной выписки с датой (например, вчера или в 2020 году). А здесь мы смотрим на актуальный снимок прямо сейчас!')">Past Simple (просто факт в прошлом)</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>📐 Формулы построения: V2 vs Have/Has + V3</h2>
+            <p>Для правильных глаголов (<i>help, examine, prescribe</i>) вторая и третья формы совпадают — просто добавляем <b>-ed</b>. Для неправильных глаголов (<i>give – gave – given, take – took – taken, go – went – gone</i>) важно различать <b>V2</b> и <b>V3</b>:</p>
+
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Тип предложения</th>
+                  <th>Past Simple (Когда? Вчера / В 8:00)</th>
+                  <th>Present Perfect (Уже / Только что / Результат)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>(+) Утверждение</b></td>
+                  <td><b>Subject + V2 (-ed)</b><br>• I <b>helped</b> a patient.<br>• I <b>gave</b> albuterol at 8 a.m.</td>
+                  <td><b>Subject + have/has + V3 (-ed)</b><br>• I <b>have helped</b> the patient.<br>• I <b>have given</b> the patient albuterol.</td>
+                </tr>
+                <tr>
+                  <td><b>(?) Вопрос</b></td>
+                  <td><b>Did + Subject + V1 (без -ed!)?</b><br>• <b>Did</b> you <b>help</b> the patient?<br>• <b>Did</b> you <b>go</b> to Mega Silkway?</td>
+                  <td><b>Have/Has + Subject + V3?</b><br>• <b>Have</b> you <b>helped</b> the patient?<br>• <b>Has</b> he <b>taken</b> the medication?</td>
+                </tr>
+                <tr>
+                  <td><b>(-) Отрицание</b></td>
+                  <td><b>Subject + did not (didn't) + V1</b><br>• I <b>did not help</b> the patient.<br>• I <b>did not go</b>.</td>
+                  <td><b>Subject + haven't / hasn't + V3</b><br>• I <b>have not helped</b> the patient.<br>• He <b>hasn't taken</b> albuterol yet.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <details class="tenses-spoiler">
+              <summary>💡 Бонус для уровня B1: Конструкции «Used to do» vs «Be used to doing»</summary>
+              <div style="margin-top:8px; font-size:0.8rem; line-height:1.5;">
+                В медицине при сборе анамнеза очень часто используется конструкция <b>used to + V1</b> (раньше делал, но больше не делает):<br>
+                • (+) <b>I used to work in Astana.</b> — <i>Раньше я работал в Астане (сейчас уже нет).</i><br>
+                • (-) <b>I did not use to give anesthesia in appendicitis cases.</b> — <i>Раньше я не давал анестезию при аппендиците.</i><br>
+                • (?) <b>Did you use to give patients morphine?</b> — <i>Вы раньше давали пациентам морфин?</i><br><br>
+                ⚠️ <b>Не путайте с:</b> <b>am/is/are used to + V-ing</b> (привык делать что-то в настоящем):<br>
+                • <b>I am used to writing diaries after lunch.</b> — <i>Я привык писать дневники пациентов после обеда.</i>
+              </div>
+            </details>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Быстрая проверка формулы</span>
+              <div class="qc-question">Как правильно построить отрицание в Past Simple: «Хирург НЕ прооперировал вчера»?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Ошибка: после помощника did not глагол возвращается в первую форму V1 (без окончания -ed)!')">The surgeon did not operated yesterday.</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Отлично! В вопросах и отрицаниях Past Simple помощник did забирает на себя прошедшее время: did not operate.')">The surgeon did not operate yesterday.</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Has not operated — это Present Perfect, а его нельзя использовать с точным маркером прошлого yesterday!')">The surgeon has not operated yesterday.</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">Перейти к шагу 2: Слова-маркеры и Клинический кейс ➔</button>
+        `,
+        kz: `
+          <div class="card-block">
+            <h2>🩻 Негізгі айырмашылық неде? Рентген суреті және Kaspi Жұма мысалы</h2>
+            <p>Қазақ және орыс тілдерінде біз бірдей айтамыз: <b>«Науқас рентгенге түсті»</b>. Бірақ дәрігер үшін ең маңыздысы: бұл рентген суреті <b>жаңа ма (осы ауруға қатысты ма)</b>, әлде науқас оны <b>2019 жылы</b> жай ғана тексерістен өткенде түсірген бе? Ағылшын тілінде бұл айырмашылықты <b>Past Simple</b> мен <b>Present Perfect</b> көрсетеді:</p>
+
+            <div class="comparison-grid">
+              <div class="comp-box past">
+                <div class="comp-title">
+                  <span>📁 Past Simple</span>
+                  <span style="font-size:0.72rem; color:var(--kz-blue-dark);">«ӨТКЕН ШАҚ МҰРАҒАТЫ»</span>
+                </div>
+                <span class="comp-formula">Subject + DID (V2 / V-ed)</span>
+                <p style="font-size:0.8rem;">Біз өткен шақта аяқталған оқиға туралы (кеше, таңғы 8-де, былтыр) «жай ғана» баяндаймыз. Осы шақпен байланысы үзілген.</p>
+                <div class="clinical-quote">
+                  <b>"The patient underwent many investigations, could not find the diagnosis, and then died."</b><br>
+                  <span style="color:var(--text-muted); font-size:0.75rem;">Оқиға толығымен өткен шақта қалды (науқас қайтыс болды, тексерулер енді өзекті емес).</span>
+                </div>
+              </div>
+
+              <div class="comp-box perfect">
+                <div class="comp-title">
+                  <span>⚡ Present Perfect</span>
+                  <span style="font-size:0.72rem; color:var(--kz-gold-dark);">«ДӘЛ ҚАЗІР МАҢЫЗДЫ»</span>
+                </div>
+                <span class="comp-formula">Subject + HAVE / HAS + DONE (V3)</span>
+                <p style="font-size:0.8rem;">Оқиға өткенде болғанымен, оның <b>нәтижесі дәл қазір көз алдымызда</b> (жаңа рентген үстелде жатыр, науқас дәріні ішіп қойды).</p>
+                <div class="clinical-quote">
+                  <b>"The patient has undergone many investigations, but we are still clueless about his diagnosis."</b><br>
+                  <span style="color:var(--text-muted); font-size:0.75rem;">Науқас осы уақытқа дейін тексерулерден өтті, бірақ біз дәл қазір әлі де диагнозын іздеп жатырмыз!</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="clinical-quote" style="border-left-color: var(--kz-gold-dark); margin-top: 12px;">
+              📱 <b>Өмірлік аналогия («Kaspi Жұма»):</b><br>
+              • Егер досыңыз: <i>«Мен Kaspi Жұмада iPhone сатып алдым»</i> десе, бірақ қолында қазір ескі Samsung болса — бұл <b>Past Simple</b> (<i>I bought an iPhone</i> — бұрын алған, қазір ол жоқ).<br>
+              • Ал егер қолында жаңа немесе жаңа ғана сынған iPhone-ды көрсетіп тұрса — бұл <b>Present Perfect</b> (<i>I have bought / I have broken my iPhone</i> — нәтижесі көз алдымызда!).
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Түсінікті жылдам тексеру</span>
+              <div class="qc-question">Сіз науқастың жаңа рентген суретіне қарап, әріптесіңізге: «Рентгенге қарашы — бактериялар сол жақ өкпенің төменгі бөлігін зақымдапты!» дейсіз. Қай шақты таңдайсыз?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Дұрыс! Сурет дәл қазір алдымызда (Look at the X-ray!), нәтижесі осы сәтке тікелей қатысты -> Present Perfect (have/has infiltrated).')">Present Perfect (нәтижесі дәл қазір суретте көрініп тұр)</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Past Simple өткен жылғы немесе кешегі архивтік жазбаға сәйкес келеді. Ал мұнда біз жаңа суретке дәл қазір қарап тұрмыз!')">Past Simple (жай ғана өткен дерек)</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>📐 Құрылым формуласы: V2 және Have/Has + V3</h2>
+            <p>Дұрыс етістіктерге (<i>help, examine, prescribe</i>) екінші және үшінші формада жай ғана <b>-ed</b> жалғанады. Бұрыс етістіктердің (<i>give – gave – given, take – took – taken</i>) <b>V2</b> және <b>V3</b> формаларын ажырата білу маңызды:</p>
+
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Сөйлем түрі</th>
+                  <th>Past Simple (Қашан? Кеше / Сағат 8:00-де)</th>
+                  <th>Present Perfect (Әлдеқашан / Жаңа ғана / Нәтиже)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>(+) Болымды</b></td>
+                  <td><b>Subject + V2 (-ed)</b><br>• I <b>helped</b> a patient.<br>• I <b>gave</b> albuterol at 8 a.m.</td>
+                  <td><b>Subject + have/has + V3 (-ed)</b><br>• I <b>have helped</b> the patient.<br>• I <b>have given</b> the patient albuterol.</td>
+                </tr>
+                <tr>
+                  <td><b>(?) Сұраулы</b></td>
+                  <td><b>Did + Subject + V1 (-ed жалғауынсыз!)?</b><br>• <b>Did</b> you <b>help</b> the patient?<br>• <b>Did</b> you <b>go</b> to Mega Silkway?</td>
+                  <td><b>Have/Has + Subject + V3?</b><br>• <b>Have</b> you <b>helped</b> the patient?<br>• <b>Has</b> he <b>taken</b> the medication?</td>
+                </tr>
+                <tr>
+                  <td><b>(-) Болымсыз</b></td>
+                  <td><b>Subject + did not (didn't) + V1</b><br>• I <b>did not help</b> the patient.<br>• I <b>did not go</b>.</td>
+                  <td><b>Subject + haven't / hasn't + V3</b><br>• I <b>have not helped</b> the patient.<br>• He <b>hasn't taken</b> albuterol yet.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <details class="tenses-spoiler">
+              <summary>💡 B1 деңгейіне бонус: «Used to do» және «Be used to doing»</summary>
+              <div style="margin-top:8px; font-size:0.8rem; line-height:1.5;">
+                Анамнез жинағанда <b>used to + V1</b> (бұрын істейтін едім, қазір істемеймін) құрылымы өте жиі қолданылады:<br>
+                • (+) <b>I used to work in Astana.</b> — <i>Мен бұрын Астанада жұмыс істегенмін (қазір емес).</i><br>
+                • (-) <b>I did not use to give anesthesia in appendicitis cases.</b> — <i>Бұрын аппендицит кезінде анестезия бермейтінмін.</i><br>
+                • (?) <b>Did you use to give patients morphine?</b> — <i>Сіз бұрын науқастарға морфин беретін бе едіңіз?</i><br><br>
+                ⚠️ <b>Шатастырмаңыз:</b> <b>am/is/are used to + V-ing</b> (қазір бір нәрсеге үйреніп қалғанмын):<br>
+                • <b>I am used to writing diaries after lunch.</b> — <i>Мен түскі астан кейін күнделік толтыруға үйренгенмін.</i>
+              </div>
+            </details>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Формуланы жылдам тексеру</span>
+              <div class="qc-question">Past Simple-да болымсыз сөйлемді қалай дұрыс құраймыз: «Хирург кеше операция жасаған ЖОҚ»?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Қате: did not көмекші етістігінен кейін негізгі етістік бастапқы V1 формасына (-ed жалғауынсыз) оралады!')">The surgeon did not operated yesterday.</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Тамаша! Сұраулы және болымсыз Past Simple сөйлемдерінде did өткен шақты өзіне алады: did not operate.')">The surgeon did not operate yesterday.</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Has not operated — Present Perfect, ал оны нақты өткен уақытпен (yesterday) қолдануға болмайды!')">The surgeon has not operated yesterday.</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">2-қадамға өту: Мезгіл маркерлері және Клиникалық кейс ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 2: МАРКЕРЫ И ИНТЕРАКТИВНЫЙ КЛИНИЧЕСКИЙ КЕЙС (19-YEAR-OLD ATHLETE WITH SYNCOPE)
+      tab1Html: {
+        ru: `
+          <div class="card-block gold">
+            <h2>🧭 Главная шпаргалка по словам-маркерам (Time Markers)</h2>
+            <p>Запомните простое правило: если в предложении названа <b>закрытая точка в прошлом</b> (когда именно?) — это 100% <b>Past Simple</b>. Если период <b>еще не закончился</b> или важен итог к настоящему моменту — это <b>Present Perfect</b>:</p>
+
+            <h3 style="font-size:0.84rem; font-weight:800; color:var(--kz-blue-dark); margin-top:10px;">1. Маркеры Past Simple (Точное, закрытое время в прошлом):</h3>
+            <div class="markers-wrap">
+              <span class="marker-chip"><b>yesterday</b> — вчера</span>
+              <span class="marker-chip"><b>at 8 a.m. this morning</b> — в 8 утра</span>
+              <span class="marker-chip"><b>two weeks ago</b> — две недели назад</span>
+              <span class="marker-chip"><b>last year / last night</b> — в прошлом году</span>
+              <span class="marker-chip"><b>when I was younger</b> — когда я был моложе</span>
+              <span class="marker-chip"><b>before 30</b> — до 30 лет</span>
+              <span class="marker-chip"><b>during the last practice</b> — на прошлой тренировке</span>
+            </div>
+
+            <h3 style="font-size:0.84rem; font-weight:800; color:#B45309; margin-top:14px;">2. Маркеры Present Perfect (Связь с настоящим и незавершенный период):</h3>
+            <div class="markers-wrap">
+              <span class="marker-chip"><b>since yesterday</b> — со вчерашнего дня (и до сих пор)</span>
+              <span class="marker-chip"><b>for the last two days / 2 weeks</b> — на протяжении последних 2 дней</span>
+              <span class="marker-chip"><b>over the past 6 months</b> — за последние 6 месяцев</span>
+              <span class="marker-chip"><b>so far</b> — на данный момент / пока что</span>
+              <span class="marker-chip"><b>yet</b> — еще не / уже (в конце (-) и (?))</span>
+              <span class="marker-chip"><b>already / just</b> — уже / только что</span>
+              <span class="marker-chip"><b>this week / this month</b> — на этой неделе (она еще идет!)</span>
+            </div>
+          </div>
+
+          <div class="card-block">
+            <h2>🫀 Интерактивный разбор клинического кейса (Exertional Syncope in Athlete)</h2>
+            <p>Прочитайте реальный кардиологический кейс 19-летнего спортсмена с обмороками при нагрузке. Нажимайте на кнопки подсветки, чтобы увидеть, почему авторы статьи используют <b>Past Simple</b> для архивных событий и <b>Present Perfect</b> для накопленного анамнеза к текущему моменту:</p>
+
+            <div class="case-box">
+              <div class="case-header">
+                <span>📋 Case Presentation: 19-year-old male with syncope</span>
+                <div class="case-controls">
+                  <button class="hl-btn ps" onclick="toggleCaseHighlight('ps')">Только Past Simple</button>
+                  <button class="hl-btn pp" onclick="toggleCaseHighlight('pp')">Только Present Perfect</button>
+                  <button class="hl-btn all" onclick="toggleCaseHighlight('all')">Показать оба</button>
+                </div>
+              </div>
+              <div class="case-body show-ps show-pp" id="caseBodyText">
+                A 19-year-old male presents with recurrent episodes of syncope during physical exertion. Currently, he is undergoing a full cardiac evaluation.<br><br>
+                The patient <span class="v-pp">has experienced</span> four syncopal episodes <b>over the past six months</b>. He <span class="v-pp">has never reported</span> chest pain, and his family history is negative for sudden cardiac death. He <span class="v-pp">has been participating</span> in high-intensity sports <b>for the last three years</b> without prior incidents. However, his coach <span class="v-ps">noticed</span> a brief loss of consciousness <b>during the last practice</b> and <span class="v-ps">called</span> emergency services.<br><br>
+                <b>Previous evaluations</b> <span class="v-ps">included</span> routine blood work, which <span class="v-ps">was</span> within normal limits, and an echocardiogram, which <span class="v-ps">did not reveal</span> any structural abnormalities. However, a <b>recent</b> Holter monitor <span class="v-pp">has captured</span> intermittent episodes of ventricular tachycardia.<br><br>
+                While the cardiology team is considering implantable loop recorder placement, they <span class="v-pp">have also scheduled</span> a cardiac MRI to further investigate possible arrhythmogenic right ventricular cardiomyopathy (ARVC).
+              </div>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Вопрос по клиническому кейсу</span>
+              <div class="qc-question">Почему про Холтер сказано в Present Perfect ("a recent Holter monitor has captured..."), а про действия тренера — в Past Simple ("his coach noticed... and called")?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Именно! Тренер заметил обморок в конкретный момент прошлого (during the last practice), а недавний Холтер дал ключевой результат, на основании которого кардиологи прямо сейчас назначают МРТ!')">Действия тренера были на прошлой тренировке (закрытый факт), а результат Холтера определяет тактику лечения прямо сейчас</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Наоборот: выбор времени здесь строго логичен и зависит от привязки к прошлой тренировке vs актуальному результату обследования.')">Авторы просто чередуют времена случайно для красоты текста</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">Перейти к шагу 3: Словарь урока (13 слов) ➔</button>
+        `,
+        kz: `
+          <div class="card-block gold">
+            <h2>🧭 Мезгіл маркерлері бойынша басты шпаргалка (Time Markers)</h2>
+            <p>Қарапайым ережені есте сақтаңыз: егер сөйлемде <b>өткен шақтағы нақты жабық уақыт</b> (қашан?) көрсетілсе — бұл 100% <b>Past Simple</b>. Егер уақыт кезеңі <b>әлі аяқталмаса</b> немесе осы сәтке дейінгі нәтиже маңызды болса — <b>Present Perfect</b>:</p>
+
+            <h3 style="font-size:0.84rem; font-weight:800; color:var(--kz-blue-dark); margin-top:10px;">1. Past Simple маркерлері (Өткен шақтағы нақты жабық уақыт):</h3>
+            <div class="markers-wrap">
+              <span class="marker-chip"><b>yesterday</b> — кеше</span>
+              <span class="marker-chip"><b>at 8 a.m. this morning</b> — таңғы сағат 8-де</span>
+              <span class="marker-chip"><b>two weeks ago</b> — екі апта бұрын</span>
+              <span class="marker-chip"><b>last year / last night</b> — былтыр / өткен түнде</span>
+              <span class="marker-chip"><b>when I was younger</b> — жас кезімде</span>
+              <span class="marker-chip"><b>before 30</b> — 30 жасқа дейін</span>
+              <span class="marker-chip"><b>during the last practice</b> — соңғы жаттығу кезінде</span>
+            </div>
+
+            <h3 style="font-size:0.84rem; font-weight:800; color:#B45309; margin-top:14px;">2. Present Perfect маркерлері (Осы шақпен байланыс және аяқталмаған кезең):</h3>
+            <div class="markers-wrap">
+              <span class="marker-chip"><b>since yesterday</b> — кешеден бері (әлі жалғасуда)</span>
+              <span class="marker-chip"><b>for the last two days / 2 weeks</b> — соңғы 2 күн / апта бойы</span>
+              <span class="marker-chip"><b>over the past 6 months</b> — соңғы 6 ай ішінде</span>
+              <span class="marker-chip"><b>so far</b> — осы уақытқа дейін / әзірше</span>
+              <span class="marker-chip"><b>yet</b> — әлі (болымсыз және сұраулы сөйлем соңында)</span>
+              <span class="marker-chip"><b>already / just</b> — әлдеқашан / жаңа ғана</span>
+              <span class="marker-chip"><b>this week / this month</b> — осы аптада (апта әлі біткен жоқ!)</span>
+            </div>
+          </div>
+
+          <div class="card-block">
+            <h2>🫀 Клиникалық жағдайды интерактивті талдау (Exertional Syncope in Athlete)</h2>
+            <p>Физикалық жүктеме кезінде талып қалатын (синкопе) 19 жастағы спортшының кардиологиялық кейсін оқыңыз. Авторлардың өткен оқиғалар үшін <b>Past Simple</b>, ал қазіргі диагнозға жинақталған анамнез үшін <b>Present Perfect</b> шағын қалай қолданғанын көру үшін батырмаларды басыңыз:</p>
+
+            <div class="case-box">
+              <div class="case-header">
+                <span>📋 Case Presentation: 19-year-old male with syncope</span>
+                <div class="case-controls">
+                  <button class="hl-btn ps" onclick="toggleCaseHighlight('ps')">Тек Past Simple</button>
+                  <button class="hl-btn pp" onclick="toggleCaseHighlight('pp')">Тек Present Perfect</button>
+                  <button class="hl-btn all" onclick="toggleCaseHighlight('all')">Екеуін де көрсету</button>
+                </div>
+              </div>
+              <div class="case-body show-ps show-pp" id="caseBodyText">
+                A 19-year-old male presents with recurrent episodes of syncope during physical exertion. Currently, he is undergoing a full cardiac evaluation.<br><br>
+                The patient <span class="v-pp">has experienced</span> four syncopal episodes <b>over the past six months</b>. He <span class="v-pp">has never reported</span> chest pain, and his family history is negative for sudden cardiac death. He <span class="v-pp">has been participating</span> in high-intensity sports <b>for the last three years</b> without prior incidents. However, his coach <span class="v-ps">noticed</span> a brief loss of consciousness <b>during the last practice</b> and <span class="v-ps">called</span> emergency services.<br><br>
+                <b>Previous evaluations</b> <span class="v-ps">included</span> routine blood work, which <span class="v-ps">was</span> within normal limits, and an echocardiogram, which <span class="v-ps">did not reveal</span> any structural abnormalities. However, a <b>recent</b> Holter monitor <span class="v-pp">has captured</span> intermittent episodes of ventricular tachycardia.<br><br>
+                While the cardiology team is considering implantable loop recorder placement, they <span class="v-pp">have also scheduled</span> a cardiac MRI to further investigate possible arrhythmogenic right ventricular cardiomyopathy (ARVC).
+              </div>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Клиникалық кейс бойынша сұрақ</span>
+              <div class="qc-question">Неліктен Холтер нәтижесі Present Perfect-те ("a recent Holter monitor has captured..."), ал жаттықтырушының әрекеті Past Simple-да ("his coach noticed... and called") берілген?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Дәл солай! Жаттықтырушы есінен тануды өткен жаттығуда (during the last practice) байқады, ал жақында жасалған Холтер дәл қазіргі емдеу тактикасын (МРТ тағайындауды) анықтап тұр!')">Жаттықтырушының әрекеті соңғы жаттығуда (өткен нақты уақытта) болды, ал Холтер нәтижесі дәл қазіргі диагнозға тікелей әсер етіп тұр</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Жоқ, медициналық мақалаларда әр шақтың нақты клиникалық логикасы бар.')">Авторлар мәтін әдемі көрінуі үшін шақтарды кезектестіріп қолданған</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">3-қадамға өту: Сабақ сөздігі (13 сөз) ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 3: СЛОВАРЬ (13 ТЕРМИНОВ С ПРИМЕРАМИ ИЗ СЛАЙДОВ 2 И 8)
+      vocabulary: [
+        {
+          en: "Kidney",
+          ru: "Почка",
+          kz: "Бүйрек",
+          ex: "The rheumatologist <b>discovered</b> a kidney injury because of lupus. <i>(Past Simple — факт обнаружения)</i>"
+        },
+        {
+          en: "Liver",
+          ru: "Печень",
+          kz: "Бауыр",
+          ex: "The surgeon <b>transplanted</b> the liver <b>yesterday</b>. <i>(Past Simple — маркер yesterday)</i>"
+        },
+        {
+          en: "Lung",
+          ru: "Легкое",
+          kz: "Өкпе",
+          ex: "Look at the X-ray — bacteria <b>have/has infiltrated</b> the lower lobe of the left lung. <i>(Present Perfect — результат на снимке сейчас)</i>"
+        },
+        {
+          en: "Medication",
+          ru: "Лекарство / Препарат",
+          kz: "Дәрілік препарат",
+          ex: "The patient <b>stopped</b> medications <b>two weeks ago</b> (Past) and <b>has developed</b> a rash (Perfect — сыпь сейчас)."
+        },
+        {
+          en: "Neck",
+          ru: "Шея",
+          kz: "Мойын",
+          ex: "The doctor <b>examined</b> the patient's neck and <b>found</b> stiffness. <i>(Past Simple — последовательность действий)</i>"
+        },
+        {
+          en: "Prescribe",
+          ru: "Назначать (лечение)",
+          kz: "Тағайындау (ем/дәрі)",
+          ex: "I <b>have prescribed</b> two medications; you need to take them in the morning. <i>(Present Perfect — рецепт уже готов)</i>"
+        },
+        {
+          en: "Shoulder",
+          ru: "Плечо",
+          kz: "Иық",
+          ex: "I think the patient's shoulder <b>has dislocated</b>. <i>(Present Perfect — вывих налицо прямо сейчас)</i>"
+        },
+        {
+          en: "Side effects",
+          ru: "Побочные эффекты",
+          kz: "Жанама әсерлер",
+          ex: "<b>Before 30</b>, I <b>didn't experience</b> any side effects of caffeine. <i>(Past Simple — закрытый период до 30 лет)</i>"
+        },
+        {
+          en: "Sore throat",
+          ru: "Боль в горле",
+          kz: "Тамақ ауруы",
+          ex: "She <b>has had</b> a sore throat <b>for two weeks now</b> — what can we do? <i>(Present Perfect — болит уже 2 недели и до сих пор)</i>"
+        },
+        {
+          en: "Stem cell",
+          ru: "Стволовая клетка",
+          kz: "Бағаналы жасуша",
+          ex: "Scientists <b>haven't proven</b> the benefit of stem cell therapy <b>yet</b>. <i>(Present Perfect — маркер yet)</i>"
+        },
+        {
+          en: "Stomachache",
+          ru: "Боль в желудке",
+          kz: "Асқазан ауруы",
+          ex: "The patient <b>treated</b> the stomachache with omeprazole. <i>(Past Simple — факт лечения в прошлом)</i>"
+        },
+        {
+          en: "Suffer",
+          ru: "Страдать (от болезни)",
+          kz: "Зардап шегу / Ауыру",
+          ex: "The patient <b>has suffered</b> from a stomachache <b>since yesterday</b>. <i>(Present Perfect — маркер since)</i>"
+        },
+        {
+          en: "Sweating",
+          ru: "Потливость (гипергидроз)",
+          kz: "Тершеңдік",
+          ex: "I <b>didn't use to sweat</b> so much while walking <b>when I was younger</b>. <i>(Конструкция used to в прошлом)</i>"
+        }
+      ],
+
+      // ВКЛАДКА 4: УПРАЖНЕНИЕ 1 И УПРАЖНЕНИЕ 2 ИЗ PDF
+      ex1: [
+        {
+          q: "1. The patient ___ his medication at 8 a.m. this morning.",
+          options: ["has taken", "took"],
+          correct: 1,
+          exp: {
+            ru: "Точное время в прошлом ('at 8 a.m. this morning') закрыто -> используем Past Simple (took — V2 от глагола take).",
+            kz: "Өткен шақтағы нақты сағат ('at 8 a.m. this morning') көрсетілген -> Past Simple қолданамыз (took — take етістігінің V2 формасы)."
+          }
+        },
+        {
+          q: "2. [На приеме, протягивая рецепт пациенту] I ___ antibiotics for her sore throat.",
+          options: ["have prescribed", "prescribed (если речь о вчерашнем приеме)"],
+          correct: 0,
+          exp: {
+            ru: "Вне контекста времени оба варианта грамматически возможны! Но если врач на приеме подводит итог («Я выписал антибиотики, вот рецепт») — это Present Perfect (have prescribed).",
+            kz: "Уақыт маркері болмаса, екі нұсқа да мүмкін! Бірақ дәрігер қабылдау кезінде нәтижені айтса («Мен антибиотик тағайындадым, міне рецепт») — Present Perfect (have prescribed)."
+          }
+        },
+        {
+          q: "3. He ___ about shoulder pain for the last two days.",
+          options: ["has complained", "complained"],
+          correct: 0,
+          exp: {
+            ru: "Маркер 'for the last two days' (на протяжении последних двух дней вплоть до текущего момента) требует Present Perfect -> has complained.",
+            kz: "'For the last two days' (соңғы екі күн бойы осы сәтке дейін) маркері Present Perfect-ті талап етеді -> has complained."
+          }
+        },
+        {
+          q: "4. We ___ any serious side effects so far.",
+          options: ["have not seen", "did not see"],
+          correct: 0,
+          exp: {
+            ru: "Маркер 'so far' (на данный момент / пока что) всегда связывает прошлое с настоящим -> Present Perfect (have not seen).",
+            kz: "'So far' (осы уақытқа дейін / әзірше) маркері әрқашан өткенді осы шақпен байланыстырады -> Present Perfect (have not seen)."
+          }
+        },
+        {
+          q: "5. She ___ from liver problems when she was younger.",
+          options: ["suffered", "has suffered"],
+          correct: 0,
+          exp: {
+            ru: "Период 'when she was younger' (когда она была моложе) полностью остался в прошлом -> Past Simple (suffered).",
+            kz: "'When she was younger' (жас кезінде) кезеңі толығымен өткен шақта қалды -> Past Simple (suffered)."
+          }
+        }
+      ],
+
+      ex2: [
+        {
+          q: "1. The patient ___ (suffer) from a stomachache since yesterday.",
+          options: ["suffered", "has suffered / has been suffering", "did suffer"],
+          correct: 1,
+          exp: {
+            ru: "Маркер 'since yesterday' (со вчерашнего дня и по сей момент) требует Present Perfect (has suffered) или Present Perfect Continuous (has been suffering).",
+            kz: "'Since yesterday' (кешеден бері осы сәтке дейін) маркері Present Perfect (has suffered) немесе Present Perfect Continuous (has been suffering) формасын талап етеді."
+          }
+        },
+        {
+          q: "2. I ___ (not examine) the lung X-ray yet.",
+          options: ["did not examine", "have not examined", "has not examined"],
+          correct: 1,
+          exp: {
+            ru: "Маркер 'yet' (еще не) в конце отрицательного предложения — классический спутник Present Perfect: I have not examined.",
+            kz: "Болымсыз сөйлем соңындағы 'yet' (әлі) маркері — Present Perfect-тің классикалық белгісі: I have not examined."
+          }
+        },
+        {
+          q: "3. We ___ (use) stem cells in a treatment last year.",
+          options: ["have used", "used", "use"],
+          correct: 1,
+          exp: {
+            ru: "Маркер 'last year' (в прошлом году) — закрытый период в прошлом -> Past Simple: used.",
+            kz: "'Last year' (былтыр) маркері — өткен шақтағы жабық кезең -> Past Simple: used."
+          }
+        },
+        {
+          q: "4. She ___ (have) sweating and a sore throat this week.",
+          options: ["had", "has had", "have had"],
+          correct: 1,
+          exp: {
+            ru: "Маркер 'this week' (на этой неделе — неделя еще не закончилась!) + 'She' (3-е лицо ед. ч.) -> Present Perfect: has had (V3 от have).",
+            kz: "'This week' (осы аптада — апта әлі аяқталған жоқ!) маркері + 'She' (3-жақ, жекеше) -> Present Perfect: has had."
+          }
+        },
+        {
+          q: "5. He ___ (hurt) his neck while lifting a heavy box yesterday.",
+          options: ["has hurt", "hurt", "hurted"],
+          correct: 1,
+          exp: {
+            ru: "Маркер 'yesterday' (вчера) требует Past Simple. Обратите внимание: глагол hurt неправильный, все три его формы одинаковы (hurt – hurt – hurt)!",
+            kz: "'Yesterday' (кеше) маркері Past Simple-ды талап етеді. Назар аударыңыз: hurt — бұрыс етістік, оның үш формасы да бірдей (hurt – hurt – hurt)!"
+          }
+        }
+      ]
+    };
+
+    // =========================================================================
+    // 3. ЛОГИКА ОТОБРАЖЕНИЯ, ОЗВУЧКИ И ПЕРЕКЛЮЧЕНИЯ ЯЗЫКОВ (RU / KZ)
+    // =========================================================================
+    let currentLang = localStorage.getItem('doctors_speak_lang') || 'ru';
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('doctors_speak_lang', lang);
+
+      document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
+      document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
+
+      const ui = LESSON3_DATA.ui;
+      document.getElementById('uiBackBtn').textContent = ui.backBtn[lang];
+      document.getElementById('uiTitle').textContent = ui.title[lang];
+      document.getElementById('uiSubtitle').textContent = ui.subtitle[lang];
+
+      ui.nav.forEach((item, index) => {
+        document.getElementById(`nav${index}`).textContent = item[lang];
+      });
+
+      document.getElementById('uiVocabTitle').textContent = ui.vocabTitle[lang];
+      document.getElementById('uiVocabDesc').textContent = ui.vocabDesc[lang];
+      document.getElementById('uiToExBtn').textContent = ui.toExBtn[lang];
+      document.getElementById('uiEx1Title').textContent = ui.ex1Title[lang];
+      document.getElementById('uiEx1Desc').textContent = ui.ex1Desc[lang];
+      document.getElementById('uiEx2Title').textContent = ui.ex2Title[lang];
+      document.getElementById('uiEx2Desc').textContent = ui.ex2Desc[lang];
+      document.getElementById('uiGoTrainerBtn').textContent = ui.goTrainerBtn[lang];
+
+      // Рендерим вкладки теории, словаря и упражнений
+      document.getElementById('tab0').innerHTML = LESSON3_DATA.tab0Html[lang];
+      document.getElementById('tab1').innerHTML = LESSON3_DATA.tab1Html[lang];
+      renderVocab();
+      renderExercises('ex1Container', LESSON3_DATA.ex1);
+      renderExercises('ex2Container', LESSON3_DATA.ex2);
+    }
+
+    function showTab(idx) {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`nav${i}`).classList.toggle('active', i === idx);
+        document.getElementById(`tab${i}`).classList.toggle('active', i === idx);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Подсветка глаголов в клиническом кейсе (Past Simple vs Present Perfect)
+    function toggleCaseHighlight(mode) {
+      const box = document.getElementById('caseBodyText');
+      if (!box) return;
+      box.classList.remove('show-ps', 'show-pp');
+      if (mode === 'ps' || mode === 'all') box.classList.add('show-ps');
+      if (mode === 'pp' || mode === 'all') box.classList.add('show-pp');
+    }
+
+    // Проверка встроенных микро-вопросов в теории
+    function checkInlineQuiz(btn, isCorrect, feedbackText) {
+      const parent = btn.closest('.quick-check');
+      const allBtns = parent.querySelectorAll('.qc-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+      }
+
+      const fb = parent.querySelector('.qc-feedback');
+      fb.textContent = `💡 ${feedbackText}`;
+      fb.style.display = 'block';
+    }
+
+    // Рендер словаря с озвучкой Web Speech API
+    function renderVocab() {
+      const grid = document.getElementById('vocabGrid');
+      grid.innerHTML = '';
+      LESSON3_DATA.vocabulary.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'vocab-card';
+        div.innerHTML = `
+          <div class="vocab-header">
+            <span class="vocab-word">${item.en}</span>
+            <button class="speak-btn" onclick="speakEn('${item.en}')" title="Прослушать">🔊</button>
+          </div>
+          <div class="vocab-trans">${item[currentLang]}</div>
+          <div class="vocab-example">${item.ex}</div>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    function speakEn(word) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(word);
+      u.lang = 'en-US';
+      u.rate = 0.9;
+      window.speechSynthesis.speak(u);
+    }
+
+    // Рендер упражнений 1 и 2 из PDF
+    function renderExercises(containerId, list) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+      list.forEach(item => {
+        const box = document.createElement('div');
+        box.className = 'quick-check';
+        box.style.marginTop = '0';
+
+        const qEl = document.createElement('div');
+        qEl.className = 'qc-question';
+        qEl.textContent = item.q;
+
+        const optsEl = document.createElement('div');
+        optsEl.className = 'qc-options';
+
+        const fbEl = document.createElement('div');
+        fbEl.className = 'qc-feedback';
+        fbEl.textContent = `💡 ${item.exp[currentLang]}`;
+
+        item.options.forEach((optText, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'qc-btn';
+          btn.textContent = optText;
+          btn.onclick = () => {
+            const buttons = optsEl.querySelectorAll('.qc-btn');
+            buttons.forEach(b => b.disabled = true);
+            if (idx === item.correct) {
+              btn.classList.add('correct');
+            } else {
+              btn.classList.add('wrong');
+              buttons[item.correct].classList.add('correct');
+            }
+            fbEl.style.display = 'block';
+          };
+          optsEl.appendChild(btn);
+        });
+
+        box.appendChild(qEl);
+        box.appendChild(optsEl);
+        box.appendChild(fbEl);
+        container.appendChild(box);
+      });
+    }
+
+    // Запуск при загрузке
+    setLang(currentLang);
+  </script>
+  <script src="/session-guard.js"></script>
+</body>
+</html>
