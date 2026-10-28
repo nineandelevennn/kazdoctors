@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>@doctors.speak — Lesson 4: Future Simple & Future Forms</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Подключение Supabase SDK для проверки подписки -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --kz-gold-light: #FFFBEB;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --success-bg: #DCFCE7;
+      --success-border: #22C55E;
+      --success-text: #15803D;
+      --error-bg: #FEE2E2;
+      --error-border: #EF4444;
+      --error-text: #B91C1C;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 40px;
+    }
+
+    /* Верхняя шапка с кнопкой назад и переключателем RU/KZ */
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+      color: #FFFFFF;
+      padding: 16px 20px 22px 20px;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-top {
+      max-width: 820px;
+      margin: 0 auto 12px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 20px;
+      padding: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 800;
+      font-size: 0.74rem;
+      padding: 5px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+    }
+
+    .header-title-box {
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .lesson-badge {
+      display: inline-block;
+      background: rgba(255, 199, 44, 0.2);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    header p {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* Навигация по разделам урока */
+    .section-nav {
+      width: 100%;
+      max-width: 820px;
+      margin: 14px auto 0 auto;
+      padding: 0 14px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .nav-pill {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 9px 6px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .nav-pill.active {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      border-color: var(--kz-blue-dark);
+      box-shadow: 0 4px 12px rgba(0, 161, 222, 0.25);
+    }
+
+    /* Основной контейнер */
+    main {
+      width: 100%;
+      max-width: 820px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-section {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .tab-section.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Карточки теории */
+    .card-block {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-block::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: var(--kz-blue);
+    }
+
+    .card-block.gold::before {
+      background: var(--kz-gold-dark);
+    }
+
+    .card-block h2 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-block p {
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+
+    /* Шкала уверенности в будущем (4 карточки) */
+    .scale-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .scale-card {
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-main);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .scale-card.lvl1 { border-top: 4px solid #38BDF8; background: #F0F9FF; }
+    .scale-card.lvl2 { border-top: 4px solid var(--kz-blue); background: var(--kz-blue-light); }
+    .scale-card.lvl3 { border-top: 4px solid #F59E0B; background: var(--kz-gold-light); }
+    .scale-card.lvl4 { border-top: 4px solid #10B981; background: #ECFDF5; }
+
+    .scale-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .scale-name {
+      font-size: 0.86rem;
+      font-weight: 900;
+      color: var(--text-dark);
+    }
+
+    .scale-percent {
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+    }
+
+    .comp-formula {
+      display: inline-block;
+      background: #FFFFFF;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      border: 1px dashed var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .clinical-quote {
+      background: #FFFFFF;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 0.8rem;
+      border-left: 3px solid var(--text-dark);
+      margin-top: 8px;
+      line-height: 1.45;
+    }
+
+    /* Таблица формул */
+    .grammar-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 0.78rem;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .grammar-table th {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: 800;
+    }
+
+    .grammar-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border-color);
+      background: #FFFFFF;
+      line-height: 1.45;
+    }
+
+    .grammar-table tr:nth-child(even) td {
+      background: #F8FAFC;
+    }
+
+    /* Спойлер для Future Continuous */
+    details.tenses-spoiler {
+      margin-top: 12px;
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 10px 14px;
+    }
+
+    details.tenses-spoiler summary {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      cursor: pointer;
+      list-style: none;
+    }
+
+    /* Быстрые микро-упражнения внутри теории (Quick Check) */
+    .quick-check {
+      background: #F8FAFC;
+      border: 1px dashed var(--kz-blue);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .qc-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .qc-question {
+      font-size: 0.86rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+    }
+
+    .qc-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .qc-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .qc-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background: var(--kz-blue-light);
+    }
+
+    .qc-btn.correct {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    .qc-btn.wrong {
+      background: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    .qc-feedback {
+      display: none;
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      line-height: 1.35;
+    }
+
+    /* Теги слов-маркеров */
+    .markers-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .marker-chip {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 5px 11px;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .marker-chip b {
+      color: var(--kz-blue-dark);
+    }
+
+    /* Карточки словаря */
+    .vocab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+      gap: 10px;
+    }
+
+    .vocab-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .vocab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .vocab-word {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+    }
+
+    .speak-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 161, 222, 0.3);
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+    }
+
+    .vocab-trans {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .vocab-example {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--bg-main);
+      padding: 7px 9px;
+      border-radius: 8px;
+      line-height: 1.35;
+    }
+
+    /* Кнопка перехода к следующему разделу или тренажеру */
+    .action-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      border-radius: 16px;
+      padding: 13px 18px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    @media (max-width: 560px) {
+      .section-nav {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      header h1 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ШАПКА УРОКА -->
+  <header>
+    <div class="header-top">
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅ К списку уроков</a>
+      <div class="lang-switch">
+        <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
+        <button class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
+      </div>
+    </div>
+    <div class="header-title-box">
+      <span class="lesson-badge">Lesson 4 • A1–B1 Medical English</span>
+      <h1 id="uiTitle">Future Simple & Степени уверенности в будущем</h1>
+      <p id="uiSubtitle">Как говорить о прогнозе лечения, планах операции и графике отделения (will / be going to / Continuous / Simple)</p>
+    </div>
+  </header>
+
+  <!-- НАВИГАЦИЯ ПО ЭТАПАМ УРОКА -->
+  <nav class="section-nav">
+    <button class="nav-pill active" onclick="showTab(0)" id="nav0">1. Шкала уверенности</button>
+    <button class="nav-pill" onclick="showTab(1)" id="nav1">2. Формулы и Ловушки</button>
+    <button class="nav-pill" onclick="showTab(2)" id="nav2">3. Словарь (14 слов)</button>
+    <button class="nav-pill" onclick="showTab(3)" id="nav3">4. Упражнения</button>
+  </nav>
+
+  <!-- ОСНОВНОЙ КОНТЕНТ -->
+  <main>
+    <!-- ВКЛАДКА 1: 4 СТЕПЕНИ УВЕРЕННОСТИ В БУДУЩЕМ -->
+    <section class="tab-section active" id="tab0"></section>
+
+    <!-- ВКЛАДКА 2: ФОРМУЛЫ, FUTURE CONTINUOUS И ПРАВИЛО WHEN/AFTER/IF -->
+    <section class="tab-section" id="tab1"></section>
+
+    <!-- ВКЛАДКА 3: СЛОВАРЬ С ПРИМЕРАМИ -->
+    <section class="tab-section" id="tab2">
+      <div class="card-block">
+        <h2 id="uiVocabTitle">💊 Клинический словарь урока (14 терминов)</h2>
+        <p id="uiVocabDesc">Нажмите 🔊, чтобы прослушать произношение. Все примеры показывают, как будущие формы работают в медицине.</p>
+        <div class="vocab-grid" id="vocabGrid"></div>
+      </div>
+      <button class="action-btn" onclick="showTab(3)" id="uiToExBtn">Перейти к упражнениям урока ➔</button>
+    </section>
+
+    <!-- ВКЛАДКА 4: ПРАКТИКУМ (EXERCISE 1 & 2 ИЗ PDF) -->
+    <section class="tab-section" id="tab3">
+      <div class="card-block gold">
+        <h2 id="uiEx1Title">✍️ Упражнение 1: Выберите правильную форму будущего времени</h2>
+        <p id="uiEx1Desc">Определите: это спонтанное обещание/прогноз (will), четкое намерение/план (be going to) или расписание:</p>
+        <div id="ex1Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+      </div>
+
+      <div class="card-block">
+        <h2 id="uiEx2Title">🩺 Упражнение 2: Раскройте скобки в клинических ситуациях</h2>
+        <p id="uiEx2Desc">Выберите подходящую форму будущего времени (will, be going to или Present Continuous):</p>
+        <div id="ex2Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+      </div>
+
+      <a href="./future/" class="action-btn" id="uiGoTrainerBtn">🎯 Запустить игровой тренажер по Уроку 4 ➔</a>
+    </section>
+  </main>
+
+  <script>
+    // =========================================================================
+    // 1. ПРОВЕРКА ДОСТУПА ПО ПОДПИСКЕ ЧЕРЕЗ SUPABASE (по образцу index-86)
+    // =========================================================================
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+    async function checkAuth() {
+      if (!supabaseClient || window.location.protocol === 'file:') return;
+      try {
+        const { data, error } = await supabaseClient.auth.getSession();
+        if (error || !data.session) {
+          window.location.href = "/login.html";
+        }
+      } catch (e) {
+        console.warn("Auth check error:", e);
+      }
+    }
+    checkAuth();
+
+    // =========================================================================
+    // 2. БАЗА ДАННЫХ УРОКА 4 (НА РУССКОМ И КАЗАХСКОМ ЯЗЫКАХ)
+    // =========================================================================
+    const LESSON4_DATA = {
+      ui: {
+        backBtn: { ru: "⬅ К списку уроков", kz: "⬅ Сабақтар тізіміне" },
+        title: {
+          ru: "Future Simple & Способы выразить будущее",
+          kz: "Future Simple және Келер шақты білдіру жолдары"
+        },
+        subtitle: {
+          ru: "Как говорить о событиях в будущем с разной степенью уверенности (will / be going to / is doing / does)",
+          kz: "Болашақтағы оқиғаларды сенімділік деңгейіне қарай айту (will / be going to / is doing / does)"
+        },
+        nav: [
+          { ru: "1. Шкала уверенности", kz: "1. Сенімділік шкаласы" },
+          { ru: "2. Формулы и Секреты", kz: "2. Формула мен Ереже" },
+          { ru: "3. Словарь (14 слов)", kz: "3. Сөздік (14 сөз)" },
+          { ru: "4. Упражнения", kz: "4. Жаттығулар" }
+        ],
+        vocabTitle: {
+          ru: "💊 Клинический словарь урока (14 терминов)",
+          kz: "💊 Сабақтың клиникалық сөздігі (14 термин)"
+        },
+        vocabDesc: {
+          ru: "Нажмите 🔊 для прослушивания произношения. Изучите клинические примеры со всеми формами будущего времени.",
+          kz: "Дұрыс айтылуын тыңдау үшін 🔊 басыңыз. Келер шақтың барлық формалары берілген клиникалық мысалдармен танысыңыз."
+        },
+        toExBtn: {
+          ru: "Перейти к шагу 4: Быстрые упражнения ➔",
+          kz: "4-қадамға өту: Жылдам жаттығулар ➔"
+        },
+        ex1Title: {
+          ru: "✍️ Упражнение 1: Выберите правильную форму будущего времени",
+          kz: "✍️ 1-жаттығу: Келер шақтың дұрыс формасын таңдаңыз"
+        },
+        ex1Desc: {
+          ru: "Обратите внимание: это решение/прогноз (will) или уже принятый план (be going to):",
+          kz: "Назар аударыңыз: бұл болжам/уәде ме (will), әлде алдын ала жоспарланған іс-әрекет пе (be going to):"
+        },
+        ex2Title: {
+          ru: "🩺 Упражнение 2: Раскройте скобки в клинических ситуациях",
+          kz: "🩺 2-жаттығу: Клиникалық жағдайларда жақшаны ашыңыз"
+        },
+        ex2Desc: {
+          ru: "Выберите верную конструкцию будущего времени для каждого пропуска:",
+          kz: "Әр бос орынға сәйкес келетін келер шақ құрылымын таңдаңыз:"
+        },
+        goTrainerBtn: {
+          ru: "🎯 Перейти к основному тренажеру Урока 4 ➔",
+          kz: "🎯 4-сабақтың негізгі тренажеріне өту ➔"
+        }
+      },
+
+      // ВКЛАДКА 1: 4 СТЕПЕНИ УВЕРЕННОСТИ В БУДУЩЕМ
+      tab0Html: {
+        ru: `
+          <div class="card-block">
+            <h2>🌡️ 4 степени уверенности в будущем: какую форму выбрать врачу?</h2>
+            <p>Когда мы говорим о будущем в медицине (хронология лечения: «сделаем УЗИ, назначим терапию, выпишем пациента»), в английском языке есть <b>4 конструкции</b> в зависимости от того, насколько жестко запланировано событие:</p>
+
+            <div class="scale-grid">
+              <div class="scale-card lvl1">
+                <div>
+                  <div class="scale-head">
+                    <span class="scale-name">1. WILL DO («Универсал»)</span>
+                    <span class="scale-percent">~50–70%</span>
+                  </div>
+                  <span class="comp-formula">Subject + WILL + V1</span>
+                  <p style="font-size:0.79rem;">Моментальные решения на приеме, обещания пациенту, общие медицинские прогнозы и фразы со словами <b>I think / I don't think</b>.</p>
+                </div>
+                <div class="clinical-quote">
+                  • <b>"I think she will feel better after this injection."</b><br>
+                  • <b>"The operation will take approximately 2 hours."</b>
+                </div>
+              </div>
+
+              <div class="scale-card lvl2">
+                <div>
+                  <div class="scale-head">
+                    <span class="scale-name">2. BE GOING TO DO (План)</span>
+                    <span class="scale-percent">~80%</span>
+                  </div>
+                  <span class="comp-formula">am / is / are + GOING TO + V1</span>
+                  <p style="font-size:0.79rem;">Запланированные действия (решение уже принято заранее) или предсказание, когда мы уже видим симптомы/признаки.</p>
+                </div>
+                <div class="clinical-quote">
+                  • <b>"The hospital is going to admit the patient tonight."</b> <i>(план госпитализации)</i><br>
+                  • <b>"Poor diet is going to trigger the response."</b>
+                </div>
+              </div>
+
+              <div class="scale-card lvl3">
+                <div>
+                  <div class="scale-head">
+                    <span class="scale-name">3. IS DOING (Договоренность)</span>
+                    <span class="scale-percent">~95%</span>
+                  </div>
+                  <span class="comp-formula">am / is / are + V-ing</span>
+                  <p style="font-size:0.79rem;">Present Continuous для будущего: точно запланированное действие в ежедневнике (назначено время, все участники знают).</p>
+                </div>
+                <div class="clinical-quote">
+                  • <b>"Tomorrow we all are checking our visual acuity at the ophthalmologist's."</b><br>
+                  • <b>"They are starting the treatment at 9 a.m. tomorrow."</b>
+                </div>
+              </div>
+
+              <div class="scale-card lvl4">
+                <div>
+                  <div class="scale-head">
+                    <span class="scale-name">4. DOES (Офиц. график)</span>
+                    <span class="scale-percent">100%</span>
+                  </div>
+                  <span class="comp-formula">Present Simple (V1 / V-s)</span>
+                  <p style="font-size:0.79rem;">Действие случится в будущем строго по официальному расписанию (график приема больницы, расписание рейсов, конференций).</p>
+                </div>
+                <div class="clinical-quote">
+                  • <b>"The hospital admits children tomorrow in the morning."</b> <i>(по официальному графику клиники)</i>
+                </div>
+              </div>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Быстрая проверка понимания</span>
+              <div class="qc-question">Вы говорите коллеге о будущем научном проекте, который ваша кафедра уже запланировала: «В следующем проекте мы собираемся изучить, как жировая ткань влияет на надпочечники». Что лучше выбрать?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Верно! Для заранее обдуманных планов и намерений («собираемся изучить») идеально подходит конструкция be going to -> We are going to study.')">We are going to study (запланированное намерение)</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Study (Present Simple) используется только для жестких расписаний (поезда, часы открытия клиники), а для планов исследования нужен are going to study.')">We study (официальное расписание)</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">Перейти к шагу 2: Формулы, Вопросы и Правило When/After ➔</button>
+        `,
+        kz: `
+          <div class="card-block">
+            <h2>🌡️ Болашаққа қатысты 4 сенімділік деңгейі: дәрігер қай форманы таңдайды?</h2>
+            <p>Медицинада болашақтағы іс-әрекеттер тізбегі туралы айтқанда («УДЗ жасаймыз, ем тағайындаймыз, науқасты шығарамыз»), ағылшын тілінде оқиғаның қаншалықты нақты жоспарланғанына қарай <b>4 құрылым</b> қолданылады:</p>
+
+            <div class="scale-grid">
+              <div class="scale-card lvl1">
+                <div>
+                  <div class="scale-head">
+                    <span class="scale-name">1. WILL DO («Әмбебап»)</span>
+                    <span class="scale-percent">~50–70%</span>
+                  </div>
+                  <span class="comp-formula">Subject + WILL + V1</span>
+                  <p style="font-size:0.79rem;">Қабылдау кезіндегі жедел шешімдер, науқасқа берілген уәде, жалпы клиникалық болжамдар және <b>I think / I don't think</b> сөздерімен.</p>
+                </div>
+                <div class="clinical-quote">
+                  • <b>"I think she will feel better after this injection."</b><br>
+                  • <b>"The operation will take approximately 2 hours."</b>
+                </div>
+              </div>
+
+              <div class="scale-card lvl2">
+                <div>
+                  <div class="scale-head">
+                    <span class="scale-name">2. BE GOING TO DO (Жоспар)</span>
+                    <span class="scale-percent">~80%</span>
+                  </div>
+                  <span class="comp-formula">am / is / are + GOING TO + V1</span>
+                  <p style="font-size:0.79rem;">Алдын ала жоспарланған әрекеттер (шешім қабылданып қойған) немесе айқын белгілерге негізделген болжам.</p>
+                </div>
+                <div class="clinical-quote">
+                  • <b>"The hospital is going to admit the patient tonight."</b> <i>(жоспарланған госпитализация)</i><br>
+                  • <b>"Poor diet is going to trigger the response."</b>
+                </div>
+              </div>
+
+              <div class="scale-card lvl3">
+                <div>
+                  <div class="scale-head">
+                    <span class="scale-name">3. IS DOING (Нақты келісім)</span>
+                    <span class="scale-percent">~95%</span>
+                  </div>
+                  <span class="comp-formula">am / is / are + V-ing</span>
+                  <p style="font-size:0.79rem;">Болашаққа арналған Present Continuous: нақты уақыты мен орны белгіленген іс-әрекет (бәрі хабардар, күнделікке жазылған).</p>
+                </div>
+                <div class="clinical-quote">
+                  • <b>"Tomorrow we all are checking our visual acuity at the ophthalmologist's."</b><br>
+                  • <b>"They are starting the treatment at 9 a.m. tomorrow."</b>
+                </div>
+              </div>
+
+              <div class="scale-card lvl4">
+                <div>
+                  <div class="scale-head">
+                    <span class="scale-name">4. DOES (Ресми кесте)</span>
+                    <span class="scale-percent">100%</span>
+                  </div>
+                  <span class="comp-formula">Present Simple (V1 / V-s)</span>
+                  <p style="font-size:0.79rem;">Оқиға болашақта ресми кесте бойынша міндетті түрде болады (аурухананың қабылдау кестесі, конференция уақыты).</p>
+                </div>
+                <div class="clinical-quote">
+                  • <b>"The hospital admits children tomorrow in the morning."</b> <i>(емхананың ресми кестесі бойынша)</i>
+                </div>
+              </div>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Түсінікті жылдам тексеру</span>
+              <div class="qc-question">Сіз әріптесіңізге кафедра алдын ала жоспарлап қойған ғылыми жоба туралы: «Келесі жобада біз май тінінің бүйрек үсті безіне қалай әсер ететінін зерттемекпіз (зерттеуді жоспарлап отырмыз)» дейсіз. Қай нұсқа дұрыс?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Дұрыс! Алдын ала ойластырылған жоспар мен ниет үшін be going to құрылымы қолданылады -> We are going to study.')">We are going to study (жоспарланған ниет)</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Study (Present Simple) тек ресми кестелер үшін қолданылады, ал зерттеу жоспары үшін are going to study қажет.')">We study (ресми кесте)</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">2-қадамға өту: Формулалар, Сұрақтар және When/After ережесі ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 2: ФОРМУЛЫ, FUTURE CONTINUOUS И ПРАВИЛО WHEN/AFTER/IF
+      tab1Html: {
+        ru: `
+          <div class="card-block gold">
+            <h2>📐 Как строить (+), (?) и (-) в Future Simple и Be going to</h2>
+            <p>Глагол <b>will</b> — идеальный помощник: он не меняется по лицам (одинаковый для <i>I, you, he, she, they</i>), а после него глагол всегда стоит в чистой первой форме <b>V1 (без to и без -s!)</b>:</p>
+
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Тип предложения</th>
+                  <th>WILL DO (Спонтанно / Прогноз)</th>
+                  <th>BE GOING TO DO (Намерение / План)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>(+) Утверждение</b></td>
+                  <td>• I <b>will do</b> (I'll do).<br>• The drug <b>will alleviate</b> pain.</td>
+                  <td>• I <b>am going to do</b>.<br>• She <b>is going to go</b> to the clinic.<br><i>(В разговорной речи: going to = <b>gonna</b>)</i></td>
+                </tr>
+                <tr>
+                  <td><b>(?) Вопрос</b></td>
+                  <td>• <b>Will</b> I <b>do</b>?<br>• <b>Will</b> the operation <b>take</b> 2 hours?</td>
+                  <td>• <b>Am</b> I <b>going to do</b>?<br>• <b>Are</b> we <b>going to check</b> the ankle?</td>
+                </tr>
+                <tr>
+                  <td><b>(-) Отрицание</b></td>
+                  <td>• I <b>will not do</b> = I <b>won't do</b>.<br>• NSAIDs <b>won't alleviate</b> your pain.</td>
+                  <td>• I <b>am not going to do</b>.<br>• He <b>isn't going to take</b> the drug.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <details class="tenses-spoiler">
+              <summary>🎬 Дополнительно: Future Continuous (I will be doing) — «Момент в будущем»</summary>
+              <div style="margin-top:8px; font-size:0.8rem; line-height:1.5;">
+                Если <b>Future Simple</b> перечисляет хронологию фактов в будущем («сделаю А, затем сделаю Б»), то <b>Future Continuous (will be + V-ing)</b> передает «картинку» или процесс в конкретный момент в будущем:<br>
+                • <b>"At 10 a.m. tomorrow, I will be operating on a patient."</b> — <i>Завтра в 10 утра я буду в процессе проведения операции.</i><br>
+                • Бонус-конструкция из словаря: <b>"I am having my ankle examined tomorrow."</b> — <i>Завтра мне будут осматривать лодыжку (запланированная процедура у врача).</i>
+              </div>
+            </details>
+          </div>
+
+          <div class="card-block">
+            <h2>⚠️ Главная ловушка в медицинских тестах: предложения с WHEN, AFTER, IF</h2>
+            <p>В сложных предложениях про будущее со словами <b>when</b> (когда), <b>after</b> (после того как), <b>if</b> (если) и <b>in case of</b> (в случае) работает железное правило английского языка:</p>
+            <div class="clinical-quote" style="border-left-color: var(--kz-blue);">
+              🔹 <b>Главная часть (что сделает врач/пациент):</b> ставим <b>WILL + V1</b><br>
+              🔹 <b>Условие времени (после when / after / if):</b> уже стоит в <b>Present Simple</b>!<br><br>
+              1. <b>"I <span style="color:var(--kz-blue-dark);">will explain</span> the treatment plan <u>after</u> the test results <span style="color:#D97706;">arrive</span>."</b><br>
+              <i>(Я объясню план лечения после того, как придут результаты анализов).</i><br>
+              2. <b>"We <span style="color:var(--kz-blue-dark);">will check</span> the patient's ankle <u>when</u> he <span style="color:#D97706;">arrives</span>."</b><br>
+              <i>(Мы проверим лодыжку пациента, когда он приедет).</i><br>
+              3. <b>"You <span style="color:var(--kz-blue-dark);">will vomit</span> <u>if</u> you <span style="color:#D97706;">take</span> the drug without food."</b><br>
+              <i>(Вас вырвет, если вы примете препарат без еды).</i>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Быстрая проверка правила</span>
+              <div class="qc-question">Выберите правильный вариант: «Я объясню план лечения после того, как придут результаты» — "I ___ the treatment plan after the test results arrive."</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Отлично! В главной части перед after мы даем обещание/решение на будущее -> I will explain.')">will explain</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Explain (Present Simple) стоит во второй части после союза after (arrive), а в главной части нужно будущее время — will explain!')">explain</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">Перейти к шагу 3: Словарь урока (14 слов) ➔</button>
+        `,
+        kz: `
+          <div class="card-block gold">
+            <h2>📐 Future Simple және Be going to құрылымдарында (+), (?) және (-) қалай жасалады</h2>
+            <p><b>Will</b> көмекші етістігі барлық жақтарда (<i>I, you, he, she, they</i>) өзгеріссіз қалады, ал одан кейін негізгі етістік әрқашан бастапқы <b>V1 формасында (to-сыз және -s жалғауынсыз!)</b> тұрады:</p>
+
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Сөйлем түрі</th>
+                  <th>WILL DO (Жедел шешім / Болжам)</th>
+                  <th>BE GOING TO DO (Ниет / Жоспар)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>(+) Болымды</b></td>
+                  <td>• I <b>will do</b> (I'll do).<br>• The drug <b>will alleviate</b> pain.</td>
+                  <td>• I <b>am going to do</b>.<br>• She <b>is going to go</b> to the clinic.<br><i>(Ауызекі тілде: going to = <b>gonna</b>)</i></td>
+                </tr>
+                <tr>
+                  <td><b>(?) Сұраулы</b></td>
+                  <td>• <b>Will</b> I <b>do</b>?<br>• <b>Will</b> the operation <b>take</b> 2 hours?</td>
+                  <td>• <b>Am</b> I <b>going to do</b>?<br>• <b>Are</b> we <b>going to check</b> the ankle?</td>
+                </tr>
+                <tr>
+                  <td><b>(-) Болымсыз</b></td>
+                  <td>• I <b>will not do</b> = I <b>won't do</b>.<br>• NSAIDs <b>won't alleviate</b> your pain.</td>
+                  <td>• I <b>am not going to do</b>.<br>• He <b>isn't going to take</b> the drug.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <details class="tenses-spoiler">
+              <summary>🎬 Қосымша: Future Continuous (I will be doing) — «Болашақтағы сәт»</summary>
+              <div style="margin-top:8px; font-size:0.8rem; line-height:1.5;">
+                Егер <b>Future Simple</b> болашақтағы оқиғалар тізбегін («мынаны істеймін, сосын ананы істеймін») білдірсе, <b>Future Continuous (will be + V-ing)</b> болашақтағы белгілі бір сәттегі процесті («көріністі») сипаттайды:<br>
+                • <b>"At 10 a.m. tomorrow, I will be operating on a patient."</b> — <i>Ертең таңғы 10-да мен науқасқа операция жасап жатамын.</i><br>
+                • Сөздіктегі бонус құрылым: <b>"I am having my ankle examined tomorrow."</b> — <i>Ертең мен тобығымды дәрігерге тексертемін (алдын ала жазылып қойған процедура).</i>
+              </div>
+            </details>
+          </div>
+
+          <div class="card-block">
+            <h2>⚠️ Медициналық тесттердегі басты тұзақ: WHEN, AFTER, IF сөйлемдері</h2>
+            <p>Болашақ туралы <b>when</b> (қашан), <b>after</b> (кейін), <b>if</b> (егер) жалғаулықтары бар құрмалас сөйлемдерде ағылшын тілінің темірдей ережесі жұмыс істейді:</p>
+            <div class="clinical-quote" style="border-left-color: var(--kz-blue);">
+              🔹 <b>Басыңқы бөлік (дәрігер/науқас не істейді):</b> <b>WILL + V1</b> қойылады<br>
+              🔹 <b>Шартты бөлік (when / after / if сөздерінен кейін):</b> <b>Present Simple</b> тұрады!<br><br>
+              1. <b>"I <span style="color:var(--kz-blue-dark);">will explain</span> the treatment plan <u>after</u> the test results <span style="color:#D97706;">arrive</span>."</b><br>
+              <i>(Талдау нәтижелері келгеннен кейін мен емдеу жоспарын түсіндіріп беремін).</i><br>
+              2. <b>"We <span style="color:var(--kz-blue-dark);">will check</span> the patient's ankle <u>when</u> he <span style="color:#D97706;">arrives</span>."</b><br>
+              <i>(Науқас келген кезде біз оның тобығын тексереміз).</i><br>
+              3. <b>"You <span style="color:var(--kz-blue-dark);">will vomit</span> <u>if</u> you <span style="color:#D97706;">take</span> the drug without food."</b><br>
+              <i>(Егер дәріні тамақсыз ішсеңіз, құсасыз).</i>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Ережені жылдам тексеру</span>
+              <div class="qc-question">Дұрыс нұсқаны таңдаңыз: «Талдау нәтижелері келген соң мен емдеу жоспарын түсіндіремін» — "I ___ the treatment plan after the test results arrive."</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Тамаша! Басыңқы бөлікте болашаққа уәде/шешім айтылғандықтан -> I will explain қолданылады.')">will explain</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Present Simple (arrive) тек after жалғаулығынан кейінгі бөлікте тұрады, ал негізгі бөлікте will explain қажет!')">explain</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">3-қадамға өту: Сабақ сөздігі (14 сөз) ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 3: СЛОВАРЬ (14 ТЕРМИНОВ С ПРИМЕРАМИ ИЗ СЛАЙДОВ 2 И 6)
+      vocabulary: [
+        {
+          en: "Treatment",
+          ru: "Лечение / Терапия",
+          kz: "Ем / Терапия",
+          ex: "The treatment for your condition <b>will include</b> GCS and NSAIDs. <i>(Future Simple — план терапии)</i>"
+        },
+        {
+          en: "Trigger",
+          ru: "Триггер / Вызывать (запускать)",
+          kz: "Триггер / Қоздыру (тудыру)",
+          ex: "Poor diet <b>is going to trigger</b> the autoimmune response. <i>(Be going to — неизбежный прогноз)</i>"
+        },
+        {
+          en: "Vomiting",
+          ru: "Рвота (Vomit — рвать)",
+          kz: "Құсу",
+          ex: "You <b>will vomit</b> if you take the drug without food. <i>(Future Simple в условии с if)</i>"
+        },
+        {
+          en: "Weakness",
+          ru: "Слабость",
+          kz: "Әлсіздік",
+          ex: "The patient <b>is going to feel</b> some weakness after the surgery. <i>(Be going to — ожидаемое состояние)</i>"
+        },
+        {
+          en: "Acuity",
+          ru: "Острота (напр., зрения)",
+          kz: "Өткірлік (мысалы, көру өткірлігі)",
+          ex: "Tomorrow we all <b>are checking</b> our visual acuity at the ophthalmologist's. <i>(Present Continuous — точная запись)</i>"
+        },
+        {
+          en: "Acute",
+          ru: "Острый (о состоянии/боли)",
+          kz: "Жедел (клиникалық жағдай)",
+          ex: "You <b>will be hospitalized</b> in case of acute pancreatitis. <i>(Future Simple Passive)</i>"
+        },
+        {
+          en: "Adipose tissue",
+          ru: "Жировая ткань",
+          kz: "Май тіні",
+          ex: "The ultrasound <b>will show</b> the amount of adipose tissue around the liver. <i>(Future Simple)</i>"
+        },
+        {
+          en: "Admit",
+          ru: "Госпитализировать / Принимать",
+          kz: "Ауруханаға жатқызу / Қабылдау",
+          ex: "The hospital <b>admits</b> children tomorrow in the morning. <i>(Present Simple — по официальному графику)</i>"
+        },
+        {
+          en: "Adrenal gland",
+          ru: "Надпочечник",
+          kz: "Бүйрек үсті безі",
+          ex: "The specialist <b>will examine</b> the adrenal glands for tumors. <i>(Future Simple)</i>"
+        },
+        {
+          en: "Adverse effects",
+          ru: "Побочные (нежелательные) эффекты",
+          kz: "Жағымсыз (жанама) әсерлер",
+          ex: "You <b>are going to hear</b> about the adverse effects of the drug at the forum. <i>(Be going to — программа форума)</i>"
+        },
+        {
+          en: "Alleviate",
+          ru: "Облегчать (боль / симптомы)",
+          kz: "Жеңілдету (ауырсынуды басу)",
+          ex: "I don't think NSAIDs <b>will alleviate</b> your pain. <i>(Future Simple после I don't think)</i>"
+        },
+        {
+          en: "Almost",
+          ru: "Почти",
+          kz: "Дерлік / Жақын",
+          ex: "<b>Almost</b> everyone from the hospital <b>will be</b> at the conference tomorrow. <i>(Future Simple)</i>"
+        },
+        {
+          en: "Ankle",
+          ru: "Лодыжка / Голеностоп",
+          kz: "Тобық",
+          ex: "I <b>am having</b> my ankle examined tomorrow. <i>(Present Continuous — запись на осмотр завтра)</i>"
+        },
+        {
+          en: "Approximately",
+          ru: "Приблизительно / Около",
+          kz: "Шамамен",
+          ex: "The operation <b>will take approximately</b> 2 hours. <i>(Future Simple — прогноз длительности)</i>"
+        }
+      ],
+
+      // ВКЛАДКА 4: УПРАЖНЕНИЕ 1 И УПРАЖНЕНИЕ 2 ИЗ PDF
+      ex1: [
+        {
+          q: "1. The hospital ___ the patient with acute weakness tonight.",
+          options: ["will admit", "is going to admit", "admits"],
+          correct: 1,
+          exp: {
+            ru: "Госпитализация конкретного пациента сегодня вечером ('tonight') — это уже принятое решение и план отделения -> is going to admit.",
+            kz: "Нақты науқасты бүгін кешке ('tonight') ауруханаға жатқызу — алдын ала қабылданған шешім мен жоспар -> is going to admit."
+          }
+        },
+        {
+          q: "2. I ___ the treatment plan after the test results arrive.",
+          options: ["will explain", "am going to explain", "explain"],
+          correct: 0,
+          exp: {
+            ru: "Обещание врача пациенту в связке с условием времени ('after the test results arrive') -> используем Future Simple: will explain.",
+            kz: "Уақыт шартымен ('after the test results arrive') байланысқан дәрігердің уәдесі -> Future Simple қолданамыз: will explain."
+          }
+        },
+        {
+          q: "3. She ___ to the clinic at 10:00 a.m. tomorrow for vomiting.",
+          options: ["goes", "is going to go", "will go"],
+          correct: 1,
+          exp: {
+            ru: "У пациентки уже есть конкретный план визита в клинику завтра в 10:00 утра из-за рвоты -> is going to go.",
+            kz: "Науқастың ертең таңғы 10:00-де клиникаға бару туралы нақты жоспары бар -> is going to go."
+          }
+        },
+        {
+          q: "4. This medication ___ the adverse effects of chemotherapy.",
+          options: ["is going to alleviate", "alleviates", "will alleviate"],
+          correct: 2,
+          exp: {
+            ru: "Общий клинический прогноз действия препарата в будущем (облегчит побочные эффекты химиотерапии) -> will alleviate.",
+            kz: "Препараттың болашақтағы әсері туралы клиникалық болжам (химиотерапияның жанама әсерлерін жеңілдетеді) -> will alleviate."
+          }
+        },
+        {
+          q: "5. We ___ the patient's ankle when he arrives.",
+          options: ["are going to check", "check", "will check"],
+          correct: 2,
+          exp: {
+            ru: "Действие, которое мы выполним в момент приезда пациента ('when he arrives') -> в главной части ставим will check.",
+            kz: "Науқас келген кезде ('when he arrives') орындалатын әрекет -> негізгі бөлікте will check қойылады."
+          }
+        }
+      ],
+
+      ex2: [
+        {
+          q: "1. They ___ (start) the new treatment at approximately 9 a.m. tomorrow.",
+          options: ["are starting / are going to start", "starts", "is starting"],
+          correct: 0,
+          exp: {
+            ru: "Точно запланированная процедура на завтра в 9 утра + местоимение множественного числа 'They' -> are starting (Present Continuous для будущего) или are going to start.",
+            kz: "Ертең таңғы сағат 9-ға нақты белгіленген емшара + көпше түрдегі 'They' есімдігі -> are starting (болашаққа арналған Present Continuous) немесе are going to start."
+          }
+        },
+        {
+          q: "2. I think she ___ (feel) better after this injection.",
+          options: ["is feeling", "will feel", "feels"],
+          correct: 1,
+          exp: {
+            ru: "После фразы 'I think' (я думаю/полагаю) для прогноза всегда используется Future Simple -> will feel.",
+            kz: "'I think' (менің ойымша) тіркесінен кейін болжам жасау үшін әрқашан Future Simple қолданылады -> will feel."
+          }
+        },
+        {
+          q: "3. The nurse ___ (monitor) the patient's acuity during the night shift.",
+          options: ["will monitor / is going to monitor", "monitors", "monitoring"],
+          correct: 0,
+          exp: {
+            ru: "Обязанность и план на предстоящую ночную смену -> подходят как will monitor, так и is going to monitor.",
+            kz: "Алдағы түнгі ауысымға арналған міндет пен жоспар -> will monitor да, is going to monitor да дұрыс."
+          }
+        },
+        {
+          q: "4. We ___ (study) how adipose tissue affects the adrenal gland in the next research project.",
+          options: ["study", "are going to study", "will studying"],
+          correct: 1,
+          exp: {
+            ru: "Заранее запланированная тема следующего научного проекта ('in the next research project') -> We are going to study.",
+            kz: "Келесі ғылыми жобаның алдын ала жоспарланған тақырыбы ('in the next research project') -> We are going to study."
+          }
+        },
+        {
+          q: "5. That drug is dangerous — it ___ (trigger) vomiting and other side effects.",
+          options: ["triggers", "will trigger / is going to trigger", "triggering"],
+          correct: 1,
+          exp: {
+            ru: "Предупреждение и прогноз о будущем действии опасного препарата -> it will trigger (или is going to trigger).",
+            kz: "Қауіпті препараттың салдары туралы ескерту мен болжам -> it will trigger (немесе is going to trigger)."
+          }
+        }
+      ]
+    };
+
+    // =========================================================================
+    // 3. ЛОГИКА ОТОБРАЖЕНИЯ, ОЗВУЧКИ И ПЕРЕКЛЮЧЕНИЯ ЯЗЫКОВ (RU / KZ)
+    // =========================================================================
+    let currentLang = localStorage.getItem('doctors_speak_lang') || 'ru';
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('doctors_speak_lang', lang);
+
+      document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
+      document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
+
+      const ui = LESSON4_DATA.ui;
+      document.getElementById('uiBackBtn').textContent = ui.backBtn[lang];
+      document.getElementById('uiTitle').textContent = ui.title[lang];
+      document.getElementById('uiSubtitle').textContent = ui.subtitle[lang];
+
+      ui.nav.forEach((item, index) => {
+        document.getElementById(`nav${index}`).textContent = item[lang];
+      });
+
+      document.getElementById('uiVocabTitle').textContent = ui.vocabTitle[lang];
+      document.getElementById('uiVocabDesc').textContent = ui.vocabDesc[lang];
+      document.getElementById('uiToExBtn').textContent = ui.toExBtn[lang];
+      document.getElementById('uiEx1Title').textContent = ui.ex1Title[lang];
+      document.getElementById('uiEx1Desc').textContent = ui.ex1Desc[lang];
+      document.getElementById('uiEx2Title').textContent = ui.ex2Title[lang];
+      document.getElementById('uiEx2Desc').textContent = ui.ex2Desc[lang];
+      document.getElementById('uiGoTrainerBtn').textContent = ui.goTrainerBtn[lang];
+
+      // Рендерим вкладки теории, словаря и упражнений
+      document.getElementById('tab0').innerHTML = LESSON4_DATA.tab0Html[lang];
+      document.getElementById('tab1').innerHTML = LESSON4_DATA.tab1Html[lang];
+      renderVocab();
+      renderExercises('ex1Container', LESSON4_DATA.ex1);
+      renderExercises('ex2Container', LESSON4_DATA.ex2);
+    }
+
+    function showTab(idx) {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`nav${i}`).classList.toggle('active', i === idx);
+        document.getElementById(`tab${i}`).classList.toggle('active', i === idx);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Проверка встроенных микро-вопросов в теории
+    function checkInlineQuiz(btn, isCorrect, feedbackText) {
+      const parent = btn.closest('.quick-check');
+      const allBtns = parent.querySelectorAll('.qc-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+      }
+
+      const fb = parent.querySelector('.qc-feedback');
+      fb.textContent = `💡 ${feedbackText}`;
+      fb.style.display = 'block';
+    }
+
+    // Рендер словаря с озвучкой Web Speech API
+    function renderVocab() {
+      const grid = document.getElementById('vocabGrid');
+      grid.innerHTML = '';
+      LESSON4_DATA.vocabulary.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'vocab-card';
+        div.innerHTML = `
+          <div class="vocab-header">
+            <span class="vocab-word">${item.en}</span>
+            <button class="speak-btn" onclick="speakEn('${item.en}')" title="Прослушать">🔊</button>
+          </div>
+          <div class="vocab-trans">${item[currentLang]}</div>
+          <div class="vocab-example">${item.ex}</div>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    function speakEn(word) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(word);
+      u.lang = 'en-US';
+      u.rate = 0.9;
+      window.speechSynthesis.speak(u);
+    }
+
+    // Рендер упражнений 1 и 2 из PDF
+    function renderExercises(containerId, list) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+      list.forEach(item => {
+        const box = document.createElement('div');
+        box.className = 'quick-check';
+        box.style.marginTop = '0';
+
+        const qEl = document.createElement('div');
+        qEl.className = 'qc-question';
+        qEl.textContent = item.q;
+
+        const optsEl = document.createElement('div');
+        optsEl.className = 'qc-options';
+
+        const fbEl = document.createElement('div');
+        fbEl.className = 'qc-feedback';
+        fbEl.textContent = `💡 ${item.exp[currentLang]}`;
+
+        item.options.forEach((optText, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'qc-btn';
+          btn.textContent = optText;
+          btn.onclick = () => {
+            const buttons = optsEl.querySelectorAll('.qc-btn');
+            buttons.forEach(b => b.disabled = true);
+            if (idx === item.correct) {
+              btn.classList.add('correct');
+            } else {
+              btn.classList.add('wrong');
+              buttons[item.correct].classList.add('correct');
+            }
+            fbEl.style.display = 'block';
+          };
+          optsEl.appendChild(btn);
+        });
+
+        box.appendChild(qEl);
+        box.appendChild(optsEl);
+        box.appendChild(fbEl);
+        container.appendChild(box);
+      });
+    }
+
+    // Запуск при загрузке
+    setLang(currentLang);
+  </script>
+  <script src="/session-guard.js"></script>
+</body>
+</html>
