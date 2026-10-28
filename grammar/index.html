@@ -146,6 +146,9 @@
             position: relative;
             overflow: hidden;
             border: 1px solid var(--border-color);
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
         }
 
         /* Акцентная синяя полоса слева (стиль референса) */
@@ -205,6 +208,112 @@
             fill: var(--kz-blue);
             flex-shrink: 0;
             margin-left: 8px;
+            transition: transform 0.25s ease;
+        }
+
+        /* ==========================================================================
+           СТИЛИ ДЛЯ РАСКРЫВАЮЩИХСЯ УРОКОВ (EXPAND / COLLAPSE)
+           ========================================================================== */
+        .lesson-group {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        /* Поворот стрелки при открытии урока */
+        .lesson-group.open .trainer-card {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            border-bottom-color: transparent;
+            background: #F8FAFC;
+        }
+
+        .lesson-group.open .arrow-icon {
+            transform: rotate(90deg);
+        }
+
+        /* Выпадающая панель со ссылками (Теория, YouTube, Тренажер) */
+        .lesson-dropdown {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+            opacity: 0;
+            background: var(--card-bg);
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            border-bottom-left-radius: 16px;
+            border-bottom-right-radius: 16px;
+            position: relative;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.03);
+        }
+
+        /* Сохраняем синюю полоску слева и для раскрытого списка */
+        .lesson-dropdown::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            background: var(--kz-blue);
+        }
+
+        .lesson-group.open .lesson-dropdown {
+            max-height: 240px;
+            opacity: 1;
+        }
+
+        .dropdown-links {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 10px 14px 14px 20px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .sub-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 9px 12px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            transition: all 0.15s ease;
+        }
+
+        .sub-link:hover, .sub-link:active {
+            background: var(--kz-blue-light);
+            border-color: var(--kz-blue);
+            color: var(--kz-blue-dark);
+        }
+
+        /* Акцентная кнопка для перехода к самому тренажеру */
+        .sub-link.primary-trainer {
+            background: var(--kz-blue-light);
+            color: var(--kz-blue-dark);
+            border-color: rgba(0, 161, 222, 0.25);
+        }
+
+        .sub-link-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sub-badge {
+            font-size: 0.68rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 8px;
+            background: #FFFFFF;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
         }
 
         /* 3. Подвал и кнопки внизу */
@@ -288,7 +397,7 @@
 
     <main>
 
-        <!-- all random -->
+        <!-- all random (прямая ссылка) -->
         <a href="./random/" class="trainer-card">
             <div class="card-content">
                 <div class="card-icon">🤯</div>
@@ -300,7 +409,7 @@
             <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </a>
 
-                <!-- reading practice -->
+        <!-- reading practice (прямая ссылка) -->
         <a href="./reading/" class="trainer-card">
             <div class="card-content">
                 <div class="card-icon">🤓</div>
@@ -312,190 +421,458 @@
             <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </a>
 
-        
-        <!-- lesson 1 -->
-        <a href="./tobetodo/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🦦</div>
-                <div class="card-text">
-                    <h2>To be & To do</h2>
-                    <p>Lesson 1</p>
+        <!-- ================= УРОК 1 ================= -->
+        <div class="lesson-group">
+            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                <div class="card-content">
+                    <div class="card-icon">🦦</div>
+                    <div class="card-text">
+                        <h2>To be & To do</h2>
+                        <p>Lesson 1</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+            </button>
+            <div class="lesson-dropdown">
+                <div class="dropdown-links">
+                    <!-- Сюда вы можете вставить ссылку на страницу теории и YouTube -->
+                    <a href="./tobetodo/theory.html" class="sub-link">
+                        <span class="sub-link-left">📖 Теория и конспект</span>
+                        <span class="sub-badge">PDF / Статья</span>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="sub-link">
+                        <span class="sub-link-left">▶️ Видеоурок</span>
+                        <span class="sub-badge">YouTube</span>
+                    </a>
+                    <a href="./tobetodo/" class="sub-link primary-trainer">
+                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                        <span>➔</span>
+                    </a>
                 </div>
             </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+        </div>
 
+        <!-- ================= УРОК 2 ================= -->
+        <div class="lesson-group">
+            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                <div class="card-content">
+                    <div class="card-icon">🐅</div>
+                    <div class="card-text">
+                        <h2>Present simple & continuous</h2>
+                        <p>Lesson 2</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+            </button>
+            <div class="lesson-dropdown">
+                <div class="dropdown-links">
+                    <a href="./present/theory.html" class="sub-link">
+                        <span class="sub-link-left">📖 Теория и конспект</span>
+                        <span class="sub-badge">PDF / Статья</span>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="sub-link">
+                        <span class="sub-link-left">▶️ Видеоурок</span>
+                        <span class="sub-badge">YouTube</span>
+                    </a>
+                    <a href="./present/" class="sub-link primary-trainer">
+                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                        <span>➔</span>
+                    </a>
+                </div>
+            </div>
+        </div>
 
-        <!-- lesson 2 -->
-        <a href="./present/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🐅</div>
-                <div class="card-text">
-                    <h2>Present simple & continuous</h2>
-                    <p>Lesson 2</p>
+        <!-- ================= УРОК 3 ================= -->
+        <div class="lesson-group">
+            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                <div class="card-content">
+                    <div class="card-icon">🐘</div>
+                    <div class="card-text">
+                        <h2>Past Simple & Present Perfect</h2>
+                        <p>Lesson 3</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+            </button>
+            <div class="lesson-dropdown">
+                <div class="dropdown-links">
+                    <a href="./past/theory.html" class="sub-link">
+                        <span class="sub-link-left">📖 Теория и конспект</span>
+                        <span class="sub-badge">PDF / Статья</span>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="sub-link">
+                        <span class="sub-link-left">▶️ Видеоурок</span>
+                        <span class="sub-badge">YouTube</span>
+                    </a>
+                    <a href="./past/" class="sub-link primary-trainer">
+                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                        <span>➔</span>
+                    </a>
                 </div>
             </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
-        
-        <!-- lesson 3 -->
-        <a href="./past/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🐘</div>
-                <div class="card-text">
-                    <h2>Past Simple & Present Perfect</h2>
-                    <p>Lesson 3</p>
-                </div>
-            </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+        </div>
 
-        <!-- lesson 4 -->
-        <a href="./future/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🐶</div>
-                <div class="card-text">
-                    <h2>Future Simple</h2>
-                    <p>Lesson 4</p>
+        <!-- ================= УРОК 4 ================= -->
+        <div class="lesson-group">
+            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                <div class="card-content">
+                    <div class="card-icon">🐶</div>
+                    <div class="card-text">
+                        <h2>Future Simple</h2>
+                        <p>Lesson 4</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+            </button>
+            <div class="lesson-dropdown">
+                <div class="dropdown-links">
+                    <a href="./future/theory.html" class="sub-link">
+                        <span class="sub-link-left">📖 Теория и конспект</span>
+                        <span class="sub-badge">PDF / Статья</span>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="sub-link">
+                        <span class="sub-link-left">▶️ Видеоурок</span>
+                        <span class="sub-badge">YouTube</span>
+                    </a>
+                    <a href="./future/" class="sub-link primary-trainer">
+                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                        <span>➔</span>
+                    </a>
                 </div>
             </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+        </div>
 
-        
-        <!-- Passive -->
-        <a href="./passive/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🐱</div>
-                <div class="card-text">
-                    <h2>Passive</h2>
-                    <p>Lesson 5</p>
+        <!-- ================= УРОК 5 ================= -->
+        <div class="lesson-group">
+            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                <div class="card-content">
+                    <div class="card-icon">🐱</div>
+                    <div class="card-text">
+                        <h2>Passive</h2>
+                        <p>Lesson 5</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+            </button>
+            <div class="lesson-dropdown">
+                <div class="dropdown-links">
+                    <a href="./passive/theory.html" class="sub-link">
+                        <span class="sub-link-left">📖 Теория и конспект</span>
+                        <span class="sub-badge">PDF / Статья</span>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="sub-link">
+                        <span class="sub-link-left">▶️ Видеоурок</span>
+                        <span class="sub-badge">YouTube</span>
+                    </a>
+                    <a href="./passive/" class="sub-link primary-trainer">
+                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                        <span>➔</span>
+                    </a>
                 </div>
             </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+        </div>
 
-        <!-- Modals -->
-        <a href="./modals/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🐯</div>
-                <div class="card-text">
-                    <h2>Modals</h2>
-                    <p>Lesson 6</p>
+        <!-- ================= УРОК 6 ================= -->
+        <div class="lesson-group">
+            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                <div class="card-content">
+                    <div class="card-icon">🐯</div>
+                    <div class="card-text">
+                        <h2>Modals</h2>
+                        <p>Lesson 6</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+            </button>
+            <div class="lesson-dropdown">
+                <div class="dropdown-links">
+                    <a href="./modals/theory.html" class="sub-link">
+                        <span class="sub-link-left">📖 Теория и конспект</span>
+                        <span class="sub-badge">PDF / Статья</span>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="sub-link">
+                        <span class="sub-link-left">▶️ Видеоурок</span>
+                        <span class="sub-badge">YouTube</span>
+                    </a>
+                    <a href="./modals/" class="sub-link primary-trainer">
+                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                        <span>➔</span>
+                    </a>
                 </div>
             </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+        </div>
 
-        <!-- Possessives -->
-        <a href="./possessives/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🦈</div>
-                <div class="card-text">
-                    <h2>Possessives</h2>
-                    <p>Lesson 7</p>
+        <!-- ================= УРОК 7 ================= -->
+        <div class="lesson-group">
+            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                <div class="card-content">
+                    <div class="card-icon">🦈</div>
+                    <div class="card-text">
+                        <h2>Possessives</h2>
+                        <p>Lesson 7</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+            </button>
+            <div class="lesson-dropdown">
+                <div class="dropdown-links">
+                    <a href="./possessives/theory.html" class="sub-link">
+                        <span class="sub-link-left">📖 Теория и конспект</span>
+                        <span class="sub-badge">PDF / Статья</span>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="sub-link">
+                        <span class="sub-link-left">▶️ Видеоурок</span>
+                        <span class="sub-badge">YouTube</span>
+                    </a>
+                    <a href="./possessives/" class="sub-link primary-trainer">
+                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                        <span>➔</span>
+                    </a>
                 </div>
             </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+        </div>
 
-        <!-- There is/are -->
-        <a href="./thereis/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🦁</div>
-                <div class="card-text">
-                    <h2>There is / there are</h2>
-                    <p>Lesson 8</p>
+        <!-- ================= УРОК 8 ================= -->
+        <div class="lesson-group">
+            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                <div class="card-content">
+                    <div class="card-icon">🦁</div>
+                    <div class="card-text">
+                        <h2>There is / there are</h2>
+                        <p>Lesson 8</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+            </button>
+            <div class="lesson-dropdown">
+                <div class="dropdown-links">
+                    <a href="./thereis/theory.html" class="sub-link">
+                        <span class="sub-link-left">📖 Теория и конспект</span>
+                        <span class="sub-badge">PDF / Статья</span>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="sub-link">
+                        <span class="sub-link-left">▶️ Видеоурок</span>
+                        <span class="sub-badge">YouTube</span>
+                    </a>
+                    <a href="./thereis/" class="sub-link primary-trainer">
+                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                        <span>➔</span>
+                    </a>
                 </div>
             </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+        </div>
 
-        <!-- Prepositions of time -->
-        <a href="./prepositionsoftime/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🐴</div>
-                <div class="card-text">
-                    <h2>Prepositions of time</h2>
-                    <p>Lesson 9</p>
+        <!-- ================= УРОК 9 ================= -->
+        <div class="lesson-group">
+            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                <div class="card-content">
+                    <div class="card-icon">🐴</div>
+                    <div class="card-text">
+                        <h2>Prepositions of time</h2>
+                        <p>Lesson 9</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+            </button>
+            <div class="lesson-dropdown">
+                <div class="dropdown-links">
+                    <a href="./prepositionsoftime/theory.html" class="sub-link">
+                        <span class="sub-link-left">📖 Теория и конспект</span>
+                        <span class="sub-badge">PDF / Статья</span>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="sub-link">
+                        <span class="sub-link-left">▶️ Видеоурок</span>
+                        <span class="sub-badge">YouTube</span>
+                    </a>
+                    <a href="./prepositionsoftime/" class="sub-link primary-trainer">
+                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                        <span>➔</span>
+                    </a>
                 </div>
             </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+        </div>
 
-        <!-- Prepositions of place and motion -->
-        <a href="./prepositionsofplace/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🦅</div>
-                <div class="card-text">
-                    <h2>Prepositions of place and motion</h2>
-                    <p>Lesson 10</p>
+        <!-- ================= УРОК 10 ================= -->
+        <div class="lesson-group">
+            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                <div class="card-content">
+                    <div class="card-icon">🦅</div>
+                    <div class="card-text">
+                        <h2>Prepositions of place and motion</h2>
+                        <p>Lesson 10</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+            </button>
+            <div class="lesson-dropdown">
+                <div class="dropdown-links">
+                    <a href="./prepositionsofplace/theory.html" class="sub-link">
+                        <span class="sub-link-left">📖 Теория и конспект</span>
+                        <span class="sub-badge">PDF / Статья</span>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="sub-link">
+                        <span class="sub-link-left">▶️ Видеоурок</span>
+                        <span class="sub-badge">YouTube</span>
+                    </a>
+                    <a href="./prepositionsofplace/" class="sub-link primary-trainer">
+                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                        <span>➔</span>
+                    </a>
                 </div>
             </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+        </div>
 
-        <!-- Conditionals -->
-        <a href="./conditionals/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🐺</div>
-                <div class="card-text">
-                    <h2>Conditionals</h2>
-                    <p>Lesson 11</p>
+        <!-- ================= УРОК 11 ================= -->
+        <div class="lesson-group">
+            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                <div class="card-content">
+                    <div class="card-icon">🐺</div>
+                    <div class="card-text">
+                        <h2>Conditionals</h2>
+                        <p>Lesson 11</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+            </button>
+            <div class="lesson-dropdown">
+                <div class="dropdown-links">
+                    <a href="./conditionals/theory.html" class="sub-link">
+                        <span class="sub-link-left">📖 Теория и конспект</span>
+                        <span class="sub-badge">PDF / Статья</span>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="sub-link">
+                        <span class="sub-link-left">▶️ Видеоурок</span>
+                        <span class="sub-badge">YouTube</span>
+                    </a>
+                    <a href="./conditionals/" class="sub-link primary-trainer">
+                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                        <span>➔</span>
+                    </a>
                 </div>
             </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
-        
-        <!-- Comparatives & Superlatives -->
-        <a href="./comparatives/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🦉</div>
-                <div class="card-text">
-                    <h2>Comparatives & Superlatives</h2>
-                    <p>Lesson 12</p>
-                </div>
-            </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+        </div>
 
-        <!-- Articles -->
-        <a href="./articles/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🦆</div>
-                <div class="card-text">
-                    <h2>Articles</h2>
-                    <p>Lesson 13</p>
+        <!-- ================= УРОК 12 ================= -->
+        <div class="lesson-group">
+            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                <div class="card-content">
+                    <div class="card-icon">🦉</div>
+                    <div class="card-text">
+                        <h2>Comparatives & Superlatives</h2>
+                        <p>Lesson 12</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+            </button>
+            <div class="lesson-dropdown">
+                <div class="dropdown-links">
+                    <a href="./comparatives/theory.html" class="sub-link">
+                        <span class="sub-link-left">📖 Теория и конспект</span>
+                        <span class="sub-badge">PDF / Статья</span>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="sub-link">
+                        <span class="sub-link-left">▶️ Видеоурок</span>
+                        <span class="sub-badge">YouTube</span>
+                    </a>
+                    <a href="./comparatives/" class="sub-link primary-trainer">
+                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                        <span>➔</span>
+                    </a>
                 </div>
             </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+        </div>
 
-        <!-- Relative Clause -->
-        <a href="./relativeclause/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🐳</div>
-                <div class="card-text">
-                    <h2>Relative Clause</h2>
-                    <p>Lesson 14</p>
+        <!-- ================= УРОК 13 ================= -->
+        <div class="lesson-group">
+            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                <div class="card-content">
+                    <div class="card-icon">🦆</div>
+                    <div class="card-text">
+                        <h2>Articles</h2>
+                        <p>Lesson 13</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+            </button>
+            <div class="lesson-dropdown">
+                <div class="dropdown-links">
+                    <a href="./articles/theory.html" class="sub-link">
+                        <span class="sub-link-left">📖 Теория и конспект</span>
+                        <span class="sub-badge">PDF / Статья</span>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="sub-link">
+                        <span class="sub-link-left">▶️ Видеоурок</span>
+                        <span class="sub-badge">YouTube</span>
+                    </a>
+                    <a href="./articles/" class="sub-link primary-trainer">
+                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                        <span>➔</span>
+                    </a>
                 </div>
             </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+        </div>
 
-        <!-- Gerund, Infinitive, Past Participle -->
-        <a href="./gerund/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🦜</div>
-                <div class="card-text">
-                    <h2>Gerund, Infinitive, Past Participle</h2>
-                    <p>Lesson 15</p>
+        <!-- ================= УРОК 14 ================= -->
+        <div class="lesson-group">
+            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                <div class="card-content">
+                    <div class="card-icon">🐳</div>
+                    <div class="card-text">
+                        <h2>Relative Clause</h2>
+                        <p>Lesson 14</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+            </button>
+            <div class="lesson-dropdown">
+                <div class="dropdown-links">
+                    <a href="./relativeclause/theory.html" class="sub-link">
+                        <span class="sub-link-left">📖 Теория и конспект</span>
+                        <span class="sub-badge">PDF / Статья</span>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="sub-link">
+                        <span class="sub-link-left">▶️ Видеоурок</span>
+                        <span class="sub-badge">YouTube</span>
+                    </a>
+                    <a href="./relativeclause/" class="sub-link primary-trainer">
+                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                        <span>➔</span>
+                    </a>
                 </div>
             </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+        </div>
 
-                <!-- all random 2 -->
+        <!-- ================= УРОК 15 ================= -->
+        <div class="lesson-group">
+            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                <div class="card-content">
+                    <div class="card-icon">🦜</div>
+                    <div class="card-text">
+                        <h2>Gerund, Infinitive, Past Participle</h2>
+                        <p>Lesson 15</p>
+                    </div>
+                </div>
+                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+            </button>
+            <div class="lesson-dropdown">
+                <div class="dropdown-links">
+                    <a href="./gerund/theory.html" class="sub-link">
+                        <span class="sub-link-left">📖 Теория и конспект</span>
+                        <span class="sub-badge">PDF / Статья</span>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="sub-link">
+                        <span class="sub-link-left">▶️ Видеоурок</span>
+                        <span class="sub-badge">YouTube</span>
+                    </a>
+                    <a href="./gerund/" class="sub-link primary-trainer">
+                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                        <span>➔</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- all random 2 (прямая ссылка) -->
         <a href="./random2/" class="trainer-card">
             <div class="card-content">
                 <div class="card-icon">🤯</div>
@@ -520,6 +897,28 @@
             <span>Go back</span>
         </a>
     </footer>
+
+    <script>
+        /**
+         * Функция раскрытия/скрытия урока (Accordion).
+         * При открытии одного урока автоматически закрывает другие открытые уроки,
+         * чтобы страница всегда оставалась компактной.
+         */
+        function toggleLesson(buttonElement) {
+            const currentGroup = buttonElement.parentElement;
+            const isOpen = currentGroup.classList.contains('open');
+
+            // Закрываем все открытые уроки
+            document.querySelectorAll('.lesson-group.open').forEach(group => {
+                group.classList.remove('open');
+            });
+
+            // Если нажатый урок был закрыт — открываем его
+            if (!isOpen) {
+                currentGroup.classList.add('open');
+            }
+        }
+    </script>
 
 </body>
 </html>
