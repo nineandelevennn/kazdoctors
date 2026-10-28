@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>@doctors.speak — Lesson 2: Present Simple & Present Continuous</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Подключение Supabase SDK для проверки подписки -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --kz-gold-light: #FFFBEB;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --success-bg: #DCFCE7;
+      --success-border: #22C55E;
+      --success-text: #15803D;
+      --error-bg: #FEE2E2;
+      --error-border: #EF4444;
+      --error-text: #B91C1C;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 40px;
+    }
+
+    /* Верхняя шапка с кнопкой назад и переключателем RU/KZ */
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+      color: #FFFFFF;
+      padding: 16px 20px 22px 20px;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-top {
+      max-width: 820px;
+      margin: 0 auto 12px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 20px;
+      padding: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 800;
+      font-size: 0.74rem;
+      padding: 5px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+    }
+
+    .header-title-box {
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .lesson-badge {
+      display: inline-block;
+      background: rgba(255, 199, 44, 0.2);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    header p {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* Навигация по разделам урока */
+    .section-nav {
+      width: 100%;
+      max-width: 820px;
+      margin: 14px auto 0 auto;
+      padding: 0 14px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .nav-pill {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 9px 6px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .nav-pill.active {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      border-color: var(--kz-blue-dark);
+      box-shadow: 0 4px 12px rgba(0, 161, 222, 0.25);
+    }
+
+    /* Основной контейнер */
+    main {
+      width: 100%;
+      max-width: 820px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-section {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .tab-section.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Карточки теории */
+    .card-block {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-block::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: var(--kz-blue);
+    }
+
+    .card-block.gold::before {
+      background: var(--kz-gold-dark);
+    }
+
+    .card-block h2 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-block p {
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+
+    /* Сравнение двух времен (Две камеры) */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .comp-box {
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-main);
+    }
+
+    .comp-box.simple {
+      border-top: 4px solid var(--kz-blue);
+      background: var(--kz-blue-light);
+    }
+
+    .comp-box.continuous {
+      border-top: 4px solid var(--kz-gold-dark);
+      background: var(--kz-gold-light);
+    }
+
+    .comp-title {
+      font-size: 0.88rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .comp-formula {
+      display: inline-block;
+      background: #FFFFFF;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      border: 1px dashed var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .clinical-quote {
+      background: #FFFFFF;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 0.82rem;
+      border-left: 3px solid var(--text-dark);
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    /* Таблица формул (prescribe aspirin) */
+    .grammar-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 0.78rem;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .grammar-table th {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: 800;
+    }
+
+    .grammar-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border-color);
+      background: #FFFFFF;
+      line-height: 1.4;
+    }
+
+    .grammar-table tr:nth-child(even) td {
+      background: #F8FAFC;
+    }
+
+    /* Раскрывающийся спойлер для таблицы 12 времен */
+    details.tenses-spoiler {
+      margin-top: 12px;
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 10px 14px;
+    }
+
+    details.tenses-spoiler summary {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      cursor: pointer;
+      list-style: none;
+    }
+
+    /* Быстрые микро-упражнения внутри теории (Quick Check) */
+    .quick-check {
+      background: #F8FAFC;
+      border: 1px dashed var(--kz-blue);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .qc-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .qc-question {
+      font-size: 0.86rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+    }
+
+    .qc-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .qc-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .qc-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background: var(--kz-blue-light);
+    }
+
+    .qc-btn.correct {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    .qc-btn.wrong {
+      background: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    .qc-feedback {
+      display: none;
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      line-height: 1.35;
+    }
+
+    /* Теги слов-маркеров */
+    .markers-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .marker-chip {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 5px 11px;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .marker-chip b {
+      color: var(--kz-blue-dark);
+    }
+
+    /* Карточки словаря */
+    .vocab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+      gap: 10px;
+    }
+
+    .vocab-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .vocab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .vocab-word {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+    }
+
+    .speak-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 161, 222, 0.3);
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+    }
+
+    .vocab-trans {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .vocab-example {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--bg-main);
+      padding: 7px 9px;
+      border-radius: 8px;
+      line-height: 1.35;
+    }
+
+    /* Кнопка перехода к следующему разделу или тренажеру */
+    .action-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      border-radius: 16px;
+      padding: 13px 18px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    @media (max-width: 560px) {
+      .section-nav {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      header h1 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ШАПКА УРОКА -->
+  <header>
+    <div class="header-top">
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅ К списку уроков</a>
+      <div class="lang-switch">
+        <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
+        <button class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
+      </div>
+    </div>
+    <div class="header-title-box">
+      <span class="lesson-badge">Lesson 2 • A1–B1 Medical English</span>
+      <h1 id="uiTitle">Present Simple vs Present Continuous</h1>
+      <p id="uiSubtitle">Как описывать регулярные симптомы (вообще) и острое состояние пациента (прямо сейчас)</p>
+    </div>
+  </header>
+
+  <!-- НАВИГАЦИЯ ПО ЭТАПАМ УРОКА -->
+  <nav class="section-nav">
+    <button class="nav-pill active" onclick="showTab(0)" id="nav0">1. Смысл и Формулы</button>
+    <button class="nav-pill" onclick="showTab(1)" id="nav1">2. Маркеры и Кейс</button>
+    <button class="nav-pill" onclick="showTab(2)" id="nav2">3. Словарь (13 слов)</button>
+    <button class="nav-pill" onclick="showTab(3)" id="nav3">4. Упражнения</button>
+  </nav>
+
+  <!-- ОСНОВНОЙ КОНТЕНТ -->
+  <main>
+    <!-- ВКЛАДКА 1: СМЫСЛ И ФОРМУЛЫ -->
+    <section class="tab-section active" id="tab0"></section>
+
+    <!-- ВКЛАДКА 2: ОПЕРАЦИОННАЯ И МАРКЕРЫ -->
+    <section class="tab-section" id="tab1"></section>
+
+    <!-- ВКЛАДКА 3: СЛОВАРЬ С ПРИМЕРАМИ -->
+    <section class="tab-section" id="tab2">
+      <div class="card-block">
+        <h2 id="uiVocabTitle">💊 Клинический словарь урока (13 терминов)</h2>
+        <p id="uiVocabDesc">Нажмите 🔊, чтобы прослушать произношение. Все примеры взяты из реальной практики и показывают работу Present Simple и Present Continuous.</p>
+        <div class="vocab-grid" id="vocabGrid"></div>
+      </div>
+      <button class="action-btn" onclick="showTab(3)" id="uiToExBtn">Перейти к упражнениям урока ➔</button>
+    </section>
+
+    <!-- ВКЛАДКА 4: ПРАКТИКУМ (EXERCISE 1 & 2 ИЗ PDF) -->
+    <section class="tab-section" id="tab3">
+      <div class="card-block gold">
+        <h2 id="uiEx1Title">✍️ Упражнение 1: Выберите правильную форму глагола</h2>
+        <p id="uiEx1Desc">Найдите в предложении подсказку (маркер времени) и выберите Present Simple или Present Continuous:</p>
+        <div id="ex1Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+      </div>
+
+      <div class="card-block">
+        <h2 id="uiEx2Title">🩺 Упражнение 2: Раскройте скобки в клинических ситуациях</h2>
+        <p id="uiEx2Desc">Поставьте глагол в скобках в нужную форму настоящего времени:</p>
+        <div id="ex2Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+      </div>
+
+      <a href="./present/" class="action-btn" id="uiGoTrainerBtn">🎯 Запустить игровой тренажер по Уроку 2 ➔</a>
+    </section>
+  </main>
+
+  <script>
+    // =========================================================================
+    // 1. ПРОВЕРКА ДОСТУПА ПО ПОДПИСКЕ ЧЕРЕЗ SUPABASE (по образцу index-86)
+    // =========================================================================
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+    async function checkAuth() {
+      if (!supabaseClient || window.location.protocol === 'file:') return;
+      try {
+        const { data, error } = await supabaseClient.auth.getSession();
+        if (error || !data.session) {
+          window.location.href = "/login.html";
+        }
+      } catch (e) {
+        console.warn("Auth check error:", e);
+      }
+    }
+    checkAuth();
+
+    // =========================================================================
+    // 2. БАЗА ДАННЫХ УРОКА 2 (НА РУССКОМ И КАЗАХСКОМ ЯЗЫКАХ)
+    // =========================================================================
+    const LESSON2_DATA = {
+      ui: {
+        backBtn: { ru: "⬅ К списку уроков", kz: "⬅ Сабақтар тізіміне" },
+        title: {
+          ru: "Present Simple vs Present Continuous",
+          kz: "Present Simple және Present Continuous"
+        },
+        subtitle: {
+          ru: "События в настоящем времени: «вообще по жизни» или «прямо сейчас на осмотре»",
+          kz: "Осы шақтағы жағдайлар: «жалпы алғанда» немесе «дәл қазір тексеру кезінде»"
+        },
+        nav: [
+          { ru: "1. Смысл и Формулы", kz: "1. Мағынасы мен Формула" },
+          { ru: "2. Маркеры и Разбор", kz: "2. Маркерлер мен Талдау" },
+          { ru: "3. Словарь (13 слов)", kz: "3. Сөздік (13 сөз)" },
+          { ru: "4. Упражнения", kz: "4. Жаттығулар" }
+        ],
+        vocabTitle: {
+          ru: "💊 Клинический словарь урока (13 терминов)",
+          kz: "💊 Сабақтың клиникалық сөздігі (13 термин)"
+        },
+        vocabDesc: {
+          ru: "Нажмите 🔊 для прослушивания произношения. Обратите внимание, почему в каждом примере выбрано Simple или Continuous.",
+          kz: "Дұрыс айтылуын тыңдау үшін 🔊 басыңыз. Әр мысалда неліктен Simple немесе Continuous таңдалғанына назар аударыңыз."
+        },
+        toExBtn: {
+          ru: "Перейти к шагу 4: Быстрые упражнения ➔",
+          kz: "4-қадамға өту: Жылдам жаттығулар ➔"
+        },
+        ex1Title: {
+          ru: "✍️ Упражнение 1: Выберите правильную форму (Present Simple vs Continuous)",
+          kz: "✍️ 1-жаттығу: Дұрыс форманы таңдаңыз (Present Simple vs Continuous)"
+        },
+        ex1Desc: {
+          ru: "Ориентируйтесь на слова-маркеры (usually, right now, at the moment, often):",
+          kz: "Мезгіл маркерлеріне (usually, right now, at the moment, often) назар аударыңыз:"
+        },
+        ex2Title: {
+          ru: "🩺 Упражнение 2: Раскройте скобки в клинических ситуациях",
+          kz: "🩺 2-жаттығу: Клиникалық жағдайларда жақшаны ашыңыз"
+        },
+        ex2Desc: {
+          ru: "Выберите верную грамматическую конструкцию для пропусков:",
+          kz: "Бос орындарға сәйкес келетін грамматикалық форманы таңдаңыз:"
+        },
+        goTrainerBtn: {
+          ru: "🎯 Перейти к основному тренажеру Урока 2 ➔",
+          kz: "🎯 2-сабақтың негізгі тренажеріне өту ➔"
+        }
+      },
+
+      // ВКЛАДКА 1: СМЫСЛ И ФОРМУЛЫ
+      tab0Html: {
+        ru: `
+          <div class="card-block">
+            <h2>🚨 Главная разница за 30 секунд: «Пациенты умирают»</h2>
+            <p>В русском языке одна и та же фраза <b>«Пациенты умирают»</b> может означать две совершенно разные клинические ситуации. В английском для них используются два разных времени:</p>
+            <div class="comparison-grid">
+              <div class="comp-box simple">
+                <div class="comp-title">
+                  <span>📊 Present Simple</span>
+                  <span style="font-size:0.72rem; color:var(--kz-blue-dark);">«ВООБЩЕ / РЕГУЛЯРНО»</span>
+                </div>
+                <span class="comp-formula">Subject + DOES (V / V-s)</span>
+                <p style="font-size:0.8rem;">Факты, медицинская статистика, патогенез, привычки и регулярные симптомы пациента.</p>
+                <div class="clinical-quote">
+                  <b>"Patients die because of oncology."</b><br>
+                  <span style="color:var(--text-muted); font-size:0.76rem;">Вообще в мире пациенты умирают от онкологии (статистика, закономерность).</span>
+                </div>
+              </div>
+
+              <div class="comp-box continuous">
+                <div class="comp-title">
+                  <span>🚑 Present Continuous</span>
+                  <span style="font-size:0.72rem; color:var(--kz-gold-dark);">«ПРЯМО СЕЙЧАС»</span>
+                </div>
+                <span class="comp-formula">Subject + IS DOING (am/is/are + V-ing)</span>
+                <p style="font-size:0.8rem;">Экстренный процесс, который происходит прямо сейчас перед глазами врача (в реанимации, на осмотре) или в текущий период.</p>
+                <div class="clinical-quote">
+                  <b>"Patients are dying right now because of bleeding!"</b><br>
+                  <span style="color:var(--text-muted); font-size:0.76rem;">Прямо сейчас в отделении умирают пациенты из-за массивного кровотечения!</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="quick-check" data-qc="0">
+              <span class="qc-badge">⚡ Быстрая проверка понимания</span>
+              <div class="qc-question">Вы читаете в статье: «Клетчатка помогает лечить запор» (Fiber helps treat constipation). Почему автор использовал Present Simple (helps)?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Верно! Это постоянный медицинский факт («вообще»), поэтому нужен Present Simple.')">Это постоянный медицинский факт («вообще»)</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Не совсем: пациент не ест клетчатку прямо сейчас на ваших глазах. Это общий медицинский факт — Present Simple.')">Потому что пациент принимает клетчатку прямо сейчас</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>📐 Формулы построения: как не путать окончания</h2>
+            <p>Разберем оба времени на одной врачебной фразе — <b>prescribe aspirin</b> (назначать аспирин):</p>
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Лицо (Кто?)</th>
+                  <th>Present Simple (Обычно / Вообще)</th>
+                  <th>Present Continuous (Прямо сейчас)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>I</b> (Я)</td>
+                  <td>(+) I <b>prescribe</b> aspirin.<br>(?) <b>Do</b> I prescribe?<br>(-) I <b>don't</b> prescribe.</td>
+                  <td>(+) I <b>am prescribing</b> aspirin.<br>(?) <b>Am</b> I prescribing?<br>(-) I <b>am not</b> prescribing.</td>
+                </tr>
+                <tr>
+                  <td><b>You / We / They</b><br>(Вы / Мы / Врачи)</td>
+                  <td>(+) We <b>prescribe</b> aspirin.<br>(?) <b>Do</b> we prescribe?<br>(-) We <b>don't</b> prescribe.</td>
+                  <td>(+) We <b>are prescribing</b> aspirin.<br>(?) <b>Are</b> we prescribing?<br>(-) We <b>aren't</b> prescribing.</td>
+                </tr>
+                <tr>
+                  <td><b>He / She / It</b><br>(Врач / Пациент / Препарат)</td>
+                  <td>(+) He <b>prescribes</b> aspirin. <i>(добавляем -s!)</i><br>(?) <b>Does</b> he prescribe?<br>(-) He <b>doesn't</b> prescribe.</td>
+                  <td>(+) She <b>is prescribing</b> aspirin.<br>(?) <b>Is</b> she prescribing?<br>(-) She <b>isn't</b> prescribing.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <details class="tenses-spoiler">
+              <summary>🗺️ Показать общую карту всех 12 времен (для обзора)</summary>
+              <p style="margin-top:8px; font-size:0.78rem; color:var(--text-muted);">Не пытайтесь заучить всё сразу! В реальной медицине 80% речи строится на базовых временах Simple, Continuous и Perfect:</p>
+              <table class="grammar-table" style="margin-top:6px;">
+                <thead>
+                  <tr><th>Время</th><th>Simple (Факт)</th><th>Continuous (Процесс)</th><th>Perfect (Результат)</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><b>Past</b></td><td>I worked (V2 / -ed)</td><td>I was working</td><td>I had worked</td></tr>
+                  <tr><td><b>Present</b></td><td><b>I work (V1 / V-s)</b></td><td><b>I am working (am/is/are + V-ing)</b></td><td>I have worked</td></tr>
+                  <tr><td><b>Future</b></td><td>I will work</td><td>I will be working</td><td>I will have worked</td></tr>
+                </tbody>
+              </table>
+            </details>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Быстрое упражнение на формулу</span>
+              <div class="qc-question">Как правильно сказать: «В данный момент медсестра НЕ дает лекарство»?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Осторожно: doesn\\'t используется в Present Simple (обычно), а у нас процесс «в данный момент» (Continuous).')">The nurse doesn't giving the drug.</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Отлично! Формула Present Continuous для she (the nurse): is not (isn\\'t) + giving.')">The nurse isn't giving the drug.</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Пропущен вспомогательный глагол is перед not.')">The nurse not giving the drug.</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">Перейти к шагу 2: Кейс из операционной и Маркеры ➔</button>
+        `,
+        kz: `
+          <div class="card-block">
+            <h2>🚨 30 секунд ішіндегі басты айырмашылық: «Науқастар қайтыс болады»</h2>
+            <p>Қазақ тіліндегі <b>«Науқастар қайтыс болады»</b> және <b>«Науқастар қайтыс болып жатыр»</b> деген сөйлемдердің арасындағы айырмашылық сияқты, ағылшын тілінде де осы шақ екі түрлі грамматикалық ереже арқылы қолданылады:</p>
+            <div class="comparison-grid">
+              <div class="comp-box simple">
+                <div class="comp-title">
+                  <span>📊 Present Simple</span>
+                  <span style="font-size:0.72rem; color:var(--kz-blue-dark);">«ЖАЛПЫ / ҮНЕМІ»</span>
+                </div>
+                <span class="comp-formula">Subject + DOES (V / V-s)</span>
+                <p style="font-size:0.8rem;">Медициналық фактілер, статистика, патогенез, әдеттер және науқастың тұрақты симптомдары.</p>
+                <div class="clinical-quote">
+                  <b>"Patients die because of oncology."</b><br>
+                  <span style="color:var(--text-muted); font-size:0.76rem;">Жалпы әлемде науқастар онкологиядан қайтыс болады (статистика, заңдылық).</span>
+                </div>
+              </div>
+
+              <div class="comp-box continuous">
+                <div class="comp-title">
+                  <span>🚑 Present Continuous</span>
+                  <span style="font-size:0.72rem; color:var(--kz-gold-dark);">«ДӘЛ ҚАЗІР»</span>
+                </div>
+                <span class="comp-formula">Subject + IS DOING (am/is/are + V-ing)</span>
+                <p style="font-size:0.8rem;">Дәрігердің көз алдында дәл қазір болып жатқан жедел процесс (реанимацияда, тексеру кезінде) немесе уақытша кезең.</p>
+                <div class="clinical-quote">
+                  <b>"Patients are dying right now because of bleeding!"</b><br>
+                  <span style="color:var(--text-muted); font-size:0.76rem;">Дәл қазір бөлімшеде науқастар қан кетуден қайтыс болып жатыр!</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Түсінікті жылдам тексеру</span>
+              <div class="qc-question">Мақалада: «Жасұнық іш қатуды емдеуге көмектеседі» (Fiber helps treat constipation). Автор неліктен Present Simple (helps) қолданды?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Дұрыс! Бұл тұрақты медициналық факт («жалпы алғанда»), сондықтан Present Simple қолданылады.')">Себебі бұл тұрақты медициналық факт («жалпы»)</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Жоқ, бұл дәл қазіргі процесс емес, жалпы медициналық заңдылық — Present Simple.')">Себебі науқас жасұнықты дәл қазір ішіп отыр</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>📐 Құрылым формуласы: жалғауларды қалай шатастырмаймыз</h2>
+            <p>Екі шақты да дәрігерлік <b>prescribe aspirin</b> (аспирин тағайындау) тіркесімен салыстырайық:</p>
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Жақ (Кім?)</th>
+                  <th>Present Simple (Әдетте / Жалпы)</th>
+                  <th>Present Continuous (Дәл қазір)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>I</b> (Мен)</td>
+                  <td>(+) I <b>prescribe</b> aspirin.<br>(?) <b>Do</b> I prescribe?<br>(-) I <b>don't</b> prescribe.</td>
+                  <td>(+) I <b>am prescribing</b> aspirin.<br>(?) <b>Am</b> I prescribing?<br>(-) I <b>am not</b> prescribing.</td>
+                </tr>
+                <tr>
+                  <td><b>You / We / They</b><br>(Сіз / Біз / Дәрігерлер)</td>
+                  <td>(+) We <b>prescribe</b> aspirin.<br>(?) <b>Do</b> we prescribe?<br>(-) We <b>don't</b> prescribe.</td>
+                  <td>(+) We <b>are prescribing</b> aspirin.<br>(?) <b>Are</b> we prescribing?<br>(-) We <b>aren't</b> prescribing.</td>
+                </tr>
+                <tr>
+                  <td><b>He / She / It</b><br>(Дәрігер / Науқас / Препарат)</td>
+                  <td>(+) He <b>prescribes</b> aspirin. <i>(-s жалғанады!)</i><br>(?) <b>Does</b> he prescribe?<br>(-) He <b>doesn't</b> prescribe.</td>
+                  <td>(+) She <b>is prescribing</b> aspirin.<br>(?) <b>Is</b> she prescribing?<br>(-) She <b>isn't</b> prescribing.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <details class="tenses-spoiler">
+              <summary>🗺️ Барлық 12 шақтың шолу кестесін көрсету</summary>
+              <p style="margin-top:8px; font-size:0.78rem; color:var(--text-muted);">Барлығын бірден жаттаудың қажеті жоқ! Медицинада сөйлемдердің 80%-ы осы негізгі шақтармен құрылады:</p>
+              <table class="grammar-table" style="margin-top:6px;">
+                <thead>
+                  <tr><th>Шақ</th><th>Simple (Факт)</th><th>Continuous (Процесс)</th><th>Perfect (Нәтиже)</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><b>Past</b></td><td>I worked (V2 / -ed)</td><td>I was working</td><td>I had worked</td></tr>
+                  <tr><td><b>Present</b></td><td><b>I work (V1 / V-s)</b></td><td><b>I am working (am/is/are + V-ing)</b></td><td>I have worked</td></tr>
+                  <tr><td><b>Future</b></td><td>I will work</td><td>I will be working</td><td>I will have worked</td></tr>
+                </tbody>
+              </table>
+            </details>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Формулаға арналған жылдам жаттығу</span>
+              <div class="qc-question">«Қазіргі сәтте медбике дәрі беріп жатқан ЖОҚ» деп қалай дұрыс айтамыз?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Қате: doesn\\'t тек Present Simple-да (әдетте) қолданылады, ал бізде «қазіргі сәтте» (Continuous).')">The nurse doesn't giving the drug.</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Тамаша! She (the nurse) үшін Present Continuous болымсыз формасы: is not (isn\\'t) + giving.')">The nurse isn't giving the drug.</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'not алдында is көмекші етістігі қалып қойған.')">The nurse not giving the drug.</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">2-қадамға өту: Операциялық бөлме және Маркерлер ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 2: КЕЙС #NEWAMSTERDAM И МАРКЕРЫ
+      tab1Html: {
+        ru: `
+          <div class="card-block">
+            <h2>😷 Разбор клинической сцены в операционной (#NewAmsterdam)</h2>
+            <p>Посмотрите, как врач описывает одну и ту же фотографию бригады хирургов в операционной, переключаясь между <b>Present Simple</b> (кто они по профессии) и <b>Present Continuous</b> (что происходит на мониторах и в руках прямо сейчас):</p>
+            <div class="clinical-quote" style="border-left-color: var(--kz-blue);">
+              1. <b>"These people <span style="color:var(--kz-blue-dark);">work</span> as doctors."</b> — <i>Present Simple</i> (они работают врачами вообще по жизни).<br>
+              2. <b>"At the moment they <span style="color:#D97706;">are preparing</span> for surgery."</b> — <i>Present Continuous</i> (в данный момент они готовятся к операции).<br>
+              3. <b>"One of them <span style="color:var(--kz-blue-dark);">wears</span> glasses. The other ones <span style="color:#D97706;">are not wearing</span> glasses."</b> — <i>Контраст:</i> ведущий хирург вообще носит очки (Simple), а остальные сейчас стоят без очков (Continuous).<br>
+              4. <b>"The monitor <span style="color:#D97706;">is showing</span> the vital signs."</b> — <i>Present Continuous</i> (монитор прямо сейчас показывает жизненные показатели).
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>🧭 Слова-маркеры: как за 1 секунду узнать нужное время</h2>
+            <p>В тестах, при опросе пациента и в научных статьях время всегда выдает слово-спутник (маркер):</p>
+
+            <h3 style="font-size:0.84rem; font-weight:800; color:var(--kz-blue-dark); margin-top:10px;">1. Базовые маркеры Present Simple (На приёме пациента):</h3>
+            <div class="markers-wrap">
+              <span class="marker-chip"><b>usually</b> — обычно</span>
+              <span class="marker-chip"><b>often</b> — часто</span>
+              <span class="marker-chip"><b>always</b> — всегда</span>
+              <span class="marker-chip"><b>never</b> — никогда</span>
+              <span class="marker-chip"><b>rarely / seldom</b> — редко</span>
+              <span class="marker-chip"><b>every day / week / hour</b> — каждый день/час</span>
+              <span class="marker-chip"><b>from time to time</b> — время от времени</span>
+              <span class="marker-chip"><b>every now and then</b> — время от времени</span>
+            </div>
+
+            <h3 style="font-size:0.84rem; font-weight:800; color:var(--kz-blue-dark); margin-top:14px;">2. «Научные» маркеры Present Simple (В статьях PubMed / UpToDate):</h3>
+            <div class="markers-wrap">
+              <span class="marker-chip"><b>commonly</b> — часто / обычно</span>
+              <span class="marker-chip"><b>frequently</b> — часто</span>
+              <span class="marker-chip"><b>regularly</b> — регулярно</span>
+              <span class="marker-chip"><b>occasionally</b> — изредка / иногда</span>
+              <span class="marker-chip"><b>sporadically</b> — спорадически</span>
+              <span class="marker-chip"><b>constantly</b> — постоянно</span>
+              <span class="marker-chip"><b>consistently</b> — последовательно / стабильно</span>
+              <span class="marker-chip"><b>inconsistently</b> — непоследовательно</span>
+            </div>
+
+            <h3 style="font-size:0.84rem; font-weight:800; color:#B45309; margin-top:14px;">3. Маркеры Present Continuous (Прямо сейчас / В текущий период):</h3>
+            <div class="markers-wrap">
+              <span class="marker-chip"><b>right now</b> — прямо сейчас</span>
+              <span class="marker-chip"><b>at this moment</b> — в данный момент</span>
+              <span class="marker-chip"><b>currently</b> — в настоящее время</span>
+              <span class="marker-chip"><b>nowadays / these days</b> — в наши дни</span>
+              <span class="marker-chip"><b>this week / this year</b> — на этой неделе / в этом году</span>
+              <span class="marker-chip"><b>Look! / Do you see?</b> — Посмотрите! Видите?</span>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Быстрый тест по научным маркерам</span>
+              <div class="qc-question">В статье написано: "Scientists are <b>currently</b> ___ new methods to treat cancer." Какую форму глагола study нужно поставить после маркера currently?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Маркер currently означает «в настоящее время» (текущий активный процесс), здесь нужен Continuous (studying).')">study (Present Simple)</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Верно! Маркеры currently, nowadays и this week указывают на активный процесс в настоящем периоде — are studying.')">studying (Present Continuous)</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">Перейти к шагу 3: Словарь урока (13 слов) ➔</button>
+        `,
+        kz: `
+          <div class="card-block">
+            <h2>😷 Операциялық бөлмедегі жағдайды талдау (#NewAmsterdam)</h2>
+            <p>Дәрігер операциялық бөлмедегі хирургтар тобын сипаттағанда <b>Present Simple</b> (олардың тұрақты мамандығы) мен <b>Present Continuous</b> (дәл қазір мониторда не болып жатқаны) арасында қалай ауысатынына қараңыз:</p>
+            <div class="clinical-quote" style="border-left-color: var(--kz-blue);">
+              1. <b>"These people <span style="color:var(--kz-blue-dark);">work</span> as doctors."</b> — <i>Present Simple</i> (олар жалпы өмірде дәрігер болып жұмыс істейді).<br>
+              2. <b>"At the moment they <span style="color:#D97706;">are preparing</span> for surgery."</b> — <i>Present Continuous</i> (дәл қазір олар операцияға дайындалып жатыр).<br>
+              3. <b>"One of them <span style="color:var(--kz-blue-dark);">wears</span> glasses. The other ones <span style="color:#D97706;">are not wearing</span> glasses."</b> — <i>Контраст:</i> олардың бірі жалпы көзілдірік тағады (Simple), ал қалғандары қазір көзілдіріксіз тұр (Continuous).<br>
+              4. <b>"The monitor <span style="color:#D97706;">is showing</span> the vital signs."</b> — <i>Present Continuous</i> (монитор дәл қазір өмірлік көрсеткіштерді көрсетіп тұр).
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>🧭 Мезгіл маркерлері: қажетті шақты 1 секундта қалай табамыз</h2>
+            <p>Тесттерде, науқасты сұрастырғанда және ғылыми мақалаларда қай шақ керек екенін арнайы маркер-сөздер көрсетеді:</p>
+
+            <h3 style="font-size:0.84rem; font-weight:800; color:var(--kz-blue-dark); margin-top:10px;">1. Present Simple негізгі маркерлері (Науқасты қабылдауда):</h3>
+            <div class="markers-wrap">
+              <span class="marker-chip"><b>usually</b> — әдетте</span>
+              <span class="marker-chip"><b>often</b> — жиі</span>
+              <span class="marker-chip"><b>always</b> — әрқашан</span>
+              <span class="marker-chip"><b>never</b> — ешқашан</span>
+              <span class="marker-chip"><b>rarely / seldom</b> — сирек</span>
+              <span class="marker-chip"><b>every day / week / hour</b> — күн / апта / сағат сайын</span>
+              <span class="marker-chip"><b>from time to time</b> — анда-санда</span>
+            </div>
+
+            <h3 style="font-size:0.84rem; font-weight:800; color:var(--kz-blue-dark); margin-top:14px;">2. «Ғылыми» Present Simple маркерлері (PubMed / UpToDate мақалаларында):</h3>
+            <div class="markers-wrap">
+              <span class="marker-chip"><b>commonly</b> — жиі / әдетте</span>
+              <span class="marker-chip"><b>frequently</b> — жиі</span>
+              <span class="marker-chip"><b>regularly</b> — жүйелі түрде</span>
+              <span class="marker-chip"><b>occasionally</b> — кейде</span>
+              <span class="marker-chip"><b>sporadically</b> — спорадикалық (анда-санда)</span>
+              <span class="marker-chip"><b>constantly</b> — үнемі</span>
+              <span class="marker-chip"><b>consistently</b> — тұрақты / дәйекті түрде</span>
+              <span class="marker-chip"><b>inconsistently</b> — тұрақсыз</span>
+            </div>
+
+            <h3 style="font-size:0.84rem; font-weight:800; color:#B45309; margin-top:14px;">3. Present Continuous маркерлері (Дәл қазір / Осы кезеңде):</h3>
+            <div class="markers-wrap">
+              <span class="marker-chip"><b>right now</b> — дәл қазір</span>
+              <span class="marker-chip"><b>at this moment</b> — осы сәтте</span>
+              <span class="marker-chip"><b>currently</b> — қазіргі уақытта</span>
+              <span class="marker-chip"><b>nowadays / these days</b> — қазіргі кезде</span>
+              <span class="marker-chip"><b>this week / this year</b> — осы аптада / осы жылы</span>
+              <span class="marker-chip"><b>Look! / Do you see?</b> — Қараңыз! Көрдіңіз бе?</span>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Ғылыми маркерлер бойынша жылдам тест</span>
+              <div class="qc-question">Мақалада: "Scientists <b>currently</b> ___ new methods to treat cancer." Currently маркерінен кейін study етістігінің қай формасы қойылады?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Currently «қазіргі уақытта» дегенді білдіреді, яғни процесс жүріп жатыр — Continuous (studying) керек.')">study (Present Simple)</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Дұрыс! Currently, nowadays және this week маркерлері қазіргі кезеңдегі белсенді процесті көрсетеді — are studying.')">studying (Present Continuous)</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">3-қадамға өту: Сабақ сөздігі (13 сөз) ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 3: СЛОВАРЬ (13 ТЕРМИНОВ С ПРИМЕРАМИ ИЗ СЛАЙДОВ 2 И 11)
+      vocabulary: [
+        {
+          en: "Ambulance",
+          ru: "Скорая помощь",
+          kz: "Жедел жәрдем",
+          ex: "The ambulance <b>is delivering</b> that patient to the hospital. <i>(Continuous — везет прямо сейчас)</i>"
+        },
+        {
+          en: "Aspiration",
+          ru: "Аспирация",
+          kz: "Аспирация (тыныс жолына кету)",
+          ex: "Aspiration <b>stops</b> breathing and <b>harms</b> the trachea. <i>(Simple — медицинский факт)</i>"
+        },
+        {
+          en: "Bone",
+          ru: "Кость",
+          kz: "Сүйек",
+          ex: "People <b>break</b> bones in wrestling. <i>(Simple — происходит вообще)</i>"
+        },
+        {
+          en: "Cancer",
+          ru: "Рак (онкология)",
+          kz: "Қатерлі ісік (рак)",
+          ex: "Scientists <b>are now studying</b> new methods to treat cancer. <i>(Continuous — изучают сейчас)</i>"
+        },
+        {
+          en: "Chest",
+          ru: "Грудная клетка",
+          kz: "Кеуде қуысы",
+          ex: "Do you see? His chest <b>is not moving</b>. <i>(Continuous — не дышит прямо сейчас)</i>"
+        },
+        {
+          en: "Complaint",
+          ru: "Жалоба",
+          kz: "Шағым",
+          ex: "People with gastritis <b>usually have</b> complaints about fullness. <i>(Simple — маркер usually)</i>"
+        },
+        {
+          en: "Constipation",
+          ru: "Запор",
+          kz: "Іш қату",
+          ex: "Fiber <b>helps</b> treat constipation. <i>(Simple — клинический факт)</i>"
+        },
+        {
+          en: "Drug",
+          ru: "Лекарство / Препарат",
+          kz: "Дәрілік зат / Препарат",
+          ex: "Look, I <b>am prescribing</b> a bigger dose, be careful. <i>(Continuous — маркер Look!)</i>"
+        },
+        {
+          en: "Elbow",
+          ru: "Локоть",
+          kz: "Шынтақ",
+          ex: "Arthritis <b>rarely affects</b> elbows. <i>(Simple — маркер rarely)</i>"
+        },
+        {
+          en: "Febrile",
+          ru: "Фебрильный (с лихорадкой)",
+          kz: "Фебрильді (қызуы бар)",
+          ex: "<b>This week</b> we <b>are focusing</b> on febrile patients only. <i>(Continuous — временный фокус)</i>"
+        },
+        {
+          en: "Heart attack",
+          ru: "Сердечный приступ (ИМ)",
+          kz: "Жүрек талмасы (инфаркт)",
+          ex: "His pain sounds like he <b>is having</b> a heart attack. <i>(Continuous — приступ прямо сейчас)</i>"
+        },
+        {
+          en: "Hypertension",
+          ru: "Гипертензия (высокое АД)",
+          kz: "Гипертензия (жоғары АҚ)",
+          ex: "Many patients in Kazakhstan also <b>have</b> hypertension. <i>(Simple — статистика)</i>"
+        },
+        {
+          en: "Joint",
+          ru: "Сустав",
+          kz: "Буын",
+          ex: "I <b>am trying</b> to move my joint, but it is immobile. <i>(Continuous — пытается сейчас на осмотре)</i>"
+        }
+      ],
+
+      // ВКЛАДКА 4: УПРАЖНЕНИЕ 1 И УПРАЖНЕНИЕ 2 ИЗ PDF
+      ex1: [
+        {
+          q: "1. The patient usually ___ of chest pain during exercise.",
+          options: ["complains", "is complaining"],
+          correct: 0,
+          exp: {
+            ru: "Маркер 'usually' (обычно) указывает на регулярный симптом -> Present Simple (complains с окончанием -s для the patient).",
+            kz: "'Usually' (әдетте) маркері тұрақты симптомды көрсетеді -> Present Simple (жекеше түрдегі the patient үшін complains)."
+          }
+        },
+        {
+          q: "2. I ___ the patient's elbow for any swelling right now.",
+          options: ["am checking", "check"],
+          correct: 0,
+          exp: {
+            ru: "Маркер 'right now' (прямо сейчас) — врач осматривает локоть в эту секунду -> Present Continuous (am checking).",
+            kz: "'Right now' (дәл қазір) маркері — дәрігер дәл осы сәтте шынтақты тексеріп жатыр -> Present Continuous (am checking)."
+          }
+        },
+        {
+          q: "3. An ambulance ___ at the emergency entrance at the moment.",
+          options: ["arrives", "is arriving"],
+          correct: 1,
+          exp: {
+            ru: "Маркер 'at the moment' (в данный момент) — скорая подъезжает прямо сейчас -> Present Continuous (is arriving).",
+            kz: "'At the moment' (осы сәтте) маркері — жедел жәрдем дәл қазір келіп жатыр -> Present Continuous (is arriving)."
+          }
+        },
+        {
+          q: "4. We often ___ patients with hypertension in this unit.",
+          options: ["treat", "are treating"],
+          correct: 0,
+          exp: {
+            ru: "Маркер 'often' (часто) — обычная практика отделения -> Present Simple (treat).",
+            kz: "'Often' (жиі) маркері — бөлімшенің күнделікті тәжірибесі -> Present Simple (treat)."
+          }
+        },
+        {
+          q: "5. The nurse ___ the drug to the febrile child at the moment.",
+          options: ["is giving", "gives"],
+          correct: 0,
+          exp: {
+            ru: "Маркер 'at the moment' — медсестра дает препарат прямо сейчас -> Present Continuous (is giving).",
+            kz: "'At the moment' маркері — медбике дәріні дәл қазір беріп жатыр -> Present Continuous (is giving)."
+          }
+        }
+      ],
+
+      ex2: [
+        {
+          q: "1. She usually ___ (have) constipation, but today she ___ (feel) fine.",
+          options: ["has ... is feeling", "is having ... feels", "have ... is feeling"],
+          correct: 0,
+          exp: {
+            ru: "В первой части 'usually' (обычно -> Present Simple: she has), а во второй контраст 'today' (сегодня -> Present Continuous: she is feeling).",
+            kz: "Бірінші бөлікте 'usually' (әдетте -> Present Simple: she has), ал екінші бөлікте 'today' (бүгін -> Present Continuous: she is feeling)."
+          }
+        },
+        {
+          q: "2. I ___ (examine) a patient who has a broken bone in his leg right now.",
+          options: ["examine", "am examining", "is examining"],
+          correct: 1,
+          exp: {
+            ru: "Маркер 'right now' + местоимение 'I' -> Present Continuous: am examining.",
+            kz: "'Right now' маркері + 'I' есімдігі -> Present Continuous: am examining."
+          }
+        },
+        {
+          q: "3. They ___ (not talk) about joint pain in every consultation.",
+          options: ["aren't talking", "don't talk", "doesn't talk"],
+          correct: 1,
+          exp: {
+            ru: "Маркер 'in every consultation' (на каждой консультации — регулярность) + 'They' -> Present Simple: don't talk.",
+            kz: "'In every consultation' (әр консультацияда — қайталанатын әрекет) + 'They' -> Present Simple: don't talk."
+          }
+        },
+        {
+          q: "4. Look! The doctor ___ (check) the chest X-ray of a patient with cancer right now.",
+          options: ["checks", "is checking", "are checking"],
+          correct: 1,
+          exp: {
+            ru: "Врач проверяет рентгеновский снимок грудной клетки прямо сейчас -> Present Continuous (is checking).",
+            kz: "Дәрігер кеуде қуысының рентген суретін дәл қазір тексеріп жатыр -> Present Continuous (is checking)."
+          }
+        },
+        {
+          q: "5. My colleague always ___ (respond) quickly when there is a heart attack.",
+          options: ["is responding", "respond", "responds"],
+          correct: 2,
+          exp: {
+            ru: "Маркер 'always' (всегда) + 'My colleague' (he/she, 3-е лицо ед. ч.) -> Present Simple с окончанием -s: responds.",
+            kz: "'Always' (әрқашан) маркері + 'My colleague' (3-жақ, жекеше) -> -s жалғауы бар Present Simple: responds."
+          }
+        }
+      ]
+    };
+
+    // =========================================================================
+    // 3. ЛОГИКА ОТОБРАЖЕНИЯ, ОЗВУЧКИ И ПЕРЕКЛЮЧЕНИЯ ЯЗЫКОВ (RU / KZ)
+    // =========================================================================
+    let currentLang = localStorage.getItem('doctors_speak_lang') || 'ru';
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('doctors_speak_lang', lang);
+
+      document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
+      document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
+
+      const ui = LESSON2_DATA.ui;
+      document.getElementById('uiBackBtn').textContent = ui.backBtn[lang];
+      document.getElementById('uiTitle').textContent = ui.title[lang];
+      document.getElementById('uiSubtitle').textContent = ui.subtitle[lang];
+
+      ui.nav.forEach((item, index) => {
+        document.getElementById(`nav${index}`).textContent = item[lang];
+      });
+
+      document.getElementById('uiVocabTitle').textContent = ui.vocabTitle[lang];
+      document.getElementById('uiVocabDesc').textContent = ui.vocabDesc[lang];
+      document.getElementById('uiToExBtn').textContent = ui.toExBtn[lang];
+      document.getElementById('uiEx1Title').textContent = ui.ex1Title[lang];
+      document.getElementById('uiEx1Desc').textContent = ui.ex1Desc[lang];
+      document.getElementById('uiEx2Title').textContent = ui.ex2Title[lang];
+      document.getElementById('uiEx2Desc').textContent = ui.ex2Desc[lang];
+      document.getElementById('uiGoTrainerBtn').textContent = ui.goTrainerBtn[lang];
+
+      // Рендерим вкладки теории, словаря и упражнений
+      document.getElementById('tab0').innerHTML = LESSON2_DATA.tab0Html[lang];
+      document.getElementById('tab1').innerHTML = LESSON2_DATA.tab1Html[lang];
+      renderVocab();
+      renderExercises('ex1Container', LESSON2_DATA.ex1);
+      renderExercises('ex2Container', LESSON2_DATA.ex2);
+    }
+
+    function showTab(idx) {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`nav${i}`).classList.toggle('active', i === idx);
+        document.getElementById(`tab${i}`).classList.toggle('active', i === idx);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Проверка встроенных микро-вопросов в теории
+    function checkInlineQuiz(btn, isCorrect, feedbackText) {
+      const parent = btn.closest('.quick-check');
+      const allBtns = parent.querySelectorAll('.qc-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+      }
+
+      const fb = parent.querySelector('.qc-feedback');
+      fb.textContent = `💡 ${feedbackText}`;
+      fb.style.display = 'block';
+    }
+
+    // Рендер словаря с озвучкой Web Speech API
+    function renderVocab() {
+      const grid = document.getElementById('vocabGrid');
+      grid.innerHTML = '';
+      LESSON2_DATA.vocabulary.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'vocab-card';
+        div.innerHTML = `
+          <div class="vocab-header">
+            <span class="vocab-word">${item.en}</span>
+            <button class="speak-btn" onclick="speakEn('${item.en}')" title="Прослушать">🔊</button>
+          </div>
+          <div class="vocab-trans">${item[currentLang]}</div>
+          <div class="vocab-example">${item.ex}</div>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    function speakEn(word) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(word);
+      u.lang = 'en-US';
+      u.rate = 0.9;
+      window.speechSynthesis.speak(u);
+    }
+
+    // Рендер упражнений 1 и 2 из PDF
+    function renderExercises(containerId, list) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+      list.forEach(item => {
+        const box = document.createElement('div');
+        box.className = 'quick-check';
+        box.style.marginTop = '0';
+
+        const qEl = document.createElement('div');
+        qEl.className = 'qc-question';
+        qEl.textContent = item.q;
+
+        const optsEl = document.createElement('div');
+        optsEl.className = 'qc-options';
+
+        const fbEl = document.createElement('div');
+        fbEl.className = 'qc-feedback';
+        fbEl.textContent = `💡 ${item.exp[currentLang]}`;
+
+        item.options.forEach((optText, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'qc-btn';
+          btn.textContent = optText;
+          btn.onclick = () => {
+            const buttons = optsEl.querySelectorAll('.qc-btn');
+            buttons.forEach(b => b.disabled = true);
+            if (idx === item.correct) {
+              btn.classList.add('correct');
+            } else {
+              btn.classList.add('wrong');
+              buttons[item.correct].classList.add('correct');
+            }
+            fbEl.style.display = 'block';
+          };
+          optsEl.appendChild(btn);
+        });
+
+        box.appendChild(qEl);
+        box.appendChild(optsEl);
+        box.appendChild(fbEl);
+        container.appendChild(box);
+      });
+    }
+
+    // Запуск при загрузке
+    setLang(currentLang);
+  </script>
+  <script src="/session-guard.js"></script>
+</body>
+</html>
