@@ -125,7 +125,7 @@
             flex-direction: column;
             gap: 12px;
             width: 100%;
-            max-width: 440px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 20px 16px;
             flex-grow: 1;
@@ -261,7 +261,7 @@
 
         /* Увеличена максимальная высота, чтобы помещалось и видео 16:9, и кнопки ниже */
         .lesson-group.open .lesson-dropdown {
-            max-height: 520px;
+            max-height: 1200px;
             opacity: 1;
         }
 
@@ -421,6 +421,18 @@
             .card-text h2 { font-size: 0.88rem; }
             .card-text p { font-size: 0.7rem; }
         }
+
+        /* Адаптивность: комфортная ширина на ноутбуках и поля на телефонах */
+        @media (min-width: 700px) {
+            main { padding: 28px 24px; gap: 14px; }
+            .video-embed-box { border-radius: 14px; }
+            .dropdown-links { padding: 16px 18px 18px 24px; }
+        }
+        @media (max-width: 480px) {
+            main { padding: 16px 12px; }
+            .video-embed-box { border-radius: 10px; }
+            .dropdown-links { padding: 10px 10px 12px 16px; }
+        }
     </style>
 </head>
 <body>
@@ -476,6 +488,17 @@
             </button>
             <div class="lesson-dropdown">
                 <div class="dropdown-links">
+                    <!-- Vimeo video: Lesson 1 — To be & To do -->
+                    <div class="video-embed-box">
+                        <iframe
+                            data-src="https://player.vimeo.com/video/1240358777?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                            title="LESSON 1 — To be &amp; To do"
+                            loading="lazy"
+                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
                     <a href="https://kazdoctors.com/grammar/lesson1" class="sub-link">
                         <span class="sub-link-left">📖 Теория и конспект</span>
                         <span class="sub-badge">PDF / Статья</span>
