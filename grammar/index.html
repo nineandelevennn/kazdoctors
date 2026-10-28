@@ -212,7 +212,7 @@
         }
 
         /* ==========================================================================
-           СТИЛИ ДЛЯ РАСКРЫВАЮЩИХСЯ УРОКОВ (EXPAND / COLLAPSE)
+           СТИЛИ ДЛЯ РАСКРЫВАЮЩИХСЯ УРОКОВ (EXPAND / COLLAPSE) И ВИДЕО
            ========================================================================== */
         .lesson-group {
             display: flex;
@@ -232,11 +232,11 @@
             transform: rotate(90deg);
         }
 
-        /* Выпадающая панель со ссылками (Теория, YouTube, Тренажер) */
+        /* Выпадающая панель с видео, конспектом и тренажером */
         .lesson-dropdown {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+            transition: max-height 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s ease;
             opacity: 0;
             background: var(--card-bg);
             border-left: 1px solid var(--border-color);
@@ -259,17 +259,58 @@
             background: var(--kz-blue);
         }
 
+        /* Увеличена максимальная высота, чтобы помещалось и видео 16:9, и кнопки ниже */
         .lesson-group.open .lesson-dropdown {
-            max-height: 240px;
+            max-height: 520px;
             opacity: 1;
         }
 
         .dropdown-links {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            padding: 10px 14px 14px 20px;
+            gap: 8px;
+            padding: 12px 14px 14px 20px;
             border-top: 1px dashed var(--border-color);
+        }
+
+        /* Контейнер для встроенного видео (16:9) */
+        .video-embed-box {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #0F172A;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .video-embed-box iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
+
+        /* Невидимые защитные накладки поверх ссылок "Перейти на YouTube" */
+        .yt-shield-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 58px; /* Блокирует клик по названию видео и кнопке "Поделиться" */
+            z-index: 3;
+            background: transparent;
+        }
+
+        .yt-shield-bottom-right {
+            position: absolute;
+            bottom: 0;
+            right: 38px; /* Оставляет кнопку полного экрана справа, но закрывает логотип YouTube */
+            width: 95px;
+            height: 42px;
+            z-index: 3;
+            background: transparent;
         }
 
         .sub-link {
@@ -435,12 +476,10 @@
             </button>
             <div class="lesson-dropdown">
                 <div class="dropdown-links">
-                    <!-- Сюда вы можете вставить ссылку на страницу теории и YouTube -->
                     <a href="https://kazdoctors.com/grammar/lesson1" class="sub-link">
                         <span class="sub-link-left">📖 Теория и конспект</span>
                         <span class="sub-badge">PDF / Статья</span>
                     </a>
-
                     <a href="./tobetodo/" class="sub-link primary-trainer">
                         <span class="sub-link-left">🎯 Перейти к тренажеру</span>
                         <span>➔</span>
@@ -467,7 +506,6 @@
                         <span class="sub-link-left">📖 Теория и конспект</span>
                         <span class="sub-badge">PDF / Статья</span>
                     </a>
-
                     <a href="./present/" class="sub-link primary-trainer">
                         <span class="sub-link-left">🎯 Перейти к тренажеру</span>
                         <span>➔</span>
@@ -502,7 +540,7 @@
             </div>
         </div>
 
-        <!-- ================= УРОК 4 ================= -->
+        <!-- ================= УРОК 4 (С ВСТРОЕННЫМ ВИДЕО) ================= -->
         <div class="lesson-group">
             <button type="button" class="trainer-card" onclick="toggleLesson(this)">
                 <div class="card-content">
@@ -516,10 +554,25 @@
             </button>
             <div class="lesson-dropdown">
                 <div class="dropdown-links">
+                    <!-- 1. Встроенное видео (ID: hsGNlJ_u8Kg) -->
+                    <div class="video-embed-box" oncontextmenu="return false;">
+                        <div class="yt-shield-top"></div>
+                        <div class="yt-shield-bottom-right"></div>
+                        <iframe
+                            data-src="https://www.youtube-nocookie.com/embed/hsGNlJ_u8Kg?rel=0&modestbranding=1&playsinline=1"
+                            title="Lesson 4 — Future Simple"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+
+                    <!-- 2. Ниже — Конспект -->
                     <a href="https://kazdoctors.com/grammar/lesson4" class="sub-link">
                         <span class="sub-link-left">📖 Теория и конспект</span>
                         <span class="sub-badge">PDF / Статья</span>
                     </a>
+
+                    <!-- 3. Ниже — Тренажер -->
                     <a href="./future/" class="sub-link primary-trainer">
                         <span class="sub-link-left">🎯 Перейти к тренажеру</span>
                         <span>➔</span>
@@ -842,22 +895,28 @@
 
     <script>
         /**
-         * Функция раскрытия/скрытия урока (Accordion).
-         * При открытии одного урока автоматически закрывает другие открытые уроки,
-         * чтобы страница всегда оставалась компактной.
+         * Функция раскрытия/скрытия урока (Accordion) с ленивой подгрузкой и авто-остановкой видео.
          */
         function toggleLesson(buttonElement) {
             const currentGroup = buttonElement.parentElement;
             const isOpen = currentGroup.classList.contains('open');
 
-            // Закрываем все открытые уроки
+            // Закрываем все открытые уроки и останавливаем в них видео, если оно играло
             document.querySelectorAll('.lesson-group.open').forEach(group => {
                 group.classList.remove('open');
+                const iframe = group.querySelector('iframe');
+                if (iframe && iframe.getAttribute('src')) {
+                    iframe.removeAttribute('src');
+                }
             });
 
-            // Если нажатый урок был закрыт — открываем его
+            // Если нажатый урок был закрыт — открываем его и подгружаем видео
             if (!isOpen) {
                 currentGroup.classList.add('open');
+                const iframe = currentGroup.querySelector('iframe');
+                if (iframe && iframe.dataset.src && !iframe.getAttribute('src')) {
+                    iframe.setAttribute('src', iframe.dataset.src);
+                }
             }
         }
     </script>
