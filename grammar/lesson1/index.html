@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>@doctors.speak — Lesson 1: To Be & To Do (Full Learning Module)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ==========================================================================
+       1. ФИРМЕННЫЕ СТИЛИ И ПЕРЕМЕННЫЕ (@doctors.speak / KazDoctors)
+       ========================================================================== */
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --kz-gold-light: #FFFBEB;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --success-bg: #DCFCE7;
+      --success-border: #22C55E;
+      --success-text: #15803D;
+      --error-bg: #FEE2E2;
+      --error-border: #EF4444;
+      --error-text: #B91C1C;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 16px 10px;
+    }
+
+    /* Основной контейнер платформы (шире для комфортного чтения теории и практики) */
+    .app-shell {
+      background: var(--card-bg);
+      border-radius: 22px;
+      width: 100%;
+      max-width: 780px;
+      min-height: 86vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+
+    /* Шапка с возвратом, брендом и переключателем языка RU/KZ */
+    .header {
+      background: linear-gradient(135deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+      color: #FFFFFF;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .header-left, .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .home-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 6px 12px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .home-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .brand {
+      font-weight: 800;
+      font-size: 0.82rem;
+      letter-spacing: 0.4px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.16);
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    /* Переключатель языка (RU / KZ) */
+    .lang-switch {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 20px;
+      padding: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 800;
+      font-size: 0.72rem;
+      padding: 4px 10px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Название урока и полоса прогресса */
+    .lesson-banner {
+      background: var(--kz-blue-light);
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .lesson-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      margin-bottom: 4px;
+    }
+
+    .lesson-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* Навигация по 4 этапам обучения (Stepper Tabs) */
+    .step-nav {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: #F8FAFC;
+      border-bottom: 1px solid var(--border-color);
+      padding: 6px;
+      gap: 6px;
+    }
+
+    .step-tab {
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      padding: 8px 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 3px;
+      transition: all 0.2s ease;
+    }
+
+    .step-tab:hover {
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+    }
+
+    .step-tab.active {
+      background: var(--card-bg);
+      color: var(--kz-blue-dark);
+      border-color: rgba(0, 161, 222, 0.3);
+      box-shadow: 0 2px 8px rgba(0, 161, 222, 0.1);
+    }
+
+    .step-badge {
+      font-size: 0.65rem;
+      font-weight: 800;
+      background: var(--border-color);
+      color: var(--text-dark);
+      padding: 2px 6px;
+      border-radius: 8px;
+    }
+
+    .step-tab.active .step-badge {
+      background: var(--kz-gold);
+    }
+
+    /* Контентная область вкладок */
+    .content-area {
+      padding: 18px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      overflow-y: auto;
+    }
+
+    .tab-pane {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .tab-pane.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==========================================================================
+       2. СТИЛИ БЛОКОВ ТЕОРИИ, UP-TO-DATE И СЛОВАРЯ
+       ========================================================================== */
+    .theory-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-left: 5px solid var(--kz-blue);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.02);
+    }
+
+    .theory-card.gold {
+      border-left-color: var(--kz-gold-dark);
+      background: var(--kz-gold-light);
+    }
+
+    .theory-card h3 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .theory-card p {
+      font-size: 0.84rem;
+      line-height: 1.5;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+    }
+
+    .formula-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .formula-box {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.8rem;
+    }
+
+    .formula-box strong {
+      color: var(--kz-blue-dark);
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.85rem;
+    }
+
+    .formula-code {
+      display: block;
+      background: #FFFFFF;
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px dashed var(--kz-blue);
+      font-weight: 700;
+      margin: 6px 0;
+      font-size: 0.78rem;
+    }
+
+    /* Матрица 3-х навыков врача: Статьи, Пациент, Конференция */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 10px;
+    }
+
+    .skill-card {
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .skill-card h4 {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      margin-bottom: 6px;
+    }
+
+    .skill-example {
+      font-size: 0.78rem;
+      background: #FFFFFF;
+      padding: 8px;
+      border-radius: 8px;
+      border-left: 3px solid var(--kz-gold-dark);
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    /* Интерактивный блок статьи UpToDate */
+    .uptodate-box {
+      background: #FFFFFF;
+      border: 2px solid #CBD5E1;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .uptodate-header {
+      background: #1E293B;
+      color: #FFFFFF;
+      padding: 10px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .uptodate-controls {
+      display: flex;
+      gap: 6px;
+    }
+
+    .hl-btn {
+      border: none;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .hl-btn.be { background: #BAE6FD; color: #0369A1; }
+    .hl-btn.do { background: #FDE68A; color: #92400E; }
+    .hl-btn.reset { background: rgba(255,255,255,0.2); color: #FFFFFF; }
+
+    .uptodate-body {
+      padding: 14px;
+      font-size: 0.85rem;
+      line-height: 1.65;
+      color: #334155;
+    }
+
+    .v-be, .v-do {
+      padding: 1px 4px;
+      border-radius: 5px;
+      transition: all 0.2s ease;
+    }
+
+    .uptodate-body.show-be .v-be {
+      background: #BAE6FD;
+      color: #0369A1;
+      font-weight: 800;
+      border-bottom: 2px solid #0284C7;
+    }
+
+    .uptodate-body.show-do .v-do {
+      background: #FDE68A;
+      color: #92400E;
+      font-weight: 800;
+      border-bottom: 2px solid #D97706;
+    }
+
+    /* Сетка словаря */
+    .vocab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+    }
+
+    .vocab-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6px;
+      transition: border-color 0.2s ease;
+    }
+
+    .vocab-item:hover {
+      border-color: var(--kz-blue);
+    }
+
+    .vocab-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .vocab-en {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+    }
+
+    .audio-btn {
+      background: var(--kz-blue-light);
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      color: var(--kz-blue-dark);
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .vocab-tr {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .vocab-ex {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      background: var(--bg-main);
+      padding: 6px 8px;
+      border-radius: 8px;
+      line-height: 1.35;
+    }
+
+    /* ==========================================================================
+       3. СТИЛИ ЛЕГКОЙ ПРАКТИКИ (WARM-UP) И ТРЕНАЖЕРА (TRAINER)
+       ========================================================================== */
+    .practice-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .practice-q {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .practice-context {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--kz-blue-dark);
+      text-transform: uppercase;
+    }
+
+    .practice-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .mini-btn {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .mini-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background: var(--kz-blue-light);
+    }
+
+    .mini-btn.correct {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    .mini-btn.wrong {
+      background: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    .practice-feedback {
+      font-size: 0.76rem;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      display: none;
+    }
+
+    /* Кнопка перехода к следующему шагу урока */
+    .step-action-btn {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      font-weight: 800;
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-size: 0.88rem;
+      border: 1px solid var(--kz-gold-dark);
+      cursor: pointer;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.2);
+      transition: all 0.2s ease;
+    }
+
+    .step-action-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    /* Стили основного Тренажера (сохранены и улучшены из index-80.html) */
+    .trainer-wrapper {
+      max-width: 480px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .mode-select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      border-radius: 12px;
+      font-weight: 700;
+      color: var(--kz-blue-dark);
+      background: var(--kz-blue-light);
+      outline: none;
+      font-size: 0.82rem;
+      cursor: pointer;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: var(--bg-main);
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .term-box {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 14px;
+      border: 1px solid var(--border-color);
+      border-left: 6px solid var(--kz-gold-dark);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      text-align: center;
+      min-height: 135px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .level-tag {
+      display: inline-block;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      border: 1px solid rgba(0, 161, 222, 0.25);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+    }
+
+    .term-title {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.35;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background-color: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+    }
+
+    .option-btn.correct {
+      background-color: var(--success-bg) !important;
+      border-color: var(--success-border) !important;
+      color: var(--success-text) !important;
+      font-weight: 700;
+    }
+
+    .option-btn.wrong {
+      background-color: var(--error-bg) !important;
+      border-color: var(--error-border) !important;
+      color: var(--error-text) !important;
+      font-weight: 700;
+    }
+
+    .explanation-box {
+      background-color: var(--kz-blue-light);
+      border-left: 4px solid var(--kz-blue);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      color: var(--kz-blue-dark);
+      line-height: 1.35;
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+    }
+
+    .next-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      font-weight: 800;
+      padding: 11px;
+      border-radius: 14px;
+      font-size: 0.9rem;
+      border: 1px solid var(--kz-gold-dark);
+      cursor: pointer;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.2s ease;
+    }
+
+    .next-btn.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    @media (max-width: 520px) {
+      .step-tab span:not(.step-badge) {
+        font-size: 0.68rem;
+      }
+      .content-area {
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Подключение Supabase SDK для проверки подписки -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <div class="app-shell">
+    <!-- ШАПКА САЙТА -->
+    <header class="header">
+      <div class="header-left">
+        <a href="https://kazdoctors.com/grammar/" class="home-btn" id="uiBackBtn">⬅ Назад</a>
+        <div class="brand">@doctors.speak</div>
+      </div>
+      <div class="header-right">
+        <!-- Переключатель языка RU / KZ -->
+        <div class="lang-switch" role="group" aria-label="Language switch">
+          <button class="lang-btn active" id="langRuBtn" onclick="setLanguage('ru')">RU</button>
+          <button class="lang-btn" id="langKzBtn" onclick="setLanguage('kz')">KZ</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ЗАГОЛОВОК УРОКА -->
+    <div class="lesson-banner">
+      <div class="lesson-title" id="uiLessonTitle">Урок 1: Глаголы TO BE и TO DO в медицине</div>
+      <div class="lesson-subtitle" id="uiLessonSubtitle">Фундамент для чтения статей UpToDate, сбора анамнеза и выступлений на конференциях</div>
+    </div>
+
+    <!-- НАВИГАЦИЯ ПО 4 ШАГАМ ОБУЧЕНИЯ -->
+    <nav class="step-nav">
+      <button class="step-tab active" onclick="switchTab(0)" id="tabBtn0">
+        <span class="step-badge">1</span>
+        <span id="uiTab0">📚 Теория и Статьи</span>
+      </button>
+      <button class="step-tab" onclick="switchTab(1)" id="tabBtn1">
+        <span class="step-badge">2</span>
+        <span id="uiTab1">💊 Словарь</span>
+      </button>
+      <button class="step-tab" onclick="switchTab(2)" id="tabBtn2">
+        <span class="step-badge">3</span>
+        <span id="uiTab2">✍️ Разминка</span>
+      </button>
+      <button class="step-tab" onclick="switchTab(3)" id="tabBtn3">
+        <span class="step-badge">4</span>
+        <span id="uiTab3">🎯 Тренажер</span>
+      </button>
+    </nav>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main class="content-area">
+
+      <!-- ====================================================================
+           ШАГ 1: ТЕОРИЯ + UP-TO-DATE + ЛАЙФХАК ЧТЕНИЯ СТАТЕЙ
+           ==================================================================== -->
+      <section class="tab-pane active" id="tabPane0">
+        <div id="theoryContainer"></div>
+
+        <!-- Интерактивный разбор скриншота из UpToDate (COPD) -->
+        <div class="uptodate-box">
+          <div class="uptodate-header">
+            <span id="uiUptodateTitle">🔬 Разбор реальной статьи UpToDate (COPD / ХОБЛ)</span>
+            <div class="uptodate-controls">
+              <button class="hl-btn be" onclick="highlightUpToDate('be')" id="uiBtnHlBe">Подсветить TO BE</button>
+              <button class="hl-btn do" onclick="highlightUpToDate('do')" id="uiBtnHlDo">Подсветить TO DO</button>
+              <button class="hl-btn reset" onclick="highlightUpToDate('all')" id="uiBtnHlAll">Показать оба</button>
+            </div>
+          </div>
+          <div class="uptodate-body show-be show-do" id="uptodateText">
+            <strong>Symptoms and pattern of onset</strong> — The three cardinal symptoms of COPD <span class="v-be">are</span> dyspnea, chronic cough, and sputum production; the most common early symptom <span class="v-be">is</span> exertional dyspnea. Less common symptoms <span class="v-do">include</span> wheezing and chest tightness. However, any of these symptoms <span class="v-do">may develop</span> independently.<br><br>
+            Patients who <span class="v-do">have</span> an extremely sedentary lifestyle <span class="v-do">require</span> careful questioning to elicit a history that <span class="v-be">is</span> suggestive of COPD. Some patients unknowingly <span class="v-do">avoid</span> exertional dyspnea. They <span class="v-be">may be</span> unaware that their limitations <span class="v-be">are</span> due to respiratory symptoms, although they <span class="v-do">may complain</span> of fatigue.
+          </div>
+        </div>
+
+        <button class="step-action-btn" onclick="switchTab(1)" id="uiNextToVocab">Перейти к шагу 2: Клинический словарь ➔</button>
+      </section>
+
+      <!-- ====================================================================
+           ШАГ 2: КЛИНИЧЕСКИЙ СЛОВАРЬ С ОЗВУЧКОЙ (11 СИМПТОМОВ + ПРИМЕРЫ)
+           ==================================================================== -->
+      <section class="tab-pane" id="tabPane1">
+        <div class="theory-card">
+          <h3 id="uiVocabHeader">🔊 11 базовых симптомов для опроса пациента и чтения статей</h3>
+          <p id="uiVocabSub">Нажмите на иконку динамика 🔊, чтобы прослушать правильное медицинское произношение термина.</p>
+        </div>
+        <div class="vocab-grid" id="vocabContainer"></div>
+        <button class="step-action-btn" onclick="switchTab(2)" id="uiNextToPractice">Перейти к шагу 3: Легкая практика ➔</button>
+      </section>
+
+      <!-- ====================================================================
+           ШАГ 3: ЛЕГКАЯ ПРАКТИКА (PRE/POST EXERCISES В ИНТЕРАКТИВНОМ ФОРМАТЕ)
+           ==================================================================== -->
+      <section class="tab-pane" id="tabPane2">
+        <div class="theory-card gold">
+          <h3 id="uiWarmupHeader">✍️ Легкая разминка перед тренажером</h3>
+          <p id="uiWarmupSub">Потренируйтесь строить вопросы врачу и распознавать глаголы в спокойном темпе с подсказками.</p>
+        </div>
+        <div id="warmupContainer" style="display:flex; flex-direction:column; gap:10px;"></div>
+        <button class="step-action-btn" onclick="switchTab(3)" id="uiNextToTrainer">Перейти к шагу 4: Запустить Тренажер 🔥</button>
+      </section>
+
+      <!-- ====================================================================
+           ШАГ 4: ОСНОВНОЙ ТРЕНАЖЕР (4 УРОВНЯ + MIX)
+           ==================================================================== -->
+      <section class="tab-pane" id="tabPane3">
+        <div class="trainer-wrapper">
+          <select id="levelSelect" class="mode-select" onchange="changeLevel()"></select>
+
+          <div class="stats">
+            <span><span id="uiStatTotal">Всего</span>: <strong id="totalCount">0</strong></span>
+            <span><span id="uiStatCorrect">Верно</span>: <strong id="correctCount" style="color:#16A34A;">0</strong></span>
+            <span><span id="uiStatStreak">Серия</span>: <strong id="streakCount" style="color:#D9A000;">0 🔥</strong></span>
+          </div>
+
+          <div class="term-box">
+            <span id="levelTag" class="level-tag">Level 1</span>
+            <div id="questionText" class="term-title">Loading question...</div>
+          </div>
+
+          <div id="optionsGrid" class="options-grid"></div>
+          
+          <div id="explanationBox" class="explanation-box">
+            <div><strong id="uiExpLabel">💡 Объяснение:</strong> <span id="explanationText">Выберите правильный ответ!</span></div>
+          </div>
+
+          <button id="nextBtn" class="next-btn" onclick="nextQuestion()" id="uiNextQuestionBtn">Дальше ➔</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==========================================================================
+       ШАБЛОН ДАННЫХ И ЛОГИКА ПЛАТФОРМЫ
+       КАК ИСПОЛЬЗОВАТЬ ДЛЯ ДРУГИХ УРОКОВ:
+       Чтобы создать страницу для Урока 2, 3 и т.д., вам нужно отредактировать
+       ТОЛЬКО объект LESSON_CONFIG ниже (тексты теории, словарь, разминку и банк вопросов).
+       Вся логика интерфейса, переключения RU/KZ и проверки подписки работает автоматически!
+       ========================================================================== -->
+  <script>
+    // ==========================================================================
+    // БЛОК 1. АВТОРИЗАЦИЯ ПО ПОДПИСКЕ SUPABASE
+    // ==========================================================================
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+
+    // Инициализируем клиент Supabase (если библиотека загружена)
+    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+    async function checkAuth() {
+      // Если открыто локально во время разработки без сервера, не блокируем рендер
+      if (!supabaseClient || window.location.protocol === 'file:') {
+        initApp();
+        return;
+      }
+      try {
+        const { data, error } = await supabaseClient.auth.getSession();
+        if (error || !data.session) {
+          window.location.href = "/login.html";
+          return;
+        }
+      } catch (err) {
+        console.warn("Auth check warning:", err);
+      }
+      initApp();
+    }
+
+    // ==========================================================================
+    // БЛОК 2. КОНФИГУРАЦИЯ УРОКА (МЕНЯЙТЕ ЭТОТ БЛОК ДЛЯ НОВЫХ ТЕМ)
+    // Все поля поддерживают билингвальный формат { ru: "...", kz: "..." }
+    // ==========================================================================
+    const LESSON_CONFIG = {
+      ui: {
+        backBtn: { ru: "⬅ Назад", kz: "⬅ Артқа" },
+        lessonTitle: {
+          ru: "Урок 1: Глаголы TO BE и TO DO в медицине",
+          kz: "1-сабақ: Медицинадағы TO BE және TO DO етістіктері"
+        },
+        lessonSubtitle: {
+          ru: "Фундамент для чтения статей UpToDate, опроса пациентов и выступлений на конференциях",
+          kz: "UpToDate мақалаларын оқу, науқастан анамнез жинау және конференцияда сөйлеу негізі"
+        },
+        tabs: [
+          { ru: "📚 Теория", kz: "📚 Теория" },
+          { ru: "💊 Словарь", kz: "💊 Сөздік" },
+          { ru: "✍️ Разминка", kz: "✍️ Жаттығу" },
+          { ru: "🎯 Тренажер", kz: "🎯 Тренажер" }
+        ],
+        uptodateTitle: {
+          ru: "🔬 Разбор реальной статьи UpToDate (COPD / ХОБЛ)",
+          kz: "🔬 UpToDate мақаласын талдау (COPD / ӨСОА)"
+        },
+        btnHlBe: { ru: "Только TO BE", kz: "Тек TO BE" },
+        btnHlDo: { ru: "Только TO DO", kz: "Тек TO DO" },
+        btnHlAll: { ru: "Показать оба", kz: "Екеуін де көрсету" },
+        nextToVocab: {
+          ru: "Перейти к шагу 2: Клинический словарь (11 симптомов) ➔",
+          kz: "2-қадамға өту: Клиникалық сөздік (11 симптом) ➔"
+        },
+        vocabHeader: {
+          ru: "🔊 11 базовых симптомов (Опрос пациента и чтение статей)",
+          kz: "🔊 11 негізгі симптом (Науқасты сұрастыру және мақала оқу)"
+        },
+        vocabSub: {
+          ru: "Нажмите 🔊 для прослушивания произношения. Обратите внимание, как симптомы сочетаются с глаголами TO BE и TO DO.",
+          kz: "Дұрыс айтылуын тыңдау үшін 🔊 басыңыз. Симптомдардың TO BE және TO DO етістіктерімен қалай қолданылатынына назар аударыңыз."
+        },
+        nextToPractice: {
+          ru: "Перейти к шагу 3: Легкая разминка ➔",
+          kz: "3-қадамға өту: Жеңіл жаттығу ➔"
+        },
+        warmupHeader: {
+          ru: "✍️ Легкая практика перед тренажером",
+          kz: "✍️ Тренажер алдындағы жеңіл жаттығу"
+        },
+        warmupSub: {
+          ru: "Проверьте, как вы умеете находить глагол и строить вопросы пациенту или коллегам.",
+          kz: "Етістікті табу және науқасқа немесе әріптестерге сұрақ қою дағдысын тексеріңіз."
+        },
+        nextToTrainer: {
+          ru: "Перейти к шагу 4: Запустить Тренажер 🔥",
+          kz: "4-қадамға өту: Тренажерді іске қосу 🔥"
+        },
+        statTotal: { ru: "Всего", kz: "Барлығы" },
+        statCorrect: { ru: "Верно", kz: "Дұрыс" },
+        statStreak: { ru: "Серия", kz: "Серия" },
+        expLabel: { ru: "💡 Объяснение:", kz: "💡 Түсіндірме:" },
+        expDefault: { ru: "Выберите правильный вариант ответа!", kz: "Дұрыс жауап нұсқасын таңдаңыз!" },
+        nextBtn: { ru: "Дальше ➔", kz: "Келесі ➔" },
+        levels: [
+          { value: "1", ru: "Уровень 1 — Определить тип глагола (To Be / To Do / Modal / Combo)", kz: "1-деңгей — Етістік түрін анықтау" },
+          { value: "2", ru: "Уровень 2 — Вставить пропущенный глагол", kz: "2-деңгей — Тиісті етістікті қою" },
+          { value: "3", ru: "Уровень 3 — Найти главный глагол в научной статье", kz: "3-деңгей — Ғылыми мақаладан негізгі етістікті табу" },
+          { value: "4", ru: "Уровень 4 — Опрос пациента и Конференции", kz: "4-деңгей — Науқасты сұрастыру және Конференция" },
+          { value: "mix", ru: "🔥 МИКС (Все уровни сразу)", kz: "🔥 МИКС (Барлық деңгейлер)" }
+        ]
+      },
+
+      // ШАГ 1: ТЕОРИЯ (Рендерится динамически на выбранном языке)
+      theoryBlocks: {
+        ru: `
+          <div class="theory-card">
+            <h3>🎯 Главное правило медицинского английского</h3>
+            <p>В отличие от русского и казахского языков (где можно сказать <em>«Пациент в палате»</em> или <em>«Давление высокое»</em> без глагола), <strong>в английском предложении ВСЕГДА есть глагол</strong>. Когда вы читаете сложную статью в PubMed или UpToDate, <strong>первым делом ищите глагол!</strong> Он делит предложение на две части: КТО/ЧТО (Subject) и ЧТО ПРОИСХОДИТ.</p>
+            <div class="formula-grid">
+              <div class="formula-box">
+                <strong>1. Глагол состояния: TO BE (быть / являться / находиться)</strong>
+                Используется, когда мы описываем диагноз, состояние, локализацию или характеристику симптома.<br>
+                <span class="formula-code">Настоящее: am / is / are<br>Прошедшее: was / were<br>Будущее / Модальные: will be / can be / must be</span>
+                <em>(+) The pain <b>is</b> severe.</em><br>
+                <em>(?) <b>Is</b> the pain severe?</em><br>
+                <em>(-) The pain <b>is not</b> severe.</em>
+              </div>
+              <div class="formula-box">
+                <strong>2. Глагол действия: TO DO (делать / действовать)</strong>
+                Любой активный глагол (<em>reduce, help, monitor, complain, cause</em>). В вопросах и отрицаниях ему нужен помощник <b>do / does / did</b>.<br>
+                <span class="formula-code">Настоящее: V / V-s (помощник do / does)<br>Прошедшее: V-ed / V2 (помощник did)</span>
+                <em>(+) This drug <b>reduces</b> pain.</em><br>
+                <em>(?) <b>Does</b> this drug <b>reduce</b> pain?</em><br>
+                <em>(-) This drug <b>does not reduce</b> pain.</em>
+              </div>
+            </div>
+          </div>
+
+          <div class="theory-card gold">
+            <h3>🔗 3. Комбинация (TO BE + TO DO) и Модальные глаголы</h3>
+            <p>В медицинских статьях и докладах глаголы часто объединяются:</p>
+            <p>• <strong>Continuous (процесс сейчас):</strong> <code>am/is/are + V-ing</code> $\\rightarrow$ <em>The physician <b>is monitoring</b> vital signs.</em><br>
+               • <strong>Passive Voice (страдательный залог — супер-часто в статьях!):</strong> <code>am/is/are/was/were + V3 (-ed)</code> $\\rightarrow$ <em>The patient <b>was admitted</b> to the hospital yesterday. Hypertension <b>is called</b> the silent killer.</em><br>
+               • <strong>Modal Verbs (вероятность и рекомендации):</strong> <code>can / may / should / must + Verb</code> $\\rightarrow$ <em>Symptoms <b>may develop</b> independently. Shortness of breath <b>must be treated</b> immediately.</em></p>
+          </div>
+
+          <div class="theory-card">
+            <h3>🩺 Как применять это в 3-х главных задачах врача:</h3>
+            <div class="skills-grid">
+              <div class="skill-card">
+                <h4>📄 1. Чтение статей (Articles)</h4>
+                <p style="font-size:0.75rem;">Даже если вы не знаете 50% слов, окончания покажут глагол: <code>-s/-es</code>, <code>-ed</code>, <code>is/are</code>.</p>
+                <div class="skill-example">
+                  <em>"Zindor <b>blafked</b> yesterday."</em><br>
+                  Мы не знаем, кто такой Zindor, но видим <code>-ed</code> и <code>yesterday</code> — это действие (To Do) в прошлом!
+                </div>
+              </div>
+              <div class="skill-card">
+                <h4>🗣️ 2. Опрос пациента (Anamnesis)</h4>
+                <p style="font-size:0.75rem;">Спрашиваете о характеристике симптома — ставьте вперед <b>Is/Are/Was</b>. О действии — <b>Do/Does/Did</b>.</p>
+                <div class="skill-example">
+                  • <b>Where is</b> the pain? <b>Was</b> it severe last night?<br>
+                  • <b>Do</b> you have a fever? <b>Did</b> you take the pills?
+                </div>
+              </div>
+              <div class="skill-card">
+                <h4>🎤 3. Конференции (Conferences)</h4>
+                <p style="font-size:0.75rem;">Презентация клинического случая (Case Presentation) строится по четким шаблонам:</p>
+                <div class="skill-example">
+                  • <em>"Our patient <b>is</b> a 45-year-old female."</em><br>
+                  • <em>"She <b>was admitted</b> with acute dyspnea."</em><br>
+                  • <em>"The therapy <b>reduced</b> mortality by 20%."</em>
+                </div>
+              </div>
+            </div>
+          </div>
+        `,
+        kz: `
+          <div class="theory-card">
+            <h3>🎯 Медициналық ағылшын тілінің басты ережесі</h3>
+            <p>Қазақ және орыс тілдерінен айырмашылығы (мысалы, <em>«Науқас палатада»</em> немесе <em>«Қан қысымы жоғары»</em> деп етістіксіз айтуға болады), <strong>ағылшын сөйлемінде ӘРҚАШАН етістік болады</strong>. PubMed немесе UpToDate мақалаларын оқығанда, <strong>ең алдымен етістікті іздеңіз!</strong> Ол сөйлемді КІМ/НЕ (Subject) және НЕ ІСТЕЙДІ/ҚАНДАЙ деген екі бөлікке бөледі.</p>
+            <div class="formula-grid">
+              <div class="formula-box">
+                <strong>1. Күй етістігі: TO BE (болу / табылу)</strong>
+                Диагнозды, науқастың жағдайын, симптомның орналасуын немесе сипатын айтқанда қолданылады.<br>
+                <span class="formula-code">Осы шақ: am / is / are<br>Өткен шақ: was / were<br>Келер шақ / Модальді: will be / can be / must be</span>
+                <em>(+) The pain <b>is</b> severe.</em><br>
+                <em>(?) <b>Is</b> the pain severe?</em><br>
+                <em>(-) The pain <b>is not</b> severe.</em>
+              </div>
+              <div class="formula-box">
+                <strong>2. Қимыл етістігі: TO DO (істеу / әрекет ету)</strong>
+                Кез келген белсенді әрекет (<em>reduce, help, monitor, complain, cause</em>). Сұраулы және болымсыз сөйлемде <b>do / does / did</b> көмекші етістігі қажет.<br>
+                <span class="formula-code">Осы шақ: V / V-s (көмекші do / does)<br>Өткен шақ: V-ed / V2 (көмекші did)</span>
+                <em>(+) This drug <b>reduces</b> pain.</em><br>
+                <em>(?) <b>Does</b> this drug <b>reduce</b> pain?</em><br>
+                <em>(-) This drug <b>does not reduce</b> pain.</em>
+              </div>
+            </div>
+          </div>
+
+          <div class="theory-card gold">
+            <h3>🔗 3. Комбинация (TO BE + TO DO) және Модальді етістіктер</h3>
+            <p>Медициналық мақалалар мен баяндамаларда етістіктер жиі бірігіп келеді:</p>
+            <p>• <strong>Continuous (дәл қазіргі процесс):</strong> <code>am/is/are + V-ing</code> $\\rightarrow$ <em>The physician <b>is monitoring</b> vital signs.</em><br>
+               • <strong>Passive Voice (ырықсыз етіс — мақалаларда өте жиі кездеседі!):</strong> <code>am/is/are/was/were + V3 (-ed)</code> $\\rightarrow$ <em>The patient <b>was admitted</b> to the hospital yesterday.</em><br>
+               • <strong>Modal Verbs (ықтималдық және ұсыныс):</strong> <code>can / may / should / must + Verb</code> $\\rightarrow$ <em>Symptoms <b>may develop</b> independently. Shortness of breath <b>must be treated</b> immediately.</em></p>
+          </div>
+
+          <div class="theory-card">
+            <h3>🩺 Дәрігердің 3 негізгі міндетінде қалай қолданамыз:</h3>
+            <div class="skills-grid">
+              <div class="skill-card">
+                <h4>📄 1. Мақала оқу (Articles)</h4>
+                <p style="font-size:0.75rem;">Сөздердің 50%-ын білмесеңіз де, жалғаулар етістікті көрсетеді: <code>-s/-es</code>, <code>-ed</code>, <code>is/are</code>.</p>
+                <div class="skill-example">
+                  <em>"Zindor <b>blafked</b> yesterday."</em><br>
+                  Zindor-дың не екенін білмесек те, <code>-ed</code> және <code>yesterday</code> арқылы өткен шақтағы әрекетті (To Do) бірден танимыз!
+                </div>
+              </div>
+              <div class="skill-card">
+                <h4>🗣️ 2. Науқасты сұрастыру (Anamnesis)</h4>
+                <p style="font-size:0.75rem;">Симптом сипатын сұрасаңыз — алдына <b>Is/Are/Was</b> қойыңыз. Әрекетті сұрасаңыз — <b>Do/Does/Did</b>.</p>
+                <div class="skill-example">
+                  • <b>Where is</b> the pain? <b>Was</b> it severe last night?<br>
+                  • <b>Do</b> you have a fever? <b>Did</b> you take the pills?
+                </div>
+              </div>
+              <div class="skill-card">
+                <h4>🎤 3. Конференциялар (Conferences)</h4>
+                <p style="font-size:0.75rem;">Клиникалық жағдайды баяндау (Case Presentation) дайын үлгілермен жасалады:</p>
+                <div class="skill-example">
+                  • <em>"Our patient <b>is</b> a 45-year-old female."</em><br>
+                  • <em>"She <b>was admitted</b> with acute dyspnea."</em><br>
+                  • <em>"The therapy <b>reduced</b> mortality by 20%."</em>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      // ШАГ 2: СЛОВАРЬ (11 симптомов из PDF + переводы RU/KZ + клинические примеры)
+      vocabulary: [
+        { en: "Pain", ru: "Боль", kz: "Ауырсыну", ex: "In myocardial infarction, the pain is in the chest. (TO BE)" },
+        { en: "Fever", ru: "Жар / Лихорадка", kz: "Қызба / Дене қызуы", ex: "In bacterial infections, the fever is high. (TO BE)" },
+        { en: "Cough", ru: "Кашель", kz: "Жөтел", ex: "In pneumonia, the cough is productive. (TO BE)" },
+        { en: "Cold", ru: "Простуда", kz: "Суық тию", ex: "In winter, the common cold is frequent. (TO BE)" },
+        { en: "Fatigue", ru: "Усталость / Утомляемость", kz: "Шаршағыштық / Әлсіздік", ex: "Fatigue is a common problem in hypothyroidism. (TO BE)" },
+        { en: "Nausea", ru: "Тошнота", kz: "Жүрек айну", ex: "Patients are often discomforted by nausea. (Combination)" },
+        { en: "Headache", ru: "Головная боль", kz: "Бас ауруы", ex: "Headache can be severe in migraine. (Modal + TO BE)" },
+        { en: "Rash", ru: "Сыпь", kz: "Бөртпе", ex: "A skin rash was present yesterday. (TO BE — Past)" },
+        { en: "Dizziness", ru: "Головокружение", kz: "Бас айналу", ex: "Did the patient complain of dizziness? (TO DO — Question)" },
+        { en: "Shortness of breath (Dyspnea)", ru: "Одышка (Диспноэ)", kz: "Ентігу (Диспноэ)", ex: "Shortness of breath must be treated with bronchodilators. (Modal + Passive)" },
+        { en: "Wheezing", ru: "Свистящие хрипы", kz: "Ысқырықты сырылдар", ex: "Less common symptoms include wheezing. (TO DO)" }
+      ],
+
+      // ШАГ 3: ЛЕГКАЯ РАЗМИНКА (Переработанные упражнения из PDF Pre/Post-exercises + Jabberwocky)
+      warmupExercises: [
+        {
+          tag: { ru: "Опрос пациента (Вопрос с TO BE)", kz: "Науқастан сұрау (TO BE сұрағы)" },
+          q: {
+            ru: "Утверждение: 'The symptoms were severe last night.' Как спросить пациента: «Были ли симптомы тяжелыми прошлой ночью?»",
+            kz: "Тұжырым: 'The symptoms were severe last night.' Науқастан «Өткен түнде симптомдар ауыр болды ма?» деп қалай сұраймыз?"
+          },
+          options: [
+            "Were the symptoms severe last night?",
+            "Did the symptoms severe last night?",
+            "Was the symptoms severe last night?"
+          ],
+          correct: 0,
+          feedback: {
+            ru: "Верно! Для вопроса с 'to be' мы просто выносим 'Were' вперед перед 'the symptoms' (множественное число).",
+            kz: "Дұрыс! 'to be' етістігімен сұрақ қою үшін көпше түрдегі 'Were' сөзін 'the symptoms' алдына шығарамыз."
+          }
+        },
+        {
+          tag: { ru: "Опрос пациента (Специальный вопрос Wh-)", kz: "Науқастан сұрау (Арнайы Wh- сұрағы)" },
+          q: {
+            ru: "Ответ: 'The patient is in the waiting room.' Как задать вопрос «Где находится пациент?»",
+            kz: "Жауап: 'The patient is in the waiting room.' «Науқас қайда?» деп қалай сұрақ қоямыз?"
+          },
+          options: [
+            "Where does the patient?",
+            "Where is the patient?",
+            "Where the patient is?"
+          ],
+          correct: 1,
+          feedback: {
+            ru: "Отлично! Формула вопроса: Вопросительное слово (Where) + глагол TO BE (is) + подлежащее (the patient).",
+            kz: "Тамаша! Сұрақ формуласы: Сұрау есімдігі (Where) + TO BE етістігі (is) + бастауыш (the patient)."
+          }
+        },
+        {
+          tag: { ru: "Сбор анамнеза (Вопрос с TO DO в прошлом)", kz: "Анамнез жинау (Өткен шақтағы TO DO сұрағы)" },
+          q: {
+            ru: "Утверждение: 'The patient followed the doctor's advice.' Превратите в вопрос «Следовал ли пациент совету врача?»",
+            kz: "Тұжырым: 'The patient followed the doctor's advice.' «Науқас дәрігердің кеңесін орындады ма?» деген сұраққа айналдырыңыз:"
+          },
+          options: [
+            "Was the patient followed the doctor's advice?",
+            "Did the patient follow the doctor's advice?",
+            "Did the patient followed the doctor's advice?"
+          ],
+          correct: 1,
+          feedback: {
+            ru: "Правильно! 'Followed' — это глагол действия в Past Simple. В вопросе вперед выходит помощник 'Did', который забирает на себя прошедшее время, поэтому основной глагол возвращается в начальную форму 'follow' (без -ed!).",
+            kz: "Дұрыс! 'Followed' — өткен шақтағы қимыл етістігі. Сұрақта алдына 'Did' көмекші етістігі шығады да, негізгі етістік бастапқы 'follow' формасына (-ed жалғауынсыз!) оралады."
+          }
+        },
+        {
+          tag: { ru: "Консультация (Вопрос с TO DO в настоящем)", kz: "Консультация (Осы шақтағы TO DO сұрағы)" },
+          q: {
+            ru: "Утверждение: 'This medication helps control high blood pressure.' Спросите: «Помогает ли этот препарат контролировать высокое АД?»",
+            kz: "Тұжырым: 'This medication helps control high blood pressure.' «Бұл препарат жоғары АҚ-ты бақылауға көмектесе ме?» деп сұраңыз:"
+          },
+          options: [
+            "Is this medication help control high BP?",
+            "Do this medication help control high BP?",
+            "Does this medication help control high BP?"
+          ],
+          correct: 2,
+          feedback: {
+            ru: "Верно! 'This medication' (оно, 3-е лицо ед. ч.) требует помощника 'Does', а у глагола 'help' пропадает окончание -s.",
+            kz: "Дұрыс! 'This medication' (3-жақ, жекеше) үшін 'Does' көмекші етістігі қолданылады, ал 'help' сөзіндегі -s жалғауы түсіп қалады."
+          }
+        },
+        {
+          tag: { ru: "Лайфхак чтения статей («Незнакомые термины»)", kz: "Мақала оқу лайфхакы («Таныс емес терминдер»)" },
+          q: {
+            ru: "Представьте незнакомые термины в статье: 'The froblans are currently shrifting in the murples.' Какое здесь сказуемое (глагол)?",
+            kz: "Мақаладағы таныс емес сөздерді елестетіңіз: 'The froblans are currently shrifting in the murples.' Мұндағы баяндауыш (етістік) қайсы?"
+          },
+          options: [
+            "froblans (существительное во мн.ч.)",
+            "are shrifting (комбинация: Present Continuous)",
+            "murples (обстоятельство места)"
+          ],
+          correct: 1,
+          feedback: {
+            ru: "Блестяще! Вы не знаете ни одного корня, но видите 'are ... -ing' — это 100% глагол в Present Continuous (комбинация TO BE + TO DO).",
+            kz: "Керемет! Сөздердің мағынасын білмесеңіз де, 'are ... -ing' құрылымы арқылы Present Continuous (TO BE + TO DO комбинациясы) етістігін дәл таптыңыз."
+          }
+        }
+      ],
+
+      // ШАГ 4: БАНК ВОПРОСОВ ТРЕНАЖЕРА (4 УРОВНЯ)
+      questions: [
+        // ================= LEVEL 1: IDENTIFY SENTENCE TYPE =================
+        {
+          level: 1,
+          question: "Dyspnea is the most common early symptom of COPD.",
+          options: ["to be", "to do", "modal verb", "combination"],
+          targetIndex: 0,
+          explanation: {
+            ru: "'is' — форма глагола 'to be' (быть/являться). Описывает факт в статье.",
+            kz: "'is' — 'to be' (болу/табылу) етістігінің формасы. Мақаладағы деректі сипаттайды."
+          }
+        },
+        {
+          level: 1,
+          question: "High cholesterol is a major risk factor for heart disease.",
+          options: ["to be", "to do", "modal verb", "combination"],
+          targetIndex: 0,
+          explanation: {
+            ru: "'is' — глагол 'to be', связывающий подлежащее и определение.",
+            kz: "'is' — бастауыш пен анықтаманы байланыстыратын 'to be' етістігі."
+          }
+        },
+        {
+          level: 1,
+          question: "The symptoms were severe during the night.",
+          options: ["to be", "to do", "modal verb", "combination"],
+          targetIndex: 0,
+          explanation: {
+            ru: "'were' — форма прошедшего времени (Past Simple) глагола 'to be'.",
+            kz: "'were' — 'to be' етістігінің өткен шақ (Past Simple) формасы."
+          }
+        },
+        {
+          level: 1,
+          question: "This medication helps control high blood pressure.",
+          options: ["to be", "to do", "modal verb", "combination"],
+          targetIndex: 1,
+          explanation: {
+            ru: "'helps' — активный глагол действия (to do) в Present Simple.",
+            kz: "'helps' — Present Simple шағындағы қимыл етістігі (to do)."
+          }
+        },
+        {
+          level: 1,
+          question: "The patient followed the doctor's advice.",
+          options: ["to be", "to do", "modal verb", "combination"],
+          targetIndex: 1,
+          explanation: {
+            ru: "'followed' — глагол действия (to do) в прошедшем времени (окончание -ed).",
+            kz: "'followed' — өткен шақтағы (-ed жалғауы бар) қимыл етістігі (to do)."
+          }
+        },
+        {
+          level: 1,
+          question: "Regular exercise reduces the risk of heart disease.",
+          options: ["to be", "to do", "modal verb", "combination"],
+          targetIndex: 1,
+          explanation: {
+            ru: "'reduces' (снижает) — глагол действия (to do).",
+            kz: "'reduces' (төмендетеді) — қимыл етістігі (to do)."
+          }
+        },
+        {
+          level: 1,
+          question: "Any of these symptoms may develop independently.",
+          options: ["to be", "to do", "modal verb", "combination"],
+          targetIndex: 2,
+          explanation: {
+            ru: "'may' — модальный глагол (modal verb), выражающий вероятность.",
+            kz: "'may' — ықтималдықты білдіретін модальді етістік (modal verb)."
+          }
+        },
+        {
+          level: 1,
+          question: "The doctor should prescribe antibiotics immediately.",
+          options: ["to be", "to do", "modal verb", "combination"],
+          targetIndex: 2,
+          explanation: {
+            ru: "'should' — модальный глагол рекомендации (следует).",
+            kz: "'should' — ұсынысты білдіретін модальді етістік (керек/жөн)."
+          }
+        },
+        {
+          level: 1,
+          question: "Hypertension is often called the 'silent killer'.",
+          options: ["to be", "to do", "modal verb", "combination"],
+          targetIndex: 3,
+          explanation: {
+            ru: "'is called' — комбинация 'to be' (is) + 'to do' (called, V3) в пассивном залоге.",
+            kz: "'is called' — ырықсыз етістегі 'to be' (is) + 'to do' (called, V3) комбинациясы."
+          }
+        },
+        {
+          level: 1,
+          question: "The patient was admitted to the hospital yesterday.",
+          options: ["to be", "to do", "modal verb", "combination"],
+          targetIndex: 3,
+          explanation: {
+            ru: "'was admitted' (был госпитализирован) — комбинация 'to be' + V3 (Passive Voice).",
+            kz: "'was admitted' (ауруханаға жатқызылды) — 'to be' + V3 комбинациясы (Passive Voice)."
+          }
+        },
+        {
+          level: 1,
+          question: "The physician is monitoring the patient's vital signs.",
+          options: ["to be", "to do", "modal verb", "combination"],
+          targetIndex: 3,
+          explanation: {
+            ru: "'is monitoring' — комбинация 'to be' (is) и действия (monitoring) в Present Continuous.",
+            kz: "'is monitoring' — Present Continuous шағындағы 'to be' (is) және әрекеттің (monitoring) комбинациясы."
+          }
+        },
+
+        // ================= LEVEL 2: FILL IN THE BLANKS =================
+        {
+          level: 2,
+          question: "Hypertension ___ often called the 'silent killer'.",
+          options: ["is", "are", "were", "been"],
+          targetIndex: 0,
+          explanation: {
+            ru: "'Hypertension' — единственное число (it), поэтому в настоящем времени используем 'is'.",
+            kz: "'Hypertension' — жекеше түр (it), сондықтан осы шақта 'is' қолданамыз."
+          }
+        },
+        {
+          level: 2,
+          question: "Exercise and a healthy diet ___ essential for heart health.",
+          options: ["are", "is", "was", "be"],
+          targetIndex: 0,
+          explanation: {
+            ru: "Два подлежащих ('Exercise and diet' = they) требуют множественного числа 'are'.",
+            kz: "Екі бастауыш ('Exercise and diet' = they) көпше түрдегі 'are' етістігін талап етеді."
+          }
+        },
+        {
+          level: 2,
+          question: "The patient ___ admitted to the hospital yesterday.",
+          options: ["is", "was", "are", "were"],
+          targetIndex: 1,
+          explanation: {
+            ru: "Маркер 'yesterday' (вчера) + ед. число 'The patient' -> прошедшее время 'was'.",
+            kz: "'yesterday' (кеше) маркері + жекеше түрдегі 'The patient' -> өткен шақта 'was' болады."
+          }
+        },
+        {
+          level: 2,
+          question: "___ this medication help control high blood pressure?",
+          options: ["Is", "Do", "Does", "Are"],
+          targetIndex: 2,
+          explanation: {
+            ru: "В предложении есть глагол действия 'help'. Для единственного числа ('this medication') нужен помощник 'Does'.",
+            kz: "Сөйлемде 'help' қимыл етістігі бар. Жекеше түр ('this medication') үшін 'Does' көмекші етістігі қажет."
+          }
+        },
+        {
+          level: 2,
+          question: "___ the patient follow the doctor's advice yesterday?",
+          options: ["Is", "Does", "Do", "Did"],
+          targetIndex: 3,
+          explanation: {
+            ru: "Вопрос о действии в прошлом ('yesterday' + глагол 'follow') строится с помощью 'Did'.",
+            kz: "Өткен шақтағы әрекет туралы сұрақ ('yesterday' + 'follow' етістігі) 'Did' арқылы жасалады."
+          }
+        },
+        {
+          level: 2,
+          question: "These symptoms ___ common in patients with high cholesterol.",
+          options: ["is", "was", "are", "be"],
+          targetIndex: 2,
+          explanation: {
+            ru: "'These symptoms' — множественное число, в настоящем времени ставим 'are'.",
+            kz: "'These symptoms' — көпше түр, осы шақта 'are' қойылады."
+          }
+        },
+
+        // ================= LEVEL 3: IDENTIFY MAIN VERB IN ARTICLES =================
+        {
+          level: 3,
+          question: "Mutations in the CFTR gene cause the CFTR protein to malfunction.",
+          options: ["cause", "mutations", "protein", "gene"],
+          targetIndex: 0,
+          explanation: {
+            ru: "'Mutations' — подлежащее (что?), а 'cause' (вызывают) — главный глагол-сказуемое.",
+            kz: "'Mutations' — бастауыш (не?), ал 'cause' (тудырады) — негізгі етістік-баяндауыш."
+          }
+        },
+        {
+          level: 3,
+          question: "Acute myocardial infarction triggers severe retrosternal chest pain.",
+          options: ["infarction", "triggers", "pain", "severe"],
+          targetIndex: 1,
+          explanation: {
+            ru: "'triggers' (запускает/вызывает) имеет окончание -s и стоит сразу после подлежащего 'infarction'.",
+            kz: "'triggers' (қоздырады/тудырады) сөзінде -s жалғауы бар және 'infarction' бастауышынан кейін тұр."
+          }
+        },
+        {
+          level: 3,
+          question: "Prophylactic anticoagulation prevents venous thromboembolism in surgical patients.",
+          options: ["anticoagulation", "thromboembolism", "prevents", "surgical"],
+          targetIndex: 2,
+          explanation: {
+            ru: "'prevents' (предотвращает) — главный глагол действия с окончанием -s.",
+            kz: "'prevents' (алдын алады) — -s жалғауы бар негізгі қимыл етістігі."
+          }
+        },
+        {
+          level: 3,
+          question: "The chest radiograph showed bilateral pulmonary infiltrates.",
+          options: ["radiograph", "infiltrates", "showed", "pulmonary"],
+          targetIndex: 2,
+          explanation: {
+            ru: "'showed' (показал) — главный глагол в прошедшем времени (окончание -ed).",
+            kz: "'showed' (көрсетті) — өткен шақтағы (-ed жалғауы бар) негізгі етістік."
+          }
+        },
+        {
+          level: 3,
+          question: "Uncontrolled hyperglycemia damaged his small blood vessels over time.",
+          options: ["hyperglycemia", "vessels", "time", "damaged"],
+          targetIndex: 3,
+          explanation: {
+            ru: "'damaged' (повредила) — сказуемое в Past Simple.",
+            kz: "'damaged' (зақымдады) — Past Simple шағындағы баяндауыш."
+          }
+        },
+        {
+          level: 3,
+          question: "Zindor blafked through the grentish floms yesterday.",
+          options: ["Zindor", "blafked", "grentish", "floms"],
+          targetIndex: 1,
+          explanation: {
+            ru: "Даже в предложении из вымышленных слов окончание '-ed' после подлежащего 'Zindor' однозначно указывает на глагол 'blafked'!",
+            kz: "Тіпті ойдан шығарылған сөздерден тұратын сөйлемде де 'Zindor' бастауышынан кейінгі '-ed' жалғауы 'blafked' етістігін дәл көрсетеді!"
+          }
+        },
+
+        // ================= LEVEL 4: PATIENT INTERVIEW & CONFERENCES =================
+        {
+          level: 4,
+          question: "[Опрос пациента] Как правильно спросить: «Кругом ли шла голова вчера (было ли головокружение)?»",
+          options: [
+            "Were you dizzy yesterday?",
+            "Did you dizzy yesterday?",
+            "Are you dizzy yesterday?",
+            "Do you were dizzy yesterday?"
+          ],
+          targetIndex: 0,
+          explanation: {
+            ru: "'Dizzy' — прилагательное (какой?). С местоимением 'you' в прошлом ('yesterday') используется глагол TO BE в форме 'Were'.",
+            kz: "'Dizzy' — сын есім (қандай?). 'You' есімдігімен өткен шақта ('yesterday') TO BE етістігінің 'Were' формасы қолданылады."
+          }
+        },
+        {
+          level: 4,
+          question: "[Опрос пациента] Пациент жалуется на боль в груди. Как спросить: «Вызывает ли физическая нагрузка одышку?»",
+          options: [
+            "Is physical activity cause shortness of breath?",
+            "Does physical activity cause shortness of breath?",
+            "Do physical activity causes shortness of breath?",
+            "Are physical activity causing shortness of breath?"
+          ],
+          targetIndex: 1,
+          explanation: {
+            ru: "'Cause' (вызывать) — это действие (to do). Для 'physical activity' (it) используем вопрос с 'Does + cause'.",
+            kz: "'Cause' (тудыру) — қимыл етістігі (to do). Жекеше түрдегі 'physical activity' (it) үшін 'Does + cause' құрылымын қолданамыз."
+          }
+        },
+        {
+          level: 4,
+          question: "[Доклад на конференции] Вы представляете клинический случай: «Пациент был доставлен с острой лихорадкой и сыпью».",
+          options: [
+            "The patient admitted with acute fever and rash.",
+            "The patient was admitted with acute fever and rash.",
+            "The patient did admitted with acute fever and rash.",
+            "The patient were admitted with acute fever and rash."
+          ],
+          targetIndex: 1,
+          explanation: {
+            ru: "В медицинских кейсах на конференциях используется пассивный залог: 'was admitted' (был госпитализирован/доставлен).",
+            kz: "Конференцияда клиникалық жағдайды баяндағанда ырықсыз етіс қолданылады: 'was admitted' (ауруханаға жатқызылды/жеткізілді)."
+          }
+        },
+        {
+          level: 4,
+          question: "[Доклад на конференции] Как ответить на вопрос из зала: «Мы не наблюдали побочных эффектов в нашей группе»?",
+          options: [
+            "We were not observe side effects in our group.",
+            "We did not observed side effects in our group.",
+            "We did not observe side effects in our group.",
+            "We not observed side effects in our group."
+          ],
+          targetIndex: 2,
+          explanation: {
+            ru: "Отрицание в Past Simple для глагола действия (observe) строится по формуле: 'did not + начальная форма глагола (observe)'.",
+            kz: "Past Simple шағындағы қимыл етістігінің (observe) болымсыз формасы 'did not + бастапқы етістік (observe)' формуласымен жасалады."
+          }
+        }
+      ]
+    };
+
+    // ==========================================================================
+    // БЛОК 3. СОСТОЯНИЕ ПРИЛОЖЕНИЯ И ПЕРЕКЛЮЧЕНИЕ ЯЗЫКОВ (RU / KZ)
+    // ==========================================================================
+    let currentLang = localStorage.getItem('doctors_speak_lang') || 'ru';
+    let currentTab = 0;
+
+    // Состояние тренажера
+    let total = 0;
+    let correct = 0;
+    let streak = 0;
+    let currentQuestion = null;
+    let answered = false;
+
+    function initApp() {
+      setLanguage(currentLang);
+      nextQuestion();
+    }
+
+    // Функция смены языка (RU / KZ)
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('doctors_speak_lang', lang);
+
+      // Переключаем активную кнопку в шапке
+      document.getElementById('langRuBtn').classList.toggle('active', lang === 'ru');
+      document.getElementById('langKzBtn').classList.toggle('active', lang === 'kz');
+
+      const ui = LESSON_CONFIG.ui;
+      document.getElementById('uiBackBtn').textContent = ui.backBtn[lang];
+      document.getElementById('uiLessonTitle').textContent = ui.lessonTitle[lang];
+      document.getElementById('uiLessonSubtitle').textContent = ui.lessonSubtitle[lang];
+
+      // Обновляем названия вкладок
+      ui.tabs.forEach((t, idx) => {
+        document.getElementById(`uiTab${idx}`).textContent = t[lang];
+      });
+
+      // Обновляем подписи шагов
+      document.getElementById('uiUptodateTitle').textContent = ui.uptodateTitle[lang];
+      document.getElementById('uiBtnHlBe').textContent = ui.btnHlBe[lang];
+      document.getElementById('uiBtnHlDo').textContent = ui.btnHlDo[lang];
+      document.getElementById('uiBtnHlAll').textContent = ui.btnHlAll[lang];
+      document.getElementById('uiNextToVocab').textContent = ui.nextToVocab[lang];
+      document.getElementById('uiVocabHeader').textContent = ui.vocabHeader[lang];
+      document.getElementById('uiVocabSub').textContent = ui.vocabSub[lang];
+      document.getElementById('uiNextToPractice').textContent = ui.nextToPractice[lang];
+      document.getElementById('uiWarmupHeader').textContent = ui.warmupHeader[lang];
+      document.getElementById('uiWarmupSub').textContent = ui.warmupSub[lang];
+      document.getElementById('uiNextToTrainer').textContent = ui.nextToTrainer[lang];
+
+      // Обновляем подписи тренажера
+      document.getElementById('uiStatTotal').textContent = ui.statTotal[lang];
+      document.getElementById('uiStatCorrect').textContent = ui.statCorrect[lang];
+      document.getElementById('uiStatStreak').textContent = ui.statStreak[lang];
+      document.getElementById('uiExpLabel').textContent = ui.expLabel[lang];
+      document.getElementById('nextBtn').textContent = ui.nextBtn[lang];
+
+      // Перерисовываем селектор уровней тренажера с сохранением выбранного значения
+      const levelSelect = document.getElementById('levelSelect');
+      const currentVal = levelSelect.value || "1";
+      levelSelect.innerHTML = '';
+      ui.levels.forEach(lvl => {
+        const opt = document.createElement('option');
+        opt.value = lvl.value;
+        opt.textContent = lvl[lang];
+        levelSelect.appendChild(opt);
+      });
+      levelSelect.value = currentVal;
+
+      // Рендерим теорию, словарь и легкую практику на выбранном языке
+      renderTheory();
+      renderVocabulary();
+      renderWarmup();
+
+      // Обновляем объяснение текущего вопроса в тренажере
+      if (currentQuestion) {
+        document.getElementById('explanationText').textContent = answered
+          ? currentQuestion.explanation[currentLang]
+          : ui.expDefault[currentLang];
+      }
+    }
+
+    // Навигация между 4 вкладками урока
+    function switchTab(tabIndex) {
+      currentTab = tabIndex;
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`tabBtn${i}`).classList.toggle('active', i === tabIndex);
+        document.getElementById(`tabPane${i}`).classList.toggle('active', i === tabIndex);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ==========================================================================
+    // БЛОК 4. РЕНДЕР ТЕОРИИ, UP-TO-DATE, СЛОВАРЯ И ЛЕГКОЙ ПРАКТИКИ
+    // ==========================================================================
+    function renderTheory() {
+      document.getElementById('theoryContainer').innerHTML = LESSON_CONFIG.theoryBlocks[currentLang];
+    }
+
+    function highlightUpToDate(mode) {
+      const box = document.getElementById('uptodateText');
+      box.classList.remove('show-be', 'show-do');
+      if (mode === 'be' || mode === 'all') box.classList.add('show-be');
+      if (mode === 'do' || mode === 'all') box.classList.add('show-do');
+    }
+
+    function renderVocabulary() {
+      const container = document.getElementById('vocabContainer');
+      container.innerHTML = '';
+      LESSON_CONFIG.vocabulary.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'vocab-item';
+        card.innerHTML = `
+          <div class="vocab-top">
+            <span class="vocab-en">${item.en}</span>
+            <button class="audio-btn" title="Listen" onclick="speakWord('${item.en.replace(/'/g, "\\'")}')">🔊</button>
+          </div>
+          <div class="vocab-tr">${item[currentLang]}</div>
+          <div class="vocab-ex">${item.ex}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Озвучка медицинских терминов через встроенный синтезатор речи браузера
+    function speakWord(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const cleanText = text.split('(')[0].trim();
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.92;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function renderWarmup() {
+      const container = document.getElementById('warmupContainer');
+      container.innerHTML = '';
+
+      LESSON_CONFIG.warmupExercises.forEach((ex, exIdx) => {
+        const box = document.createElement('div');
+        box.className = 'practice-item';
+
+        const tag = document.createElement('div');
+        tag.className = 'practice-context';
+        tag.textContent = ex.tag[currentLang];
+
+        const q = document.createElement('div');
+        q.className = 'practice-q';
+        q.textContent = `${exIdx + 1}. ${ex.q[currentLang]}`;
+
+        const optsDiv = document.createElement('div');
+        optsDiv.className = 'practice-options';
+
+        const feedbackDiv = document.createElement('div');
+        feedbackDiv.className = 'practice-feedback';
+        feedbackDiv.textContent = `💡 ${ex.feedback[currentLang]}`;
+
+        ex.options.forEach((optText, optIdx) => {
+          const btn = document.createElement('button');
+          btn.className = 'mini-btn';
+          btn.textContent = optText;
+          btn.onclick = () => {
+            // При клике подсвечиваем правильный/неправильный вариант и показываем разбор
+            const allBtns = optsDiv.querySelectorAll('.mini-btn');
+            allBtns.forEach(b => b.disabled = true);
+            if (optIdx === ex.correct) {
+              btn.classList.add('correct');
+            } else {
+              btn.classList.add('wrong');
+              allBtns[ex.correct].classList.add('correct');
+            }
+            feedbackDiv.style.display = 'block';
+          };
+          optsDiv.appendChild(btn);
+        });
+
+        box.appendChild(tag);
+        box.appendChild(q);
+        box.appendChild(optsDiv);
+        box.appendChild(feedbackDiv);
+        container.appendChild(box);
+      });
+    }
+
+    // ==========================================================================
+    // БЛОК 5. ЛОГИКА ОСНОВНОГО ТРЕНАЖЕРА (С ПЕРЕМЕШИВАНИЕМ ОТВЕТОВ)
+    // ==========================================================================
+    function shuffleArray(array) {
+      let arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function changeLevel() {
+      nextQuestion();
+    }
+
+    function getFilteredQuestions() {
+      const selectedLevel = document.getElementById('levelSelect').value;
+      if (selectedLevel === 'mix') {
+        return LESSON_CONFIG.questions;
+      }
+      return LESSON_CONFIG.questions.filter(q => q.level === parseInt(selectedLevel));
+    }
+
+    function nextQuestion() {
+      answered = false;
+
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.classList.remove('visible');
+
+      document.getElementById('explanationText').textContent = LESSON_CONFIG.ui.expDefault[currentLang];
+
+      const pool = getFilteredQuestions();
+      const rawQ = pool[Math.floor(Math.random() * pool.length)];
+
+      document.getElementById('levelTag').textContent = `Level ${rawQ.level}`;
+      document.getElementById('questionText').textContent = rawQ.question;
+
+      // Для уровней 2, 3, 4 перемешиваем варианты ответов, чтобы врач не запоминал букву ответа
+      let indexedOptions = rawQ.options.map((text, idx) => ({
+        text,
+        isCorrect: idx === rawQ.targetIndex
+      }));
+
+      if (rawQ.level !== 1) {
+        indexedOptions = shuffleArray(indexedOptions);
+      }
+
+      const newCorrectIndex = indexedOptions.findIndex(o => o.isCorrect);
+
+      currentQuestion = {
+        level: rawQ.level,
+        question: rawQ.question,
+        explanation: rawQ.explanation,
+        computedCorrectIndex: newCorrectIndex,
+        displayOptions: indexedOptions.map(o => o.text)
+      };
+
+      const grid = document.getElementById('optionsGrid');
+      grid.innerHTML = '';
+
+      currentQuestion.displayOptions.forEach((optText, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = `${String.fromCharCode(65 + index)}) ${optText}`;
+        btn.onclick = () => selectOption(btn, index);
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedBtn, selectedIndex) {
+      if (answered) return;
+      answered = true;
+
+      total++;
+      const isCorrect = (selectedIndex === currentQuestion.computedCorrectIndex);
+
+      if (isCorrect) {
+        correct++;
+        streak++;
+        selectedBtn.classList.add('correct');
+      } else {
+        streak = 0;
+        selectedBtn.classList.add('wrong');
+        const allBtns = document.querySelectorAll('.option-btn');
+        if (allBtns[currentQuestion.computedCorrectIndex]) {
+          allBtns[currentQuestion.computedCorrectIndex].classList.add('correct');
+        }
+      }
+
+      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('correctCount').textContent = correct;
+      document.getElementById('streakCount').textContent = `${streak} 🔥`;
+
+      document.getElementById('explanationText').textContent = currentQuestion.explanation[currentLang];
+      document.getElementById('nextBtn').classList.add('visible');
+    }
+
+    // Запуск проверки сессии и инициализации при загрузке
+    checkAuth();
+  </script>
+
+  <!-- Ваш существующий скрипт защиты сессии -->
+  <script src="/session-guard.js"></script>
+</body>
+</html>
