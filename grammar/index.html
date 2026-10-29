@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <!-- Подключение Supabase SDK (как в index-86.html) -->
+    <!-- Подключение Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
@@ -87,6 +87,15 @@
             fill: var(--kz-gold);
         }
 
+        .header-badges {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
         .brand-badge {
             display: inline-block;
             background: rgba(255, 255, 255, 0.15);
@@ -99,7 +108,20 @@
             letter-spacing: 0.8px;
             padding: 4px 12px;
             border-radius: 20px;
-            margin-bottom: 8px;
+        }
+
+        /* Бейдж текущего тарифа пользователя */
+        .tier-status-badge {
+            display: none;
+            background: rgba(255, 199, 44, 0.22);
+            border: 1px solid var(--kz-gold);
+            color: var(--kz-gold);
+            font-weight: 800;
+            font-size: 0.72rem;
+            letter-spacing: 0.5px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
         }
 
         h1 {
@@ -296,7 +318,7 @@
         }
 
         /* ==========================================================================
-           ЗАГЛУШКА ДЛЯ НЕАВТОРИЗОВАННЫХ ПОЛЬЗОВАТЕЛЕЙ (PAYWALL ВИДЕОУРОКА)
+           ЗАГЛУШКА ДЛЯ ПОЛЬЗОВАТЕЛЕЙ БЕЗ ТАРИФА ПРЕМИУМ / ВИП (PAYWALL ВИДЕОУРОКА)
            ========================================================================== */
         .video-embed-box.locked {
             aspect-ratio: auto;
@@ -313,7 +335,7 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            max-width: 460px;
+            max-width: 480px;
             gap: 10px;
             color: #FFFFFF;
         }
@@ -426,6 +448,18 @@
             color: var(--kz-blue-dark);
         }
 
+        /* Стиль для заблокированной кнопки конспекта (если тариф Стандарт или нет подписки) */
+        .sub-link.locked-resource {
+            opacity: 0.75;
+            background: #F8FAFC;
+        }
+
+        .sub-link.locked-resource .sub-badge {
+            background: #FEF3C7;
+            color: #B45309;
+            border-color: #FCD34D;
+        }
+
         /* Акцентная кнопка для перехода к самому тренажеру */
         .sub-link.primary-trainer {
             background: var(--kz-blue-light);
@@ -535,7 +569,10 @@
             <span>⬅️Go back</span>
         </a>
 
-        <div class="brand-badge">@doctors.speak</div>
+        <div class="header-badges">
+            <div class="brand-badge">@doctors.speak</div>
+            <div id="tierStatusBadge" class="tier-status-badge"></div>
+        </div>
         <h1>Medical English</h1>
         <p class="subtitle">Study Medical English with us!</p>
     </header>
@@ -590,7 +627,7 @@
                             allowfullscreen>
                         </iframe>
                     </div>
-                    <a href="https://kazdoctors.com/grammar/lesson1" class="sub-link">
+                    <a href="https://kazdoctors.com/grammar/lesson1" class="sub-link theory-link">
                         <span class="sub-link-left">📖 Теория и конспект</span>
                         <span class="sub-badge">PDF / Статья</span>
                     </a>
@@ -626,7 +663,7 @@
                             allowfullscreen>
                         </iframe>
                     </div>
-                    <a href="https://kazdoctors.com/grammar/lesson2" class="sub-link">
+                    <a href="https://kazdoctors.com/grammar/lesson2" class="sub-link theory-link">
                         <span class="sub-link-left">📖 Теория и конспект</span>
                         <span class="sub-badge">PDF / Статья</span>
                     </a>
@@ -662,7 +699,7 @@
                             allowfullscreen>
                         </iframe>
                     </div>
-                    <a href="https://kazdoctors.com/grammar/lesson3" class="sub-link">
+                    <a href="https://kazdoctors.com/grammar/lesson3" class="sub-link theory-link">
                         <span class="sub-link-left">📖 Теория и конспект</span>
                         <span class="sub-badge">PDF / Статья</span>
                     </a>
@@ -698,7 +735,7 @@
                             allowfullscreen>
                         </iframe>
                     </div>
-                    <a href="https://kazdoctors.com/grammar/lesson4" class="sub-link">
+                    <a href="https://kazdoctors.com/grammar/lesson4" class="sub-link theory-link">
                         <span class="sub-link-left">📖 Теория и конспект</span>
                         <span class="sub-badge">PDF / Статья</span>
                     </a>
@@ -734,7 +771,7 @@
                             allowfullscreen>
                         </iframe>
                     </div>
-                    <a href="https://kazdoctors.com/grammar/lesson5" class="sub-link">
+                    <a href="https://kazdoctors.com/grammar/lesson5" class="sub-link theory-link">
                         <span class="sub-link-left">📖 Теория и конспект</span>
                         <span class="sub-badge">PDF / Статья</span>
                     </a>
@@ -770,7 +807,7 @@
                             allowfullscreen>
                         </iframe>
                     </div>
-                    <a href="https://kazdoctors.com/grammar/lesson6" class="sub-link">
+                    <a href="https://kazdoctors.com/grammar/lesson6" class="sub-link theory-link">
                         <span class="sub-link-left">📖 Теория и конспект</span>
                         <span class="sub-badge">PDF / Статья</span>
                     </a>
@@ -806,7 +843,7 @@
                             allowfullscreen>
                         </iframe>
                     </div>
-                    <a href="https://kazdoctors.com/grammar/lesson7" class="sub-link">
+                    <a href="https://kazdoctors.com/grammar/lesson7" class="sub-link theory-link">
                         <span class="sub-link-left">📖 Теория и конспект</span>
                         <span class="sub-badge">PDF / Статья</span>
                     </a>
@@ -842,7 +879,7 @@
                             allowfullscreen>
                         </iframe>
                     </div>
-                    <a href="https://kazdoctors.com/grammar/lesson8" class="sub-link">
+                    <a href="https://kazdoctors.com/grammar/lesson8" class="sub-link theory-link">
                         <span class="sub-link-left">📖 Теория и конспект</span>
                         <span class="sub-badge">PDF / Статья</span>
                     </a>
@@ -878,7 +915,7 @@
                             allowfullscreen>
                         </iframe>
                     </div>
-                    <a href="https://kazdoctors.com/grammar/lesson9" class="sub-link">
+                    <a href="https://kazdoctors.com/grammar/lesson9" class="sub-link theory-link">
                         <span class="sub-link-left">📖 Теория и конспект</span>
                         <span class="sub-badge">PDF / Статья</span>
                     </a>
@@ -914,7 +951,7 @@
                             allowfullscreen>
                         </iframe>
                     </div>
-                    <a href="https://kazdoctors.com/grammar/lesson10" class="sub-link">
+                    <a href="https://kazdoctors.com/grammar/lesson10" class="sub-link theory-link">
                         <span class="sub-link-left">📖 Теория и конспект</span>
                         <span class="sub-badge">PDF / Статья</span>
                     </a>
@@ -950,7 +987,7 @@
                             allowfullscreen>
                         </iframe>
                     </div>
-                    <a href="https://kazdoctors.com/grammar/lesson11" class="sub-link">
+                    <a href="https://kazdoctors.com/grammar/lesson11" class="sub-link theory-link">
                         <span class="sub-link-left">📖 Теория и конспект</span>
                         <span class="sub-badge">PDF / Статья</span>
                     </a>
@@ -986,7 +1023,7 @@
                             allowfullscreen>
                         </iframe>
                     </div>
-                    <a href="https://kazdoctors.com/grammar/lesson12" class="sub-link">
+                    <a href="https://kazdoctors.com/grammar/lesson12" class="sub-link theory-link">
                         <span class="sub-link-left">📖 Теория и конспект</span>
                         <span class="sub-badge">PDF / Статья</span>
                     </a>
@@ -1022,7 +1059,7 @@
                             allowfullscreen>
                         </iframe>
                     </div>
-                    <a href="https://kazdoctors.com/grammar/lesson13" class="sub-link">
+                    <a href="https://kazdoctors.com/grammar/lesson13" class="sub-link theory-link">
                         <span class="sub-link-left">📖 Теория и конспект</span>
                         <span class="sub-badge">PDF / Статья</span>
                     </a>
@@ -1058,7 +1095,7 @@
                             allowfullscreen>
                         </iframe>
                     </div>
-                    <a href="https://kazdoctors.com/grammar/lesson14" class="sub-link">
+                    <a href="https://kazdoctors.com/grammar/lesson14" class="sub-link theory-link">
                         <span class="sub-link-left">📖 Теория и конспект</span>
                         <span class="sub-badge">PDF / Статья</span>
                     </a>
@@ -1094,7 +1131,7 @@
                             allowfullscreen>
                         </iframe>
                     </div>
-                    <a href="https://kazdoctors.com/grammar/lesson15" class="sub-link">
+                    <a href="https://kazdoctors.com/grammar/lesson15" class="sub-link theory-link">
                         <span class="sub-link-left">📖 Теория и конспект</span>
                         <span class="sub-badge">PDF / Статья</span>
                     </a>
@@ -1134,7 +1171,7 @@
 
     <script>
         // =========================================================================
-        // 1. ПРОВЕРКА АВТОРИЗАЦИИ И ПОДПИСКИ ЧЕРЕЗ SUPABASE (по образцу index-86)
+        // 1. СИСТЕМА 4 ТАРИФОВ ПОДПИСКИ (СТАНДАРТ, ПРО, ПРЕМИУМ, ВИП)
         // =========================================================================
         const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
         const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
@@ -1143,10 +1180,31 @@
             ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
             : null;
 
-        let isUserAuthorized = false;
-        let authCheckCompleted = false;
+        // Иерархия уровней подписки:
+        // 0 = none (не авторизован)
+        // 1 = standard (только тренажеры)
+        // 2 = pro (тренажеры + конспекты)
+        // 3 = premium (тренажеры + конспекты + видеоуроки)
+        // 4 = vip (все включено + личное ведение)
+        const TIER_LEVELS = {
+            none: 0,
+            standard: 1,
+            pro: 2,
+            premium: 3,
+            vip: 4
+        };
 
-        // Сохраняем ссылки на видео в памяти JS и сразу убираем их из DOM до проверки подписки
+        const TIER_NAMES_RU = {
+            standard: "СТАНДАРТ",
+            pro: "ПРО",
+            premium: "ПРЕМИУМ",
+            vip: "ВИП 👑"
+        };
+
+        let currentUserTier = "none";
+        let canWatchVideo = false;
+
+        // Сохраняем ссылки на видео в памяти JS и сразу убираем их из DOM до проверки тарифа
         const videoBoxes = document.querySelectorAll('.video-embed-box');
         const vimeoUrls = [];
 
@@ -1162,33 +1220,42 @@
             }
         });
 
-        // Функция отрисовки плашки «Доступно по подписке» вместо видео
-        function renderLockedVideoState() {
+        // Отрисовка плашки «Видео доступно только в Премиум и ВИП»
+        function renderLockedVideoState(tier) {
+            const isLoggedIn = (tier !== "none");
+            const currentTierLabel = TIER_NAMES_RU[tier] || "";
+
+            const subtitleText = isLoggedIn
+                ? `У вас активен тариф «${currentTierLabel}». Доступ к видеоразборам уроков входит в подписки «Премиум» и «ВИП». Вы можете повысить свой тариф по нашим контактам или на странице тарифов:`
+                : `Доступ к видеоурокам открыт для участников с подпиской «Премиум» или «ВИП». Вы можете приобрести доступ по нашим тарифам или написать нам напрямую:`;
+
+            const loginLinkHtml = isLoggedIn
+                ? ``
+                : `<a href="/login.html" class="paywall-login-link">Уже есть подписка Премиум / ВИП? Войти в аккаунт ➔</a>`;
+
             videoBoxes.forEach((box) => {
                 box.classList.add('locked');
                 box.innerHTML = `
                     <div class="video-paywall">
-                        <span class="paywall-badge">🔒 Видеоурок по подписке</span>
-                        <div class="paywall-title">Здесь находится подробный видеоразбор темы</div>
-                        <p class="paywall-desc">
-                            Доступ к видеоурокам открыт для участников с действующей подпиской. Вы можете приобрести доступ по нашим тарифам или написать нам напрямую:
-                        </p>
+                        <span class="paywall-badge">🔒 Доступно в тарифах «Премиум» и «ВИП»</span>
+                        <div class="paywall-title">Здесь находится подробный видеоурок темы</div>
+                        <p class="paywall-desc">${subtitleText}</p>
                         <div class="paywall-actions">
                             <a href="https://kazdoctors.com/tarifs" class="paywall-btn tarifs">
-                                🌟 Выбрать тариф
+                                🌟 Тарифы (Премиум / ВИП)
                             </a>
                             <a href="https://instagram.com/doctors.speak" target="_blank" class="paywall-btn contact">
                                 💬 Контакты (@doctors.speak)
                             </a>
                         </div>
-                        <a href="/login.html" class="paywall-login-link">Уже есть подписка? Войти в аккаунт ➔</a>
+                        ${loginLinkHtml}
                     </div>
                 `;
             });
         }
 
-        // Функция восстановления видеоплееров для авторизованных подписчиков
-        function unlockVideosForSubscriber() {
+        // Разблокировка видеоплееров ТОЛЬКО для подписчиков Премиум и ВИП
+        function unlockVideosForPremiumAndVip() {
             videoBoxes.forEach((box, idx) => {
                 box.classList.remove('locked');
                 const videoData = vimeoUrls[idx];
@@ -1206,7 +1273,7 @@
                 }
             });
 
-            // Если пользователь успел раскрыть урок во время проверки сессии — сразу подгружаем видео
+            // Если пользователь уже раскрыл урок — сразу подгружаем видео
             const openGroup = document.querySelector('.lesson-group.open');
             if (openGroup) {
                 const iframe = openGroup.querySelector('iframe');
@@ -1216,31 +1283,105 @@
             }
         }
 
-        async function checkAuth() {
-            // По умолчанию показываем защищенную заглушку до ответа Supabase
-            renderLockedVideoState();
+        // Настройка доступа к кнопкам «Теория и конспект» (нужен Про, Премиум или ВИП)
+        function updateTheoryLinksState(tierLevel) {
+            const theoryLinks = document.querySelectorAll('.theory-link');
+            theoryLinks.forEach(link => {
+                const badge = link.querySelector('.sub-badge');
+                if (tierLevel < TIER_LEVELS.pro) {
+                    link.classList.add('locked-resource');
+                    if (badge) badge.textContent = "🔒 Тариф ПРО+";
+                    link.onclick = (e) => {
+                        e.preventDefault();
+                        alert("Конспекты и теория доступны на тарифах «Про», «Премиум» и «ВИП». Переходим к описанию тарифов!");
+                        window.location.href = "https://kazdoctors.com/tarifs";
+                    };
+                } else {
+                    link.classList.remove('locked-resource');
+                    if (badge) badge.textContent = "PDF / Статья";
+                    link.onclick = null;
+                }
+            });
+        }
 
-            if (!supabaseClient) {
-                authCheckCompleted = true;
-                return;
+        // Определение тарифа пользователя из Supabase
+        async function detectUserTier(session) {
+            if (!session || !session.user) return "none";
+
+            // 1. Сначала проверяем user_metadata (если тариф указан прямо в Auth -> Users)
+            const metaTier = (
+                session.user.user_metadata?.tier ||
+                session.user.user_metadata?.subscription_tier ||
+                session.user.app_metadata?.tier ||
+                ""
+            ).toLowerCase().trim();
+
+            if (TIER_LEVELS[metaTier] !== undefined && metaTier !== "none") {
+                return metaTier;
             }
+
+            // 2. Проверяем таблицу profiles в базе данных Supabase
+            try {
+                const { data: profile, error } = await supabaseClient
+                    .from('profiles')
+                    .select('tier, subscription_tier')
+                    .eq('id', session.user.id)
+                    .maybeSingle();
+
+                if (!error && profile) {
+                    const dbTier = (profile.tier || profile.subscription_tier || "").toLowerCase().trim();
+                    if (TIER_LEVELS[dbTier] !== undefined && dbTier !== "none") {
+                        return dbTier;
+                    }
+                }
+            } catch (err) {
+                console.warn("Проверка таблицы profiles:", err);
+            }
+
+            // 3. Если пользователь авторизован, но тариф еще не проставлен — считаем базовым "standard"
+            return "standard";
+        }
+
+        async function checkAuthAndTier() {
+            // Изначально блокируем видео до завершения проверки
+            renderLockedVideoState("none");
+
+            if (!supabaseClient) return;
 
             try {
                 const { data, error } = await supabaseClient.auth.getSession();
                 if (!error && data && data.session) {
-                    isUserAuthorized = true;
-                    unlockVideosForSubscriber();
+                    currentUserTier = await detectUserTier(data.session);
                 } else {
-                    isUserAuthorized = false;
+                    currentUserTier = "none";
                 }
             } catch (e) {
-                isUserAuthorized = false;
-            } finally {
-                authCheckCompleted = true;
+                currentUserTier = "none";
+            }
+
+            const tierLevel = TIER_LEVELS[currentUserTier] || 0;
+
+            // Показываем бейдж тарифа в шапке для авторизованных пользователей
+            const badgeEl = document.getElementById('tierStatusBadge');
+            if (tierLevel > 0 && badgeEl) {
+                badgeEl.textContent = `Тариф: ${TIER_NAMES_RU[currentUserTier]}`;
+                badgeEl.style.display = 'inline-block';
+            }
+
+            // Проверяем доступ к конспектам (нужен уровень >= 2: pro, premium, vip)
+            updateTheoryLinksState(tierLevel);
+
+            // Проверяем доступ к ВИДЕО (нужен уровень >= 3: ТОЛЬКО premium или vip)
+            if (tierLevel >= TIER_LEVELS.premium) {
+                canWatchVideo = true;
+                unlockVideosForPremiumAndVip();
+            } else {
+                canWatchVideo = false;
+                renderLockedVideoState(currentUserTier);
             }
         }
 
-        checkAuth();
+        checkAuthAndTier();
 
         // =========================================================================
         // 2. ФУНКЦИЯ РАСКРЫТИЯ / СКРЫТИЯ УРОКА (ACCORDION)
@@ -1249,7 +1390,7 @@
             const currentGroup = buttonElement.parentElement;
             const isOpen = currentGroup.classList.contains('open');
 
-            // Закрываем все открытые уроки и останавливаем в них видео, если оно играло
+            // Закрываем все открытые уроки и останавливаем в них видео
             document.querySelectorAll('.lesson-group.open').forEach(group => {
                 group.classList.remove('open');
                 const iframe = group.querySelector('iframe');
@@ -1262,8 +1403,8 @@
             if (!isOpen) {
                 currentGroup.classList.add('open');
 
-                // Подгружаем плеер Vimeo ТОЛЬКО если пользователь авторизован
-                if (isUserAuthorized) {
+                // Подгружаем плеер Vimeo ТОЛЬКО если у пользователя тариф Премиум или ВИП
+                if (canWatchVideo) {
                     const iframe = currentGroup.querySelector('iframe');
                     if (iframe && iframe.dataset.src && !iframe.getAttribute('src')) {
                         iframe.setAttribute('src', iframe.dataset.src);
