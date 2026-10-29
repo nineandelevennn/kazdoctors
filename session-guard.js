@@ -1,14 +1,27 @@
 // ============================================================================
 // Файл: /session-guard.js
-// Единая защита всех тренажеров kazdoctors.com (Аккаунт + Подписка + 1 устройство)
+// Единая защита всех тренажеров и конспектов kazdoctors.com
+// (Аккаунт + Срок подписки + 1 устройство + Тарифы: standard, pro, premium, vip)
 // ============================================================================
 
 (function () {
     const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
     const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
 
-    // 1. Мгновенно скрываем содержимое тренажера до окончания проверки,
-    // чтобы пользователь без подписки не видел вопросы даже доли секунды
+    // Уровни тарифов:
+    // 1 = standard (только тренажеры)
+    // 2 = pro (тренажеры + конспекты)
+    // 3 = premium (тренажеры + конспекты + видеоуроки)
+    // 4 = vip (все включено + личное ведение)
+    const TIER_LEVELS = {
+        standard: 1,
+        pro: 2,
+        premium: 3,
+        vip: 4
+    };
+
+    // 1. Мгновенно скрываем содержимое страницы до окончания проверки,
+    // чтобы пользователь без подписки не видел материалы даже доли секунды
     const hideStyle = document.createElement('style');
     hideStyle.id = 'session-guard-cloak';
     hideStyle.innerHTML = 'body { opacity: 0 !important; pointer-events: none !important; transition: opacity 0.2s ease; }';
@@ -34,9 +47,9 @@
         return deviceId;
     }
 
-    // Получаем или создаем клиент Supabase (работает даже если в тренажере переменная названа иначе)
+    // Получаем или создаем клиент Supabase
     function getClient() {
-        if (typeof supabaseClient !== 'undefined') return supabaseClient;
+        if (typeof supabaseClient !== 'undefined' && supabaseClient) return supabaseClient;
         if (window.supabase && typeof window.supabase.createClient === 'function') {
             return window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         }
@@ -63,17 +76,17 @@
             const userEmail = (user.email || '').toLowerCase().trim();
             const localDeviceId = getDeviceUUID();
 
-            // ШАГ 2: Ищем профиль пользователя в таблице profiles (сначала по ID, затем по Email)
+            // ШАГ 2: Ищем профиль пользователя в таблице profiles (включая колонку tier)
             let { data: profile, error: profileError } = await client
                 .from('profiles')
-                .select('id, email, current_device_id, subscription_expires_at')
+                .select('id, email, current_device_id, subscription_expires_at, tier')
                 .eq('id', user.id)
                 .maybeSingle();
 
             if (!profile && userEmail) {
                 const resByEmail = await client
                     .from('profiles')
-                    .select('id, email, current_device_id, subscription_expires_at')
+                    .select('id, email, current_device_id, subscription_expires_at, tier')
                     .ilike('email', userEmail)
                     .maybeSingle();
                 profile = resByEmail.data;
@@ -81,13 +94,14 @@
             }
 
             // ШАГ 3: Если человек зарегистрировался сам и его еще нет в таблице profiles —
-            // создаем ему запись с ИСТЕКШЕЙ датой (1970 год) и НЕ пускаем в тренажер!
+            // создаем ему запись с ИСТЕКШЕЙ датой (1970 год) и базовым тарифом 'standard'
             if (!profile) {
                 await client.from('profiles').insert({
                     id: user.id,
                     email: userEmail,
                     current_device_id: localDeviceId,
-                    subscription_expires_at: '1970-01-01T00:00:00Z' // Подписка НЕ активна по умолчанию
+                    subscription_expires_at: '1970-01-01T00:00:00Z',
+                    tier: 'standard'
                 });
 
                 blockAccess(
@@ -132,7 +146,24 @@
                 return;
             }
 
-            // Все проверки успешно пройдены — показываем страницу тренажера!
+            // ШАГ 6: Проверка уровня тарифа (Стандарт / Про / Премиум / ВИП)
+            const userTier = (profile.tier || 'standard').toLowerCase().trim();
+            const userLevel = TIER_LEVELS[userTier] || 1;
+            const currentPath = window.location.pathname.toLowerCase();
+
+            // Если это страница конспекта/теории (/grammar/lesson1, lesson2 и т.д.),
+            // требуем тариф не ниже 'pro' (уровень 2 и выше)
+            const isTheoryPage = currentPath.includes('/grammar/lesson') || currentPath.includes('theory');
+
+            if (isTheoryPage && userLevel < TIER_LEVELS.pro) {
+                blockAccess(
+                    "У вас активен тариф «Стандарт» (доступ только к тренажерам). Конспекты и теория доступны на тарифах «Про», «Премиум» и «ВИП»!",
+                    "/tarifs/"
+                );
+                return;
+            }
+
+            // Все проверки успешно пройдены — показываем страницу!
             unlockPage();
 
         } catch (err) {
