@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>@doctors.speak — Lesson 7: Possessives & Noun Chains in Medicine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Подключение Supabase SDK для проверки подписки -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --kz-gold-light: #FFFBEB;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --success-bg: #DCFCE7;
+      --success-border: #22C55E;
+      --success-text: #15803D;
+      --error-bg: #FEE2E2;
+      --error-border: #EF4444;
+      --error-text: #B91C1C;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 40px;
+    }
+
+    /* Верхняя шапка с кнопкой назад и переключателем RU/KZ */
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+      color: #FFFFFF;
+      padding: 16px 20px 22px 20px;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-top {
+      max-width: 820px;
+      margin: 0 auto 12px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .header-right-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tier-badge {
+      display: none;
+      background: rgba(255, 199, 44, 0.25);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 20px;
+      padding: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 800;
+      font-size: 0.74rem;
+      padding: 5px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+    }
+
+    .header-title-box {
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .lesson-badge {
+      display: inline-block;
+      background: rgba(255, 199, 44, 0.2);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    header p {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       ЭКРАН ЗАГЛУШКИ ПРИ ОТСУТСТВИИ ПОДПИСКИ ПРО / ПРЕМИУМ / ВИП
+       ========================================================================== */
+    #authLoader {
+      width: 100%;
+      max-width: 520px;
+      margin: 40px auto;
+      padding: 30px 20px;
+      text-align: center;
+      font-weight: 700;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    #paywallGate {
+      display: none;
+      width: 100%;
+      max-width: 540px;
+      margin: 28px auto;
+      padding: 0 14px;
+    }
+
+    .paywall-card {
+      background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      border-radius: 22px;
+      padding: 28px 22px;
+      text-align: center;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.18);
+      border: 1px solid rgba(255, 199, 44, 0.35);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .pw-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      background: rgba(255, 199, 44, 0.16);
+      border: 1px solid rgba(255, 199, 44, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+    }
+
+    .pw-badge {
+      background: rgba(0, 161, 222, 0.22);
+      border: 1px solid rgba(0, 161, 222, 0.55);
+      color: #7DD3FC;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .pw-title {
+      font-size: 1.15rem;
+      font-weight: 900;
+      line-height: 1.3;
+      color: #FFFFFF;
+    }
+
+    .pw-desc {
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: #CBD5E1;
+      font-weight: 500;
+    }
+
+    .pw-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      margin-top: 6px;
+    }
+
+    .pw-btn-primary {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      padding: 13px 18px;
+      border-radius: 14px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(255, 199, 44, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .pw-btn-primary:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    .pw-btn-secondary {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 11px 16px;
+      border-radius: 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .pw-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    /* Контейнер защищенного урока (скрыт до подтверждения тарифа) */
+    #lessonContentWrapper {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Навигация по разделам урока */
+    .section-nav {
+      width: 100%;
+      max-width: 820px;
+      margin: 14px auto 0 auto;
+      padding: 0 14px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .nav-pill {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 9px 6px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .nav-pill.active {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      border-color: var(--kz-blue-dark);
+      box-shadow: 0 4px 12px rgba(0, 161, 222, 0.25);
+    }
+
+    /* Основной контейнер */
+    main {
+      width: 100%;
+      max-width: 820px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-section {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .tab-section.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Карточки теории */
+    .card-block {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-block::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: var(--kz-blue);
+    }
+
+    .card-block.gold::before {
+      background: var(--kz-gold-dark);
+    }
+
+    .card-block h2 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-block p {
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+
+    /* Сетка 4 способов принадлежности */
+    .ways-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .way-card {
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-main);
+    }
+
+    .way-card.w1 { border-top: 4px solid #0284C7; background: #F0F9FF; }
+    .way-card.w2 { border-top: 4px solid #D97706; background: var(--kz-gold-light); }
+    .way-card.w3 { border-top: 4px solid #16A34A; background: #F0FDF4; }
+    .way-card.w4 { border-top: 4px solid #7C3AED; background: #F5F3FF; }
+
+    .way-title {
+      font-size: 0.86rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .comp-formula {
+      display: inline-block;
+      background: #FFFFFF;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      border: 1px dashed var(--kz-blue-dark);
+      margin-bottom: 8px;
+    }
+
+    .clinical-quote {
+      background: #FFFFFF;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.81rem;
+      border-left: 3px solid var(--text-dark);
+      margin-top: 8px;
+      line-height: 1.45;
+    }
+
+    /* Дешифратор цепочек существительных */
+    .chain-box {
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .chain-en {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .word-modifier {
+      background: #E2E8F0;
+      color: #334155;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .word-head {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 900;
+    }
+
+    .chain-tr {
+      font-size: 0.78rem;
+      color: var(--kz-blue-dark);
+      font-weight: 700;
+    }
+
+    /* Таблица местоимений */
+    .grammar-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 0.78rem;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .grammar-table th {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: 800;
+    }
+
+    .grammar-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border-color);
+      background: #FFFFFF;
+      line-height: 1.45;
+    }
+
+    .grammar-table tr:nth-child(even) td {
+      background: #F8FAFC;
+    }
+
+    /* Интерактивный разбор статьи UpToDate (Gastric Cancer) */
+    .uptodate-box {
+      background: #FFFFFF;
+      border: 2px solid #CBD5E1;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .uptodate-header {
+      background: #1E293B;
+      color: #FFFFFF;
+      padding: 10px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .uptodate-controls {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .hl-btn {
+      border: none;
+      padding: 5px 10px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .hl-btn.of-type { background: #BAE6FD; color: #0369A1; }
+    .hl-btn.chain-type { background: #FDE68A; color: #92400E; }
+    .hl-btn.reset { background: rgba(255,255,255,0.2); color: #FFFFFF; }
+
+    .uptodate-body {
+      padding: 14px;
+      font-size: 0.84rem;
+      line-height: 1.68;
+      color: #334155;
+    }
+
+    .p-of, .p-chain {
+      padding: 1px 5px;
+      border-radius: 5px;
+      transition: all 0.2s ease;
+    }
+
+    .uptodate-body.show-of .p-of {
+      background: #BAE6FD;
+      color: #0369A1;
+      font-weight: 800;
+      border-bottom: 2px solid #0284C7;
+    }
+
+    .uptodate-body.show-chain .p-chain {
+      background: #FDE68A;
+      color: #92400E;
+      font-weight: 800;
+      border-bottom: 2px solid #D97706;
+    }
+
+    /* Быстрые микро-упражнения внутри теории (Quick Check) */
+    .quick-check {
+      background: #F8FAFC;
+      border: 1px dashed var(--kz-blue);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .qc-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .qc-question {
+      font-size: 0.86rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+    }
+
+    .qc-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .qc-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .qc-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background: var(--kz-blue-light);
+    }
+
+    .qc-btn.correct {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    .qc-btn.wrong {
+      background: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    .qc-feedback {
+      display: none;
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      line-height: 1.35;
+    }
+
+    /* Карточки словаря */
+    .vocab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+      gap: 10px;
+    }
+
+    .vocab-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .vocab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .vocab-word {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+    }
+
+    .speak-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 161, 222, 0.3);
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+    }
+
+    .vocab-trans {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .vocab-example {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--bg-main);
+      padding: 7px 9px;
+      border-radius: 8px;
+      line-height: 1.35;
+    }
+
+    /* Кнопка перехода к следующему разделу или тренажеру */
+    .action-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      border-radius: 16px;
+      padding: 13px 18px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    @media (max-width: 560px) {
+      .section-nav {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      header h1 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ШАПКА УРОКА -->
+  <header>
+    <div class="header-top">
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅ К списку уроков</a>
+      <div class="header-right-controls">
+        <span id="userTierBadge" class="tier-badge"></span>
+        <div class="lang-switch">
+          <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
+          <button class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
+        </div>
+      </div>
+    </div>
+    <div class="header-title-box">
+      <span class="lesson-badge">Lesson 7 • A1–B1 Medical English</span>
+      <h1 id="uiTitle">Possessives (Принадлежность и цепочки существительных)</h1>
+      <p id="uiSubtitle">Как читать длинные медицинские термины и диагнозы: главное слово — всегда последнее!</p>
+    </div>
+  </header>
+
+  <!-- ИНДИКАТОР ПРОВЕРКИ ПОДПИСКИ -->
+  <div id="authLoader">🔄 Проверка подписки и доступа к конспекту...</div>
+
+  <!-- БЛОК PAYWALL (ПОКАЗЫВАЕТСЯ, ЕСЛИ НЕТ ТАРИФА ПРО / ПРЕМИУМ / ВИП) -->
+  <div id="paywallGate">
+    <div class="paywall-card">
+      <div class="pw-icon">🔒</div>
+      <span class="pw-badge" id="pwBadgeText">Доступно в тарифах ПРО / ПРЕМИУМ / ВИП</span>
+      <div class="pw-title" id="pwTitleText">Интерактивный конспект закрыт для вашего тарифа</div>
+      <p class="pw-desc" id="pwDescText">
+        Интерактивные конспекты с клиническим разбором статей UpToDate, озвученным словарем и упражнениями открыты для подписок «Про», «Премиум» и «ВИП». Перейдите на страницу тарифов, чтобы подключить или повысить свой доступ:
+      </p>
+      <div class="pw-buttons">
+        <a href="https://kazdoctors.com/tarifs" class="pw-btn-primary" id="pwTarifsBtn">
+          🌟 Перейти к тарифам (kazdoctors.com/tarifs)
+        </a>
+        <a href="https://instagram.com/doctors.speak" target="_blank" class="pw-btn-secondary" id="pwContactBtn">
+          💬 Написать нам (@doctors.speak)
+        </a>
+        <a href="/login.html" class="pw-btn-secondary" id="pwLoginBtn" style="display:none;">
+          🔐 Войти в аккаунт
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ЗАЩИЩЕННЫЙ КОНТЕНТ УРОКА (ОТКРЫВАЕТСЯ ТОЛЬКО ДЛЯ PRO, PREMIUM, VIP) -->
+  <div id="lessonContentWrapper">
+    <!-- НАВИГАЦИЯ ПО ЭТАПАМ УРОКА -->
+    <nav class="section-nav">
+      <button class="nav-pill active" onclick="showTab(0)" id="nav0">1. 4 Формулы</button>
+      <button class="nav-pill" onclick="showTab(1)" id="nav1">2. Цепочки и Статья</button>
+      <button class="nav-pill" onclick="showTab(2)" id="nav2">3. Словарь (14 слов)</button>
+      <button class="nav-pill" onclick="showTab(3)" id="nav3">4. Упражнения</button>
+    </nav>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main>
+      <!-- ВКЛАДКА 1: 4 СПОСОБА ВЫРАЗИТЬ ПРИНАДЛЕЖНОСТЬ И ТАБЛИЦА МЕСТОИМЕНИЙ -->
+      <section class="tab-section active" id="tab0"></section>
+
+      <!-- ВКЛАДКА 2: ДЕШИФРАТОР ДЛИННЫХ ЦЕПОЧЕК СУЩЕСТВИТЕЛЬНЫХ И СТАТЬЯ UPTODATE -->
+      <section class="tab-section" id="tab1"></section>
+
+      <!-- ВКЛАДКА 3: СЛОВАРЬ С ПРИМЕРАМИ -->
+      <section class="tab-section" id="tab2">
+        <div class="card-block">
+          <h2 id="uiVocabTitle">💊 Клинический словарь урока (14 терминов)</h2>
+          <p id="uiVocabDesc">Нажмите 🔊, чтобы прослушать произношение. Обратите внимание на конструкции с 's, предлогом of и цепочки существительных в примерах.</p>
+          <div class="vocab-grid" id="vocabGrid"></div>
+        </div>
+        <button class="action-btn" onclick="showTab(3)" id="uiToExBtn">Перейти к упражнениям урока ➔</button>
+      </section>
+
+      <!-- ВКЛАДКА 4: ПРАКТИКУМ (EXERCISE 1 & 2 ИЗ PDF) -->
+      <section class="tab-section" id="tab3">
+        <div class="card-block gold">
+          <h2 id="uiEx1Title">✍️ Упражнение 1: Выберите правильную притяжательную конструкцию</h2>
+          <p id="uiEx1Desc">Определите правильный порядок слов с апострофом 's, предлогом of или в цепочке существительных:</p>
+          <div id="ex1Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+
+        <div class="card-block">
+          <h2 id="uiEx2Title">🩺 Упражнение 2: Составьте медицинское словосочетание из слов в скобках</h2>
+          <p id="uiEx2Desc">Помните: в цепочке существительных главное по смыслу слово всегда стоит последним!</p>
+          <div id="ex2Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+
+        <a href="./possessives/" class="action-btn" id="uiGoTrainerBtn">🎯 Запустить игровой тренажер по Уроку 7 ➔</a>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. ПРОВЕРКА ПОДПИСКИ SUPABASE (ДОСТУП ТОЛЬКО ДЛЯ PRO, PREMIUM, VIP)
+    // =========================================================================
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+    // Уровни подписок: конспект открывается только при уровне >= 2 (pro, premium, vip)
+    const TIER_LEVELS = {
+      none: 0,
+      free: 0,
+      standard: 1,
+      pro: 2,
+      premium: 3,
+      vip: 4
+    };
+
+    const TIER_LABELS = {
+      standard: { ru: "СТАНДАРТ", kz: "СТАНДАРТ" },
+      pro: { ru: "ТАРИФ: ПРО", kz: "ТАРИФ: ПРО" },
+      premium: { ru: "ТАРИФ: ПРЕМИУМ", kz: "ТАРИФ: ПРЕМИУМ" },
+      vip: { ru: "ТАРИФ: ВИП 👑", kz: "ТАРИФ: ВИП 👑" }
+    };
+
+    let currentViewerState = {
+      isLoggedIn: false,
+      hasActiveSub: false,
+      tier: "none"
+    };
+
+    async function verifySubscriptionAccess() {
+      if (!supabaseClient) {
+        showPaywallGate(false, "none");
+        return;
+      }
+
+      try {
+        const { data: sessionData, error: sessionErr } = await supabaseClient.auth.getSession();
+        if (sessionErr || !sessionData || !sessionData.session) {
+          currentViewerState = { isLoggedIn: false, hasActiveSub: false, tier: "none" };
+          showPaywallGate(false, "none");
+          return;
+        }
+
+        const user = sessionData.session.user;
+        const userEmail = (user.email || "").toLowerCase().trim();
+
+        // Ищем профиль сначала по ID, затем по Email
+        let { data: profile } = await supabaseClient
+          .from("profiles")
+          .select("id, email, tier, subscription_expires_at")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (!profile && userEmail) {
+          const resByEmail = await supabaseClient
+            .from("profiles")
+            .select("id, email, tier, subscription_expires_at")
+            .ilike("email", userEmail)
+            .maybeSingle();
+          profile = resByEmail.data;
+        }
+
+        if (!profile || !profile.subscription_expires_at) {
+          currentViewerState = { isLoggedIn: true, hasActiveSub: false, tier: "none" };
+          showPaywallGate(true, "none");
+          return;
+        }
+
+        const expiresAt = new Date(profile.subscription_expires_at);
+        const now = new Date();
+        const isSubActive = !isNaN(expiresAt.getTime()) && now <= expiresAt;
+
+        if (!isSubActive) {
+          currentViewerState = { isLoggedIn: true, hasActiveSub: false, tier: "expired" };
+          showPaywallGate(true, "expired");
+          return;
+        }
+
+        const userTier = (profile.tier || "standard").toLowerCase().trim();
+        const tierLevel = TIER_LEVELS[userTier] || 1;
+
+        currentViewerState = { isLoggedIn: true, hasActiveSub: true, tier: userTier };
+
+        // Если уровень тарифа >= 2 (pro, premium, vip) — открываем конспект!
+        if (tierLevel >= TIER_LEVELS.pro) {
+          unlockLessonContent(userTier);
+        } else {
+          // Если тариф standard (уровень 1) — показываем предложение перейти на страницу тарифов
+          showPaywallGate(true, "standard");
+        }
+      } catch (err) {
+        console.error("Subscription check error:", err);
+        showPaywallGate(false, "none");
+      }
+    }
+
+    function unlockLessonContent(tier) {
+      document.getElementById("authLoader").style.display = "none";
+      document.getElementById("paywallGate").style.display = "none";
+      document.getElementById("lessonContentWrapper").style.display = "flex";
+
+      const badge = document.getElementById("userTierBadge");
+      if (badge && TIER_LABELS[tier]) {
+        badge.textContent = TIER_LABELS[tier][currentLang];
+        badge.style.display = "inline-block";
+      }
+    }
+
+    function showPaywallGate(isLoggedIn, reasonTier) {
+      document.getElementById("authLoader").style.display = "none";
+      document.getElementById("lessonContentWrapper").style.display = "none";
+      document.getElementById("paywallGate").style.display = "block";
+      updatePaywallTexts(isLoggedIn, reasonTier);
+    }
+
+    function updatePaywallTexts(isLoggedIn, reasonTier) {
+      const isKz = (currentLang === "kz");
+      const badgeEl = document.getElementById("pwBadgeText");
+      const titleEl = document.getElementById("pwTitleText");
+      const descEl = document.getElementById("pwDescText");
+      const tarifsBtn = document.getElementById("pwTarifsBtn");
+      const contactBtn = document.getElementById("pwContactBtn");
+      const loginBtn = document.getElementById("pwLoginBtn");
+
+      badgeEl.textContent = isKz
+        ? "ПРО / ПРЕМИУМ / ВИП ТАРИФТЕРІНДЕ ҚОЛЖЕТІМДІ"
+        : "ДОСТУПНО В ТАРИФАХ ПРО / ПРЕМИУМ / ВИП";
+
+      tarifsBtn.textContent = isKz
+        ? "🌟 Тарифтер бетіне өту (kazdoctors.com/tarifs)"
+        : "🌟 Перейти к тарифам (kazdoctors.com/tarifs)";
+
+      contactBtn.textContent = isKz
+        ? "💬 Бізге жазу (@doctors.speak)"
+        : "💬 Написать нам (@doctors.speak)";
+
+      if (!isLoggedIn) {
+        titleEl.textContent = isKz
+          ? "Конспектіні ашу үшін аккаунтқа кіріңіз немесе жазылым таңдаңыз"
+          : "Войдите в аккаунт или подключите тариф для чтения конспекта";
+        descEl.textContent = isKz
+          ? "Бұл интерактивті конспект «Про», «Премиум» және «ВИП» жазылымдары бар дәрігерлерге арналған. Тарифтер бетінде өзіңізге ыңғайлы пакетті таңдай аласыз:"
+          : "Этот интерактивный конспект открыт для врачей с подпиской «Про», «Премиум» или «ВИП». Ознакомьтесь с вариантами доступа на странице тарифов:";
+        loginBtn.style.display = "inline-flex";
+        loginBtn.textContent = isKz ? "🔐 Аккаунтқа кіру" : "🔐 Уже есть подписка? Войти в аккаунт";
+      } else if (reasonTier === "standard") {
+        titleEl.textContent = isKz
+          ? "Сізде «Стандарт» тарифі белсенді (тек тренажерлер)"
+          : "У вас активен тариф «Стандарт» (только тренажеры)";
+        descEl.textContent = isKz
+          ? "Интерактивті конспектілер мен мақала талдауларын оқу үшін тарифіңізді «Про», «Премиум» немесе «ВИП» деңгейіне дейін жаңартуды ұсынамыз:"
+          : "Чтобы открывать интерактивные конспекты, разборы статей и грамматические справочники, обновите вашу подписку до тарифа «Про», «Премиум» или «ВИП» на странице тарифов:";
+        loginBtn.style.display = "none";
+      } else {
+        titleEl.textContent = isKz
+          ? "Жазылым мерзімі аяқталды немесе белсенді емес"
+          : "Ваша подписка не активна или истекла";
+        descEl.textContent = isKz
+          ? "Сабақ конспектілеріне қол жеткізу үшін «Про», «Премиум» немесе «ВИП» тарифін таңдаңыз:"
+          : "Для получения доступа к интерактивным конспектам выберите тариф «Про», «Премиум» или «ВИП» на странице тарифов:";
+        loginBtn.style.display = "none";
+      }
+    }
+
+    // =========================================================================
+    // 2. БАЗА ДАННЫХ УРОКА 7 (НА РУССКОМ И КАЗАХСКОМ ЯЗЫКАХ)
+    // =========================================================================
+    const LESSON7_DATA = {
+      ui: {
+        backBtn: { ru: "⬅ К списку уроков", kz: "⬅ Сабақтар тізіміне" },
+        title: {
+          ru: "Possessives (Принадлежность и цепочки существительных)",
+          kz: "Possessives (Тәуелділік және зат есімдер тізбегі)"
+        },
+        subtitle: {
+          ru: "Формулы: My/Your • B's A • A of B • Nouns in a row (главное слово — последнее!)",
+          kz: "Формулалар: My/Your • B's A • A of B • Nouns in a row (негізгі сөз — ең соңында!)"
+        },
+        nav: [
+          { ru: "1. 4 Формулы", kz: "1. 4 Формула" },
+          { ru: "2. Цепочки и Статья", kz: "2. Тізбектер мен Мақала" },
+          { ru: "3. Словарь (14 слов)", kz: "3. Сөздік (14 сөз)" },
+          { ru: "4. Упражнения", kz: "4. Жаттығулар" }
+        ],
+        vocabTitle: {
+          ru: "💊 Клинический словарь урока (14 терминов)",
+          kz: "💊 Сабақтың клиникалық сөздігі (14 термин)"
+        },
+        vocabDesc: {
+          ru: "Нажмите 🔊 для прослушивания произношения. Все примеры показывают, как строится принадлежность в медицинских текстах.",
+          kz: "Дұрыс айтылуын тыңдау үшін 🔊 басыңыз. Барлық мысалдар медициналық мәтіндердегі тәуелділік құрылымын көрсетеді."
+        },
+        toExBtn: {
+          ru: "Перейти к шагу 4: Быстрые упражнения ➔",
+          kz: "4-қадамға өту: Жылдам жаттығулар ➔"
+        },
+        ex1Title: {
+          ru: "✍️ Упражнение 1: Выберите правильную форму принадлежности",
+          kz: "✍️ 1-жаттығу: Тәуелділіктің дұрыс формасын таңдаңыз"
+        },
+        ex1Desc: {
+          ru: "Выберите грамматически верное сочетание ('s, of или цепочку существительных):",
+          kz: "Грамматикалық тұрғыдан дұрыс тіркесті таңдаңыз ('s, of немесе зат есімдер тізбегі):"
+        },
+        ex2Title: {
+          ru: "🩺 Упражнение 2: Составьте медицинский термин из слов в скобках",
+          kz: "🩺 2-жаттығу: Жақшадағы сөздерден дұрыс медициналық тіркес құраңыз"
+        },
+        ex2Desc: {
+          ru: "Используйте 's, предлог of или выстройте цепочку существительных (главное слово в конце):",
+          kz: "'s, of предлогын қолданыңыз немесе зат есімдер тізбегін құраңыз (негізгі сөз соңында):"
+        },
+        goTrainerBtn: {
+          ru: "🎯 Перейти к основному тренажеру Урока 7 ➔",
+          kz: "🎯 7-сабақтың негізгі тренажеріне өту ➔"
+        }
+      },
+
+      // ВКЛАДКА 1: 4 СПОСОБА ВЫРАЗИТЬ ПРИНАДЛЕЖНОСТЬ И ТАБЛИЦА МЕСТОИМЕНИЙ
+      tab0Html: {
+        ru: `
+          <div class="card-block">
+            <h2>🔗 4 способа сказать «Чей?» или «Чего?» в медицинском английском</h2>
+            <p>В каждой строчке истории болезни или научной статьи мы связываем понятия между собой: <i>жалобы пациента, увеличение опухоли, протокол лечения сердечной недостаточности</i>. В английском языке для этого есть <b>4 четкие формулы</b>:</p>
+
+            <div class="ways-grid">
+              <div class="way-card w1">
+                <div class="way-title">
+                  <span>1. Местоимение (My / His)</span>
+                  <span>👤</span>
+                </div>
+                <span class="comp-formula">my / your / his / her / its / our / their + Noun</span>
+                <p style="font-size:0.79rem;">Просто ставим перед существительным:</p>
+                <div class="clinical-quote">
+                  • <b>"This is <u>my</u> patient."</b><br>
+                  • <b>"<u>His</u> eyesight has dropped."</b>
+                </div>
+              </div>
+
+              <div class="way-card w2">
+                <div class="way-title">
+                  <span>2. Апостроф 's (B's A)</span>
+                  <span>✍️</span>
+                </div>
+                <span class="comp-formula">Владелец + 's + Объект</span>
+                <p style="font-size:0.79rem;">Ставим <b>'s</b> после первого существительного (чаще всего для людей — врача, пациента, ребенка, или органов):</p>
+                <div class="clinical-quote">
+                  • <b>"This is <u>doctor Aiganym's</u> patient."</b><br>
+                  • <b>"The <u>patient's</u> extremities were cyanotic."</b><br>
+                  • <b>"The <u>gland's</u> enlargement."</b>
+                </div>
+              </div>
+
+              <div class="way-card w3">
+                <div class="way-title">
+                  <span>3. Предлог OF (A of B)</span>
+                  <span>🔬</span>
+                </div>
+                <span class="comp-formula">Что (A) + OF + Чего/Кого (B)</span>
+                <p style="font-size:0.79rem;">Идеально соответствует русскому родительному падежу (<i>увеличение чего? опухоли</i>):</p>
+                <div class="clinical-quote">
+                  • <b>"This is a patient <u>of Dr. Aiganym</u>."</b><br>
+                  • <b>"The enlargement <u>of the tumor</u>."</b><br>
+                  • <b>"The frequency <u>of heartburn</u>."</b>
+                </div>
+              </div>
+
+              <div class="way-card w4">
+                <div class="way-title">
+                  <span>4. Цепочка существительных</span>
+                  <span>🧬</span>
+                </div>
+                <span class="comp-formula">Noun 1 + Noun 2 + ГЛАВНОЕ СЛОВО</span>
+                <p style="font-size:0.79rem;">Существительные ставятся подряд без предлогов. Первые слова работают как прилагательные, а <b>главное слово — последнее!</b></p>
+                <div class="clinical-quote">
+                  • <b>"Kidney <u>failure</u>"</b> <i>(отказ почки)</i><br>
+                  • <b>"Emergency imaging <u>results</u>"</b>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>📋 Шпаргалка по притяжательным местоимениям</h2>
+            <p>Не путайте зависимую форму (всегда стоит <b>перед существительным</b>: <i>my patient</i>) и самостоятельную форму (стоит <b>без существительного</b>: <i>this patient is mine</i>):</p>
+
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Кто?</th>
+                  <th>Перед существительным (+ Noun)</th>
+                  <th>Самостоятельно (без Noun)</th>
+                  <th>Клинический пример</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>I</b> (Я)</td>
+                  <td><b>my</b> (мой)</td>
+                  <td><b>mine</b></td>
+                  <td><b>My</b> experience in pediatrics was wide.</td>
+                </tr>
+                <tr>
+                  <td><b>You</b> (Ты/Вы)</td>
+                  <td><b>your</b> (ваш)</td>
+                  <td><b>yours</b></td>
+                  <td>What is <b>your</b> diagnosis?</td>
+                </tr>
+                <tr>
+                  <td><b>He</b> (Он)</td>
+                  <td><b>his</b> (его)</td>
+                  <td><b>his</b></td>
+                  <td><b>His</b> eyesight has dropped.</td>
+                </tr>
+                <tr>
+                  <td><b>She</b> (Она)</td>
+                  <td><b>her</b> (её)</td>
+                  <td><b>hers</b></td>
+                  <td>We reviewed <b>her</b> blood test.</td>
+                </tr>
+                <tr>
+                  <td><b>It</b> (Орган / Опухоль)</td>
+                  <td><b>its</b> (его/её — <i>без апострофа!</i>)</td>
+                  <td><b>its</b></td>
+                  <td>The tumor increased in <b>its</b> size.</td>
+                </tr>
+                <tr>
+                  <td><b>We</b> (Мы)</td>
+                  <td><b>our</b> (наш)</td>
+                  <td><b>ours</b></td>
+                  <td>This is <b>our</b> department.</td>
+                </tr>
+                <tr>
+                  <td><b>They</b> (Они)</td>
+                  <td><b>their</b> (их)</td>
+                  <td><b>theirs</b></td>
+                  <td>Patients described <b>their</b> symptoms.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Быстрая проверка</span>
+              <div class="qc-question">Как правильно сказать «опыт пациента» с помощью притяжательного апострофа?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Верно! Сначала идет владелец с апострофом (the patient\\'s), а затем то, что ему принадлежит (experience).')">the patient's experience</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Неверно: если мы используем предлог of, то на первом месте должно стоять слово «опыт» — the experience of the patient.')">the patient of the experience</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">Перейти к шагу 2: Дешифратор длинных терминов и UpToDate ➔</button>
+        `,
+        kz: `
+          <div class="card-block">
+            <h2>🔗 Медициналық ағылшын тілінде «Кімнің?» немесе «Ненің?» деп айтудың 4 жолы</h2>
+            <p>Ауру тарихында немесе ғылыми мақалада біз ұғымдарды үнемі бір-бірімен байланыстырамыз: <i>науқастың шағымдары, ісіктің ұлғаюы, жүрек жеткіліксіздігін емдеу хаттамасы</i>. Ағылшын тілінде бұл үшін <b>4 нақты формула</b> қолданылады:</p>
+
+            <div class="ways-grid">
+              <div class="way-card w1">
+                <div class="way-title">
+                  <span>1. Есімдік (My / His)</span>
+                  <span>👤</span>
+                </div>
+                <span class="comp-formula">my / your / his / her / its / our / their + Noun</span>
+                <p style="font-size:0.79rem;">Зат есімнің алдына қойылады:</p>
+                <div class="clinical-quote">
+                  • <b>"This is <u>my</u> patient."</b><br>
+                  • <b>"<u>His</u> eyesight has dropped."</b>
+                </div>
+              </div>
+
+              <div class="way-card w2">
+                <div class="way-title">
+                  <span>2. Апостроф 's (B's A)</span>
+                  <span>✍️</span>
+                </div>
+                <span class="comp-formula">Иесі + 's + Зат</span>
+                <p style="font-size:0.79rem;">Бірінші зат есімнен кейін <b>'s</b> жалғанады (қазақ тіліндегі ілік септігі сияқты — <i>дәрігердің науқасы</i>):</p>
+                <div class="clinical-quote">
+                  • <b>"This is <u>doctor Aiganym's</u> patient."</b><br>
+                  • <b>"The <u>patient's</u> extremities were cyanotic."</b><br>
+                  • <b>"The <u>gland's</u> enlargement."</b>
+                </div>
+              </div>
+
+              <div class="way-card w3">
+                <div class="way-title">
+                  <span>3. OF предлогы (A of B)</span>
+                  <span>🔬</span>
+                </div>
+                <span class="comp-formula">Не (A) + OF + Ненің/Кімнің (B)</span>
+                <p style="font-size:0.79rem;">Аударғанда соңынан басына қарай оқылады (<i>the enlargement of the tumor = ісіктің ұлғаюы</i>):</p>
+                <div class="clinical-quote">
+                  • <b>"This is a patient <u>of Dr. Aiganym</u>."</b><br>
+                  • <b>"The enlargement <u>of the tumor</u>."</b><br>
+                  • <b>"The frequency <u>of heartburn</u>."</b>
+                </div>
+              </div>
+
+              <div class="way-card w4">
+                <div class="way-title">
+                  <span>4. Зат есімдер тізбегі</span>
+                  <span>🧬</span>
+                </div>
+                <span class="comp-formula">Noun 1 + Noun 2 + НЕГІЗГІ СӨЗ</span>
+                <p style="font-size:0.79rem;">Зат есімдер ешқандай предлогсыз қатар тұрады. Қазақ тіліндегідей <b>ең негізгі сөз соңында тұрады!</b></p>
+                <div class="clinical-quote">
+                  • <b>"Kidney <u>failure</u>"</b> <i>(бүйрек жеткіліксіздігі)</i><br>
+                  • <b>"Emergency imaging <u>results</u>"</b>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>📋 Тәуелдік есімдіктерінің кестесі</h2>
+            <p>Зат есімнің <b>алдында тұратын</b> форманы (<i>my patient</i>) және зат есімсіз <b>дербес қолданылатын</b> форманы (<i>this patient is mine</i>) ажырата біліңіз:</p>
+
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Кім?</th>
+                  <th>Зат есім алдында (+ Noun)</th>
+                  <th>Дербес форма (Noun-сыз)</th>
+                  <th>Клиникалық мысал</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>I</b> (Мен)</td>
+                  <td><b>my</b> (менің)</td>
+                  <td><b>mine</b> (менікі)</td>
+                  <td><b>My</b> experience in pediatrics was wide.</td>
+                </tr>
+                <tr>
+                  <td><b>You</b> (Сен/Сіз)</td>
+                  <td><b>your</b> (сіздің)</td>
+                  <td><b>yours</b> (сіздікі)</td>
+                  <td>What is <b>your</b> diagnosis?</td>
+                </tr>
+                <tr>
+                  <td><b>He</b> (Ол — ер)</td>
+                  <td><b>his</b> (оның)</td>
+                  <td><b>his</b> (онікі)</td>
+                  <td><b>His</b> eyesight has dropped.</td>
+                </tr>
+                <tr>
+                  <td><b>She</b> (Ол — әйел)</td>
+                  <td><b>her</b> (оның)</td>
+                  <td><b>hers</b> (онікі)</td>
+                  <td>We reviewed <b>her</b> blood test.</td>
+                </tr>
+                <tr>
+                  <td><b>It</b> (Ағза / Ісік)</td>
+                  <td><b>its</b> (оның — <i>апострофсыз!</i>)</td>
+                  <td><b>its</b></td>
+                  <td>The tumor increased in <b>its</b> size.</td>
+                </tr>
+                <tr>
+                  <td><b>We</b> (Біз)</td>
+                  <td><b>our</b> (біздің)</td>
+                  <td><b>ours</b> (біздікі)</td>
+                  <td>This is <b>our</b> department.</td>
+                </tr>
+                <tr>
+                  <td><b>They</b> (Олар)</td>
+                  <td><b>their</b> (олардың)</td>
+                  <td><b>theirs</b> (олардікі)</td>
+                  <td>Patients described <b>their</b> symptoms.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Жылдам тексеру</span>
+              <div class="qc-question">Апостроф арқылы «науқастың тәжірибесі» деп қалай дұрыс айтамыз?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Дұрыс! Алдымен иесі апострофпен (the patient\\'s), содан кейін оған тиесілі ұғым (experience) тұрады.')">the patient's experience</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Қате: егер of предлогын қолдансақ, бірінші орында the experience of the patient болуы керек.')">the patient of the experience</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">2-қадамға өту: Ұзын терминдерді оқу құпиясы және UpToDate ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 2: ДЕШИФРАТОР ДЛИННЫХ ЦЕПОЧЕК СУЩЕСТВИТЕЛЬНЫХ И РАЗБОР UPTODATE (GASTRIC CANCER)
+      tab1Html: {
+        ru: `
+          <div class="card-block gold">
+            <h2>🧩 Секрет чтения длинных цепочек существительных (Nouns in a row)</h2>
+            <p>В медицинских гайдлайнах авторы обожают выстраивать по 4–7 существительных подряд без единого предлога. <b>Золотое правило:</b> все слова слева — это просто определения (какой? чего?), причем <b>в единственном числе</b>! А <b>главное слово (о чем вообще речь) — ВСЕГДА САМОЕ ПОСЛЕДНЕЕ</b>. По-русски переводим цепочку с конца в начало:</p>
+
+            <div class="chain-box">
+              <div class="chain-en">
+                <span class="word-modifier">Heart failure</span>
+                <span class="word-modifier">treatment</span>
+                <span class="word-head">guidelines 🎯</span>
+              </div>
+              <div class="chain-tr">⬅ Читаем с конца: Клинические рекомендации (guidelines) по лечению (treatment) сердечной недостаточности (heart failure).</div>
+            </div>
+
+            <div class="chain-box">
+              <div class="chain-en">
+                <span class="word-modifier">Blood pressure</span>
+                <span class="word-modifier">monitoring</span>
+                <span class="word-head">device 🎯</span>
+              </div>
+              <div class="chain-tr">⬅ Читаем с конца: Прибор (device) для мониторинга (monitoring) артериального давления (blood pressure).</div>
+            </div>
+
+            <div class="chain-box">
+              <div class="chain-en">
+                <span class="word-modifier">Post-chemotherapy</span>
+                <span class="word-modifier">cancer patient</span>
+                <span class="word-modifier">symptom</span>
+                <span class="word-modifier">management</span>
+                <span class="word-head">protocol 🎯</span>
+              </div>
+              <div class="chain-tr">⬅ Читаем с конца: Протокол (protocol) ведения (management) симптомов (symptom) онкопациента (cancer patient) после химиотерапии (post-chemotherapy).</div>
+            </div>
+
+            <div class="chain-box">
+              <div class="chain-en">
+                <span class="word-modifier">Diabetic foot ulcer</span>
+                <span class="word-modifier">wound healing</span>
+                <span class="word-modifier">progress</span>
+                <span class="word-head">chart 🎯</span>
+              </div>
+              <div class="chain-tr">⬅ Читаем с конца: График/таблица (chart) динамики (progress) заживления раны (wound healing) при язве диабетической стопы (diabetic foot ulcer).</div>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Ловушка множественного числа в цепочках</span>
+              <div class="qc-question">Как правильно сказать «лечение переломов конечностей»? Помните: слово-определение перед главным словом ставится в единственном числе!</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Блестяще! Главное слово в конце — fractures (переломы, мн. ч.), а определяющее слово перед ним — extremity (конечность, ед. ч.): extremity fractures.')">treatment of extremity fractures</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Ошибка! Если поставить extremities в конец, получится «конечности перелома» вместо «переломы конечностей».')">treatment of fracture extremities</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <div class="card-block">
+            <h2>🔬 Практика чтения UpToDate: Gastric Cancer (Рак желудка)</h2>
+            <p>Прочитайте введение из статьи <b>UpToDate: Clinical presentation, diagnosis, and staging of gastric cancer</b>. Нажимайте на кнопки подсветки, чтобы увидеть, как авторы комбинируют конструкции с предлогом <b>OF (A of B)</b> и <b>цепочки существительных (Nouns in a row)</b>:</p>
+
+            <div class="uptodate-box">
+              <div class="uptodate-header">
+                <span>📖 UpToDate: Gastric cancer — Introduction</span>
+                <div class="uptodate-controls">
+                  <button class="hl-btn of-type" onclick="toggleUptodateHighlight('of')">Конструкции с OF (A of B)</button>
+                  <button class="hl-btn chain-type" onclick="toggleUptodateHighlight('chain')">Цепочки существительных (Nouns in a row)</button>
+                  <button class="hl-btn reset" onclick="toggleUptodateHighlight('all')">Показать оба</button>
+                </div>
+              </div>
+              <div class="uptodate-body show-of show-chain" id="uptodateBodyText">
+                <b><span class="p-of">Clinical presentation, diagnosis, and staging of gastric cancer</span></b><br><br>
+                Most patients with gastric cancer in the United States are symptomatic and already have advanced, incurable disease at <span class="p-of">the time of presentation</span>. Despite advances in medicine, approximately 50 percent have disease that extends beyond locoregional confines at <span class="p-of">the time of presentation</span>, and only <span class="p-of">one-half of those</span> who appear to have <span class="p-chain">locoregional tumor involvement</span> can undergo potentially curative resection. Surgically curable early gastric cancers are usually asymptomatic and are only infrequently detected <span class="p-of">outside of</span> <span class="p-chain">screening programs</span>. Screening is not widely performed, except in countries that have a very high incidence, such as Japan, Korea, Venezuela, and Chile. (See "<span class="p-chain">Gastric cancer screening</span>".)<br><br>
+                The common <span class="p-of">presenting symptoms of</span> and diagnostic approaches to gastric cancer will be reviewed here. Epidemiology, issues related to screening for <span class="p-chain">high-risk patients</span>, and <span class="p-of">treatment of gastric cancer</span> are discussed separately. (See "<span class="p-of">Epidemiology of gastric cancer</span>" and "<span class="p-chain">Gastric cancer screening</span>" and "<span class="p-of">Adjuvant and neoadjuvant treatment of gastric cancer</span>" and "<span class="p-of">Surgical management of invasive gastric cancer</span>".)
+              </div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">Перейти к шагу 3: Словарь урока (14 слов) ➔</button>
+        `,
+        kz: `
+          <div class="card-block gold">
+            <h2>🧩 Ұзын зат есім тізбектерін оқу құпиясы (Nouns in a row)</h2>
+            <p>Медициналық гайдлайндарда 4–7 зат есім ешқандай предлогсыз қатар тізіліп келе береді. <b>Қазақ тілді дәрігерлер үшін керемет жаңалық:</b> ағылшын тіліндегі зат есім тізбегінің реті <b>қазақ тілімен 100% бірдей</b> — анықтауыш сөздер жекеше түрде алдында тұрады, ал <b>ең негізгі сөз ӘРҚАШАН ЕҢ СОҢЫНДА</b> тұрады!</p>
+
+            <div class="chain-box">
+              <div class="chain-en">
+                <span class="word-modifier">Heart failure</span>
+                <span class="word-modifier">treatment</span>
+                <span class="word-head">guidelines 🎯</span>
+              </div>
+              <div class="chain-tr">🇰🇿 Дәл ретімен: Жүрек жеткіліксіздігін (heart failure) емдеу (treatment) бойынша клиникалық ұсынымдар (guidelines).</div>
+            </div>
+
+            <div class="chain-box">
+              <div class="chain-en">
+                <span class="word-modifier">Blood pressure</span>
+                <span class="word-modifier">monitoring</span>
+                <span class="word-head">device 🎯</span>
+              </div>
+              <div class="chain-tr">🇰🇿 Дәл ретімен: Қан қысымын (blood pressure) бақылау (monitoring) құрылғысы (device).</div>
+            </div>
+
+            <div class="chain-box">
+              <div class="chain-en">
+                <span class="word-modifier">Post-chemotherapy</span>
+                <span class="word-modifier">cancer patient</span>
+                <span class="word-modifier">symptom</span>
+                <span class="word-modifier">management</span>
+                <span class="word-head">protocol 🎯</span>
+              </div>
+              <div class="chain-tr">🇰🇿 Дәл ретімен: Химиотерапиядан кейінгі (post-chemotherapy) онконауқастың (cancer patient) симптомдарын (symptom) жүргізу (management) хаттамасы (protocol).</div>
+            </div>
+
+            <div class="chain-box">
+              <div class="chain-en">
+                <span class="word-modifier">Diabetic foot ulcer</span>
+                <span class="word-modifier">wound healing</span>
+                <span class="word-modifier">progress</span>
+                <span class="word-head">chart 🎯</span>
+              </div>
+              <div class="chain-tr">🇰🇿 Дәл ретімен: Диабеттік табан ойық жарасының (diabetic foot ulcer) жазылу (wound healing) динамикасының (progress) кестесі (chart).</div>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Тізбектердегі көпше түр тұзағы</span>
+              <div class="qc-question">«Аяқ-қол сынықтарын емдеу» деп қалай дұрыс айтамыз? Есте сақтаңыз: негізгі сөз соңында көпше түрде, ал алдындағы анықтауыш зат есім жекеше түрде тұрады!</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Тамаша! Негізгі сөз соңында — fractures (сынықтар, көпше), ал оның алдындағы анықтауыш — extremity (аяқ-қол, жекеше): extremity fractures.')">treatment of extremity fractures</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Қате! Егер extremities соңында тұрса, «сынықтың аяқ-қолдары» болып шығады.')">treatment of fracture extremities</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <div class="card-block">
+            <h2>🔬 UpToDate мақаласын талдау: Gastric Cancer (Асқазан обыры)</h2>
+            <p><b>UpToDate: Clinical presentation, diagnosis, and staging of gastric cancer</b> мақаласының кіріспесін оқыңыз. Авторлардың <b>OF (A of B)</b> құрылымы мен <b>зат есімдер тізбегін (Nouns in a row)</b> қалай қолданғанын көру үшін батырмаларды басыңыз:</p>
+
+            <div class="uptodate-box">
+              <div class="uptodate-header">
+                <span>📖 UpToDate: Gastric cancer — Introduction</span>
+                <div class="uptodate-controls">
+                  <button class="hl-btn of-type" onclick="toggleUptodateHighlight('of')">OF құрылымдары (A of B)</button>
+                  <button class="hl-btn chain-type" onclick="toggleUptodateHighlight('chain')">Зат есімдер тізбегі (Nouns in a row)</button>
+                  <button class="hl-btn reset" onclick="toggleUptodateHighlight('all')">Екеуін де көрсету</button>
+                </div>
+              </div>
+              <div class="uptodate-body show-of show-chain" id="uptodateBodyText">
+                <b><span class="p-of">Clinical presentation, diagnosis, and staging of gastric cancer</span></b><br><br>
+                Most patients with gastric cancer in the United States are symptomatic and already have advanced, incurable disease at <span class="p-of">the time of presentation</span>. Despite advances in medicine, approximately 50 percent have disease that extends beyond locoregional confines at <span class="p-of">the time of presentation</span>, and only <span class="p-of">one-half of those</span> who appear to have <span class="p-chain">locoregional tumor involvement</span> can undergo potentially curative resection. Surgically curable early gastric cancers are usually asymptomatic and are only infrequently detected <span class="p-of">outside of</span> <span class="p-chain">screening programs</span>. Screening is not widely performed, except in countries that have a very high incidence, such as Japan, Korea, Venezuela, and Chile. (See "<span class="p-chain">Gastric cancer screening</span>".)<br><br>
+                The common <span class="p-of">presenting symptoms of</span> and diagnostic approaches to gastric cancer will be reviewed here. Epidemiology, issues related to screening for <span class="p-chain">high-risk patients</span>, and <span class="p-of">treatment of gastric cancer</span> are discussed separately. (See "<span class="p-of">Epidemiology of gastric cancer</span>" and "<span class="p-chain">Gastric cancer screening</span>" and "<span class="p-of">Adjuvant and neoadjuvant treatment of gastric cancer</span>" and "<span class="p-of">Surgical management of invasive gastric cancer</span>".)
+              </div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">3-қадамға өту: Сабақ сөздігі (14 сөз) ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 3: СЛОВАРЬ (14 ТЕРМИНОВ С ПРИМЕРАМИ ИЗ СЛАЙДОВ 2 И 7)
+      vocabulary: [
+        {
+          en: "Emergency",
+          ru: "Экстренная ситуация / Неотложная помощь",
+          kz: "Жедел жағдай / Шұғыл көмек",
+          ex: "The <b>emergency department</b> is now open. <i>(Цепочка существительных: отделение неотложной помощи).</i>"
+        },
+        {
+          en: "Enlargement",
+          ru: "Увеличение (органа / опухоли)",
+          kz: "Ұлғаю (ағзаның / ісіктің)",
+          ex: "<b>The enlargement of the tumor</b> was unexpected. <i>(Формула A of B: увеличение опухоли).</i>"
+        },
+        {
+          en: "Experience",
+          ru: "Опыт",
+          kz: "Тәжірибе",
+          ex: "<b>My experience</b> in pediatrics was wide. <i>(Притяжательное местоимение my).</i>"
+        },
+        {
+          en: "Extremity",
+          ru: "Конечность (верхняя/нижняя)",
+          kz: "Аяқ-қол (қол-аяқ)",
+          ex: "<b>The patient's extremities</b> were cyanotic. <i>(Формула B's A: конечности пациента).</i>"
+        },
+        {
+          en: "Eyesight",
+          ru: "Зрение",
+          kz: "Көру қабілеті",
+          ex: "<b>His eyesight</b> has dropped. <i>(Притяжательное местоимение his: его зрение упало).</i>"
+        },
+        {
+          en: "Failure",
+          ru: "Отказ / Недостаточность (органа)",
+          kz: "Жеткіліксіздік / Істен шығу (ағза)",
+          ex: "<b>My patient's heart failure</b> started long ago. <i>(Комбинация my + patient's + цепочка heart failure).</i>"
+        },
+        {
+          en: "Fracture",
+          ru: "Перелом",
+          kz: "Сынық (сүйектің сынуы)",
+          ex: "<b>The fracture of the patient's bone</b> was noticed on the X-ray. <i>(Перелом кости пациента).</i>"
+        },
+        {
+          en: "Frequency",
+          ru: "Частота",
+          kz: "Жиілік",
+          ex: "<b>The frequency of hospital admissions</b> rose this summer. <i>(A of B + цепочка hospital admissions).</i>"
+        },
+        {
+          en: "Gain",
+          ru: "Набор / Прибавка (веса)",
+          kz: "Қосу / Арту (салмақ қосу)",
+          ex: "<b>My patient's gain of weight</b> (weight gain) was explained by hypothyroidism."
+        },
+        {
+          en: "Gland",
+          ru: "Железа",
+          kz: "Без",
+          ex: "<b>Salivary glands of the patient</b> were sent to histological assessment. <i>(Слюнные железы пациента).</i>"
+        },
+        {
+          en: "Heartburn",
+          ru: "Изжога",
+          kz: "Қыжыл (запыран қайнау)",
+          ex: "He said that <b>his heartburn problem solution</b> was in stress management. <i>(Цепочка из 3 существительных).</i>"
+        },
+        {
+          en: "Imaging",
+          ru: "Визуализация (лучевая диагностика)",
+          kz: "Визуализация (сәулелік диагностика)",
+          ex: "<b>X-ray imaging inaccuracies</b> may lead to misdiagnosis. <i>(Неточности рентген-визуализации).</i>"
+        },
+        {
+          en: "Impairment",
+          ru: "Ухудшение / Нарушение (функции)",
+          kz: "Бұзылу / Нашарлау (қызметтің)",
+          ex: "<b>The patient's lung function impairments</b> were caused by pneumothorax. <i>(Нарушения функции легких пациента).</i>"
+        },
+        {
+          en: "Improvement",
+          ru: "Улучшение",
+          kz: "Жақсару",
+          ex: "<b>The improvement of the patient's condition</b> was due to the new drug. <i>(Улучшение состояния пациента).</i>"
+        }
+      ],
+
+      // ВКЛАДКА 4: УПРАЖНЕНИЕ 1 И УПРАЖНЕНИЕ 2 ИЗ PDF
+      ex1: [
+        {
+          q: "1. The ___ helped guide the treatment plan.",
+          options: ["patient's experience", "the patient of the experience"],
+          correct: 0,
+          exp: {
+            ru: "С одушевленным лицом (пациентом) используем апостроф 's: the patient's experience (опыт пациента).",
+            kz: "Жанды зат есіммен (науқаспен) 's апострофын қолданамыз: the patient's experience (науқастың тәжірибесі)."
+          }
+        },
+        {
+          q: "2. We analyzed the ___ over the past month.",
+          options: ["frequency of heartburn", "heartburn of frequency"],
+          correct: 0,
+          exp: {
+            ru: "В конструкции A of B главное слово стоит ПЕРЕД of: the frequency (что? частота) of heartburn (чего? изжоги).",
+            kz: "A of B құрылымында негізгі сөз of алдында тұрады: the frequency (нені? жиілігін) of heartburn (ненің? қыжылдың)."
+          }
+        },
+        {
+          q: "3. The doctor explained the ___ during the scan.",
+          options: ["gland's enlargement", "enlargement's the gland"],
+          correct: 0,
+          exp: {
+            ru: "При использовании апострофа 's сначала называем орган (gland's), а затем что с ним произошло (enlargement — увеличение железы).",
+            kz: "Апостроф ('s) қолданғанда алдымен ағза аталады (gland's), содан кейін оның өзгерісі (enlargement — бездің ұлғаюы)."
+          }
+        },
+        {
+          q: "4. This clinic specializes in the ___.",
+          options: ["treatment of extremity fractures", "treatment of fracture extremities"],
+          correct: 0,
+          exp: {
+            ru: "Главное слово — fractures (переломы), а слово extremity (конечность) стоит перед ним в единственном числе как определение: extremity fractures.",
+            kz: "Негізгі сөз — fractures (сынықтар), ал extremity (аяқ-қол) оның алдында жекеше түрде анықтауыш болып тұрады: extremity fractures."
+          }
+        },
+        {
+          q: "5. The ___ were inconclusive.",
+          options: ["imagings' results", "imaging's results (imaging results)"],
+          correct: 1,
+          exp: {
+            ru: "Слово imaging (визуализация) — неисчисляемое в единственном числе, поэтому верно imaging's results (или цепочка imaging results).",
+            kz: "Imaging (визуализация) сөзі жекеше түрде қолданылады, сондықтан дұрысы: imaging's results (немесе imaging results)."
+          }
+        }
+      ],
+
+      ex2: [
+        {
+          q: "1. The ___ (improvement / eyesight) was clear after the surgery.",
+          options: ["improvement of the eyesight (eyesight improvement)", "eyesight of improvement", "improvement's eyesight"],
+          correct: 0,
+          exp: {
+            ru: "«Улучшение зрения»: через предлог of — the improvement of the eyesight (или цепочкой: eyesight improvement, где главное слово improvement в конце).",
+            kz: "«Көру қабілетінің жақсаруы»: of арқылы — the improvement of the eyesight (немесе тізбекпен: eyesight improvement)."
+          }
+        },
+        {
+          q: "2. We monitored the ___ (gain / patient / weight) carefully.",
+          options: ["patient's weight gain", "weight patient's gain", "gain weight patient"],
+          correct: 0,
+          exp: {
+            ru: "Сначала чей? — patient's (пациента), затем цепочка существительных «набор веса» (главное слово gain в конце) -> patient's weight gain.",
+            kz: "Алдымен кімнің? — patient's (науқастың), сосын «салмақ қосу» тізбегі (негізгі сөз gain соңында) -> patient's weight gain."
+          }
+        },
+        {
+          q: "3. That scan shows the ___ (failure / kidney).",
+          options: ["failure of the kidney / kidney failure", "kidney of failure", "failure kidney"],
+          correct: 0,
+          exp: {
+            ru: "Оба варианта отличные: через of — the failure of the kidney, или классической медицинской цепочкой — kidney failure (почечная недостаточность).",
+            kz: "Екі нұсқа да дұрыс: of арқылы — the failure of the kidney, немесе клиникалық тізбекпен — kidney failure (бүйрек жеткіліксіздігі)."
+          }
+        },
+        {
+          q: "4. The specialist reviewed the ___ (imaging / emergency / results).",
+          options: ["emergency imaging results", "results emergency imaging", "imaging results emergency"],
+          correct: 0,
+          exp: {
+            ru: "Цепочка из 3 существительных: главное слово «результаты» (results) ставим в конец! Перед ним: какой визуализации? — экстренной (emergency imaging results).",
+            kz: "3 зат есімнен тұратын тізбек: негізгі сөз «нәтижелер» (results) ең соңында тұрады -> emergency imaging results (шұғыл визуализация нәтижелері)."
+          }
+        },
+        {
+          q: "5. The ___ (impairment / child's / speech) was mild.",
+          options: ["child's speech impairment", "speech child's impairment", "impairment child's speech"],
+          correct: 0,
+          exp: {
+            ru: "Сначала владелец с апострофом (child's — ребенка), затем цепочка «нарушение речи» (speech impairment, главное слово impairment в конце).",
+            kz: "Алдымен апострофпен иесі (child's — баланың), содан кейін «сөйлеу бұзылысы» тізбегі (speech impairment, негізгі сөз impairment соңында)."
+          }
+        }
+      ]
+    };
+
+    // =========================================================================
+    // 3. ЛОГИКА ОТОБРАЖЕНИЯ, ОЗВУЧКИ И ПЕРЕКЛЮЧЕНИЯ ЯЗЫКОВ (RU / KZ)
+    // =========================================================================
+    let currentLang = localStorage.getItem('doctors_speak_lang') || 'ru';
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('doctors_speak_lang', lang);
+
+      document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
+      document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
+
+      const ui = LESSON7_DATA.ui;
+      document.getElementById('uiBackBtn').textContent = ui.backBtn[lang];
+      document.getElementById('uiTitle').textContent = ui.title[lang];
+      document.getElementById('uiSubtitle').textContent = ui.subtitle[lang];
+
+      ui.nav.forEach((item, index) => {
+        document.getElementById(`nav${index}`).textContent = item[lang];
+      });
+
+      document.getElementById('uiVocabTitle').textContent = ui.vocabTitle[lang];
+      document.getElementById('uiVocabDesc').textContent = ui.vocabDesc[lang];
+      document.getElementById('uiToExBtn').textContent = ui.toExBtn[lang];
+      document.getElementById('uiEx1Title').textContent = ui.ex1Title[lang];
+      document.getElementById('uiEx1Desc').textContent = ui.ex1Desc[lang];
+      document.getElementById('uiEx2Title').textContent = ui.ex2Title[lang];
+      document.getElementById('uiEx2Desc').textContent = ui.ex2Desc[lang];
+      document.getElementById('uiGoTrainerBtn').textContent = ui.goTrainerBtn[lang];
+
+      // Обновляем бейдж тарифа или тексты экрана Paywall при переключении языка
+      const badge = document.getElementById("userTierBadge");
+      if (badge && TIER_LABELS[currentViewerState.tier]) {
+        badge.textContent = TIER_LABELS[currentViewerState.tier][lang];
+      }
+      if (document.getElementById("paywallGate").style.display === "block") {
+        updatePaywallTexts(currentViewerState.isLoggedIn, currentViewerState.tier);
+      }
+
+      // Рендерим вкладки теории, словаря и упражнений
+      document.getElementById('tab0').innerHTML = LESSON7_DATA.tab0Html[lang];
+      document.getElementById('tab1').innerHTML = LESSON7_DATA.tab1Html[lang];
+      renderVocab();
+      renderExercises('ex1Container', LESSON7_DATA.ex1);
+      renderExercises('ex2Container', LESSON7_DATA.ex2);
+    }
+
+    function showTab(idx) {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`nav${i}`).classList.toggle('active', i === idx);
+        document.getElementById(`tab${i}`).classList.toggle('active', i === idx);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Подсветка конструкций в статье UpToDate (Gastric Cancer)
+    function toggleUptodateHighlight(mode) {
+      const box = document.getElementById('uptodateBodyText');
+      if (!box) return;
+      box.classList.remove('show-of', 'show-chain');
+      if (mode === 'of' || mode === 'all') box.classList.add('show-of');
+      if (mode === 'chain' || mode === 'all') box.classList.add('show-chain');
+    }
+
+    // Проверка встроенных микро-вопросов в теории
+    function checkInlineQuiz(btn, isCorrect, feedbackText) {
+      const parent = btn.closest('.quick-check');
+      const allBtns = parent.querySelectorAll('.qc-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+      }
+
+      const fb = parent.querySelector('.qc-feedback');
+      fb.textContent = `💡 ${feedbackText}`;
+      fb.style.display = 'block';
+    }
+
+    // Рендер словаря с озвучкой Web Speech API
+    function renderVocab() {
+      const grid = document.getElementById('vocabGrid');
+      grid.innerHTML = '';
+      LESSON7_DATA.vocabulary.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'vocab-card';
+        div.innerHTML = `
+          <div class="vocab-header">
+            <span class="vocab-word">${item.en}</span>
+            <button class="speak-btn" onclick="speakEn('${item.en}')" title="Прослушать">🔊</button>
+          </div>
+          <div class="vocab-trans">${item[currentLang]}</div>
+          <div class="vocab-example">${item.ex}</div>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    function speakEn(word) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(word);
+      u.lang = 'en-US';
+      u.rate = 0.9;
+      window.speechSynthesis.speak(u);
+    }
+
+    // Рендер упражнений 1 и 2 из PDF
+    function renderExercises(containerId, list) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+      list.forEach(item => {
+        const box = document.createElement('div');
+        box.className = 'quick-check';
+        box.style.marginTop = '0';
+
+        const qEl = document.createElement('div');
+        qEl.className = 'qc-question';
+        qEl.textContent = item.q;
+
+        const optsEl = document.createElement('div');
+        optsEl.className = 'qc-options';
+
+        const fbEl = document.createElement('div');
+        fbEl.className = 'qc-feedback';
+        fbEl.textContent = `💡 ${item.exp[currentLang]}`;
+
+        item.options.forEach((optText, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'qc-btn';
+          btn.textContent = optText;
+          btn.onclick = () => {
+            const buttons = optsEl.querySelectorAll('.qc-btn');
+            buttons.forEach(b => b.disabled = true);
+            if (idx === item.correct) {
+              btn.classList.add('correct');
+            } else {
+              btn.classList.add('wrong');
+              buttons[item.correct].classList.add('correct');
+            }
+            fbEl.style.display = 'block';
+          };
+          optsEl.appendChild(btn);
+        });
+
+        box.appendChild(qEl);
+        box.appendChild(optsEl);
+        box.appendChild(fbEl);
+        container.appendChild(box);
+      });
+    }
+
+    // Инициализация языка и проверка подписки при загрузке страницы
+    setLang(currentLang);
+    verifySubscriptionAccess();
+  </script>
+</body>
+</html>
