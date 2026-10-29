@@ -1305,41 +1305,49 @@
         }
 
         // Определение тарифа пользователя из Supabase
+// Определение тарифа пользователя и активности подписки из таблицы profiles
         async function detectUserTier(session) {
             if (!session || !session.user) return "none";
 
-            // 1. Сначала проверяем user_metadata (если тариф указан прямо в Auth -> Users)
-            const metaTier = (
-                session.user.user_metadata?.tier ||
-                session.user.user_metadata?.subscription_tier ||
-                session.user.app_metadata?.tier ||
-                ""
-            ).toLowerCase().trim();
+            const user = session.user;
+            const userEmail = (user.email || "").toLowerCase().trim();
 
-            if (TIER_LEVELS[metaTier] !== undefined && metaTier !== "none") {
-                return metaTier;
-            }
-
-            // 2. Проверяем таблицу profiles в базе данных Supabase
             try {
-                const { data: profile, error } = await supabaseClient
+                // Ищем профиль сначала по ID, затем по Email (как в session-guard.js)
+                let { data: profile } = await supabaseClient
                     .from('profiles')
-                    .select('tier, subscription_tier')
-                    .eq('id', session.user.id)
+                    .select('tier, subscription_expires_at')
+                    .eq('id', user.id)
                     .maybeSingle();
 
-                if (!error && profile) {
-                    const dbTier = (profile.tier || profile.subscription_tier || "").toLowerCase().trim();
-                    if (TIER_LEVELS[dbTier] !== undefined && dbTier !== "none") {
-                        return dbTier;
-                    }
+                if (!profile && userEmail) {
+                    const resByEmail = await supabaseClient
+                        .from('profiles')
+                        .select('tier, subscription_expires_at')
+                        .ilike('email', userEmail)
+                        .maybeSingle();
+                    profile = resByEmail.data;
+                }
+
+                // Если профиля нет или срок подписки истек — считаем, что активной подписки нет ("none")
+                if (!profile || !profile.subscription_expires_at) {
+                    return "none";
+                }
+
+                const expiresAt = new Date(profile.subscription_expires_at);
+                if (isNaN(expiresAt.getTime()) || new Date() > expiresAt) {
+                    return "none"; // Подписка истекла
+                }
+
+                const dbTier = (profile.tier || "standard").toLowerCase().trim();
+                if (TIER_LEVELS[dbTier] !== undefined && dbTier !== "none") {
+                    return dbTier;
                 }
             } catch (err) {
                 console.warn("Проверка таблицы profiles:", err);
             }
 
-            // 3. Если пользователь авторизован, но тариф еще не проставлен — считаем базовым "standard"
-            return "standard";
+            return "none";
         }
 
         async function checkAuthAndTier() {
