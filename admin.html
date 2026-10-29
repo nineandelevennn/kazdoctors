@@ -104,7 +104,7 @@
             flex-direction: column;
             gap: 16px;
             width: 100%;
-            max-width: 440px;
+            max-width: 460px;
             margin: 0 auto;
             padding: 24px 16px;
             flex-grow: 1;
@@ -161,6 +161,41 @@
             border-color: var(--kz-blue);
         }
 
+        /* Выделение селектора тарифа */
+        .tier-select {
+            font-weight: 700;
+            background: var(--kz-blue-light) !important;
+            border-color: rgba(0, 161, 222, 0.35) !important;
+            color: var(--kz-blue-dark) !important;
+        }
+
+        /* Карточка найденного пользователя при вводе email */
+        .user-lookup-box {
+            font-size: 0.76rem;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: #F8FAFC;
+            border: 1px dashed var(--border-color);
+            color: var(--text-muted);
+            display: none;
+            line-height: 1.4;
+        }
+
+        .user-lookup-box.found {
+            display: block;
+            background: var(--kz-blue-light);
+            border-color: var(--kz-blue);
+            color: var(--text-dark);
+        }
+
+        .user-lookup-box.new-user {
+            display: block;
+            background: #FFFBEB;
+            border-color: #FCD34D;
+            color: #92400E;
+        }
+
         .password-wrapper {
             position: relative;
             display: flex;
@@ -188,6 +223,24 @@
             gap: 10px;
         }
 
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        .checkbox-row input {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--kz-blue);
+            cursor: pointer;
+        }
+
         .match-hint {
             font-size: 0.73rem;
             font-weight: 700;
@@ -197,13 +250,13 @@
 
         .btn-submit {
             width: 100%;
-            padding: 12px;
+            padding: 13px;
             background: var(--kz-blue);
             color: #FFFFFF;
             border: none;
             border-radius: 12px;
-            font-weight: 700;
-            font-size: 0.85rem;
+            font-weight: 800;
+            font-size: 0.88rem;
             cursor: pointer;
             transition: background 0.2s;
             margin-top: 6px;
@@ -225,6 +278,7 @@
             font-weight: 600;
             margin-bottom: 14px;
             display: none;
+            line-height: 1.4;
         }
 
         .alert-error {
@@ -263,7 +317,7 @@
         <a href="index.html" class="back-link">← Назад</a>
         <div class="brand-badge">@doctors.speak</div>
         <h1>Admin Control</h1>
-        <p class="subtitle">Управление участниками</p>
+        <p class="subtitle">Управление участниками и тарифами</p>
     </header>
 
     <main>
@@ -273,7 +327,7 @@
             <p>У вас нет прав для просмотра этой страницы. Войдите под аккаунтом администратора.</p>
         </div>
 
-        <!-- Блок формы добавления пользователя -->
+        <!-- Блок формы добавления / продления пользователя -->
         <div id="adminFormCard" class="admin-card" style="display: none;">
             <div class="card-title">
                 <span>👤</span> Добавить / Продлить участника
@@ -282,11 +336,31 @@
             <div id="alertMessage" class="alert"></div>
 
             <form id="addUserForm" onsubmit="createUser(event)">
+                <!-- 1. Email пользователя с автопоиском в базе -->
                 <div class="form-group">
                     <label for="userEmail">Email пользователя</label>
-                    <input type="email" id="userEmail" placeholder="student@gmail.com" required>
+                    <input type="email" id="userEmail" placeholder="student@gmail.com" required onblur="lookupUserByEmail()">
+                    <div id="userLookupBox" class="user-lookup-box"></div>
                 </div>
 
+                <!-- 2. Имя пользователя (для приветствия HELLO, NAME) -->
+                <div class="form-group">
+                    <label for="userName">Имя участника (для главной страницы)</label>
+                    <input type="text" id="userName" placeholder="Например: Айгерим / Dr. Askar">
+                </div>
+
+                <!-- 3. Выбор вида подписки (Тариф) -->
+                <div class="form-group">
+                    <label for="subTier">Вид подписки (Тариф)</label>
+                    <select id="subTier" class="tier-select" required>
+                        <option value="standard">🔹 Стандарт (Только тренажеры)</option>
+                        <option value="pro">📘 Про (Тренажеры + Конспекты)</option>
+                        <option value="premium">🎬 Премиум (Тренажеры + Конспекты + Видео)</option>
+                        <option value="vip">👑 ВИП (Все включено + Личное ведение)</option>
+                    </select>
+                </div>
+
+                <!-- 4. Пароль (только для новых пользователей) -->
                 <div class="form-group">
                     <label for="userPassword">Пароль (только для новых)</label>
                     <div class="password-wrapper">
@@ -304,6 +378,7 @@
                     <div id="matchHint" class="match-hint"></div>
                 </div>
 
+                <!-- 5. Срок доступа -->
                 <div class="form-group">
                     <label>Срок доступа (произвольный)</label>
                     <div class="duration-row">
@@ -314,6 +389,10 @@
                             <option value="years">Лет</option>
                         </select>
                     </div>
+                    <label class="checkbox-row">
+                        <input type="checkbox" id="addToExistingExpiry" checked>
+                        <span>Прибавить к текущему сроку (если подписка еще активна)</span>
+                    </label>
                 </div>
 
                 <button type="submit" id="submitBtn" class="btn-submit">
@@ -329,6 +408,15 @@
         const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const TIER_LABELS = {
+            standard: "Стандарт",
+            pro: "Про",
+            premium: "Премиум",
+            vip: "ВИП 👑"
+        };
+
+        let cachedExistingProfile = null;
 
         // Проверка авторизации и прав администратора при загрузке
         async function checkAdminAccess() {
@@ -404,11 +492,74 @@
             }
         }
 
-        // Расчет произвольной даты окончания подписки
-        function calculateCustomExpiryDate() {
+        // Автопоиск пользователя при вводе Email, чтобы админ сразу видел его имя, текущий тариф и срок
+        async function lookupUserByEmail() {
+            const email = document.getElementById("userEmail").value.trim().toLowerCase();
+            const box = document.getElementById("userLookupBox");
+            cachedExistingProfile = null;
+
+            if (!email || !email.includes("@")) {
+                box.className = "user-lookup-box";
+                box.style.display = "none";
+                return;
+            }
+
+            try {
+                const { data: profile } = await supabaseClient
+                    .from('profiles')
+                    .select('email, name, tier, subscription_expires_at')
+                    .ilike('email', email)
+                    .maybeSingle();
+
+                if (profile) {
+                    cachedExistingProfile = profile;
+                    const nameInput = document.getElementById("userName");
+                    const tierSelect = document.getElementById("subTier");
+
+                    // Автоматически подставляем имя и текущий тариф, если поле имени еще пустое
+                    if (profile.name && !nameInput.value.trim()) {
+                        nameInput.value = profile.name;
+                    }
+                    if (profile.tier && TIER_LABELS[profile.tier]) {
+                        tierSelect.value = profile.tier;
+                    }
+
+                    const expDate = profile.subscription_expires_at ? new Date(profile.subscription_expires_at) : null;
+                    const isActive = expDate && expDate > new Date();
+                    const expStr = expDate && expDate.getFullYear() > 1971
+                        ? expDate.toLocaleDateString('ru-RU')
+                        : "не активна";
+
+                    box.className = "user-lookup-box found";
+                    box.innerHTML = `✅ <b>Участник найден в базе:</b> ${profile.name || "Имя не указано"}<br>` +
+                                    `Текущий тариф: <b>${TIER_LABELS[profile.tier] || "Стандарт"}</b> • ` +
+                                    `Подписка до: <b>${expStr}</b> (${isActive ? "активна" : "истекла"})`;
+                } else {
+                    box.className = "user-lookup-box new-user";
+                    box.innerHTML = `🆕 <b>Новый участник:</b> этого email еще нет в базе. Заполните имя и пароль для создания аккаунта.`;
+                }
+            } catch (err) {
+                console.warn("Lookup error:", err);
+            }
+        }
+
+        // Расчет даты окончания подписки (с возможностью прибавления к остатку текущей подписки)
+        function calculateCustomExpiryDate(existingExpiresAt) {
             const amount = parseInt(document.getElementById("subAmount").value, 10) || 1;
             const unit = document.getElementById("subUnit").value;
-            const date = new Date();
+            const addToExisting = document.getElementById("addToExistingExpiry").checked;
+
+            const now = new Date();
+            let baseDate = now;
+
+            if (addToExisting && existingExpiresAt) {
+                const parsedExisting = new Date(existingExpiresAt);
+                if (!isNaN(parsedExisting.getTime()) && parsedExisting > now) {
+                    baseDate = parsedExisting;
+                }
+            }
+
+            const date = new Date(baseDate);
 
             switch (unit) {
                 case "days":
@@ -431,6 +582,8 @@
             hideAlert();
 
             const email = document.getElementById("userEmail").value.trim().toLowerCase();
+            const enteredName = document.getElementById("userName").value.trim();
+            const selectedTier = document.getElementById("subTier").value;
             const password = document.getElementById("userPassword").value;
             const passwordConfirm = document.getElementById("userPasswordConfirm").value;
             const submitBtn = document.getElementById("submitBtn");
@@ -446,11 +599,18 @@
 
             try {
                 const { data: { session } } = await supabaseClient.auth.getSession();
-                const expiresAt = calculateCustomExpiryDate();
 
-                let isAlreadyRegistered = false;
+                // Проверяем текущий профиль пользователя в базе
+                const { data: existingProfile } = await supabaseClient
+                    .from('profiles')
+                    .select('email, name, tier, subscription_expires_at')
+                    .ilike('email', email)
+                    .maybeSingle();
 
-                // Если введен пароль — пытаемся создать нового пользователя через Edge Function
+                const expiresAt = calculateCustomExpiryDate(existingProfile?.subscription_expires_at);
+                let isAlreadyRegistered = !!existingProfile;
+
+                // Если введен пароль — создаем нового пользователя через Edge Function
                 if (password) {
                     const response = await fetch(`${SUPABASE_URL}/functions/v1/create-user`, {
                         method: 'POST',
@@ -458,56 +618,72 @@
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${session.access_token}`
                         },
-                        body: JSON.stringify({ email, password })
+                        body: JSON.stringify({
+                            email,
+                            password,
+                            name: enteredName || undefined,
+                            tier: selectedTier
+                        })
                     });
 
                     const result = await response.json();
 
-                    isAlreadyRegistered = result.error && (
+                    const alreadyInAuth = result.error && (
                         result.error.toLowerCase().includes("already") || 
                         result.error.toLowerCase().includes("registered") ||
                         result.error.toLowerCase().includes("exists")
                     );
 
-                    if (!response.ok && !isAlreadyRegistered) {
+                    if (!response.ok && !alreadyInAuth) {
                         throw new Error(result.error || "Ошибка при создании пользователя");
                     }
-                } else {
-                    // Пароль не введен — значит это продление существующего по email. 
-                    // Проверим, есть ли он в таблице profiles
-                    const { data: existingProfile } = await supabaseClient
-                        .from('profiles')
-                        .select('email')
-                        .eq('email', email)
-                        .maybeSingle();
 
+                    if (alreadyInAuth) {
+                        isAlreadyRegistered = true;
+                    }
+                } else {
+                    // Пароль не введен — значит это продление существующего по email
                     if (!existingProfile) {
-                        throw new Error("Пользователь не найден в базе. Для создания нового учетного запишите пароль.");
+                        throw new Error("Пользователь не найден в базе. Для создания нового аккаунта введите пароль.");
                     }
                     isAlreadyRegistered = true;
                 }
 
-                // Обновляем/записываем срок подписки в таблице profiles по email
+                // Формируем данные для сохранения в таблицу profiles
+                const finalName = enteredName || existingProfile?.name || null;
+
+                const upsertPayload = {
+                    email: email,
+                    tier: selectedTier,
+                    subscription_expires_at: expiresAt
+                };
+
+                if (finalName) {
+                    upsertPayload.name = finalName;
+                }
+
+                // Обновляем/записываем имя, тариф и срок подписки в таблице profiles по email
                 const { error: dbError } = await supabaseClient
                     .from('profiles')
-                    .upsert({
-                        email: email,
-                        subscription_expires_at: expiresAt
-                    }, { onConflict: 'email' });
+                    .upsert(upsertPayload, { onConflict: 'email' });
 
                 if (dbError) {
-                    throw new Error("Не удалось сохранить срок подписки: " + dbError.message);
+                    throw new Error("Не удалось сохранить данные подписки: " + dbError.message);
                 }
 
                 const formattedDate = new Date(expiresAt).toLocaleDateString('ru-RU');
+                const tierLabel = TIER_LABELS[selectedTier] || selectedTier;
+                const displayUser = finalName ? `${finalName} (${email})` : email;
+
                 if (isAlreadyRegistered || !password) {
-                    showAlert(`Подписка для ${email} успешно обновлена до ${formattedDate}!`, "success");
+                    showAlert(`Подписка «${tierLabel}» для ${displayUser} успешно обновлена до ${formattedDate}!`, "success");
                 } else {
-                    showAlert(`Участник ${email} создан! Доступ открыт до ${formattedDate}.`, "success");
+                    showAlert(`Участник ${displayUser} создан! Тариф «${tierLabel}» открыт до ${formattedDate}.`, "success");
                 }
 
                 document.getElementById("addUserForm").reset();
                 document.getElementById("matchHint").textContent = "";
+                document.getElementById("userLookupBox").style.display = "none";
 
             } catch (err) {
                 showAlert(err.message, "error");
