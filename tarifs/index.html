@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Doctors Speak — Тарифы / Тарифтар</title>
+    <title>Doctors Speak — Тарифы / Тарифтер</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --kz-blue: #00A1DE;
@@ -14,12 +14,17 @@
             --kz-blue-light: #EBF8FC;
             --kz-gold: #FFC72C;
             --kz-gold-dark: #D9A000;
+            --kz-gold-light: #FFFBEB;
             --bg-main: #F2F5F8;
             --card-bg: #FFFFFF;
             --text-dark: #1E293B;
             --text-muted: #64748B;
             --border-color: #E2E8F0;
             --green-accent: #10B981;
+            --green-light: #DEF7EC;
+            --green-dark: #03543F;
+            --purple-accent: #7C3AED;
+            --purple-light: #F5F3FF;
         }
 
         * {
@@ -45,7 +50,7 @@
         /* 1. Шапка сайта */
         header {
             position: relative;
-            z-index: 1;
+            z-index: 10;
             background: linear-gradient(165deg, var(--kz-blue) 0%, #0088bb 70%, var(--kz-gold) 100%);
             color: #FFFFFF;
             text-align: center;
@@ -58,14 +63,13 @@
 
         .header-top {
             width: 100%;
-            max-width: 460px;
+            max-width: 680px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 12px;
         }
 
-        /* Кнопка GO BACK */
         .back-btn {
             display: inline-flex;
             align-items: center;
@@ -89,7 +93,6 @@
             background: rgba(255, 255, 255, 0.35);
         }
 
-        /* Переключатель языков */
         .lang-switch {
             display: flex;
             background: rgba(0, 0, 0, 0.15);
@@ -117,18 +120,18 @@
         }
 
         h1 {
-            font-size: 1.35rem;
+            font-size: 1.4rem;
             font-weight: 900;
             line-height: 1.2;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: #FFFFFF;
-            max-width: 380px;
+            max-width: 480px;
             margin: 0 auto;
         }
 
         .subtitle {
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             margin-top: 6px;
             font-weight: 800;
             letter-spacing: 1px;
@@ -142,30 +145,25 @@
             z-index: 1;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 18px;
             width: 100%;
-            max-width: 460px;
+            max-width: 680px;
             margin: 0 auto;
-            padding: 20px 16px;
+            padding: 20px 14px;
             flex-grow: 1;
-        }
-
-        .pricing-section {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
         }
 
         .pricing-header {
             text-align: center;
+            margin-bottom: 2px;
         }
 
         .pricing-header h2 {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 900;
             text-transform: uppercase;
             color: var(--text-dark);
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
         }
 
         .pricing-header p {
@@ -173,12 +171,7 @@
             color: var(--text-muted);
             margin-top: 4px;
             font-weight: 600;
-        }
-
-        .pricing-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
+            line-height: 1.4;
         }
 
         /* Разделитель секций */
@@ -186,12 +179,12 @@
             display: flex;
             align-items: center;
             text-align: center;
-            color: var(--text-muted);
+            color: var(--kz-blue-dark);
             font-size: 0.75rem;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.8px;
-            margin: 8px 0 4px 0;
+            margin: 8px 0 2px 0;
         }
 
         .section-divider::before,
@@ -204,126 +197,397 @@
         .section-divider:not(:empty)::before { margin-right: .75em; }
         .section-divider:not(:empty)::after { margin-left: .75em; }
 
-        /* Карточка тарифа */
-        .price-card {
-            position: relative;
+        /* ==========================================================================
+           СВОДНАЯ ТАБЛИЦА ТАРИФОВ СВЕРХУ
+           ========================================================================== */
+        .table-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 18px;
-            padding: 20px 16px;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+            padding: 14px 12px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+            overflow: hidden;
+        }
+
+        .table-title {
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .scroll-hint {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .table-scroll {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .compare-table {
+            width: 100%;
+            min-width: 540px;
+            border-collapse: collapse;
+            font-size: 0.73rem;
+            text-align: center;
+        }
+
+        .compare-table th {
+            background: #1E293B;
+            color: #FFFFFF;
+            padding: 10px 6px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            border-right: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .compare-table th:first-child {
+            text-align: left;
+            padding-left: 10px;
+            width: 30%;
+            background: #0F172A;
+        }
+
+        .compare-table th.col-prem {
+            background: var(--kz-gold-dark);
+            color: #FFFFFF;
+        }
+
+        .compare-table th.col-vip {
+            background: var(--kz-blue-dark);
+            color: #FFFFFF;
+        }
+
+        .compare-table td {
+            padding: 8px 6px;
+            border-bottom: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            font-weight: 600;
+            color: var(--text-dark);
+            background: #FFFFFF;
+        }
+
+        .compare-table td:first-child {
+            text-align: left;
+            padding-left: 10px;
+            font-weight: 700;
+            background: #F8FAFC;
+        }
+
+        .compare-table tr:nth-child(even) td:not(:first-child) {
+            background: #FAFBFD;
+        }
+
+        .compare-table td.highlight-col {
+            background: #FFFDF5 !important;
+            font-weight: 700;
+        }
+
+        .compare-table tr.price-row td {
+            font-weight: 900;
+            color: var(--kz-blue-dark);
+            background: var(--kz-blue-light) !important;
+            font-size: 0.75rem;
+        }
+
+        .yes-mark { color: var(--green-accent); font-weight: 900; font-size: 0.9rem; }
+        .no-mark { color: #CBD5E1; font-weight: 800; }
+
+        /* ==========================================================================
+           СХЛОПЫВАЮЩИЕСЯ КАРТОЧКИ ТАРИФОВ (ACCORDION)
+           ========================================================================== */
+        .plans-list {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        .price-card.featured {
+        details.plan-accordion {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            overflow: hidden;
+            transition: all 0.22s ease;
+        }
+
+        details.plan-accordion.tier-pro {
+            border: 1.5px solid var(--kz-blue);
+        }
+
+        details.plan-accordion.tier-premium {
             border: 2px solid var(--kz-gold-dark);
-            background: linear-gradient(180deg, #FFFFFF 0%, #FFFDF5 100%);
-            box-shadow: 0 8px 24px rgba(217, 160, 0, 0.15);
+            box-shadow: 0 6px 20px rgba(217, 160, 0, 0.14);
         }
 
-        .price-card.pro-card {
-            border: 2px solid var(--kz-blue);
-            background: linear-gradient(180deg, #FFFFFF 0%, #F4FBFE 100%);
-            box-shadow: 0 8px 24px rgba(0, 161, 222, 0.12);
+        details.plan-accordion.tier-vip {
+            border: 2px solid var(--purple-accent);
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.12);
         }
 
-        .badge-pop {
-            position: absolute;
-            top: -12px;
-            right: 16px;
-            background: var(--kz-gold-dark);
-            color: #FFFFFF;
-            font-size: 0.68rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            padding: 4px 10px;
-            border-radius: 12px;
-            letter-spacing: 0.5px;
-        }
-
-        .badge-blue {
-            position: absolute;
-            top: -12px;
-            right: 16px;
-            background: var(--kz-blue-dark);
-            color: #FFFFFF;
-            font-size: 0.68rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            padding: 4px 10px;
-            border-radius: 12px;
-            letter-spacing: 0.5px;
-        }
-
-        .badge-discount {
-            display: inline-block;
-            background: #DEF7EC;
-            color: #03543F;
-            font-size: 0.7rem;
-            font-weight: 800;
-            padding: 3px 8px;
-            border-radius: 6px;
-            margin-left: 6px;
-        }
-
-        .price-card-title {
-            font-size: 1.05rem;
-            font-weight: 800;
-            color: var(--text-dark);
-            line-height: 1.2;
-        }
-
-        .price-card-desc {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-            font-weight: 500;
-            line-height: 1.4;
-        }
-
-        .price-amount {
+        summary.plan-summary {
+            list-style: none;
+            padding: 15px 16px;
+            cursor: pointer;
             display: flex;
-            align-items: baseline;
-            gap: 6px;
-            margin-top: 2px;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            user-select: none;
+            position: relative;
+            background: var(--card-bg);
+            transition: background 0.2s ease;
         }
 
-        .price-num {
-            font-size: 1.5rem;
+        summary.plan-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary.plan-summary::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 5px;
+            background: var(--kz-blue);
+        }
+
+        details.plan-accordion.tier-free summary.plan-summary::before { background: #94A3B8; }
+        details.plan-accordion.tier-premium summary.plan-summary::before { background: var(--kz-gold-dark); }
+        details.plan-accordion.tier-vip summary.plan-summary::before { background: var(--purple-accent); }
+
+        details.plan-accordion[open] > summary.plan-summary {
+            background: #F8FAFC;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .summary-left {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            padding-left: 4px;
+        }
+
+        .plan-title-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .plan-name {
+            font-size: 1rem;
             font-weight: 900;
-            color: var(--kz-blue-dark);
+            color: var(--text-dark);
+            letter-spacing: 0.3px;
         }
 
-        .price-period {
-            font-size: 0.78rem;
+        .mini-badge {
+            font-size: 0.63rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .mini-badge.gray { background: #F1F5F9; color: #475569; }
+        .mini-badge.blue { background: var(--kz-blue-light); color: var(--kz-blue-dark); }
+        .mini-badge.gold { background: var(--kz-gold-light); color: #B45309; border: 1px solid rgba(217, 160, 0, 0.35); }
+        .mini-badge.purple { background: var(--purple-light); color: var(--purple-accent); border: 1px solid rgba(124, 58, 237, 0.25); }
+
+        .plan-teaser {
+            font-size: 0.73rem;
             color: var(--text-muted);
             font-weight: 600;
+        }
+
+        .summary-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .summary-price-box {
+            text-align: right;
+        }
+
+        .summary-price {
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: var(--kz-blue-dark);
+            display: block;
+            line-height: 1.1;
+        }
+
+        details.plan-accordion.tier-premium .summary-price { color: #B45309; }
+        details.plan-accordion.tier-vip .summary-price { color: var(--purple-accent); }
+
+        .summary-period {
+            font-size: 0.67rem;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .chevron-circle {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.25s ease, background 0.25s ease;
+        }
+
+        .chevron-circle svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-dark);
+        }
+
+        details.plan-accordion[open] .chevron-circle {
+            transform: rotate(180deg);
+            background: var(--kz-blue);
+            border-color: var(--kz-blue);
+        }
+
+        details.plan-accordion[open] .chevron-circle svg {
+            fill: #FFFFFF;
+        }
+
+        /* Содержимое раскрытой карточки */
+        .plan-body {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: #FFFFFF;
+        }
+
+        .plan-hook {
+            font-size: 0.8rem;
+            color: var(--text-dark);
+            line-height: 1.45;
+            font-weight: 500;
         }
 
         .price-features {
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            padding-top: 8px;
-            border-top: 1px dashed var(--border-color);
+            gap: 7px;
         }
 
         .price-features li {
-            font-size: 0.8rem;
+            font-size: 0.79rem;
             color: var(--text-dark);
             font-weight: 600;
             display: flex;
             align-items: flex-start;
             gap: 8px;
-            line-height: 1.3;
+            line-height: 1.35;
         }
 
-        .price-features li span {
+        .price-features li span.check {
             color: var(--green-accent);
-            font-weight: 800;
+            font-weight: 900;
             flex-shrink: 0;
+        }
+
+        /* Блок результата ученика */
+        .result-box {
+            background: var(--kz-blue-light);
+            border-left: 4px solid var(--kz-blue);
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 0.78rem;
+            line-height: 1.4;
+            color: var(--text-dark);
+        }
+
+        .result-box strong {
+            color: var(--kz-blue-dark);
+            display: block;
+            margin-bottom: 3px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        /* Пакеты на 1, 3, 6 месяцев с расчетом экономии */
+        .packages-box {
+            background: #F8FAFC;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .pkg-title {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .pkg-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding-bottom: 6px;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .pkg-row:last-child {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .pkg-Save {
+            display: inline-block;
+            background: var(--green-light);
+            color: var(--green-dark);
+            font-size: 0.68rem;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 6px;
+            margin-left: 4px;
+        }
+
+        .pkg-price {
+            font-weight: 900;
+            color: var(--text-dark);
+            white-space: nowrap;
+        }
+
+        .pkg-old-price {
+            text-decoration: line-through;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-right: 4px;
         }
 
         .price-btn {
@@ -336,20 +600,26 @@
             padding: 12px 16px;
             border-radius: 12px;
             font-weight: 800;
-            font-size: 0.85rem;
-            box-shadow: 0 4px 10px rgba(0, 161, 222, 0.25);
+            font-size: 0.84rem;
+            box-shadow: 0 4px 10px rgba(0, 161, 222, 0.22);
             transition: all 0.2s ease;
         }
 
-        .price-btn:active {
-            transform: scale(0.98);
-            background: var(--kz-blue-dark);
+        .price-btn.gold-btn {
+            background: var(--kz-gold-dark);
+            box-shadow: 0 4px 12px rgba(217, 160, 0, 0.28);
         }
 
-        .price-btn.featured-btn {
-            background: var(--kz-gold-dark);
-            color: #FFFFFF;
-            box-shadow: 0 4px 12px rgba(217, 160, 0, 0.3);
+        .price-btn.purple-btn {
+            background: var(--purple-accent);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
+        }
+
+        .price-btn.outline-btn {
+            background: #F1F5F9;
+            color: var(--text-dark);
+            box-shadow: none;
+            border: 1px solid var(--border-color);
         }
 
         .guarantee-note {
@@ -357,33 +627,21 @@
             font-size: 0.75rem;
             color: var(--text-muted);
             font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
             margin-top: 4px;
         }
 
-        /* Логика скрытия элементов на разных языках */
+        /* Логика переключения языков KZ / RU */
         [lang-val] { display: none; }
         body.lang-kz [lang-val="kz"] { display: inline-block; }
         body.lang-ru [lang-val="ru"] { display: inline-block; }
 
-        div[lang-val] { display: none; }
-        body.lang-kz div[lang-val="kz"] { display: block; }
-        body.lang-ru div[lang-val="ru"] { display: block; }
-
-        p[lang-val] { display: none; }
-        body.lang-kz p[lang-val="kz"] { display: block; }
-        body.lang-ru p[lang-val="ru"] { display: block; }
+        div[lang-val], p[lang-val], a.price-btn[lang-val] { display: none; }
+        body.lang-kz div[lang-val="kz"], body.lang-kz p[lang-val="kz"], body.lang-kz a.price-btn[lang-val="kz"] { display: block; }
+        body.lang-ru div[lang-val="ru"], body.lang-ru p[lang-val="ru"], body.lang-ru a.price-btn[lang-val="ru"] { display: block; }
 
         li[lang-val] { display: none; }
         body.lang-kz li[lang-val="kz"] { display: flex; }
         body.lang-ru li[lang-val="ru"] { display: flex; }
-
-        a[lang-val] { display: none; }
-        body.lang-kz a[lang-val="kz"] { display: block; }
-        body.lang-ru a[lang-val="ru"] { display: block; }
 
         span[lang-val] { display: none; }
         body.lang-kz span[lang-val="kz"] { display: inline; }
@@ -394,7 +652,7 @@
             position: relative;
             z-index: 1;
             text-align: center;
-            padding: 12px 16px 24px 16px;
+            padding: 12px 16px 26px 16px;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -431,254 +689,599 @@
             </div>
         </div>
         <h1>Medical English</h1>
-        <p class="subtitle" lang-val="kz">Тарифтар мен оқу бағдарламалары</p>
+        <p class="subtitle" lang-val="kz">Тарифтер мен оқу бағдарламалары</p>
         <p class="subtitle" lang-val="ru">Тарифы и программы обучения</p>
     </header>
 
     <main>
-        <section class="pricing-section">
-            <div class="pricing-header">
-                <h2 lang-val="kz">Оқу форматын таңдаңыз</h2>
-                <h2 lang-val="ru">Выберите формат обучения</h2>
-                
-                <p lang-val="kz">Тіл барьерін жеңіп, медициналық ағылшын тілін сенімді меңгеріңіз</p>
-                <p lang-val="ru">Преодолейте языковой барьер и уверенно освойте медицинский английский</p>
+        <div class="pricing-header">
+            <h2 lang-val="kz">Мақсатыңызға сай тарифті таңдаңыз</h2>
+            <h2 lang-val="ru">Выберите свой маршрут к медицинскому английскому</h2>
+            
+            <p lang-val="kz">Тіл барьерін жеңіп, PubMed мақалаларын оқуды, науқастан анамнез жинауды және конференцияда сөйлеуді меңгеріңіз</p>
+            <p lang-val="ru">От базовых терминов до уверенного уровня B1, чтения статей в оригинале, опроса иностранных пациентов и докладов на конференциях</p>
+        </div>
+
+        <!-- ==================================================================
+             1. СВОДНАЯ СРАВНИТЕЛЬНАЯ ТАБЛИЦА СВЕРХУ
+             ================================================================== -->
+        <div class="table-card">
+            <div class="table-title">
+                <span>📊</span>
+                <span lang-val="kz">Платформа тарифтерін салыстыру</span>
+                <span lang-val="ru">Сводная таблица тарифов платформы</span>
             </div>
+            <div class="scroll-hint" lang-val="kz">↔️ Кестені толық көру үшін оңға-солға жылжытыңыз</div>
+            <div class="scroll-hint" lang-val="ru">↔️ Проведите по таблице влево-вправо для сравнения всех колонок</div>
 
-            <div class="pricing-grid">
-
-                <!-- SECTION 1 -->
-                <div class="section-divider" lang-val="kz">Жеке және топтық сабақтар</div>
-                <div class="section-divider" lang-val="ru">Индивидуально и в группах</div>
-
-                <!-- Индивидуальные уроки -->
-                <div class="price-card pro-card">
-                    <span class="badge-blue" lang-val="kz">👨‍⚕️ ПЕРСОНАЛДЫ ФОРМАТ</span>
-                    <span class="badge-blue" lang-val="ru">👨‍⚕️ ПЕРСОНАЛЬНЫЙ ФОРМАТ</span>
-
-                    <div class="price-card-title" lang-val="kz">ЖЕКЕ САБАҚТАР</div>
-                    <div class="price-card-title" lang-val="ru">ИНДИВИДУАЛЬНЫЕ УРОКИ</div>
-
-                    <div class="price-card-desc" lang-val="kz">
-                        Сіздің мамандығыңыз бен жеке мақсаттарыңызға (конференция, науқас қабылдау, стажировка, мақала жазу) арналған жеке бағдарлама.
-                    </div>
-                    <div class="price-card-desc" lang-val="ru">
-                        Персональная программа под вашу медицинскую специальность и цели (конференции, работа с пациентами, резидентура, написание статей).
-                    </div>
-
-                    <div class="price-amount">
-                        <span class="price-num">9,990 ₸</span>
-                        <span class="price-period" lang-val="kz">/ сағат</span>
-                        <span class="price-period" lang-val="ru">/ час</span>
-                    </div>
-
-                    <ul class="price-features">
-                        <li lang-val="kz"><span>✓</span> Оқытушымен 1-ге-1 форматындағы сабақ</li>
-                        <li lang-val="ru"><span>✓</span> Интенсивные занятия 1-on-1 с преподавателем</li>
-                        
-                        <li lang-val="kz"><span>✓</span> Сіздің бағытыңызға арналған арнайы лексика мен грамматика</li>
-                        <li lang-val="ru"><span>✓</span> Узкопрофильная лексика под Вашу специальность</li>
-                        
-                        <li lang-val="kz"><span>✓</span> Икемді кесте</li>
-                        <li lang-val="ru"><span>✓</span> Гибкий график занятий под Вашу смену</li>
-                        
-                        <li lang-val="kz"><span>✓</span> Ағылшынша сөйлеу мен қателерді жеке талдау</li>
-                        <li lang-val="ru"><span>✓</span> Максимум разговорной практики и разбор ошибок</li>
-
-                                                <li lang-val="kz"><span>✓</span> Пакетпен алғанда, жеңілдіктер бар</li>
-                        <li lang-val="ru"><span>✓</span> Скидки, если в пакете</li>
-                    </ul>
-
-                    <a href="https://wa.me/77081595038?text=Сәлеметсіз бе! Жеке сабақтар туралы білгім келеді" target="_blank" class="price-btn" lang-val="kz">Жазылу / Консультация</a>
-                    <a href="https://wa.me/77081595038?text=Здравствуйте! Хочу узнать про индивидуальные уроки" target="_blank" class="price-btn" lang-val="ru">Записаться / Консультация</a>
-                </div>
-
-                <!-- Speaking Club -->
-                <div class="price-card">
-                    <div class="price-card-title">MEDICAL SPEAKING CLUB</div>
-
-                    <div class="price-card-desc" lang-val="kz">
-                        Дәрігер мен студенттерге арналған сөйлесу клубы. Еркін сөйлеуді дамытуға ең тиімді орта.
-                    </div>
-                    <div class="price-card-desc" lang-val="ru">
-                        Разговорный клуб для врачей и студентов. Лучшая практика для преодоления языкового барьера и беглости речи.
-                    </div>
-
-                    <div class="price-amount">
-                        <span class="price-num">23,990 ₸</span>
-                        <span class="price-period" lang-val="kz">/ айына</span>
-                        <span class="price-period" lang-val="ru">/ в месяц</span>
-                    </div>
-
-                    <ul class="price-features">
-                        <li lang-val="kz"><span>✓</span> Әріптестермен тұрақты сөйлесу практикасы</li>
-                        <li lang-val="ru"><span>✓</span> Регулярная разговорная практика с коллегами</li>
-
-                        <li lang-val="kz"><span>✓</span> Нақты клиникалық кейстер мен мақалаларды талқылау</li>
-                        <li lang-val="ru"><span>✓</span> Обсуждение клинических кейсов и статей</li>
-
-                        <li lang-val="kz"><span>✓</span> Медициналық терминмен сөйлеу сенімділігін арттыру</li>
-                        <li lang-val="ru"><span>✓</span> Развитие уверенности при общении на английском</li>
-
-                        <li lang-val="kz"><span>✓</span> Комфортты және қолдаушы орта</li>
-                        <li lang-val="ru"><span>✓</span> Поддерживающая медицинская среда</li>
-                    </ul>
-
-                    <a href="https://wa.me/77081595038?text=Сәлеметсіз бе! Speaking Club-қа қосылғым келеді" target="_blank" class="price-btn" lang-val="kz">Клубқа қосылу</a>
-                    <a href="https://wa.me/77081595038?text=Здравствуйте! Хочу вступить в Speaking Club" target="_blank" class="price-btn" lang-val="ru">Вступить в клуб</a>
-                </div>
-
-
-                <!-- SECTION 2 -->
-                <div class="section-divider" lang-val="kz">Платформа және курстар</div>
-                <div class="section-divider" lang-val="ru">Платформа и курсы</div>
-
-                <!-- Plan 1: Monthly Website -->
-                <div class="price-card">
-                    <div class="price-card-title" lang-val="kz">АЙЛЫҚ ТАРИФ (Сайт)</div>
-                    <div class="price-card-title" lang-val="ru">МЕСЯЧНЫЙ ТАРИФ (Сайт)</div>
-
-                    <div class="price-amount">
-                        <span class="price-num">4,990 ₸</span>
-                        <span class="price-period" lang-val="kz">/ айына</span>
-                        <span class="price-period" lang-val="ru">/ в месяц</span>
-                    </div>
-
-                    <ul class="price-features">
-                        <li lang-val="kz"><span>✓</span> Сайттағы барлық онлайн тренажерлар</li>
-                        <li lang-val="ru"><span>✓</span> Полный доступ ко всем онлайн-тренажерам</li>
-                      
-                        <li lang-val="kz"><span>✓</span> Күнделікті тұрақты дайындық үшін өте тиімді</li>
-                        <li lang-val="ru"><span>✓</span> Идеально для ежедневной самостоятельной практики</li>
-                    </ul>
-
-                    <a href="https://wa.me/77081595038?text=Сәлеметсіз бе! Kazdoctors сайтына айлық жазылым алғым келеді" target="_blank" class="price-btn" lang-val="kz">Бастайық!</a>
-                    <a href="https://wa.me/77081595038?text=Здравствуйте! Хочу месячную подписку на сайт kazdoctors" target="_blank" class="price-btn" lang-val="ru">Начать обучение</a>
-                </div>
-
-                <!-- Plan 2: Yearly Website -->
-                <div class="price-card">
-                    <div class="price-card-title">
-                        <span lang-val="kz">ЖЫЛДЫҚ ТАРИФ (қосымша жеңілдіктер бар!)</span>
-                        <span lang-val="ru">ГОДОВОЙ ТАРИФ (есть доп.скидки!)</span>
-                        <span class="badge-discount">-20%</span>
-                    </div>
-
-                    <div class="price-amount">
-                        <span class="price-num">52,490 ₸</span>
-                        <span class="price-period" lang-val="kz">/ жылға</span>
-                        <span class="price-period" lang-val="ru">/ на год</span>
-                    </div>
-
-                    <ul class="price-features">
-                        <li lang-val="kz"><span>✓</span> Сайттағы барлық онлайн тренажерлар</li>
-                        <li lang-val="ru"><span>✓</span> Все тренажеры платформы без ограничений</li>
-
-                        <li lang-val="kz"><span>✓</span> 7,390 ₸ үнемдеу!</li>
-                        <li lang-val="ru"><span>✓</span> Выгода 7,390 ₸ при оплате за год</li>
-
-                        <li lang-val="kz"><span>✓</span> Күнделікті тұрақты дайындық үшін өте тиімді</li>
-                        <li lang-val="ru"><span>✓</span> Идеально для ежедневной самостоятельной практики</li>
-                      
-                        <li lang-val="kz"><span>✓</span> Қосымша жеңілдіктер бар!</li>
-                        <li lang-val="ru"><span>✓</span> Есть дополнительные скидки!</li>
-                    </ul>
-
-                    <a href="https://wa.me/77081595038?text=Сәлеметсіз бе! Kazdoctors сайтына жылдық жазылым алғым келеді" target="_blank" class="price-btn" lang-val="kz">Жеңілдікпен алу</a>
-                    <a href="https://wa.me/77081595038?text=Здравствуйте! Хочу годовую подписку на сайт kazdoctors" target="_blank" class="price-btn" lang-val="ru">Получить со скидкой</a>
-                </div>
-
-                           <!-- Plan 3: Textbooks & Videocourse -->
-                <div class="price-card">
-                    <div class="price-card-title">
-                        <span lang-val="kz">Видеокурс және барлық материалдар</span>
-                        <span lang-val="ru">Видеокурс и все учебные материалы</span>
-                        <span class="badge-discount">LIMITED OFFER</span>
-                    </div>
-
-                    <div class="price-amount">
-                        <span class="price-num">64,590₸</span>
-                        <span class="price-period" lang-val="kz">бір реттік төлем (қосымша жеңілдіктер бар!)</span>
-                        <span class="price-period" lang-val="ru">разовый платёж (есть доп.скидки!)</span>
-                    </div>
-
-                    <ul class="price-features">
-                        <li lang-val="kz"><span>✓</span> Толық видеокурс</li>
-                        <li lang-val="ru"><span>✓</span> Полный обучающий видеокурс</li>
-
-                        <li lang-val="kz"><span>✓</span> Барлық онлайн оқулықтар мен материалдар</li>
-                        <li lang-val="ru"><span>✓</span> Все онлайн-учебники и материалы</li>
-
-                        <li lang-val="kz"><span>✓</span> Мерзімсіз тұрақты доступ</li>
-                        <li lang-val="ru"><span>✓</span> Доступ навсегда</li>
-                                            
-                        <li lang-val="kz"><span>✓</span> Қосымша жеңілдіктер бар!</li>
-                        <li lang-val="ru"><span>✓</span> Есть дополнительные скидки!</li>
-                    </ul>
-
-                    <a href="https://wa.me/77081595038?text=Сәлеметсіз бе! Толық видеокурс пен материалдар алғым келеді" target="_blank" class="price-btn" lang-val="kz">Видеокурс алу</a>
-                    <a href="https://wa.me/77081595038?text=Здравствуйте! Хочу приобрести видеокурс и материалы" target="_blank" class="price-btn" lang-val="ru">Приобрести курс</a>
-                </div>
-     
-
-                
-                <!-- Plan 4: All-In-One (FEATURED) -->
-                <div class="price-card featured">
-                    <span class="badge-pop" lang-val="kz">🔥 ЕҢ ТИІМДІ (қосымша жеңілдіктер бар)</span>
-                    <span class="badge-pop" lang-val="ru">🔥 САМЫЙ ВЫГОДНЫЙ (есть доп.скидки)</span>
-
-                    <div class="price-card-title">ALL-INCLUSIVE Pass</div>
-
-                    <div class="price-amount">
-                        <span class="price-num">99,990 ₸</span>
-                        <span class="price-period" lang-val="kz">/ жылға</span>
-                        <span class="price-period" lang-val="ru">/ на год</span>
-                    </div>
-
-                    <ul class="price-features">
-                        <li lang-val="kz"><span>✓</span> <strong>ТОЛЫҚ ЖЫЛДЫҚ ТАРИФ:</strong> БАРЛЫҚ ТРЕНАЖЕРЛАР</li>
-                        <li lang-val="ru"><span>✓</span> <strong>ГОДОВОЙ ДОСТУП:</strong> ВСЕ ТРЕНАЖЕРЫ НА САЙТЕ</li>
-
-                        <li lang-val="kz"><span>✓</span> <strong>ТОЛЫҚ ВИДЕОКУРС + БАРЛЫҚ МАТЕРИАЛДАР</strong></li>
-                        <li lang-val="ru"><span>✓</span> <strong>ПОЛНЫЙ ВИДЕОКУРС + ВСЕ УЧЕБНЫЕ МАТЕРИАЛЫ</strong></li>
-
-                        <li lang-val="kz"><span>✓</span> Қосымша 16,990 ₸ пайда</li>
-                        <li lang-val="ru"><span>✓</span> Экономия 16,990 ₸</li>
-
-                        <li lang-val="kz"><span>✓</span> Барлық жаңартуларға доступ</li>
-                        <li lang-val="ru"><span>✓</span> Доступ ко всем обновлениям материалов</li>
-                      
-                        <li lang-val="kz"><span>✓</span> Қосымша жеңілдіктер бар!</li>
-                        <li lang-val="ru"><span>✓</span> Есть дополнительные скидки!</li>
-                    </ul>
-
-                    <a href="https://wa.me/77081595038?text=Сәлеметсіз бе! Сайтқа доступ және толық пакетті алғым келеді" target="_blank" class="price-btn featured-btn" lang-val="kz">Бүкіл доступ алу</a>
-                    <a href="https://wa.me/77081595038?text=Здравствуйте! Хочу оформить подписку на полный пакет с сайтом" target="_blank" class="price-btn featured-btn" lang-val="ru">Получить полный доступ</a>
-                </div>
-
-
+            <div class="table-scroll">
+                <table class="compare-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <span lang-val="kz">Мүмкіндіктер</span>
+                                <span lang-val="ru">Что входит в план</span>
+                            </th>
+                            <th>FREE</th>
+                            <th>STANDARD</th>
+                            <th>PRO</th>
+                            <th class="col-prem">PREMIUM 🔥</th>
+                            <th class="col-vip">VIP 👑</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span lang-val="kz">Анатомия тренажері, 8-сабақ, ойындар, сұрастыру тизері</span>
+                                <span lang-val="ru">Анатомия, 8-й урок, игры и тизер опроса пациента</span>
+                            </td>
+                            <td><span class="yes-mark">✓</span></td>
+                            <td><span class="yes-mark">✓</span></td>
+                            <td><span class="yes-mark">✓</span></td>
+                            <td class="highlight-col"><span class="yes-mark">✓</span></td>
+                            <td><span class="yes-mark">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span lang-val="kz">Барлық Vocabulary, Grammar және Науқасты сұрастыру тренажерлері</span>
+                                <span lang-val="ru">Все тренажеры Vocabulary, Grammar и Опроса пациентов</span>
+                            </td>
+                            <td><span class="no-mark">—</span></td>
+                            <td><span class="yes-mark">✓</span></td>
+                            <td><span class="yes-mark">✓</span></td>
+                            <td class="highlight-col"><span class="yes-mark">✓</span></td>
+                            <td><span class="yes-mark">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span lang-val="kz">Интерактивті конспектілер (Грамматика + Сұрастыру + Презентация + Мақала іздеу)</span>
+                                <span lang-val="ru">Все конспекты и теория (Грамматика + Опрос пациентов + Презентации + Поиск статей)</span>
+                            </td>
+                            <td><span class="no-mark">—</span></td>
+                            <td><span class="no-mark">—</span></td>
+                            <td><span class="yes-mark">✓</span></td>
+                            <td class="highlight-col"><span class="yes-mark">✓</span></td>
+                            <td><span class="yes-mark">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span lang-val="kz">Авторлық ВИДЕОСАБАҚТАР (Грамматика, Сұрастыру, Презентация, Мақалалар)</span>
+                                <span lang-val="ru">Все ВИДЕОУРОКИ курса (Грамматика, Опрос, Презентации и Поиск статей)</span>
+                            </td>
+                            <td><span class="no-mark">—</span></td>
+                            <td><span class="no-mark">—</span></td>
+                            <td><span class="no-mark">—</span></td>
+                            <td class="highlight-col"><span class="yes-mark">✓</span></td>
+                            <td><span class="yes-mark">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span lang-val="kz">Оқытушымен жеке 4 сабақ (60 мин) + үй жұмысын тексеру және менторлық</span>
+                                <span lang-val="ru">4 личных занятия по 60 мин с преподавателем + проверка ДЗ и кураторство</span>
+                            </td>
+                            <td><span class="no-mark">—</span></td>
+                            <td><span class="no-mark">—</span></td>
+                            <td><span class="no-mark">—</span></td>
+                            <td class="highlight-col"><span class="no-mark">—</span></td>
+                            <td><span class="yes-mark">✓</span></td>
+                        </tr>
+                        <tr class="price-row">
+                            <td>
+                                <span lang-val="kz">Айлық құны:</span>
+                                <span lang-val="ru">Стоимость в месяц:</span>
+                            </td>
+                            <td>0 ₸</td>
+                            <td>7,990 ₸</td>
+                            <td>17,990 ₸</td>
+                            <td class="highlight-col" style="color:#B45309;">22,990 ₸</td>
+                            <td style="color:var(--purple-accent);">57,990 ₸</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+        </div>
 
-            <div class="guarantee-note" lang-val="kz">
-                🔒 Төлем жасалғаннан кейін WhatsApp арқылы іске қосылады
-            </div>
-            <div class="guarantee-note" lang-val="ru">
-                🔒 Активация через WhatsApp после оплаты
-            </div>
-        </section>
+        <!-- ==================================================================
+             2. ТАРИФЫ ОБУЧАЮЩЕЙ ПЛАТФОРМЫ (РАСКРЫВАЮЩИЕСЯ КАРТОЧКИ)
+             ================================================================== -->
+        <div class="section-divider" lang-val="kz">Сайттағы оқу тарифтері (ашу үшін басыңыз)</div>
+        <div class="section-divider" lang-val="ru">Планы обучения на платформе (нажмите для раскрытия)</div>
+
+        <div class="plans-list">
+
+            <!-- 1. FREE -->
+            <details class="plan-accordion tier-free">
+                <summary class="plan-summary">
+                    <div class="summary-left">
+                        <div class="plan-title-row">
+                            <span class="plan-name">FREE</span>
+                            <span class="mini-badge gray" lang-val="kz">ТЕГІН СТАРТ</span>
+                            <span class="mini-badge gray" lang-val="ru">БЕСПЛАТНЫЙ СТАРТ</span>
+                        </div>
+                        <span class="plan-teaser" lang-val="kz">Платформамен танысу және базалық тест</span>
+                        <span class="plan-teaser" lang-val="ru">Знакомство с платформой и тест-драйв тренажеров</span>
+                    </div>
+                    <div class="summary-right">
+                        <div class="summary-price-box">
+                            <span class="summary-price">0 ₸</span>
+                            <span class="summary-period" lang-val="kz">тегін</span>
+                            <span class="summary-period" lang-val="ru">бесплатно</span>
+                        </div>
+                        <div class="chevron-circle">
+                            <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                        </div>
+                    </div>
+                </summary>
+                <div class="plan-body">
+                    <p class="plan-hook" lang-val="kz">
+                        Платформаның қалай жұмыс істейтінін өз көзіңізбен көріп, алғашқы медициналық терминдерді бүгіннен бастап жаттап алыңыз.
+                    </p>
+                    <p class="plan-hook" lang-val="ru">
+                        Идеальный способ протестировать методику сайта без оплаты и выучить первые клинические и анатомические термины уже сегодня.
+                    </p>
+                    <ul class="price-features">
+                        <li lang-val="kz"><span class="check">✓</span> Анатомиялық сөздік тренажеріне толық доступ</li>
+                        <li lang-val="ru"><span class="check">✓</span> Полный доступ к анатомическому тренажеру (органы и кости)</li>
+
+                        <li lang-val="kz"><span class="check">✓</span> Видеокурстан 8-сабақ (There is / There are) ашық</li>
+                        <li lang-val="ru"><span class="check">✓</span> Открытый 8-й урок из видеокурса по медицинской грамматике</li>
+
+                        <li lang-val="kz"><span class="check">✓</span> Интерактивті медициналық ойындар (Run Doctor, Syringe Shots)</li>
+                        <li lang-val="ru"><span class="check">✓</span> Интерактивные медицинские игры (Run Doctor, Syringe Shots)</li>
+
+                        <li lang-val="kz"><span class="check">✓</span> Науқасты сұрастыру тренажерінің демо-нұсқасы («тизер»)</li>
+                        <li lang-val="ru"><span class="check">✓</span> Демо-режим («тизер») тренажера по опросу пациентов</li>
+                    </ul>
+                    <div class="result-box">
+                        <strong lang-val="kz">🎯 Сіздің нәтижеңіз:</strong>
+                        <strong lang-val="ru">🎯 Ваш результат:</strong>
+                        <span lang-val="kz">Анатомиялық базаны меңгересіз, интерактивті форматтың тиімділігін бағалайсыз және өзіңізге қажетті негізгі тарифті сенімді таңдайсыз.</span>
+                        <span lang-val="ru">Освоите базовую анатомическую лексику, оцените удобство интерактивных тренажеров и поймете, как быстро растет ваш словарный запас.</span>
+                    </div>
+                    <a href="https://kazdoctors.com" class="price-btn outline-btn" lang-val="kz">Тегін жаттығуды бастау</a>
+                    <a href="https://kazdoctors.com" class="price-btn outline-btn" lang-val="ru">Начать бесплатно на сайте</a>
+                </div>
+            </details>
+
+            <!-- 2. STANDARD -->
+            <details class="plan-accordion tier-standard">
+                <summary class="plan-summary">
+                    <div class="summary-left">
+                        <div class="plan-title-row">
+                            <span class="plan-name">STANDARD</span>
+                            <span class="mini-badge blue" lang-val="kz">БАРЛЫҚ ТРЕНАЖЕРЛЕР</span>
+                            <span class="mini-badge blue" lang-val="ru">ВСЕ ТРЕНАЖЕРЫ</span>
+                        </div>
+                        <span class="plan-teaser" lang-val="kz">Күнделікті практика арқылы B1 деңгейіне шығу</span>
+                        <span class="plan-teaser" lang-val="ru">Ежедневная практика на всех тренажерах до уровня B1</span>
+                    </div>
+                    <div class="summary-right">
+                        <div class="summary-price-box">
+                            <span class="summary-price">7,990 ₸</span>
+                            <span class="summary-period" lang-val="kz">/ айына</span>
+                            <span class="summary-period" lang-val="ru">/ в месяц</span>
+                        </div>
+                        <div class="chevron-circle">
+                            <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                        </div>
+                    </div>
+                </summary>
+                <div class="plan-body">
+                    <p class="plan-hook" lang-val="kz">
+                        Грамматика мен медициналық лексиканы автоматты деңгейге жеткізгісі келетін дәрігерлер мен студенттерге арналған практикалық тренажерлер пакеті.
+                    </p>
+                    <p class="plan-hook" lang-val="ru">
+                        Для тех, кто хочет довести медицинскую лексику и грамматику до автоматизма, занимаясь по 15–20 минут в день между сменами и приемами.
+                    </p>
+                    <ul class="price-features">
+                        <li lang-val="kz"><span class="check">✓</span> <strong>Vocabulary:</strong> Анатомиялық, Клиникалық және Академиялық (PubMed/IELTS) тренажерлер</li>
+                        <li lang-val="ru"><span class="check">✓</span> <strong>Все тренажеры Vocabulary:</strong> Анатомический, Клинический и Академический словарь</li>
+
+                        <li lang-val="kz"><span class="check">✓</span> <strong>Grammar:</strong> Медициналық грамматиканың барлық 15 тақырыбы бойынша тренажерлер</li>
+                        <li lang-val="ru"><span class="check">✓</span> <strong>Все тренажеры Grammar:</strong> 15 модулей медицинской грамматики + режимы Mix A1–B2</li>
+
+                        <li lang-val="kz"><span class="check">✓</span> <strong>Patient Interview:</strong> Науқасты сұрастыру (анамнез жинау) тренажері толық ашық</li>
+                        <li lang-val="ru"><span class="check">✓</span> <strong>Тренажер Patient Interview:</strong> отработка фраз для сбора анамнеза и опроса пациентов</li>
+                    </ul>
+                    <div class="result-box">
+                        <strong lang-val="kz">🎯 Сіздің нақты нәтижеңіз:</strong>
+                        <strong lang-val="ru">🎯 Ваш ощутимый результат:</strong>
+                        <span lang-val="kz">Егер сіз барлық тренажерлерді өтіп, түсіндірмелерді меңгерсеңіз — репетиторсыз-ақ <strong>толық B1 деңгейіне</strong> өз бетіңізше жетесіз және жүздеген клиникалық терминді жатқа білесіз.</span>
+                        <span lang-val="ru">Пройдя все тренажеры и разобрав встроенные пояснения, вы сможете <strong>самостоятельно дойти до крепкого уровня B1</strong>, перестанете путать времена и сформируете активный словарный запас практикующего врача.</span>
+                    </div>
+                    <div class="packages-box">
+                        <div class="pkg-title" lang-val="kz">💎 Тиімді жазылым нұсқалары:</div>
+                        <div class="pkg-title" lang-val="ru">💎 Варианты подписки и выгода:</div>
+                        <div class="pkg-row">
+                            <span lang-val="kz">1 айға доступ</span>
+                            <span lang-val="ru">На 1 месяц</span>
+                            <span class="pkg-price">7,990 ₸</span>
+                        </div>
+                        <div class="pkg-row">
+                            <span>
+                                <span lang-val="kz">6 айға доступ</span>
+                                <span lang-val="ru">На 6 месяцев (1 мес. в подарок!)</span>
+                                <span class="pkg-Save">-17% (-7,950 ₸)</span>
+                            </span>
+                            <span class="pkg-price"><span class="pkg-old-price">47,940 ₸</span>39,990 ₸</span>
+                        </div>
+                    </div>
+                    <a href="https://wa.me/77081595038?text=Сәлеметсіз бе! STANDARD тарифін (7,990 ₸ / 6 айға 39,990 ₸) қосқым келеді" target="_blank" class="price-btn" lang-val="kz">STANDARD тарифін қосу</a>
+                    <a href="https://wa.me/77081595038?text=Здравствуйте! Хочу подключить тариф STANDARD (7,990 ₸ / 6 мес за 39,990 ₸)" target="_blank" class="price-btn" lang-val="ru">Подключить тариф STANDARD</a>
+                </div>
+            </details>
+
+            <!-- 3. PRO -->
+            <details class="plan-accordion tier-pro">
+                <summary class="plan-summary">
+                    <div class="summary-left">
+                        <div class="plan-title-row">
+                            <span class="plan-name">PRO</span>
+                            <span class="mini-badge blue" lang-val="kz">ТРЕНАЖЕРЛЕР + КОНСПЕКТІЛЕР</span>
+                            <span class="mini-badge blue" lang-val="ru">ТРЕНАЖЕРЫ + КОНСПЕКТЫ</span>
+                        </div>
+                        <span class="plan-teaser" lang-val="kz">Теория, мақалалармен жұмыс, презентациялар және сұрастыру</span>
+                        <span class="plan-teaser" lang-val="ru">Полная база интерактивных конспектов, чтение статей и презентации</span>
+                    </div>
+                    <div class="summary-right">
+                        <div class="summary-price-box">
+                            <span class="summary-price">17,990 ₸</span>
+                            <span class="summary-period" lang-val="kz">/ айына</span>
+                            <span class="summary-period" lang-val="ru">/ в месяц</span>
+                        </div>
+                        <div class="chevron-circle">
+                            <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                        </div>
+                    </div>
+                </summary>
+                <div class="plan-body">
+                    <p class="plan-hook" lang-val="kz">
+                        Жай ғана тест шешіп қоймай, әр тақырыптың логикасын орыс және қазақ тілдеріндегі интерактивті оқулық-конспектілер арқылы терең түсінгісі келетін дәрігерлер үшін.
+                    </p>
+                    <p class="plan-hook" lang-val="ru">
+                        Для врачей, которым нужна четкая система: вы сначала разбираете тему по интерактивному конспекту на примерах из UpToDate и PubMed, а затем закрепляете её на тренажерах.
+                    </p>
+                    <ul class="price-features">
+                        <li lang-val="kz"><span class="check">✓</span> <strong>STANDARD тарифіндегі барлық тренажерлер</strong> (Vocabulary, Grammar, Patient Interview)</li>
+                        <li lang-val="ru"><span class="check">✓</span> <strong>Все тренажеры тарифа STANDARD</strong> без ограничений</li>
+
+                        <li lang-val="kz"><span class="check">✓</span> <strong>Барлық интерактивті конспектілер (RU/KZ):</strong> нақты клиникалық кейстермен және дыбысталған сөздікпен</li>
+                        <li lang-val="ru"><span class="check">✓</span> <strong>Все интерактивные конспекты-учебники (RU/KZ):</strong> с разбором реальных статей и озвученным словарем</li>
+
+                        <li lang-val="kz"><span class="check">✓</span> <strong>Арнайы теориялық гайдтар:</strong> науқасты сұрастыру алгоритмдері, ғылыми мақалаларды іздеу және конференцияға презентация дайындау</li>
+                        <li lang-val="ru"><span class="check">✓</span> <strong>Практические руководства:</strong> теория по опросу пациентов, алгоритмы поиска научных статей и составления презентаций</li>
+                    </ul>
+                    <div class="result-box">
+                        <strong lang-val="kz">🎯 Сіздің нақты нәтижеңіз:</strong>
+                        <strong lang-val="ru">🎯 Ваш ощутимый результат:</strong>
+                        <span lang-val="kz">Сіз <strong>B1 деңгейін толық аяқтайсыз</strong>, шетелдік науқастардан анамнез жинауды жаттықтырасыз, PubMed пен UpToDate-тен ғылыми мақалаларды тауып оқуды және халықаралық конференцияларға презентация құрастыруды үйренесіз.</span>
+                        <span lang-val="ru">Вы <strong>самостоятельно закончите уровень B1</strong>, натренируетесь грамотно опрашивать пациентов, научитесь быстро находить и читать статьи в оригинале (PubMed / UpToDate) и составлять медицинские презентации на английском.</span>
+                    </div>
+                    <div class="packages-box">
+                        <div class="pkg-title" lang-val="kz">💎 Тиімді жазылым нұсқалары:</div>
+                        <div class="pkg-title" lang-val="ru">💎 Варианты подписки и выгода:</div>
+                        <div class="pkg-row">
+                            <span lang-val="kz">1 айға доступ</span>
+                            <span lang-val="ru">На 1 месяц</span>
+                            <span class="pkg-price">17,990 ₸</span>
+                        </div>
+                        <div class="pkg-row">
+                            <span>
+                                <span lang-val="kz">3 айға доступ</span>
+                                <span lang-val="ru">На 3 месяца</span>
+                                <span class="pkg-Save">-7% (-3,980 ₸)</span>
+                            </span>
+                            <span class="pkg-price"><span class="pkg-old-price">53,970 ₸</span>49,990 ₸</span>
+                        </div>
+                        <div class="pkg-row">
+                            <span>
+                                <span lang-val="kz">6 айға доступ (1 ай сыйлыққа!)</span>
+                                <span lang-val="ru">На 6 месяцев (1 мес. в подарок!)</span>
+                                <span class="pkg-Save">-17% (-17,950 ₸)</span>
+                            </span>
+                            <span class="pkg-price"><span class="pkg-old-price">107,940 ₸</span>89,990 ₸</span>
+                        </div>
+                    </div>
+                    <a href="https://wa.me/77081595038?text=Сәлеметсіз бе! PRO тарифін (17,990 ₸ / 3 ай / 6 ай) қосқым келеді" target="_blank" class="price-btn" lang-val="kz">PRO тарифін қосу</a>
+                    <a href="https://wa.me/77081595038?text=Здравствуйте! Хочу подключить тариф PRO (17,990 ₸ / 3 мес / 6 мес)" target="_blank" class="price-btn" lang-val="ru">Подключить тариф PRO</a>
+                </div>
+            </details>
+
+            <!-- 4. PREMIUM (САМЫЙ ПОПУЛЯРНЫЙ — ОТКРЫТ ПО УМОЛЧАНИЮ ИЛИ АКЦЕНТИРОВАН) -->
+            <details class="plan-accordion tier-premium">
+                <summary class="plan-summary">
+                    <div class="summary-left">
+                        <div class="plan-title-row">
+                            <span class="plan-name">PREMIUM</span>
+                            <span class="mini-badge gold" lang-val="kz">🔥 ХИТ • БАРЛЫҚ ВИДЕОСАБАҚТАР</span>
+                            <span class="mini-badge gold" lang-val="ru">🔥 ХИТ • ВСЕ ВИДЕОУРОКИ</span>
+                        </div>
+                        <span class="plan-teaser" lang-val="kz">Тренажерлер + Конспектілер + Барлық жабық видеосабақтар</span>
+                        <span class="plan-teaser" lang-val="ru">Все тренажеры + Все конспекты + Полный курс видеоуроков</span>
+                    </div>
+                    <div class="summary-right">
+                        <div class="summary-price-box">
+                            <span class="summary-price">22,990 ₸</span>
+                            <span class="summary-period" lang-val="kz">/ айына</span>
+                            <span class="summary-period" lang-val="ru">/ в месяц</span>
+                        </div>
+                        <div class="chevron-circle">
+                            <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                        </div>
+                    </div>
+                </summary>
+                <div class="plan-body">
+                    <p class="plan-hook" lang-val="kz">
+                        Толық автономды оқыту жүйесі: автордың жан-жақты видео-түсіндірмелерін көріңіз, интерактивті конспектілермен бекітіңіз және тренажерде машықтаныңыз. PRO тарифінен айырмашылығы — айына небәрі 5,000 ₸!
+                    </p>
+                    <p class="plan-hook" lang-val="ru">
+                        Максимальный пакет для самостоятельного прорыва: вы смотрите подробные авторские видеоразборы каждого урока прямо на сайте, читаете конспекты и оттачиваете навыки на тренажерах.
+                    </p>
+                    <ul class="price-features">
+                        <li lang-val="kz"><span class="check">✓</span> <strong>PRO тарифіндегі барлық материалдар</strong> (барлық тренажерлер мен конспектілер)</li>
+                        <li lang-val="ru"><span class="check">✓</span> <strong>Полный доступ ко всем тренажерам и конспектам</strong> платформы</li>
+
+                        <li lang-val="kz"><span class="check">✓</span> <strong>Барлық жабық ВИДЕОСАБАҚТАР:</strong> медициналық грамматиканың 15 модулі бойынша видео-талдау</li>
+                        <li lang-val="ru"><span class="check">✓</span> <strong>Все закрытые ВИДЕОУРОКИ:</strong> подробное объяснение каждого грамматического и клинического правила</li>
+
+                        <li lang-val="kz"><span class="check">✓</span> <strong>Арнайы видео-модульдер:</strong> науқасты сұрастыру, ғылыми мақалаларды іздеу/талдау және конференцияларға презентация жасау</li>
+                        <li lang-val="ru"><span class="check">✓</span> <strong>Видеоуроки по врачебным навыкам:</strong> как опрашивать пациентов, искать статьи в базах данных и готовить доклады</li>
+                    </ul>
+                    <div class="result-box">
+                        <strong lang-val="kz">🎯 Сіздің нақты нәтижеңіз:</strong>
+                        <strong lang-val="ru">🎯 Ваш ощутимый результат:</strong>
+                        <span lang-val="kz">Видеосабақтардың арқасында ең күрделі тақырыптарды тез меңгеріп, <strong>B1 деңгейін сенімді аяқтайсыз</strong>. Науқастармен сөйлесуге, шетелдік гайдлайндарды оқуға және конференцияда презентация жасауға толық дайын боласыз!</span>
+                        <span lang-val="ru">Благодаря живым видеообъяснениям вы в 2 раза быстрее усвоите базу, <strong>уверенно закроете уровень B1</strong>, поставите правильное произношение и сможете самостоятельно работать с англоязычными пациентами, статьями и презентациями.</span>
+                    </div>
+                    <div class="packages-box">
+                        <div class="pkg-title" lang-val="kz">💎 Тиімді пакеттер (3 және 6 айға үлкен жеңілдік):</div>
+                        <div class="pkg-title" lang-val="ru">💎 Выгодные пакеты (максимальная экономия на 6 мес.):</div>
+                        <div class="pkg-row">
+                            <span lang-val="kz">1 айға доступ</span>
+                            <span lang-val="ru">На 1 месяц</span>
+                            <span class="pkg-price">22,990 ₸</span>
+                        </div>
+                        <div class="pkg-row">
+                            <span>
+                                <span lang-val="kz">3 айға доступ</span>
+                                <span lang-val="ru">На 3 месяца</span>
+                                <span class="pkg-Save">-13% (-8,980 ₸)</span>
+                            </span>
+                            <span class="pkg-price"><span class="pkg-old-price">68,970 ₸</span>59,990 ₸</span>
+                        </div>
+                        <div class="pkg-row">
+                            <span>
+                                <span lang-val="kz">6 айға доступ (Айына небәрі 16,665 ₸!)</span>
+                                <span lang-val="ru">На 6 месяцев (Всего 16,665 ₸/мес!)</span>
+                                <span class="pkg-Save">-28% (-37,950 ₸)</span>
+                            </span>
+                            <span class="pkg-price"><span class="pkg-old-price">137,940 ₸</span>99,990 ₸</span>
+                        </div>
+                    </div>
+                    <a href="https://wa.me/77081595038?text=Сәлеметсіз бе! PREMIUM тарифін (22,990 ₸ / 3 айға 59,990 ₸ / 6 айға 99,990 ₸) қосқым келеді" target="_blank" class="price-btn gold-btn" lang-val="kz">🔥 PREMIUM тарифін қосу</a>
+                    <a href="https://wa.me/77081595038?text=Здравствуйте! Хочу подключить тариф PREMIUM (22,990 ₸ / 3 мес за 59,990 ₸ / 6 мес за 99,990 ₸)" target="_blank" class="price-btn gold-btn" lang-val="ru">🔥 Подключить тариф PREMIUM</a>
+                </div>
+            </details>
+
+            <!-- 5. VIP -->
+            <details class="plan-accordion tier-vip">
+                <summary class="plan-summary">
+                    <div class="summary-left">
+                        <div class="plan-title-row">
+                            <span class="plan-name">VIP 👑</span>
+                            <span class="mini-badge purple" lang-val="kz">PREMIUM + 4 ЖЕКЕ САБАҚ</span>
+                            <span class="mini-badge purple" lang-val="ru">PREMIUM + 4 ЛИЧНЫХ УРОКА</span>
+                        </div>
+                        <span class="plan-teaser" lang-val="kz">Толық платформа + оқытушымен жеке менторлық</span>
+                        <span class="plan-teaser" lang-val="ru">Полный доступ + личное наставничество преподавателя</span>
+                    </div>
+                    <div class="summary-right">
+                        <div class="summary-price-box">
+                            <span class="summary-price">57,990 ₸</span>
+                            <span class="summary-period" lang-val="kz">/ 1-айға</span>
+                            <span class="summary-period" lang-val="ru">/ 1-й месяц</span>
+                        </div>
+                        <div class="chevron-circle">
+                            <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                        </div>
+                    </div>
+                </summary>
+                <div class="plan-body">
+                    <p class="plan-hook" lang-val="kz">
+                        Жұмыс кестесі тығыз дәрігерлерге арналған гибридті формат: теория мен тренажерлерді өзіңізге ыңғайлы уақытта өтесіз, ал аптасына 1 рет оқытушымен жеке кездесіп, сөйлеу практикасын жасайсыз.
+                    </p>
+                    <p class="plan-hook" lang-val="ru">
+                        Идеальный гибридный формат для занятых врачей: теорию и тренажеры вы проходите в своем темпе, а каждую неделю встречаетесь с преподавателем 1-на-1 для контроля прогресса и живой практики.
+                    </p>
+                    <ul class="price-features">
+                        <li lang-val="kz"><span class="check">✓</span> <strong>PREMIUM тарифінің толық пакеті:</strong> барлық тренажерлер, конспектілер және видеосабақтар</li>
+                        <li lang-val="ru"><span class="check">✓</span> <strong>Полный пакет PREMIUM:</strong> все тренажеры, конспекты и видеоуроки сайта</li>
+
+                        <li lang-val="kz"><span class="check">✓</span> <strong>Оқытушымен 60 минуттық 4 жеке сабақ:</strong> прогресті тексеру, сұрақтарды талдау және сөйлеу практикасы</li>
+                        <li lang-val="ru"><span class="check">✓</span> <strong>4 индивидуальных занятия по 60 минут:</strong> проверка прогресса, разбор сложных тем и разговорный тренинг</li>
+
+                        <li lang-val="kz"><span class="check">✓</span> <strong>Жеке менторлық және үй жұмысын тексеру:</strong> оқытушы сізді мақсатыңызға жетелейді</li>
+                        <li lang-val="ru"><span class="check">✓</span> <strong>Проверка домашних заданий и наставничество:</strong> ответы на вопросы и персональная коррекция ошибок</li>
+
+                        <li lang-val="kz"><span class="check">✓</span> <strong>Арнайы бонус:</strong> келесі айларға PREMIUM доступын жеңілдікпен <strong>19,990 ₸/айына</strong> ұзарту мүмкіндігі!</li>
+                        <li lang-val="ru"><span class="check">✓</span> <strong>Привилегия VIP:</strong> со 2-го месяца продление полного доступа PREMIUM по закрытой цене <strong>19,990 ₸/мес.</strong> (вместо 22,990 ₸)</li>
+                    </ul>
+                    <div class="result-box">
+                        <strong lang-val="kz">🎯 Сіздің нақты нәтижеңіз:</strong>
+                        <strong lang-val="ru">🎯 Ваш ощутимый результат:</strong>
+                        <span lang-val="kz">Ментордың бақылауымен оқуды тастап кетпейсіз, сөйлеу барьерін 1 ай ішінде бұзасыз және өз мамандығыңыз бойынша нақты клиникалық диалогтар мен презентацияны еркін айтып шығасыз.</span>
+                        <span lang-val="ru">Вы гарантированно не забросите учебу благодаря контролю наставника, снимете страх говорения и за первый же месяц отработаете живой опрос пациента и самопрезентацию с преподавателем.</span>
+                    </div>
+                    <a href="https://wa.me/77081595038?text=Сәлеметсіз бе! VIP тарифіне (57,990 ₸ — Premium + 4 жеке сабақ) жазылғым келеді" target="_blank" class="price-btn purple-btn" lang-val="kz">👑 VIP тарифіне жазылу</a>
+                    <a href="https://wa.me/77081595038?text=Здравствуйте! Хочу записаться на тариф VIP (57,990 ₸ — Premium + 4 личных занятия)" target="_blank" class="price-btn purple-btn" lang-val="ru">👑 Записаться на тариф VIP</a>
+                </div>
+            </details>
+
+        </div>
+
+        <!-- ==================================================================
+             3. ИНДИВИДУАЛЬНЫЕ ЗАНЯТИЯ И SPEAKING CLUB (НИЖЕ)
+             ================================================================== -->
+        <div class="section-divider" lang-val="kz">Жеке сабақтар және Speaking Club</div>
+        <div class="section-divider" lang-val="ru">Индивидуальные занятия и Speaking Club</div>
+
+        <div class="plans-list">
+
+            <!-- ИНДИВИДУАЛЬНЫЕ ЗАНЯТИЯ -->
+            <details class="plan-accordion tier-pro">
+                <summary class="plan-summary">
+                    <div class="summary-left">
+                        <div class="plan-title-row">
+                            <span class="plan-name" lang-val="kz">ЖЕКЕ САБАҚТАР (1-on-1)</span>
+                            <span class="plan-name" lang-val="ru">ИНДИВИДУАЛЬНЫЕ ЗАНЯТИЯ</span>
+                            <span class="mini-badge blue" lang-val="kz">🎁 ПЛАТФОРМА СЫЙЛЫҚҚА</span>
+                            <span class="mini-badge blue" lang-val="ru">🎁 ПЛАТФОРМА В ПОДАРОК</span>
+                        </div>
+                        <span class="plan-teaser" lang-val="kz">Сіздің мақсатыңызға арналған жеке бағдарлама + барлық материалдар</span>
+                        <span class="plan-teaser" lang-val="ru">Персональный план под ваши цели + полный доступ к сайту</span>
+                    </div>
+                    <div class="summary-right">
+                        <div class="summary-price-box">
+                            <span class="summary-price">10,990 ₸</span>
+                            <span class="summary-period" lang-val="kz">/ сабақ</span>
+                            <span class="summary-period" lang-val="ru">/ занятие</span>
+                        </div>
+                        <div class="chevron-circle">
+                            <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                        </div>
+                    </div>
+                </summary>
+                <div class="plan-body">
+                    <p class="plan-hook" lang-val="kz">
+                        Шетелдік тағылымдамаға (стажировка), халықаралық конференцияда баяндама жасауға, USMLE/IELTS тапсыруға немесе шетелдік науқастарды қабылдауға жедел дайындалу үшін.
+                    </p>
+                    <p class="plan-hook" lang-val="ru">
+                        Максимально быстрый результат за счет программы, составленной строго под ваш текущий уровень, врачебную специальность и конкретную цель (выступление на конгрессе, стажировка за рубежом, прием иностранных пациентов).
+                    </p>
+                    <ul class="price-features">
+                        <li lang-val="kz"><span class="check">✓</span> <strong>Жеке оқу траекториясы:</strong> тек сіздің мамандығыңыз бен деңгейіңізге бейімделген жоспар</li>
+                        <li lang-val="ru"><span class="check">✓</span> <strong>Индивидуальный план:</strong> программа строится строго под ваши задачи и график дежурств</li>
+
+                        <li lang-val="kz"><span class="check">✓</span> <strong>БАРЛЫҚ МАТЕРИАЛДАРҒА ДОСТУП АШЫҚ:</strong> айлық пакет алғанда сайттағы барлық тренажерлер, конспектілер мен видеосабақтар тегін ашылады!</li>
+                        <li lang-val="ru"><span class="check">✓</span> <strong>ПОЛНЫЙ ДОСТУП К ПЛАТФОРМЕ В ПОДАРОК:</strong> на весь период месячного абонемента вам открываются все тренажеры, конспекты и видеоуроки сайта!</li>
+
+                        <li lang-val="kz"><span class="check">✓</span> <strong>100% практика:</strong> сабақ уақыты тек сөйлеуге, клиникалық кейстерді талдауға және қателермен жұмысқа арналады</li>
+                        <li lang-val="ru"><span class="check">✓</span> <strong>100% фокус на практике:</strong> отработка вашей презентации, разбор профильных статей и симуляция приёма пациента</li>
+                    </ul>
+                    <div class="packages-box">
+                        <div class="pkg-title" lang-val="kz">💎 Сабақ пакеттері:</div>
+                        <div class="pkg-title" lang-val="ru">💎 Стоимость занятий:</div>
+                        <div class="pkg-row">
+                            <span lang-val="kz">1 реттік сабақ (60 минут)</span>
+                            <span lang-val="ru">Разовое занятие (60 минут)</span>
+                            <span class="pkg-price">10,990 ₸</span>
+                        </div>
+                        <div class="pkg-row">
+                            <span>
+                                <span lang-val="kz">1 айлық абонемент (8 сабақ + Платформа)</span>
+                                <span lang-val="ru">Абонемент на месяц: 8 занятий + Полный доступ к сайту</span>
+                                <span class="pkg-Save">-15% (-12,930 ₸)</span>
+                            </span>
+                            <span class="pkg-price"><span class="pkg-old-price">87,920 ₸</span>74,990 ₸</span>
+                        </div>
+                    </div>
+                    <a href="https://wa.me/77081595038?text=Сәлеметсіз бе! Жеке сабақтарға (10,990 ₸ / 8 сабақ 74,990 ₸) жазылғым келеді" target="_blank" class="price-btn" lang-val="kz">Жеке сабаққа жазылу</a>
+                    <a href="https://wa.me/77081595038?text=Здравствуйте! Хочу записаться на индивидуальные занятия (10,990 ₸ / 8 занятий за 74,990 ₸)" target="_blank" class="price-btn" lang-val="ru">Записаться на индивидуальные занятия</a>
+                </div>
+            </details>
+
+            <!-- SPEAKING CLUB -->
+            <details class="plan-accordion">
+                <summary class="plan-summary">
+                    <div class="summary-left">
+                        <div class="plan-title-row">
+                            <span class="plan-name">MEDICAL SPEAKING CLUB</span>
+                            <span class="mini-badge gold" lang-val="kz">ШАҒЫН ТОП ≤ 5 АДАМ</span>
+                            <span class="mini-badge gold" lang-val="ru">МИНИ-ГРУППА ДО 5 ВРАЧЕЙ</span>
+                        </div>
+                        <span class="plan-teaser" lang-val="kz">Zoom-да аптасына 1 рет: ғылыми мақалалар баяндамасы және науқас сұрастыру</span>
+                        <span class="plan-teaser" lang-val="ru">Раз в неделю в Zoom: доклады по научным статьям и практика опроса пациентов</span>
+                    </div>
+                    <div class="summary-right">
+                        <div class="summary-price-box">
+                            <span class="summary-price">19,990 ₸</span>
+                            <span class="summary-period" lang-val="kz">/ айына</span>
+                            <span class="summary-period" lang-val="ru">/ в месяц</span>
+                        </div>
+                        <div class="chevron-circle">
+                            <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                        </div>
+                    </div>
+                </summary>
+                <div class="plan-body">
+                    <p class="plan-hook" lang-val="kz">
+                        Қарапайым «әңгіме клубы» емес, нағыз дәрігерлік <strong>Journal Club & Clinical Simulation</strong> форматы. Шағын топта (5 адамға дейін) әр қатысушы белсенді сөйлейді.
+                    </p>
+                    <p class="plan-hook" lang-val="ru">
+                        Это не абстрактные беседы «о погоде», а профессиональный врачебный <strong>Journal Club & Clinical Role-Play</strong>. В закрытой группе до 5 человек говорит каждый участник!
+                    </p>
+                    <ul class="price-features">
+                        <li lang-val="kz"><span class="check">✓</span> <strong>Формат:</strong> аптасына 1 рет Zoom-да тікелей эфирде кездесу (айына 4 практикалық сессия)</li>
+                        <li lang-val="ru"><span class="check">✓</span> <strong>Формат:</strong> живые встречи раз в неделю в Zoom (4 практические сессии в месяц)</li>
+
+                        <li lang-val="kz"><span class="check">✓</span> <strong>Шағын топ (5 адамға дейін):</strong> әр дәрігерге сөйлеуге және кері байланыс алуға жеткілікті уақыт беріледі</li>
+                        <li lang-val="ru"><span class="check">✓</span> <strong>Камерная группа до 5 человек:</strong> максимум эфирного времени и персональная обратная связь каждому врачу</li>
+
+                        <li lang-val="kz"><span class="check">✓</span> <strong>Нақты клиникалық машықтар:</strong> ғылыми мақалалар бойынша баяндама жасау (Case & Article Presentation) және жұппен науқастан анамнез жинау</li>
+                        <li lang-val="ru"><span class="check">✓</span> <strong>2 главных навыка на каждой встрече:</strong> практика устных докладов по научным статьям и ролевые симуляции опроса пациентов (Doctor–Patient)</li>
+                    </ul>
+                    <div class="result-box">
+                        <strong lang-val="kz">🎯 Сіздің нақты нәтижеңіз:</strong>
+                        <strong lang-val="ru">🎯 Ваш ощутимый результат:</strong>
+                        <span lang-val="kz">Әріптестер алдында ағылшынша сөйлеу қорқынышынан арыласыз, медициналық зерттеулерді ауызша қорғауды және науқаспен еркін диалог құруды үйренесіз.</span>
+                        <span lang-val="ru">Вы полностью снимете страх публичных выступлений перед коллегами, научитесь уверенно докладывать клинические кейсы и отвечать на вопросы на английском языке.</span>
+                    </div>
+                    <a href="https://wa.me/77081595038?text=Сәлеметсіз бе! Medical Speaking Club-қа (19,990 ₸/айына) жазылғым келеді" target="_blank" class="price-btn" lang-val="kz">Speaking Club-қа қосылу</a>
+                    <a href="https://wa.me/77081595038?text=Здравствуйте! Хочу записаться в Medical Speaking Club (19,990 ₸/мес)" target="_blank" class="price-btn" lang-val="ru">Записаться в Speaking Club</a>
+                </div>
+            </details>
+
+        </div>
+
+        <div class="guarantee-note" lang-val="kz">
+            🔒 Төлемнен кейін WhatsApp арқылы аккаунтыңызға бірден доступ ашылады
+        </div>
+        <div class="guarantee-note" lang-val="ru">
+            🔒 Мгновенная активация доступа к аккаунту через WhatsApp после оплаты
+        </div>
     </main>
 
     <footer>
         <a href="https://wa.me/77081595038" target="_blank" class="instagram-link">
-            <span lang-val="kz">✅ Сабаққа жазылу / Консультация</span>
-            <span lang-val="ru">✅ Записаться на занятия / Консультация</span>
+            <span lang-val="kz">💬 Қай тарифті таңдауды білмейсіз бе? WhatsApp-қа жазыңыз</span>
+            <span lang-val="ru">💬 Помочь с выбором тарифа? Напишите нам в WhatsApp</span>
         </a>
         <a href="https://instagram.com/doctors.speak" target="_blank" class="instagram-link">
-            <span>✍️ Our Instagram!</span>
+            <span>📸 Instagram @doctors.speak</span>
         </a>
     </footer>
 
-    <!-- Скрипт переключения языков -->
+    <!-- Скрипт переключения языков и плавной работы аккордеонов -->
     <script>
         function setLanguage(lang) {
             document.body.className = 'lang-' + lang;
@@ -686,11 +1289,23 @@
             document.getElementById('btn-kz').classList.toggle('active', lang === 'kz');
             document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
 
-            // Сохраняем выбор пользователя в памяти браузера
             localStorage.setItem('selected_lang', lang);
         }
 
-        // При загрузке восстанавливаем сохраненный язык (по умолчанию KZ)
+        // При открытии одной карточки тарифа автоматически закрываем остальные,
+        // чтобы страница всегда оставалась компактной
+        document.querySelectorAll('details.plan-accordion').forEach((targetDetail) => {
+            targetDetail.addEventListener('toggle', () => {
+                if (targetDetail.open) {
+                    document.querySelectorAll('details.plan-accordion').forEach((detail) => {
+                        if (detail !== targetDetail && detail.open) {
+                            detail.removeAttribute('open');
+                        }
+                    });
+                }
+            });
+        });
+
         const savedLang = localStorage.getItem('selected_lang') || 'kz';
         setLanguage(savedLang);
     </script>
