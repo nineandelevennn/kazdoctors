@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>@doctors.speak — Lesson 8: There is / There are in Medicine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Подключение Supabase SDK для проверки подписки -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --kz-gold-light: #FFFBEB;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --success-bg: #DCFCE7;
+      --success-border: #22C55E;
+      --success-text: #15803D;
+      --error-bg: #FEE2E2;
+      --error-border: #EF4444;
+      --error-text: #B91C1C;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 40px;
+    }
+
+    /* Верхняя шапка с кнопкой назад и переключателем RU/KZ */
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+      color: #FFFFFF;
+      padding: 16px 20px 22px 20px;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-top {
+      max-width: 820px;
+      margin: 0 auto 12px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .header-right-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tier-badge {
+      display: none;
+      background: rgba(255, 199, 44, 0.25);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 20px;
+      padding: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 800;
+      font-size: 0.74rem;
+      padding: 5px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+    }
+
+    .header-title-box {
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .lesson-badge {
+      display: inline-block;
+      background: rgba(255, 199, 44, 0.2);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    header p {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       ЭКРАН ЗАГЛУШКИ ПРИ ОТСУТСТВИИ ПОДПИСКИ ПРО / ПРЕМИУМ / ВИП
+       ========================================================================== */
+    #authLoader {
+      width: 100%;
+      max-width: 520px;
+      margin: 40px auto;
+      padding: 30px 20px;
+      text-align: center;
+      font-weight: 700;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    #paywallGate {
+      display: none;
+      width: 100%;
+      max-width: 540px;
+      margin: 28px auto;
+      padding: 0 14px;
+    }
+
+    .paywall-card {
+      background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      border-radius: 22px;
+      padding: 28px 22px;
+      text-align: center;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.18);
+      border: 1px solid rgba(255, 199, 44, 0.35);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .pw-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      background: rgba(255, 199, 44, 0.16);
+      border: 1px solid rgba(255, 199, 44, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+    }
+
+    .pw-badge {
+      background: rgba(0, 161, 222, 0.22);
+      border: 1px solid rgba(0, 161, 222, 0.55);
+      color: #7DD3FC;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .pw-title {
+      font-size: 1.15rem;
+      font-weight: 900;
+      line-height: 1.3;
+      color: #FFFFFF;
+    }
+
+    .pw-desc {
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: #CBD5E1;
+      font-weight: 500;
+    }
+
+    .pw-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      margin-top: 6px;
+    }
+
+    .pw-btn-primary {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      padding: 13px 18px;
+      border-radius: 14px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(255, 199, 44, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .pw-btn-primary:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    .pw-btn-secondary {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 11px 16px;
+      border-radius: 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .pw-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    /* Контейнер защищенного урока (скрыт до подтверждения тарифа) */
+    #lessonContentWrapper {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Навигация по разделам урока */
+    .section-nav {
+      width: 100%;
+      max-width: 820px;
+      margin: 14px auto 0 auto;
+      padding: 0 14px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .nav-pill {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 9px 6px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .nav-pill.active {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      border-color: var(--kz-blue-dark);
+      box-shadow: 0 4px 12px rgba(0, 161, 222, 0.25);
+    }
+
+    /* Основной контейнер */
+    main {
+      width: 100%;
+      max-width: 820px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-section {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .tab-section.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Карточки теории */
+    .card-block {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-block::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: var(--kz-blue);
+    }
+
+    .card-block.gold::before {
+      background: var(--kz-gold-dark);
+    }
+
+    .card-block h2 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-block p {
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+
+    /* Сравнение Единственное vs Множественное число */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .comp-box {
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-main);
+    }
+
+    .comp-box.singular {
+      border-top: 4px solid var(--kz-blue);
+      background: var(--kz-blue-light);
+    }
+
+    .comp-box.plural {
+      border-top: 4px solid var(--kz-gold-dark);
+      background: var(--kz-gold-light);
+    }
+
+    .comp-title {
+      font-size: 0.88rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .comp-formula {
+      display: inline-block;
+      background: #FFFFFF;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      border: 1px dashed var(--kz-blue-dark);
+      margin-bottom: 8px;
+    }
+
+    .clinical-quote {
+      background: #FFFFFF;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.81rem;
+      border-left: 3px solid var(--text-dark);
+      margin-top: 8px;
+      line-height: 1.45;
+    }
+
+    /* Таблица временных и модальных вариаций There + BE */
+    .grammar-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 0.78rem;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .grammar-table th {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: 800;
+    }
+
+    .grammar-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border-color);
+      background: #FFFFFF;
+      line-height: 1.45;
+    }
+
+    .grammar-table tr:nth-child(even) td {
+      background: #F8FAFC;
+    }
+
+    /* Интерактивный разбор статьи UpToDate (Gastric Cancer — Diagnosis) */
+    .uptodate-box {
+      background: #FFFFFF;
+      border: 2px solid #CBD5E1;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .uptodate-header {
+      background: #1E293B;
+      color: #FFFFFF;
+      padding: 10px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .uptodate-controls {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .hl-btn {
+      border: none;
+      padding: 5px 10px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .hl-btn.there-type { background: #BAE6FD; color: #0369A1; }
+    .hl-btn.passive-type { background: #FDE68A; color: #92400E; }
+    .hl-btn.reset { background: rgba(255,255,255,0.2); color: #FFFFFF; }
+
+    .uptodate-body {
+      padding: 14px;
+      font-size: 0.84rem;
+      line-height: 1.68;
+      color: #334155;
+    }
+
+    .t-be, .t-pas {
+      padding: 1px 5px;
+      border-radius: 5px;
+      transition: all 0.2s ease;
+    }
+
+    .uptodate-body.show-there .t-be {
+      background: #BAE6FD;
+      color: #0369A1;
+      font-weight: 800;
+      border-bottom: 2px solid #0284C7;
+    }
+
+    .uptodate-body.show-passive .t-pas {
+      background: #FDE68A;
+      color: #92400E;
+      font-weight: 800;
+      border-bottom: 2px solid #D97706;
+    }
+
+    /* Быстрые микро-упражнения внутри теории (Quick Check) */
+    .quick-check {
+      background: #F8FAFC;
+      border: 1px dashed var(--kz-blue);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .qc-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .qc-question {
+      font-size: 0.86rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+    }
+
+    .qc-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .qc-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .qc-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background: var(--kz-blue-light);
+    }
+
+    .qc-btn.correct {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    .qc-btn.wrong {
+      background: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    .qc-feedback {
+      display: none;
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      line-height: 1.35;
+    }
+
+    /* Карточки словаря */
+    .vocab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+      gap: 10px;
+    }
+
+    .vocab-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .vocab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .vocab-word {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+    }
+
+    .speak-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 161, 222, 0.3);
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+    }
+
+    .vocab-trans {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .vocab-example {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--bg-main);
+      padding: 7px 9px;
+      border-radius: 8px;
+      line-height: 1.35;
+    }
+
+    /* Кнопка перехода к следующему разделу или тренажеру */
+    .action-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      border-radius: 16px;
+      padding: 13px 18px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    @media (max-width: 560px) {
+      .section-nav {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      header h1 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ШАПКА УРОКА -->
+  <header>
+    <div class="header-top">
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅ К списку уроков</a>
+      <div class="header-right-controls">
+        <span id="userTierBadge" class="tier-badge"></span>
+        <div class="lang-switch">
+          <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
+          <button class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
+        </div>
+      </div>
+    </div>
+    <div class="header-title-box">
+      <span class="lesson-badge">Lesson 8 • A1–B1 Medical English</span>
+      <h1 id="uiTitle">There is / There are (Наличие симптомов и очагов)</h1>
+      <p id="uiSubtitle">Как говорить, что где-то есть (или отсутствует) симптом, показание или патология в любом времени</p>
+    </div>
+  </header>
+
+  <!-- ИНДИКАТОР ПРОВЕРКИ ПОДПИСКИ -->
+  <div id="authLoader">🔄 Проверка подписки и доступа к конспекту...</div>
+
+  <!-- БЛОК PAYWALL (ПОКАЗЫВАЕТСЯ, ЕСЛИ НЕТ ТАРИФА ПРО / ПРЕМИУМ / ВИП) -->
+  <div id="paywallGate">
+    <div class="paywall-card">
+      <div class="pw-icon">🔒</div>
+      <span class="pw-badge" id="pwBadgeText">Доступно в тарифах ПРО / ПРЕМИУМ / ВИП</span>
+      <div class="pw-title" id="pwTitleText">Интерактивный конспект закрыт для вашего тарифа</div>
+      <p class="pw-desc" id="pwDescText">
+        Интерактивные конспекты с клиническим разбором статей UpToDate, озвученным словарем и упражнениями открыты для подписок «Про», «Премиум» и «ВИП». Перейдите на страницу тарифов, чтобы подключить или повысить свой доступ:
+      </p>
+      <div class="pw-buttons">
+        <a href="https://kazdoctors.com/tarifs" class="pw-btn-primary" id="pwTarifsBtn">
+          🌟 Перейти к тарифам (kazdoctors.com/tarifs)
+        </a>
+        <a href="https://instagram.com/doctors.speak" target="_blank" class="pw-btn-secondary" id="pwContactBtn">
+          💬 Написать нам (@doctors.speak)
+        </a>
+        <a href="/login.html" class="pw-btn-secondary" id="pwLoginBtn" style="display:none;">
+          🔐 Войти в аккаунт
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ЗАЩИЩЕННЫЙ КОНТЕНТ УРОКА (ОТКРЫВАЕТСЯ ТОЛЬКО ДЛЯ PRO, PREMIUM, VIP) -->
+  <div id="lessonContentWrapper">
+    <!-- НАВИГАЦИЯ ПО ЭТАПАМ УРОКА -->
+    <nav class="section-nav">
+      <button class="nav-pill active" onclick="showTab(0)" id="nav0">1. Смысл и Нюансы</button>
+      <button class="nav-pill" onclick="showTab(1)" id="nav1">2. Времена и Статья</button>
+      <button class="nav-pill" onclick="showTab(2)" id="nav2">3. Словарь (14 слов)</button>
+      <button class="nav-pill" onclick="showTab(3)" id="nav3">4. Упражнения</button>
+    </nav>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main>
+      <!-- ВКЛАДКА 1: ФОРМУЛА, ПРАВИЛО ПЕРВОГО СЛОВА И PARAДОКС THERE + HERE -->
+      <section class="tab-section active" id="tab0"></section>
+
+      <!-- ВКЛАДКА 2: ТАБЛИЦА ВСЕХ ВРЕМЕН/МОДАЛЬНЫХ (THERE + BE) И СТАТЬЯ UPTODATE -->
+      <section class="tab-section" id="tab1"></section>
+
+      <!-- ВКЛАДКА 3: СЛОВАРЬ С ПРИМЕРАМИ -->
+      <section class="tab-section" id="tab2">
+        <div class="card-block">
+          <h2 id="uiVocabTitle">💊 Клинический словарь урока (14 терминов)</h2>
+          <p id="uiVocabDesc">Нажмите 🔊, чтобы прослушать произношение. Все примеры показывают реальное использование конструкции There + BE в медицине.</p>
+          <div class="vocab-grid" id="vocabGrid"></div>
+        </div>
+        <button class="action-btn" onclick="showTab(3)" id="uiToExBtn">Перейти к упражнениям урока ➔</button>
+      </section>
+
+      <!-- ВКЛАДКА 4: ПРАКТИКУМ (EXERCISE 1 & 2 ИЗ PDF) -->
+      <section class="tab-section" id="tab3">
+        <div class="card-block gold">
+          <h2 id="uiEx1Title">✍️ Упражнение 1: Выберите правильную грамматическую форму</h2>
+          <p id="uiEx1Desc">Обращайте внимание на единственное/множественное число и форму глагола BE после модальных глаголов:</p>
+          <div id="ex1Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+
+        <div class="card-block">
+          <h2 id="uiEx2Title">🩺 Упражнение 2: Дополните предложения конструкцией There + BE</h2>
+          <p id="uiEx2Desc">Подберите нужное время или модальную вариацию (was / is / were / will be / could have been):</p>
+          <div id="ex2Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+
+        <a href="./thereis/" class="action-btn" id="uiGoTrainerBtn">🎯 Запустить игровой тренажер по Уроку 8 ➔</a>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. ПРОВЕРКА ПОДПИСКИ SUPABASE (ДОСТУП ТОЛЬКО ДЛЯ PRO, PREMIUM, VIP)
+    // =========================================================================
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+    // Уровни подписок: конспект открывается только при уровне >= 2 (pro, premium, vip)
+    const TIER_LEVELS = {
+      none: 0,
+      free: 0,
+      standard: 1,
+      pro: 2,
+      premium: 3,
+      vip: 4
+    };
+
+    const TIER_LABELS = {
+      standard: { ru: "СТАНДАРТ", kz: "СТАНДАРТ" },
+      pro: { ru: "ТАРИФ: ПРО", kz: "ТАРИФ: ПРО" },
+      premium: { ru: "ТАРИФ: ПРЕМИУМ", kz: "ТАРИФ: ПРЕМИУМ" },
+      vip: { ru: "ТАРИФ: ВИП 👑", kz: "ТАРИФ: ВИП 👑" }
+    };
+
+    let currentViewerState = {
+      isLoggedIn: false,
+      hasActiveSub: false,
+      tier: "none"
+    };
+
+    async function verifySubscriptionAccess() {
+      if (!supabaseClient) {
+        showPaywallGate(false, "none");
+        return;
+      }
+
+      try {
+        const { data: sessionData, error: sessionErr } = await supabaseClient.auth.getSession();
+        if (sessionErr || !sessionData || !sessionData.session) {
+          currentViewerState = { isLoggedIn: false, hasActiveSub: false, tier: "none" };
+          showPaywallGate(false, "none");
+          return;
+        }
+
+        const user = sessionData.session.user;
+        const userEmail = (user.email || "").toLowerCase().trim();
+
+        // Ищем профиль сначала по ID, затем по Email
+        let { data: profile } = await supabaseClient
+          .from("profiles")
+          .select("id, email, tier, subscription_expires_at")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (!profile && userEmail) {
+          const resByEmail = await supabaseClient
+            .from("profiles")
+            .select("id, email, tier, subscription_expires_at")
+            .ilike("email", userEmail)
+            .maybeSingle();
+          profile = resByEmail.data;
+        }
+
+        if (!profile || !profile.subscription_expires_at) {
+          currentViewerState = { isLoggedIn: true, hasActiveSub: false, tier: "none" };
+          showPaywallGate(true, "none");
+          return;
+        }
+
+        const expiresAt = new Date(profile.subscription_expires_at);
+        const now = new Date();
+        const isSubActive = !isNaN(expiresAt.getTime()) && now <= expiresAt;
+
+        if (!isSubActive) {
+          currentViewerState = { isLoggedIn: true, hasActiveSub: false, tier: "expired" };
+          showPaywallGate(true, "expired");
+          return;
+        }
+
+        const userTier = (profile.tier || "standard").toLowerCase().trim();
+        const tierLevel = TIER_LEVELS[userTier] || 1;
+
+        currentViewerState = { isLoggedIn: true, hasActiveSub: true, tier: userTier };
+
+        // Если уровень тарифа >= 2 (pro, premium, vip) — открываем конспект!
+        if (tierLevel >= TIER_LEVELS.pro) {
+          unlockLessonContent(userTier);
+        } else {
+          // Если тариф standard (уровень 1) — показываем предложение перейти на страницу тарифов
+          showPaywallGate(true, "standard");
+        }
+      } catch (err) {
+        console.error("Subscription check error:", err);
+        showPaywallGate(false, "none");
+      }
+    }
+
+    function unlockLessonContent(tier) {
+      document.getElementById("authLoader").style.display = "none";
+      document.getElementById("paywallGate").style.display = "none";
+      document.getElementById("lessonContentWrapper").style.display = "flex";
+
+      const badge = document.getElementById("userTierBadge");
+      if (badge && TIER_LABELS[tier]) {
+        badge.textContent = TIER_LABELS[tier][currentLang];
+        badge.style.display = "inline-block";
+      }
+    }
+
+    function showPaywallGate(isLoggedIn, reasonTier) {
+      document.getElementById("authLoader").style.display = "none";
+      document.getElementById("lessonContentWrapper").style.display = "none";
+      document.getElementById("paywallGate").style.display = "block";
+      updatePaywallTexts(isLoggedIn, reasonTier);
+    }
+
+    function updatePaywallTexts(isLoggedIn, reasonTier) {
+      const isKz = (currentLang === "kz");
+      const badgeEl = document.getElementById("pwBadgeText");
+      const titleEl = document.getElementById("pwTitleText");
+      const descEl = document.getElementById("pwDescText");
+      const tarifsBtn = document.getElementById("pwTarifsBtn");
+      const contactBtn = document.getElementById("pwContactBtn");
+      const loginBtn = document.getElementById("pwLoginBtn");
+
+      badgeEl.textContent = isKz
+        ? "ПРО / ПРЕМИУМ / ВИП ТАРИФТЕРІНДЕ ҚОЛЖЕТІМДІ"
+        : "ДОСТУПНО В ТАРИФАХ ПРО / ПРЕМИУМ / ВИП";
+
+      tarifsBtn.textContent = isKz
+        ? "🌟 Тарифтер бетіне өту (kazdoctors.com/tarifs)"
+        : "🌟 Перейти к тарифам (kazdoctors.com/tarifs)";
+
+      contactBtn.textContent = isKz
+        ? "💬 Бізге жазу (@doctors.speak)"
+        : "💬 Написать нам (@doctors.speak)";
+
+      if (!isLoggedIn) {
+        titleEl.textContent = isKz
+          ? "Конспектіні ашу үшін аккаунтқа кіріңіз немесе жазылым таңдаңыз"
+          : "Войдите в аккаунт или подключите тариф для чтения конспекта";
+        descEl.textContent = isKz
+          ? "Бұл интерактивті конспект «Про», «Премиум» және «ВИП» жазылымдары бар дәрігерлерге арналған. Тарифтер бетінде өзіңізге ыңғайлы пакетті таңдай аласыз:"
+          : "Этот интерактивный конспект открыт для врачей с подпиской «Про», «Премиум» или «ВИП». Ознакомьтесь с вариантами доступа на странице тарифов:";
+        loginBtn.style.display = "inline-flex";
+        loginBtn.textContent = isKz ? "🔐 Аккаунтқа кіру" : "🔐 Уже есть подписка? Войти в аккаунт";
+      } else if (reasonTier === "standard") {
+        titleEl.textContent = isKz
+          ? "Сізде «Стандарт» тарифі белсенді (тек тренажерлер)"
+          : "У вас активен тариф «Стандарт» (только тренажеры)";
+        descEl.textContent = isKz
+          ? "Интерактивті конспектілер мен мақала талдауларын оқу үшін тарифіңізді «Про», «Премиум» немесе «ВИП» деңгейіне дейін жаңартуды ұсынамыз:"
+          : "Чтобы открывать интерактивные конспекты, разборы статей и грамматические справочники, обновите вашу подписку до тарифа «Про», «Премиум» или «ВИП» на странице тарифов:";
+        loginBtn.style.display = "none";
+      } else {
+        titleEl.textContent = isKz
+          ? "Жазылым мерзімі аяқталды немесе белсенді емес"
+          : "Ваша подписка не активна или истекла";
+        descEl.textContent = isKz
+          ? "Сабақ конспектілеріне қол жеткізу үшін «Про», «Премиум» немесе «ВИП» тарифін таңдаңыз:"
+          : "Для получения доступа к интерактивным конспектам выберите тариф «Про», «Премиум» или «ВИП» на странице тарифов:";
+        loginBtn.style.display = "none";
+      }
+    }
+
+    // =========================================================================
+    // 2. БАЗА ДАННЫХ УРОКА 8 (НА РУССКОМ И КАЗАХСКОМ ЯЗЫКАХ)
+    // =========================================================================
+    const LESSON8_DATA = {
+      ui: {
+        backBtn: { ru: "⬅ К списку уроков", kz: "⬅ Сабақтар тізіміне" },
+        title: {
+          ru: "There is / There are (Наличие симптомов и очагов)",
+          kz: "There is / There are (Симптомдар мен ошақтардың болуы)"
+        },
+        subtitle: {
+          ru: "Формула: THERE + любая форма BE (is / are / was / were / will be / must be / might have been)",
+          kz: "Формула: THERE + кез келген BE формасы (is / are / was / were / will be / must be / might have been)"
+        },
+        nav: [
+          { ru: "1. Смысл и Нюансы", kz: "1. Мағынасы мен Ереже" },
+          { ru: "2. Времена и Статья", kz: "2. Шақтар мен Мақала" },
+          { ru: "3. Словарь (14 слов)", kz: "3. Сөздік (14 сөз)" },
+          { ru: "4. Упражнения", kz: "4. Жаттығулар" }
+        ],
+        vocabTitle: {
+          ru: "💊 Клинический словарь урока (14 терминов)",
+          kz: "💊 Сабақтың клиникалық сөздігі (14 термин)"
+        },
+        vocabDesc: {
+          ru: "Нажмите 🔊 для прослушивания произношения. Все примеры показывают работу конструкции There + BE в клинических ситуациях.",
+          kz: "Дұрыс айтылуын тыңдау үшін 🔊 басыңыз. Барлық мысалдар клиникалық жағдайлардағы There + BE құрылымын көрсетеді."
+        },
+        toExBtn: {
+          ru: "Перейти к шагу 4: Быстрые упражнения ➔",
+          kz: "4-қадамға өту: Жылдам жаттығулар ➔"
+        },
+        ex1Title: {
+          ru: "✍️ Упражнение 1: Выберите правильную форму There + BE",
+          kz: "✍️ 1-жаттығу: There + BE дұрыс формасын таңдаңыз"
+        },
+        ex1Desc: {
+          ru: "Следите за числом существительного и правильной формой глагола BE после модальных глаголов:",
+          kz: "Зат есімнің жекеше/көпше түріне және модальді етістіктен кейінгі BE формасына мұқият болыңыз:"
+        },
+        ex2Title: {
+          ru: "🩺 Упражнение 2: Вставьте подходящую вариацию There is / There are",
+          kz: "🩺 2-жаттығу: Тиісті There is / There are вариациясын қойыңыз"
+        },
+        ex2Desc: {
+          ru: "Определите время или модальность по контексту (Yesterday / In the next visit / In rare cases):",
+          kz: "Контекст бойынша шақты немесе модальділікті анықтаңыз (Yesterday / In the next visit / In rare cases):"
+        },
+        goTrainerBtn: {
+          ru: "🎯 Перейти к основному тренажеру Урока 8 ➔",
+          kz: "🎯 8-сабақтың негізгі тренажеріне өту ➔"
+        }
+      },
+
+      // ВКЛАДКА 1: БАЗОВАЯ ФОРМУЛА, ПРАВИЛО ПЕРВОГО СЛОВА И ПАРАДОКС THERE + HERE
+      tab0Html: {
+        ru: `
+          <div class="card-block">
+            <h2>🏥 Зачем врачу конструкция THERE IS / THERE ARE?</h2>
+            <p>Когда нам нужно сказать, что где-то <b>есть (имеется, присутствует)</b> или <b>отсутствует</b> симптом, отек, показание к пункции или пациенты в палате, в русском и казахском языках мы часто начинаем с места (<i>«В палате 20 пациентов», «Палатада 20 науқас бар»</i>). В английском языке такие предложения начинаются со связки <b>THERE + глагол BE</b>:</p>
+
+            <div class="comparison-grid">
+              <div class="comp-box singular">
+                <div class="comp-title">
+                  <span>1️⃣ THERE IS + Ед. ч. / Неисчисл.</span>
+                  <span style="font-size:0.72rem; color:var(--kz-blue-dark);">THERE IS A</span>
+                </div>
+                <span class="comp-formula">There is + 1 объект / симптом</span>
+                <p style="font-size:0.8rem;">Используется с исчисляемыми в ед. числе (<i>an indication, a rash, a loss</i>) и <b>неисчисляемыми</b> понятиями (<i>inflammation, itching, jaundice</i>):</p>
+                <div class="clinical-quote">
+                  • <b>"Clearly, <u>there is</u> an insufficiency in his heart function."</b><br>
+                  • <b>"<u>There is</u> no possibility to perform LP."</b>
+                </div>
+              </div>
+
+              <div class="comp-box plural">
+                <div class="comp-title">
+                  <span>🔢 THERE ARE + Множ. число</span>
+                  <span style="font-size:0.72rem; color:var(--kz-gold-dark);">THERE ARE As, Bs</span>
+                </div>
+                <span class="comp-formula">There are + объекты во мн. ч.</span>
+                <p style="font-size:0.8rem;">Используется, когда существительное после глагола стоит во множественном числе (<i>patients, causes, ligaments, lesions</i>):</p>
+                <div class="clinical-quote">
+                  • <b>"<u>There are</u> twenty patients in the ward."</b><br>
+                  • <b>"<u>There are</u> ligaments between vertebrae."</b>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>💡 Два главных секрета, на которых ловят в медицинских тестах</h2>
+            
+            <div class="clinical-quote" style="border-left-color: var(--kz-blue);">
+              <b>Секрет 1. Правило «первого слова» при перечислении:</b><br>
+              Если после конструкции перечисляются сразу несколько предметов или симптомов, глагол <b>BE согласуется с самым первым словом</b> в списке:<br>
+              • <b>"<u>There is</u> a table and two chairs."</b> — ставим <b>is</b>, так как первое слово (<i>a table</i>) в единственном числе!<br>
+              • <b>"<u>There is</u> itching and inflammation after the injection."</b> — ставим <b>is</b>, так как зуд (<i>itching</i>) и воспаление (<i>inflammation</i>) — неисчисляемые существительные!
+            </div>
+
+            <div class="clinical-quote" style="border-left-color: var(--kz-gold-dark);">
+              <b>Секрет 2. Почему в предложении бывает сразу два "there" или "there + here"?</b><br>
+              Первое слово <b>There</b> в начале конструкции <b>НЕ переводится как «там»</b> — это просто формальный грамматический старт («имеется / есть»). Поэтому в конце предложения спокойно может стоять слово <b>here</b> (здесь) или второе <b>there</b> (там):<br>
+              • <b>"<u>There are</u> investigation results <u>here</u>."</b> — <i><u>Здесь</u> есть (имеются) результаты исследования.</i><br>
+              • <b>"<u>There are</u> twenty patients <u>there</u>."</b> — <i><u>Там</u> находится двадцать пациентов.</i>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Быстрая проверка</span>
+              <div class="qc-question">Выберите правильный вариант: «После инъекции наблюдается зуд и воспаление» — "___ itching and inflammation after the injection."</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Верно! Itching (зуд) и inflammation (воспаление) — неисчисляемые медицинские термины, поэтому согласуем через единственное число: There is.')">There is</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Осторожно: несмотря на союз and, оба слова (itching, inflammation) неисчисляемые, поэтому по правилу первого слова ставится There is.')">There are</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">Перейти к шагу 2: Все времена и Модальные формы (There + BE) ➔</button>
+        `,
+        kz: `
+          <div class="card-block">
+            <h2>🏥 Дәрігерге THERE IS / THERE ARE құрылымы не үшін қажет?</h2>
+            <p>Бір жерде симптомның, ісінудің, пункцияға көрсеткіштің немесе палатада науқастардың <b>бар (немесе жоқ)</b> екенін айтқанда, қазақ тілінде біз сөйлемді орыннан бастап, соңына <b>«бар / жоқ»</b> сөзін қоямыз (<i>«Палатада 20 науқас бар», «Инфекция белгілері жоқ»</i>). Ал ағылшын тілінде мұндай сөйлемдер әрқашан <b>THERE + BE етістігімен</b> басталады:</p>
+
+            <div class="comparison-grid">
+              <div class="comp-box singular">
+                <div class="comp-title">
+                  <span>1️⃣ THERE IS + Жекеше / Саналмайтын</span>
+                  <span style="font-size:0.72rem; color:var(--kz-blue-dark);">THERE IS A</span>
+                </div>
+                <span class="comp-formula">There is + 1 нысан / симптом</span>
+                <p style="font-size:0.8rem;">Жекеше түрдегі зат есімдермен (<i>an indication, a rash, a loss</i>) және <b>саналмайтын</b> медициналық ұғымдармен (<i>inflammation, itching, jaundice</i>) қолданылады:</p>
+                <div class="clinical-quote">
+                  • <b>"Clearly, <u>there is</u> an insufficiency in his heart function."</b><br>
+                  • <b>"<u>There is</u> no possibility to perform LP."</b>
+                </div>
+              </div>
+
+              <div class="comp-box plural">
+                <div class="comp-title">
+                  <span>🔢 THERE ARE + Көпше түр</span>
+                  <span style="font-size:0.72rem; color:var(--kz-gold-dark);">THERE ARE As, Bs</span>
+                </div>
+                <span class="comp-formula">There are + көпше түрдегі заттар</span>
+                <p style="font-size:0.8rem;">Етістіктен кейінгі зат есім көпше түрде тұрғанда қолданылады (<i>patients, causes, ligaments, lesions</i>):</p>
+                <div class="clinical-quote">
+                  • <b>"<u>There are</u> twenty patients in the ward."</b><br>
+                  • <b>"<u>There are</u> ligaments between vertebrae."</b>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>💡 Медициналық тесттерде жиі кездесетін 2 маңызды құпия</h2>
+            
+            <div class="clinical-quote" style="border-left-color: var(--kz-blue);">
+              <b>1-құпия. Тізбектелген сөздердегі «бірінші сөз» ережесі:</b><br>
+              Егер сөйлемде бірнеше зат немесе симптом қатар аталса, <b>BE етістігі тізімдегі ЕҢ БІРІНШІ сөзбен</b> қиысады:<br>
+              • <b>"<u>There is</u> a table and two chairs."</b> — бірінші сөз (<i>a table</i>) жекеше түрде болғандықтан, <b>is</b> қойылады!<br>
+              • <b>"<u>There is</u> itching and inflammation after the injection."</b> — қышу (<i>itching</i>) мен қабыну (<i>inflammation</i>) саналмайтын зат есімдер болғандықтан, <b>is</b> қойылады!
+            </div>
+
+            <div class="clinical-quote" style="border-left-color: var(--kz-gold-dark);">
+              <b>2-құпия. Неліктен бір сөйлемде екі "there" немесе "there + here" қатар келе алады?</b><br>
+              Құрылым басындағы бірінші <b>There</b> «онда» деп аударылмайды — ол тек сөйлемді бастайтын грамматикалық белгі («бар»). Сондықтан сөйлем соңында <b>here</b> (осында/мұнда) немесе екінші <b>there</b> (онда) еркін тұра береді:<br>
+              • <b>"<u>There are</u> investigation results <u>here</u>."</b> — <i><u>Мұнда</u> зерттеу нәтижелері бар.</i><br>
+              • <b>"<u>There are</u> twenty patients <u>there</u>."</b> — <i><u>Онда</u> жиырма науқас бар.</i>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Жылдам тексеру</span>
+              <div class="qc-question">Дұрыс нұсқаны таңдаңыз: «Инъекциядан кейін қышу мен қабыну байқалады» — "___ itching and inflammation after the injection."</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Дұрыс! Itching (қышу) және inflammation (қабыну) — саналмайтын медициналық терминдер, сондықтан жекеше түрдегі There is қолданылады.')">There is</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Сақ болыңыз: itching және inflammation саналмайтын зат есімдер болғандықтан, бірінші сөз ережесі бойынша There is қойылады.')">There are</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">2-қадамға өту: Барлық шақтар мен Модальді формалар (There + BE) ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 2: ТАБЛИЦА ВСЕХ ВРЕМЕН/МОДАЛЬНЫХ (THERE + BE) И РАЗБОР UPTODATE (GASTRIC CANCER DIAGNOSIS)
+      tab1Html: {
+        ru: `
+          <div class="card-block gold">
+            <h2>🔄 Глагол BE в любой форме: от Past Simple до Модальных глаголов</h2>
+            <p>Главное правило этого урока: <b>необязательно, чтобы после There стоял именно "is" или "are"</b>! На месте глагола <b>BE</b> может стоять абсолютно любое время или модальная конструкция из прошлых уроков:</p>
+
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Время / Модальность</th>
+                  <th>Формула (There + форма BE)</th>
+                  <th>Клинический пример из урока</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>Past Simple</b><br>(Было / Не было в прошлом)</td>
+                  <td><b>There was</b> (ед. ч.)<br><b>There were</b> (мн. ч.)</td>
+                  <td>• <b>There was</b> an indication for lumbar puncture yesterday.<br>• <b>There were</b> no indications to admit the patient.</td>
+                </tr>
+                <tr>
+                  <td><b>Present Perfect</b><br>(На протяжении периода и до сих пор)</td>
+                  <td><b>There has been</b> (ед. ч.)<br><b>There have been</b> (мн. ч.)</td>
+                  <td>• After the lumbar puncture, <b>there have been</b> no signs of infection.</td>
+                </tr>
+                <tr>
+                  <td><b>Future Simple</b><br>(Будет / Не будет)</td>
+                  <td><b>There will be / won't be</b><br><b>There is going to be</b></td>
+                  <td>• <b>There won't be</b> any lesions visible on the scan.<br>• In the next visit, <b>there will be</b> further investigation.</td>
+                </tr>
+                <tr>
+                  <td><b>Modal + BE (Настоящее)</b><br>(Может быть / Должно быть)</td>
+                  <td><b>There can / may / should / must / cannot + BE</b></td>
+                  <td>• <b>There can be</b> massive inflammation.<br>• <b>There should be</b> signs of lesions.<br>• <b>There must be</b> an insufficiency.<br>• <b>There cannot be</b> any patients in the department.</td>
+                </tr>
+                <tr>
+                  <td><b>Modal + HAVE BEEN (Прошлое)</b><br>(Возможно, была потеря / желтуха)</td>
+                  <td><b>There might / could / must + HAVE BEEN</b></td>
+                  <td>• <b>There might have been</b> a loss of vision during the episode.<br>• In rare cases, <b>there could have been</b> lifelong jaundice.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Ловушка с модальными глаголами</span>
+              <div class="qc-question">Как правильно сказать: «Во время приступа, возможно, была потеря зрения» (предположение о прошлом)?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Отлично! После любого модального глагола (might / could / must) для прошедшего времени всегда идет неизменяемая связка have been -> There might have been.')">There might have been a loss of vision.</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Ошибка: после модального глагола might никогда не ставится has или was — только начальная форма have been!')">There might has been / might was a loss of vision.</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <div class="card-block">
+            <h2>🔬 Практика чтения UpToDate: Gastric Cancer — Diagnosis</h2>
+            <p>Прочитайте реальный клинический фрагмент из <b>UpToDate</b> о диагностике рака желудка и пластического линита (<i>linitis plastica</i>). Нажимайте на кнопки подсветки, чтобы увидеть, как в одном тексте работают конструкции <b>There + Modal + BE</b> (Урок 8) и <b>Modal / Passive Voice</b> (Уроки 5–6):</p>
+
+            <div class="uptodate-box">
+              <div class="uptodate-header">
+                <span>📖 UpToDate: Gastric Cancer — When to suspect the diagnosis</span>
+                <div class="uptodate-controls">
+                  <button class="hl-btn there-type" onclick="toggleUptodateHighlight('there')">Конструкции THERE + BE (Урок 8)</button>
+                  <button class="hl-btn passive-type" onclick="toggleUptodateHighlight('passive')">Passive & Modals (Уроки 5–6)</button>
+                  <button class="hl-btn reset" onclick="toggleUptodateHighlight('all')">Показать оба</button>
+                </div>
+              </div>
+              <div class="uptodate-body show-there show-passive" id="uptodateBodyText">
+                <b>When to suspect the diagnosis</b> — The diagnosis of gastric cancer <span class="t-pas">may be suspected</span> in patients with abdominal pain or weight loss and a history of gastric ulcer, or because of findings on upper endoscopy or imaging studies (eg, abdominal CT or barium studies).<br><br>
+                <span class="t-be">There should also be</span> a low threshold to evaluate for gastric cancer in patients with persistent heartburn or gastroesophageal reflux. One of the major diagnostic challenges is that patients with gastric cancer <span class="t-pas">may simply present</span> with heartburn or gastroesophageal reflux; however, these symptoms <span class="t-pas">may be overlooked</span> since they <span class="t-pas">are also experienced</span> by most people without cancer.<br><br>
+                Histologic examination of gastric tumor tissue <span class="t-pas">is required</span> to establish the diagnosis; this <span class="t-pas">is almost always acquired</span> with endoscopic biopsies.<br><br>
+                The gastric mucosa <span class="t-pas">may appear</span> normal in patients with linitis plastica, a particularly aggressive form of diffuse-type gastric cancer. Tumors with extensive submucosal spread <span class="t-pas">can be</span> difficult to identify endoscopically; in fact, this is responsible for the majority of gastric cancers for which upper endoscopy is nondiagnostic. These tumors tend to infiltrate the submucosa and muscularis propria extensively, and <span class="t-be">there may be</span> no superficial mucosal findings. Poor distensibility of the stomach <span class="t-pas">may be</span> the only finding on endoscopic evaluation.
+              </div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">Перейти к шагу 3: Словарь урока (14 слов) ➔</button>
+        `,
+        kz: `
+          <div class="card-block gold">
+            <h2>🔄 BE етістігінің кез келген формасы: Past Simple-дан Модальді етістіктерге дейін</h2>
+            <p>Осы сабақтың басты ережесі: <b>There сөзінен кейін тек "is" немесе "are" тұруы міндетті емес</b>! <b>BE</b> етістігінің орнында өткен сабақтардағы кез келген шақ немесе модальді құрылым тұра алады:</p>
+
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Шақ / Модальділік</th>
+                  <th>Формула (There + BE формасы)</th>
+                  <th>Сабақтағы клиникалық мысал</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>Past Simple</b><br>(Өткен шақта болды / болмады)</td>
+                  <td><b>There was</b> (жекеше)<br><b>There were</b> (көпше)</td>
+                  <td>• <b>There was</b> an indication for lumbar puncture yesterday.<br>• <b>There were</b> no indications to admit the patient.</td>
+                </tr>
+                <tr>
+                  <td><b>Present Perfect</b><br>(Осы уақытқа дейін болды)</td>
+                  <td><b>There has been</b> (жекеше)<br><b>There have been</b> (көпше)</td>
+                  <td>• After the lumbar puncture, <b>there have been</b> no signs of infection.</td>
+                </tr>
+                <tr>
+                  <td><b>Future Simple</b><br>(Болады / Болмайды)</td>
+                  <td><b>There will be / won't be</b><br><b>There is going to be</b></td>
+                  <td>• <b>There won't be</b> any lesions visible on the scan.<br>• In the next visit, <b>there will be</b> further investigation.</td>
+                </tr>
+                <tr>
+                  <td><b>Modal + BE (Осы шақ)</b><br>(Болуы мүмкін / Болуы тиіс)</td>
+                  <td><b>There can / may / should / must / cannot + BE</b></td>
+                  <td>• <b>There can be</b> massive inflammation.<br>• <b>There should be</b> signs of lesions.<br>• <b>There must be</b> an insufficiency.<br>• <b>There cannot be</b> any patients in the department.</td>
+                </tr>
+                <tr>
+                  <td><b>Modal + HAVE BEEN (Өткен шақ)</b><br>(Өткенде болған болуы мүмкін)</td>
+                  <td><b>There might / could / must + HAVE BEEN</b></td>
+                  <td>• <b>There might have been</b> a loss of vision during the episode.<br>• In rare cases, <b>there could have been</b> lifelong jaundice.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Модальді етістіктер тұзағы</span>
+              <div class="qc-question">«Ұстама кезінде көру қабілетінің жоғалуы болған болуы мүмкін» (өткен шаққа болжам) деп қалай дұрыс айтамыз?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Тамаша! Кез келген модальді етістіктен кейін (might / could / must) өткен шақты білдіру үшін өзгермейтін have been тіркесі келеді -> There might have been.')">There might have been a loss of vision.</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Қате: might модальді етістігінен кейін ешқашан has немесе was қойылмайды — тек бастапқы have been формасы!')">There might has been / might was a loss of vision.</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <div class="card-block">
+            <h2>🔬 UpToDate мақаласын талдау: Gastric Cancer — Diagnosis</h2>
+            <p>Асқазан обыры мен пластикалық линиттің (<i>linitis plastica</i>) диагностикасы туралы <b>UpToDate</b> клиникалық үзіндісін оқыңыз. Мәтіндегі <b>There + Modal + BE</b> (8-сабақ) және <b>Modal / Passive Voice</b> (5–6 сабақтар) құрылымдарын көру үшін батырмаларды басыңыз:</p>
+
+            <div class="uptodate-box">
+              <div class="uptodate-header">
+                <span>📖 UpToDate: Gastric Cancer — When to suspect the diagnosis</span>
+                <div class="uptodate-controls">
+                  <button class="hl-btn there-type" onclick="toggleUptodateHighlight('there')">THERE + BE құрылымдары (8-сабақ)</button>
+                  <button class="hl-btn passive-type" onclick="toggleUptodateHighlight('passive')">Passive & Modals (5–6 сабақтар)</button>
+                  <button class="hl-btn reset" onclick="toggleUptodateHighlight('all')">Екеуін де көрсету</button>
+                </div>
+              </div>
+              <div class="uptodate-body show-there show-passive" id="uptodateBodyText">
+                <b>When to suspect the diagnosis</b> — The diagnosis of gastric cancer <span class="t-pas">may be suspected</span> in patients with abdominal pain or weight loss and a history of gastric ulcer, or because of findings on upper endoscopy or imaging studies (eg, abdominal CT or barium studies).<br><br>
+                <span class="t-be">There should also be</span> a low threshold to evaluate for gastric cancer in patients with persistent heartburn or gastroesophageal reflux. One of the major diagnostic challenges is that patients with gastric cancer <span class="t-pas">may simply present</span> with heartburn or gastroesophageal reflux; however, these symptoms <span class="t-pas">may be overlooked</span> since they <span class="t-pas">are also experienced</span> by most people without cancer.<br><br>
+                Histologic examination of gastric tumor tissue <span class="t-pas">is required</span> to establish the diagnosis; this <span class="t-pas">is almost always acquired</span> with endoscopic biopsies.<br><br>
+                The gastric mucosa <span class="t-pas">may appear</span> normal in patients with linitis plastica, a particularly aggressive form of diffuse-type gastric cancer. Tumors with extensive submucosal spread <span class="t-pas">can be</span> difficult to identify endoscopically; in fact, this is responsible for the majority of gastric cancers for which upper endoscopy is nondiagnostic. These tumors tend to infiltrate the submucosa and muscularis propria extensively, and <span class="t-be">there may be</span> no superficial mucosal findings. Poor distensibility of the stomach <span class="t-pas">may be</span> the only finding on endoscopic evaluation.
+              </div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">3-қадамға өту: Сабақ сөздігі (14 сөз) ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 3: СЛОВАРЬ (14 ТЕРМИНОВ С ПРИМЕРАМИ ИЗ СЛАЙДОВ 2 И 6)
+      vocabulary: [
+        {
+          en: "Include",
+          ru: "Включать в себя",
+          kz: "Қамту / Тізімге қосу",
+          ex: "If <b>there is</b> budget for gloves, please <b>include</b> them in the list. <i>(Если есть бюджет на перчатки, включите их в список).</i>"
+        },
+        {
+          en: "Indication",
+          ru: "Показание (к процедуре/госпитализации)",
+          kz: "Көрсеткіш (емге / жатқызуға)",
+          ex: "<b>There were no indications</b> to admit the patient at presentation. <i>(При поступлении показаний к госпитализации не было).</i>"
+        },
+        {
+          en: "Inflammation",
+          ru: "Воспаление",
+          kz: "Қабыну",
+          ex: "<b>There can be</b> massive <b>inflammation</b> in autoimmune diseases. <i>(При аутоиммунных заболеваниях может быть массивное воспаление).</i>"
+        },
+        {
+          en: "Injection",
+          ru: "Инъекция / Укол",
+          kz: "Инъекция / Егу",
+          ex: "<b>There must be</b> at least two syringes to make an <b>injection</b>. <i>(Должно быть минимум два шприца для инъекции).</i>"
+        },
+        {
+          en: "Insufficiency",
+          ru: "Недостаточность (функции органа)",
+          kz: "Жеткіліксіздік (ағза қызметінің)",
+          ex: "Clearly, <b>there is an insufficiency</b> in his heart function. <i>(Очевидно, имеется недостаточность функции сердца).</i>"
+        },
+        {
+          en: "Intensive care",
+          ru: "Интенсивная терапия (реанимация / ОРИТ)",
+          kz: "Қарқынды терапия (жансақтау бөлімі)",
+          ex: "Before <b>there were intensive care</b> units, people were treated at home. <i>(До появления отделений реанимации людей лечили дома).</i>"
+        },
+        {
+          en: "Investigation",
+          ru: "Исследование / Обследование",
+          kz: "Зерттеу / Тексеру",
+          ex: "<b>There are investigation</b> results here. <i>(Здесь находятся результаты обследования — связка there + here!).</i>"
+        },
+        {
+          en: "Itching",
+          ru: "Зуд (зудящий)",
+          kz: "Қышу",
+          ex: "The patient said <b>there is</b> a persistent rash which is now <b>itching</b>. <i>(У пациента стойкая сыпь, которая сейчас зудит).</i>"
+        },
+        {
+          en: "Jaundice",
+          ru: "Желтуха",
+          kz: "Сарғаю (сарғыштық)",
+          ex: "<b>There are</b> several causes of <b>jaundice</b>: pre-hepatic, hepatic and post-hepatic. <i>(Существует несколько причин желтухи).</i>"
+        },
+        {
+          en: "Lesion",
+          ru: "Поражение / Очаг / Повреждение",
+          kz: "Зақымдану ошағы",
+          ex: "<b>There should be</b> signs of <b>lesions</b> in the lungs to diagnose pneumonia. <i>(Должны быть признаки очагов поражения в легких).</i>"
+        },
+        {
+          en: "Lifelong",
+          ru: "Пожизненный / Пожизненно",
+          kz: "Өмір бойы",
+          ex: "<b>There are</b> drugs that must be taken <b>lifelong</b>. <i>(Существуют препараты, которые нужно принимать пожизненно).</i>"
+        },
+        {
+          en: "Ligament",
+          ru: "Связка",
+          kz: "Байлам (сіңір байламы)",
+          ex: "<b>There are ligaments</b> between vertebrae. <i>(Между позвонками находятся связки).</i>"
+        },
+        {
+          en: "Loss",
+          ru: "Потеря (веса, зрения, сознания)",
+          kz: "Жоғалту (салмақ, көру, есінен тану)",
+          ex: "<b>There was</b> no weight <b>loss</b> since the last month. <i>(С прошлого месяца потери веса не наблюдалось).</i>"
+        },
+        {
+          en: "Lumbar puncture",
+          ru: "Люмбальная (спинномозговая) пункция",
+          kz: "Люмбальды (жұлын) пункциясы",
+          ex: "<b>There is</b> no possibility to perform <b>lumbar puncture (LP)</b>. <i>(Нет возможности провести люмбальную пункцию).</i>"
+        }
+      ],
+
+      // ВКЛАДКА 4: УПРАЖНЕНИЕ 1 И УПРАЖНЕНИЕ 2 ИЗ PDF
+      ex1: [
+        {
+          q: "1. Выберите грамматически верное предложение (маркер yesterday + ед. ч. an indication):",
+          options: [
+            "a) There was an indication for lumbar puncture yesterday.",
+            "b) There were an indication for lumbar puncture yesterday.",
+            "c) There will be an indication for lumbar puncture yesterday."
+          ],
+          correct: 0,
+          exp: {
+            ru: "Маркер 'yesterday' (вчера) требует прошедшего времени, а 'an indication' стоит в единственном числе -> There was.",
+            kz: "'Yesterday' (кеше) маркері өткен шақты талап етеді, ал 'an indication' жекеше түрде тұр -> There was."
+          }
+        },
+        {
+          q: "2. Выберите правильный вариант с модальным глаголом must:",
+          options: [
+            "a) There must be an insufficiency in hormone production.",
+            "b) There must has been an insufficiency in hormone production.",
+            "c) There must are insufficiency in hormone production."
+          ],
+          correct: 0,
+          exp: {
+            ru: "После модального глагола must глагол всегда идет в чистой начальной форме BE -> There must be.",
+            kz: "Must модальді етістігінен кейін етістік әрқашан бастапқы BE формасында тұрады -> There must be."
+          }
+        },
+        {
+          q: "3. Выберите правильный вариант («После инъекции наблюдается зуд и воспаление»):",
+          options: [
+            "a) There is itching and inflammation after the injection.",
+            "b) There are itching and inflammation after the injection.",
+            "c) There be itching and inflammation after the injection."
+          ],
+          correct: 0,
+          exp: {
+            ru: "По правилу первого слова (и неисчисляемых существительных itching / inflammation) используется форма единственного числа: There is.",
+            kz: "Бірінші сөз ережесі бойынша (және саналмайтын itching / inflammation сөздерімен) жекеше түрдегі There is қолданылады."
+          }
+        },
+        {
+          q: "4. Выберите правильный вариант предположения о прошлом (во время приступа):",
+          options: [
+            "a) There might have been a loss of vision during the episode.",
+            "b) There might has been a loss of vision during the episode.",
+            "c) There might was a loss of vision during the episode."
+          ],
+          correct: 0,
+          exp: {
+            ru: "Модальный глагол о событии в прошлом строится строго по формуле: Modal (might) + have been -> There might have been.",
+            kz: "Өткен шақтағы оқиғаға модальді болжам жасау формуласы: Modal (might) + have been -> There might have been."
+          }
+        },
+        {
+          q: "5. Выберите правильное отрицание в будущем времени (won't = will not):",
+          options: [
+            "a) There won't be any lesions visible on the scan.",
+            "b) There isn't be any lesions visible on the scan.",
+            "c) There won't being any lesions visible on the scan."
+          ],
+          correct: 0,
+          exp: {
+            ru: "После won't (will not) глагол ставится в начальную форму BE без окончаний -> There won't be.",
+            kz: "Won't (will not) көмекші етістігінен кейін бастапқы BE формасы қойылады -> There won't be."
+          }
+        }
+      ],
+
+      ex2: [
+        {
+          q: "1. Yesterday, ___ an urgent need for intensive care transfer.",
+          options: ["there was", "there were", "there will be"],
+          correct: 0,
+          exp: {
+            ru: "Маркер 'Yesterday' (вчера) + единственное число 'an urgent need' (острая необходимость) -> there was.",
+            kz: "'Yesterday' (кеше) маркері + жекеше түрдегі 'an urgent need' (шұғыл қажеттілік) -> there was."
+          }
+        },
+        {
+          q: "2. In most autoimmune conditions, ___ inflammation of the joints.",
+          options: ["there is (или there can be)", "there are", "there were"],
+          correct: 0,
+          exp: {
+            ru: "Общий медицинский факт в настоящем времени + неисчисляемое слово 'inflammation' (воспаление) -> there is.",
+            kz: "Осы шақтағы жалпы медициналық факт + саналмайтын 'inflammation' (қабыну) сөзі -> there is."
+          }
+        },
+        {
+          q: "3. After the lumbar puncture, ___ no signs of infection.",
+          options: ["there were / there have been", "there was", "there is"],
+          correct: 0,
+          exp: {
+            ru: "'Signs' (признаки) стоит во множественном числе, а пункция уже прошла -> there were (Past Simple) или there have been (Present Perfect).",
+            kz: "'Signs' (белгілер) көпше түрде тұр, ал пункция жасалып қойған -> there were (Past Simple) немесе there have been (Present Perfect)."
+          }
+        },
+        {
+          q: "4. In the next visit, ___ further investigation of the liver.",
+          options: ["there will be / there is going to be", "there was", "there have been"],
+          correct: 0,
+          exp: {
+            ru: "Маркер будущего времени 'In the next visit' (на следующем приеме) -> there will be или there is going to be.",
+            kz: "Келер шақ маркері 'In the next visit' (келесі қабылдауда) -> there will be немесе there is going to be."
+          }
+        },
+        {
+          q: "5. In rare cases, ___ have been lifelong jaundice due to congenital issues.",
+          options: ["there could / might / may", "there was", "there must to"],
+          correct: 0,
+          exp: {
+            ru: "Перед конструкцией 'have been' для выражения редкой вероятности ('In rare cases') ставим модальный глагол: there could / might / may have been.",
+            kz: "'Have been' алдында сирек ықтималдықты ('In rare cases') білдіру үшін модальді етістік қойылады: there could / might / may have been."
+          }
+        }
+      ]
+    };
+
+    // =========================================================================
+    // 3. ЛОГИКА ОТОБРАЖЕНИЯ, ОЗВУЧКИ И ПЕРЕКЛЮЧЕНИЯ ЯЗЫКОВ (RU / KZ)
+    // =========================================================================
+    let currentLang = localStorage.getItem('doctors_speak_lang') || 'ru';
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('doctors_speak_lang', lang);
+
+      document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
+      document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
+
+      const ui = LESSON8_DATA.ui;
+      document.getElementById('uiBackBtn').textContent = ui.backBtn[lang];
+      document.getElementById('uiTitle').textContent = ui.title[lang];
+      document.getElementById('uiSubtitle').textContent = ui.subtitle[lang];
+
+      ui.nav.forEach((item, index) => {
+        document.getElementById(`nav${index}`).textContent = item[lang];
+      });
+
+      document.getElementById('uiVocabTitle').textContent = ui.vocabTitle[lang];
+      document.getElementById('uiVocabDesc').textContent = ui.vocabDesc[lang];
+      document.getElementById('uiToExBtn').textContent = ui.toExBtn[lang];
+      document.getElementById('uiEx1Title').textContent = ui.ex1Title[lang];
+      document.getElementById('uiEx1Desc').textContent = ui.ex1Desc[lang];
+      document.getElementById('uiEx2Title').textContent = ui.ex2Title[lang];
+      document.getElementById('uiEx2Desc').textContent = ui.ex2Desc[lang];
+      document.getElementById('uiGoTrainerBtn').textContent = ui.goTrainerBtn[lang];
+
+      // Обновляем бейдж тарифа или тексты экрана Paywall при переключении языка
+      const badge = document.getElementById("userTierBadge");
+      if (badge && TIER_LABELS[currentViewerState.tier]) {
+        badge.textContent = TIER_LABELS[currentViewerState.tier][lang];
+      }
+      if (document.getElementById("paywallGate").style.display === "block") {
+        updatePaywallTexts(currentViewerState.isLoggedIn, currentViewerState.tier);
+      }
+
+      // Рендерим вкладки теории, словаря и упражнений
+      document.getElementById('tab0').innerHTML = LESSON8_DATA.tab0Html[lang];
+      document.getElementById('tab1').innerHTML = LESSON8_DATA.tab1Html[lang];
+      renderVocab();
+      renderExercises('ex1Container', LESSON8_DATA.ex1);
+      renderExercises('ex2Container', LESSON8_DATA.ex2);
+    }
+
+    function showTab(idx) {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`nav${i}`).classList.toggle('active', i === idx);
+        document.getElementById(`tab${i}`).classList.toggle('active', i === idx);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Подсветка конструкций в статье UpToDate (Gastric Cancer Diagnosis)
+    function toggleUptodateHighlight(mode) {
+      const box = document.getElementById('uptodateBodyText');
+      if (!box) return;
+      box.classList.remove('show-there', 'show-passive');
+      if (mode === 'there' || mode === 'all') box.classList.add('show-there');
+      if (mode === 'passive' || mode === 'all') box.classList.add('show-passive');
+    }
+
+    // Проверка встроенных микро-вопросов в теории
+    function checkInlineQuiz(btn, isCorrect, feedbackText) {
+      const parent = btn.closest('.quick-check');
+      const allBtns = parent.querySelectorAll('.qc-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+      }
+
+      const fb = parent.querySelector('.qc-feedback');
+      fb.textContent = `💡 ${feedbackText}`;
+      fb.style.display = 'block';
+    }
+
+    // Рендер словаря с озвучкой Web Speech API
+    function renderVocab() {
+      const grid = document.getElementById('vocabGrid');
+      grid.innerHTML = '';
+      LESSON8_DATA.vocabulary.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'vocab-card';
+        div.innerHTML = `
+          <div class="vocab-header">
+            <span class="vocab-word">${item.en}</span>
+            <button class="speak-btn" onclick="speakEn('${item.en}')" title="Прослушать">🔊</button>
+          </div>
+          <div class="vocab-trans">${item[currentLang]}</div>
+          <div class="vocab-example">${item.ex}</div>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    function speakEn(word) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(word);
+      u.lang = 'en-US';
+      u.rate = 0.9;
+      window.speechSynthesis.speak(u);
+    }
+
+    // Рендер упражнений 1 и 2 из PDF
+    function renderExercises(containerId, list) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+      list.forEach(item => {
+        const box = document.createElement('div');
+        box.className = 'quick-check';
+        box.style.marginTop = '0';
+
+        const qEl = document.createElement('div');
+        qEl.className = 'qc-question';
+        qEl.textContent = item.q;
+
+        const optsEl = document.createElement('div');
+        optsEl.className = 'qc-options';
+
+        const fbEl = document.createElement('div');
+        fbEl.className = 'qc-feedback';
+        fbEl.textContent = `💡 ${item.exp[currentLang]}`;
+
+        item.options.forEach((optText, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'qc-btn';
+          btn.textContent = optText;
+          btn.onclick = () => {
+            const buttons = optsEl.querySelectorAll('.qc-btn');
+            buttons.forEach(b => b.disabled = true);
+            if (idx === item.correct) {
+              btn.classList.add('correct');
+            } else {
+              btn.classList.add('wrong');
+              buttons[item.correct].classList.add('correct');
+            }
+            fbEl.style.display = 'block';
+          };
+          optsEl.appendChild(btn);
+        });
+
+        box.appendChild(qEl);
+        box.appendChild(optsEl);
+        box.appendChild(fbEl);
+        container.appendChild(box);
+      });
+    }
+
+    // Инициализация языка и проверка подписки при загрузке страницы
+    setLang(currentLang);
+    verifySubscriptionAccess();
+  </script>
+</body>
+</html>
