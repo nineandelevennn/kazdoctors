@@ -485,7 +485,49 @@
     }
 
     #userArea { display: none; }
-    #welcomeMessage { display: block; margin-bottom: 8px; font-size: 0.82rem; font-weight: 700; }      
+    #welcomeMessage {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 0.9rem;
+        font-weight: 800;
+        letter-spacing: 0.4px;
+        color: #FFFFFF;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Строчка YOUR PLAN */
+    .user-plan-row {
+        margin-bottom: 10px;
+    }
+
+    .plan-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(0, 0, 0, 0.22);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        color: #FFFFFF;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.6px;
+        padding: 4px 14px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        text-decoration: none;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .plan-badge.active-plan {
+        background: rgba(255, 199, 44, 0.25);
+        border-color: var(--kz-gold);
+        color: var(--kz-gold);
+    }
+
+    .plan-badge:active {
+        transform: scale(0.96);
+    }
 
     @media (max-height: 680px) {
         header { padding: 20px 16px; }
@@ -532,6 +574,9 @@
             <!-- Блок авторизованного пользователя -->
             <div id="userArea">
                 <span id="welcomeMessage"></span>
+                <div class="user-plan-row">
+                    <a href="./tarifs/" id="userPlanBadge" class="plan-badge">YOUR PLAN: FREE</a>
+                </div>
                 <button id="logoutButton" onclick="logout()">🚪 LOG OUT</button>
             </div>
         </div>
@@ -811,6 +856,14 @@
 
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+    const PLAN_DISPLAY_NAMES = {
+        free: "FREE",
+        standard: "STANDARD",
+        pro: "PRO",
+        premium: "PREMIUM",
+        vip: "VIP 👑"
+    };
+
     // Генерация уникального ID устройства для защиты от мульти-входа
     function getDeviceUUID() {
         let deviceId = localStorage.getItem('app_device_id');
@@ -821,53 +874,72 @@
         return deviceId;
     }
 
-    // Проверка: 1 устройство + наличие активной подписки (subscription_expires_at)
+    // Проверка: 1 устройство + наличие активной подписки + получение ИМЕНИ и ТАРИФА
     async function verifyUserAccess(user) {
         const localDeviceId = getDeviceUUID();
+        const userEmail = (user.email || '').toLowerCase().trim();
 
-        const { data: profile, error } = await supabaseClient
+        // 1. Ищем профиль по ID, а если не найден — по Email
+        let { data: profile, error } = await supabaseClient
             .from('profiles')
-            .select('current_device_id, subscription_expires_at')
+            .select('id, email, name, tier, current_device_id, subscription_expires_at')
             .eq('id', user.id)
-            .single();
+            .maybeSingle();
 
-        // Если профиля еще нет в таблице — создаем его БЕЗ подписки (subscription_expires_at: null),
-        // чтобы доступ появлялся только тогда, когда вы сами продлите его в Supabase!
-        if (error && error.code === 'PGRST116') {
-            await supabaseClient.from('profiles').insert({
-                id: user.id,
-                email: user.email,
-                current_device_id: localDeviceId,
-                subscription_expires_at: null
-            });
-            return { sessionValid: true, hasActiveSub: false };
+        if (!profile && userEmail) {
+            const resByEmail = await supabaseClient
+                .from('profiles')
+                .select('id, email, name, tier, current_device_id, subscription_expires_at')
+                .ilike('email', userEmail)
+                .maybeSingle();
+            profile = resByEmail.data;
+            error = resByEmail.error;
         }
 
-        if (!profile) return { sessionValid: true, hasActiveSub: false };
+        // Если профиля еще нет в таблице — создаем его БЕЗ подписки (subscription_expires_at: null)
+        if (!profile) {
+            await supabaseClient.from('profiles').insert({
+                id: user.id,
+                email: userEmail,
+                current_device_id: localDeviceId,
+                subscription_expires_at: null,
+                tier: 'standard'
+            });
+            return { sessionValid: true, hasActiveSub: false, name: null, tier: 'free' };
+        }
 
         // Проверяем, совпадает ли устройство с активным
         if (!profile.current_device_id) {
             await supabaseClient
                 .from('profiles')
-                .update({ current_device_id: localDeviceId })
-                .eq('id', user.id);
+                .update({ id: user.id, current_device_id: localDeviceId })
+                .eq('email', profile.email || userEmail);
         } else if (profile.current_device_id !== localDeviceId) {
             alert("В ваш аккаунт выполнен вход с другого устройства. Сессия на этом устройстве завершена.");
             await supabaseClient.auth.signOut();
             showLoggedOut();
-            return { sessionValid: false, hasActiveSub: false };
+            return { sessionValid: false, hasActiveSub: false, name: null, tier: 'free' };
         }
 
         // Проверяем, выдана ли подписка администратором и не истекла ли она
         let hasActiveSub = false;
         if (profile.subscription_expires_at) {
             const expiresAt = new Date(profile.subscription_expires_at);
-            if (new Date() <= expiresAt) {
+            if (!isNaN(expiresAt.getTime()) && new Date() <= expiresAt) {
                 hasActiveSub = true;
             }
         }
 
-        return { sessionValid: true, hasActiveSub: hasActiveSub };
+        const activeTier = hasActiveSub
+            ? (profile.tier || 'standard').toLowerCase().trim()
+            : 'free';
+
+        return {
+            sessionValid: true,
+            hasActiveSub: hasActiveSub,
+            name: profile.name || null,
+            tier: activeTier
+        };
     }
 
     async function checkAuth() {
@@ -877,19 +949,33 @@
         if (data.session) {
             const access = await verifyUserAccess(data.session.user);
             if (access.sessionValid) {
-                showLoggedIn(data.session.user, access.hasActiveSub);
+                showLoggedIn(data.session.user, access.hasActiveSub, access.name, access.tier);
             }
         } else {
             showLoggedOut();
         }
     }
 
-    function showLoggedIn(user, hasActiveSub) {
+    function showLoggedIn(user, hasActiveSub, profileName, tier) {
         // Прячем обе кнопки (LOGIN и REGISTER)
         document.getElementById("guestActions").style.display = "none";
         document.getElementById("userArea").style.display = "block";
-        document.getElementById("welcomeMessage").textContent =
-            "Welcome, " + (user.email || "student") + (hasActiveSub ? " 👋" : " (Free account)");
+
+        // Определяем имя: сначала из таблицы profiles, затем из метаданных, иначе логин до @
+        const fallbackEmailName = user.email ? user.email.split('@')[0] : "DOCTOR";
+        const displayName = (
+            (profileName && profileName.trim()) ||
+            user.user_metadata?.name ||
+            fallbackEmailName
+        ).toUpperCase();
+
+        document.getElementById("welcomeMessage").textContent = `HELLO, ${displayName}! 👋`;
+
+        // Обновляем строчку YOUR PLAN
+        const planBadge = document.getElementById("userPlanBadge");
+        const planLabel = PLAN_DISPLAY_NAMES[tier] || (hasActiveSub ? "STANDARD" : "FREE");
+        planBadge.textContent = `YOUR PLAN: ${planLabel}`;
+        planBadge.classList.toggle("active-plan", hasActiveSub);
 
         // Открываем замочки только если у пользователя активна подписка
         if (hasActiveSub) {
