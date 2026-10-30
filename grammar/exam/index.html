@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>@doctors.speak — Final Videocourse Exam (60 min)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Подключение Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --kz-gold-light: #FFFBEB;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --success-bg: #DCFCE7;
+      --success-border: #22C55E;
+      --success-text: #15803D;
+      --error-bg: #FEE2E2;
+      --error-border: #EF4444;
+      --error-text: #B91C1C;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 50px;
+    }
+
+    /* Верхняя шапка с таймером */
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      padding: 12px 16px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.25);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 2px solid var(--kz-blue);
+    }
+
+    .header-inner {
+      max-width: 840px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 6px 12px;
+      border-radius: 18px;
+      transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    .header-center-status {
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .timer-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 199, 44, 0.18);
+      border: 1.5px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-weight: 900;
+      font-size: 0.92rem;
+      padding: 5px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .timer-pill.danger {
+      background: rgba(239, 68, 68, 0.25);
+      border-color: #EF4444;
+      color: #FCA5A5;
+      animation: pulseTimer 1s infinite;
+    }
+
+    @keyframes pulseTimer {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+
+    .progress-pill {
+      background: rgba(0, 161, 222, 0.2);
+      border: 1px solid rgba(0, 161, 222, 0.5);
+      color: #7DD3FC;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 5px 11px;
+      border-radius: 16px;
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      padding: 2px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 800;
+      font-size: 0.72rem;
+      padding: 4px 10px;
+      border-radius: 14px;
+      cursor: pointer;
+    }
+
+    .lang-btn.active {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+    }
+
+    /* Лоадер и Экран Paywall */
+    #authLoader {
+      width: 100%;
+      max-width: 500px;
+      margin: 50px auto;
+      padding: 30px 20px;
+      text-align: center;
+      font-weight: 700;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    #paywallGate {
+      display: none;
+      width: 100%;
+      max-width: 540px;
+      margin: 30px auto;
+      padding: 0 14px;
+    }
+
+    .paywall-card {
+      background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      border-radius: 22px;
+      padding: 28px 22px;
+      text-align: center;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.18);
+      border: 1px solid rgba(255, 199, 44, 0.35);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .pw-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      background: rgba(255, 199, 44, 0.16);
+      border: 1px solid rgba(255, 199, 44, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+    }
+
+    .pw-badge {
+      background: rgba(0, 161, 222, 0.22);
+      border: 1px solid rgba(0, 161, 222, 0.55);
+      color: #7DD3FC;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+
+    .pw-title {
+      font-size: 1.12rem;
+      font-weight: 900;
+      line-height: 1.3;
+    }
+
+    .pw-desc {
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: #CBD5E1;
+    }
+
+    .pw-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      margin-top: 6px;
+    }
+
+    .pw-btn-primary {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      padding: 13px 18px;
+      border-radius: 14px;
+      font-size: 0.86rem;
+      font-weight: 800;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .pw-btn-secondary {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 11px 16px;
+      border-radius: 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    /* Основной контейнер экзамена */
+    main {
+      width: 100%;
+      max-width: 840px;
+      padding: 18px 14px;
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* 1. СТАРТОВЫЙ ЭКРАН ПЕРЕД НАЧАЛОМ ТАЙМЕРА */
+    .start-card {
+      background: var(--card-bg);
+      border-radius: 22px;
+      padding: 26px 22px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .exam-hero-badge {
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      border: 1px solid rgba(0, 161, 222, 0.3);
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 5px 14px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .start-title {
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--text-dark);
+      line-height: 1.25;
+    }
+
+    .student-info-pill {
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px 16px;
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.82rem;
+    }
+
+    .student-info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .exam-specs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 100%;
+      max-width: 520px;
+      margin: 4px 0;
+    }
+
+    .spec-item {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .spec-val {
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: var(--kz-blue-dark);
+    }
+
+    .spec-lbl {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .rules-list {
+      text-align: left;
+      background: var(--kz-gold-light);
+      border-left: 4px solid var(--kz-gold-dark);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      color: var(--text-dark);
+      width: 100%;
+      max-width: 560px;
+    }
+
+    .start-exam-btn {
+      width: 100%;
+      max-width: 400px;
+      background: linear-gradient(135deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 16px;
+      padding: 15px 24px;
+      font-size: 0.96rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0, 161, 222, 0.3);
+      transition: transform 0.15s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .start-exam-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* 2. ЭКРАН ПРОХОЖДЕНИЯ ЭКЗАМЕНА */
+    #activeExamSection {
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .nav-panel-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 12px 14px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+    }
+
+    .nav-controls-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .sec-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .sec-tab-btn {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      color: var(--text-dark);
+      font-size: 0.74rem;
+      font-weight: 800;
+      padding: 7px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .sec-tab-btn.active {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      border-color: var(--kz-blue-dark);
+    }
+
+    .map-toggle-btn {
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      color: var(--kz-blue-dark);
+      font-size: 0.73rem;
+      font-weight: 800;
+      padding: 6px 11px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .q-map-grid {
+      display: none;
+      grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+      gap: 5px;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--border-color);
+    }
+
+    .q-map-grid.open {
+      display: grid;
+    }
+
+    .q-map-dot {
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: #F8FAFC;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .q-map-dot.answered {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      border-color: var(--kz-blue-dark);
+    }
+
+    /* Карточка вопроса */
+    .q-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-left: 5px solid #CBD5E1;
+      border-radius: 16px;
+      padding: 15px 16px;
+      transition: all 0.15s ease;
+    }
+
+    .q-card.answered-card {
+      border-left-color: var(--kz-blue);
+    }
+
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .q-num-badge {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      background: var(--kz-blue-light);
+      padding: 3px 9px;
+      border-radius: 8px;
+      text-transform: uppercase;
+    }
+
+    .q-cat-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .q-text {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      line-height: 1.45;
+      margin-bottom: 12px;
+    }
+
+    .q-opts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .opt-btn {
+      background: #F8FAFC;
+      border: 1.5px solid var(--border-color);
+      border-radius: 11px;
+      padding: 9px 14px;
+      font-size: 0.81rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-align: left;
+      flex: 1 1 auto;
+    }
+
+    .opt-btn:hover {
+      border-color: var(--kz-blue);
+      background: var(--kz-blue-light);
+    }
+
+    .opt-btn.selected {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      border-color: var(--kz-blue-dark);
+      box-shadow: 0 3px 10px rgba(0, 161, 222, 0.22);
+    }
+
+    .finish-exam-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1.5px solid var(--kz-gold-dark);
+      border-radius: 16px;
+      padding: 15px 20px;
+      font-size: 0.95rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(217, 160, 0, 0.25);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 8px;
+    }
+
+    /* ==========================================================================
+       3. СЕРТИФИКАТ РЕЗУЛЬТАТА (ИДЕАЛЬНЫЙ ПОД СКРИНШОТ С ТЕЛЕФОНА И НОУТБУКА)
+       ========================================================================== */
+    #resultSection {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .screenshot-frame {
+      width: 100%;
+      max-width: 480px;
+      background: linear-gradient(155deg, #0F172A 0%, #1E293B 60%, #0F2942 100%);
+      color: #FFFFFF;
+      border-radius: 24px;
+      padding: 22px 20px;
+      border: 2px solid rgba(255, 199, 44, 0.55);
+      box-shadow: 0 16px 38px rgba(15, 23, 42, 0.25);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .screenshot-frame::after {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 170px;
+      height: 170px;
+      background: radial-gradient(circle, rgba(255, 199, 44, 0.22) 0%, rgba(255, 199, 44, 0) 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .cert-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+      padding-bottom: 10px;
+    }
+
+    .cert-brand {
+      font-size: 0.78rem;
+      font-weight: 900;
+      color: var(--kz-gold);
+      letter-spacing: 0.6px;
+    }
+
+    .cert-hash {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: #94A3B8;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 3px 8px;
+      border-radius: 8px;
+      font-family: monospace;
+    }
+
+    .cert-student-box {
+      text-align: center;
+      padding: 4px 0;
+    }
+
+    .cert-student-lbl {
+      font-size: 0.66rem;
+      font-weight: 800;
+      color: #94A3B8;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .cert-student-name {
+      font-size: 1.22rem;
+      font-weight: 900;
+      color: #FFFFFF;
+      margin-top: 2px;
+      word-break: break-word;
+    }
+
+    .cert-score-circle-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 18px;
+      padding: 14px 16px;
+    }
+
+    .cert-big-score {
+      font-size: 2.1rem;
+      font-weight: 900;
+      color: var(--kz-gold);
+      line-height: 1;
+    }
+
+    .cert-score-meta {
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .cert-percent-badge {
+      display: inline-block;
+      background: rgba(16, 185, 129, 0.22);
+      border: 1px solid #34D399;
+      color: #A7F3D0;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 8px;
+      width: fit-content;
+    }
+
+    .cert-level-text {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+
+    .cert-subscores-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .cert-sub-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 8px 10px;
+      text-align: center;
+    }
+
+    .cert-sub-title {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #CBD5E1;
+      text-transform: uppercase;
+    }
+
+    .cert-sub-val {
+      font-size: 0.95rem;
+      font-weight: 900;
+      color: #7DD3FC;
+      margin-top: 2px;
+    }
+
+    /* Блок контроля попыток на сертификате */
+    .cert-integrity-box {
+      background: rgba(0, 0, 0, 0.28);
+      border: 1px solid rgba(255, 199, 44, 0.35);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 0.73rem;
+    }
+
+    .cert-int-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cert-int-row span.lbl {
+      color: #94A3B8;
+      font-weight: 600;
+    }
+
+    .cert-int-row span.val {
+      color: #FFFFFF;
+      font-weight: 800;
+    }
+
+    .cert-int-row span.val.gold {
+      color: var(--kz-gold);
+    }
+
+    .cert-footer-stamp {
+      text-align: center;
+      font-size: 0.66rem;
+      color: #94A3B8;
+      font-weight: 600;
+      padding-top: 4px;
+    }
+
+    /* Кнопки под сертификатом */
+    .result-actions {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .review-card {
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 16px;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .review-item {
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      line-height: 1.4;
+      border-left: 4px solid #CBD5E1;
+      background: #F8FAFC;
+    }
+
+    .review-item.ok {
+      border-left-color: #22C55E;
+      background: #F0FDF4;
+    }
+
+    .review-item.err {
+      border-left-color: #EF4444;
+      background: #FEF2F2;
+    }
+
+    @media (max-width: 520px) {
+      .exam-specs-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .cert-big-score {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ВЕРХНЯЯ ШАПКА -->
+  <header>
+    <div class="header-inner">
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅ К курсу</a>
+
+      <!-- Таймер и счетчик ответов (показываются во время экзамена) -->
+      <div class="header-center-status" id="headerExamStatus">
+        <div class="timer-pill" id="timerDisplay">⏱️ 60:00</div>
+        <div class="progress-pill" id="progressDisplay">0 / 60</div>
+      </div>
+
+      <div class="lang-switch">
+        <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
+        <button class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ИНДИКАТОР ПРОВЕРКИ ПОДПИСКИ -->
+  <div id="authLoader">🔄 Проверка подписки и подготовка экзаменационного бланка...</div>
+
+  <!-- БЛОК PAYWALL (ЕСЛИ НЕТ ТАРИФА ПРО / ПРЕМИУМ / ВИП) -->
+  <div id="paywallGate">
+    <div class="paywall-card">
+      <div class="pw-icon">🔒</div>
+      <span class="pw-badge" id="pwBadgeText">ДОСТУПНО В ТАРИФАХ ПРО / ПРЕМИУМ / ВИП</span>
+      <div class="pw-title" id="pwTitleText">Финальный экзамен видеокурса закрыт для вашего тарифа</div>
+      <p class="pw-desc" id="pwDescText">
+        Итоговое тестирование по видеокурсу (60 вопросов с выдачей именного сертификата) доступно участникам с подпиской «Про», «Премиум» или «ВИП».
+      </p>
+      <div class="pw-buttons">
+        <a href="https://kazdoctors.com/tarifs" class="pw-btn-primary" id="pwTarifsBtn">
+          🌟 Перейти к тарифам (kazdoctors.com/tarifs)
+        </a>
+        <a href="https://instagram.com/doctors.speak" target="_blank" class="pw-btn-secondary" id="pwContactBtn">
+          💬 Написать нам (@doctors.speak)
+        </a>
+        <a href="/login.html" class="pw-btn-secondary" id="pwLoginBtn" style="display:none;">
+          🔐 Войти в аккаунт
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ОСНОВНОЙ КОНТЕНТ (ОТКРЫВАЕТСЯ ТОЛЬКО ДЛЯ PRO, PREMIUM, VIP) -->
+  <main id="examMainWrapper">
+
+    <!-- 1. СТАРТОВЫЙ ЭКРАН -->
+    <section class="start-card" id="startScreen">
+      <span class="exam-hero-badge">🎓 @doctors.speak • Final Assessment</span>
+      <h1 class="start-title" id="uiStartTitle">Итоговый экзамен по видеокурсу Medical English</h1>
+
+      <div class="student-info-pill">
+        <div class="student-info-row">
+          <span style="color:var(--text-muted); font-weight:700;" id="uiStudentLbl">Участник:</span>
+          <strong style="color:var(--text-dark);" id="startStudentName">—</strong>
+        </div>
+        <div class="student-info-row">
+          <span style="color:var(--text-muted); font-weight:700;" id="uiAttemptLbl">Предстоящая попытка:</span>
+          <strong style="color:var(--kz-blue-dark);" id="startAttemptBadge">#1</strong>
+        </div>
+        <div class="student-info-row" id="startFirstScoreRow" style="display:none;">
+          <span style="color:var(--text-muted); font-weight:700;" id="uiFirstScoreLbl">Результат 1-й попытки:</span>
+          <strong style="color:#B45309;" id="startFirstScoreVal">—</strong>
+        </div>
+      </div>
+
+      <div class="exam-specs-grid">
+        <div class="spec-item">
+          <span class="spec-val">60</span>
+          <span class="spec-lbl" id="uiSpecQ">Вопросов</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-val">60 мин</span>
+          <span class="spec-lbl" id="uiSpecTime">Таймер</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-val">30 + 30</span>
+          <span class="spec-lbl">Grammar & Vocab</span>
+        </div>
+      </div>
+
+      <div class="rules-list" id="uiRulesBox">
+        ⚠️ <b>Правила экзамена и фиксации попыток:</b><br>
+        • Как только вы нажмете кнопку <b>«НАЧАТЬ ЭКЗАМЕН»</b>, запустится таймер на 60 минут и в системе зафиксируется номер вашей попытки.<br>
+        • Экзамен состоит из <b>30 вопросов по грамматике</b> и <b>30 вопросов по клиническому словарю</b>.<br>
+        • В конце вы получите именную карточку результата, которую удобно заскриншотить с телефона или ноутбука и отправить преподавателю.
+      </div>
+
+      <button type="button" class="start-exam-btn" onclick="startExamNow()" id="uiStartBtn">
+        🚀 НАЧАТЬ ЭКЗАМЕН (60 МИНУТ)
+      </button>
+    </section>
+
+    <!-- 2. АКТИВНЫЙ ЭКЗАМЕН -->
+    <section id="activeExamSection">
+      <div class="nav-panel-card">
+        <div class="nav-controls-row">
+          <div class="sec-tabs">
+            <button class="sec-tab-btn active" id="filterAllBtn" onclick="setQuestionFilter('all')">Все (60)</button>
+            <button class="sec-tab-btn" id="filterGramBtn" onclick="setQuestionFilter('grammar')">Grammar (1–30)</button>
+            <button class="sec-tab-btn" id="filterVocabBtn" onclick="setQuestionFilter('vocab')">Vocabulary (31–60)</button>
+            <button class="sec-tab-btn" id="filterUnansBtn" onclick="setQuestionFilter('unanswered')">Неотвеченные</button>
+          </div>
+          <button class="map-toggle-btn" onclick="toggleQuestionMap()" id="uiMapBtn">🗺️ Карта вопросов ⌄</button>
+        </div>
+        <div class="q-map-grid" id="questionMapGrid"></div>
+      </div>
+
+      <div id="questionsListContainer" style="display:flex; flex-direction:column; gap:12px;"></div>
+
+      <button type="button" class="finish-exam-btn" onclick="confirmAndFinishExam()" id="uiFinishBtn">
+        🏁 ЗАКОНЧИТЬ ЭКЗАМЕН И ПОЛУЧИТЬ РЕЗУЛЬТАТ
+      </button>
+    </section>
+
+    <!-- 3. ЭКРАН РЕЗУЛЬТАТА (КАРТОЧКА ПОД СКРИНШОТ) -->
+    <section id="resultSection">
+      <div style="font-size:0.78rem; font-weight:700; color:var(--text-muted); text-align:center;" id="uiScreenshotHint">
+        📸 Сделайте скриншот карточки ниже и отправьте преподавателю:
+      </div>
+
+      <!-- КАРТОЧКА-СЕРТИФИКАТ ДЛЯ СКРИНШОТА -->
+      <div class="screenshot-frame" id="certificateCard">
+        <div class="cert-top-row">
+          <span class="cert-brand">✨ @DOCTORS.SPEAK • EXAM RESULT</span>
+          <span class="cert-hash" id="certVerifyCode">DS-0000</span>
+        </div>
+
+        <div class="cert-student-box">
+          <div class="cert-student-lbl" id="uiCertStudentLbl">PARTICIPANT / УЧАСТНИК</div>
+          <div class="cert-student-name" id="certStudentName">DOCTOR</div>
+        </div>
+
+        <div class="cert-score-circle-row">
+          <div class="cert-big-score" id="certTotalScore">0 / 60</div>
+          <div class="cert-score-meta">
+            <span class="cert-percent-badge" id="certPercentBadge">0%</span>
+            <span class="cert-level-text" id="certGradeTitle">Level Assessment</span>
+          </div>
+        </div>
+
+        <div class="cert-subscores-grid">
+          <div class="cert-sub-box">
+            <div class="cert-sub-title">GRAMMAR (1–30)</div>
+            <div class="cert-sub-val" id="certGrammarScore">0 / 30</div>
+          </div>
+          <div class="cert-sub-box">
+            <div class="cert-sub-title">VOCABULARY (31–60)</div>
+            <div class="cert-sub-val" id="certVocabScore">0 / 30</div>
+          </div>
+        </div>
+
+        <!-- Блок прозрачности попыток (защита от зазубривания) -->
+        <div class="cert-integrity-box">
+          <div class="cert-int-row">
+            <span class="lbl" id="uiCertAttemptLbl">Номер попытки (Attempt):</span>
+            <span class="val gold" id="certAttemptNum">#1</span>
+          </div>
+          <div class="cert-int-row">
+            <span class="lbl" id="uiCertFirstLbl">Балл 1-й попытки (1st Attempt):</span>
+            <span class="val" id="certFirstAttemptScore">—</span>
+          </div>
+          <div class="cert-int-row">
+            <span class="lbl" id="uiCertTimeLbl">Время выполнения:</span>
+            <span class="val" id="certTimeSpent">0 мин 00 сек</span>
+          </div>
+          <div class="cert-int-row">
+            <span class="lbl" id="uiCertDateLbl">Дата и время сдачи:</span>
+            <span class="val" id="certDateStamp">—</span>
+          </div>
+        </div>
+
+        <div class="cert-footer-stamp">
+          kazdoctors.com • Medical English Videocourse Official Exam
+        </div>
+      </div>
+
+      <!-- Кнопки действий под скриншотом -->
+      <div class="result-actions">
+        <button type="button" class="map-toggle-btn" style="padding:12px; width:100%; font-size:0.82rem;" onclick="toggleReviewList()" id="uiToggleReviewBtn">
+          📋 Показать статус моих ответов по вопросам (без раскрытия ключей)
+        </button>
+        <div class="review-card" id="reviewListCard"></div>
+        <button type="button" class="start-exam-btn" style="max-width:100%; background:#334155;" onclick="prepareNewRetake()" id="uiRetakeBtn">
+          🔄 Пройти экзамен еще раз (новая попытка)
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // =========================================================================
+    // 1. БАЗА ВСЕХ 60 ВОПРОСОВ ИЗ ФАЙЛА "QUIZ FOR VIDEOCOURSE.pdf"
+    // =========================================================================
+    const EXAM_QUESTIONS = [
+      // --- ЧАСТЬ 1: GRAMMAR (Вопросы 1–30) ---
+      { id: 1, sec: "grammar", q: "1. The patient became hemodynamically ___ after the rapid fluid loss.", opts: ["unstable", "instability"], ans: [0] },
+      { id: 2, sec: "grammar", q: "2. This medication is ___ in severe renal impairment.", opts: ["contraindicated", "contraindicating"], ans: [0] },
+      { id: 3, sec: "grammar", q: "3. The study ___ a significant reduction in mortality.", opts: ["demonstrates", "is demonstrating"], ans: [0] },
+      { id: 4, sec: "grammar", q: "4. The patient arrived with ___ electrolyte abnormalities.", opts: ["severely", "severe"], ans: [1] },
+      { id: 5, sec: "grammar", q: "5. The guidelines recommend ___ adjunct therapy in refractory cases.", opts: ["initiating", "to initiate"], ans: [0] },
+      { id: 6, sec: "grammar", q: "6. The results were ___ elevated despite treatment.", opts: ["unexpected", "unexpectedly"], ans: [1] },
+      { id: 7, sec: "grammar", q: "7. The tumor, ___ margins were irregular, required urgent intervention.", opts: ["which", "whose"], ans: [1] },
+      { id: 8, sec: "grammar", q: "8. The sample ___ during transportation.", opts: ["was contaminating", "was contaminated"], ans: [1] },
+      { id: 9, sec: "grammar", q: "9. The patient complained of ___ persistent neuropathic pain.", opts: ["having", "to have"], ans: [0] },
+      { id: 10, sec: "grammar", q: "10. The vaccine is less effective ___ immunocompromised individuals.", opts: ["in", "at"], ans: [0] },
+      { id: 11, sec: "grammar", q: "11. The physician noted a ___ decline in lung function.", opts: ["progressive", "progressing"], ans: [0] },
+      { id: 12, sec: "grammar", q: "12. The patient had ___ history of multiple comorbidities, including diabetes and COPD.", opts: ["a", "the"], ans: [0] },
+      { id: 13, sec: "grammar", q: "13. The antibiotic ___ based on culture results.", opts: ["will adjust", "will be adjusted"], ans: [1] },
+      { id: 14, sec: "grammar", q: "14. The device ___ to monitor intracranial pressure continuously.", opts: ["is designed", "is designing"], ans: [0] },
+      { id: 15, sec: "grammar", q: "15. The patient was discharged ___ having mild residual symptoms.", opts: ["although", "despite"], ans: [1] },
+      { id: 16, sec: "grammar", q: "16. The patient looked very ___ when he heard the diagnosis.", opts: ["alarmed", "alarming"], ans: [0] },
+      { id: 17, sec: "grammar", q: "17. The team ___ (observe) similar symptoms in several patients this week.", opts: ["a) has observed", "b) observed"], ans: [0] },
+      { id: 18, sec: "grammar", q: "18. The nurse performed ___ physical exam and documented the findings.", opts: ["a) a", "b) the", "c) — (no article)"], ans: [0] },
+      { id: 19, sec: "grammar", q: "19. The patient ___ (monitor) continuously in the ICU.", opts: ["a) is monitoring", "b) is monitored", "c) has monitored"], ans: [1] },
+      { id: 20, sec: "grammar", q: "20. The medication ___ you prescribed yesterday caused severe nausea.", opts: ["a) who", "b) what", "c) that"], ans: [2] },
+      { id: 21, sec: "grammar", q: "21. If the fever doesn't decrease, we ___ (change) the treatment strategy.", opts: ["will change", "would change", "changed"], ans: [0] },
+      { id: 22, sec: "grammar", q: "22. If the nurse had not noticed the rash early, the complication ___.", opts: ["may develop", "might have developed"], ans: [1] },
+      { id: 23, sec: "grammar", q: "23. It was the swelling ___ worried the surgeon the most.", opts: ["who", "that", "what"], ans: [1] },
+      { id: 24, sec: "grammar", q: "24. Further investigation is required, ___ the initial imaging results were inconclusive.", opts: ["a) although", "b) since", "c) unless"], ans: [1] },
+      { id: 25, sec: "grammar", q: "25. The stroke ___ with earlier intervention.", opts: ["could avoid", "could have been avoided"], ans: [1] },
+      { id: 26, sec: "grammar", q: "26. The patient said that he ___ dizzy after taking the medication.", opts: ["felt", "feels"], ans: [0] },
+      { id: 27, sec: "grammar", q: "27. The treatment is believed ___ mortality in severe cases.", opts: ["to reduce", "reducing"], ans: [0] },
+      { id: 28, sec: "grammar", q: "28. The patient had no fever; ___, his CRP levels were extremely elevated.", opts: ["a) however", "b) because", "c) therefore"], ans: [0] },
+      { id: 29, sec: "grammar", q: "29. Sepsis is one of ___ complications of infection.", opts: ["most serious", "the most serious"], ans: [1] },
+      { id: 30, sec: "grammar", q: "30. CT imaging is ___ than a chest X-ray in detecting nodules.", opts: ["more accurate", "accurater"], ans: [0] },
+
+      // --- ЧАСТЬ 2: VOCABULARY (Вопросы 31–60 / 1–30 в разделе Vocabulary) ---
+      { id: 31, sec: "vocab", q: "31 (Vocab 1). The patient complained of wheezing.", opts: ["a) skin rash", "b) noisy breathing", "c) chest pain"], ans: [1] },
+      { id: 32, sec: "vocab", q: "32 (Vocab 2). He was brought to the hospital by ambulance.", opts: ["a) emergency vehicle", "b) family member", "c) police"], ans: [0] },
+      { id: 33, sec: "vocab", q: "33 (Vocab 3). The patient has severe ___ after running up the stairs.", opts: ["shortness of breath", "fracture", "elbow"], ans: [0] },
+      { id: 34, sec: "vocab", q: "34 (Vocab 4). The abdominal CT scan showed an enlargement of the ___.", opts: ["ankle", "adrenal gland", "shoulder"], ans: [1] },
+      { id: 35, sec: "vocab", q: "35 (Vocab 5). Persistent ___ may cause dehydration.", opts: ["nausea", "vomiting", "cartilage"], ans: [1] },
+      { id: 36, sec: "vocab", q: "36 (Vocab 6). If the patient has a high temperature and chills, this indicates ___.", opts: ["fever", "wrist", "lesion"], ans: [0] },
+      { id: 37, sec: "vocab", q: "37 (Vocab 7). Hepatitis is an inflammation of the ___.", opts: ["liver", "kidney", "lung"], ans: [0] },
+      { id: 38, sec: "vocab", q: "38 (Vocab 8). Pulmonary edema affects the ___.", opts: ["lung", "heart", "spine"], ans: [0] },
+      { id: 39, sec: "vocab", q: "39 (Vocab 9). An ophthalmological patient may say they have ___.", opts: ["blurry vision", "constipation", "bruising"], ans: [0] },
+      { id: 40, sec: "vocab", q: "40 (Vocab 10). If blood collects under the skin after trauma, it is called ___.", opts: ["bruise", "node", "aspiration"], ans: [0] },
+      { id: 41, sec: "vocab", q: "41 (Vocab 11). \"I feel like I'm going to faint. Everything is spinning.\" →", opts: ["dizziness", "edema", "bowel movement"], ans: [0] },
+      { id: 42, sec: "vocab", q: "42 (Vocab 12). \"It hurts when I swallow.\" →", opts: ["sore throat", "bone marrow", "gallbladder"], ans: [0] },
+      { id: 43, sec: "vocab", q: "43 (Vocab 13). A benign tumor is ___.", opts: ["non-cancerous", "rapidly spreading", "congenital"], ans: [0] },
+      { id: 44, sec: "vocab", q: "44 (Vocab 14). A ___ is used to evaluate cerebrospinal fluid.", opts: ["lumbar puncture", "fracture", "syringe"], ans: [0] },
+      { id: 45, sec: "vocab", q: "45 (Vocab 15). Severe dehydration can lead to:", opts: ["a) edema", "b) hypotension", "c) tendon injury"], ans: [1] },
+      { id: 46, sec: "vocab", q: "46 (Vocab 16). A patient with gout usually has painful swelling in the:", opts: ["a) big toe", "b) shoulder", "c) pancreas"], ans: [0] },
+      { id: 47, sec: "vocab", q: "47 (Vocab 17). \"The patient is sweating excessively.\" →", opts: ["diaphoresis", "constipation", "murmur"], ans: [0] },
+      { id: 48, sec: "vocab", q: "48 (Vocab 18). \"He has a red, itchy area on the skin.\" →", opts: ["rash", "stiffness", "tendon"], ans: [0] },
+      { id: 49, sec: "vocab", q: "49 (Vocab 19). A heart rate of 140 in a febrile child is a/an ___ finding.", opts: ["significant", "benign", "occasional"], ans: [0, 1] },
+      { id: 50, sec: "vocab", q: "50 (Vocab 20). A contraindication means:", opts: ["something that should not be done", "something mandatory", "something mild"], ans: [0] },
+      { id: 51, sec: "vocab", q: "51 (Vocab 21). The patient has a/an ___ after falling from a ladder.", opts: ["fracture", "inflammatory", "blindness"], ans: [0] },
+      { id: 52, sec: "vocab", q: "52 (Vocab 22). Severe ___ may require insulin therapy.", opts: ["hyperglycemia", "elbow pain", "mucous membrane"], ans: [0] },
+      { id: 53, sec: "vocab", q: "53 (Vocab 23). Adipose tissue means bone tissue.", opts: ["True", "False"], ans: [1] },
+      { id: 54, sec: "vocab", q: "54 (Vocab 24). Cutaneous symptoms are related to the skin.", opts: ["True", "False"], ans: [0] },
+      { id: 55, sec: "vocab", q: "55 (Vocab 25). A stroke affects the:", opts: ["a) liver", "b) brain", "c) bowel"], ans: [1] },
+      { id: 56, sec: "vocab", q: "56 (Vocab 26). Sputum is collected from the:", opts: ["a) mouth", "b) kidney", "c) stomach"], ans: [0] },
+      { id: 57, sec: "vocab", q: "57 (Vocab 27). A patient with chest tightness and pounding heartbeat may be having a ___.", opts: ["fracture", "heart attack", "rash"], ans: [1] },
+      { id: 58, sec: "vocab", q: "58 (Vocab 28). A lesion is:", opts: ["a type of hormone", "a surgical tool", "abnormal tissue"], ans: [2] },
+      { id: 59, sec: "vocab", q: "59 (Vocab 29). Side effects are:", opts: ["a) beneficial effects of medication", "b) unwanted reactions", "c) diagnostic tools"], ans: [1] },
+      { id: 60, sec: "vocab", q: "60 (Vocab 30). Swelling of the ankle after twisting it suggests:", opts: ["a) edema", "b) fever", "c) nausea"], ans: [0] }
+    ];
+
+    // =========================================================================
+    // 2. ПРОВЕРКА ДОСТУПА ПО ПОДПИСКЕ SUPABASE (PRO / PREMIUM / VIP) + ДАННЫЕ УЧЕНИКА
+    // =========================================================================
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+    const TIER_LEVELS = { none: 0, free: 0, standard: 1, pro: 2, premium: 3, vip: 4 };
+    const EXAM_DURATION_SEC = 60 * 60; // 60 минут = 3600 секунд
+
+    let currentLang = localStorage.getItem('doctors_speak_lang') || 'ru';
+    let currentViewer = {
+      isLoggedIn: false,
+      userId: "guest",
+      email: "",
+      displayName: "STUDENT",
+      tier: "none"
+    };
+
+    // Метаданные попыток ученика
+    let examStats = {
+      attemptsStarted: 0,
+      firstAttemptScore: null,
+      bestScore: null
+    };
+
+    // Текущая активная сессия экзамена
+    let activeExam = {
+      inProgress: false,
+      attemptNumber: 1,
+      startTimeMs: 0,
+      answers: {}, // { questionId: selectedOptionIndex }
+      filter: "all"
+    };
+
+    let timerInterval = null;
+
+    function getStorageKey(suffix) {
+      return `ds_videocourse_exam_${currentViewer.userId}_${suffix}`;
+    }
+
+    async function verifyAccessAndLoadStudent() {
+      if (!supabaseClient) {
+        showPaywall(false, "none");
+        return;
+      }
+
+      try {
+        const { data: sessionData, error: sessionErr } = await supabaseClient.auth.getSession();
+        if (sessionErr || !sessionData || !sessionData.session) {
+          showPaywall(false, "none");
+          return;
+        }
+
+        const user = sessionData.session.user;
+        const userEmail = (user.email || "").toLowerCase().trim();
+
+        // Ищем профиль сначала по ID, затем по Email
+        let { data: profile } = await supabaseClient
+          .from("profiles")
+          .select("id, email, name, tier, subscription_expires_at")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (!profile && userEmail) {
+          const resByEmail = await supabaseClient
+            .from("profiles")
+            .select("id, email, name, tier, subscription_expires_at")
+            .ilike("email", userEmail)
+            .maybeSingle();
+          profile = resByEmail.data;
+        }
+
+        if (!profile || !profile.subscription_expires_at) {
+          showPaywall(true, "none");
+          return;
+        }
+
+        const expiresAt = new Date(profile.subscription_expires_at);
+        if (isNaN(expiresAt.getTime()) || new Date() > expiresAt) {
+          showPaywall(true, "expired");
+          return;
+        }
+
+        const userTier = (profile.tier || "standard").toLowerCase().trim();
+        const tierLevel = TIER_LEVELS[userTier] || 1;
+
+        // Определяем ИМЯ участника (из profiles.name, иначе user_metadata.name, иначе его EMAIL)
+        const resolvedName = (
+          (profile.name && profile.name.trim()) ||
+          (user.user_metadata && user.user_metadata.name && user.user_metadata.name.trim()) ||
+          userEmail
+        );
+
+        currentViewer = {
+          isLoggedIn: true,
+          userId: user.id,
+          email: userEmail,
+          displayName: resolvedName,
+          tier: userTier
+        };
+
+        // Доступ открывается только для PRO (2), PREMIUM (3) и VIP (4)
+        if (tierLevel < TIER_LEVELS.pro) {
+          showPaywall(true, "standard");
+          return;
+        }
+
+        // Загружаем историю попыток из облака (user_metadata) + localStorage
+        loadAttemptHistory(user);
+        unlockExamPage();
+
+      } catch (err) {
+        console.error("Exam auth error:", err);
+        showPaywall(false, "none");
+      }
+    }
+
+    function loadAttemptHistory(user) {
+      const meta = user.user_metadata || {};
+      const localStatsRaw = localStorage.getItem(getStorageKey("stats"));
+      let localStats = { attemptsStarted: 0, firstAttemptScore: null, bestScore: null };
+
+      if (localStatsRaw) {
+        try { localStats = JSON.parse(localStatsRaw); } catch (e) {}
+      }
+
+      // Берем максимум из облака Supabase и локального хранилища (чтобы нельзя было сбросить очисткой кэша)
+      const cloudAttempts = parseInt(meta.vc_exam_attempts || 0, 10) || 0;
+      const localAttempts = parseInt(localStats.attemptsStarted || 0, 10) || 0;
+
+      examStats.attemptsStarted = Math.max(cloudAttempts, localAttempts);
+      examStats.firstAttemptScore = meta.vc_exam_first_score !== undefined
+        ? meta.vc_exam_first_score
+        : localStats.firstAttemptScore;
+      examStats.bestScore = Math.max(meta.vc_exam_best_score || 0, localStats.bestScore || 0);
+    }
+
+    async function saveAttemptHistoryToCloud() {
+      localStorage.setItem(getStorageKey("stats"), JSON.stringify(examStats));
+      if (!supabaseClient || !currentViewer.isLoggedIn) return;
+      try {
+        await supabaseClient.auth.updateUser({
+          data: {
+            vc_exam_attempts: examStats.attemptsStarted,
+            vc_exam_first_score: examStats.firstAttemptScore,
+            vc_exam_best_score: examStats.bestScore
+          }
+        });
+      } catch (e) {
+        console.warn("Could not sync attempt metadata:", e);
+      }
+    }
+
+    function unlockExamPage() {
+      document.getElementById("authLoader").style.display = "none";
+      document.getElementById("paywallGate").style.display = "none";
+      document.getElementById("examMainWrapper").style.display = "flex";
+
+      updateStartScreenInfo();
+
+      // Проверяем, нет ли уже запущенного незавершенного экзамена (если ученик обновил страницу)
+      const savedActiveRaw = localStorage.getItem(getStorageKey("active_session"));
+      if (savedActiveRaw) {
+        try {
+          const savedSession = JSON.parse(savedActiveRaw);
+          if (savedSession && savedSession.inProgress && savedSession.startTimeMs) {
+            const elapsedSec = Math.floor((Date.now() - savedSession.startTimeMs) / 1000);
+            if (elapsedSec < EXAM_DURATION_SEC) {
+              activeExam = savedSession;
+              resumeActiveExamUI();
+              return;
+            } else {
+              // Время истекло, пока вкладка была закрыта — сразу завершаем!
+              activeExam = savedSession;
+              finishExamAndShowResult(true);
+              return;
+            }
+          }
+        } catch (e) {}
+      }
+    }
+
+    function updateStartScreenInfo() {
+      document.getElementById("startStudentName").textContent = currentViewer.displayName;
+      const nextAttempt = examStats.attemptsStarted + 1;
+      document.getElementById("startAttemptBadge").textContent = `#${nextAttempt}`;
+
+      const firstRow = document.getElementById("startFirstScoreRow");
+      if (examStats.firstAttemptScore !== null && examStats.firstAttemptScore !== undefined) {
+        firstRow.style.display = "flex";
+        document.getElementById("startFirstScoreVal").textContent = `${examStats.firstAttemptScore} / 60`;
+      } else {
+        firstRow.style.display = "none";
+      }
+    }
+
+    function showPaywall(isLoggedIn, reasonTier) {
+      document.getElementById("authLoader").style.display = "none";
+      document.getElementById("examMainWrapper").style.display = "none";
+      document.getElementById("paywallGate").style.display = "block";
+      const loginBtn = document.getElementById("pwLoginBtn");
+      loginBtn.style.display = isLoggedIn ? "none" : "block";
+    }
+
+    // =========================================================================
+    // 3. ЗАПУСК ЭКЗАМЕНА, ТАЙМЕР 60 МИНУТ И СОХРАНЕНИЕ СОСТОЯНИЯ
+    // =========================================================================
+    async function startExamNow() {
+      // Фиксируем новую попытку сразу в момент нажатия СТАРТ!
+      examStats.attemptsStarted += 1;
+      await saveAttemptHistoryToCloud();
+
+      activeExam = {
+        inProgress: true,
+        attemptNumber: examStats.attemptsStarted,
+        startTimeMs: Date.now(),
+        answers: {},
+        filter: "all"
+      };
+
+      localStorage.setItem(getStorageKey("active_session"), JSON.stringify(activeExam));
+      resumeActiveExamUI();
+    }
+
+    function resumeActiveExamUI() {
+      document.getElementById("startScreen").style.display = "none";
+      document.getElementById("resultSection").style.display = "none";
+      document.getElementById("activeExamSection").style.display = "flex";
+      document.getElementById("headerExamStatus").style.display = "flex";
+
+      renderQuestionMap();
+      renderQuestionsList();
+      updateProgressPill();
+
+      if (timerInterval) clearInterval(timerInterval);
+      tickExamTimer();
+      timerInterval = setInterval(tickExamTimer, 1000);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function tickExamTimer() {
+      const elapsedSec = Math.floor((Date.now() - activeExam.startTimeMs) / 1000);
+      const remainingSec = Math.max(0, EXAM_DURATION_SEC - elapsedSec);
+
+      const mins = Math.floor(remainingSec / 60);
+      const secs = remainingSec % 60;
+      const pad = (n) => n.toString().padStart(2, "0");
+
+      const timerEl = document.getElementById("timerDisplay");
+      timerEl.textContent = `⏱️ ${pad(mins)}:${pad(secs)}`;
+      timerEl.classList.toggle("danger", remainingSec <= 300); // Красный пульс за 5 минут до конца
+
+      if (remainingSec <= 0) {
+        clearInterval(timerInterval);
+        finishExamAndShowResult(true);
+      }
+    }
+
+    // =========================================================================
+    // 4. ОТРИСОВКА ВОПРОСОВ И КАРТЫ НАВИГАЦИИ
+    // =========================================================================
+    function renderQuestionMap() {
+      const mapGrid = document.getElementById("questionMapGrid");
+      mapGrid.innerHTML = "";
+
+      EXAM_QUESTIONS.forEach((item) => {
+        const dot = document.createElement("button");
+        dot.type = "button";
+        const isAns = activeExam.answers[item.id] !== undefined;
+        dot.className = "q-map-dot" + (isAns ? " answered" : "");
+        dot.textContent = item.id;
+        dot.onclick = () => {
+          setQuestionFilter("all");
+          const cardEl = document.getElementById(`qcard_${item.id}`);
+          if (cardEl) cardEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        };
+        mapGrid.appendChild(dot);
+      });
+    }
+
+    function toggleQuestionMap() {
+      document.getElementById("questionMapGrid").classList.toggle("open");
+    }
+
+    function setQuestionFilter(filterType) {
+      activeExam.filter = filterType;
+      document.getElementById("filterAllBtn").classList.toggle("active", filterType === "all");
+      document.getElementById("filterGramBtn").classList.toggle("active", filterType === "grammar");
+      document.getElementById("filterVocabBtn").classList.toggle("active", filterType === "vocab");
+      document.getElementById("filterUnansBtn").classList.toggle("active", filterType === "unanswered");
+      renderQuestionsList();
+    }
+
+    function renderQuestionsList() {
+      const container = document.getElementById("questionsListContainer");
+      container.innerHTML = "";
+
+      const filtered = EXAM_QUESTIONS.filter((item) => {
+        if (activeExam.filter === "grammar") return item.sec === "grammar";
+        if (activeExam.filter === "vocab") return item.sec === "vocab";
+        if (activeExam.filter === "unanswered") return activeExam.answers[item.id] === undefined;
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="nav-panel-card" style="text-align:center; font-weight:700; color:var(--success-text);">✅ В этой категории все вопросы отвечены!</div>`;
+        return;
+      }
+
+      filtered.forEach((item) => {
+        const selectedIdx = activeExam.answers[item.id];
+        const card = document.createElement("div");
+        card.id = `qcard_${item.id}`;
+        card.className = "q-card" + (selectedIdx !== undefined ? " answered-card" : "");
+
+        const catName = item.sec === "grammar" ? "Grammar (1–30)" : "Vocabulary (31–60)";
+
+        const metaDiv = document.createElement("div");
+        metaDiv.className = "q-meta";
+        metaDiv.innerHTML = `
+          <span class="q-num-badge">Question #${item.id}</span>
+          <span class="q-cat-label">${catName}</span>
+        `;
+
+        const qTextDiv = document.createElement("div");
+        qTextDiv.className = "q-text";
+        qTextDiv.textContent = item.q;
+
+        const optsDiv = document.createElement("div");
+        optsDiv.className = "q-opts";
+
+        item.opts.forEach((optLabel, idx) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "opt-btn" + (selectedIdx === idx ? " selected" : "");
+          btn.textContent = optLabel;
+          btn.onclick = () => selectAnswer(item.id, idx);
+          optsDiv.appendChild(btn);
+        });
+
+        card.appendChild(metaDiv);
+        card.appendChild(qTextDiv);
+        card.appendChild(optsDiv);
+        container.appendChild(card);
+      });
+    }
+
+    function selectAnswer(questionId, optionIndex) {
+      activeExam.answers[questionId] = optionIndex;
+      localStorage.setItem(getStorageKey("active_session"), JSON.stringify(activeExam));
+
+      // Мгновенно обновляем карточку и прогресс без перерисовки всего списка
+      const card = document.getElementById(`qcard_${questionId}`);
+      if (card) {
+        card.classList.add("answered-card");
+        const buttons = card.querySelectorAll(".opt-btn");
+        buttons.forEach((b, i) => b.classList.toggle("selected", i === optionIndex));
+      }
+
+      renderQuestionMap();
+      updateProgressPill();
+    }
+
+    function updateProgressPill() {
+      const answeredTotal = Object.keys(activeExam.answers).length;
+      document.getElementById("progressDisplay").textContent = `${answeredTotal} / 60`;
+    }
+
+    // =========================================================================
+    // 5. ЗАВЕРШЕНИЕ ЭКЗАМЕНА, ПОДСЧЕТ БАЛЛОВ И ВЫВОД КАРТОЧКИ ПОД СКРИНШОТ
+    // =========================================================================
+    function confirmAndFinishExam() {
+      const answeredTotal = Object.keys(activeExam.answers).length;
+      const unanswered = 60 - answeredTotal;
+
+      if (unanswered > 0) {
+        const msg = currentLang === "kz"
+          ? `Сіз 60 сұрақтың ${answeredTotal}-не жауап бердіңіз (${unanswered} сұрақ бос қалды). Емтиханды аяқтауға сенімдісіз бе?`
+          : `Вы ответили на ${answeredTotal} из 60 вопросов (осталось без ответа: ${unanswered}). Вы уверены, что хотите закончить экзамен?`;
+        if (!confirm(msg)) return;
+      }
+
+      finishExamAndShowResult(false);
+    }
+
+    async function finishExamAndShowResult(isAutoTimeout) {
+      if (timerInterval) clearInterval(timerInterval);
+
+      const elapsedSec = Math.min(
+        EXAM_DURATION_SEC,
+        Math.max(1, Math.floor((Date.now() - activeExam.startTimeMs) / 1000))
+      );
+
+      let grammarScore = 0;
+      let vocabScore = 0;
+
+      EXAM_QUESTIONS.forEach((item) => {
+        const chosen = activeExam.answers[item.id];
+        if (chosen !== undefined && item.ans.includes(chosen)) {
+          if (item.sec === "grammar") grammarScore++;
+          else vocabScore++;
+        }
+      });
+
+      const totalScore = grammarScore + vocabScore;
+      const percent = Math.round((totalScore / 60) * 100);
+
+      // Если это 1-я попытка (или балл первой попытки еще не был записан) — сохраняем его навсегда!
+      if (examStats.firstAttemptScore === null || examStats.firstAttemptScore === undefined) {
+        examStats.firstAttemptScore = totalScore;
+      }
+      if (!examStats.bestScore || totalScore > examStats.bestScore) {
+        examStats.bestScore = totalScore;
+      }
+
+      activeExam.inProgress = false;
+      localStorage.removeItem(getStorageKey("active_session"));
+      await saveAttemptHistoryToCloud();
+
+      // Заполняем карточку для скриншота
+      document.getElementById("activeExamSection").style.display = "none";
+      document.getElementById("headerExamStatus").style.display = "none";
+      document.getElementById("resultSection").style.display = "flex";
+
+      document.getElementById("certStudentName").textContent = currentViewer.displayName;
+      document.getElementById("certTotalScore").textContent = `${totalScore} / 60`;
+      document.getElementById("certPercentBadge").textContent = `${percent}%`;
+      document.getElementById("certGrammarScore").textContent = `${grammarScore} / 30`;
+      document.getElementById("certVocabScore").textContent = `${vocabScore} / 30`;
+
+      // Оценка уровня по результату
+      let gradeText = "";
+      if (percent >= 90) gradeText = "🏆 Excellent (Upper-Intermediate B2)";
+      else if (percent >= 75) gradeText = "✅ Confident Medical B1";
+      else if (percent >= 55) gradeText = "📈 Pre-Intermediate A2+";
+      else gradeText = "📘 Elementary Foundation (Needs Review)";
+      document.getElementById("certGradeTitle").textContent = gradeText;
+
+      // Данные о попытке и времени
+      const attemptNum = activeExam.attemptNumber || examStats.attemptsStarted || 1;
+      document.getElementById("certAttemptNum").textContent = `#${attemptNum}` + (attemptNum === 1 ? " (Первая попытка! ⭐)" : "");
+      document.getElementById("certFirstAttemptScore").textContent = `${examStats.firstAttemptScore} / 60 (${Math.round((examStats.firstAttemptScore / 60) * 100)}%)`;
+
+      const spentMins = Math.floor(elapsedSec / 60);
+      const spentSecs = elapsedSec % 60;
+      document.getElementById("certTimeSpent").textContent = `${spentMins} мин ${spentSecs.toString().padStart(2, "0")} сек` + (isAutoTimeout ? " (Таймер истек)" : "");
+
+      const now = new Date();
+      document.getElementById("certDateStamp").textContent = now.toLocaleString("ru-RU", {
+        day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit"
+      });
+
+      // Уникальный код верификации результата (включает попытку и баллы)
+      const hashSeed = `${currentViewer.displayName}-${attemptNum}-${totalScore}-${examStats.firstAttemptScore}`;
+      let hashNum = 0;
+      for (let i = 0; i < hashSeed.length; i++) {
+        hashNum = ((hashNum << 5) - hashNum) + hashSeed.charCodeAt(i);
+        hashNum |= 0;
+      }
+      const hexCode = Math.abs(hashNum).toString(16).toUpperCase().slice(0, 4).padStart(4, "0");
+      document.getElementById("certVerifyCode").textContent = `DS-A${attemptNum}F${examStats.firstAttemptScore}-${hexCode}`;
+
+      renderReviewBreakdown();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // Список ответов ученика (показывает, где верно/ошибка, без раскрытия правильного ключа при ошибке)
+    function renderReviewBreakdown() {
+      const container = document.getElementById("reviewListCard");
+      container.innerHTML = "";
+
+      EXAM_QUESTIONS.forEach((item) => {
+        const chosenIdx = activeExam.answers[item.id];
+        const isCorrect = chosenIdx !== undefined && item.ans.includes(chosenIdx);
+        const chosenText = chosenIdx !== undefined ? item.opts[chosenIdx] : "— (Нет ответа)";
+
+        const div = document.createElement("div");
+        div.className = "review-item " + (isCorrect ? "ok" : "err");
+        div.innerHTML = `
+          <div style="font-weight:800; margin-bottom:3px;">${isCorrect ? "✅" : "❌"} ${item.q}</div>
+          <div style="color:var(--text-muted); font-weight:600;">Ваш ответ: <b>${chosenText}</b></div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function toggleReviewList() {
+      const card = document.getElementById("reviewListCard");
+      card.style.display = card.style.display === "flex" ? "none" : "flex";
+    }
+
+    function prepareNewRetake() {
+      document.getElementById("resultSection").style.display = "none";
+      document.getElementById("reviewListCard").style.display = "none";
+      document.getElementById("startScreen").style.display = "flex";
+      updateStartScreenInfo();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // =========================================================================
+    // 6. ПЕРЕКЛЮЧЕНИЕ ЯЗЫКА ИНТЕРФЕЙСА (RU / KZ)
+    // =========================================================================
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('doctors_speak_lang', lang);
+
+      document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
+      document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
+
+      const isKz = (lang === 'kz');
+      document.getElementById('uiBackBtn').textContent = isKz ? "⬅ Курсқа оралу" : "⬅ К курсу";
+      document.getElementById('uiStartTitle').textContent = isKz
+        ? "Medical English видеокурсы бойынша қорытынды емтихан"
+        : "Итоговый экзамен по видеокурсу Medical English";
+      document.getElementById('uiStudentLbl').textContent = isKz ? "Қатысушы:" : "Участник:";
+      document.getElementById('uiAttemptLbl').textContent = isKz ? "Алдағы мүмкіндік (Попытка):" : "Предстоящая попытка:";
+      document.getElementById('uiFirstScoreLbl').textContent = isKz ? "1-ші мүмкіндік нәтижесі:" : "Результат 1-й попытки:";
+      document.getElementById('uiSpecQ').textContent = isKz ? "Сұрақ" : "Вопросов";
+      document.getElementById('uiSpecTime').textContent = isKz ? "Таймер" : "Таймер";
+
+      document.getElementById('uiRulesBox').innerHTML = isKz
+        ? `⚠️ <b>Емтихан ережелері:</b><br>• <b>«ЕМТИХАНДЫ БАСТАУ»</b> батырмасын басқан сәтте 60 минуттық таймер іске қосылады және сіздің мүмкіндік (попытка) нөміріңіз тіркеледі.<br>• Емтихан <b>30 грамматикалық</b> және <b>30 клиникалық сөздік</b> сұрағынан тұрады.<br>• Соңында телефоннан немесе ноутбуктан скриншот жасауға ыңғайлы атаулы сертификат шығады.`
+        : `⚠️ <b>Правила экзамена и фиксации попыток:</b><br>• Как только вы нажмете кнопку <b>«НАЧАТЬ ЭКЗАМЕН»</b>, запустится таймер на 60 минут и в системе зафиксируется номер вашей попытки.<br>• Экзамен состоит из <b>30 вопросов по грамматике</b> и <b>30 вопросов по клиническому словарю</b>.<br>• В конце вы получите именную карточку результата, которую удобно заскриншотить с телефона или ноутбука и отправить преподавателю.`;
+
+      document.getElementById('uiStartBtn').textContent = isKz
+        ? "🚀 ЕМТИХАНДЫ БАСТАУ (60 МИНУТ)"
+        : "🚀 НАЧАТЬ ЭКЗАМЕН (60 МИНУТ)";
+
+      document.getElementById('uiMapBtn').textContent = isKz ? "🗺️ Сұрақтар картасы ⌄" : "🗺️ Карта вопросов ⌄";
+      document.getElementById('uiFinishBtn').textContent = isKz
+        ? "🏁 ЕМТИХАНДЫ АЯҚТАУ ЖӘНЕ НӘТИЖЕНІ АЛУ"
+        : "🏁 ЗАКОНЧИТЬ ЭКЗАМЕН И ПОЛУЧИТЬ РЕЗУЛЬТАТ";
+
+      document.getElementById('uiScreenshotHint').textContent = isKz
+        ? "📸 Төмендегі сертификатты скриншот жасап, оқытушыға жіберіңіз:"
+        : "📸 Сделайте скриншот карточки ниже и отправьте преподавателю:";
+
+      document.getElementById('uiCertAttemptLbl').textContent = isKz ? "Мүмкіндік нөмірі (Attempt):" : "Номер попытки (Attempt):";
+      document.getElementById('uiCertFirstLbl').textContent = isKz ? "1-ші мүмкіндік балы (1st Attempt):" : "Балл 1-й попытки (1st Attempt):";
+      document.getElementById('uiCertTimeLbl').textContent = isKz ? "Орындау уақыты:" : "Время выполнения:";
+      document.getElementById('uiCertDateLbl').textContent = isKz ? "Тапсырылған күні:" : "Дата и время сдачи:";
+
+      document.getElementById('uiToggleReviewBtn').textContent = isKz
+        ? "📋 Менің жауаптарымның тізімін көру"
+        : "📋 Показать статус моих ответов по вопросам (без раскрытия ключей)";
+      document.getElementById('uiRetakeBtn').textContent = isKz
+        ? "🔄 Емтиханды қайта тапсыру (жаңа мүмкіндік)"
+        : "🔄 Пройти экзамен еще раз (новая попытка)";
+    }
+
+    setLang(currentLang);
+    verifyAccessAndLoadStudent();
+  </script>
+</body>
+</html>
