@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>@doctors.speak — Lesson 13: Articles (a, an, the) in Medicine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Подключение Supabase SDK для проверки подписки -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --kz-gold-light: #FFFBEB;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --success-bg: #DCFCE7;
+      --success-border: #22C55E;
+      --success-text: #15803D;
+      --error-bg: #FEE2E2;
+      --error-border: #EF4444;
+      --error-text: #B91C1C;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 40px;
+    }
+
+    /* Верхняя шапка с кнопкой назад и переключателем RU/KZ */
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+      color: #FFFFFF;
+      padding: 16px 20px 22px 20px;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-top {
+      max-width: 820px;
+      margin: 0 auto 12px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .header-right-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tier-badge {
+      display: none;
+      background: rgba(255, 199, 44, 0.25);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 20px;
+      padding: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 800;
+      font-size: 0.74rem;
+      padding: 5px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+    }
+
+    .header-title-box {
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .lesson-badge {
+      display: inline-block;
+      background: rgba(255, 199, 44, 0.2);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    header p {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       ЭКРАН ЗАГЛУШКИ ПРИ ОТСУТСТВИИ ПОДПИСКИ ПРО / ПРЕМИУМ / ВИП
+       ========================================================================== */
+    #authLoader {
+      width: 100%;
+      max-width: 520px;
+      margin: 40px auto;
+      padding: 30px 20px;
+      text-align: center;
+      font-weight: 700;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    #paywallGate {
+      display: none;
+      width: 100%;
+      max-width: 540px;
+      margin: 28px auto;
+      padding: 0 14px;
+    }
+
+    .paywall-card {
+      background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      border-radius: 22px;
+      padding: 28px 22px;
+      text-align: center;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.18);
+      border: 1px solid rgba(255, 199, 44, 0.35);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .pw-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      background: rgba(255, 199, 44, 0.16);
+      border: 1px solid rgba(255, 199, 44, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+    }
+
+    .pw-badge {
+      background: rgba(0, 161, 222, 0.22);
+      border: 1px solid rgba(0, 161, 222, 0.55);
+      color: #7DD3FC;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .pw-title {
+      font-size: 1.15rem;
+      font-weight: 900;
+      line-height: 1.3;
+      color: #FFFFFF;
+    }
+
+    .pw-desc {
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: #CBD5E1;
+      font-weight: 500;
+    }
+
+    .pw-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      margin-top: 6px;
+    }
+
+    .pw-btn-primary {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      padding: 13px 18px;
+      border-radius: 14px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(255, 199, 44, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .pw-btn-primary:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    .pw-btn-secondary {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 11px 16px;
+      border-radius: 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .pw-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    /* Контейнер защищенного урока (скрыт до подтверждения тарифа) */
+    #lessonContentWrapper {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Навигация по разделам урока */
+    .section-nav {
+      width: 100%;
+      max-width: 820px;
+      margin: 14px auto 0 auto;
+      padding: 0 14px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .nav-pill {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 9px 6px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .nav-pill.active {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      border-color: var(--kz-blue-dark);
+      box-shadow: 0 4px 12px rgba(0, 161, 222, 0.25);
+    }
+
+    /* Основной контейнер */
+    main {
+      width: 100%;
+      max-width: 820px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-section {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .tab-section.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Карточки теории */
+    .card-block {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-block::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: var(--kz-blue);
+    }
+
+    .card-block.gold::before {
+      background: var(--kz-gold-dark);
+    }
+
+    .card-block h2 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-block p {
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+
+    /* Сетка 3 видов артиклей */
+    .art-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .art-card {
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-main);
+    }
+
+    .art-card.a1 { border-top: 4px solid #0284C7; background: #F0F9FF; }
+    .art-card.a2 { border-top: 4px solid #D97706; background: var(--kz-gold-light); }
+    .art-card.a3 { border-top: 4px solid #16A34A; background: #F0FDF4; }
+
+    .art-title {
+      font-size: 0.88rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .comp-formula {
+      display: inline-block;
+      background: #FFFFFF;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      border: 1px dashed var(--kz-blue-dark);
+      margin-bottom: 8px;
+    }
+
+    .clinical-quote {
+      background: #FFFFFF;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.81rem;
+      border-left: 3px solid var(--text-dark);
+      margin-top: 8px;
+      line-height: 1.45;
+    }
+
+    /* Таблица правил выбора артикля в медицине */
+    .grammar-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 0.77rem;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .grammar-table th {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: 800;
+    }
+
+    .grammar-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border-color);
+      background: #FFFFFF;
+      line-height: 1.45;
+    }
+
+    .grammar-table tr:nth-child(even) td {
+      background: #F8FAFC;
+    }
+
+    /* Интерактивный разбор статьи Wiley (Necrotizing enterocolitis) */
+    .abstract-box {
+      background: #FFFFFF;
+      border: 2px solid #CBD5E1;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .abstract-header {
+      background: #1E293B;
+      color: #FFFFFF;
+      padding: 10px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .abstract-controls {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .hl-btn {
+      border: none;
+      padding: 5px 10px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .hl-btn.indef-type { background: #BAE6FD; color: #0369A1; }
+    .hl-btn.def-type { background: #FDE68A; color: #92400E; }
+    .hl-btn.zero-type { background: #BBF7D0; color: #166534; }
+    .hl-btn.reset { background: rgba(255,255,255,0.2); color: #FFFFFF; }
+
+    .abstract-body {
+      padding: 14px;
+      font-size: 0.84rem;
+      line-height: 1.68;
+      color: #334155;
+    }
+
+    .ar-a, .ar-the, .ar-zero {
+      padding: 1px 5px;
+      border-radius: 5px;
+      transition: all 0.2s ease;
+    }
+
+    .abstract-body.show-a .ar-a {
+      background: #BAE6FD;
+      color: #0369A1;
+      font-weight: 800;
+      border-bottom: 2px solid #0284C7;
+    }
+
+    .abstract-body.show-the .ar-the {
+      background: #FDE68A;
+      color: #92400E;
+      font-weight: 800;
+      border-bottom: 2px solid #D97706;
+    }
+
+    .abstract-body.show-zero .ar-zero {
+      background: #DCFCE7;
+      color: #166534;
+      font-weight: 700;
+      border-bottom: 2px dashed #16A34A;
+    }
+
+    /* Быстрые микро-упражнения внутри теории (Quick Check) */
+    .quick-check {
+      background: #F8FAFC;
+      border: 1px dashed var(--kz-blue);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .qc-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .qc-question {
+      font-size: 0.86rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+    }
+
+    .qc-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .qc-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .qc-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background: var(--kz-blue-light);
+    }
+
+    .qc-btn.correct {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    .qc-btn.wrong {
+      background: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    .qc-feedback {
+      display: none;
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      line-height: 1.35;
+    }
+
+    /* Карточки словаря */
+    .vocab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+      gap: 10px;
+    }
+
+    .vocab-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .vocab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .vocab-word {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+    }
+
+    .speak-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 161, 222, 0.3);
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+    }
+
+    .vocab-trans {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .vocab-example {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--bg-main);
+      padding: 7px 9px;
+      border-radius: 8px;
+      line-height: 1.35;
+    }
+
+    /* Кнопка перехода к следующему разделу или тренажеру */
+    .action-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      border-radius: 16px;
+      padding: 13px 18px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    @media (max-width: 560px) {
+      .section-nav {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      header h1 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ШАПКА УРОКА -->
+  <header>
+    <div class="header-top">
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅ К списку уроков</a>
+      <div class="header-right-controls">
+        <span id="userTierBadge" class="tier-badge"></span>
+        <div class="lang-switch">
+          <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
+          <button class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
+        </div>
+      </div>
+    </div>
+    <div class="header-title-box">
+      <span class="lesson-badge">Lesson 13 • A1–B1 Medical English</span>
+      <h1 id="uiTitle">Articles: A, An, The & No Article (Артикли в медицине)</h1>
+      <p id="uiSubtitle">Как безошибочно выбирать между a/an, the и отсутствием артикля при описании симптомов, органов и диагнозов</p>
+    </div>
+  </header>
+
+  <!-- ИНДИКАТОР ПРОВЕРКИ ПОДПИСКИ -->
+  <div id="authLoader">🔄 Проверка подписки и доступа к конспекту...</div>
+
+  <!-- БЛОК PAYWALL (ПОКАЗЫВАЕТСЯ, ЕСЛИ НЕТ ТАРИФА ПРО / ПРЕМИУМ / ВИП) -->
+  <div id="paywallGate">
+    <div class="paywall-card">
+      <div class="pw-icon">🔒</div>
+      <span class="pw-badge" id="pwBadgeText">Доступно в тарифах ПРО / ПРЕМИУМ / ВИП</span>
+      <div class="pw-title" id="pwTitleText">Интерактивный конспект закрыт для вашего тарифа</div>
+      <p class="pw-desc" id="pwDescText">
+        Интерактивные конспекты с клиническим разбором статей, озвученным словарем и упражнениями открыты для подписок «Про», «Премиум» и «ВИП». Перейдите на страницу тарифов, чтобы подключить или повысить свой доступ:
+      </p>
+      <div class="pw-buttons">
+        <a href="https://kazdoctors.com/tarifs" class="pw-btn-primary" id="pwTarifsBtn">
+          🌟 Перейти к тарифам (kazdoctors.com/tarifs)
+        </a>
+        <a href="https://instagram.com/doctors.speak" target="_blank" class="pw-btn-secondary" id="pwContactBtn">
+          💬 Написать нам (@doctors.speak)
+        </a>
+        <a href="/login.html" class="pw-btn-secondary" id="pwLoginBtn" style="display:none;">
+          🔐 Войти в аккаунт
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ЗАЩИЩЕННЫЙ КОНТЕНТ УРОКА (ОТКРЫВАЕТСЯ ТОЛЬКО ДЛЯ PRO, PREMIUM, VIP) -->
+  <div id="lessonContentWrapper">
+    <!-- НАВИГАЦИЯ ПО ЭТАПАМ УРОКА -->
+    <nav class="section-nav">
+      <button class="nav-pill active" onclick="showTab(0)" id="nav0">1. Смысл и 3 Формулы</button>
+      <button class="nav-pill" onclick="showTab(1)" id="nav1">2. Ловушки и Статья</button>
+      <button class="nav-pill" onclick="showTab(2)" id="nav2">3. Словарь (14 слов)</button>
+      <button class="nav-pill" onclick="showTab(3)" id="nav3">4. Упражнения</button>
+    </nav>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main>
+      <!-- ВКЛАДКА 1: 3 ПРАВИЛА АРТИКЛЕЙ (A/AN, THE, NO ARTICLE) -->
+      <section class="tab-section active" id="tab0"></section>
+
+      <!-- ВКЛАДКА 2: КЛИНИЧЕСКАЯ ТАБЛИЦА + РАЗБОР СТАТЬИ WILEY (NECROTIZING ENTEROCOLITIS) -->
+      <section class="tab-section" id="tab1"></section>
+
+      <!-- ВКЛАДКА 3: СЛОВАРЬ С ПРИМЕРАМИ -->
+      <section class="tab-section" id="tab2">
+        <div class="card-block">
+          <h2 id="uiVocabTitle">💊 Клинический словарь урока (14 терминов)</h2>
+          <p id="uiVocabDesc">Нажмите 🔊, чтобы прослушать произношение. Обратите внимание, какой артикль (a, an, the или нулевой) стоит перед каждым термином в примерах.</p>
+          <div class="vocab-grid" id="vocabGrid"></div>
+        </div>
+        <button class="action-btn" onclick="showTab(3)" id="uiToExBtn">Перейти к упражнениям урока ➔</button>
+      </section>
+
+      <!-- ВКЛАДКА 4: ПРАКТИКУМ (EXERCISE 1 & 2 ИЗ PDF) -->
+      <section class="tab-section" id="tab3">
+        <div class="card-block gold">
+          <h2 id="uiEx1Title">✍️ Упражнение 1: Выберите правильный артикль (a, an, the или —)</h2>
+          <p id="uiEx1Desc">Определите: слово исчисляемое в единственном числе (a/an), уже конкретизировано в контексте (the) или неисчисляемое (—):</p>
+          <div id="ex1Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+
+        <div class="card-block">
+          <h2 id="uiEx2Title">🩺 Упражнение 2: Вставьте подходящий артикль в клинических фразах</h2>
+          <p id="uiEx2Desc">Помните про уникальные системы организма и показатели (the immune system, the GFR) vs первое упоминание симптома (a crust):</p>
+          <div id="ex2Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+
+        <a href="./articles/" class="action-btn" id="uiGoTrainerBtn">🎯 Запустить игровой тренажер по Уроку 13 ➔</a>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. ПРОВЕРКА ПОДПИСКИ SUPABASE (ДОСТУП ТОЛЬКО ДЛЯ PRO, PREMIUM, VIP)
+    // =========================================================================
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+    // Уровни подписок: конспект открывается только при уровне >= 2 (pro, premium, vip)
+    const TIER_LEVELS = {
+      none: 0,
+      free: 0,
+      standard: 1,
+      pro: 2,
+      premium: 3,
+      vip: 4
+    };
+
+    const TIER_LABELS = {
+      standard: { ru: "СТАНДАРТ", kz: "СТАНДАРТ" },
+      pro: { ru: "ТАРИФ: ПРО", kz: "ТАРИФ: ПРО" },
+      premium: { ru: "ТАРИФ: ПРЕМИУМ", kz: "ТАРИФ: ПРЕМИУМ" },
+      vip: { ru: "ТАРИФ: ВИП 👑", kz: "ТАРИФ: ВИП 👑" }
+    };
+
+    let currentViewerState = {
+      isLoggedIn: false,
+      hasActiveSub: false,
+      tier: "none"
+    };
+
+    async function verifySubscriptionAccess() {
+      if (!supabaseClient) {
+        showPaywallGate(false, "none");
+        return;
+      }
+
+      try {
+        const { data: sessionData, error: sessionErr } = await supabaseClient.auth.getSession();
+        if (sessionErr || !sessionData || !sessionData.session) {
+          currentViewerState = { isLoggedIn: false, hasActiveSub: false, tier: "none" };
+          showPaywallGate(false, "none");
+          return;
+        }
+
+        const user = sessionData.session.user;
+        const userEmail = (user.email || "").toLowerCase().trim();
+
+        // Ищем профиль сначала по ID, затем по Email
+        let { data: profile } = await supabaseClient
+          .from("profiles")
+          .select("id, email, tier, subscription_expires_at")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (!profile && userEmail) {
+          const resByEmail = await supabaseClient
+            .from("profiles")
+            .select("id, email, tier, subscription_expires_at")
+            .ilike("email", userEmail)
+            .maybeSingle();
+          profile = resByEmail.data;
+        }
+
+        if (!profile || !profile.subscription_expires_at) {
+          currentViewerState = { isLoggedIn: true, hasActiveSub: false, tier: "none" };
+          showPaywallGate(true, "none");
+          return;
+        }
+
+        const expiresAt = new Date(profile.subscription_expires_at);
+        const now = new Date();
+        const isSubActive = !isNaN(expiresAt.getTime()) && now <= expiresAt;
+
+        if (!isSubActive) {
+          currentViewerState = { isLoggedIn: true, hasActiveSub: false, tier: "expired" };
+          showPaywallGate(true, "expired");
+          return;
+        }
+
+        const userTier = (profile.tier || "standard").toLowerCase().trim();
+        const tierLevel = TIER_LEVELS[userTier] || 1;
+
+        currentViewerState = { isLoggedIn: true, hasActiveSub: true, tier: userTier };
+
+        // Если уровень тарифа >= 2 (pro, premium, vip) — открываем конспект!
+        if (tierLevel >= TIER_LEVELS.pro) {
+          unlockLessonContent(userTier);
+        } else {
+          // Если тариф standard (уровень 1) — показываем предложение перейти на страницу тарифов
+          showPaywallGate(true, "standard");
+        }
+      } catch (err) {
+        console.error("Subscription check error:", err);
+        showPaywallGate(false, "none");
+      }
+    }
+
+    function unlockLessonContent(tier) {
+      document.getElementById("authLoader").style.display = "none";
+      document.getElementById("paywallGate").style.display = "none";
+      document.getElementById("lessonContentWrapper").style.display = "flex";
+
+      const badge = document.getElementById("userTierBadge");
+      if (badge && TIER_LABELS[tier]) {
+        badge.textContent = TIER_LABELS[tier][currentLang];
+        badge.style.display = "inline-block";
+      }
+    }
+
+    function showPaywallGate(isLoggedIn, reasonTier) {
+      document.getElementById("authLoader").style.display = "none";
+      document.getElementById("lessonContentWrapper").style.display = "none";
+      document.getElementById("paywallGate").style.display = "block";
+      updatePaywallTexts(isLoggedIn, reasonTier);
+    }
+
+    function updatePaywallTexts(isLoggedIn, reasonTier) {
+      const isKz = (currentLang === "kz");
+      const badgeEl = document.getElementById("pwBadgeText");
+      const titleEl = document.getElementById("pwTitleText");
+      const descEl = document.getElementById("pwDescText");
+      const tarifsBtn = document.getElementById("pwTarifsBtn");
+      const contactBtn = document.getElementById("pwContactBtn");
+      const loginBtn = document.getElementById("pwLoginBtn");
+
+      badgeEl.textContent = isKz
+        ? "ПРО / ПРЕМИУМ / ВИП ТАРИФТЕРІНДЕ ҚОЛЖЕТІМДІ"
+        : "ДОСТУПНО В ТАРИФАХ ПРО / ПРЕМИУМ / ВИП";
+
+      tarifsBtn.textContent = isKz
+        ? "🌟 Тарифтер бетіне өту (kazdoctors.com/tarifs)"
+        : "🌟 Перейти к тарифам (kazdoctors.com/tarifs)";
+
+      contactBtn.textContent = isKz
+        ? "💬 Бізге жазу (@doctors.speak)"
+        : "💬 Написать нам (@doctors.speak)";
+
+      if (!isLoggedIn) {
+        titleEl.textContent = isKz
+          ? "Конспектіні ашу үшін аккаунтқа кіріңіз немесе жазылым таңдаңыз"
+          : "Войдите в аккаунт или подключите тариф для чтения конспекта";
+        descEl.textContent = isKz
+          ? "Бұл интерактивті конспект «Про», «Премиум» және «ВИП» жазылымдары бар дәрігерлерге арналған. Тарифтер бетінде өзіңізге ыңғайлы пакетті таңдай аласыз:"
+          : "Этот интерактивный конспект открыт для врачей с подпиской «Про», «Премиум» или «ВИП». Ознакомьтесь с вариантами доступа на странице тарифов:";
+        loginBtn.style.display = "inline-flex";
+        loginBtn.textContent = isKz ? "🔐 Аккаунтқа кіру" : "🔐 Уже есть подписка? Войти в аккаунт";
+      } else if (reasonTier === "standard") {
+        titleEl.textContent = isKz
+          ? "Сізде «Стандарт» тарифі белсенді (тек тренажерлер)"
+          : "У вас активен тариф «Стандарт» (только тренажеры)";
+        descEl.textContent = isKz
+          ? "Интерактивті конспектілер мен мақала талдауларын оқу үшін тарифіңізді «Про», «Премиум» немесе «ВИП» деңгейіне дейін жаңартуды ұсынамыз:"
+          : "Чтобы открывать интерактивные конспекты, разборы статей и грамматические справочники, обновите вашу подписку до тарифа «Про», «Премиум» или «ВИП» на странице тарифов:";
+        loginBtn.style.display = "none";
+      } else {
+        titleEl.textContent = isKz
+          ? "Жазылым мерзімі аяқталды немесе белсенді емес"
+          : "Ваша подписка не активна или истекла";
+        descEl.textContent = isKz
+          ? "Сабақ конспектілеріне қол жеткізу үшін «Про», «Премиум» немесе «ВИП» тарифін таңдаңыз:"
+          : "Для получения доступа к интерактивным конспектам выберите тариф «Про», «Премиум» или «ВИП» на странице тарифов:";
+        loginBtn.style.display = "none";
+      }
+    }
+
+    // =========================================================================
+    // 2. БАЗА ДАННЫХ УРОКА 13 (НА РУССКОМ И КАЗАХСКОМ ЯЗЫКАХ)
+    // =========================================================================
+    const LESSON13_DATA = {
+      ui: {
+        backBtn: { ru: "⬅ К списку уроков", kz: "⬅ Сабақтар тізіміне" },
+        title: {
+          ru: "Articles: A, An, The & No Article (Артикли в медицине)",
+          kz: "Articles: A, An, The & No Article (Медицинадағы артикльдер)"
+        },
+        subtitle: {
+          ru: "A/An — «незнакомый» (впервые) • The — «знакомый» (в контексте / система) • No article — «общее понятие»",
+          kz: "A/An — «бейтаныс» (алғаш рет) • The — «таныс» (контексте / жүйе) • No article — «жалпы ұғым»"
+        },
+        nav: [
+          { ru: "1. Смысл и 3 Формулы", kz: "1. Мағынасы мен 3 Ереже" },
+          { ru: "2. Ловушки и Статья", kz: "2. Тұзақтар мен Мақала" },
+          { ru: "3. Словарь (14 слов)", kz: "3. Сөздік (14 сөз)" },
+          { ru: "4. Упражнения", kz: "4. Жаттығулар" }
+        ],
+        vocabTitle: {
+          ru: "💊 Клинический словарь урока (14 терминов)",
+          kz: "💊 Сабақтың клиникалық сөздігі (14 термин)"
+        },
+        vocabDesc: {
+          ru: "Нажмите 🔊 для прослушивания произношения. Обратите внимание на выбор артикля перед каждым медицинским термином.",
+          kz: "Дұрыс айтылуын тыңдау үшін 🔊 басыңыз. Әр медициналық терминнің алдындағы артикль таңдауына назар аударыңыз."
+        },
+        toExBtn: {
+          ru: "Перейти к шагу 4: Быстрые упражнения ➔",
+          kz: "4-қадамға өту: Жылдам жаттығулар ➔"
+        },
+        ex1Title: {
+          ru: "✍️ Упражнение 1: Выберите правильный артикль (a, an, the или —)",
+          kz: "✍️ 1-жаттығу: Дұрыс артикльді таңдаңыз (a, an, the немесе —)"
+        },
+        ex1Desc: {
+          ru: "Проверьте: мы называем один исчисляемый объект впервые (a/an), конкретный объект (the) или общее/неисчисляемое понятие (—):",
+          kz: "Тексеріңіз: біз саналатын бір затты алғаш рет атап тұрмыз ба (a/an), нақты зат па (the), әлде жалпы/саналмайтын ұғым ба (—):"
+        },
+        ex2Title: {
+          ru: "🩺 Упражнение 2: Вставьте артикль в клинических ситуациях",
+          kz: "🩺 2-жаттығу: Клиникалық жағдайларда тиісті артикльді қойыңыз"
+        },
+        ex2Desc: {
+          ru: "Выберите верный вариант для каждого пропуска:",
+          kz: "Әр бос орынға сәйкес келетін нұсқаны таңдаңыз:"
+        },
+        goTrainerBtn: {
+          ru: "🎯 Перейти к основному тренажеру Урока 13 ➔",
+          kz: "🎯 13-сабақтың негізгі тренажеріне өту ➔"
+        }
+      },
+
+      // ВКЛАДКА 1: 3 ПРАВИЛА АРТИКЛЕЙ (A/AN, THE, NO ARTICLE)
+      tab0Html: {
+        ru: `
+          <div class="card-block">
+            <h2>🧭 Зачем нужны артикли и как их почувствовать врачу?</h2>
+            <p>В русском и казахском языках артиклей нет, поэтому мы угадываем смысл по интонации или порядку слов. А в английском языке маленькое слово перед существительным сразу подсказывает коллеге: <b>мы говорим о каком-то новом объекте впервые, об уже известном пациенте/органе или о болезни вообще</b>:</p>
+
+            <div class="art-grid">
+              <div class="art-card a1">
+                <div class="art-title">
+                  <span>1️⃣ A / AN («Незнакомый объект»)</span>
+                  <span>Впервые / Один</span>
+                </div>
+                <span class="comp-formula">A + согласный звук • AN + гласный звук</span>
+                <p style="font-size:0.79rem;">Говорим об <b>одном исчисляемом</b> объекте <b>впервые</b> (слушатель еще не знает, о каком именно речь; буквально = «один какой-то»):</p>
+                <div class="clinical-quote">
+                  • <b>"This is <u>a</u> doctor. She took <u>a</u> drug."</b><br>
+                  • <b>"The nurse noticed <u>a</u> crust."</b><br>
+                  • <b>"<u>An</u> exacerbation of asthma."</b>
+                </div>
+              </div>
+
+              <div class="art-card a2">
+                <div class="art-title">
+                  <span>2️⃣ THE («Знакомый / Конкретный»)</span>
+                  <span>В контексте</span>
+                </div>
+                <span class="comp-formula">THE + любой конкретный объект (ед. и мн. ч.)</span>
+                <p style="font-size:0.79rem;">Объект нам <b>уже известен из контекста</b> (упомянут второй раз, понятен по ситуации в палате) ИЛИ это уникальная система организма:</p>
+                <div class="clinical-quote">
+                  • <b>"The doctor prescribed a drug. She took <u>the</u> drug."</b> <i>(тот самый препарат!)</i><br>
+                  • <b>"Stress can disrupt <u>the</u> immune system."</b>
+                </div>
+              </div>
+
+              <div class="art-card a3">
+                <div class="art-title">
+                  <span>3️⃣ NO ARTICLE (—) («Общее понятие»)</span>
+                  <span>Вообще / Имена</span>
+                </div>
+                <span class="comp-formula">Без артикля: неисчисл. / мн. ч. / имена</span>
+                <p style="font-size:0.79rem;">Слово выражает <b>общее медицинское понятие, процесс, симптом</b>, множественное число в целом ИЛИ это имя собственное:</p>
+                <div class="clinical-quote">
+                  • <b>"<u>—</u> Aiganym is a doctor."</b><br>
+                  • <b>"<u>—</u> Exposure to smoking can cause <u>—</u> COPD."</b><br>
+                  • <b>"<u>—</u> Flares occur in cold weather."</b>
+                </div>
+              </div>
+            </div>
+
+            <div class="clinical-quote" style="border-left-color: var(--kz-blue); margin-top: 12px;">
+              💡 <b>Как выбрать между A и AN за 1 секунду:</b><br>
+              Смотрите на <b>первый звук</b> слова, стоящего сразу после артикля:<br>
+              • Согласный звук $\\rightarrow$ <b>A</b>: <i><b>a</b> contagion, <b>a</b> crust, <b>a</b> flutter, <b>a</b> follow-up, <b>a</b> gasping sound</i>.<br>
+              • Гласный звук (a, e, i, o, u) $\\rightarrow$ <b>AN</b>: <i><b>an</b> exacerbation, <b>an</b> allergic reaction, <b>an</b> incorrect result, <b>an</b> acute disease</i>.
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>🔄 Классическая цепочка на приеме: как «A» превращается в «THE»</h2>
+            <p>Посмотрите, как в одной истории болезни артикль меняется по мере того, как объект становится знакомым врачу:</p>
+            <div class="clinical-quote" style="border-left-color: var(--kz-gold-dark);">
+              1. <b>Первое упоминание (новый факт):</b> <i>"The patient had <b><u>a</u> detachment</b> of the retina after trauma."</i> (У пациента произошла отслойка сетчатки).<br>
+              2. <b>Второе упоминание (уже знаем, какая отслойка):</b> <i>"<b><u>The</u> detachment</b> was treated surgically."</i> (Эта самая отслойка была пролечена хирургически).
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Быстрая проверка</span>
+              <div class="qc-question">У пациента запланирован повторный визит (follow-up) через три дня после выписки: "He had ___ follow-up scheduled three days after discharge." Какой артикль выберем?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Верно! Один запланированный повторный прием (исчисляемое понятие в ед. числе, упоминается впервые, начинается с согласного звука f) -> a follow-up.')">a</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'An ставится только перед гласным звуком (например, an exacerbation), а слово follow-up начинается со звука [f].')">an</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Слово discharge (выписка) здесь идет без артикля как процесс, а вот сам визит (a follow-up) — исчисляемое событие в единственном числе.')">без артикля (—)</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">Перейти к шагу 2: Клинические ловушки и Статья Wiley (NEC) ➔</button>
+        `,
+        kz: `
+          <div class="card-block">
+            <h2>🧭 Артикльдер не үшін қажет және дәрігер оларды қалай оңай түсінеді?</h2>
+            <p>Қазақ және орыс тілдерінде артикль жоқ. Ал ағылшын тілінде зат есімнің алдындағы кішкентай сөз әріптесіңізге бірден бағыт береді: <b>біз белгісіз бір зат туралы алғаш рет айтып тұрмыз ба, әлде бұрыннан таныс нақты науқас/ағза туралы ма, әлде жалпы ауру/процесс туралы ма</b>:</p>
+
+            <div class="art-grid">
+              <div class="art-card a1">
+                <div class="art-title">
+                  <span>1️⃣ A / AN («Бейтаныс нысан»)</span>
+                  <span>Алғаш рет / Бір</span>
+                </div>
+                <span class="comp-formula">A + дауыссыз дыбыс • AN + дауысты дыбыс</span>
+                <p style="font-size:0.79rem;">Жекеше түрдегі <b>саналатын бір</b> зат туралы <b>алғаш рет</b> айтқанда қолданылады (қазақ тіліндегі «бір» сөзіне жақын):</p>
+                <div class="clinical-quote">
+                  • <b>"This is <u>a</u> doctor. She took <u>a</u> drug."</b><br>
+                  • <b>"The nurse noticed <u>a</u> crust."</b><br>
+                  • <b>"<u>An</u> exacerbation of asthma."</b>
+                </div>
+              </div>
+
+              <div class="art-card a2">
+                <div class="art-title">
+                  <span>2️⃣ THE («Таныс / Нақты нысан»)</span>
+                  <span>Контексте бар</span>
+                </div>
+                <span class="comp-formula">THE + кез келген нақты зат (жекеше/көпше)</span>
+                <p style="font-size:0.79rem;">Нысан бізге <b>контекстен таныс</b> (екінші рет аталды, палатадағы нақты жағдай) НЕМЕСЕ ағзаның бірегей жүйесі:</p>
+                <div class="clinical-quote">
+                  • <b>"The doctor prescribed a drug. She took <u>the</u> drug."</b> <i>(дәл сол дәріні!)</i><br>
+                  • <b>"Stress can disrupt <u>the</u> immune system."</b>
+                </div>
+              </div>
+
+              <div class="art-card a3">
+                <div class="art-title">
+                  <span>3️⃣ NO ARTICLE (—) («Жалпы ұғым»)</span>
+                  <span>Жалпы / Есімдер</span>
+                </div>
+                <span class="comp-formula">Артикльсіз: саналмайтын / көпше / есімдер</span>
+                <p style="font-size:0.79rem;">Сөз нақты бір затты емес, <b>жалпы медициналық ұғымды, процесті, симптомды</b> немесе адам атын білдіргенде:</p>
+                <div class="clinical-quote">
+                  • <b>"<u>—</u> Aiganym is a doctor."</b><br>
+                  • <b>"<u>—</u> Exposure to smoking can cause <u>—</u> COPD."</b><br>
+                  • <b>"<u>—</u> Flares occur in cold weather."</b>
+                </div>
+              </div>
+            </div>
+
+            <div class="clinical-quote" style="border-left-color: var(--kz-blue); margin-top: 12px;">
+              💡 <b>A мен AN артиклін 1 секундта қалай таңдаймыз:</b><br>
+              Артикльден кейін тұрған сөздің <b>бірінші дыбысына</b> қараңыз:<br>
+              • Дауыссыз дыбыс $\\rightarrow$ <b>A</b>: <i><b>a</b> contagion, <b>a</b> crust, <b>a</b> flutter, <b>a</b> follow-up, <b>a</b> gasping sound</i>.<br>
+              • Дауысты дыбыс (a, e, i, o, u) $\\rightarrow$ <b>AN</b>: <i><b>an</b> exacerbation, <b>an</b> allergic reaction, <b>an</b> incorrect result, <b>an</b> acute disease</i>.
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>🔄 Қабылдау кезіндегі классикалық тізбек: «A» қалай «THE»-ге айналады</h2>
+            <p>Ауру тарихында нысан дәрігерге таныс болған сайын артикльдің қалай өзгеретініне қараңыз:</p>
+            <div class="clinical-quote" style="border-left-color: var(--kz-gold-dark);">
+              1. <b>Алғаш рет атау (жаңа дерек):</b> <i>"The patient had <b><u>a</u> detachment</b> of the retina after trauma."</i> (Науқаста жарақаттан кейін торлы қабықтың ажырауы болды).<br>
+              2. <b>Екінші рет атау (нақты сол патология):</b> <i>"<b><u>The</u> detachment</b> was treated surgically."</i> (Осы ажырау хирургиялық жолмен емделді).
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Жылдам тексеру</span>
+              <div class="qc-question">Науқасқа ауруханадан шыққаннан кейін үш күннен соң қайта қаралу (follow-up) белгіленді: "He had ___ follow-up scheduled three days after discharge." Қай артикльді таңдаймыз?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Дұрыс! Бір жоспарланған қайта қабылдау (жекеше түрдегі саналатын ұғым, алғаш рет аталып тұр, f дауыссыз дыбысынан басталады) -> a follow-up.')">a</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'An тек дауысты дыбыстың алдында қойылады (мысалы, an exacerbation), ал follow-up сөзі [f] дыбысынан басталады.')">an</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Discharge (шығару) сөзі процесс ретінде артикльсіз тұр, ал визит (a follow-up) — саналатын жеке оқиға.')">артикльсіз (—)</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">2-қадамға өту: Клиникалық тұзақтар және Wiley (NEC) мақаласы ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 2: КЛИНИЧЕСКАЯ ТАБЛИЦА ЛОВУШЕК И ИНТЕРАКТИВНЫЙ РАЗБОР СТАТЬИ WILEY (NECROTIZING ENTEROCOLITIS)
+      tab1Html: {
+        ru: `
+          <div class="card-block gold">
+            <h2>🩺 Главные клинические правила: когда врачу нужен THE, а когда A / AN или —</h2>
+            <p>Лучший способ выучить артикли — подмечать их в реальных медицинских контекстах. Вот 4 ситуации, которые постоянно встречаются в тестах и статьях:</p>
+
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Клиническая ситуация</th>
+                  <th>Какой артикль?</th>
+                  <th>Примеры из урока</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>1. Системы организма, ключевые органы и физиологические индексы</b></td>
+                  <td><b>THE</b></td>
+                  <td>• disrupt <b>the</b> immune system<br>• <b>The</b> glomerular filtration rate (<b>The</b> GFR) is essential<br>• detachment of <b>the</b> retina<br>• disease of <b>the</b> intestine</td>
+                </tr>
+                <tr>
+                  <td><b>2. Отделения больницы и конкретные пробы/раны пациента</b></td>
+                  <td><b>THE</b></td>
+                  <td>• in <b>the</b> neonatal intensive care unit (NICU)<br>• in <b>the</b> lab sample<br>• around <b>the</b> wound<br>• confirm <b>the</b> diagnosis</td>
+                </tr>
+                <tr>
+                  <td><b>3. Неисчисляемые симптомы/процессы vs Одиночный звук/проявление</b></td>
+                  <td><b>— (нет)</b> vs <b>A / AN</b></td>
+                  <td>• experienced <b>—</b> cramping (спазмы вообще) AND <b>a</b> flutter (ощущение трепетания)<br>• noted <b>a</b> gasping sound (появилось исчисляемое слово <i>sound</i>!)<br>• <b>—</b> improper technique leads to <b>—</b> contamination</td>
+                </tr>
+                <tr>
+                  <td><b>4. Названия болезней и аббревиатуры диагнозов</b></td>
+                  <td><b>— (нет)</b><br><i>(но описание болезни — с a/an!)</i></td>
+                  <td>• can cause <b>—</b> COPD<br>• <b>—</b> Necrotizing enterocolitis (NEC) is <b>an</b> acute inflammatory disease</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card-block">
+            <h2>🔬 Практика чтения Wiley Mini-Review: Necrotizing Enterocolitis (НЭК)</h2>
+            <p>Прочитайте реальный абстракт неонатологического обзора <b>«Necrotizing enterocolitis»</b> из журнала <i>Neurogastroenterology & Motility</i>. Нажимайте на кнопки подсветки и наблюдайте, почему авторы ставят <b>a/an</b>, <b>the</b> или оставляют слова <b>без артикля</b>:</p>
+
+            <div class="abstract-box">
+              <div class="abstract-header">
+                <span>📄 Wiley Mini-Review: Necrotizing enterocolitis — Abstract</span>
+                <div class="abstract-controls">
+                  <button class="hl-btn indef-type" onclick="toggleAbstractHighlight('a')">Неопределенный (a / an)</button>
+                  <button class="hl-btn def-type" onclick="toggleAbstractHighlight('the')">Определенный (the)</button>
+                  <button class="hl-btn zero-type" onclick="toggleAbstractHighlight('zero')">Без артикля (общие понятия)</button>
+                  <button class="hl-btn reset" onclick="toggleAbstractHighlight('all')">Показать все</button>
+                </div>
+              </div>
+              <div class="abstract-body show-a show-the show-zero" id="abstractBodyText">
+                <b>Abstract:</b> <span class="ar-zero">Necrotizing enterocolitis (NEC)</span> is <span class="ar-a">an</span> acute inflammatory disease of <span class="ar-the">the</span> intestine which primarily affects <span class="ar-zero">preterm infants</span> and is <span class="ar-a">a</span> leading cause of <span class="ar-zero">morbidity and mortality</span> in <span class="ar-the">the</span> neonatal intensive care unit. From <span class="ar-a">a</span> clinical standpoint, and during <span class="ar-the">the</span> early course of <span class="ar-the">the</span> disease, <span class="ar-zero">NEC</span> can be difficult to distinguish from other diseases and conditions common to <span class="ar-the">the</span> preterm infant, and this warrants <span class="ar-the">the</span> need for <span class="ar-zero">specific disease biomarkers</span>.<br><br>
+                <span class="ar-the">The</span> pathogenesis of <span class="ar-zero">NEC</span> is only partly understood but likely involves <span class="ar-a">an</span> altered intestinal barrier immune response to <span class="ar-zero">feeding</span> and <span class="ar-the">the</span> developing microbiome. <span class="ar-zero">Recent evidence</span> points toward <span class="ar-a">a</span> role of <span class="ar-the">the</span> enteric nervous system in <span class="ar-zero">NEC pathogenesis</span>. In this issue, Meister and colleagues use <span class="ar-a">a</span> rodent model of <span class="ar-zero">NEC</span> to demonstrate that <span class="ar-zero">NEC</span> is associated with <span class="ar-zero">diminished vagal tone</span>, as determined by <span class="ar-zero">decreased high-frequency heart rate variability (HF-HRV)</span>, and <span class="ar-zero">altered myenteric nitrergic inhibitory neurotransmission</span>. These results augment their previous findings that describe <span class="ar-zero">decreased HF-HRV</span> in <span class="ar-zero">human preterm infants</span> with <span class="ar-zero">NEC</span>. This mini-review provides <span class="ar-a">a</span> brief summary of clinical and pathophysiologic aspects of <span class="ar-zero">NEC</span> with focus on certain aspects of <span class="ar-zero">neurogastroenterology</span>.
+              </div>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Вопрос по научному абстракту</span>
+              <div class="qc-question">Посмотрите на первое предложение абстракта: "Necrotizing enterocolitis (NEC) is AN acute inflammatory disease of THE intestine..." Почему перед acute inflammatory disease стоит AN, а перед intestine — THE?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Блестяще! Мы классифицируем НЭК как «одно из острых воспалительных заболеваний» (an acute inflammatory disease), а кишечник (the intestine) — это конкретный орган/система организма!')">AN — потому что это «одно из» острых заболеваний (классификация), а THE — потому что кишечник (the intestine) — конкретная анатомическая система</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Наоборот: и acute, и intestine начинаются с гласного звука, но выбор между an и the зависит от смысла (классификация vs конкретный орган организма).')">Только из-за того, с какой буквы начинается слово</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">Перейти к шагу 3: Словарь урока (14 слов) ➔</button>
+        `,
+        kz: `
+          <div class="card-block gold">
+            <h2>🩺 Басты клиникалық ережелер: дәрігерге қашан THE, ал қашан A / AN немесе — қажет?</h2>
+            <p>Артикльдерді меңгерудің ең жақсы жолы — оларды нақты медициналық контексте байқау. Міне, тесттер мен мақалаларда үнемі кездесетін 4 жағдай:</p>
+
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Клиникалық жағдай</th>
+                  <th>Қай артикль?</th>
+                  <th>Сабақтағы мысалдар</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>1. Ағза жүйелері, негізгі мүшелер және физиологиялық көрсеткіштер</b></td>
+                  <td><b>THE</b></td>
+                  <td>• disrupt <b>the</b> immune system<br>• <b>The</b> glomerular filtration rate (<b>The</b> GFR) is essential<br>• detachment of <b>the</b> retina<br>• disease of <b>the</b> intestine</td>
+                </tr>
+                <tr>
+                  <td><b>2. Аурухана бөлімшелері және науқастың нақты сынамасы/жарасы</b></td>
+                  <td><b>THE</b></td>
+                  <td>• in <b>the</b> neonatal intensive care unit (NICU)<br>• in <b>the</b> lab sample<br>• around <b>the</b> wound<br>• confirm <b>the</b> diagnosis</td>
+                </tr>
+                <tr>
+                  <td><b>3. Саналмайтын симптомдар/процестер vs Жеке дыбыс/көрініс</b></td>
+                  <td><b>— (жоқ)</b> vs <b>A / AN</b></td>
+                  <td>• experienced <b>—</b> cramping (жалпы спазмдар) AND <b>a</b> flutter (лүпілдеу сезімі)<br>• noted <b>a</b> gasping sound (саналатын <i>sound</i> сөзі қосылды!)<br>• <b>—</b> improper technique leads to <b>—</b> contamination</td>
+                </tr>
+                <tr>
+                  <td><b>4. Ауру атаулары мен диагноз аббревиатуралары</b></td>
+                  <td><b>— (жоқ)</b><br><i>(бірақ сипаттамасы — a/an арқылы!)</i></td>
+                  <td>• can cause <b>—</b> COPD<br>• <b>—</b> Necrotizing enterocolitis (NEC) is <b>an</b> acute inflammatory disease</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card-block">
+            <h2>🔬 Wiley Mini-Review мақаласын талдау: Necrotizing Enterocolitis (НЭК)</h2>
+            <p><i>Neurogastroenterology & Motility</i> журналындағы <b>«Necrotizing enterocolitis»</b> неонатологиялық шолуының абстрактісін оқыңыз. Авторлардың <b>a/an</b>, <b>the</b> артикльдерін немесе <b>артикльсіз</b> форманы неліктен таңдағанын көру үшін батырмаларды басыңыз:</p>
+
+            <div class="abstract-box">
+              <div class="abstract-header">
+                <span>📄 Wiley Mini-Review: Necrotizing enterocolitis — Abstract</span>
+                <div class="abstract-controls">
+                  <button class="hl-btn indef-type" onclick="toggleAbstractHighlight('a')">Белгісіздік (a / an)</button>
+                  <button class="hl-btn def-type" onclick="toggleAbstractHighlight('the')">Белгілілік (the)</button>
+                  <button class="hl-btn zero-type" onclick="toggleAbstractHighlight('zero')">Артикльсіз (жалпы ұғымдар)</button>
+                  <button class="hl-btn reset" onclick="toggleAbstractHighlight('all')">Барлығын көрсету</button>
+                </div>
+              </div>
+              <div class="abstract-body show-a show-the show-zero" id="abstractBodyText">
+                <b>Abstract:</b> <span class="ar-zero">Necrotizing enterocolitis (NEC)</span> is <span class="ar-a">an</span> acute inflammatory disease of <span class="ar-the">the</span> intestine which primarily affects <span class="ar-zero">preterm infants</span> and is <span class="ar-a">a</span> leading cause of <span class="ar-zero">morbidity and mortality</span> in <span class="ar-the">the</span> neonatal intensive care unit. From <span class="ar-a">a</span> clinical standpoint, and during <span class="ar-the">the</span> early course of <span class="ar-the">the</span> disease, <span class="ar-zero">NEC</span> can be difficult to distinguish from other diseases and conditions common to <span class="ar-the">the</span> preterm infant, and this warrants <span class="ar-the">the</span> need for <span class="ar-zero">specific disease biomarkers</span>.<br><br>
+                <span class="ar-the">The</span> pathogenesis of <span class="ar-zero">NEC</span> is only partly understood but likely involves <span class="ar-a">an</span> altered intestinal barrier immune response to <span class="ar-zero">feeding</span> and <span class="ar-the">the</span> developing microbiome. <span class="ar-zero">Recent evidence</span> points toward <span class="ar-a">a</span> role of <span class="ar-the">the</span> enteric nervous system in <span class="ar-zero">NEC pathogenesis</span>. In this issue, Meister and colleagues use <span class="ar-a">a</span> rodent model of <span class="ar-zero">NEC</span> to demonstrate that <span class="ar-zero">NEC</span> is associated with <span class="ar-zero">diminished vagal tone</span>, as determined by <span class="ar-zero">decreased high-frequency heart rate variability (HF-HRV)</span>, and <span class="ar-zero">altered myenteric nitrergic inhibitory neurotransmission</span>. These results augment their previous findings that describe <span class="ar-zero">decreased HF-HRV</span> in <span class="ar-zero">human preterm infants</span> with <span class="ar-zero">NEC</span>. This mini-review provides <span class="ar-a">a</span> brief summary of clinical and pathophysiologic aspects of <span class="ar-zero">NEC</span> with focus on certain aspects of <span class="ar-zero">neurogastroenterology</span>.
+              </div>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Ғылыми абстракт бойынша сұрақ</span>
+              <div class="qc-question">Бірінші сөйлемге қараңыз: "Necrotizing enterocolitis (NEC) is AN acute inflammatory disease of THE intestine..." Неліктен acute inflammatory disease алдында AN, ал intestine алдында THE тұр?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Керемет! Біз НЭК-ті «жедел қабыну ауруларының бірі» ретінде жіктейміз (an acute inflammatory disease), ал ішек (the intestine) — ағзаның нақты анатомиялық жүйесі!')">AN — себебі бұл жедел аурулардың «бірі» (жіктеу), ал THE — себебі ішек (the intestine) нақты анатомиялық ағза жүйесі</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Екі сөз де дауысты дыбыстан басталғанымен, an мен the таңдауы мағынаға (жіктеу vs нақты анатомиялық мүше) байланысты.')">Тек сөздің бірінші әрпіне байланысты</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">3-қадамға өту: Сабақ сөздігі (14 сөз) ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 3: СЛОВАРЬ (14 ТЕРМИНОВ С ПРИМЕРАМИ ИЗ СЛАЙДОВ 2 И 5)
+      vocabulary: [
+        {
+          en: "Confirm",
+          ru: "Подтверждать (диагноз)",
+          kz: "Растау (диагнозды)",
+          ex: "<b>The</b> doctor needs to <b>confirm the</b> diagnosis before starting <b>—</b> treatment."
+        },
+        {
+          en: "Contagion",
+          ru: "Заражение / Контагиозная инфекция",
+          kz: "Жұқтыру / Жұқпалы инфекция",
+          ex: "<b>A contagion</b> can spread quickly in <b>a</b> crowded hospital."
+        },
+        {
+          en: "Contamination",
+          ru: "Загрязнение / Контаминация (пробы)",
+          kz: "Ластану / Контаминация (сынаманың)",
+          ex: "<b>—</b> Improper technique can lead to <b>— contamination</b>."
+        },
+        {
+          en: "Cramping",
+          ru: "Спазмы / Схваткообразные боли",
+          kz: "Түйілу / Спазмдар",
+          ex: "She complained of <b>— cramping</b> in <b>the</b> lower abdomen."
+        },
+        {
+          en: "Crust",
+          ru: "Корка / Струп (на ране)",
+          kz: "Қабыршақ / Жара бетіндегі қабық",
+          ex: "<b>The</b> nurse noticed <b>a crust</b> forming around <b>the</b> wound."
+        },
+        {
+          en: "Detachment",
+          ru: "Отслоение / Отслойка (напр., сетчатки)",
+          kz: "Ажырау / Сылыну (мысалы, торлы қабықтың)",
+          ex: "<b>The detachment</b> was treated surgically."
+        },
+        {
+          en: "Disrupt",
+          ru: "Нарушать работу / Прерывать / Разрушать",
+          kz: "Бұзу (жүйе жұмысын) / Үзу",
+          ex: "<b>—</b> Stress can <b>disrupt the</b> immune system."
+        },
+        {
+          en: "Exacerbation",
+          ru: "Обострение / Ухудшение (хронической болезни)",
+          kz: "Өршу / Асқыну (созылмалы аурудың)",
+          ex: "<b>An exacerbation</b> of asthma can occur without warning."
+        },
+        {
+          en: "Exposure",
+          ru: "Подверженность / Воздействие / Контакт",
+          kz: "Әсерге ұшырау / Байланыс",
+          ex: "<b>— Exposure</b> to sunlight is limited in this ward."
+        },
+        {
+          en: "Flare",
+          ru: "Вспышка / Рецидив симптомов",
+          kz: "Аурудың қайта қозуы / Өршу",
+          ex: "<b>— Flares</b> occur more frequently in cold weather. <i>(Мн. ч. в целом — без артикля).</i>"
+        },
+        {
+          en: "Flutter",
+          ru: "Трепетание / Мерцание",
+          kz: "Дірілдеу / Лүпілдеу (трепетание)",
+          ex: "She felt <b>a flutter</b> in her chest."
+        },
+        {
+          en: "Follow-up",
+          ru: "Последующее наблюдение / Повторный прием",
+          kz: "Қайта қаралу / Динамикалық бақылау",
+          ex: "He has <b>a follow-up</b> appointment next week."
+        },
+        {
+          en: "Gasping",
+          ru: "Удушье / Затрудненное (агональное) дыхание",
+          kz: "Тұншығу / Ауа жетпей дем алу",
+          ex: "<b>The gasping</b> lasted for several minutes."
+        },
+        {
+          en: "Glomerular filtration rate (GFR)",
+          ru: "Скорость клубочковой фильтрации (СКФ)",
+          kz: "Шумақшалық фильтрация жылдамдығы (ШФЖ)",
+          ex: "<b>The GFR</b> is essential in evaluating kidney function."
+        }
+      ],
+
+      // ВКЛАДКА 4: УПРАЖНЕНИЕ 1 И УПРАЖНЕНИЕ 2 ИЗ PDF
+      ex1: [
+        {
+          q: "1. The patient showed signs of ___ exacerbation of symptoms overnight. (a / an / the / —)",
+          options: ["an / — (без артикля)", "a", "the"],
+          correct: 0,
+          exp: {
+            ru: "Слово exacerbation начинается с гласного звука [ɪg], поэтому ставим артикль an (an exacerbation of symptoms) либо используем как неисчисляемый процесс без артикля (—).",
+            kz: "Exacerbation сөзі дауысты дыбыстан басталатындықтан, an артиклі қойылады (an exacerbation of symptoms) немесе процесс ретінде артикльсіз (—) қолданылады."
+          }
+        },
+        {
+          q: "2. He had ___ follow-up scheduled three days after discharge. (a / an / the / —)",
+          options: ["a", "an", "the"],
+          correct: 0,
+          exp: {
+            ru: "Один запланированный повторный прием (исчисляемое событие в единственном числе, упоминается впервые) -> a follow-up.",
+            kz: "Бір жоспарланған қайта қабылдау (жекеше түрдегі саналатын оқиға, алғаш рет аталып тұр) -> a follow-up."
+          }
+        },
+        {
+          q: "3. ___ contamination in the lab sample led to an incorrect result. (A / An / The / —)",
+          options: ["The / A (или — в общем смысле)", "An"],
+          correct: 0,
+          exp: {
+            ru: "Поскольку уточнено, где именно произошло загрязнение ('in the lab sample' — в конкретной пробе), отлично подходит The contamination (или A contamination — случай контаминации).",
+            kz: "Ластанудың нақты қайда болғаны ('in the lab sample' — зертханалық сынамада) көрсетілгендіктен, The contamination (немесе A contamination) қолданылады."
+          }
+        },
+        {
+          q: "4. She experienced cramping and ___ flutter in the lower abdomen. (a / an / the / —)",
+          options: ["a", "an", "the"],
+          correct: 0,
+          exp: {
+            ru: "Cramping (спазмы) идет без артикля, а вот flutter (ощущение трепетания/пульсации) — исчисляемое в единственном числе -> a flutter.",
+            kz: "Cramping (спазмдар) артикльсіз келеді, ал flutter (лүпілдеу сезімі) жекеше түрде саналатын сөз болғандықтан -> a flutter."
+          }
+        },
+        {
+          q: "5. Doctors noted ___ gasping sound during auscultation. (a / an / the / —)",
+          options: ["a", "an", "—"],
+          correct: 0,
+          exp: {
+            ru: "Обратите внимание на исчисляемое слово 'sound' (звук) в единственном числе! Врачи услышали (какой-то один) хрипящий звук -> a gasping sound.",
+            kz: "Жекеше түрдегі саналатын 'sound' (дыбыс) сөзіне назар аударыңыз! Дәрігерлер аускультация кезінде (бір) сырылдаған дыбысты байқады -> a gasping sound."
+          }
+        }
+      ],
+
+      ex2: [
+        {
+          q: "1. We need to confirm whether it's ___ contagion or allergic reaction.",
+          options: ["a", "the", "an"],
+          correct: 0,
+          exp: {
+            ru: "Мы выясняем, является ли это «заразной инфекцией» (одной из возможных причин, первое упоминание, согласный звук [k]) -> a contagion.",
+            kz: "Бұл «жұқпалы инфекция ма» (ықтимал себептердің бірі, алғаш рет аталуы, [k] дауыссыз дыбысы) екенін анықтаймыз -> a contagion."
+          }
+        },
+        {
+          q: "2. There was ___ crust forming around the wound.",
+          options: ["a", "the", "an"],
+          correct: 0,
+          exp: {
+            ru: "После конструкции 'There was...' новый исчисляемый объект в единственном числе всегда вводится с неопределенным артиклем -> a crust.",
+            kz: "'There was...' құрылымынан кейін жекеше түрдегі жаңа саналатын зат әрқашан белгісіздік артиклімен беріледі -> a crust."
+          }
+        },
+        {
+          q: "3. ___ glomerular filtration rate (GFR) is essential for assessing kidney function.",
+          options: ["The", "A", "An"],
+          correct: 0,
+          exp: {
+            ru: "Конкретный физиологический показатель организма — скорость клубочковой фильтрации (СКФ / GFR) — используется с определенным артиклем The.",
+            kz: "Ағзаның нақты физиологиялық көрсеткіші — шумақшалық фильтрация жылдамдығы (GFR) — The белгілілік артиклімен қолданылады."
+          }
+        },
+        {
+          q: "4. The patient had ___ detachment of the retina after trauma.",
+          options: ["a / the", "an", "—"],
+          correct: 0,
+          exp: {
+            ru: "Подходят оба варианта: 'a detachment of the retina' (случай отслойки сетчатки у пациента) или 'the detachment of the retina' (отслойка сетчатки как конкретизированная патология).",
+            kz: "Екі нұсқа да дұрыс: 'a detachment of the retina' (торлы қабық ажырауы жағдайы) немесе 'the detachment of the retina' (нақты анықталған патология)."
+          }
+        },
+        {
+          q: "5. Prolonged exposure to the chemical can disrupt ___ immune system.",
+          options: ["the", "a", "an"],
+          correct: 0,
+          exp: {
+            ru: "Все уникальные системы человеческого организма (the immune system, the nervous system, the cardiovascular system) всегда употребляются с артиклем THE!",
+            kz: "Адам ағзасының барлық бірегей жүйелері (the immune system, the nervous system) әрқашан THE артиклімен қолданылады!"
+          }
+        }
+      ]
+    };
+
+    // =========================================================================
+    // 3. ЛОГИКА ОТОБРАЖЕНИЯ, ОЗВУЧКИ И ПЕРЕКЛЮЧЕНИЯ ЯЗЫКОВ (RU / KZ)
+    // =========================================================================
+    let currentLang = localStorage.getItem('doctors_speak_lang') || 'ru';
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('doctors_speak_lang', lang);
+
+      document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
+      document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
+
+      const ui = LESSON13_DATA.ui;
+      document.getElementById('uiBackBtn').textContent = ui.backBtn[lang];
+      document.getElementById('uiTitle').textContent = ui.title[lang];
+      document.getElementById('uiSubtitle').textContent = ui.subtitle[lang];
+
+      ui.nav.forEach((item, index) => {
+        document.getElementById(`nav${index}`).textContent = item[lang];
+      });
+
+      document.getElementById('uiVocabTitle').textContent = ui.vocabTitle[lang];
+      document.getElementById('uiVocabDesc').textContent = ui.vocabDesc[lang];
+      document.getElementById('uiToExBtn').textContent = ui.toExBtn[lang];
+      document.getElementById('uiEx1Title').textContent = ui.ex1Title[lang];
+      document.getElementById('uiEx1Desc').textContent = ui.ex1Desc[lang];
+      document.getElementById('uiEx2Title').textContent = ui.ex2Title[lang];
+      document.getElementById('uiEx2Desc').textContent = ui.ex2Desc[lang];
+      document.getElementById('uiGoTrainerBtn').textContent = ui.goTrainerBtn[lang];
+
+      // Обновляем бейдж тарифа или тексты экрана Paywall при переключении языка
+      const badge = document.getElementById("userTierBadge");
+      if (badge && TIER_LABELS[currentViewerState.tier]) {
+        badge.textContent = TIER_LABELS[currentViewerState.tier][lang];
+      }
+      if (document.getElementById("paywallGate").style.display === "block") {
+        updatePaywallTexts(currentViewerState.isLoggedIn, currentViewerState.tier);
+      }
+
+      // Рендерим вкладки теории, словаря и упражнений
+      document.getElementById('tab0').innerHTML = LESSON13_DATA.tab0Html[lang];
+      document.getElementById('tab1').innerHTML = LESSON13_DATA.tab1Html[lang];
+      renderVocab();
+      renderExercises('ex1Container', LESSON13_DATA.ex1);
+      renderExercises('ex2Container', LESSON13_DATA.ex2);
+    }
+
+    function showTab(idx) {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`nav${i}`).classList.toggle('active', i === idx);
+        document.getElementById(`tab${i}`).classList.toggle('active', i === idx);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Подсветка артиклей в абстракте Wiley (Necrotizing Enterocolitis)
+    function toggleAbstractHighlight(mode) {
+      const box = document.getElementById('abstractBodyText');
+      if (!box) return;
+      box.classList.remove('show-a', 'show-the', 'show-zero');
+      if (mode === 'a' || mode === 'all') box.classList.add('show-a');
+      if (mode === 'the' || mode === 'all') box.classList.add('show-the');
+      if (mode === 'zero' || mode === 'all') box.classList.add('show-zero');
+    }
+
+    // Проверка встроенных микро-вопросов в теории
+    function checkInlineQuiz(btn, isCorrect, feedbackText) {
+      const parent = btn.closest('.quick-check');
+      const allBtns = parent.querySelectorAll('.qc-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+      }
+
+      const fb = parent.querySelector('.qc-feedback');
+      fb.textContent = `💡 ${feedbackText}`;
+      fb.style.display = 'block';
+    }
+
+    // Рендер словаря с озвучкой Web Speech API
+    function renderVocab() {
+      const grid = document.getElementById('vocabGrid');
+      grid.innerHTML = '';
+      LESSON13_DATA.vocabulary.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'vocab-card';
+        div.innerHTML = `
+          <div class="vocab-header">
+            <span class="vocab-word">${item.en}</span>
+            <button class="speak-btn" onclick="speakEn('${item.en}')" title="Прослушать">🔊</button>
+          </div>
+          <div class="vocab-trans">${item[currentLang]}</div>
+          <div class="vocab-example">${item.ex}</div>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    function speakEn(word) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(word);
+      u.lang = 'en-US';
+      u.rate = 0.9;
+      window.speechSynthesis.speak(u);
+    }
+
+    // Рендер упражнений 1 и 2 из PDF
+    function renderExercises(containerId, list) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+      list.forEach(item => {
+        const box = document.createElement('div');
+        box.className = 'quick-check';
+        box.style.marginTop = '0';
+
+        const qEl = document.createElement('div');
+        qEl.className = 'qc-question';
+        qEl.textContent = item.q;
+
+        const optsEl = document.createElement('div');
+        optsEl.className = 'qc-options';
+
+        const fbEl = document.createElement('div');
+        fbEl.className = 'qc-feedback';
+        fbEl.textContent = `💡 ${item.exp[currentLang]}`;
+
+        item.options.forEach((optText, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'qc-btn';
+          btn.textContent = optText;
+          btn.onclick = () => {
+            const buttons = optsEl.querySelectorAll('.qc-btn');
+            buttons.forEach(b => b.disabled = true);
+            if (idx === item.correct) {
+              btn.classList.add('correct');
+            } else {
+              btn.classList.add('wrong');
+              buttons[item.correct].classList.add('correct');
+            }
+            fbEl.style.display = 'block';
+          };
+          optsEl.appendChild(btn);
+        });
+
+        box.appendChild(qEl);
+        box.appendChild(optsEl);
+        box.appendChild(fbEl);
+        container.appendChild(box);
+      });
+    }
+
+    // Инициализация языка и проверка подписки при загрузке страницы
+    setLang(currentLang);
+    verifySubscriptionAccess();
+  </script>
+</body>
+</html>
