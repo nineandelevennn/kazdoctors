@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Doctors Speak — Medical English</title>
+    <title>Doctors Speak — Medical English Course & Trainers</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -23,6 +23,8 @@
             --text-muted: #64748B;
             --border-color: #DBE5F0;
             --green-accent: #10B981;
+            --green-light: #DCFCE7;
+            --green-dark: #15803D;
         }
 
         * {
@@ -43,22 +45,33 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            padding-bottom: 64px;
         }
 
-        /* 1. Верхняя шапка во всю ширину */
+        /* 1. Верхняя шапка */
         header {
             position: relative;
-            z-index: 1;
-            background: linear-gradient(145deg, #0088BB 0%, var(--kz-blue) 60%, #15B2E8 100%);
+            z-index: 10;
+            background: linear-gradient(145deg, #0077A3 0%, var(--kz-blue) 58%, #15B2E8 100%);
             color: #FFFFFF;
             text-align: center;
-            padding: 20px 16px 24px 16px;
-            box-shadow: 0 6px 18px rgba(0, 161, 222, 0.22);
+            padding: 18px 16px 22px 16px;
+            box-shadow: 0 6px 20px rgba(0, 161, 222, 0.24);
             display: flex;
             flex-direction: column;
             align-items: center;
-            border-bottom-left-radius: 22px;
-            border-bottom-right-radius: 22px;
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+        }
+
+        .header-top-bar {
+            width: 100%;
+            max-width: 840px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
         }
 
         header .back-btn {
@@ -72,10 +85,9 @@
             border: 1px solid rgba(255, 255, 255, 0.35);
             text-decoration: none;
             font-weight: 700;
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             padding: 6px 14px;
             border-radius: 20px;
-            margin-bottom: 10px;
             transition: all 0.2s ease;
         }
 
@@ -84,44 +96,68 @@
             background: rgba(255, 255, 255, 0.3);
         }
 
+        .lang-switch {
+            display: inline-flex;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            padding: 3px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .lang-btn {
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 800;
+            font-size: 0.72rem;
+            padding: 4px 11px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn.active {
+            background: var(--kz-gold);
+            color: var(--text-dark);
+        }
+
         .header-badges {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             flex-wrap: wrap;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .brand-badge {
             display: inline-block;
             background: rgba(255, 255, 255, 0.16);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.32);
             color: #FFFFFF;
             font-weight: 700;
-            font-size: 0.75rem;
-            letter-spacing: 0.8px;
+            font-size: 0.73rem;
+            letter-spacing: 0.6px;
             padding: 4px 12px;
             border-radius: 20px;
         }
 
         .tier-status-badge {
-            display: none;
+            display: inline-block;
             background: rgba(255, 199, 44, 0.24);
             border: 1px solid var(--kz-gold);
             color: var(--kz-gold);
             font-weight: 800;
-            font-size: 0.72rem;
+            font-size: 0.71rem;
             letter-spacing: 0.5px;
             padding: 4px 12px;
             border-radius: 20px;
             text-transform: uppercase;
+            text-decoration: none;
         }
 
         h1 {
-            font-size: 1.38rem;
+            font-size: 1.36rem;
             font-weight: 900;
             line-height: 1.2;
             text-transform: uppercase;
@@ -130,15 +166,54 @@
         }
 
         .subtitle {
-            font-size: 0.78rem;
+            font-size: 0.77rem;
             margin-top: 4px;
             font-weight: 800;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.7px;
             text-transform: uppercase;
             color: var(--kz-gold);
         }
 
-        /* 2. Основная зона со сворачиваемыми категориями */
+        /* Шкала личного прогресса в шапке */
+        .progress-widget {
+            width: 100%;
+            max-width: 540px;
+            background: rgba(15, 23, 42, 0.28);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 16px;
+            padding: 10px 14px;
+            margin-top: 12px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .pw-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.73rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-bottom: 6px;
+        }
+
+        .pw-bar-bg {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .pw-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--kz-gold) 0%, #34D399 100%);
+            border-radius: 10px;
+            transition: width 0.35s ease;
+        }
+
+        /* 2. Основная зона */
         main {
             position: relative;
             z-index: 1;
@@ -148,13 +223,195 @@
             width: 100%;
             max-width: 860px;
             margin: 0 auto;
-            padding: 20px 14px;
+            padding: 18px 14px;
             flex-grow: 1;
-            justify-content: flex-start;
         }
 
         /* ==========================================================================
-           СХЛОПЫВАЮЩИЕСЯ КАТЕГОРИИ ВЕРХНЕГО УРОВНЯ (CATEGORY ACCORDIONS)
+           УМНЫЙ МАРКЕТИНГОВЫЙ БЛОК (АДАПТИРУЕТСЯ ПОД ТАРИФ ВРАЧА)
+           ========================================================================== */
+        .smart-promo-card {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            color: #FFFFFF;
+            border-radius: 20px;
+            padding: 16px 18px;
+            border: 1.5px solid rgba(255, 199, 44, 0.45);
+            box-shadow: 0 8px 22px rgba(15, 23, 42, 0.14);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sp-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .sp-badge {
+            background: rgba(255, 199, 44, 0.2);
+            border: 1px solid var(--kz-gold);
+            color: var(--kz-gold);
+            font-size: 0.68rem;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .sp-title {
+            font-size: 0.96rem;
+            font-weight: 900;
+            line-height: 1.3;
+            color: #FFFFFF;
+        }
+
+        .sp-desc {
+            font-size: 0.77rem;
+            color: #CBD5E1;
+            line-height: 1.45;
+            font-weight: 500;
+        }
+
+        .sp-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 8px;
+            margin-top: 2px;
+        }
+
+        .sp-step-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 12px;
+            padding: 9px 12px;
+            color: #FFFFFF;
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .sp-step-btn:hover {
+            background: rgba(0, 161, 222, 0.25);
+            border-color: #7DD3FC;
+        }
+
+        .sp-step-btn.gold-cta {
+            background: linear-gradient(135deg, var(--kz-gold) 0%, #FFD55A 100%);
+            color: var(--text-dark);
+            border-color: var(--kz-gold-dark);
+            font-weight: 900;
+        }
+
+        /* ==========================================================================
+           30-СЕКУНДНЫЙ КЛИНИЧЕСКИЙ БЛИЦ-КВЕСТ (ДЛЯ УДЕРЖАНИЯ НА СТРАНИЦЕ)
+           ========================================================================== */
+        .micro-quiz-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 161, 222, 0.28);
+            border-left: 6px solid var(--kz-gold);
+            border-radius: 18px;
+            padding: 14px 16px;
+            box-shadow: 0 4px 14px rgba(0, 119, 163, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mq-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mq-badge {
+            font-size: 0.68rem;
+            font-weight: 800;
+            background: var(--kz-gold-light);
+            color: #B45309;
+            padding: 3px 9px;
+            border-radius: 10px;
+            text-transform: uppercase;
+        }
+
+        .mq-next-btn {
+            background: var(--kz-blue-light);
+            color: var(--kz-blue-dark);
+            border: none;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .mq-question {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1.35;
+        }
+
+        .mq-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .mq-opt-btn {
+            flex: 1 1 130px;
+            background: #F8FAFC;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 8px 10px;
+            font-size: 0.77rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .mq-opt-btn:hover:not(:disabled) {
+            background: var(--kz-blue-light);
+            border-color: var(--kz-blue);
+        }
+
+        .mq-opt-btn.correct {
+            background: var(--green-light);
+            border-color: var(--green-accent);
+            color: var(--green-dark);
+        }
+
+        .mq-opt-btn.wrong {
+            background: #FEE2E2;
+            border-color: #EF4444;
+            color: #991B1B;
+        }
+
+        .mq-feedback {
+            display: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: var(--kz-blue-light);
+            color: var(--kz-blue-dark);
+            padding: 7px 10px;
+            border-radius: 8px;
+            line-height: 1.35;
+        }
+
+        /* ==========================================================================
+           СХЛОПЫВАЮЩИЕСЯ КАТЕГОРИИ ВЕРХНЕГО УРОВНЯ
            ========================================================================== */
         details.category-box {
             background: var(--card-bg);
@@ -170,12 +427,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px 18px;
+            padding: 15px 18px;
             cursor: pointer;
             user-select: none;
             background: linear-gradient(90deg, #FFFFFF 0%, #F8FBFF 100%);
             position: relative;
-            transition: background 0.2s ease;
         }
 
         summary.category-summary::-webkit-details-marker {
@@ -225,7 +481,7 @@
         }
 
         .cat-header-text h2 {
-            font-size: 0.96rem;
+            font-size: 0.95rem;
             font-weight: 900;
             color: var(--text-dark);
             display: flex;
@@ -235,14 +491,14 @@
         }
 
         .cat-header-text p {
-            font-size: 0.74rem;
+            font-size: 0.73rem;
             color: var(--text-muted);
             font-weight: 600;
             margin-top: 2px;
         }
 
         .cat-pill {
-            font-size: 0.64rem;
+            font-size: 0.63rem;
             font-weight: 800;
             padding: 2px 8px;
             border-radius: 10px;
@@ -301,9 +557,7 @@
             gap: 10px;
         }
 
-        /* ==========================================================================
-           БЫСТРЫЙ ФИЛЬТР УРОКОВ (ЧТОБЫ НЕ ЛИСТАТЬ ДО 15-ГО УРОКА)
-           ========================================================================== */
+        /* Быстрый фильтр уроков (1-5, 6-10, 11-15) */
         .quick-range-bar {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -320,7 +574,7 @@
             background: #F1F5F9;
             color: var(--text-muted);
             font-weight: 800;
-            font-size: 0.73rem;
+            font-size: 0.72rem;
             padding: 8px 6px;
             border-radius: 10px;
             cursor: pointer;
@@ -343,9 +597,7 @@
             display: none !important;
         }
 
-        /* ==========================================================================
-           КАРТОЧКИ УРОКОВ И ТРЕНАЖЕРОВ С ЛЕГКИМ НЕНАВЯЗЧИВЫМ ГРАДИЕНТОМ
-           ========================================================================== */
+        /* Карточки уроков с градиентом */
         .trainer-card {
             display: flex;
             align-items: center;
@@ -381,7 +633,16 @@
             background: linear-gradient(180deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
         }
 
-        /* Особый градиент для бесплатной карточки CHUNKS */
+        /* Отмеченный пройденным урок */
+        .lesson-group.completed-lesson .trainer-card {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 70%, #DCFCE7 100%);
+            border-color: #86EFAC;
+        }
+
+        .lesson-group.completed-lesson .trainer-card::before {
+            background: linear-gradient(180deg, #10B981 0%, #059669 100%);
+        }
+
         .trainer-card.chunks-card {
             background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 60%, #DCFCE7 100%);
             border-color: #86EFAC;
@@ -391,7 +652,6 @@
             background: linear-gradient(180deg, #10B981 0%, #059669 100%);
         }
 
-        /* Особый градиент для карточки ЭКЗАМЕНА */
         .trainer-card.exam-card {
             background: linear-gradient(135deg, #FFFFFF 0%, #FFFBEB 60%, #FEF3C7 100%);
             border-color: #FCD34D;
@@ -404,7 +664,7 @@
         .card-content {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 13px;
         }
 
         .card-icon {
@@ -421,7 +681,7 @@
             box-shadow: 0 2px 6px rgba(0, 119, 163, 0.06);
         }
 
-        .chunks-card .card-icon {
+        .chunks-card .card-icon, .lesson-group.completed-lesson .card-icon {
             background: linear-gradient(135deg, #FFFFFF 0%, #D1FAE5 100%);
             border-color: rgba(16, 185, 129, 0.3);
         }
@@ -432,7 +692,7 @@
         }
 
         .card-text h2 {
-            font-size: 0.93rem;
+            font-size: 0.92rem;
             font-weight: 800;
             margin-bottom: 3px;
             color: var(--text-dark);
@@ -444,17 +704,27 @@
         }
 
         .card-text p {
-            font-size: 0.74rem;
+            font-size: 0.73rem;
             color: var(--text-muted);
             line-height: 1.3;
             font-weight: 600;
+        }
+
+        .lesson-meta-icons {
+            font-size: 0.66rem;
+            color: var(--kz-blue-dark);
+            font-weight: 700;
+            margin-top: 3px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .lesson-num-pill {
             display: inline-block;
             background: rgba(0, 161, 222, 0.12);
             color: var(--kz-blue-dark);
-            font-size: 0.65rem;
+            font-size: 0.64rem;
             font-weight: 800;
             padding: 2px 7px;
             border-radius: 6px;
@@ -473,6 +743,21 @@
             letter-spacing: 0.4px;
         }
 
+        .done-pill-tag {
+            display: none;
+            background: #DCFCE7;
+            color: #15803D;
+            border: 1px solid #86EFAC;
+            font-size: 0.62rem;
+            font-weight: 800;
+            padding: 1px 6px;
+            border-radius: 6px;
+        }
+
+        .lesson-group.completed-lesson .done-pill-tag {
+            display: inline-block;
+        }
+
         .arrow-icon {
             width: 18px;
             height: 18px;
@@ -482,9 +767,7 @@
             transition: transform 0.25s ease;
         }
 
-        /* ==========================================================================
-           ВЫПАДАЮЩЕЕ МЕНЮ УРОКА (ВИДЕО + КОНСПЕКТ + ТРЕНАЖЕР)
-           ========================================================================== */
+        /* Выпадающее меню урока */
         .lesson-group {
             display: flex;
             flex-direction: column;
@@ -528,7 +811,7 @@
         }
 
         .lesson-group.open .lesson-dropdown {
-            max-height: 1200px;
+            max-height: 1250px;
             opacity: 1;
         }
 
@@ -558,7 +841,7 @@
             display: block;
         }
 
-        /* Заглушка видеоурока для пользователей без Премиум / ВИП */
+        /* Заглушка видеоурока */
         .video-embed-box.locked {
             aspect-ratio: auto;
             min-height: 210px;
@@ -638,19 +921,10 @@
             box-shadow: 0 4px 12px rgba(255, 199, 44, 0.25);
         }
 
-        .paywall-btn.tarifs:hover {
-            background: var(--kz-gold-dark);
-            color: #FFFFFF;
-        }
-
         .paywall-btn.contact {
             background: rgba(0, 161, 222, 0.2);
             color: #FFFFFF;
             border: 1px solid rgba(0, 161, 222, 0.55);
-        }
-
-        .paywall-btn.contact:hover {
-            background: var(--kz-blue);
         }
 
         .paywall-login-link {
@@ -674,6 +948,7 @@
             background: #F8FAFC;
             border: 1px solid var(--border-color);
             transition: all 0.15s ease;
+            cursor: pointer;
         }
 
         .sub-link:hover, .sub-link:active {
@@ -683,7 +958,7 @@
         }
 
         .sub-link.locked-resource {
-            opacity: 0.75;
+            opacity: 0.78;
             background: #F8FAFC;
         }
 
@@ -697,6 +972,25 @@
             background: linear-gradient(90deg, var(--kz-blue-light) 0%, #E0F2FE 100%);
             color: var(--kz-blue-dark);
             border-color: rgba(0, 161, 222, 0.3);
+        }
+
+        .mark-done-btn {
+            background: #FFFFFF;
+            border: 1px dashed var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.74rem;
+            font-weight: 800;
+            padding: 8px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.15s ease;
+        }
+
+        .lesson-group.completed-lesson .mark-done-btn {
+            background: var(--green-light);
+            border-color: var(--green-accent);
+            color: var(--green-dark);
         }
 
         .sub-link-left {
@@ -713,6 +1007,53 @@
             background: #FFFFFF;
             color: var(--text-muted);
             border: 1px solid var(--border-color);
+        }
+
+        /* Плавающая нижняя плашка продаж для гостей / бесплатных аккаунтов */
+        .sticky-upsell-bar {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 24px);
+            max-width: 560px;
+            background: rgba(15, 23, 42, 0.94);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #FFFFFF;
+            padding: 10px 14px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 199, 44, 0.45);
+            box-shadow: 0 10px 26px rgba(15, 23, 42, 0.28);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            z-index: 90;
+        }
+
+        .sub-bar-text {
+            font-size: 0.73rem;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        .sub-bar-text strong {
+            color: var(--kz-gold);
+            display: block;
+            font-size: 0.77rem;
+        }
+
+        .sub-bar-btn {
+            background: var(--kz-gold);
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 0.74rem;
+            font-weight: 900;
+            padding: 8px 14px;
+            border-radius: 12px;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         /* 3. Подвал */
@@ -748,6 +1089,15 @@
             fill: var(--kz-blue);
         }
 
+        /* Логика переключения языков KZ / RU */
+        [lang-val] { display: none; }
+        body.lang-kz [lang-val="kz"] { display: inline; }
+        body.lang-ru [lang-val="ru"] { display: inline; }
+
+        p[lang-val], div[lang-val] { display: none; }
+        body.lang-kz p[lang-val="kz"], body.lang-kz div[lang-val="kz"] { display: block; }
+        body.lang-ru p[lang-val="ru"], body.lang-ru div[lang-val="ru"] { display: block; }
+
         @media (max-width: 520px) {
             .quick-range-bar {
                 grid-template-columns: repeat(2, 1fr);
@@ -761,22 +1111,82 @@
         }
     </style>
 </head>
-<body>
+<body class="lang-ru">
 
     <header>
-        <a href="https://kazdoctors.com" class="back-btn">
-            <span>⬅️ Go back</span>
-        </a>
+        <div class="header-top-bar">
+            <a href="https://kazdoctors.com" class="back-btn">
+                <span lang-val="ru">⬅️ На главную</span>
+                <span lang-val="kz">⬅️ Басты бетке</span>
+            </a>
+
+            <div class="lang-switch">
+                <button class="lang-btn" id="btn-kz" onclick="setLanguage('kz')">KZ</button>
+                <button class="lang-btn active" id="btn-ru" onclick="setLanguage('ru')">RU</button>
+            </div>
+        </div>
 
         <div class="header-badges">
             <div class="brand-badge">@doctors.speak</div>
-            <div id="tierStatusBadge" class="tier-status-badge"></div>
+            <a href="https://kazdoctors.com/tarifs" id="tierStatusBadge" class="tier-status-badge">Тариф: FREE</a>
         </div>
         <h1>Medical English</h1>
-        <p class="subtitle">Grammar, Chunks & Clinical Practice</p>
+        <p class="subtitle" lang-val="ru">Грамматика, Чанки и Клиническая Практика (A1–B2)</p>
+        <p class="subtitle" lang-val="kz">Грамматика, Чанктар және Клиникалық Практика (A1–B2)</p>
+
+        <!-- Трекер прогресса врача по 15 модулям -->
+        <div class="progress-widget">
+            <div class="pw-top-row">
+                <span id="uiProgTitle">📈 Ваш личный прогресс курса:</span>
+                <span id="progressCountText" style="color:var(--kz-gold);">0 / 15 уроков (0%)</span>
+            </div>
+            <div class="pw-bar-bg">
+                <div class="pw-bar-fill" id="progressBarFill"></div>
+            </div>
+        </div>
     </header>
 
     <main>
+
+        <!-- ==================================================================
+             УМНЫЙ МАРКЕТИНГОВЫЙ РОУДМАП (ПОДСТРАИВАЕТСЯ ПОД ТАРИФ)
+             ================================================================== -->
+        <div class="smart-promo-card" id="smartPromoCard">
+            <div class="sp-top">
+                <span class="sp-badge" id="spBadge">🚀 КАК ЗАГОВОРИТЬ НА МЕДИЦИНСКОМ АНГЛИЙСКОМ</span>
+            </div>
+            <div class="sp-title" id="spTitle">Попробуйте 2 бесплатных модуля прямо сейчас или откройте все 15 уроков курса!</div>
+            <div class="sp-desc" id="spDesc">
+                Каждый из 15 модулей включает авторский <b>видеоразбор</b>, интерактивный <b>билингвальный конспект (RU/KZ)</b> со статьями UpToDate/NCBI и <b>тренажер</b> для доведения навыка до автоматизма.
+            </div>
+            <div class="sp-steps">
+                <a href="./chunks/" class="sp-step-btn">
+                    <span>1️⃣ Бесплатно: Метод Чанков</span>
+                    <span>➔</span>
+                </a>
+                <button type="button" class="sp-step-btn" onclick="openDemoLesson8()">
+                    <span>2️⃣ Демо-тренажер: Урок №8</span>
+                    <span>➔</span>
+                </button>
+                <a href="https://kazdoctors.com/tarifs" class="sp-step-btn gold-cta" id="spMainCta">
+                    <span>💎 Открыть все 15 уроков</span>
+                    <span>➔</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- ==================================================================
+             30-СЕКУНДНЫЙ КЛИНИЧЕСКИЙ БЛИЦ (ВОвлекает врача с первых секунд)
+             ================================================================== -->
+        <div class="micro-quiz-card">
+            <div class="mq-header">
+                <span class="mq-badge" id="mqBadge">⚡ Клинический блиц-тест (30 сек)</span>
+                <button type="button" class="mq-next-btn" onclick="nextMicroQuiz()" id="mqNextBtn">Следующий вопрос ↻</button>
+            </div>
+            <div class="mq-question" id="mqQuestion">Loading...</div>
+            <div class="mq-options" id="mqOptions"></div>
+            <div class="mq-feedback" id="mqFeedback"></div>
+        </div>
 
         <!-- ==================================================================
              КАТЕГОРИЯ 1 (СВЕРХУ): ЧАНКИ (FREE) И РАНДОМНЫЕ ТЕСТЫ
@@ -787,10 +1197,12 @@
                     <div class="cat-main-icon">⚡</div>
                     <div class="cat-header-text">
                         <h2>
-                            <span>Чанки и Микс-тренажеры</span>
+                            <span lang-val="ru">Чанки и Микс-тренажеры</span>
+                            <span lang-val="kz">Чанктар және Микс-тренажерлер</span>
                             <span class="cat-pill green">CHUNKS FREE</span>
                         </h2>
-                        <p>Стартовый гид по чанкам + случайные вопросы по всем темам</p>
+                        <p lang-val="ru">Стартовый гид по чанкам + случайные вопросы по всем темам</p>
+                        <p lang-val="kz">Чанктар бойынша тегін нұсқаулық + барлық тақырыптар миксі</p>
                     </div>
                 </div>
                 <div class="cat-chevron">
@@ -808,7 +1220,8 @@
                                 <span>CHUNKS (Метод чанков)</span>
                                 <span class="free-pill-tag">🔓 FREE</span>
                             </h2>
-                            <p>Как БЫСТРО учить английский + вся шпаргалка по грамматике</p>
+                            <p lang-val="ru">Как БЫСТРО учить английский по гайдлайнам + вся шпаргалка</p>
+                            <p lang-val="kz">Гайдлайндар арқылы ағылшын тілін ТЕЗ үйрену + толық шпаргалка</p>
                         </div>
                     </div>
                     <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -820,7 +1233,8 @@
                         <div class="card-icon">🔀</div>
                         <div class="card-text">
                             <h2>ALL RANDOM (A1–B1)</h2>
-                            <p>Микс-тренажер по всем темам грамматики и словаря</p>
+                            <p lang-val="ru">Микс-тренажер по всем базовым темам грамматики и словаря</p>
+                            <p lang-val="kz">Барлық базалық грамматика мен сөздік бойынша микс-тренажер</p>
                         </div>
                     </div>
                     <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -832,7 +1246,8 @@
                         <div class="card-icon">🚀</div>
                         <div class="card-text">
                             <h2>ALL RANDOM (B1 / B2)</h2>
-                            <p>Продвинутый микс-тренажер клинического уровня B1/B2</p>
+                            <p lang-val="ru">Продвинутый микс-тренажер клинического уровня B1/B2</p>
+                            <p lang-val="kz">B1/B2 клиникалық деңгейіндегі күрделі микс-тренажер</p>
                         </div>
                     </div>
                     <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -843,16 +1258,18 @@
         <!-- ==================================================================
              КАТЕГОРИЯ 2: УРОКИ ВИДЕОКУРСА (1–15) С БЫСТРЫМ ПЕРЕКЛЮЧАТЕЛЕМ
              ================================================================== -->
-        <details class="category-box" open>
+        <details class="category-box" id="lessonsCategoryBox" open>
             <summary class="category-summary">
                 <div class="cat-header-left">
                     <div class="cat-main-icon">📚</div>
                     <div class="cat-header-text">
                         <h2>
-                            <span>Уроки курса (Lessons 1–15)</span>
+                            <span lang-val="ru">Уроки курса (Lessons 1–15)</span>
+                            <span lang-val="kz">Курс сабақтары (Lessons 1–15)</span>
                             <span class="cat-pill">15 МОДУЛЕЙ</span>
                         </h2>
-                        <p>Видеоразборы, интерактивные конспекты и тренажеры по темам</p>
+                        <p lang-val="ru">Видеоразборы, интерактивные конспекты (RU/KZ) и тренажеры</p>
+                        <p lang-val="kz">Видео-талдаулар, интерактивті конспектілер (RU/KZ) және тренажерлер</p>
                     </div>
                 </div>
                 <div class="cat-chevron">
@@ -861,16 +1278,16 @@
             </summary>
 
             <div class="category-content">
-                <!-- Панель быстрого переключения диапазона уроков (без долгого скролла) -->
+                <!-- Панель быстрого переключения диапазона уроков -->
                 <div class="quick-range-bar">
                     <button type="button" class="range-btn active" onclick="filterLessonsRange('all', this)">Все (1–15)</button>
-                    <button type="button" class="range-btn" onclick="filterLessonsRange('1-5', this)">Уроки 1–5</button>
-                    <button type="button" class="range-btn" onclick="filterLessonsRange('6-10', this)">Уроки 6–10</button>
-                    <button type="button" class="range-btn" onclick="filterLessonsRange('11-15', this)">Уроки 11–15</button>
+                    <button type="button" class="range-btn" onclick="filterLessonsRange('1-5', this)">1–5 (Времена)</button>
+                    <button type="button" class="range-btn" onclick="filterLessonsRange('6-10', this)">6–10 (Предлоги)</button>
+                    <button type="button" class="range-btn" onclick="filterLessonsRange('11-15', this)">11–15 (B1/B2)</button>
                 </div>
 
                 <!-- ================= УРОК 1 ================= -->
-                <div class="lesson-group" data-lesson="1">
+                <div class="lesson-group" data-lesson="1" id="lessonGroup1">
                     <button type="button" class="trainer-card" onclick="toggleLesson(this)">
                         <div class="card-content">
                             <div class="card-icon">🩺</div>
@@ -878,8 +1295,11 @@
                                 <h2>
                                     <span class="lesson-num-pill">Lesson 01</span>
                                     <span>To be & To do</span>
+                                    <span class="done-pill-tag">✓ Пройдено</span>
                                 </h2>
-                                <p>Состояние пациента vs действия врача</p>
+                                <p lang-val="ru">Состояние пациента (to be) vs действия врача (to do)</p>
+                                <p lang-val="kz">Науқастың жағдайы (to be) және дәрігердің әрекеті (to do)</p>
+                                <div class="lesson-meta-icons"><span>🎬 Видео</span><span>📖 Конспект</span><span>🎯 Тренажер</span></div>
                             </div>
                         </div>
                         <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -897,19 +1317,20 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson1" class="sub-link theory-link">
-                                <span class="sub-link-left">📖 Теория и конспект</span>
-                                <span class="sub-badge">PDF / Статья</span>
+                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-badge">Теория + Кейс</span>
                             </a>
                             <a href="./tobetodo/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span class="sub-link-left">🎯 Запустить тренажер Урока 1</span>
                                 <span>➔</span>
                             </a>
+                            <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(1)">✓ Отметить урок пройденным</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- ================= УРОК 2 ================= -->
-                <div class="lesson-group" data-lesson="2">
+                <div class="lesson-group" data-lesson="2" id="lessonGroup2">
                     <button type="button" class="trainer-card" onclick="toggleLesson(this)">
                         <div class="card-content">
                             <div class="card-icon">🫀</div>
@@ -917,8 +1338,11 @@
                                 <h2>
                                     <span class="lesson-num-pill">Lesson 02</span>
                                     <span>Present Simple & Continuous</span>
+                                    <span class="done-pill-tag">✓ Пройдено</span>
                                 </h2>
-                                <p>Регулярная практика vs процесс прямо сейчас</p>
+                                <p lang-val="ru">Регулярная практика и протоколы vs процесс прямо сейчас</p>
+                                <p lang-val="kz">Тұрақты практика мен хаттамалар және дәл қазіргі процесс</p>
+                                <div class="lesson-meta-icons"><span>🎬 Видео</span><span>📖 Конспект</span><span>🎯 Тренажер</span></div>
                             </div>
                         </div>
                         <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -936,19 +1360,20 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson2" class="sub-link theory-link">
-                                <span class="sub-link-left">📖 Теория и конспект</span>
-                                <span class="sub-badge">PDF / Статья</span>
+                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-badge">Теория + Кейс</span>
                             </a>
                             <a href="./present/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span class="sub-link-left">🎯 Запустить тренажер Урока 2</span>
                                 <span>➔</span>
                             </a>
+                            <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(2)">✓ Отметить урок пройденным</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- ================= УРОК 3 ================= -->
-                <div class="lesson-group" data-lesson="3">
+                <div class="lesson-group" data-lesson="3" id="lessonGroup3">
                     <button type="button" class="trainer-card" onclick="toggleLesson(this)">
                         <div class="card-content">
                             <div class="card-icon">🩻</div>
@@ -956,8 +1381,11 @@
                                 <h2>
                                     <span class="lesson-num-pill">Lesson 03</span>
                                     <span>Past Simple & Present Perfect</span>
+                                    <span class="done-pill-tag">✓ Пройдено</span>
                                 </h2>
-                                <p>Архив анамнеза vs актуальный результат к осмотру</p>
+                                <p lang-val="ru">Архив анамнеза vs актуальный результат к осмотру</p>
+                                <p lang-val="kz">Анамнез мұрағаты және дәл қазіргі диагнозға маңызды нәтиже</p>
+                                <div class="lesson-meta-icons"><span>🎬 Видео</span><span>📖 Конспект</span><span>🎯 Тренажер</span></div>
                             </div>
                         </div>
                         <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -975,19 +1403,20 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson3" class="sub-link theory-link">
-                                <span class="sub-link-left">📖 Теория и конспект</span>
-                                <span class="sub-badge">PDF / Статья</span>
+                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-badge">Теория + Кейс</span>
                             </a>
                             <a href="./past/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span class="sub-link-left">🎯 Запустить тренажер Урока 3</span>
                                 <span>➔</span>
                             </a>
+                            <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(3)">✓ Отметить урок пройденным</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- ================= УРОК 4 ================= -->
-                <div class="lesson-group" data-lesson="4">
+                <div class="lesson-group" data-lesson="4" id="lessonGroup4">
                     <button type="button" class="trainer-card" onclick="toggleLesson(this)">
                         <div class="card-content">
                             <div class="card-icon">📋</div>
@@ -995,8 +1424,11 @@
                                 <h2>
                                     <span class="lesson-num-pill">Lesson 04</span>
                                     <span>Future Simple</span>
+                                    <span class="done-pill-tag">✓ Пройдено</span>
                                 </h2>
-                                <p>Прогноз лечения и планы операций (will / going to)</p>
+                                <p lang-val="ru">Прогноз лечения и планы операций (will / going to)</p>
+                                <p lang-val="kz">Емдеу болжамы және ота жоспары (will / going to)</p>
+                                <div class="lesson-meta-icons"><span>🎬 Видео</span><span>📖 Конспект</span><span>🎯 Тренажер</span></div>
                             </div>
                         </div>
                         <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -1014,19 +1446,20 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson4" class="sub-link theory-link">
-                                <span class="sub-link-left">📖 Теория и конспект</span>
-                                <span class="sub-badge">PDF / Статья</span>
+                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-badge">Теория + Кейс</span>
                             </a>
                             <a href="./future/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span class="sub-link-left">🎯 Запустить тренажер Урока 4</span>
                                 <span>➔</span>
                             </a>
+                            <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(4)">✓ Отметить урок пройденным</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- ================= УРОК 5 ================= -->
-                <div class="lesson-group" data-lesson="5">
+                <div class="lesson-group" data-lesson="5" id="lessonGroup5">
                     <button type="button" class="trainer-card" onclick="toggleLesson(this)">
                         <div class="card-content">
                             <div class="card-icon">💉</div>
@@ -1034,8 +1467,11 @@
                                 <h2>
                                     <span class="lesson-num-pill">Lesson 05</span>
                                     <span>Passive Voice</span>
+                                    <span class="done-pill-tag">✓ Пройдено</span>
                                 </h2>
-                                <p>Страдательный залог в протоколах и статьях (to be + V3)</p>
+                                <p lang-val="ru">Страдательный залог в протоколах и статьях (to be + V3)</p>
+                                <p lang-val="kz">Протоколдар мен мақалалардағы ырықсыз етіс (to be + V3)</p>
+                                <div class="lesson-meta-icons"><span>🎬 Видео</span><span>📖 Конспект</span><span>🎯 Тренажер</span></div>
                             </div>
                         </div>
                         <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -1053,19 +1489,20 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson5" class="sub-link theory-link">
-                                <span class="sub-link-left">📖 Теория и конспект</span>
-                                <span class="sub-badge">PDF / Статья</span>
+                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-badge">Теория + NCBI</span>
                             </a>
                             <a href="./passive/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span class="sub-link-left">🎯 Запустить тренажер Урока 5</span>
                                 <span>➔</span>
                             </a>
+                            <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(5)">✓ Отметить урок пройденным</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- ================= УРОК 6 ================= -->
-                <div class="lesson-group" data-lesson="6">
+                <div class="lesson-group" data-lesson="6" id="lessonGroup6">
                     <button type="button" class="trainer-card" onclick="toggleLesson(this)">
                         <div class="card-content">
                             <div class="card-icon">⚖️</div>
@@ -1073,8 +1510,11 @@
                                 <h2>
                                     <span class="lesson-num-pill">Lesson 06</span>
                                     <span>Modals</span>
+                                    <span class="done-pill-tag">✓ Пройдено</span>
                                 </h2>
-                                <p>Вероятность диагноза, рекомендации и противопоказания</p>
+                                <p lang-val="ru">Вероятность диагноза, рекомендации и противопоказания</p>
+                                <p lang-val="kz">Диагноз ықтималдығы, ұсыныстар мен қарсы көрсетілімдер</p>
+                                <div class="lesson-meta-icons"><span>🎬 Видео</span><span>📖 Конспект</span><span>🎯 Тренажер</span></div>
                             </div>
                         </div>
                         <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -1092,19 +1532,20 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson6" class="sub-link theory-link">
-                                <span class="sub-link-left">📖 Теория и конспект</span>
-                                <span class="sub-badge">PDF / Статья</span>
+                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-badge">Теория + CKD</span>
                             </a>
                             <a href="./modals/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span class="sub-link-left">🎯 Запустить тренажер Урока 6</span>
                                 <span>➔</span>
                             </a>
+                            <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(6)">✓ Отметить урок пройденным</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- ================= УРОК 7 ================= -->
-                <div class="lesson-group" data-lesson="7">
+                <div class="lesson-group" data-lesson="7" id="lessonGroup7">
                     <button type="button" class="trainer-card" onclick="toggleLesson(this)">
                         <div class="card-content">
                             <div class="card-icon">🧬</div>
@@ -1112,8 +1553,11 @@
                                 <h2>
                                     <span class="lesson-num-pill">Lesson 07</span>
                                     <span>Possessives</span>
+                                    <span class="done-pill-tag">✓ Пройдено</span>
                                 </h2>
-                                <p>Принадлежность и чтение длинных цепочек терминов</p>
+                                <p lang-val="ru">Принадлежность и чтение длинных цепочек терминов</p>
+                                <p lang-val="kz">Тәуелділік және ұзын медициналық тізбектерді оқу</p>
+                                <div class="lesson-meta-icons"><span>🎬 Видео</span><span>📖 Конспект</span><span>🎯 Тренажер</span></div>
                             </div>
                         </div>
                         <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -1131,19 +1575,20 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson7" class="sub-link theory-link">
-                                <span class="sub-link-left">📖 Теория и конспект</span>
-                                <span class="sub-badge">PDF / Статья</span>
+                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-badge">UpToDate</span>
                             </a>
                             <a href="./possessives/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span class="sub-link-left">🎯 Запустить тренажер Урока 7</span>
                                 <span>➔</span>
                             </a>
+                            <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(7)">✓ Отметить урок пройденным</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- ================= УРОК 8 ================= -->
-                <div class="lesson-group" data-lesson="8">
+                <!-- ================= УРОК 8 (ДЕМО-ТРЕНАЖЕР ОТКРЫТ НА FREE) ================= -->
+                <div class="lesson-group" data-lesson="8" id="lessonGroup8">
                     <button type="button" class="trainer-card" onclick="toggleLesson(this)">
                         <div class="card-content">
                             <div class="card-icon">🏥</div>
@@ -1151,9 +1596,12 @@
                                 <h2>
                                     <span class="lesson-num-pill">Lesson 08</span>
                                     <span>There is / there are</span>
-                                    <span class="free-pill-tag">FREE ТРЕНАЖЕР</span>
+                                    <span class="free-pill-tag">🔓 FREE ТРЕНАЖЕР</span>
+                                    <span class="done-pill-tag">✓ Пройдено</span>
                                 </h2>
-                                <p>Наличие симптомов, показаний и очагов поражения</p>
+                                <p lang-val="ru">Наличие симптомов, показаний и очагов поражения</p>
+                                <p lang-val="kz">Симптомдар мен зақымдану ошақтарының болуы</p>
+                                <div class="lesson-meta-icons"><span>🎬 Видео</span><span>📖 Конспект</span><span>🎯 Тренажер (Free)</span></div>
                             </div>
                         </div>
                         <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -1171,19 +1619,20 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson8" class="sub-link theory-link">
-                                <span class="sub-link-left">📖 Теория и конспект</span>
-                                <span class="sub-badge">PDF / Статья</span>
+                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-badge">UpToDate</span>
                             </a>
                             <a href="./thereis/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span class="sub-link-left">🎯 Запустить демо-тренажер Урока 8 (Бесплатно)</span>
                                 <span>➔</span>
                             </a>
+                            <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(8)">✓ Отметить урок пройденным</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- ================= УРОК 9 ================= -->
-                <div class="lesson-group" data-lesson="9">
+                <div class="lesson-group" data-lesson="9" id="lessonGroup9">
                     <button type="button" class="trainer-card" onclick="toggleLesson(this)">
                         <div class="card-content">
                             <div class="card-icon">⏱️</div>
@@ -1191,8 +1640,11 @@
                                 <h2>
                                     <span class="lesson-num-pill">Lesson 09</span>
                                     <span>Prepositions of time</span>
+                                    <span class="done-pill-tag">✓ Пройдено</span>
                                 </h2>
-                                <p>Дебют симптомов, длительность терапии и дедлайны</p>
+                                <p lang-val="ru">Дебют симптомов, длительность терапии и дедлайны</p>
+                                <p lang-val="kz">Симптомдардың басталуы, ем ұзақтығы және мерзімдер</p>
+                                <div class="lesson-meta-icons"><span>🎬 Видео</span><span>📖 Конспект</span><span>🎯 Тренажер</span></div>
                             </div>
                         </div>
                         <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -1210,19 +1662,20 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson9" class="sub-link theory-link">
-                                <span class="sub-link-left">📖 Теория и конспект</span>
-                                <span class="sub-badge">PDF / Статья</span>
+                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-badge">Неврология</span>
                             </a>
                             <a href="./prepositionsoftime/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span class="sub-link-left">🎯 Запустить тренажер Урока 9</span>
                                 <span>➔</span>
                             </a>
+                            <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(9)">✓ Отметить урок пройденным</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- ================= УРОК 10 ================= -->
-                <div class="lesson-group" data-lesson="10">
+                <div class="lesson-group" data-lesson="10" id="lessonGroup10">
                     <button type="button" class="trainer-card" onclick="toggleLesson(this)">
                         <div class="card-content">
                             <div class="card-icon">🧭</div>
@@ -1230,8 +1683,11 @@
                                 <h2>
                                     <span class="lesson-num-pill">Lesson 10</span>
                                     <span>Prepositions of place and motion</span>
+                                    <span class="done-pill-tag">✓ Пройдено</span>
                                 </h2>
-                                <p>Анатомическая топография, иррадиация боли и катетеры</p>
+                                <p lang-val="ru">Анатомическая топография, иррадиация боли и катетеры</p>
+                                <p lang-val="kz">Анатомиялық топография, ауырсынудың таралуы және катетерлер</p>
+                                <div class="lesson-meta-icons"><span>🎬 Видео</span><span>📖 Конспект</span><span>🎯 Тренажер</span></div>
                             </div>
                         </div>
                         <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -1249,19 +1705,20 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson10" class="sub-link theory-link">
-                                <span class="sub-link-left">📖 Теория и конспект</span>
-                                <span class="sub-badge">PDF / Статья</span>
+                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-badge">Офтальмология</span>
                             </a>
                             <a href="./prepositionsofplace/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span class="sub-link-left">🎯 Запустить тренажер Урока 10</span>
                                 <span>➔</span>
                             </a>
+                            <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(10)">✓ Отметить урок пройденным</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- ================= УРОК 11 ================= -->
-                <div class="lesson-group" data-lesson="11">
+                <div class="lesson-group" data-lesson="11" id="lessonGroup11">
                     <button type="button" class="trainer-card" onclick="toggleLesson(this)">
                         <div class="card-content">
                             <div class="card-icon">🔀</div>
@@ -1269,8 +1726,11 @@
                                 <h2>
                                     <span class="lesson-num-pill">Lesson 11</span>
                                     <span>Conditionals</span>
+                                    <span class="done-pill-tag">✓ Пройдено</span>
                                 </h2>
-                                <p>Клинические алгоритмы «Если..., то...» (0, 1, 2, 3, Mixed)</p>
+                                <p lang-val="ru">Клинические алгоритмы «Если..., то...» (0, 1, 2, 3, Mixed)</p>
+                                <p lang-val="kz">«Егер..., онда...» клиникалық алгоритмдері (0, 1, 2, 3, Mixed)</p>
+                                <div class="lesson-meta-icons"><span>🎬 Видео</span><span>📖 Конспект</span><span>🎯 Тренажер</span></div>
                             </div>
                         </div>
                         <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -1288,19 +1748,20 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson11" class="sub-link theory-link">
-                                <span class="sub-link-left">📖 Теория и конспект</span>
-                                <span class="sub-badge">PDF / Статья</span>
+                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-badge">StatPearls</span>
                             </a>
                             <a href="./conditionals/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span class="sub-link-left">🎯 Запустить тренажер Урока 11</span>
                                 <span>➔</span>
                             </a>
+                            <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(11)">✓ Отметить урок пройденным</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- ================= УРОК 12 ================= -->
-                <div class="lesson-group" data-lesson="12">
+                <div class="lesson-group" data-lesson="12" id="lessonGroup12">
                     <button type="button" class="trainer-card" onclick="toggleLesson(this)">
                         <div class="card-content">
                             <div class="card-icon">📊</div>
@@ -1308,8 +1769,11 @@
                                 <h2>
                                     <span class="lesson-num-pill">Lesson 12</span>
                                     <span>Comparatives & Superlatives</span>
+                                    <span class="done-pill-tag">✓ Пройдено</span>
                                 </h2>
-                                <p>Сравнение динамики симптомов и тяжести патологий</p>
+                                <p lang-val="ru">Сравнение динамики симптомов и тяжести патологий</p>
+                                <p lang-val="kz">Симптомдар динамикасы мен ауру ауырлығын салыстыру</p>
+                                <div class="lesson-meta-icons"><span>🎬 Видео</span><span>📖 Конспект</span><span>🎯 Тренажер</span></div>
                             </div>
                         </div>
                         <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -1327,19 +1791,20 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson12" class="sub-link theory-link">
-                                <span class="sub-link-left">📖 Теория и конспект</span>
-                                <span class="sub-badge">PDF / Статья</span>
+                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-badge">Психиатрия</span>
                             </a>
                             <a href="./comparatives/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span class="sub-link-left">🎯 Запустить тренажер Урока 12</span>
                                 <span>➔</span>
                             </a>
+                            <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(12)">✓ Отметить урок пройденным</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- ================= УРОК 13 ================= -->
-                <div class="lesson-group" data-lesson="13">
+                <div class="lesson-group" data-lesson="13" id="lessonGroup13">
                     <button type="button" class="trainer-card" onclick="toggleLesson(this)">
                         <div class="card-content">
                             <div class="card-icon">🔬</div>
@@ -1347,8 +1812,11 @@
                                 <h2>
                                     <span class="lesson-num-pill">Lesson 13</span>
                                     <span>Articles</span>
+                                    <span class="done-pill-tag">✓ Пройдено</span>
                                 </h2>
-                                <p>Артикли a, an, the с симптомами, органами и диагнозами</p>
+                                <p lang-val="ru">Артикли a, an, the с симптомами, органами и диагнозами</p>
+                                <p lang-val="kz">Симптомдар, ағзалар және диагноздардағы a, an, the артикльдері</p>
+                                <div class="lesson-meta-icons"><span>🎬 Видео</span><span>📖 Конспект</span><span>🎯 Тренажер</span></div>
                             </div>
                         </div>
                         <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -1366,19 +1834,20 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson13" class="sub-link theory-link">
-                                <span class="sub-link-left">📖 Теория и конспект</span>
-                                <span class="sub-badge">PDF / Статья</span>
+                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-badge">Wiley Review</span>
                             </a>
                             <a href="./articles/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span class="sub-link-left">🎯 Запустить тренажер Урока 13</span>
                                 <span>➔</span>
                             </a>
+                            <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(13)">✓ Отметить урок пройденным</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- ================= УРОК 14 ================= -->
-                <div class="lesson-group" data-lesson="14">
+                <div class="lesson-group" data-lesson="14" id="lessonGroup14">
                     <button type="button" class="trainer-card" onclick="toggleLesson(this)">
                         <div class="card-content">
                             <div class="card-icon">🔗</div>
@@ -1386,8 +1855,11 @@
                                 <h2>
                                     <span class="lesson-num-pill">Lesson 14</span>
                                     <span>Relative Clause</span>
+                                    <span class="done-pill-tag">✓ Пройдено</span>
                                 </h2>
-                                <p>Придаточные со словами that, which, who, whose и where</p>
+                                <p lang-val="ru">Придаточные со словами that, which, who, whose и where</p>
+                                <p lang-val="kz">That, which, who, whose және where бағыныңқы сөйлемдері</p>
+                                <div class="lesson-meta-icons"><span>🎬 Видео</span><span>📖 Конспект</span><span>🎯 Тренажер</span></div>
                             </div>
                         </div>
                         <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -1405,19 +1877,20 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson14" class="sub-link theory-link">
-                                <span class="sub-link-left">📖 Теория и конспект</span>
-                                <span class="sub-badge">PDF / Статья</span>
+                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-badge">ЛОР / Biofilms</span>
                             </a>
                             <a href="./relativeclause/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span class="sub-link-left">🎯 Запустить тренажер Урока 14</span>
                                 <span>➔</span>
                             </a>
+                            <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(14)">✓ Отметить урок пройденным</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- ================= УРОК 15 ================= -->
-                <div class="lesson-group" data-lesson="15">
+                <div class="lesson-group" data-lesson="15" id="lessonGroup15">
                     <button type="button" class="trainer-card" onclick="toggleLesson(this)">
                         <div class="card-content">
                             <div class="card-icon">🧠</div>
@@ -1425,8 +1898,11 @@
                                 <h2>
                                     <span class="lesson-num-pill">Lesson 15</span>
                                     <span>Gerund, Infinitive, Past Participle</span>
+                                    <span class="done-pill-tag">✓ Пройдено</span>
                                 </h2>
-                                <p>Неличные формы глагола (-ing, to do, V3) в статьях</p>
+                                <p lang-val="ru">Неличные формы глагола (-ing, to do, V3) в статьях</p>
+                                <p lang-val="kz">Мақалалардағы етістіктің ерекше формалары (-ing, to do, V3)</p>
+                                <div class="lesson-meta-icons"><span>🎬 Видео</span><span>📖 Конспект</span><span>🎯 Тренажер</span></div>
                             </div>
                         </div>
                         <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -1444,13 +1920,14 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson15" class="sub-link theory-link">
-                                <span class="sub-link-left">📖 Теория и конспект</span>
-                                <span class="sub-badge">PDF / Статья</span>
+                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-badge">Урология</span>
                             </a>
                             <a href="./gerund/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span class="sub-link-left">🎯 Запустить тренажер Урока 15</span>
                                 <span>➔</span>
                             </a>
+                            <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(15)">✓ Отметить урок пройденным</button>
                         </div>
                     </div>
                 </div>
@@ -1467,10 +1944,12 @@
                     <div class="cat-main-icon">🎓</div>
                     <div class="cat-header-text">
                         <h2>
-                            <span>Итоговый экзамен курса</span>
+                            <span lang-val="ru">Итоговый экзамен курса</span>
+                            <span lang-val="kz">Курстың қорытынды емтиханы</span>
                             <span class="cat-pill gold">60 МИНУТ</span>
                         </h2>
-                        <p>Финальная проверка знаний по всем 15 урокам с сертификатом</p>
+                        <p lang-val="ru">Финальная проверка знаний по всем 15 урокам с именным сертификатом</p>
+                        <p lang-val="kz">Барлық 15 сабақ бойынша атаулы сертификат берілетін қорытынды сынақ</p>
                     </div>
                 </div>
                 <div class="cat-chevron">
@@ -1483,8 +1962,9 @@
                     <div class="card-content">
                         <div class="card-icon">🏆</div>
                         <div class="card-text">
-                            <h2>VIDEOCOURSE EXAM</h2>
-                            <p>60 вопросов (30 Grammar + 30 Vocabulary) • Именной результат</p>
+                            <h2>VIDEOCOURSE FINAL EXAM</h2>
+                            <p lang-val="ru">60 вопросов (30 Grammar + 30 Vocabulary) • Контроль попыток и сертификат</p>
+                            <p lang-val="kz">60 сұрақ (30 Grammar + 30 Vocabulary) • Нәтиже сертификаты</p>
                         </div>
                     </div>
                     <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -1494,9 +1974,18 @@
 
     </main>
 
+    <!-- Плавающая нижняя плашка перехода к тарифам (скрывается для PREMIUM / VIP) -->
+    <div class="sticky-upsell-bar" id="stickyUpsellBar">
+        <div class="sub-bar-text">
+            <strong id="stickyBarTitle">🔥 Хотите открыть все 15 уроков, конспекты и видео?</strong>
+            <span id="stickyBarSub">Доступ от 7,990 ₸/мес • Выход на уверенный медицинский B1</span>
+        </div>
+        <a href="https://kazdoctors.com/tarifs" class="sub-bar-btn" id="stickyBarBtn">💎 Тарифы ➔</a>
+    </div>
+
     <footer>
         <a href="https://instagram.com/doctors.speak" target="_blank" class="instagram-link">
-            <span>@doctors.speak</span>
+            <span>📸 Instagram @doctors.speak</span>
         </a>
 
         <a href="https://kazdoctors.com" class="back-btn">
@@ -1507,7 +1996,180 @@
 
     <script>
         // =========================================================================
-        // 1. СИСТЕМА 4 ТАРИФОВ ПОДПИСКИ (СТАНДАРТ, ПРО, ПРЕМИУМ, ВИП)
+        // 1. ПЕРЕКЛЮЧЕНИЕ ЯЗЫКА (RU / KZ) + ТРЕКЕР ПРОГРЕССА 15 УРОКОВ
+        // =========================================================================
+        let currentLang = localStorage.getItem('selected_lang') || 'ru';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.body.className = 'lang-' + lang;
+            document.getElementById('btn-kz').classList.toggle('active', lang === 'kz');
+            document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
+            localStorage.setItem('selected_lang', lang);
+
+            updateProgressUI();
+            renderMicroQuiz();
+            updateMarketingBannerByTier(currentUserTier);
+        }
+
+        function getCompletedLessons() {
+            try {
+                return JSON.parse(localStorage.getItem('ds_completed_grammar_lessons') || '[]');
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function toggleLessonCompleted(lessonNum) {
+            let list = getCompletedLessons();
+            if (list.includes(lessonNum)) {
+                list = list.filter(n => n !== lessonNum);
+            } else {
+                list.push(lessonNum);
+            }
+            localStorage.setItem('ds_completed_grammar_lessons', JSON.stringify(list));
+            updateProgressUI();
+        }
+
+        function updateProgressUI() {
+            const list = getCompletedLessons();
+            const count = list.length;
+            const pct = Math.round((count / 15) * 100);
+            const isKz = (currentLang === 'kz');
+
+            document.getElementById('uiProgTitle').textContent = isKz
+                ? "📈 Сіздің жеке курс прогресіңіз:"
+                : "📈 Ваш личный прогресс курса:";
+            document.getElementById('progressCountText').textContent = isKz
+                ? `${count} / 15 сабақ (${pct}%)`
+                : `${count} / 15 уроков (${pct}%)`;
+            document.getElementById('progressBarFill').style.width = `${pct}%`;
+
+            for (let i = 1; i <= 15; i++) {
+                const group = document.getElementById(`lessonGroup${i}`);
+                if (!group) continue;
+                const isDone = list.includes(i);
+                group.classList.toggle('completed-lesson', isDone);
+                const btn = group.querySelector('.mark-done-btn');
+                if (btn) {
+                    btn.textContent = isDone
+                        ? (isKz ? "✅ Сабақ өтілді деп белгіленді (басып алып тастау)" : "✅ Урок отмечен пройденным (нажмите для отмены)")
+                        : (isKz ? "✓ Сабақты өтілді деп белгілеу" : "✓ Отметить урок пройденным");
+                }
+            }
+        }
+
+        // Быстрый скролл и открытие бесплатного демо-урока №8
+        function openDemoLesson8() {
+            const catBox = document.getElementById('lessonsCategoryBox');
+            if (catBox) catBox.setAttribute('open', 'open');
+            filterLessonsRange('all', document.querySelector('.range-btn'));
+            const lesson8 = document.getElementById('lessonGroup8');
+            if (lesson8) {
+                if (!lesson8.classList.contains('open')) {
+                    toggleLesson(lesson8.querySelector('.trainer-card'));
+                }
+                lesson8.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        // =========================================================================
+        // 2. 30-СЕКУНДНЫЙ КЛИНИЧЕСКИЙ БЛИЦ-ТЕСТ (МИКРО-ВОВЛЕЧЕНИЕ)
+        // =========================================================================
+        const MICRO_QUIZ_ITEMS = [
+            {
+                q: "1. [Passive Voice • Урок 5] «Физраствор вводится внутривенно»: Saline solution ___ intravenously.",
+                opts: ["is given", "gives", "did give"],
+                ans: 0,
+                exp: {
+                    ru: "Верно! Раствор не сам себя вводит — над ним совершается действие (TO BE + V3 -> is given). Это тема Урока 5!",
+                    kz: "Дұрыс! Ерітінді өзін-өзі енгізбейді — ырықсыз етіс (TO BE + V3 -> is given). Бұл 5-сабақ тақырыбы!"
+                }
+            },
+            {
+                q: "2. [There is/are • Урок 8] «После инъекции наблюдается зуд и воспаление»: ___ itching and inflammation after the injection.",
+                opts: ["There is", "There are", "There were"],
+                ans: 0,
+                exp: {
+                    ru: "Отлично! Itching (зуд) и inflammation (воспаление) — неисчисляемые понятия, поэтому согласуем через There is (Урок 8).",
+                    kz: "Тамаша! Itching (қышу) мен inflammation (қабыну) — саналмайтын ұғымдар, сондықтан There is қойылады (8-сабақ)."
+                }
+            },
+            {
+                q: "3. [Modals • Урок 6] «Есть противопоказание — вам строго НЕЛЬЗЯ давать этот препарат с аспирином»: You ___ give this drug with aspirin.",
+                opts: ["must not", "don't have to", "might not"],
+                ans: 0,
+                exp: {
+                    ru: "Точно! Строгий врачебный запрет при противопоказании — это must not (тогда как don't have to = «не обязан»). Подробно в Уроке 6!",
+                    kz: "Дәл солай! Қарсы көрсетілім кезіндегі қатаң тыйым — must not (ал don't have to = «міндетті емес»). Толығырақ 6-сабақта!"
+                }
+            },
+            {
+                q: "4. [Noun Chains • Урок 7] Как правильно перевести цепочку «Heart failure treatment guidelines»?",
+                opts: ["Рекомендации по лечению сердечной недостаточности", "Сердечная недостаточность из-за лечения", "Лечение по рекомендациям кардиолога"],
+                ans: 0,
+                exp: {
+                    ru: "Блестяще! В цепочке существительных главное слово всегда самое последнее — guidelines (рекомендации). Секрет из Урока 7!",
+                    kz: "Керемет! Зат есімдер тізбегінде ең негізгі сөз әрқашан соңында тұрады — guidelines (ұсынымдар). 7-сабақ құпиясы!"
+                }
+            },
+            {
+                q: "5. [Present Perfect • Урок 3] «Пациент страдает от боли в желудке со вчерашнего дня (и до сих пор)»: The patient ___ from a stomachache since yesterday.",
+                opts: ["has suffered", "suffered", "suffers"],
+                ans: 0,
+                exp: {
+                    ru: "Верно! Маркер since yesterday связывает прошлое с настоящим моментом на приеме -> Present Perfect (has suffered, Урок 3).",
+                    kz: "Дұрыс! Since yesterday маркері өткенді қазіргі қабылдау сәтімен байланыстырады -> Present Perfect (has suffered, 3-сабақ)."
+                }
+            }
+        ];
+
+        let currentMqIdx = 0;
+
+        function renderMicroQuiz() {
+            const item = MICRO_QUIZ_ITEMS[currentMqIdx];
+            const isKz = (currentLang === 'kz');
+
+            document.getElementById('mqBadge').textContent = isKz
+                ? `⚡ Клиникалық блиц-тест (${currentMqIdx + 1}/5)`
+                : `⚡ Клинический блиц-тест (${currentMqIdx + 1}/5)`;
+            document.getElementById('mqNextBtn').textContent = isKz
+                ? "Келесі сұрақ ↻"
+                : "Следующий вопрос ↻";
+            document.getElementById('mqQuestion').textContent = item.q;
+
+            const optsBox = document.getElementById('mqOptions');
+            const fbBox = document.getElementById('mqFeedback');
+            optsBox.innerHTML = '';
+            fbBox.style.display = 'none';
+
+            item.opts.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'mq-opt-btn';
+                btn.textContent = optText;
+                btn.onclick = () => {
+                    optsBox.querySelectorAll('.mq-opt-btn').forEach(b => b.disabled = true);
+                    if (idx === item.ans) {
+                        btn.classList.add('correct');
+                    } else {
+                        btn.classList.add('wrong');
+                        optsBox.querySelectorAll('.mq-opt-btn')[item.ans].classList.add('correct');
+                    }
+                    fbBox.textContent = `💡 ${item.exp[currentLang]}`;
+                    fbBox.style.display = 'block';
+                };
+                optsBox.appendChild(btn);
+            });
+        }
+
+        function nextMicroQuiz() {
+            currentMqIdx = (currentMqIdx + 1) % MICRO_QUIZ_ITEMS.length;
+            renderMicroQuiz();
+        }
+
+        // =========================================================================
+        // 3. СИСТЕМА 4 ТАРИФОВ ПОДПИСКИ SUPABASE (СТАНДАРТ, ПРО, ПРЕМИУМ, ВИП)
         // =========================================================================
         const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
         const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
@@ -1525,6 +2187,7 @@
         };
 
         const TIER_NAMES_RU = {
+            none: "FREE",
             standard: "СТАНДАРТ",
             pro: "ПРО",
             premium: "ПРЕМИУМ",
@@ -1550,6 +2213,66 @@
             }
         });
 
+        function updateMarketingBannerByTier(tier) {
+            const isKz = (currentLang === 'kz');
+            const badgeEl = document.getElementById('spBadge');
+            const titleEl = document.getElementById('spTitle');
+            const descEl = document.getElementById('spDesc');
+            const ctaEl = document.getElementById('spMainCta');
+            const stickyBar = document.getElementById('stickyUpsellBar');
+            const stickyTitle = document.getElementById('stickyBarTitle');
+            const stickySub = document.getElementById('stickyBarSub');
+            const stickyBtn = document.getElementById('stickyBarBtn');
+
+            const tierBadge = document.getElementById('tierStatusBadge');
+            if (tierBadge) {
+                tierBadge.textContent = `Тариф: ${TIER_NAMES_RU[tier] || "FREE"}`;
+            }
+
+            if (tier === 'premium' || tier === 'vip') {
+                stickyBar.style.display = 'none';
+                badgeEl.textContent = isKz ? "✅ ТОЛЫҚ ДОСТУП БЕЛСЕНДІ" : "✅ ПОЛНЫЙ ДОСТУП АКТИВЕН";
+                titleEl.textContent = isKz
+                    ? "Сізде барлық 15 видеосабақ, конспектілер және тренажерлер ашық!"
+                    : "Вам открыты все 15 видеоуроков, интерактивные конспекты и тренажеры!";
+                descEl.innerHTML = isKz
+                    ? "Әр сабақты өтіп, «✓ Сабақты өтілді деп белгілеу» батырмасын басыңыз, соңында 60 минуттық қорытынды емтиханды тапсырыңыз."
+                    : "Проходите уроки по порядку, отмечайте их галочкой «✓ Пройдено» для отслеживания прогресса и сдайте финальный 60-минутный экзамен внизу страницы.";
+                ctaEl.textContent = isKz ? "🏆 Емтиханға өту ➔" : "🏆 К экзамену курса ➔";
+                ctaEl.href = "./exam/";
+            } else if (tier === 'pro') {
+                stickyBar.style.display = 'flex';
+                stickyTitle.textContent = isKz ? "🎬 Видеосабақтарды қосқыңыз келе ме?" : "🎬 Хотите смотреть видеоразборы всех 15 уроков?";
+                stickySub.textContent = isKz ? "PRO-дан PREMIUM-ға өту — айына +5,000 ₸" : "Доплата с тарифа ПРО до ПРЕМИУМ — всего 5,000 ₸";
+                stickyBtn.textContent = isKz ? "🌟 PREMIUM ➔" : "🌟 Включить видео ➔";
+
+                badgeEl.textContent = isKz ? "📘 ТАРИФ: ПРО (ТРЕНАЖЕРЛЕР + КОНСПЕКТІЛЕР АШЫҚ)" : "📘 ТАРИФ: ПРО (ТРЕНАЖЕРЫ + КОНСПЕКТЫ ОТКРЫТЫ)";
+                titleEl.textContent = isKz
+                    ? "Сізде барлық тренажерлер мен конспектілер ашық! Видеосабақтар үшін PREMIUM таңдаңыз"
+                    : "Вам доступны все тренажеры и конспекты! Добавьте видеоуроки на тарифе ПРЕМИУМ";
+            } else if (tier === 'standard') {
+                stickyBar.style.display = 'flex';
+                stickyTitle.textContent = isKz ? "📖 Конспектілер мен Видеосабақтар керек пе?" : "📖 Нужна теория, разборы статей UpToDate и видео?";
+                stickySub.textContent = isKz ? "Тарифіңізді PRO немесе PREMIUM-ға жаңартыңыз" : "Перейдите на тариф ПРО или ПРЕМИУМ со скидкой";
+                stickyBtn.textContent = isKz ? "💎 Тарифтер ➔" : "💎 Улучшить тариф ➔";
+
+                badgeEl.textContent = isKz ? "🔹 ТАРИФ: СТАНДАРТ (БАРЛЫҚ ТРЕНАЖЕРЛЕР АШЫҚ)" : "🔹 ТАРИФ: СТАНДАРТ (ВСЕ ТРЕНАЖЕРЫ ОТКРЫТЫ)";
+                titleEl.textContent = isKz
+                    ? "Барлық 15 тренажер ашық! Теориялық конспектілер мен видео үшін тарифті жаңартыңыз"
+                    : "Вам открыты все 15 тренажеров! Чтобы читать конспекты и смотреть видеоуроки, повысьте тариф";
+            } else {
+                stickyBar.style.display = 'flex';
+                stickyTitle.textContent = isKz ? "🔥 Барлық 15 сабақ, конспект және видеоны ашыңыз!" : "🔥 Откройте все 15 уроков, конспекты и видеоразборы!";
+                stickySub.textContent = isKz ? "Айына 7,990 ₸ бастап • Сенімді медициналық B1 деңгейі" : "От 7,990 ₸/мес • Выход на уверенный медицинский B1";
+                stickyBtn.textContent = isKz ? "💎 Тарифтер ➔" : "💎 Выбрать тариф ➔";
+
+                badgeEl.textContent = isKz ? "🚀 МЕДИЦИНАЛЫҚ АҒЫЛШЫН ТІЛІН ЖҮЙЕЛІ МЕҢГЕРУ" : "🚀 СИСТЕМНЫЙ МЕДИЦИНСКИЙ АНГЛИЙСКИЙ ДЛЯ ВРАЧЕЙ";
+                titleEl.textContent = isKz
+                    ? "Дәл қазір 2 тегін модульді байқап көріңіз немесе барлық 15 сабақты ашыңыз!"
+                    : "Попробуйте 2 бесплатных модуля прямо сейчас или откройте все 15 уроков курса!";
+            }
+        }
+
         function renderLockedVideoState(tier) {
             const isLoggedIn = (tier !== "none");
             const currentTierLabel = TIER_NAMES_RU[tier] || "";
@@ -1573,8 +2296,8 @@
                             <a href="https://kazdoctors.com/tarifs" class="paywall-btn tarifs">
                                 🌟 Тарифы (Премиум / ВИП)
                             </a>
-                            <a href="https://instagram.com/doctors.speak" target="_blank" class="paywall-btn contact">
-                                💬 Контакты (@doctors.speak)
+                            <a href="https://wa.me/77081595038?text=Здравствуйте!%20Хочу%20подключить%20доступ%20к%20видеокурсу%20Medical%20English" target="_blank" class="paywall-btn contact">
+                                💬 Подключить через WhatsApp
                             </a>
                         </div>
                         ${loginLinkHtml}
@@ -1619,12 +2342,12 @@
                     if (badge) badge.textContent = "🔒 Тариф ПРО+";
                     link.onclick = (e) => {
                         e.preventDefault();
-                        alert("Конспекты и теория доступны на тарифах «Про», «Премиум» и «ВИП». Переходим к описанию тарифов!");
+                        alert("Интерактивные конспекты с разбором статей UpToDate/NCBI доступны на тарифах «Про», «Премиум» и «ВИП». Переходим к описанию тарифов!");
                         window.location.href = "https://kazdoctors.com/tarifs";
                     };
                 } else {
                     link.classList.remove('locked-resource');
-                    if (badge) badge.textContent = "PDF / Статья";
+                    if (badge) badge.textContent = "Открыть конспект";
                     link.onclick = null;
                 }
             });
@@ -1690,13 +2413,8 @@
 
             const tierLevel = TIER_LEVELS[currentUserTier] || 0;
 
-            const badgeEl = document.getElementById('tierStatusBadge');
-            if (tierLevel > 0 && badgeEl) {
-                badgeEl.textContent = `Тариф: ${TIER_NAMES_RU[currentUserTier]}`;
-                badgeEl.style.display = 'inline-block';
-            }
-
             updateTheoryLinksState(tierLevel);
+            updateMarketingBannerByTier(currentUserTier);
 
             if (tierLevel >= TIER_LEVELS.premium) {
                 canWatchVideo = true;
@@ -1707,10 +2425,8 @@
             }
         }
 
-        checkAuthAndTier();
-
         // =========================================================================
-        // 2. БЫСТРЫЙ ФИЛЬТР УРОКОВ ПО ДИАПАЗОНАМ (1-5, 6-10, 11-15)
+        // 4. БЫСТРЫЙ ФИЛЬТР УРОКОВ ПО ДИАПАЗОНАМ (1-5, 6-10, 11-15)
         // =========================================================================
         function filterLessonsRange(range, btnEl) {
             document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
@@ -1728,7 +2444,7 @@
         }
 
         // =========================================================================
-        // 3. ФУНКЦИЯ РАСКРЫТИЯ / СКРЫТИЯ УРОКА (ACCORDION)
+        // 5. ФУНКЦИЯ РАСКРЫТИЯ / СКРЫТИЯ УРОКА (ACCORDION)
         // =========================================================================
         function toggleLesson(buttonElement) {
             const currentGroup = buttonElement.parentElement;
@@ -1753,6 +2469,10 @@
                 }
             }
         }
+
+        // Запуск при загрузке
+        setLanguage(currentLang);
+        checkAuthAndTier();
     </script>
 
 </body>
