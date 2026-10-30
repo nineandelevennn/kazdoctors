@@ -246,6 +246,12 @@
         <form id="registerForm" class="auth-body" onsubmit="handleRegister(event)">
             <div id="statusBox" class="status-box"></div>
 
+            <!-- Новое поле: Имя пользователя -->
+            <div class="input-group">
+                <label for="nameInput">Ваше Имя</label>
+                <input type="text" id="nameInput" class="form-input" placeholder="Например: Айгерим / Аскар" required autocomplete="name">
+            </div>
+
             <div class="input-group">
                 <label for="emailInput">Ваш Email</label>
                 <input type="email" id="emailInput" class="form-input" placeholder="doctor@example.com" required autocomplete="email">
@@ -326,7 +332,8 @@
         async function handleRegister(e) {
             e.preventDefault();
 
-            const email = document.getElementById('emailInput').value.trim();
+            const userName = document.getElementById('nameInput').value.trim();
+            const email = document.getElementById('emailInput').value.trim().toLowerCase();
             const pass1 = document.getElementById('pass1Input').value;
             const pass2 = document.getElementById('pass2Input').value;
             const statusBox = document.getElementById('statusBox');
@@ -334,6 +341,12 @@
 
             statusBox.className = 'status-box';
             statusBox.textContent = '';
+
+            if (!userName) {
+                statusBox.className = 'status-box error';
+                statusBox.textContent = '❌ Пожалуйста, укажите ваше имя.';
+                return;
+            }
 
             // Двойная проверка совпадения паролей
             if (pass1 !== pass2) {
@@ -352,33 +365,42 @@
             submitBtn.textContent = '⏳ Создаем аккаунт...';
 
             try {
-                // 1. Регистрация пользователя в Supabase Auth
+                // 1. Регистрация пользователя в Supabase Auth + сохранение имени в user_metadata
                 const { data, error } = await supabaseClient.auth.signUp({
                     email: email,
-                    password: pass1
+                    password: pass1,
+                    options: {
+                        data: {
+                            name: userName
+                        }
+                    }
                 });
 
                 if (error) {
                     throw error;
                 }
 
-                // 2. Создаем профиль в таблице profiles БЕЗ подписки (subscription_expires_at: null)
+                // 2. Записываем профиль с именем в таблицу profiles БЕЗ активной подписки (subscription_expires_at: null)
                 if (data && data.user) {
                     await supabaseClient.from('profiles').upsert({
                         id: data.user.id,
                         email: email,
+                        name: userName,
+                        tier: 'standard',
                         current_device_id: getDeviceUUID(),
-                        subscription_expires_at: null // Подписка не активна, пока админ не продлит доступ
-                    });
+                        subscription_expires_at: null // Подписка не активна, пока админ не выдаст доступ
+                    }, { onConflict: 'email' });
                 }
+
+                const waText = encodeURIComponent(`Здравствуйте! Меня зовут ${userName}, я зарегистрировался на сайте kazdoctors.com (${email}), хочу активировать доступ`);
 
                 statusBox.className = 'status-box success';
                 statusBox.innerHTML = `
-                    ✅ <strong>Аккаунт успешно создан!</strong><br>
+                    ✅ <strong>Добро пожаловать, ${userName}! Аккаунт создан.</strong><br>
                     Ваш email: <b>${email}</b>.<br>
-                    Для активации полного доступа к закрытым тренажерам напишите администратору или перейдите на главную страницу.
+                    Для активации полного доступа напишите администратору или перейдите на главную страницу (вам уже открыт тариф FREE).
                     <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 6px;">
-                        <a href="https://wa.me/77081595038?text=Здравствуйте!%20Я%20зарегистрировался%20на%20сайте%20kazdoctors.com%20(${encodeURIComponent(email)}),%20хочу%20активировать%20доступ" target="_blank" style="background:#10B981; color:#fff; padding:9px; border-radius:10px; text-decoration:none; font-weight:800;">💬 Активировать доступ (WhatsApp)</a>
+                        <a href="https://wa.me/77081595038?text=${waText}" target="_blank" style="background:#10B981; color:#fff; padding:9px; border-radius:10px; text-decoration:none; font-weight:800;">💬 Активировать платный тариф (WhatsApp)</a>
                         <a href="index.html" style="background:var(--kz-blue); color:#fff; padding:9px; border-radius:10px; text-decoration:none; font-weight:800;">🏠 Перейти на главную</a>
                     </div>
                 `;
