@@ -1,0 +1,1723 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>@doctors.speak — Lesson 15: Gerund, Participle & Infinitive in Medicine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Подключение Supabase SDK для проверки подписки -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --kz-gold-light: #FFFBEB;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --success-bg: #DCFCE7;
+      --success-border: #22C55E;
+      --success-text: #15803D;
+      --error-bg: #FEE2E2;
+      --error-border: #EF4444;
+      --error-text: #B91C1C;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 40px;
+    }
+
+    /* Верхняя шапка с кнопкой назад и переключателем RU/KZ */
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+      color: #FFFFFF;
+      padding: 16px 20px 22px 20px;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-top {
+      max-width: 820px;
+      margin: 0 auto 12px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .header-right-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tier-badge {
+      display: none;
+      background: rgba(255, 199, 44, 0.25);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 20px;
+      padding: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 800;
+      font-size: 0.74rem;
+      padding: 5px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+    }
+
+    .header-title-box {
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .lesson-badge {
+      display: inline-block;
+      background: rgba(255, 199, 44, 0.2);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    header p {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       ЭКРАН ЗАГЛУШКИ ПРИ ОТСУТСТВИИ ПОДПИСКИ ПРО / ПРЕМИУМ / ВИП
+       ========================================================================== */
+    #authLoader {
+      width: 100%;
+      max-width: 520px;
+      margin: 40px auto;
+      padding: 30px 20px;
+      text-align: center;
+      font-weight: 700;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    #paywallGate {
+      display: none;
+      width: 100%;
+      max-width: 540px;
+      margin: 28px auto;
+      padding: 0 14px;
+    }
+
+    .paywall-card {
+      background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      border-radius: 22px;
+      padding: 28px 22px;
+      text-align: center;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.18);
+      border: 1px solid rgba(255, 199, 44, 0.35);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .pw-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      background: rgba(255, 199, 44, 0.16);
+      border: 1px solid rgba(255, 199, 44, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+    }
+
+    .pw-badge {
+      background: rgba(0, 161, 222, 0.22);
+      border: 1px solid rgba(0, 161, 222, 0.55);
+      color: #7DD3FC;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .pw-title {
+      font-size: 1.15rem;
+      font-weight: 900;
+      line-height: 1.3;
+      color: #FFFFFF;
+    }
+
+    .pw-desc {
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: #CBD5E1;
+      font-weight: 500;
+    }
+
+    .pw-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      margin-top: 6px;
+    }
+
+    .pw-btn-primary {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      padding: 13px 18px;
+      border-radius: 14px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(255, 199, 44, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .pw-btn-primary:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    .pw-btn-secondary {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 11px 16px;
+      border-radius: 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .pw-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    /* Контейнер защищенного урока (скрыт до подтверждения тарифа) */
+    #lessonContentWrapper {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Навигация по разделам урока */
+    .section-nav {
+      width: 100%;
+      max-width: 820px;
+      margin: 14px auto 0 auto;
+      padding: 0 14px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .nav-pill {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 9px 6px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .nav-pill.active {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      border-color: var(--kz-blue-dark);
+      box-shadow: 0 4px 12px rgba(0, 161, 222, 0.25);
+    }
+
+    /* Основной контейнер */
+    main {
+      width: 100%;
+      max-width: 820px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-section {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .tab-section.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Карточки теории */
+    .card-block {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-block::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: var(--kz-blue);
+    }
+
+    .card-block.gold::before {
+      background: var(--kz-gold-dark);
+    }
+
+    .card-block h2 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-block p {
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+
+    /* Сетка 3 неличных форм глагола */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .form-card {
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-main);
+    }
+
+    .form-card.f-ger { border-top: 4px solid #0284C7; background: #F0F9FF; }
+    .form-card.f-par { border-top: 4px solid #D97706; background: var(--kz-gold-light); }
+    .form-card.f-inf { border-top: 4px solid #16A34A; background: #F0FDF4; }
+
+    .form-title {
+      font-size: 0.86rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .comp-formula {
+      display: inline-block;
+      background: #FFFFFF;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      border: 1px dashed var(--kz-blue-dark);
+      margin-bottom: 8px;
+    }
+
+    .clinical-quote {
+      background: #FFFFFF;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.81rem;
+      border-left: 3px solid var(--text-dark);
+      margin-top: 8px;
+      line-height: 1.45;
+    }
+
+    /* Таблица сводки */
+    .grammar-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 0.77rem;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .grammar-table th {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: 800;
+    }
+
+    .grammar-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border-color);
+      background: #FFFFFF;
+      line-height: 1.45;
+    }
+
+    .grammar-table tr:nth-child(even) td {
+      background: #F8FAFC;
+    }
+
+    /* Интерактивный разбор статьи по урологии (Prostatitis) */
+    .abstract-box {
+      background: #FFFFFF;
+      border: 2px solid #CBD5E1;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .abstract-header {
+      background: #1E293B;
+      color: #FFFFFF;
+      padding: 10px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .abstract-controls {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .hl-btn {
+      border: none;
+      padding: 5px 10px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .hl-btn.ger-type { background: #BAE6FD; color: #0369A1; }
+    .hl-btn.inf-type { background: #FDE68A; color: #92400E; }
+    .hl-btn.par-type { background: #BBF7D0; color: #166534; }
+    .hl-btn.reset { background: rgba(255,255,255,0.2); color: #FFFFFF; }
+
+    .abstract-body {
+      padding: 14px;
+      font-size: 0.84rem;
+      line-height: 1.68;
+      color: #334155;
+    }
+
+    .u-ger, .u-inf, .u-par {
+      padding: 1px 5px;
+      border-radius: 5px;
+      transition: all 0.2s ease;
+    }
+
+    .abstract-body.show-ger .u-ger {
+      background: #BAE6FD;
+      color: #0369A1;
+      font-weight: 800;
+      border-bottom: 2px solid #0284C7;
+    }
+
+    .abstract-body.show-inf .u-inf {
+      background: #FDE68A;
+      color: #92400E;
+      font-weight: 800;
+      border-bottom: 2px solid #D97706;
+    }
+
+    .abstract-body.show-par .u-par {
+      background: #DCFCE7;
+      color: #166534;
+      font-weight: 700;
+      border-bottom: 2px dashed #16A34A;
+    }
+
+    /* Быстрые микро-упражнения внутри теории (Quick Check) */
+    .quick-check {
+      background: #F8FAFC;
+      border: 1px dashed var(--kz-blue);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .qc-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .qc-question {
+      font-size: 0.86rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+    }
+
+    .qc-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .qc-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .qc-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background: var(--kz-blue-light);
+    }
+
+    .qc-btn.correct {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    .qc-btn.wrong {
+      background: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    .qc-feedback {
+      display: none;
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      line-height: 1.35;
+    }
+
+    /* Карточки словаря */
+    .vocab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+      gap: 10px;
+    }
+
+    .vocab-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .vocab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .vocab-word {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+    }
+
+    .speak-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 161, 222, 0.3);
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+    }
+
+    .vocab-trans {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .vocab-example {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--bg-main);
+      padding: 7px 9px;
+      border-radius: 8px;
+      line-height: 1.35;
+    }
+
+    /* Кнопка перехода к следующему разделу или тренажеру */
+    .action-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      border-radius: 16px;
+      padding: 13px 18px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    @media (max-width: 560px) {
+      .section-nav {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      header h1 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ШАПКА УРОКА -->
+  <header>
+    <div class="header-top">
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅ К списку уроков</a>
+      <div class="header-right-controls">
+        <span id="userTierBadge" class="tier-badge"></span>
+        <div class="lang-switch">
+          <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
+          <button class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
+        </div>
+      </div>
+    </div>
+    <div class="header-title-box">
+      <span class="lesson-badge">Lesson 15 • A1–B1 Medical English</span>
+      <h1 id="uiTitle">Gerund, Participle & Infinitive (Неличные формы глагола)</h1>
+      <p id="uiSubtitle">Как использовать герундий (-ing), причастие (V3) и инфинитив (to do) в медицинских статьях и диагнозах</p>
+    </div>
+  </header>
+
+  <!-- ИНДИКАТОР ПРОВЕРКИ ПОДПИСКИ -->
+  <div id="authLoader">🔄 Проверка подписки и доступа к конспекту...</div>
+
+  <!-- БЛОК PAYWALL (ПОКАЗЫВАЕТСЯ, ЕСЛИ НЕТ ТАРИФА ПРО / ПРЕМИУМ / ВИП) -->
+  <div id="paywallGate">
+    <div class="paywall-card">
+      <div class="pw-icon">🔒</div>
+      <span class="pw-badge" id="pwBadgeText">Доступно в тарифах ПРО / ПРЕМИУМ / ВИП</span>
+      <div class="pw-title" id="pwTitleText">Интерактивный конспект закрыт для вашего тарифа</div>
+      <p class="pw-desc" id="pwDescText">
+        Интерактивные конспекты с клиническим разбором статей, озвученным словарем и упражнениями открыты для подписок «Про», «Премиум» и «ВИП». Перейдите на страницу тарифов, чтобы подключить или повысить свой доступ:
+      </p>
+      <div class="pw-buttons">
+        <a href="https://kazdoctors.com/tarifs" class="pw-btn-primary" id="pwTarifsBtn">
+          🌟 Перейти к тарифам (kazdoctors.com/tarifs)
+        </a>
+        <a href="https://instagram.com/doctors.speak" target="_blank" class="pw-btn-secondary" id="pwContactBtn">
+          💬 Написать нам (@doctors.speak)
+        </a>
+        <a href="/login.html" class="pw-btn-secondary" id="pwLoginBtn" style="display:none;">
+          🔐 Войти в аккаунт
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ЗАЩИЩЕННЫЙ КОНТЕНТ УРОКА (ОТКРЫВАЕТСЯ ТОЛЬКО ДЛЯ PRO, PREMIUM, VIP) -->
+  <div id="lessonContentWrapper">
+    <!-- НАВИГАЦИЯ ПО ЭТАПАМ УРОКА -->
+    <nav class="section-nav">
+      <button class="nav-pill active" onclick="showTab(0)" id="nav0">1. Смысл и 3 Формулы</button>
+      <button class="nav-pill" onclick="showTab(1)" id="nav1">2. Таблица и Статья</button>
+      <button class="nav-pill" onclick="showTab(2)" id="nav2">3. Словарь (14 слов)</button>
+      <button class="nav-pill" onclick="showTab(3)" id="nav3">4. Упражнения</button>
+    </nav>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main>
+      <!-- ВКЛАДКА 1: ГЕРУНДИЙ, ПРИЧАСТИЕ И ИНФИНИВ В МЕДИЦИНЕ -->
+      <section class="tab-section active" id="tab0"></section>
+
+      <!-- ВКЛАДКА 2: СВОДНАЯ ТАБЛИЦА И РАЗБОР СТАТЬИ ПО УРОЛОГИИ (PROSTATITIS) -->
+      <section class="tab-section" id="tab1"></section>
+
+      <!-- ВКЛАДКА 3: СЛОВАРЬ С ПРИМЕРАМИ -->
+      <section class="tab-section" id="tab2">
+        <div class="card-block">
+          <h2 id="uiVocabTitle">💊 Клинический словарь урока (14 терминов)</h2>
+          <p id="uiVocabDesc">Нажмите 🔊, чтобы прослушать произношение. Все примеры показывают использование неличных форм глагола в реальной медицинской практике.</p>
+          <div class="vocab-grid" id="vocabGrid"></div>
+        </div>
+        <button class="action-btn" onclick="showTab(3)" id="uiToExBtn">Перейти к упражнениям урока ➔</button>
+      </section>
+
+      <!-- ВКЛАДКА 4: ПРАКТИКУМ (EXERCISE 1 & 2 ИЗ PDF) -->
+      <section class="tab-section" id="tab3">
+        <div class="card-block gold">
+          <h2 id="uiEx1Title">✍️ Упражнение 1: Выберите правильную форму (-ing, V3 или to + V1)</h2>
+          <p id="uiEx1Desc">Определите роль глагола в предложении: после управляющего глагола (to), как причастие состояния (V3) или после предлога (-ing):</p>
+          <div id="ex1Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+
+        <div class="card-block">
+          <h2 id="uiEx2Title">🩺 Упражнение 2: Заполните пропуски нужной формой глагола</h2>
+          <p id="uiEx2Desc">Используйте герундий (-ing), инфинитив (to + V1) или причастие (Past Participle):</p>
+          <div id="ex2Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+
+        <a href="./gerund/" class="action-btn" id="uiGoTrainerBtn">🎯 Запустить игровой тренажер по Уроку 15 ➔</a>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. ПРОВЕРКА ПОДПИСКИ SUPABASE (ДОСТУП ТОЛЬКО ДЛЯ PRO, PREMIUM, VIP)
+    // =========================================================================
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+    // Уровни подписок: конспект открывается только при уровне >= 2 (pro, premium, vip)
+    const TIER_LEVELS = {
+      none: 0,
+      free: 0,
+      standard: 1,
+      pro: 2,
+      premium: 3,
+      vip: 4
+    };
+
+    const TIER_LABELS = {
+      standard: { ru: "СТАНДАРТ", kz: "СТАНДАРТ" },
+      pro: { ru: "ТАРИФ: ПРО", kz: "ТАРИФ: ПРО" },
+      premium: { ru: "ТАРИФ: ПРЕМИУМ", kz: "ТАРИФ: ПРЕМИУМ" },
+      vip: { ru: "ТАРИФ: ВИП 👑", kz: "ТАРИФ: ВИП 👑" }
+    };
+
+    let currentViewerState = {
+      isLoggedIn: false,
+      hasActiveSub: false,
+      tier: "none"
+    };
+
+    async function verifySubscriptionAccess() {
+      if (!supabaseClient) {
+        showPaywallGate(false, "none");
+        return;
+      }
+
+      try {
+        const { data: sessionData, error: sessionErr } = await supabaseClient.auth.getSession();
+        if (sessionErr || !sessionData || !sessionData.session) {
+          currentViewerState = { isLoggedIn: false, hasActiveSub: false, tier: "none" };
+          showPaywallGate(false, "none");
+          return;
+        }
+
+        const user = sessionData.session.user;
+        const userEmail = (user.email || "").toLowerCase().trim();
+
+        // Ищем профиль сначала по ID, затем по Email
+        let { data: profile } = await supabaseClient
+          .from("profiles")
+          .select("id, email, tier, subscription_expires_at")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (!profile && userEmail) {
+          const resByEmail = await supabaseClient
+            .from("profiles")
+            .select("id, email, tier, subscription_expires_at")
+            .ilike("email", userEmail)
+            .maybeSingle();
+          profile = resByEmail.data;
+        }
+
+        if (!profile || !profile.subscription_expires_at) {
+          currentViewerState = { isLoggedIn: true, hasActiveSub: false, tier: "none" };
+          showPaywallGate(true, "none");
+          return;
+        }
+
+        const expiresAt = new Date(profile.subscription_expires_at);
+        const now = new Date();
+        const isSubActive = !isNaN(expiresAt.getTime()) && now <= expiresAt;
+
+        if (!isSubActive) {
+          currentViewerState = { isLoggedIn: true, hasActiveSub: false, tier: "expired" };
+          showPaywallGate(true, "expired");
+          return;
+        }
+
+        const userTier = (profile.tier || "standard").toLowerCase().trim();
+        const tierLevel = TIER_LEVELS[userTier] || 1;
+
+        currentViewerState = { isLoggedIn: true, hasActiveSub: true, tier: userTier };
+
+        // Если уровень тарифа >= 2 (pro, premium, vip) — открываем конспект!
+        if (tierLevel >= TIER_LEVELS.pro) {
+          unlockLessonContent(userTier);
+        } else {
+          // Если тариф standard (уровень 1) — показываем предложение перейти на страницу тарифов
+          showPaywallGate(true, "standard");
+        }
+      } catch (err) {
+        console.error("Subscription check error:", err);
+        showPaywallGate(false, "none");
+      }
+    }
+
+    function unlockLessonContent(tier) {
+      document.getElementById("authLoader").style.display = "none";
+      document.getElementById("paywallGate").style.display = "none";
+      document.getElementById("lessonContentWrapper").style.display = "flex";
+
+      const badge = document.getElementById("userTierBadge");
+      if (badge && TIER_LABELS[tier]) {
+        badge.textContent = TIER_LABELS[tier][currentLang];
+        badge.style.display = "inline-block";
+      }
+    }
+
+    function showPaywallGate(isLoggedIn, reasonTier) {
+      document.getElementById("authLoader").style.display = "none";
+      document.getElementById("lessonContentWrapper").style.display = "none";
+      document.getElementById("paywallGate").style.display = "block";
+      updatePaywallTexts(isLoggedIn, reasonTier);
+    }
+
+    function updatePaywallTexts(isLoggedIn, reasonTier) {
+      const isKz = (currentLang === "kz");
+      const badgeEl = document.getElementById("pwBadgeText");
+      const titleEl = document.getElementById("pwTitleText");
+      const descEl = document.getElementById("pwDescText");
+      const tarifsBtn = document.getElementById("pwTarifsBtn");
+      const contactBtn = document.getElementById("pwContactBtn");
+      const loginBtn = document.getElementById("pwLoginBtn");
+
+      badgeEl.textContent = isKz
+        ? "ПРО / ПРЕМИУМ / ВИП ТАРИФТЕРІНДЕ ҚОЛЖЕТІМДІ"
+        : "ДОСТУПНО В ТАРИФАХ ПРО / ПРЕМИУМ / ВИП";
+
+      tarifsBtn.textContent = isKz
+        ? "🌟 Тарифтер бетіне өту (kazdoctors.com/tarifs)"
+        : "🌟 Перейти к тарифам (kazdoctors.com/tarifs)";
+
+      contactBtn.textContent = isKz
+        ? "💬 Бізге жазу (@doctors.speak)"
+        : "💬 Написать нам (@doctors.speak)";
+
+      if (!isLoggedIn) {
+        titleEl.textContent = isKz
+          ? "Конспектіні ашу үшін аккаунтқа кіріңіз немесе жазылым таңдаңыз"
+          : "Войдите в аккаунт или подключите тариф для чтения конспекта";
+        descEl.textContent = isKz
+          ? "Бұл интерактивті конспект «Про», «Премиум» және «ВИП» жазылымдары бар дәрігерлерге арналған. Тарифтер бетінде өзіңізге ыңғайлы пакетті таңдай аласыз:"
+          : "Этот интерактивный конспект открыт для врачей с подпиской «Про», «Премиум» или «ВИП». Ознакомьтесь с вариантами доступа на странице тарифов:";
+        loginBtn.style.display = "inline-flex";
+        loginBtn.textContent = isKz ? "🔐 Аккаунтқа кіру" : "🔐 Уже есть подписка? Войти в аккаунт";
+      } else if (reasonTier === "standard") {
+        titleEl.textContent = isKz
+          ? "Сізде «Стандарт» тарифі белсенді (тек тренажерлер)"
+          : "У вас активен тариф «Стандарт» (только тренажеры)";
+        descEl.textContent = isKz
+          ? "Интерактивті конспектілер мен мақала талдауларын оқу үшін тарифіңізді «Про», «Премиум» немесе «ВИП» деңгейіне дейін жаңартуды ұсынамыз:"
+          : "Чтобы открывать интерактивные конспекты, разборы статей и грамматические справочники, обновите вашу подписку до тарифа «Про», «Премиум» или «ВИП» на странице тарифов:";
+        loginBtn.style.display = "none";
+      } else {
+        titleEl.textContent = isKz
+          ? "Жазылым мерзімі аяқталды немесе белсенді емес"
+          : "Ваша подписка не активна или истекла";
+        descEl.textContent = isKz
+          ? "Сабақ конспектілеріне қол жеткізу үшін «Про», «Премиум» немесе «ВИП» тарифін таңдаңыз:"
+          : "Для получения доступа к интерактивным конспектам выберите тариф «Про», «Премиум» или «ВИП» на странице тарифов:";
+        loginBtn.style.display = "none";
+      }
+    }
+
+    // =========================================================================
+    // 2. БАЗА ДАННЫХ УРОКА 15 (НА РУССКОМ И КАЗАХСКОМ ЯЗЫКАХ)
+    // =========================================================================
+    const LESSON15_DATA = {
+      ui: {
+        backBtn: { ru: "⬅ К списку уроков", kz: "⬅ Сабақтар тізіміне" },
+        title: {
+          ru: "Gerund, Participle & Infinitive (Неличные формы глагола)",
+          kz: "Gerund, Participle & Infinitive (Етістіктің ерекше формалары)"
+        },
+        subtitle: {
+          ru: "Gerund (DO+ing) • Past Participle (DONE / V3) • Infinitive (TO DO / цель «чтобы»)",
+          kz: "Gerund (DO+ing) • Past Participle (DONE / V3) • Infinitive (TO DO / «үшін» мағынасы)"
+        },
+        nav: [
+          { ru: "1. Смысл и 3 Формулы", kz: "1. Мағынасы мен 3 Формула" },
+          { ru: "2. Таблица и Статья", kz: "2. Кесте және Мақала" },
+          { ru: "3. Словарь (14 слов)", kz: "3. Сөздік (14 сөз)" },
+          { ru: "4. Упражнения", kz: "4. Жаттығулар" }
+        ],
+        vocabTitle: {
+          ru: "💊 Клинический словарь урока (14 терминов)",
+          kz: "💊 Сабақтың клиникалық сөздігі (14 термин)"
+        },
+        vocabDesc: {
+          ru: "Нажмите 🔊 для прослушивания произношения. Все примеры показывают использование герундия, причастия и инфинитива в медицине.",
+          kz: "Дұрыс айтылуын тыңдау үшін 🔊 басыңыз. Барлық мысалдар медицинадағы герундий, причастие және инфинитивтің қолданысын көрсетеді."
+        },
+        toExBtn: {
+          ru: "Перейти к шагу 4: Быстрые упражнения ➔",
+          kz: "4-қадамға өту: Жылдам жаттығулар ➔"
+        },
+        ex1Title: {
+          ru: "✍️ Упражнение 1: Выберите правильную форму (-ing, V3 или to + V1)",
+          kz: "✍️ 1-жаттығу: Дұрыс форманы таңдаңыз (-ing, V3 немесе to + V1)"
+        },
+        ex1Desc: {
+          ru: "Определите роль глагола после управляющего слова или предлога:",
+          kz: "Басқарушы сөзден немесе предлогтан кейінгі етістіктің рөлін анықтаңыз:"
+        },
+        ex2Title: {
+          ru: "🩺 Упражнение 2: Заполните пропуски нужной формой глагола",
+          kz: "🩺 2-жаттығу: Бос орындарға қажетті етістік формасын қойыңыз"
+        },
+        ex2Desc: {
+          ru: "Используйте правильное окончание герундия, форму причастия или инфинитива:",
+          kz: "Герундий жұрнағын, причастие немесе инфинитив формасын дұрыс қолданыңыз:"
+        },
+        goTrainerBtn: {
+          ru: "🎯 Зайти в тренажер по Уроку 15 ➔",
+          kz: "🎯 15-сабақтың тренажеріне өту ➔"
+        }
+      },
+
+      // ВКЛАДКА 1: СМЫСЛ И 3 ФОРМУЛЫ (GERUND, PARTICIPLE, INFINITIVE)
+      tab0Html: {
+        ru: `
+          <div class="card-block">
+            <h2>⚙️ Три неличные формы глагола: как они экономят место и делают речь научной</h2>
+            <p>В медицинских статьях мы редко пишем длинные развернутые придаточные предложения. Вместо этого используются <b>неличные формы глагола</b> (они не имеют лица и числа, но несут в себе мощный смысл действия):</p>
+
+            <div class="form-grid">
+              <div class="form-card f-ger">
+                <div class="form-title">
+                  <span>1. ГЕРУНДИЙ (Gerund)</span>
+                  <span>🔄</span>
+                </div>
+                <span class="comp-formula">Verb + ING (DO + ing)</span>
+                <p style="font-size:0.79rem;">Глагол с суффиксом <b>-ing</b>, который ведет себя как <b>существительное</b> или деепричастие (отвечает на вопрос <i>что?</i> или <i>что делая?</i>):</p>
+                <div class="clinical-quote">
+                  • <b>"<u>Prescribing</u> adalimumab is dangerous in TB."</b> <i>(Назначение... — подлежащее)</i><br>
+                  • <b>"Focused on <u>resolving</u> the source."</b> <i>(Сосредоточились на разрешении...)</i><br>
+                  • <b>"Recommended <u>soothing</u> the pain."</b>
+                </div>
+              </div>
+
+              <div class="form-card f-par">
+                <div class="form-title">
+                  <span>2. ПРИЧАСТИЕ (Past Participle)</span>
+                  <span>📋</span>
+                </div>
+                <span class="comp-formula">Verb в 3-й форме (DONE / V3)</span>
+                <p style="font-size:0.79rem;">Глагол в форме прошедшего времени, который ведет себя как <b>прилагательное</b> или пассивное определение:</p>
+                <div class="clinical-quote">
+                  • <b>"The <u>prescribed</u> medication is toxic."</b> <i>(Назначенный препарат)</i><br>
+                  • <b>"An overt rupture, clearly <u>revealed</u> on the scan."</b><br>
+                  • <b>"A suspicion, later <u>confirmed</u>."</b>
+                </div>
+              </div>
+
+              <div class="form-card f-inf">
+                <div class="form-title">
+                  <span>3. ИНФИНИВ (Infinitive)</span>
+                  <span>🎯</span>
+                </div>
+                <span class="comp-formula">TO + Verb (TO DO)</span>
+                <p style="font-size:0.79rem;">Глагол в начальной форме с частицей <b>to</b>, который чаще всего несет в себе смысл <b>«чтобы»</b> (цель действия) или идет после модальных/управляющих глаголов:</p>
+                <div class="clinical-quote">
+                  • <b>"She decided <u>to prescribe</u> adalimumab."</b><br>
+                  • <b>"Suggested <u>to help</u> rule out meningitis."</b> <i>(Предложен, чтобы помочь исключить...)</i><br>
+                  • <b>"Managed <u>to rule out</u> spinal tap."</b>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>💡 Шпаргалка по клиническим конструкциям с неличными формами</h2>
+            <p>Сравните, как одна и та же мысль звучит через разные формы глагола в зависимости от грамматической роли в выписке:</p>
+
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Форма</th>
+                  <th>Главная роль в медицине</th>
+                  <th>Клинический пример</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>Gerund (-ing)</b></td>
+                  <td>После предлогов (<i>on, in, for, by</i>) или в роли субъекта</td>
+                  <td>• The nurse was trained in <b>performing</b> resuscitation.<br>• Controlling an outbreak requires measures.</td>
+                </tr>
+                <tr>
+                  <td><b>Past Participle (V3)</b></td>
+                  <td>Описание состояния объекта (какой сделанный?)</td>
+                  <td>• A subluxated vertebra was discovered.<br>• The suspected infection was confirmed.</td>
+                </tr>
+                <tr>
+                  <td><b>Infinitive (to + V1)</b></td>
+                  <td>Выражение цели («чтобы...») после глаголов решения/попытки</td>
+                  <td>• Suggested to help <b>rule out</b> meningitis.<br>• Managed <b>to rule out</b> spinal tap.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Быстрая проверка</span>
+              <div class="qc-question">Выберите правильную форму: «Врач сумел исключить люмбальную пункцию как необходимую» — "The doctor managed ___ spinal tap as necessary."</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Верно! После глагола manage всегда используется инфинитив с частицей to -> to rule out.')">to rule out (Инфинитив)</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Герундий (ruling out) здесь грамматически не управляется глаголом manage.')">ruling out (Герундий)</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">Перейти к шагу 2: Таблица и Статья по урологии (Prostatitis) ➔</button>
+        `,
+        kz: `
+          <div class="card-block">
+            <h2>⚙️ Етістіктің үш ерекше формасы: олар мәтінді қалай ықшамдап, ғылыми етеді?</h2>
+            <p>Медициналық мақалаларда біз ұзын бағыныңқы сөйлемдерді сирек қолданамыз. Оның орнына <b>етістіктің ерекше формалары</b> қолданылады (оларда жақ пен түр өзгермейді, бірақ әрекет мағынасы сақталады):</p>
+
+            <div class="form-grid">
+              <div class="form-card f-ger">
+                <div class="form-title">
+                  <span>1. ГЕРУНДИЙ (Gerund)</span>
+                  <span>🔄</span>
+                </div>
+                <span class="comp-formula">Verb + ING (DO + ing)</span>
+                <p style="font-size:0.79rem;"><b>-ing</b> жұрнағы бар етістік, ол <b>зат есім</b> немесе есімше рөлін атқарады (<i>не?</i> немесе <i>не істеп?</i> деген сұраққа жауап береді):</p>
+                <div class="clinical-quote">
+                  • <b>"<u>Prescribing</u> adalimumab is dangerous in TB."</b> <i>(Тағайындау... — бастауыш)</i><br>
+                  • <b>"Focused on <u>resolving</u> the source."</b> <i>(Көздерін жоюға шоғырланды)</i><br>
+                  • <b>"Recommended <u>soothing</u> the pain."</b>
+                </div>
+              </div>
+
+              <div class="form-card f-par">
+                <div class="form-title">
+                  <span>2. ПРИЧАСТИЕ (Past Participle)</span>
+                  <span>📋</span>
+                </div>
+                <span class="comp-formula">3-ші формадағы Verb (DONE / V3)</span>
+                <p style="font-size:0.79rem;">Өткен шақ формасындағы етістік, ол <b>сын есім</b> сияқты заттың күйін немесе қасиетін сипаттайды:</p>
+                <div class="clinical-quote">
+                  • <b>"The <u>prescribed</u> medication is toxic."</b> <i>(Тағайындалған дәрі)</i><br>
+                  • <b>"An overt rupture, clearly <u>revealed</u> on the scan."</b><br>
+                  • <b>"A suspicion, later <u>confirmed</u>."</b>
+                </div>
+              </div>
+
+              <div class="form-card f-inf">
+                <div class="form-title">
+                  <span>3. ИНФИНИТИВ (Infinitive)</span>
+                  <span>🎯</span>
+                </div>
+                <span class="comp-formula">TO + Verb (TO DO)</span>
+                <p style="font-size:0.79rem;"><b>to</b> бөлшегі бар бастапқы форма, ол көбіне <b>«үшін»</b> (мақсат) мағынасын береді немесе басқарушы етістіктерден кейін келеді:</p>
+                <div class="clinical-quote">
+                  • <b>"She decided <u>to prescribe</u> adalimumab."</b><br>
+                  • <b>"Suggested <u>to help</u> rule out meningitis."</b> <i>(Менингитке күдікті жоққа шығаруға көмектесу үшін ұсынылды)</i><br>
+                  • <b>"Managed <u>to rule out</u> spinal tap."</b>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>💡 Клиникалық құрылымдарға арналған шпаргалка</h2>
+            <p>Ауру тарихында бір ойдың әртүрлі формалар арқылы қалай берілетінін салыстырыңыз:</p>
+
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Форма</th>
+                  <th>Медицинадағы басты рөлі</th>
+                  <th>Клиникалық мысал</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>Gerund (-ing)</b></td>
+                  <td>Предлогтардан кейін (<i>on, in, for, by</i>) немесе бастауыш ретінде</td>
+                  <td>• The nurse was trained in <b>performing</b> resuscitation.<br>• Controlling an outbreak requires measures.</td>
+                </tr>
+                <tr>
+                  <td><b>Past Participle (V3)</b></td>
+                  <td>Заттың күйін сипаттау (қандай етіп жасалған?)</td>
+                  <td>• A subluxated vertebra was discovered.<br>• The suspected infection was confirmed.</td>
+                </tr>
+                <tr>
+                  <td><b>Infinitive (to + V1)</b></td>
+                  <td>Мақсатты білдіру («... үшін») шешім/әрекет етістіктерінен соң</td>
+                  <td>• Suggested to help <b>rule out</b> meningitis.<br>• Managed <b>to rule out</b> spinal tap.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Жылдам тексеру</span>
+              <div class="qc-question">Дұрыс форманы таңдаңыз: «Дәрігер люмбальды пункцияны қажет емес деп жоққа шығара алды» — "The doctor managed ___ spinal tap as necessary."</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Дұрыс! Manage етістігінен кейін әрқашан to бөлшегі бар инфинитив қолданылады -> to rule out.')">to rule out (Инфинитив)</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Герундий (ruling out) бұл орында manage етістігімен басқарылмайды.')">ruling out (Герундий)</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">2-қадамға өту: Кесте және Урология мақаласы (Prostatitis) ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 2: СВОДНАЯ ТАБЛИЦА И РАЗБОР СТАТЬИ ПО УРОЛОГИИ (PROSTATITIS)
+      tab1Html: {
+        ru: `
+          <div class="card-block gold">
+            <h2>📋 Сводная шпаргалка: как не путать -ing, V3 и to + V1 в выписке</h2>
+            <p>Сверьте три неличные формы в таблице с примерами из реальной врачебной практики:</p>
+
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Форма</th>
+                  <th>Как образуется</th>
+                  <th>Перевод на русс./каз.</th>
+                  <th>Клинический пример</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>Gerund</b></td>
+                  <td><b>Verb + ing</b></td>
+                  <td>Существительное / Деепричастие (<i>-ing / -у / -іп</i>)</td>
+                  <td>• <b>Soothing</b> the pain helped.<br>• Focused on <b>resolving</b> the source.</td>
+                </tr>
+                <tr>
+                  <td><b>Past Participle</b></td>
+                  <td><b>V3 / -ed</b> (или 3-я форма)</td>
+                  <td>Причастие (<i>-нный / -лған / -ілген</i>)</td>
+                  <td>• The <b>prescribed</b> medication.<br>• An overt rupture, clearly <b>revealed</b> on the scan.</td>
+                </tr>
+                <tr>
+                  <td><b>Infinitive</b></td>
+                  <td><b>to + V1</b></td>
+                  <td>Инфинитив с целью «чтобы...»</td>
+                  <td>• Suggested <b>to help</b> rule out meningitis.<br>• Decided <b>to prescribe</b> therapy.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card-block">
+            <h2>🔬 Практика чтения статьи: Prostatitis — Diagnosis and Treatment</h2>
+            <p>Прочитайте фрагмент классического обзора по диагностике и лечению простатита из <i>American Family Physician</i>. Нажимайте на кнопки подсветки, чтобы увидеть, как авторы используют <b>герундий (-ing)</b>, <b>инфинитив (to + V1)</b> и <b>причастие (V3)</b>:</p>
+
+            <div class="abstract-box">
+              <div class="abstract-header">
+                <span>📄 Clinical Review: Prostatitis — Diagnosis and Treatment</span>
+                <div class="abstract-controls">
+                  <button class="hl-btn ger-type" onclick="toggleAbstractHighlight('ger')">Герундий (-ing)</button>
+                  <button class="hl-btn inf-type" onclick="toggleAbstractHighlight('inf')">Инфинитив (to + V1)</button>
+                  <button class="hl-btn par-type" onclick="toggleAbstractHighlight('par')">Причастие (V3 / -ed)</button>
+                  <button class="hl-btn reset" onclick="toggleAbstractHighlight('all')">Показать все</button>
+                </div>
+              </div>
+              <div class="abstract-body show-ger show-inf show-par" id="abstractBodyText">
+                Prostatitis ranges from a straightforward clinical entity in its acute form to a complex, debilitating condition when chronic. It is often a source of frustration for <span class="u-ger">the treating</span> physician and patient. There are four classifications of prostatitis: acute bacterial, chronic bacterial, chronic prostatitis / chronic pelvic pain syndrome, and asymptomatic. Diagnosis of acute and chronic bacterial prostatitis is primarily based on history, physical examination, urine culture, and urine specimen testing pre- and post-prostatic massage.<br><br>
+                The differential diagnosis of prostatitis includes acute cystitis, benign prostatic hyperplasia, urinary tract stones, bladder cancer, prostatic abscess, enterovesical fistula, and foreign body within the urinary tract. The mainstay of therapy is an antimicrobial regimen. Chronic pelvic pain syndrome is a more challenging entity, in part because its pathology is poorly understood. Diagnosis is often based on exclusion of other urologic conditions (e.g., <span class="u-ger">voiding</span> dysfunction, bladder cancer) in association with its presentation. Commonly used medications include antimicrobials, alpha blockers, and anti-inflammatory agents, but the effectiveness of these agents has not been supported in clinical trials. Small studies provide limited support for the use of nonpharmacologic modalities.<br><br>
+                Asymptomatic prostatitis is an incidental finding in a patient <span class="u-par">being evaluated</span> for <span class="u-par">other urologic problems</span>.
+              </div>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Вопрос по статье о простатите</span>
+              <div class="qc-question">Посмотрите на фразу из текста: "a source of frustration for the treating physician and patient". Какую форму представляет слово 'treating'?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Блестяще! 'Treating' здесь выступает в роли причастия / прилагательного (лечащий врач / врач, который лечит).')">Причастие / определение (лечащий врач)</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Инфинитив всегда пишется с частицей to (to treat).')">Инфинитив (to treat)</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">Перейти к шагу 3: Словарь урока (14 слов) ➔</button>
+        `,
+        kz: `
+          <div class="card-block gold">
+            <h2>📋 Жиынтық кесте: Ауру тарихында -ing, V3 пен to + V1 шатастырмау жолы</h2>
+            /p>Үш ерекше форманы шынайы клиникалық мысалдармен салыстырыңыз:</p>
+
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Форма</th>
+                  <th>Қалай жасалады</th>
+                  <th>Қазақша аудармасы</th>
+                  <th>Клиникалық мысал</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>Gerund</b></td>
+                  <td><b>Verb + ing</b></td>
+                  <td>Есімдік / Есімше / Көсемше (<i>-у/-уі, -іп/-п</i>)</td>
+                  <td>• <b>Soothing</b> the pain helped.<br>• Focused on <b>resolving</b> the source.</td>
+                </tr>
+                <tr>
+                  <td><b>Past Participle</b></td>
+                  <td><b>V3 / -ed</b> (немесе 3-форма)</td>
+                  <td>Есімше (<i>-лған/-ілген, -ынды</i>)</td>
+                  <td>• The <b>prescribed</b> medication.<br>• An overt rupture, clearly <b>revealed</b> on the scan.</td>
+                </tr>
+                <tr>
+                  <td><b>Infinitive</b></td>
+                  <td><b>to + V1</b></td>
+                  <td>Мақсатты мағынадағы түбір («... үшін»)</td>
+                  <td>• Suggested <b>to help</b> rule out meningitis.<br>• Decided <b>to prescribe</b> therapy.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card-block">
+            <h2>🔬 Ғылыми мақаланы талдау: Prostatitis — Diagnosis and Treatment</h2>
+            <p><i>American Family Physician</i> журналынан простатитті диагностикалау және емдеу шолуының үзіндісін оқыңыз. <b>Герундийді (-ing)</b>, <b>инфинитивті (to + V1)</b> және <b>причастиені (V3)</b> көру үшін батырмаларды басыңыз:</p>
+
+            <div class="abstract-box">
+              <div class="abstract-header">
+                <span>📄 Clinical Review: Prostatitis — Diagnosis and Treatment</span>
+                <div class="abstract-controls">
+                  <button class="hl-btn ger-type" onclick="toggleAbstractHighlight('ger')">Герундий (-ing)</button>
+                  <button class="hl-btn inf-type" onclick="toggleAbstractHighlight('inf')">Инфинитив (to + V1)</button>
+                  <button class="hl-btn par-type" onclick="toggleAbstractHighlight('par')">Причастие (V3 / -ed)</button>
+                  <button class="hl-btn reset" onclick="toggleAbstractHighlight('all')">Барлығын көрсету</button>
+                </div>
+              </div>
+              <div class="abstract-body show-ger show-inf show-par" id="abstractBodyText">
+                Prostatitis ranges from a straightforward clinical entity in its acute form to a complex, debilitating condition when chronic. It is often a source of frustration for <span class="u-ger">the treating</span> physician and patient. There are four classifications of prostatitis: acute bacterial, chronic bacterial, chronic prostatitis / chronic pelvic pain syndrome, and asymptomatic. Diagnosis of acute and chronic bacterial prostatitis is primarily based on history, physical examination, urine culture, and urine specimen testing pre- and post-prostatic massage.<br><br>
+                The differential diagnosis of prostatitis includes acute cystitis, benign prostatic hyperplasia, urinary tract stones, bladder cancer, prostatic abscess, enterovesical fistula, and foreign body within the urinary tract. The mainstay of therapy is an antimicrobial regimen. Chronic pelvic pain syndrome is a more challenging entity, in part because its pathology is poorly understood. Diagnosis is often based on exclusion of other urologic conditions (e.g., <span class="u-ger">voiding</span> dysfunction, bladder cancer) in association with its presentation. Commonly used medications include antimicrobials, alpha blockers, and anti-inflammatory agents, but the effectiveness of these agents has not been supported in clinical trials. Small studies provide limited support for the use of nonpharmacologic modalities.<br><br>
+                Asymptomatic prostatitis is an incidental finding in a patient <span class="u-par">being evaluated</span> for <span class="u-par">other urologic problems</span>.
+              </div>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Простатит туралы мақала сұрағы</span>
+              <div class="qc-question">Мәтіндегі сөйлемге қараңыз: "a source of frustration for the treating physician and patient". Мұндағы 'treating' сөзі қандай рөл атқарады?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Керемет! 'Treating' бұл жерде причастие / анықтауыш рөлінде тұр (емдеуші дәрігер).')">Причастие / анықтауыш (емдеуші дәрігер)</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Инфинитив әрқашан to бөлшегімен жазылады (to treat).')">Инфинитив (to treat)</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">3-қадамға өту: Сабақ сөздігі (14 сөз) ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 3: СЛОВАРЬ (14 ТЕРМИНОВ С ПРИМЕРАМИ ИЗ СЛАЙДОВ 2 И 9)
+      vocabulary: [
+        {
+          en: "Outbreak",
+          ru: "Вспышка (инфекционного заболевания)",
+          kz: "Індеттің таралуы / Жұқпалы аурудың өршуі",
+          ex: "Controlling an <b>outbreak</b> requires immediate public health measures."
+        },
+        {
+          en: "Overt",
+          ru: "Явный / Очевидный (клинический)",
+          kz: "Айқын / Көрінеу",
+          ex: "The admitted patient had <b>overt</b> bleeding in the GI tract."
+        },
+        {
+          en: "Predisposition",
+          ru: "Предрасположенность",
+          kz: "Бейімділік / Тұқым қуалаушылық",
+          ex: "She is likely to have a <b>predisposition</b> for the disorder because of her family."
+        },
+        {
+          en: "Resolve",
+          ru: "Разрешиться / Устранить (проблему/воспаление)",
+          kz: "Шешілу / Қайту (қабынудың)",
+          ex: "Complications can be prevented by <b>resolving</b> the inflammation soon. <i>(Герундий после предлога by).</i>"
+        },
+        {
+          en: "Resuscitation",
+          ru: "Реанимация / Реанимационные мероприятия",
+          kz: "Реанимация / Жансақтау",
+          ex: "You can save lives by <b>performing</b> timely <b>resuscitation</b>."
+        },
+        {
+          en: "Reveal",
+          ru: "Выявлять / Обнаруживать",
+          kz: "Анықтау / Көрсету",
+          ex: "<b>Revealing</b> the test results without preparation caused anxiety."
+        },
+        {
+          en: "Rule out",
+          ru: "Исключать (диагноз)",
+          kz: "Жоққа шығару / Алып тастау",
+          ex: "<b>Ruling out</b> bacterial infection was the first step in the diagnosis. <i>(Герундий в роли подлежащего).</i>"
+        },
+        {
+          en: "Rupture",
+          ru: "Разрыв (органа, сосуда)",
+          kz: "Жыртылу / Құрсаудың ашылуы",
+          ex: "The <b>ruptured</b> appendix caused peritonitis. <i>(Причастие в прошедшем времени: разорванный аппендицит).</i>"
+        },
+        {
+          en: "Shooting",
+          ru: "Стреляющий (о боли)",
+          kz: "Атыздап / Шаншып ауыратын (ауырсыну)",
+          ex: "Majority of patients reported a <b>shooting</b> pain in the studied areas."
+        },
+        {
+          en: "Soothe",
+          ru: "Смягчать / Успокаивать (боль, раздражение)",
+          kz: "Басу / Жеңілдету (ауырсынуды)",
+          ex: "They recommended <b>soothing</b> the pain with a warm compress. <i>(Герундий после recommend).</i>"
+        },
+        {
+          en: "Spinal tap",
+          ru: "Люмбальная (спинномозговая) пункция",
+          kz: "Люмбальды (жұлын) пункциясы",
+          ex: "The suspected infection was confirmed by <b>spinal tap</b>."
+        },
+        {
+          en: "Subluxation",
+          ru: "Подвывих",
+          kz: "Толық емес шығу / Жартылай тайю (подвывих)",
+          ex: "A <b>subluxated</b> vertebra was discovered on the MRI. <i>(Причастие: подвывихнутый позвонок).</i>"
+        },
+        {
+          en: "Suspicion",
+          ru: "Подозрение (на диагноз)",
+          kz: "Күдік / Шектелу",
+          ex: "The <b>suspicion</b> of TB caused doctors <b>to perform</b> the test. <i>(Инфинитив цели: чтобы провести тест).</i>"
+        },
+        {
+          en: "Urge",
+          ru: "Позыв / Непреодолимое желание",
+          kz: "Табиғи қажеттілік / Тыншусыз позыв",
+          ex: "The patient had a frequent <b>urge to urinate</b> despite abstaining from liquids."
+        }
+      ],
+
+      // ВКЛАДКА 4: УПРАЖНЕНИЕ 1 И УПРАЖНЕНИЕ 2 ИЗ PDF
+      ex1: [
+        {
+          q: "1. The doctor managed ___ spinal tap as necessary. (to rule out / ruling out / ruled out)",
+          options: ["to rule out", "ruling out", "ruled out"],
+          correct: 0,
+          exp: {
+            ru: "После глагола 'manage' всегда используется инфинитив с частицей to -> to rule out.",
+            kz: "'Manage' етістігінен кейін әрқашан to бөлшегі бар инфинитив қолданылады -> to rule out."
+          }
+        },
+        {
+          q: "2. ___ early treatment can prevent complications. (Urging / Urged / To urge)",
+          options: ["Urging (или To urge)", "Urged", "To urge"],
+          correct: 0,
+          exp: {
+            ru: "В роли подлежащего в начале предложения («Призыв к раннему лечению...») используется герундий -> Urging (также допустим инфинитив To urge).",
+            kz: "Сөйлем басында бастауыш рөлінде («Ерте емдеуге шақыру...») герундий қолданылады -> Urging (инфинитив те дұрыс келеді)."
+          }
+        },
+        {
+          q: "3. The patient showed signs of an overt rupture, clearly ___ on the scan. (revealed / revealing / to reveal)",
+          options: ["revealed", "revealing", "to reveal"],
+          correct: 0,
+          exp: {
+            ru: "Разрыв, который был явно выявлен на сканировании (страдательное причастие прошедшего времени в роли определения) -> revealed.",
+            kz: "Сканерде анық көрінген (айқындалған) жыртылу -> Past Participle (revealed)."
+          }
+        },
+        {
+          q: "4. They recommended ___ the pain with a warm compress. (to soothe / soothing / soothed)",
+          options: ["soothing", "to soothe", "soothed"],
+          correct: 0,
+          exp: {
+            ru: "После глагола 'recommend' в английском языке всегда ставится герундий (-ing) -> recommending soothing the pain.",
+            kz: "'Recommend' етістігінен кейін ағылшын тілінде әрқашан герундий (-ing) қойылады -> soothing."
+          }
+        },
+        {
+          q: "5. A predisposition to fainting was ___ during the resuscitation. (reveal / revealed / revealing)",
+          options: ["revealed", "reveal", "revealing"],
+          correct: 0,
+          exp: {
+            ru: "В пассивной конструкции прошедшего времени (was + V3) нужен глагол в третьей форме -> was revealed.",
+            kz: "Өткен шақтағы ырықсыз етіс құрылымында (was + V3) етістіктің 3-формасы қажет -> was revealed."
+          }
+        }
+      ],
+
+      ex2: [
+        {
+          q: "1. After the outbreak, the team focused on ___ (resolve) the source of contagion.",
+          options: ["resolving", "to resolve", "resolved"],
+          correct: 0,
+          exp: {
+            ru: "После предлога 'on' глагол всегда принимает форму герундия (-ing) -> focused on resolving.",
+            kz: "'On' предлогынан кейін етістік әрқашан герундий (-ing) формасын алады -> focused on resolving."
+          }
+        },
+        {
+          q: "2. A spinal tap was suggested to help ___ (rule out) meningitis.",
+          options: ["rule out (или to rule out)", "ruling out", "ruled out"],
+          correct: 0,
+          exp: {
+            ru: "После глагола 'help' инфинитив часто используется без частицы to (или с to) -> help rule out (или to rule out).",
+            kz: "'Help' етістігінен кейін инфинитив көбіне to бөлшегінсіз (немесе томен) қолданылады -> help rule out."
+          }
+        },
+        {
+          q: "3. The patient came in complaining of shooting pain and ___ (subluxation) of the shoulder.",
+          options: ["being unable to move (или subluxation)", "to subluxate", "subluxating"],
+          correct: 0,
+          exp: {
+            ru: "В упражнении из PDF здесь требуется однородная конструкция состояния: 'complaining of shooting pain and being unable to move' (или существительное subluxation).",
+            kz: "PDF жаттығуында бұл жерде бірыңғай мүше қажет: 'complaining of shooting pain and being unable to move' (немесе subluxation зат есімі)."
+          }
+        },
+        {
+          q: "4. There was a strong suspicion, later ___ (confirm), of internal bleeding.",
+          options: ["confirmed", "confirming", "to confirm"],
+          correct: 0,
+          exp: {
+            ru: "Подозрение, которое позже было подтверждено (сокращенное причастие прошедшего времени) -> later confirmed.",
+            kz: "Кейіннен расталған күдік (қысқартылған причастие) -> later confirmed."
+          }
+        },
+        {
+          q: "5. The nurse was trained in ___ (perform) emergency resuscitation procedures.",
+          options: ["performing", "to perform", "performed"],
+          correct: 0,
+          exp: {
+            ru: "После предлога 'in' ставится герундий -> trained in performing emergency resuscitation.",
+            kz: "'In' предлогынан кейін герундий қойылады -> trained in performing emergency resuscitation."
+          }
+        }
+      ]
+    };
+
+    // =========================================================================
+    // 3. ЛОГИКА ОТОБРАЖЕНИЯ, ОЗВУЧКИ И ПЕРЕКЛЮЧЕНИЯ ЯЗЫКОВ (RU / KZ)
+    // =========================================================================
+    let currentLang = localStorage.getItem('doctors_speak_lang') || 'ru';
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('doctors_speak_lang', lang);
+
+      document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
+      document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
+
+      const ui = LESSON15_DATA.ui;
+      document.getElementById('uiBackBtn').textContent = ui.backBtn[lang];
+      document.getElementById('uiTitle').textContent = ui.title[lang];
+      document.getElementById('uiSubtitle').textContent = ui.subtitle[lang];
+
+      ui.nav.forEach((item, index) => {
+        document.getElementById(`nav${index}`).textContent = item[lang];
+      });
+
+      document.getElementById('uiVocabTitle').textContent = ui.vocabTitle[lang];
+      document.getElementById('uiVocabDesc').textContent = ui.vocabDesc[lang];
+      document.getElementById('uiToExBtn').textContent = ui.toExBtn[lang];
+      document.getElementById('uiEx1Title').textContent = ui.ex1Title[lang];
+      document.getElementById('uiEx1Desc').textContent = ui.ex1Desc[lang];
+      document.getElementById('uiEx2Title').textContent = ui.ex2Title[lang];
+      document.getElementById('uiEx2Desc').textContent = ui.ex2Desc[lang];
+      document.getElementById('uiGoTrainerBtn').textContent = ui.goTrainerBtn[lang];
+
+      // Обновляем бейдж тарифа или тексты экрана Paywall при переключении языка
+      const badge = document.getElementById("userTierBadge");
+      if (badge && TIER_LABELS[currentViewerState.tier]) {
+        badge.textContent = TIER_LABELS[currentViewerState.tier][lang];
+      }
+      if (document.getElementById("paywallGate").style.display === "block") {
+        updatePaywallTexts(currentViewerState.isLoggedIn, currentViewerState.tier);
+      }
+
+      // Рендерим вкладки теории, словаря и упражнений
+      document.getElementById('tab0').innerHTML = LESSON15_DATA.tab0Html[lang];
+      document.getElementById('tab1').innerHTML = LESSON15_DATA.tab1Html[lang];
+      renderVocab();
+      renderExercises('ex1Container', LESSON15_DATA.ex1);
+      renderExercises('ex2Container', LESSON15_DATA.ex2);
+    }
+
+    function showTab(idx) {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`nav${i}`).classList.toggle('active', i === idx);
+        document.getElementById(`tab${i}`).classList.toggle('active', i === idx);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Подсветка неличных форм глагола в обзоре по простатиту
+    function toggleAbstractHighlight(mode) {
+      const box = document.getElementById('abstractBodyText');
+      if (!box) return;
+      box.classList.remove('show-ger', 'show-inf', 'show-par');
+      if (mode === 'ger' || mode === 'all') box.classList.add('show-ger');
+      if (mode === 'inf' || mode === 'all') box.classList.add('show-inf');
+      if (mode === 'par' || mode === 'all') box.classList.add('show-par');
+    }
+
+    // Проверка встроенных микро-вопросов в теории
+    function checkInlineQuiz(btn, isCorrect, feedbackText) {
+      const parent = btn.closest('.quick-check');
+      const allBtns = parent.querySelectorAll('.qc-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+      }
+
+      const fb = parent.querySelector('.qc-feedback');
+      fb.textContent = `💡 ${feedbackText}`;
+      fb.style.display = 'block';
+    }
+
+    // Рендер словаря с озвучкой Web Speech API
+    function renderVocab() {
+      const grid = document.getElementById('vocabGrid');
+      grid.innerHTML = '';
+      LESSON15_DATA.vocabulary.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'vocab-card';
+        div.innerHTML = `
+          <div class="vocab-header">
+            <span class="vocab-word">${item.en}</span>
+            <button class="speak-btn" onclick="speakEn('${item.en}')" title="Прослушать">🔊</button>
+          </div>
+          <div class="vocab-trans">${item[currentLang]}</div>
+          <div class="vocab-example">${item.ex}</div>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    function speakEn(word) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(word);
+      u.lang = 'en-US';
+      u.rate = 0.9;
+      window.speechSynthesis.speak(u);
+    }
+
+    // Рендер упражнений 1 и 2 из PDF
+    function renderExercises(containerId, list) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+      list.forEach(item => {
+        const box = document.createElement('div');
+        box.className = 'quick-check';
+        box.style.marginTop = '0';
+
+        const qEl = document.createElement('div');
+        qEl.className = 'qc-question';
+        qEl.textContent = item.q;
+
+        const optsEl = document.createElement('div');
+        optsEl.className = 'qc-options';
+
+        const fbEl = document.createElement('div');
+        fbEl.className = 'qc-feedback';
+        fbEl.textContent = `💡 ${item.exp[currentLang]}`;
+
+        item.options.forEach((optText, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'qc-btn';
+          btn.textContent = optText;
+          btn.onclick = () => {
+            const buttons = optsEl.querySelectorAll('.qc-btn');
+            buttons.forEach(b => b.disabled = true);
+            if (idx === item.correct) {
+              btn.classList.add('correct');
+            } else {
+              btn.classList.add('wrong');
+              buttons[item.correct].classList.add('correct');
+            }
+            fbEl.style.display = 'block';
+          };
+          optsEl.appendChild(btn);
+        });
+
+        box.appendChild(qEl);
+        box.appendChild(optsEl);
+        box.appendChild(fbEl);
+        container.appendChild(box);
+      });
+    }
+
+    // Инициализация языка и проверка подписки при загрузке страницы
+    setLang(currentLang);
+    verifySubscriptionAccess();
+  </script>
+</body>
+</html>
