@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>@doctors.speak — Lesson 10: Prepositions of Place & Movement</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Подключение Supabase SDK для проверки подписки -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --kz-gold-light: #FFFBEB;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --success-bg: #DCFCE7;
+      --success-border: #22C55E;
+      --success-text: #15803D;
+      --error-bg: #FEE2E2;
+      --error-border: #EF4444;
+      --error-text: #B91C1C;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 40px;
+    }
+
+    /* Верхняя шапка с кнопкой назад и переключателем RU/KZ */
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+      color: #FFFFFF;
+      padding: 16px 20px 22px 20px;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-top {
+      max-width: 820px;
+      margin: 0 auto 12px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .header-right-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tier-badge {
+      display: none;
+      background: rgba(255, 199, 44, 0.25);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 20px;
+      padding: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 800;
+      font-size: 0.74rem;
+      padding: 5px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+    }
+
+    .header-title-box {
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .lesson-badge {
+      display: inline-block;
+      background: rgba(255, 199, 44, 0.2);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    header p {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       ЭКРАН ЗАГЛУШКИ ПРИ ОТСУТСТВИИ ПОДПИСКИ ПРО / ПРЕМИУМ / ВИП
+       ========================================================================== */
+    #authLoader {
+      width: 100%;
+      max-width: 520px;
+      margin: 40px auto;
+      padding: 30px 20px;
+      text-align: center;
+      font-weight: 700;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    #paywallGate {
+      display: none;
+      width: 100%;
+      max-width: 540px;
+      margin: 28px auto;
+      padding: 0 14px;
+    }
+
+    .paywall-card {
+      background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      border-radius: 22px;
+      padding: 28px 22px;
+      text-align: center;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.18);
+      border: 1px solid rgba(255, 199, 44, 0.35);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .pw-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      background: rgba(255, 199, 44, 0.16);
+      border: 1px solid rgba(255, 199, 44, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+    }
+
+    .pw-badge {
+      background: rgba(0, 161, 222, 0.22);
+      border: 1px solid rgba(0, 161, 222, 0.55);
+      color: #7DD3FC;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .pw-title {
+      font-size: 1.15rem;
+      font-weight: 900;
+      line-height: 1.3;
+      color: #FFFFFF;
+    }
+
+    .pw-desc {
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: #CBD5E1;
+      font-weight: 500;
+    }
+
+    .pw-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      margin-top: 6px;
+    }
+
+    .pw-btn-primary {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      padding: 13px 18px;
+      border-radius: 14px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(255, 199, 44, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .pw-btn-primary:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    .pw-btn-secondary {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 11px 16px;
+      border-radius: 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .pw-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    /* Контейнер защищенного урока (скрыт до подтверждения тарифа) */
+    #lessonContentWrapper {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Навигация по разделам урока */
+    .section-nav {
+      width: 100%;
+      max-width: 820px;
+      margin: 14px auto 0 auto;
+      padding: 0 14px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .nav-pill {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 9px 6px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .nav-pill.active {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      border-color: var(--kz-blue-dark);
+      box-shadow: 0 4px 12px rgba(0, 161, 222, 0.25);
+    }
+
+    /* Основной контейнер */
+    main {
+      width: 100%;
+      max-width: 820px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-section {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .tab-section.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Карточки теории */
+    .card-block {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-block::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: var(--kz-blue);
+    }
+
+    .card-block.gold::before {
+      background: var(--kz-gold-dark);
+    }
+
+    .card-block h2 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-block p {
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+
+    /* Сетка групп предлогов места и движения */
+    .prep-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .prep-card {
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-main);
+    }
+
+    .prep-card.c1 { border-top: 4px solid #0284C7; background: #F0F9FF; }
+    .prep-card.c2 { border-top: 4px solid #D97706; background: var(--kz-gold-light); }
+    .prep-card.c3 { border-top: 4px solid #16A34A; background: #F0FDF4; }
+    .prep-card.c4 { border-top: 4px solid #7C3AED; background: #F5F3FF; }
+
+    .prep-title {
+      font-size: 0.86rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .comp-formula {
+      display: inline-block;
+      background: #FFFFFF;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      border: 1px dashed var(--kz-blue-dark);
+      margin-bottom: 8px;
+    }
+
+    .clinical-quote {
+      background: #FFFFFF;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.81rem;
+      border-left: 3px solid var(--text-dark);
+      margin-top: 8px;
+      line-height: 1.45;
+    }
+
+    /* Спойлер для полного справочника из 34 предлогов */
+    details.tenses-spoiler {
+      margin-top: 12px;
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 10px 14px;
+    }
+
+    details.tenses-spoiler summary {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      cursor: pointer;
+      list-style: none;
+    }
+
+    /* Таблица 34 предлогов места и движения */
+    .grammar-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 0.76rem;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .grammar-table th {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: 800;
+    }
+
+    .grammar-table td {
+      padding: 7px 10px;
+      border-bottom: 1px solid var(--border-color);
+      background: #FFFFFF;
+      line-height: 1.4;
+    }
+
+    .grammar-table tr:nth-child(even) td {
+      background: #F8FAFC;
+    }
+
+    /* Интерактивный разбор офтальмологического абстракта */
+    .abstract-box {
+      background: #FFFFFF;
+      border: 2px solid #CBD5E1;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .abstract-header {
+      background: #1E293B;
+      color: #FFFFFF;
+      padding: 10px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .abstract-controls {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .hl-btn {
+      border: none;
+      padding: 5px 10px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .hl-btn.place-type { background: #BAE6FD; color: #0369A1; }
+    .hl-btn.move-type { background: #FDE68A; color: #92400E; }
+    .hl-btn.reset { background: rgba(255,255,255,0.2); color: #FFFFFF; }
+
+    .abstract-body {
+      padding: 14px;
+      font-size: 0.84rem;
+      line-height: 1.68;
+      color: #334155;
+    }
+
+    .p-loc, .p-mov {
+      padding: 1px 5px;
+      border-radius: 5px;
+      transition: all 0.2s ease;
+    }
+
+    .abstract-body.show-place .p-loc {
+      background: #BAE6FD;
+      color: #0369A1;
+      font-weight: 800;
+      border-bottom: 2px solid #0284C7;
+    }
+
+    .abstract-body.show-move .p-mov {
+      background: #FDE68A;
+      color: #92400E;
+      font-weight: 800;
+      border-bottom: 2px solid #D97706;
+    }
+
+    /* Быстрые микро-упражнения внутри теории (Quick Check) */
+    .quick-check {
+      background: #F8FAFC;
+      border: 1px dashed var(--kz-blue);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .qc-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .qc-question {
+      font-size: 0.86rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+    }
+
+    .qc-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .qc-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .qc-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background: var(--kz-blue-light);
+    }
+
+    .qc-btn.correct {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    .qc-btn.wrong {
+      background: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    .qc-feedback {
+      display: none;
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      line-height: 1.35;
+    }
+
+    /* Карточки словаря */
+    .vocab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+      gap: 10px;
+    }
+
+    .vocab-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .vocab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .vocab-word {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+    }
+
+    .speak-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 161, 222, 0.3);
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+    }
+
+    .vocab-trans {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .vocab-example {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--bg-main);
+      padding: 7px 9px;
+      border-radius: 8px;
+      line-height: 1.35;
+    }
+
+    /* Кнопка перехода к следующему разделу или тренажеру */
+    .action-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      border-radius: 16px;
+      padding: 13px 18px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    @media (max-width: 560px) {
+      .section-nav {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      header h1 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ШАПКА УРОКА -->
+  <header>
+    <div class="header-top">
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅ К списку уроков</a>
+      <div class="header-right-controls">
+        <span id="userTierBadge" class="tier-badge"></span>
+        <div class="lang-switch">
+          <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
+          <button class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
+        </div>
+      </div>
+    </div>
+    <div class="header-title-box">
+      <span class="lesson-badge">Lesson 10 • A1–B1 Medical English</span>
+      <h1 id="uiTitle">Prepositions of Place & Movement (Предлоги места и движения)</h1>
+      <p id="uiSubtitle">Как описывать анатомическую локализацию органов, иррадиацию боли и введение инструментов</p>
+    </div>
+  </header>
+
+  <!-- ИНДИКАТОР ПРОВЕРКИ ПОДПИСКИ -->
+  <div id="authLoader">🔄 Проверка подписки и доступа к конспекту...</div>
+
+  <!-- БЛОК PAYWALL (ПОКАЗЫВАЕТСЯ, ЕСЛИ НЕТ ТАРИФА ПРО / ПРЕМИУМ / ВИП) -->
+  <div id="paywallGate">
+    <div class="paywall-card">
+      <div class="pw-icon">🔒</div>
+      <span class="pw-badge" id="pwBadgeText">Доступно в тарифах ПРО / ПРЕМИУМ / ВИП</span>
+      <div class="pw-title" id="pwTitleText">Интерактивный конспект закрыт для вашего тарифа</div>
+      <p class="pw-desc" id="pwDescText">
+        Интерактивные конспекты с клиническим разбором статей, озвученным словарем и упражнениями открыты для подписок «Про», «Премиум» и «ВИП». Перейдите на страницу тарифов, чтобы подключить или повысить свой доступ:
+      </p>
+      <div class="pw-buttons">
+        <a href="https://kazdoctors.com/tarifs" class="pw-btn-primary" id="pwTarifsBtn">
+          🌟 Перейти к тарифам (kazdoctors.com/tarifs)
+        </a>
+        <a href="https://instagram.com/doctors.speak" target="_blank" class="pw-btn-secondary" id="pwContactBtn">
+          💬 Написать нам (@doctors.speak)
+        </a>
+        <a href="/login.html" class="pw-btn-secondary" id="pwLoginBtn" style="display:none;">
+          🔐 Войти в аккаунт
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ЗАЩИЩЕННЫЙ КОНТЕНТ УРОКА (ОТКРЫВАЕТСЯ ТОЛЬКО ДЛЯ PRO, PREMIUM, VIP) -->
+  <div id="lessonContentWrapper">
+    <!-- НАВИГАЦИЯ ПО ЭТАПАМ УРОКА -->
+    <nav class="section-nav">
+      <button class="nav-pill active" onclick="showTab(0)" id="nav0">1. Топография и Место</button>
+      <button class="nav-pill" onclick="showTab(1)" id="nav1">2. Движение и Статья</button>
+      <button class="nav-pill" onclick="showTab(2)" id="nav2">3. Словарь (14 слов)</button>
+      <button class="nav-pill" onclick="showTab(3)" id="nav3">4. Упражнения</button>
+    </nav>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main>
+      <!-- ВКЛАДКА 1: СТАТИКА VS ДИНАМИКА И АНАТОМИЧЕСКАЯ ТОПОГРАФИЯ -->
+      <section class="tab-section active" id="tab0"></section>
+
+      <!-- ВКЛАДКА 2: ВЕКТОРЫ ДВИЖЕНИЯ (THROUGH/ACROSS/ALONG), 34 ПРЕДЛОГА И СТАТЬЯ ПО ОФТАЛЬМОЛОГИИ -->
+      <section class="tab-section" id="tab1"></section>
+
+      <!-- ВКЛАДКА 3: СЛОВАРЬ С ПРИМЕРАМИ -->
+      <section class="tab-section" id="tab2">
+        <div class="card-block">
+          <h2 id="uiVocabTitle">💊 Клинический словарь урока (14 терминов)</h2>
+          <p id="uiVocabDesc">Нажмите 🔊, чтобы прослушать произношение. Обратите внимание на предлоги места и движения в каждом примере.</p>
+          <div class="vocab-grid" id="vocabGrid"></div>
+        </div>
+        <button class="action-btn" onclick="showTab(3)" id="uiToExBtn">Перейти к упражнениям урока ➔</button>
+      </section>
+
+      <!-- ВКЛАДКА 4: ПРАКТИКУМ (EXERCISE 1 & 2 ИЗ PDF) -->
+      <section class="tab-section" id="tab3">
+        <div class="card-block gold">
+          <h2 id="uiEx1Title">✍️ Упражнение 1: Выберите правильный предлог места или движения</h2>
+          <p id="uiEx1Desc">Определите: речь идет о локализации боли/органа (in / on / behind) или о направлении движения (into / to):</p>
+          <div id="ex1Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+
+        <div class="card-block">
+          <h2 id="uiEx2Title">🩺 Упражнение 2: Заполните пропуски в клинических ситуациях</h2>
+          <p id="uiEx2Desc">Вспомните предлоги поверхности (on), направления (to), снятия давления (from) и снижения симптомов (reduction in):</p>
+          <div id="ex2Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+
+        <a href="./prepositionsofplace/" class="action-btn" id="uiGoTrainerBtn">🎯 Запустить игровой тренажер по Уроку 10 ➔</a>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. ПРОВЕРКА ПОДПИСКИ SUPABASE (ДОСТУП ТОЛЬКО ДЛЯ PRO, PREMIUM, VIP)
+    // =========================================================================
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+    // Уровни подписок: конспект открывается только при уровне >= 2 (pro, premium, vip)
+    const TIER_LEVELS = {
+      none: 0,
+      free: 0,
+      standard: 1,
+      pro: 2,
+      premium: 3,
+      vip: 4
+    };
+
+    const TIER_LABELS = {
+      standard: { ru: "СТАНДАРТ", kz: "СТАНДАРТ" },
+      pro: { ru: "ТАРИФ: ПРО", kz: "ТАРИФ: ПРО" },
+      premium: { ru: "ТАРИФ: ПРЕМИУМ", kz: "ТАРИФ: ПРЕМИУМ" },
+      vip: { ru: "ТАРИФ: ВИП 👑", kz: "ТАРИФ: ВИП 👑" }
+    };
+
+    let currentViewerState = {
+      isLoggedIn: false,
+      hasActiveSub: false,
+      tier: "none"
+    };
+
+    async function verifySubscriptionAccess() {
+      if (!supabaseClient) {
+        showPaywallGate(false, "none");
+        return;
+      }
+
+      try {
+        const { data: sessionData, error: sessionErr } = await supabaseClient.auth.getSession();
+        if (sessionErr || !sessionData || !sessionData.session) {
+          currentViewerState = { isLoggedIn: false, hasActiveSub: false, tier: "none" };
+          showPaywallGate(false, "none");
+          return;
+        }
+
+        const user = sessionData.session.user;
+        const userEmail = (user.email || "").toLowerCase().trim();
+
+        // Ищем профиль сначала по ID, затем по Email
+        let { data: profile } = await supabaseClient
+          .from("profiles")
+          .select("id, email, tier, subscription_expires_at")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (!profile && userEmail) {
+          const resByEmail = await supabaseClient
+            .from("profiles")
+            .select("id, email, tier, subscription_expires_at")
+            .ilike("email", userEmail)
+            .maybeSingle();
+          profile = resByEmail.data;
+        }
+
+        if (!profile || !profile.subscription_expires_at) {
+          currentViewerState = { isLoggedIn: true, hasActiveSub: false, tier: "none" };
+          showPaywallGate(true, "none");
+          return;
+        }
+
+        const expiresAt = new Date(profile.subscription_expires_at);
+        const now = new Date();
+        const isSubActive = !isNaN(expiresAt.getTime()) && now <= expiresAt;
+
+        if (!isSubActive) {
+          currentViewerState = { isLoggedIn: true, hasActiveSub: false, tier: "expired" };
+          showPaywallGate(true, "expired");
+          return;
+        }
+
+        const userTier = (profile.tier || "standard").toLowerCase().trim();
+        const tierLevel = TIER_LEVELS[userTier] || 1;
+
+        currentViewerState = { isLoggedIn: true, hasActiveSub: true, tier: userTier };
+
+        // Если уровень тарифа >= 2 (pro, premium, vip) — открываем конспект!
+        if (tierLevel >= TIER_LEVELS.pro) {
+          unlockLessonContent(userTier);
+        } else {
+          // Если тариф standard (уровень 1) — показываем предложение перейти на страницу тарифов
+          showPaywallGate(true, "standard");
+        }
+      } catch (err) {
+        console.error("Subscription check error:", err);
+        showPaywallGate(false, "none");
+      }
+    }
+
+    function unlockLessonContent(tier) {
+      document.getElementById("authLoader").style.display = "none";
+      document.getElementById("paywallGate").style.display = "none";
+      document.getElementById("lessonContentWrapper").style.display = "flex";
+
+      const badge = document.getElementById("userTierBadge");
+      if (badge && TIER_LABELS[tier]) {
+        badge.textContent = TIER_LABELS[tier][currentLang];
+        badge.style.display = "inline-block";
+      }
+    }
+
+    function showPaywallGate(isLoggedIn, reasonTier) {
+      document.getElementById("authLoader").style.display = "none";
+      document.getElementById("lessonContentWrapper").style.display = "none";
+      document.getElementById("paywallGate").style.display = "block";
+      updatePaywallTexts(isLoggedIn, reasonTier);
+    }
+
+    function updatePaywallTexts(isLoggedIn, reasonTier) {
+      const isKz = (currentLang === "kz");
+      const badgeEl = document.getElementById("pwBadgeText");
+      const titleEl = document.getElementById("pwTitleText");
+      const descEl = document.getElementById("pwDescText");
+      const tarifsBtn = document.getElementById("pwTarifsBtn");
+      const contactBtn = document.getElementById("pwContactBtn");
+      const loginBtn = document.getElementById("pwLoginBtn");
+
+      badgeEl.textContent = isKz
+        ? "ПРО / ПРЕМИУМ / ВИП ТАРИФТЕРІНДЕ ҚОЛЖЕТІМДІ"
+        : "ДОСТУПНО В ТАРИФАХ ПРО / ПРЕМИУМ / ВИП";
+
+      tarifsBtn.textContent = isKz
+        ? "🌟 Тарифтер бетіне өту (kazdoctors.com/tarifs)"
+        : "🌟 Перейти к тарифам (kazdoctors.com/tarifs)";
+
+      contactBtn.textContent = isKz
+        ? "💬 Бізге жазу (@doctors.speak)"
+        : "💬 Написать нам (@doctors.speak)";
+
+      if (!isLoggedIn) {
+        titleEl.textContent = isKz
+          ? "Конспектіні ашу үшін аккаунтқа кіріңіз немесе жазылым таңдаңыз"
+          : "Войдите в аккаунт или подключите тариф для чтения конспекта";
+        descEl.textContent = isKz
+          ? "Бұл интерактивті конспект «Про», «Премиум» және «ВИП» жазылымдары бар дәрігерлерге арналған. Тарифтер бетінде өзіңізге ыңғайлы пакетті таңдай аласыз:"
+          : "Этот интерактивный конспект открыт для врачей с подпиской «Про», «Премиум» или «ВИП». Ознакомьтесь с вариантами доступа на странице тарифов:";
+        loginBtn.style.display = "inline-flex";
+        loginBtn.textContent = isKz ? "🔐 Аккаунтқа кіру" : "🔐 Уже есть подписка? Войти в аккаунт";
+      } else if (reasonTier === "standard") {
+        titleEl.textContent = isKz
+          ? "Сізде «Стандарт» тарифі белсенді (тек тренажерлер)"
+          : "У вас активен тариф «Стандарт» (только тренажеры)";
+        descEl.textContent = isKz
+          ? "Интерактивті конспектілер мен мақала талдауларын оқу үшін тарифіңізді «Про», «Премиум» немесе «ВИП» деңгейіне дейін жаңартуды ұсынамыз:"
+          : "Чтобы открывать интерактивные конспекты, разборы статей и грамматические справочники, обновите вашу подписку до тарифа «Про», «Премиум» или «ВИП» на странице тарифов:";
+        loginBtn.style.display = "none";
+      } else {
+        titleEl.textContent = isKz
+          ? "Жазылым мерзімі аяқталды немесе белсенді емес"
+          : "Ваша подписка не активна или истекла";
+        descEl.textContent = isKz
+          ? "Сабақ конспектілеріне қол жеткізу үшін «Про», «Премиум» немесе «ВИП» тарифін таңдаңыз:"
+          : "Для получения доступа к интерактивным конспектам выберите тариф «Про», «Премиум» или «ВИП» на странице тарифов:";
+        loginBtn.style.display = "none";
+      }
+    }
+
+    // =========================================================================
+    // 2. БАЗА ДАННЫХ УРОКА 10 (НА РУССКОМ И КАЗАХСКОМ ЯЗЫКАХ)
+    // =========================================================================
+    const LESSON10_DATA = {
+      ui: {
+        backBtn: { ru: "⬅ К списку уроков", kz: "⬅ Сабақтар тізіміне" },
+        title: {
+          ru: "Prepositions of Place & Movement (Предлоги места и движения)",
+          kz: "Prepositions of Place & Movement (Орын және бағыт предлогтары)"
+        },
+        subtitle: {
+          ru: "Формула: Объект A + предлог места/движения + Объект B (in, into, on, onto, under, behind, through, across, along)",
+          kz: "Формула: Нысан A + орын/бағыт предлогы + Нысан B (in, into, on, onto, under, behind, through, across, along)"
+        },
+        nav: [
+          { ru: "1. Топография и Место", kz: "1. Топография мен Орын" },
+          { ru: "2. Движение и Статья", kz: "2. Қозғалыс және Мақала" },
+          { ru: "3. Словарь (14 слов)", kz: "3. Сөздік (14 сөз)" },
+          { ru: "4. Упражнения", kz: "4. Жаттығулар" }
+        ],
+        vocabTitle: {
+          ru: "💊 Клинический словарь урока (14 терминов)",
+          kz: "💊 Сабақтың клиникалық сөздігі (14 термин)"
+        },
+        vocabDesc: {
+          ru: "Нажмите 🔊 для прослушивания произношения. Изучите, как каждый термин работает в связке с предлогами места и движения.",
+          kz: "Дұрыс айтылуын тыңдау үшін 🔊 басыңыз. Әр терминнің орын және бағыт предлогтарымен қалай қолданылатынына назар аударыңыз."
+        },
+        toExBtn: {
+          ru: "Перейти к шагу 4: Быстрые упражнения ➔",
+          kz: "4-қадамға өту: Жылдам жаттығулар ➔"
+        },
+        ex1Title: {
+          ru: "✍️ Упражнение 1: Выберите правильный предлог места или движения",
+          kz: "✍️ 1-жаттығу: Орын немесе бағыттың дұрыс предлогын таңдаңыз"
+        },
+        ex1Desc: {
+          ru: "Определите по глаголу: это статичное положение органа/симптома (in / on / behind) или движение (into / to):",
+          kz: "Етістікке қарап анықтаңыз: бұл ағзаның/симптомның орналасуы ма (in / on / behind), әлде қозғалыс па (into / to):"
+        },
+        ex2Title: {
+          ru: "🩺 Упражнение 2: Заполните пропуски подходящим предлогом",
+          kz: "🩺 2-жаттығу: Бос орындарға сәйкес предлогты қойыңыз"
+        },
+        ex2Desc: {
+          ru: "Выберите предлог по клиническому смыслу предложения:",
+          kz: "Сөйлемнің клиникалық мағынасына қарай предлогты таңдаңыз:"
+        },
+        goTrainerBtn: {
+          ru: "🎯 Перейти к основному тренажеру Урока 10 ➔",
+          kz: "🎯 10-сабақтың негізгі тренажеріне өту ➔"
+        }
+      },
+
+      // ВКЛАДКА 1: СТАТИКА VS ДИНАМИКА И АНАТОМИЧЕСКАЯ ТОПОГРАФИЯ
+      tab0Html: {
+        ru: `
+          <div class="card-block">
+            <h2>📍 Главное различие: «ГДЕ находится?» (Статика) vs «КУДА движется?» (Динамика)</h2>
+            <p>В русском языке предлог <b>«В»</b> отвечает сразу на два вопроса: <i>«Где? В вене»</i> и <i>«Куда? В вену»</i>. Точно так же предлог <b>«НА»</b> используется и для <i>«Где? На лодыжке»</i>, и для <i>«Куда? На лодыжку»</i>. В английском языке для покоя и для движения внутрь/на поверхность используются <b>разные предлоги</b>:</p>
+
+            <div class="prep-grid">
+              <div class="prep-card c1">
+                <div class="prep-title">
+                  <span>📦 ВНУТРИ: IN / INSIDE / WITHIN</span>
+                  <span>Где?</span>
+                </div>
+                <span class="comp-formula">Покой внутри полости или границ</span>
+                <p style="font-size:0.79rem;"><b>in</b> (внутри органа/отделения), <b>inside</b> (внутри замкнутой полости), <b>within</b> (в пределах анатомических границ):</p>
+                <div class="clinical-quote">
+                  • <b>"There is fluid <u>in</u> the lungs."</b><br>
+                  • <b>"Bleeding <u>inside</u> the abdominal cavity."</b><br>
+                  • <b>"Localized <u>within</u> the scleral boundaries."</b>
+                </div>
+              </div>
+
+              <div class="prep-card c2">
+                <div class="prep-title">
+                  <span>💉 ВНУТРЬ: INTO</span>
+                  <span>Куда?</span>
+                </div>
+                <span class="comp-formula">Движение снаружи -> внутрь</span>
+                <p style="font-size:0.79rem;">Используется при инъекциях в сосуд/полость и при входе врача/пациента в палату или кабинет:</p>
+                <div class="clinical-quote">
+                  • <b>"The needle was inserted <u>into</u> the vein."</b><br>
+                  • <b>"The nurse walked <u>into</u> the medical ward."</b><br>
+                  • <b>"Injections delivered <u>into</u> the vitreous cavity."</b>
+                </div>
+              </div>
+
+              <div class="prep-card c3">
+                <div class="prep-title">
+                  <span>🖐️ НА ПОВЕРХНОСТИ: ON vs ONTO / OFF</span>
+                  <span>Где / Куда?</span>
+                </div>
+                <span class="comp-formula">on (лежит на) • onto (кладем на) • off (упал с)</span>
+                <p style="font-size:0.79rem;"><b>on</b> — на коже/поверхности; <b>onto</b> — движение на поверхность; <b>off</b> — падение с поверхности:</p>
+                <div class="clinical-quote">
+                  • <b>"The scar is <u>on</u> the patient's lower back."</b><br>
+                  • <b>"Placed the ice pack <u>onto</u> the swollen ankle."</b><br>
+                  • <b>"He fell <u>off</u> the examination table."</b>
+                </div>
+              </div>
+
+              <div class="prep-card c4">
+                <div class="prep-title">
+                  <span>🏥 УЧРЕЖДЕНИЕ И ТОЧКА: AT</span>
+                  <span>Где?</span>
+                </div>
+                <span class="comp-formula">at + клиника / центр / точка осмотра</span>
+                <p style="font-size:0.79rem;">Используется, когда мы говорим о больнице/клинике как об учреждении или о конкретной точке:</p>
+                <div class="clinical-quote">
+                  • <b>"She is being treated <u>at</u> the cardiology clinic."</b><br>
+                  • <b>"Treated <u>at</u> three ophthalmology centers."</b>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>🩻 Анатомическая топография: как описать расположение органов и боли</h2>
+            <p>На физикальном осмотре, УЗИ и КТ врач описывает положение патологии относительно соседних анатомических структур:</p>
+
+            <div class="prep-grid">
+              <div class="prep-card c1">
+                <div class="prep-title">
+                  <span>⬆️ Над / Выше: OVER vs ABOVE</span>
+                </div>
+                <p style="font-size:0.78rem;"><b>over</b> — прямо поверх раны (накрывая её); <b>above</b> — выше по уровню:</p>
+                <div class="clinical-quote">
+                  • <b>"Apply the bandage <u>over</u> the wound."</b><br>
+                  • <b>"There's bruising <u>above</u> the knee."</b>
+                </div>
+              </div>
+
+              <div class="prep-card c2">
+                <div class="prep-title">
+                  <span>⬇️ Под / Ниже: UNDER vs BELOW</span>
+                </div>
+                <p style="font-size:0.78rem;"><b>under / beneath</b> — непосредственно под органом/рукой; <b>below</b> — ниже уровня:</p>
+                <div class="clinical-quote">
+                  • <b>"He has a rash <u>under</u> his arm."</b><br>
+                  • <b>"The cut is just <u>below</u> the collarbone."</b>
+                </div>
+              </div>
+
+              <div class="prep-card c3">
+                <div class="prep-title">
+                  <span>🔄 Спереди / Сзади / Вокруг</span>
+                </div>
+                <p style="font-size:0.78rem;"><b>behind</b> (позади/за), <b>in front of</b> (перед), <b>around</b> (вокруг):</p>
+                <div class="clinical-quote">
+                  • <b>"The pancreas lies <u>behind</u> the stomach."</b><br>
+                  • <b>"The monitor is <u>in front of</u> the patient."</b><br>
+                  • <b>"Pain started <u>around</u> the umbilicus."</b>
+                </div>
+              </div>
+
+              <div class="prep-card c4">
+                <div class="prep-title">
+                  <span>↔️ Рядом и Между: BETWEEN vs AMONG</span>
+                </div>
+                <p style="font-size:0.78rem;"><b>next to / by / near / close to</b> (рядом); <b>between</b> (между двумя/ребрами); <b>among</b> (среди многих):</p>
+                <div class="clinical-quote">
+                  • <b>"Tenderness <u>between</u> the ribs."</b><br>
+                  • <b>"Most notable <u>among</u> patients..."</b><br>
+                  • <b>"Tumor is <u>close to</u> the spinal cord."</b>
+                </div>
+              </div>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Быстрая проверка</span>
+              <div class="qc-question">Анатомический вопрос: «Поджелудочная железа лежит ПОЗАДИ желудка и трудна для пальпации» — "The pancreas lies ___ the stomach and is difficult to palpate."</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Верно! Behind означает «позади / за» анатомической структурой.')">behind</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'In front of означает «перед желудком», а поджелудочная железа расположена ретрогастрально (позади желудка — behind).')">in front of</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Between означает «между» (требует двух объектов).')">between</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">Перейти к шагу 2: Предлоги движения и Офтальмологическая статья ➔</button>
+        `,
+        kz: `
+          <div class="card-block">
+            <h2>📍 Басты айырмашылық: «ҚАЙДА орналасқан?» (Статика) және «ҚАЙДА бағытталған?» (Динамика)</h2>
+            <p>Ағылшын тілінде заттың тыныштықта тұрған орнын (<i>Қайда?</i>) және қозғалыс бағытын (<i>Қайда қарай?</i>) білдіру үшін <b>әртүрлі предлогтар</b> қолданылады:</p>
+
+            <div class="prep-grid">
+              <div class="prep-card c1">
+                <div class="prep-title">
+                  <span>📦 ІШІНДЕ: IN / INSIDE / WITHIN</span>
+                  <span>Қайда?</span>
+                </div>
+                <span class="comp-formula">Қуыс немесе шекара ішіндегі қалып</span>
+                <p style="font-size:0.79rem;"><b>in</b> (ағза/бөлімше ішінде), <b>inside</b> (жабық қуыс ішінде), <b>within</b> (анатомиялық шекара шегінде):</p>
+                <div class="clinical-quote">
+                  • <b>"There is fluid <u>in</u> the lungs."</b><br>
+                  • <b>"Bleeding <u>inside</u> the abdominal cavity."</b><br>
+                  • <b>"Localized <u>within</u> the scleral boundaries."</b>
+                </div>
+              </div>
+
+              <div class="prep-card c2">
+                <div class="prep-title">
+                  <span>💉 ІШІНЕ ҚАРАЙ: INTO</span>
+                  <span>Қайда?</span>
+                </div>
+                <span class="comp-formula">Сырттан -> ішке қарай қозғалыс</span>
+                <p style="font-size:0.79rem;">Инені тамырға/қуысқа енгізгенде және палатаға/бөлмеге кіргенде қолданылады:</p>
+                <div class="clinical-quote">
+                  • <b>"The needle was inserted <u>into</u> the vein."</b><br>
+                  • <b>"The nurse walked <u>into</u> the medical ward."</b><br>
+                  • <b>"Injections delivered <u>into</u> the vitreous cavity."</b>
+                </div>
+              </div>
+
+              <div class="prep-card c3">
+                <div class="prep-title">
+                  <span>🖐️ БЕТІНДЕ: ON vs ONTO / OFF</span>
+                  <span>Қайда?</span>
+                </div>
+                <span class="comp-formula">on (үстінде) • onto (үстіне қою) • off (құлау)</span>
+                <p style="font-size:0.79rem;"><b>on</b> — тері/беткей үстінде; <b>onto</b> — үстіне қарай қою; <b>off</b> — үстінен құлап кету:</p>
+                <div class="clinical-quote">
+                  • <b>"The scar is <u>on</u> the patient's lower back."</b><br>
+                  • <b>"Placed the ice pack <u>onto</u> the swollen ankle."</b><br>
+                  • <b>"He fell <u>off</u> the examination table."</b>
+                </div>
+              </div>
+
+              <div class="prep-card c4">
+                <div class="prep-title">
+                  <span>🏥 МЕКЕМЕ МЕН НҮКТЕ: AT</span>
+                  <span>Қайда?</span>
+                </div>
+                <span class="comp-formula">at + клиника / орталық / нүкте</span>
+                <p style="font-size:0.79rem;">Аурухана немесе медициналық орталық туралы жалпы мекеме ретінде айтқанда:</p>
+                <div class="clinical-quote">
+                  • <b>"She is being treated <u>at</u> the cardiology clinic."</b><br>
+                  • <b>"Treated <u>at</u> three ophthalmology centers."</b>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>🩻 Анатомиялық топография: ағзалар мен ауырсыну орнын сипаттау</h2>
+            <p>Физикалық тексеру, УДЗ және КТ кезінде патологияның көршілес анатомиялық құрылымдарға қатысты орналасуын сипаттау:</p>
+
+            <div class="prep-grid">
+              <div class="prep-card c1">
+                <div class="prep-title">
+                  <span>⬆️ Үстінде / Жоғары: OVER vs ABOVE</span>
+                </div>
+                <p style="font-size:0.78rem;"><b>over</b> — жараның дәл үстіне (жауып тұру); <b>above</b> — деңгейі бойынша жоғарырақ:</p>
+                <div class="clinical-quote">
+                  • <b>"Apply the bandage <u>over</u> the wound."</b><br>
+                  • <b>"There's bruising <u>above</u> the knee."</b>
+                </div>
+              </div>
+
+              <div class="prep-card c2">
+                <div class="prep-title">
+                  <span>⬇️ Астында / Төмен: UNDER vs BELOW</span>
+                </div>
+                <p style="font-size:0.78rem;"><b>under / beneath</b> — тікелей астында (қолтық/қабырға астында); <b>below</b> — деңгейінен төмен:</p>
+                <div class="clinical-quote">
+                  • <b>"He has a rash <u>under</u> his arm."</b><br>
+                  • <b>"The cut is just <u>below</u> the collarbone."</b>
+                </div>
+              </div>
+
+              <div class="prep-card c3">
+                <div class="prep-title">
+                  <span>🔄 Алдында / Артында / Айналасында</span>
+                </div>
+                <p style="font-size:0.78rem;"><b>behind</b> (артында), <b>in front of</b> (алдында), <b>around</b> (айналасында):</p>
+                <div class="clinical-quote">
+                  • <b>"The pancreas lies <u>behind</u> the stomach."</b><br>
+                  • <b>"The monitor is <u>in front of</u> the patient."</b><br>
+                  • <b>"Pain started <u>around</u> the umbilicus."</b>
+                </div>
+              </div>
+
+              <div class="prep-card c4">
+                <div class="prep-title">
+                  <span>↔️ Жанында және Арасында: BETWEEN vs AMONG</span>
+                </div>
+                <p style="font-size:0.78rem;"><b>next to / by / near / close to</b> (жанында); <b>between</b> (екі құрылым арасында); <b>among</b> (көпшілік арасында):</p>
+                <div class="clinical-quote">
+                  • <b>"Tenderness <u>between</u> the ribs."</b><br>
+                  • <b>"Most notable <u>among</u> patients..."</b><br>
+                  • <b>"Tumor is <u>close to</u> the spinal cord."</b>
+                </div>
+              </div>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Жылдам тексеру</span>
+              <div class="qc-question">Анатомиялық сұрақ: «Ұйқы безі асқазанның АРТЫНДА орналасқан және пальпациялауға қиын» — "The pancreas lies ___ the stomach and is difficult to palpate."</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Дұрыс! Behind «артында» деген анатомиялық орналасуды білдіреді.')">behind</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'In front of «алдында» дегенді білдіреді, ал ұйқы безі асқазанның артында (behind) жатады.')">in front of</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Between «екі заттың арасында» дегенді білдіреді.')">between</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">2-қадамға өту: Қозғалыс предлогтары және Офтальмологиялық мақала ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 2: ВЕКТОРЫ ДВИЖЕНИЯ (THROUGH/ACROSS/ALONG/PAST), 34 ПРЕДЛОГА И СТАТЬЯ ПО ОФТАЛЬМОЛОГИИ
+      tab1Html: {
+        ru: `
+          <div class="card-block gold">
+            <h2>🧭 Векторы движения: как описать иррадиацию боли и проведение катетера</h2>
+            <p>Четыре предлога движения — <b>through, across, along, past</b> — часто путают при описании операций и жалоб пациента. Посмотрите на их точную механику:</p>
+
+            <div class="prep-grid">
+              <div class="prep-card c1">
+                <div class="prep-title">
+                  <span>1. THROUGH (Сквозь / Через просвет)</span>
+                </div>
+                <p style="font-size:0.78rem;">Движение <b>сквозь трехмерную структуру</b>, ткань или внутри просвета сосуда:</p>
+                <div class="clinical-quote">
+                  • <b>"Inserted the catheter <u>through</u> the artery."</b><br>
+                  • <b>"Injected <u>through</u> the pars plana."</b>
+                </div>
+              </div>
+
+              <div class="prep-card c2">
+                <div class="prep-title">
+                  <span>2. ACROSS (Поперек / По всей области)</span>
+                </div>
+                <p style="font-size:0.78rem;">Распространение от одной стороны к другой <b>по поверхности или области</b>:</p>
+                <div class="clinical-quote">
+                  • <b>"The redness spread <u>across</u> the chest."</b><br>
+                  • <b>"Distributed <u>across</u> the posterior segment."</b>
+                </div>
+              </div>
+
+              <div class="prep-card c3">
+                <div class="prep-title">
+                  <span>3. ALONG (Вдоль линии / слоя)</span>
+                </div>
+                <p style="font-size:0.78rem;">Движение или расположение <b>вдоль</b> нерва, конечности или ретинального слоя:</p>
+                <div class="clinical-quote">
+                  • <b>"There is numbness <u>along</u> the right arm."</b><br>
+                  • <b>"Thinning <u>along</u> the outer retinal layers."</b>
+                </div>
+              </div>
+
+              <div class="prep-card c4">
+                <div class="prep-title">
+                  <span>4. PAST (Мимо) & FROM ... TO / TOWARD</span>
+                </div>
+                <p style="font-size:0.78rem;"><b>past</b> — пройти мимо; <b>from ... to / toward</b> — от точки А по направлению к точке Б:</p>
+                <div class="clinical-quote">
+                  • <b>"The needle went <u>past</u> the vein."</b> <i>(мимо вены)</i><br>
+                  • <b>"Pain spread <u>from</u> the shoulder <u>to</u> the neck."</b>
+                </div>
+              </div>
+            </div>
+
+            <div class="clinical-quote" style="border-left-color: var(--kz-blue); margin-top: 12px;">
+              📌 <b>3 важные клинические связки для тестов + Нюанс Beside / Besides:</b><br>
+              1. <b>refer TO</b> (направить к врачу): <i>The patient was referred <b>to</b> the cardiologist.</i><br>
+              2. <b>reduction IN</b> (снижение в симптомах/отеке): <i>A reduction <b>in</b> symptoms was seen.</i><br>
+              3. <b>relieve pressure FROM</b> (снять давление с/из): <i>Medication was given to relieve pressure <b>from</b> the chest.</i><br>
+              4. Не путайте: <b>beside</b> (без -s) = <i>рядом с кроватью</i>, а <b>besides</b> (с -s) = <i>помимо / кроме</i> (<i><b>Besides</b> fatigue, the patient complained of dizziness</i>).
+            </div>
+
+            <details class="tenses-spoiler">
+              <summary>📚 Открыть полный справочник всех 34 предлогов урока с примерами</summary>
+              <table class="grammar-table" style="margin-top:8px;">
+                <thead>
+                  <tr><th>№</th><th>Предлог</th><th>Перевод</th><th>Клинический пример</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td><b>In</b></td><td>В (внутри)</td><td>There is fluid <b>in</b> the lungs.</td></tr>
+                  <tr><td>2</td><td><b>On</b></td><td>На (поверхности)</td><td>The scar is located <b>on</b> the patient's lower back.</td></tr>
+                  <tr><td>3</td><td><b>At</b></td><td>В (учреждении / точке)</td><td>She is being treated <b>at</b> the cardiology clinic.</td></tr>
+                  <tr><td>4</td><td><b>From</b></td><td>От / Из</td><td>The pain started <b>from</b> the shoulder.</td></tr>
+                  <tr><td>5</td><td><b>To</b></td><td>К / В (направление)</td><td>The patient was transferred <b>to</b> the ICU.</td></tr>
+                  <tr><td>6</td><td><b>By</b></td><td>Рядом с / У</td><td>The nurse stood <b>by</b> the bed during the examination.</td></tr>
+                  <tr><td>7</td><td><b>Next to</b></td><td>Рядом / Бок о бок</td><td>There's a swelling <b>next to</b> the incision site.</td></tr>
+                  <tr><td>8</td><td><b>Near</b></td><td>Поблизости / Около</td><td>The lymph node <b>near</b> the ear is enlarged.</td></tr>
+                  <tr><td>9</td><td><b>Close (to)</b></td><td>Близко к</td><td>The tumor is <b>close to</b> the spinal cord.</td></tr>
+                  <tr><td>10</td><td><b>Under</b></td><td>Под</td><td>He has a rash <b>under</b> his arm.</td></tr>
+                  <tr><td>11</td><td><b>Over</b></td><td>Над / Поверх</td><td>Apply the bandage <b>over</b> the wound.</td></tr>
+                  <tr><td>12</td><td><b>Between</b></td><td>Между (двумя)</td><td>There is tenderness <b>between</b> the ribs.</td></tr>
+                  <tr><td>13</td><td><b>Behind</b></td><td>Позади / За</td><td>The pain is located <b>behind</b> the left eye.</td></tr>
+                  <tr><td>14</td><td><b>In front of</b></td><td>Перед</td><td>The monitor is placed <b>in front of</b> the patient.</td></tr>
+                  <tr><td>15</td><td><b>Inside</b></td><td>Внутри (полости)</td><td>There is bleeding <b>inside</b> the abdominal cavity.</td></tr>
+                  <tr><td>16</td><td><b>Outside</b></td><td>Снаружи / Вне</td><td>The injury is <b>outside</b> the joint capsule.</td></tr>
+                  <tr><td>17</td><td><b>Above</b></td><td>Выше (уровня)</td><td>There's bruising <b>above</b> the knee.</td></tr>
+                  <tr><td>18</td><td><b>Below</b></td><td>Ниже (уровня)</td><td>The cut is just <b>below</b> the collarbone.</td></tr>
+                  <tr><td>19</td><td><b>Among</b></td><td>Среди (многих)</td><td>The medication was <b>among</b> the most effective.</td></tr>
+                  <tr><td>20</td><td><b>Across</b></td><td>Поперек / По всей</td><td>The redness spread <b>across</b> the chest.</td></tr>
+                  <tr><td>21</td><td><b>Along</b></td><td>Вдоль</td><td>There is numbness <b>along</b> the right arm.</td></tr>
+                  <tr><td>22</td><td><b>Through</b></td><td>Через / Сквозь</td><td>The surgeon inserted the catheter <b>through</b> the artery.</td></tr>
+                  <tr><td>23</td><td><b>Past</b></td><td>Мимо</td><td>She walked <b>past</b> the nurses' station.</td></tr>
+                  <tr><td>24</td><td><b>Besides</b></td><td>Помимо / Кроме (Рядом — beside)</td><td><b>Besides</b> fatigue, the patient complained of dizziness.</td></tr>
+                  <tr><td>25</td><td><b>Into</b></td><td>Внутрь (движение)</td><td>The needle was inserted <b>into</b> the vein.</td></tr>
+                  <tr><td>26</td><td><b>Away from</b></td><td>Вдаль от / Прочь от</td><td>Keep the injured limb <b>away from</b> cold air.</td></tr>
+                  <tr><td>27</td><td><b>Down</b></td><td>Вниз по</td><td>The pain moved <b>down</b> the left leg.</td></tr>
+                  <tr><td>28</td><td><b>Up</b></td><td>Вверх по</td><td>The rash extended <b>up</b> the spine.</td></tr>
+                  <tr><td>29</td><td><b>Off</b></td><td>С (поверхности) / Прочь</td><td>He fell <b>off</b> the examination table.</td></tr>
+                  <tr><td>30</td><td><b>Onto</b></td><td>На (поверхность — движение)</td><td>Placed the ice pack <b>onto</b> the swollen ankle.</td></tr>
+                  <tr><td>31</td><td><b>Toward</b></td><td>По направлению к</td><td>The patient leaned <b>toward</b> the doctor.</td></tr>
+                  <tr><td>32</td><td><b>In the direction of</b></td><td>В направлении</td><td>She pointed <b>in the direction of</b> the discomfort.</td></tr>
+                  <tr><td>33</td><td><b>Within</b></td><td>В пределах / Внутри</td><td>The pain was <b>within</b> the chest.</td></tr>
+                  <tr><td>34</td><td><b>Around</b></td><td>Вокруг</td><td>The pain started <b>around</b> the umbilicus.</td></tr>
+                </tbody>
+              </table>
+            </details>
+          </div>
+
+          <div class="card-block">
+            <h2>👁️ Практика чтения статьи: Ophthalmology Abstract (Retinal Degeneration)</h2>
+            <p>Прочитайте научный абстракт по офтальмологии об интравитреальных инъекциях в стекловидное тело. Нажимайте на кнопки подсветки, чтобы увидеть, как авторы описывают <b>анатомическую локализацию</b> и <b>пути доставки/миграции препарата</b>:</p>
+
+            <div class="abstract-box">
+              <div class="abstract-header">
+                <span>📄 Sample Abstract: Intravitreal Injections & Retinal Degeneration</span>
+                <div class="abstract-controls">
+                  <button class="hl-btn place-type" onclick="toggleAbstractHighlight('place')">Локализация (within / at / beneath / around / behind / near / among)</button>
+                  <button class="hl-btn move-type" onclick="toggleAbstractHighlight('move')">Движение и Доставка (into / from / along / through / across / toward / to)</button>
+                  <button class="hl-btn reset" onclick="toggleAbstractHighlight('all')">Показать все</button>
+                </div>
+              </div>
+              <div class="abstract-body show-place show-move" id="abstractBodyText">
+                This study investigates the progression of retinal degeneration <span class="p-loc">within</span> the macular region and evaluates the efficacy of intravitreal injections delivered <span class="p-mov">into</span> the vitreous cavity. Data were collected <span class="p-mov">from</span> 120 patients treated <span class="p-loc">at</span> three tertiary ophthalmology centers. Fundus imaging revealed a marked thinning <span class="p-mov">along</span> the outer retinal layers, particularly <span class="p-loc">beneath</span> the fovea and <span class="p-loc">around</span> the optic disc. Visual acuity measurements showed significant decline <span class="p-loc">in</span> patients with fluid accumulation <span class="p-loc">behind</span> the retina.<br><br>
+                Therapeutic agents were injected <span class="p-mov">through</span> the pars plana and distributed <span class="p-mov">across</span> the posterior segment. Anti-VEGF therapy appeared to migrate <span class="p-mov">toward</span> ischemic regions <i>adjacent to</i> areas of neovascularization. Inflammation was observed <span class="p-loc">near</span> the injection site but remained localized <span class="p-loc">within</span> the scleral boundaries. Improvements <span class="p-loc">in</span> central vision were most notable <span class="p-loc">among</span> patients receiving combination therapy administered over the course of three months.<br><br>
+                Our findings suggest that targeted delivery <span class="p-mov">to</span> specific retinal zones and precise tracking of drug diffusion <span class="p-mov">throughout</span> the ocular structures can enhance treatment outcomes <span class="p-loc">in</span> patients with advanced retinal diseases.
+              </div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">Перейти к шагу 3: Словарь урока (14 слов) ➔</button>
+        `,
+        kz: `
+          <div class="card-block gold">
+            <h2>🧭 Қозғалыс векторлары: ауырсынудың таралуын және катетер енгізуді сипаттау</h2>
+            <p>Қозғалысты білдіретін 4 предлогты — <b>through, across, along, past</b> — ота барысын немесе науқас шағымын сипаттағанда шатастырмау үшін олардың механикасына қараңыз:</p>
+
+            <div class="prep-grid">
+              <div class="prep-card c1">
+                <div class="prep-title">
+                  <span>1. THROUGH (Арқылы / Бойымен тесіп өту)</span>
+                </div>
+                <p style="font-size:0.78rem;">Тіннің <b>ішінен тесіп өту</b> немесе қантамыр саңылауының ішімен жүргізу:</p>
+                <div class="clinical-quote">
+                  • <b>"Inserted the catheter <u>through</u> the artery."</b><br>
+                  • <b>"Injected <u>through</u> the pars plana."</b>
+                </div>
+              </div>
+
+              <div class="prep-card c2">
+                <div class="prep-title">
+                  <span>2. ACROSS (Көлденең / Бүкіл беткейге)</span>
+                </div>
+                <p style="font-size:0.78rem;">Бір шетінен екінші шетіне <b>бүкіл аймаққа жайылу</b>:</p>
+                <div class="clinical-quote">
+                  • <b>"The redness spread <u>across</u> the chest."</b><br>
+                  • <b>"Distributed <u>across</u> the posterior segment."</b>
+                </div>
+              </div>
+
+              <div class="prep-card c3">
+                <div class="prep-title">
+                  <span>3. ALONG (Бойымен / Қабат бойымен)</span>
+                </div>
+                <p style="font-size:0.78rem;">Жүйке, қол-аяқ немесе торлы қабық қабатының <b>ұзына бойымен</b>:</p>
+                <div class="clinical-quote">
+                  • <b>"There is numbness <u>along</u> the right arm."</b><br>
+                  • <b>"Thinning <u>along</u> the outer retinal layers."</b>
+                </div>
+              </div>
+
+              <div class="prep-card c4">
+                <div class="prep-title">
+                  <span>4. PAST (Жанынан өтіп кету) & FROM ... TO</span>
+                </div>
+                <p style="font-size:0.78rem;"><b>past</b> — нысананың жанынан өтіп кету; <b>from ... to / toward</b> — А нүктесінен Б нүктесіне қарай:</p>
+                <div class="clinical-quote">
+                  • <b>"The needle went <u>past</u> the vein."</b> <i>(венаның жанынан өтіп кетті)</i><br>
+                  • <b>"Pain spread <u>from</u> the shoulder <u>to</u> the neck."</b>
+                </div>
+              </div>
+            </div>
+
+            <div class="clinical-quote" style="border-left-color: var(--kz-blue); margin-top: 12px;">
+              📌 <b>Тесттерге арналған 3 маңызды клиникалық тіркес + Beside / Besides айырмашылығы:</b><br>
+              1. <b>refer TO</b> (маманға жіберу): <i>The patient was referred <b>to</b> the cardiologist.</i><br>
+              2. <b>reduction IN</b> (симптомдардың/ісінудің азаюы): <i>A reduction <b>in</b> symptoms was seen.</i><br>
+              3. <b>relieve pressure FROM</b> (қысымды басу/кетіру): <i>Medication was given to relieve pressure <b>from</b> the chest.</i><br>
+              4. Шатастырмаңыз: <b>beside</b> (-s жалғауынсыз) = <i>жанында</i>, ал <b>besides</b> (-s жалғауымен) = <i>сонымен қатар / бұдан бөлек</i> (<i><b>Besides</b> fatigue, the patient complained of dizziness</i>).
+            </div>
+
+            <details class="tenses-spoiler">
+              <summary>📚 Сабақтағы барлық 34 предлогтың толық анықтамалығын ашу</summary>
+              <table class="grammar-table" style="margin-top:8px;">
+                <thead>
+                  <tr><th>№</th><th>Предлог</th><th>Аудармасы</th><th>Клиникалық мысал</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td><b>In</b></td><td>Ішінде</td><td>There is fluid <b>in</b> the lungs.</td></tr>
+                  <tr><td>2</td><td><b>On</b></td><td>Үстінде (бетінде)</td><td>The scar is located <b>on</b> the patient's lower back.</td></tr>
+                  <tr><td>3</td><td><b>At</b></td><td>Мекемеде / Нүктеде</td><td>She is being treated <b>at</b> the cardiology clinic.</td></tr>
+                  <tr><td>4</td><td><b>From</b></td><td>-дан/-ден (бастап)</td><td>The pain started <b>from</b> the shoulder.</td></tr>
+                  <tr><td>5</td><td><b>To</b></td><td>-ға/-ге (бағыт)</td><td>The patient was transferred <b>to</b> the ICU.</td></tr>
+                  <tr><td>6</td><td><b>By</b></td><td>Жанында / Қасында</td><td>The nurse stood <b>by</b> the bed during the examination.</td></tr>
+                  <tr><td>7</td><td><b>Next to</b></td><td>Дәл қасында / Іргелес</td><td>There's a swelling <b>next to</b> the incision site.</td></tr>
+                  <tr><td>8</td><td><b>Near</b></td><td>Жақын маңда</td><td>The lymph node <b>near</b> the ear is enlarged.</td></tr>
+                  <tr><td>9</td><td><b>Close (to)</b></td><td>Өте жақын</td><td>The tumor is <b>close to</b> the spinal cord.</td></tr>
+                  <tr><td>10</td><td><b>Under</b></td><td>Астында</td><td>He has a rash <b>under</b> his arm.</td></tr>
+                  <tr><td>11</td><td><b>Over</b></td><td>Үстіне / Үстінде</td><td>Apply the bandage <b>over</b> the wound.</td></tr>
+                  <tr><td>12</td><td><b>Between</b></td><td>Арасында (екі заттың)</td><td>There is tenderness <b>between</b> the ribs.</td></tr>
+                  <tr><td>13</td><td><b>Behind</b></td><td>Артында</td><td>The pain is located <b>behind</b> the left eye.</td></tr>
+                  <tr><td>14</td><td><b>In front of</b></td><td>Алдында</td><td>The monitor is placed <b>in front of</b> the patient.</td></tr>
+                  <tr><td>15</td><td><b>Inside</b></td><td>Ішінде (қуыста)</td><td>There is bleeding <b>inside</b> the abdominal cavity.</td></tr>
+                  <tr><td>16</td><td><b>Outside</b></td><td>Сыртында</td><td>The injury is <b>outside</b> the joint capsule.</td></tr>
+                  <tr><td>17</td><td><b>Above</b></td><td>Жоғары (деңгейден)</td><td>There's bruising <b>above</b> the knee.</td></tr>
+                  <tr><td>18</td><td><b>Below</b></td><td>Төмен (деңгейден)</td><td>The cut is just <b>below</b> the collarbone.</td></tr>
+                  <tr><td>19</td><td><b>Among</b></td><td>Арасында (көпшіліктің)</td><td>The medication was <b>among</b> the most effective.</td></tr>
+                  <tr><td>20</td><td><b>Across</b></td><td>Көлденең / Бүкіл беткейге</td><td>The redness spread <b>across</b> the chest.</td></tr>
+                  <tr><td>21</td><td><b>Along</b></td><td>Ұзына бойымен</td><td>There is numbness <b>along</b> the right arm.</td></tr>
+                  <tr><td>22</td><td><b>Through</b></td><td>Арқылы / Ішімен</td><td>The surgeon inserted the catheter <b>through</b> the artery.</td></tr>
+                  <tr><td>23</td><td><b>Past</b></td><td>Жанынан өтіп</td><td>She walked <b>past</b> the nurses' station.</td></tr>
+                  <tr><td>24</td><td><b>Besides</b></td><td>Бұдан бөлек (Жанында — beside)</td><td><b>Besides</b> fatigue, the patient complained of dizziness.</td></tr>
+                  <tr><td>25</td><td><b>Into</b></td><td>Ішіне қарай (қозғалыс)</td><td>The needle was inserted <b>into</b> the vein.</td></tr>
+                  <tr><td>26</td><td><b>Away from</b></td><td>Аулақ / Алыс</td><td>Keep the injured limb <b>away from</b> cold air.</td></tr>
+                  <tr><td>27</td><td><b>Down</b></td><td>Төмен қарай</td><td>The pain moved <b>down</b> the left leg.</td></tr>
+                  <tr><td>28</td><td><b>Up</b></td><td>Жоғары қарай</td><td>The rash extended <b>up</b> the spine.</td></tr>
+                  <tr><td>29</td><td><b>Off</b></td><td>Үстінен (құлау/кету)</td><td>He fell <b>off</b> the examination table.</td></tr>
+                  <tr><td>30</td><td><b>Onto</b></td><td>Үстіне қарай (қозғалыс)</td><td>Placed the ice pack <b>onto</b> the swollen ankle.</td></tr>
+                  <tr><td>31</td><td><b>Toward</b></td><td>Бағытында / Қарай</td><td>The patient leaned <b>toward</b> the doctor.</td></tr>
+                  <tr><td>32</td><td><b>In the direction of</b></td><td>Бағытына қарай</td><td>She pointed <b>in the direction of</b> the discomfort.</td></tr>
+                  <tr><td>33</td><td><b>Within</b></td><td>Шегінде / Ішінде</td><td>The pain was <b>within</b> the chest.</td></tr>
+                  <tr><td>34</td><td><b>Around</b></td><td>Айналасында</td><td>The pain started <b>around</b> the umbilicus.</td></tr>
+                </tbody>
+              </table>
+            </details>
+          </div>
+
+          <div class="card-block">
+            <h2>👁️ Ғылыми мақаланы талдау: Ophthalmology Abstract (Retinal Degeneration)</h2>
+            <p>Шыны тәрізді денеге жасалатын интравитреальды инъекциялар туралы офтальмологиялық абстрактіні оқыңыз. Авторлардың <b>анатомиялық орналасуды</b> және <b>препараттың енгізілу/таралу бағытын</b> қалай сипаттағанын көру үшін батырмаларды басыңыз:</p>
+
+            <div class="abstract-box">
+              <div class="abstract-header">
+                <span>📄 Sample Abstract: Intravitreal Injections & Retinal Degeneration</span>
+                <div class="abstract-controls">
+                  <button class="hl-btn place-type" onclick="toggleAbstractHighlight('place')">Орналасуы (within / at / beneath / around / behind / near / among)</button>
+                  <button class="hl-btn move-type" onclick="toggleAbstractHighlight('move')">Қозғалыс пен Енгізу (into / from / along / through / across / toward / to)</button>
+                  <button class="hl-btn reset" onclick="toggleAbstractHighlight('all')">Барлығын көрсету</button>
+                </div>
+              </div>
+              <div class="abstract-body show-place show-move" id="abstractBodyText">
+                This study investigates the progression of retinal degeneration <span class="p-loc">within</span> the macular region and evaluates the efficacy of intravitreal injections delivered <span class="p-mov">into</span> the vitreous cavity. Data were collected <span class="p-mov">from</span> 120 patients treated <span class="p-loc">at</span> three tertiary ophthalmology centers. Fundus imaging revealed a marked thinning <span class="p-mov">along</span> the outer retinal layers, particularly <span class="p-loc">beneath</span> the fovea and <span class="p-loc">around</span> the optic disc. Visual acuity measurements showed significant decline <span class="p-loc">in</span> patients with fluid accumulation <span class="p-loc">behind</span> the retina.<br><br>
+                Therapeutic agents were injected <span class="p-mov">through</span> the pars plana and distributed <span class="p-mov">across</span> the posterior segment. Anti-VEGF therapy appeared to migrate <span class="p-mov">toward</span> ischemic regions <i>adjacent to</i> areas of neovascularization. Inflammation was observed <span class="p-loc">near</span> the injection site but remained localized <span class="p-loc">within</span> the scleral boundaries. Improvements <span class="p-loc">in</span> central vision were most notable <span class="p-loc">among</span> patients receiving combination therapy administered over the course of three months.<br><br>
+                Our findings suggest that targeted delivery <span class="p-mov">to</span> specific retinal zones and precise tracking of drug diffusion <span class="p-mov">throughout</span> the ocular structures can enhance treatment outcomes <span class="p-loc">in</span> patients with advanced retinal diseases.
+              </div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">3-қадамға өту: Сабақ сөздігі (14 сөз) ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 3: СЛОВАРЬ (14 ТЕРМИНОВ С ПРИМЕРАМИ ИЗ СЛАЙДОВ 2 И 10)
+      vocabulary: [
+        {
+          en: "Pallor",
+          ru: "Бледность (кожных покровов)",
+          kz: "Бозару (терінің бозғылттығы)",
+          ex: "There was noticeable <b>pallor around</b> the lips and <b>under</b> the eyes."
+        },
+        {
+          en: "Palpitation",
+          ru: "Учащенное сердцебиение / Трепетание",
+          kz: "Жүрек соғысының жиілеуі / Лүпілдеу",
+          ex: "She felt strong <b>palpitations in</b> the chest while walking <b>up</b> the stairs."
+        },
+        {
+          en: "Pancreas",
+          ru: "Поджелудочная железа",
+          kz: "Ұйқы безі",
+          ex: "The <b>pancreas</b> is located approximately <b>behind</b> the stomach."
+        },
+        {
+          en: "Periumbilical",
+          ru: "Околопупочный",
+          kz: "Кіндік маңындағы",
+          ex: "The patient reported pain <b>in</b> the <b>periumbilical</b> area."
+        },
+        {
+          en: "Physical exam",
+          ru: "Физикальный осмотр",
+          kz: "Физикалық тексеру (қарап-тексеру)",
+          ex: "During the <b>physical exam</b>, the doctor checked <b>under</b> the arms."
+        },
+        {
+          en: "Pounding",
+          ru: "Пульсирующий / Колотящий (о боли)",
+          kz: "Солқылдап соғатын (ауырсыну)",
+          ex: "He described a <b>pounding</b> sensation <b>through</b> his head."
+        },
+        {
+          en: "Prevent",
+          ru: "Предотвращать / Профилактировать",
+          kz: "Алдын алу / Болдырмау",
+          ex: "Vaccines help <b>prevent</b> disease <b>from</b> spreading <b>between</b> people."
+        },
+        {
+          en: "Prolonged",
+          ru: "Длительный / Пролонгированный",
+          kz: "Ұзақ уақытқа созылған",
+          ex: "<b>Prolonged</b> sitting <b>in</b> one position can cause discomfort <b>in</b> the lower back."
+        },
+        {
+          en: "Reduction",
+          ru: "Уменьшение / Снижение (reduction in)",
+          kz: "Азаю / Төмендеу (reduction in)",
+          ex: "There was a <b>reduction in</b> swelling <b>around</b> the ankle after the cold compress."
+        },
+        {
+          en: "Refer",
+          ru: "Направлять (к врачу — refer to) / Ссылаться",
+          kz: "Бағыттау / Жіберу (маманға — refer to)",
+          ex: "The general practitioner <b>referred</b> the patient <b>to</b> a specialist <b>in</b> cardiology."
+        },
+        {
+          en: "Relieve",
+          ru: "Облегчать / Снимать (боль, давление)",
+          kz: "Жеңілдету / Басу (ауырсынуды)",
+          ex: "To <b>relieve</b> pain, the nurse applied ice <b>to</b> the shoulder."
+        },
+        {
+          en: "Rib",
+          ru: "Ребро",
+          kz: "Қабырға",
+          ex: "There was a sharp pain <b>under</b> the left <b>rib</b>."
+        },
+        {
+          en: "Scale",
+          ru: "1) Напольные весы; 2) Шкала",
+          kz: "1) Таразы; 2) Шкала",
+          ex: "The nurse asked the patient to stand <b>on</b> the <b>scale next to</b> the wall."
+        },
+        {
+          en: "Seizure",
+          ru: "Судорожный приступ / Припадок",
+          kz: "Тырыспа ұстамасы",
+          ex: "The <b>seizure</b> caused the patient to fall <b>to</b> the ground."
+        }
+      ],
+
+      // ВКЛАДКА 4: УПРАЖНЕНИЕ 1 И УПРАЖНЕНИЕ 2 ИЗ PDF
+      ex1: [
+        {
+          q: "1. The patient felt pounding pain ___ the periumbilical region.",
+          options: ["in / at", "into", "off"],
+          correct: 0,
+          exp: {
+            ru: "Локализация боли внутри анатомической области ('в околопупочной области') передается предлогом места IN (или AT) -> in / at the periumbilical region.",
+            kz: "Анатомиялық аймақтағы ауырсыну орны ('кіндік маңы аймағында') IN (немесе AT) предлогымен беріледі -> in / at the periumbilical region."
+          }
+        },
+        {
+          q: "2. During the physical exam, the doctor placed the stethoscope ___ the left rib area.",
+          options: ["on / at / onto", "behind", "between"],
+          correct: 0,
+          exp: {
+            ru: "Врач приложил стетоскоп НА поверхность грудной клетки в области левого ребра -> on / at (или onto) the left rib area.",
+            kz: "Дәрігер стетоскопты сол жақ қабырға аймағының ҮСТІНЕ қойды -> on / at (немесе onto) the left rib area."
+          }
+        },
+        {
+          q: "3. The pancreas lies ___ the stomach and is difficult to palpate.",
+          options: ["behind", "in front of", "across"],
+          correct: 0,
+          exp: {
+            ru: "Анатомически поджелудочная железа лежит ПОЗАДИ желудка (поэтому её трудно пропальпировать) -> behind the stomach.",
+            kz: "Анатомиялық тұрғыдан ұйқы безі асқазанның АРТЫНДА орналасқан -> behind the stomach."
+          }
+        },
+        {
+          q: "4. The nurse walked ___ the medical ward to check on the patient with seizures.",
+          options: ["into", "under", "between"],
+          correct: 0,
+          exp: {
+            ru: "Глагол движения 'walked' (вошла КУДА? — внутрь палаты) требует предлога движения внутрь INTO -> walked into the medical ward.",
+            kz: "Қозғалыс етістігі 'walked' (палатаның ІШІНЕ кірді) INTO бағыт предлогын талап етеді -> walked into the medical ward."
+          }
+        },
+        {
+          q: "5. The patient was referred ___ the cardiologist after experiencing palpitations.",
+          options: ["to", "from", "off"],
+          correct: 0,
+          exp: {
+            ru: "Устойчивая медицинская конструкция «направить пациента К специалисту» — refer TO -> was referred to the cardiologist.",
+            kz: "«Науқасты маманға бағыттау/жіберу» тұрақты клиникалық тіркесі — refer TO -> was referred to the cardiologist."
+          }
+        }
+      ],
+
+      ex2: [
+        {
+          q: "1. Pallor was noticed especially ___ the face and lips.",
+          options: ["on", "into", "through"],
+          correct: 0,
+          exp: {
+            ru: "Бледность наблюдается НА поверхности кожи лица и губ -> on the face and lips.",
+            kz: "Бозару бет пен еріннің беткейінде (үстінде) байқалады -> on the face and lips."
+          }
+        },
+        {
+          q: "2. The patient moved slowly ___ the scale for a weight check.",
+          options: ["to / toward", "away", "off"],
+          correct: 0,
+          exp: {
+            ru: "Пациент медленно подошел К весам для измерения веса -> moved slowly to (или toward) the scale.",
+            kz: "Науқас салмағын өлшеу үшін таразыға ҚАРАЙ баяу жүрді -> moved slowly to (немесе toward) the scale."
+          }
+        },
+        {
+          q: "3. Medication was given to relieve pressure ___ the chest.",
+          options: ["from / in", "onto", "past"],
+          correct: 0,
+          exp: {
+            ru: "Снять/убрать давление ИЗ грудной клетки — relieve pressure from (или in) the chest.",
+            kz: "Кеуде қуысындағы қысымды кетіру/жеңілдету — relieve pressure from (немесе in) the chest."
+          }
+        },
+        {
+          q: "4. The child ran ___ the room during a seizure episode.",
+          options: ["to / into", "between", "under"],
+          correct: 0,
+          exp: {
+            ru: "Вбежал В комнату (или побежал К комнате) -> ran to / into the room.",
+            kz: "Бөлмеге ҚАРАЙ / ІШІНЕ жүгіріп кірді -> ran to / into the room."
+          }
+        },
+        {
+          q: "5. A reduction ___ symptoms was seen after prolonged treatment.",
+          options: ["in", "on", "to"],
+          correct: 0,
+          exp: {
+            ru: "Запомните золотую связку для научных статей: «снижение / уменьшение симптомов» — a reduction IN symptoms.",
+            kz: "Ғылыми мақалаларға арналған алтын тіркесті есте сақтаңыз: «симптомдардың азаюы/төмендеуі» — a reduction IN symptoms."
+          }
+        }
+      ]
+    };
+
+    // =========================================================================
+    // 3. ЛОГИКА ОТОБРАЖЕНИЯ, ОЗВУЧКИ И ПЕРЕКЛЮЧЕНИЯ ЯЗЫКОВ (RU / KZ)
+    // =========================================================================
+    let currentLang = localStorage.getItem('doctors_speak_lang') || 'ru';
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('doctors_speak_lang', lang);
+
+      document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
+      document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
+
+      const ui = LESSON10_DATA.ui;
+      document.getElementById('uiBackBtn').textContent = ui.backBtn[lang];
+      document.getElementById('uiTitle').textContent = ui.title[lang];
+      document.getElementById('uiSubtitle').textContent = ui.subtitle[lang];
+
+      ui.nav.forEach((item, index) => {
+        document.getElementById(`nav${index}`).textContent = item[lang];
+      });
+
+      document.getElementById('uiVocabTitle').textContent = ui.vocabTitle[lang];
+      document.getElementById('uiVocabDesc').textContent = ui.vocabDesc[lang];
+      document.getElementById('uiToExBtn').textContent = ui.toExBtn[lang];
+      document.getElementById('uiEx1Title').textContent = ui.ex1Title[lang];
+      document.getElementById('uiEx1Desc').textContent = ui.ex1Desc[lang];
+      document.getElementById('uiEx2Title').textContent = ui.ex2Title[lang];
+      document.getElementById('uiEx2Desc').textContent = ui.ex2Desc[lang];
+      document.getElementById('uiGoTrainerBtn').textContent = ui.goTrainerBtn[lang];
+
+      // Обновляем бейдж тарифа или тексты экрана Paywall при переключении языка
+      const badge = document.getElementById("userTierBadge");
+      if (badge && TIER_LABELS[currentViewerState.tier]) {
+        badge.textContent = TIER_LABELS[currentViewerState.tier][lang];
+      }
+      if (document.getElementById("paywallGate").style.display === "block") {
+        updatePaywallTexts(currentViewerState.isLoggedIn, currentViewerState.tier);
+      }
+
+      // Рендерим вкладки теории, словаря и упражнений
+      document.getElementById('tab0').innerHTML = LESSON10_DATA.tab0Html[lang];
+      document.getElementById('tab1').innerHTML = LESSON10_DATA.tab1Html[lang];
+      renderVocab();
+      renderExercises('ex1Container', LESSON10_DATA.ex1);
+      renderExercises('ex2Container', LESSON10_DATA.ex2);
+    }
+
+    function showTab(idx) {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`nav${i}`).classList.toggle('active', i === idx);
+        document.getElementById(`tab${i}`).classList.toggle('active', i === idx);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Подсветка предлогов места vs предлогов движения в офтальмологическом абстракте
+    function toggleAbstractHighlight(mode) {
+      const box = document.getElementById('abstractBodyText');
+      if (!box) return;
+      box.classList.remove('show-place', 'show-move');
+      if (mode === 'place' || mode === 'all') box.classList.add('show-place');
+      if (mode === 'move' || mode === 'all') box.classList.add('show-move');
+    }
+
+    // Проверка встроенных микро-вопросов в теории
+    function checkInlineQuiz(btn, isCorrect, feedbackText) {
+      const parent = btn.closest('.quick-check');
+      const allBtns = parent.querySelectorAll('.qc-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+      }
+
+      const fb = parent.querySelector('.qc-feedback');
+      fb.textContent = `💡 ${feedbackText}`;
+      fb.style.display = 'block';
+    }
+
+    // Рендер словаря с озвучкой Web Speech API
+    function renderVocab() {
+      const grid = document.getElementById('vocabGrid');
+      grid.innerHTML = '';
+      LESSON10_DATA.vocabulary.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'vocab-card';
+        div.innerHTML = `
+          <div class="vocab-header">
+            <span class="vocab-word">${item.en}</span>
+            <button class="speak-btn" onclick="speakEn('${item.en}')" title="Прослушать">🔊</button>
+          </div>
+          <div class="vocab-trans">${item[currentLang]}</div>
+          <div class="vocab-example">${item.ex}</div>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    function speakEn(word) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(word);
+      u.lang = 'en-US';
+      u.rate = 0.9;
+      window.speechSynthesis.speak(u);
+    }
+
+    // Рендер упражнений 1 и 2 из PDF
+    function renderExercises(containerId, list) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+      list.forEach(item => {
+        const box = document.createElement('div');
+        box.className = 'quick-check';
+        box.style.marginTop = '0';
+
+        const qEl = document.createElement('div');
+        qEl.className = 'qc-question';
+        qEl.textContent = item.q;
+
+        const optsEl = document.createElement('div');
+        optsEl.className = 'qc-options';
+
+        const fbEl = document.createElement('div');
+        fbEl.className = 'qc-feedback';
+        fbEl.textContent = `💡 ${item.exp[currentLang]}`;
+
+        item.options.forEach((optText, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'qc-btn';
+          btn.textContent = optText;
+          btn.onclick = () => {
+            const buttons = optsEl.querySelectorAll('.qc-btn');
+            buttons.forEach(b => b.disabled = true);
+            if (idx === item.correct) {
+              btn.classList.add('correct');
+            } else {
+              btn.classList.add('wrong');
+              buttons[item.correct].classList.add('correct');
+            }
+            fbEl.style.display = 'block';
+          };
+          optsEl.appendChild(btn);
+        });
+
+        box.appendChild(qEl);
+        box.appendChild(optsEl);
+        box.appendChild(fbEl);
+        container.appendChild(box);
+      });
+    }
+
+    // Инициализация языка и проверка подписки при загрузке страницы
+    setLang(currentLang);
+    verifySubscriptionAccess();
+  </script>
+</body>
+</html>
