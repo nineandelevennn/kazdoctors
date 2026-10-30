@@ -19,8 +19,10 @@
         --card-bg: #FFFFFF;
         --text-dark: #1E293B;
         --text-muted: #64748B;
-        --border-color: #E2E8F0;
+        --border-color: #DBE5F0;
         --green-accent: #10B981;
+        --green-light: #DCFCE7;
+        --green-dark: #065F46;
         --red-accent: #EF4444;
     }
 
@@ -42,19 +44,20 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        padding-bottom: 66px;
     }
 
     /* 1. Шапка сайта */
     header {
         position: relative;
-        z-index: 1;
-        background: linear-gradient(150deg, #0093CC 0%, var(--kz-blue) 55%, #22B8CF 85%, var(--kz-gold) 130%);
+        z-index: 10;
+        background: linear-gradient(150deg, #0082B8 0%, var(--kz-blue) 55%, #22B8CF 90%, var(--kz-gold) 135%);
         color: #FFFFFF;
         text-align: center;
-        padding: 28px 16px 28px 16px;
+        padding: 20px 16px 26px 16px;
         box-shadow: 0 8px 24px rgba(0, 161, 222, 0.22);
-        border-bottom-left-radius: 24px;
-        border-bottom-right-radius: 24px;
+        border-bottom-left-radius: 26px;
+        border-bottom-right-radius: 26px;
         overflow: hidden;
     }
 
@@ -70,6 +73,16 @@
         pointer-events: none;
     }
 
+    .header-top-bar {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto 10px auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
     .brand-badge {
         display: inline-flex;
         align-items: center;
@@ -80,11 +93,10 @@
         border: 1px solid rgba(255, 255, 255, 0.45);
         color: #FFFFFF;
         font-weight: 700;
-        font-size: 0.76rem;
-        letter-spacing: 0.6px;
-        padding: 6px 16px;
+        font-size: 0.74rem;
+        letter-spacing: 0.5px;
+        padding: 5px 14px;
         border-radius: 20px;
-        margin-bottom: 10px;
         text-decoration: none;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
         transition: transform 0.2s ease, background 0.2s ease;
@@ -95,6 +107,31 @@
         background: rgba(255, 255, 255, 0.35);
     }
 
+    .lang-switch {
+        display: inline-flex;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 20px;
+        padding: 3px;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+    }
+
+    .lang-btn {
+        border: none;
+        background: transparent;
+        color: rgba(255, 255, 255, 0.85);
+        font-weight: 800;
+        font-size: 0.72rem;
+        padding: 4px 11px;
+        border-radius: 16px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+        background: var(--kz-gold);
+        color: var(--text-dark);
+    }
+
     h1 {
         font-size: 1.45rem;
         font-weight: 900;
@@ -102,345 +139,22 @@
         text-transform: uppercase;
         letter-spacing: 0.6px;
         color: #FFFFFF;
-        max-width: 380px;
+        max-width: 400px;
         margin: 0 auto;
         text-shadow: 0 2px 10px rgba(0, 80, 120, 0.2);
     }
 
     .subtitle {
-        font-size: 0.8rem;
-        margin-top: 6px;
+        font-size: 0.78rem;
+        margin-top: 5px;
         font-weight: 800;
-        letter-spacing: 1.2px;
+        letter-spacing: 1px;
         text-transform: uppercase;
         color: var(--kz-gold);
         text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
     }
 
-    /* 2. Основная зона */
-    main {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-        width: 100%;
-        max-width: 460px;
-        margin: 0 auto;
-        padding: 20px 16px;
-        flex-grow: 1;
-    }
-
-    /* Word of the Hour Card / Quiz */
-    .woth-card {
-        background: var(--card-bg);
-        border: 1px solid rgba(217, 160, 0, 0.25);
-        border-left: 6px solid var(--kz-gold);
-        border-radius: 18px;
-        padding: 16px;
-        text-align: center;
-        box-shadow: 0 6px 18px rgba(0, 119, 163, 0.06);
-    }
-
-    .woth-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 8px;
-    }
-
-    .woth-title {
-        font-size: 0.72rem;
-        font-weight: 800;
-        color: var(--kz-gold-dark);
-        background: var(--kz-gold-light);
-        padding: 4px 10px;
-        border-radius: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .woth-timer {
-        font-size: 0.7rem;
-        color: var(--kz-blue-dark);
-        font-weight: 700;
-        background: var(--kz-blue-light);
-        padding: 4px 10px;
-        border-radius: 12px;
-    }
-
-    .woth-term {
-        font-size: 1.35rem;
-        font-weight: 900;
-        color: var(--text-dark);
-        margin: 8px 0 12px 0;
-    }
-
-    .quiz-options {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        margin-top: 12px;
-        text-align: left;
-    }
-
-    .quiz-btn {
-        width: 100%;
-        background: #F8FAFC;
-        color: var(--text-dark);
-        border: 1px solid var(--border-color);
-        padding: 11px 14px;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 0.85rem;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        text-align: left;
-    }
-
-    .quiz-btn:hover:not(:disabled) {
-        background: var(--kz-blue-light);
-        border-color: var(--kz-blue);
-        transform: translateY(-1px);
-    }
-
-    .quiz-btn.correct {
-        background: #DEF7EC !important;
-        color: #03543F !important;
-        border-color: var(--green-accent) !important;
-        font-weight: 700;
-    }
-
-    .quiz-btn.incorrect {
-        background: #FDE8E8 !important;
-        color: #9B1C1C !important;
-        border-color: var(--red-accent) !important;
-    }
-
-    .quiz-feedback {
-        margin-top: 10px;
-        font-size: 0.8rem;
-        font-weight: 700;
-        min-height: 20px;
-    }
-
-    /* Складывающиеся категории (Аккордеоны) */
-    details.category-group {
-        background: var(--card-bg);
-        border-radius: 18px;
-        border: 1px solid var(--border-color);
-        box-shadow: 0 6px 16px rgba(0, 119, 163, 0.05);
-        overflow: hidden;
-        transition: all 0.25s ease;
-    }
-
-    details.category-group:hover {
-        border-color: rgba(0, 161, 222, 0.35);
-    }
-
-    summary.category-header {
-        list-style: none;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 15px 16px;
-        cursor: pointer;
-        position: relative;
-        user-select: none;
-        background: var(--card-bg);
-        transition: background 0.2s ease;
-    }
-
-    summary.category-header::-webkit-details-marker {
-        display: none;
-    }
-
-    summary.category-header::before {
-        content: '';
-        position: absolute;
-        left: 0; top: 0; bottom: 0;
-        width: 6px;
-        background: var(--kz-blue);
-    }
-
-    details.category-group[open] > summary.category-header {
-        background: linear-gradient(90deg, var(--kz-blue-light) 0%, #FFFFFF 100%);
-        border-bottom: 1px solid var(--border-color);
-    }
-
-    .chevron-box {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background: var(--kz-blue-light);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        margin-left: 8px;
-        transition: all 0.25s ease;
-    }
-
-    .chevron-icon {
-        width: 18px;
-        height: 18px;
-        fill: var(--kz-blue);
-        transition: transform 0.25s ease;
-    }
-
-    details.category-group[open] .chevron-box {
-        background: var(--kz-blue);
-    }
-
-    details.category-group[open] .chevron-icon {
-        transform: rotate(180deg);
-        fill: #FFFFFF;
-    }
-
-    .category-body {
-        padding: 12px;
-        background: #F8FAFC;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    /* Карточки тренажеров */
-    .trainer-card {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: var(--card-bg);
-        border-radius: 16px;
-        padding: 14px 16px;
-        text-decoration: none;
-        color: var(--text-dark);
-        box-shadow: 0 4px 12px rgba(0, 119, 163, 0.04);
-        position: relative;
-        overflow: hidden;
-        border: 1px solid var(--border-color);
-        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-    }
-
-    .trainer-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(0, 161, 222, 0.12);
-        border-color: rgba(0, 161, 222, 0.35);
-    }
-
-    .trainer-card:active {
-        transform: scale(0.99);
-    }
-
-    .trainer-card::before {
-        content: '';
-        position: absolute;
-        left: 0; top: 0; bottom: 0;
-        width: 6px;
-        background: var(--kz-gold);
-    }
-
-    .card-content { display: flex; align-items: center; gap: 14px; }
-    
-    .card-icon {
-        width: 50px; height: 50px;
-        background: linear-gradient(135deg, #EBF8FC 0%, #D6F1FA 100%);
-        border-radius: 14px;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 1.45rem; flex-shrink: 0;
-        border: 1px solid rgba(0, 161, 222, 0.2);
-        box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.8);
-    }
-
-    .card-text h2 { 
-        font-size: 0.94rem; 
-        font-weight: 800; 
-        color: var(--text-dark); 
-        margin-bottom: 3px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        flex-wrap: wrap;
-    }
-    
-    .card-text p { 
-        font-size: 0.75rem; 
-        color: var(--text-muted); 
-        font-weight: 500; 
-    }
-
-    .badge-pill {
-        font-size: 0.62rem;
-        font-weight: 800;
-        background: var(--kz-gold-light);
-        color: var(--kz-gold-dark);
-        border: 1px solid rgba(217, 160, 0, 0.3);
-        padding: 2px 7px;
-        border-radius: 10px;
-        text-transform: uppercase;
-    }
-
-    .arrow-icon { width: 18px; height: 18px; fill: var(--kz-blue); flex-shrink: 0; margin-left: 8px; }
-
-    /* Видеоплеер YouTube */
-    .video-card {
-        background: var(--card-bg);
-        border: 1px solid var(--border-color);
-        border-radius: 16px;
-        padding: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-    }
-
-    .video-container {
-        position: relative;
-        width: 100%; padding-top: 56.25%;
-        border-radius: 12px; overflow: hidden; background: #000;
-    }
-
-    .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-
-    /* 4. Футер */
-    footer {
-        position: relative;
-        z-index: 1;
-        text-align: center;
-        padding: 12px 16px 26px 16px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        align-items: center;
-    }
-
-    .instagram-link {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        color: var(--kz-blue-dark);
-        text-decoration: none;
-        font-weight: 700;
-        font-size: 0.82rem;
-        padding: 11px 22px;
-        border-radius: 22px;
-        background: var(--card-bg);
-        border: 1px solid rgba(0, 161, 222, 0.25);
-        box-shadow: 0 4px 12px rgba(0, 119, 163, 0.05);
-        transition: all 0.2s ease;
-    }
-
-    .instagram-link.cta-primary {
-        background: linear-gradient(135deg, var(--kz-gold) 0%, #FFD55A 100%);
-        color: var(--text-dark);
-        border-color: var(--kz-gold-dark);
-        font-weight: 800;
-        box-shadow: 0 4px 14px rgba(217, 160, 0, 0.22);
-    }
-
-    .instagram-link:active {
-        transform: scale(0.97);
-    }
-
-    /* Блок кнопок Входа и Регистрации (одинаковый компактный стиль) */
+    /* Блок кнопок Входа и Регистрации */
     #authArea {
         margin-top: 14px;
         text-align: center;
@@ -488,14 +202,13 @@
     #welcomeMessage {
         display: block;
         margin-bottom: 6px;
-        font-size: 0.9rem;
-        font-weight: 800;
+        font-size: 0.92rem;
+        font-weight: 900;
         letter-spacing: 0.4px;
         color: #FFFFFF;
         text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
     }
 
-    /* Строчка YOUR PLAN */
     .user-plan-row {
         margin-bottom: 10px;
     }
@@ -525,13 +238,584 @@
         color: var(--kz-gold);
     }
 
-    .plan-badge:active {
-        transform: scale(0.96);
+    /* 2. Основная зона */
+    main {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        width: 100%;
+        max-width: 520px;
+        margin: 0 auto;
+        padding: 18px 14px;
+        flex-grow: 1;
     }
 
+    /* ==========================================================================
+       WORD OF THE HOUR (ПРОКАЧАННЫЙ БЛОК С ОЗВУЧКОЙ И БЕСКОНЕЧНОЙ ТРЕНИРОВКОЙ)
+       ========================================================================== */
+    .woth-card {
+        background: var(--card-bg);
+        border: 1px solid rgba(217, 160, 0, 0.28);
+        border-left: 6px solid var(--kz-gold);
+        border-radius: 20px;
+        padding: 15px 16px;
+        text-align: center;
+        box-shadow: 0 6px 18px rgba(0, 119, 163, 0.06);
+    }
+
+    .woth-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 6px;
+    }
+
+    .woth-title {
+        font-size: 0.7rem;
+        font-weight: 800;
+        color: var(--kz-gold-dark);
+        background: var(--kz-gold-light);
+        padding: 4px 10px;
+        border-radius: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+    }
+
+    .woth-meta-right {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .woth-streak {
+        font-size: 0.68rem;
+        font-weight: 800;
+        background: var(--green-light);
+        color: var(--green-dark);
+        padding: 4px 8px;
+        border-radius: 10px;
+    }
+
+    .woth-timer {
+        font-size: 0.68rem;
+        color: var(--kz-blue-dark);
+        font-weight: 700;
+        background: var(--kz-blue-light);
+        padding: 4px 9px;
+        border-radius: 10px;
+    }
+
+    .woth-term-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin: 8px 0 10px 0;
+    }
+
+    .woth-term {
+        font-size: 1.35rem;
+        font-weight: 900;
+        color: var(--text-dark);
+    }
+
+    .speak-word-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid rgba(0, 161, 222, 0.3);
+        background: var(--kz-blue-light);
+        color: var(--kz-blue-dark);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        transition: transform 0.15s ease;
+    }
+
+    .speak-word-btn:active {
+        transform: scale(0.92);
+    }
+
+    .quiz-options {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        margin-top: 8px;
+        text-align: left;
+    }
+
+    .quiz-btn {
+        width: 100%;
+        background: #F8FAFC;
+        color: var(--text-dark);
+        border: 1px solid var(--border-color);
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 0.83rem;
+        cursor: pointer;
+        transition: all 0.18s ease;
+        text-align: left;
+    }
+
+    .quiz-btn:hover:not(:disabled) {
+        background: var(--kz-blue-light);
+        border-color: var(--kz-blue);
+        transform: translateY(-1px);
+    }
+
+    .quiz-btn.correct {
+        background: #DEF7EC !important;
+        color: #03543F !important;
+        border-color: var(--green-accent) !important;
+        font-weight: 700;
+    }
+
+    .quiz-btn.incorrect {
+        background: #FDE8E8 !important;
+        color: #9B1C1C !important;
+        border-color: var(--red-accent) !important;
+    }
+
+    .quiz-footer-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-top: 10px;
+        min-height: 26px;
+        flex-wrap: wrap;
+    }
+
+    .quiz-feedback {
+        font-size: 0.78rem;
+        font-weight: 800;
+        text-align: left;
+    }
+
+    .next-word-btn {
+        display: none;
+        background: var(--kz-blue);
+        color: #FFFFFF;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 10px;
+        font-size: 0.72rem;
+        font-weight: 800;
+        cursor: pointer;
+        margin-left: auto;
+        box-shadow: 0 2px 8px rgba(0, 161, 222, 0.25);
+    }
+
+    /* ==========================================================================
+       УМНЫЙ ОНБОРДИНГ: БЕСПЛАТНЫЙ ТЕСТ-ДРАЙВ ДЛЯ ВРАЧА (КОНВЕРСИОННЫЙ БЛОК)
+       ========================================================================== */
+    .onboarding-card {
+        background: linear-gradient(140deg, #0F172A 0%, #1E293B 100%);
+        color: #FFFFFF;
+        border-radius: 20px;
+        padding: 15px 16px;
+        border: 1px solid rgba(255, 199, 44, 0.4);
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.14);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .ob-badge {
+        display: inline-block;
+        width: fit-content;
+        background: rgba(16, 185, 129, 0.22);
+        border: 1px solid #34D399;
+        color: #A7F3D0;
+        font-size: 0.65rem;
+        font-weight: 800;
+        padding: 3px 10px;
+        border-radius: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+    }
+
+    .ob-title {
+        font-size: 0.92rem;
+        font-weight: 900;
+        line-height: 1.3;
+        color: #FFFFFF;
+    }
+
+    .ob-steps-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 7px;
+    }
+
+    .ob-step-link {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 11px;
+        padding: 8px 10px;
+        color: #FFFFFF;
+        text-decoration: none;
+        font-size: 0.72rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+        transition: all 0.18s ease;
+    }
+
+    .ob-step-link:hover, .ob-step-link:active {
+        background: rgba(0, 161, 222, 0.28);
+        border-color: #7DD3FC;
+    }
+
+    .ob-step-link.gold-full {
+        grid-column: span 2;
+        background: linear-gradient(135deg, var(--kz-gold) 0%, #FFD55A 100%);
+        color: var(--text-dark);
+        border-color: var(--kz-gold-dark);
+        font-weight: 900;
+        justify-content: center;
+        font-size: 0.76rem;
+        padding: 10px;
+    }
+
+    /* ==========================================================================
+       СКЛАДЫВАЮЩИЕСЯ КАТЕГОРИИ (АККОРДЕОНЫ)
+       ========================================================================== */
+    details.category-group {
+        background: var(--card-bg);
+        border-radius: 18px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 6px 16px rgba(0, 119, 163, 0.05);
+        overflow: hidden;
+        transition: all 0.25s ease;
+    }
+
+    details.category-group:hover {
+        border-color: rgba(0, 161, 222, 0.35);
+    }
+
+    summary.category-header {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 16px;
+        cursor: pointer;
+        position: relative;
+        user-select: none;
+        background: linear-gradient(90deg, #FFFFFF 0%, #F8FBFF 100%);
+        transition: background 0.2s ease;
+    }
+
+    summary.category-header::-webkit-details-marker {
+        display: none;
+    }
+
+    summary.category-header::before {
+        content: '';
+        position: absolute;
+        left: 0; top: 0; bottom: 0;
+        width: 6px;
+        background: linear-gradient(180deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+    }
+
+    details.category-group[open] > summary.category-header {
+        background: linear-gradient(90deg, var(--kz-blue-light) 0%, #FFFFFF 100%);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .chevron-box {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: var(--kz-blue-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-left: 8px;
+        transition: all 0.25s ease;
+    }
+
+    .chevron-icon {
+        width: 18px;
+        height: 18px;
+        fill: var(--kz-blue);
+        transition: transform 0.25s ease;
+    }
+
+    details.category-group[open] .chevron-box {
+        background: var(--kz-blue);
+    }
+
+    details.category-group[open] .chevron-icon {
+        transform: rotate(180deg);
+        fill: #FFFFFF;
+    }
+
+    .category-body {
+        padding: 12px;
+        background: #F8FAFC;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    /* Карточки тренажеров с мягким градиентом */
+    .trainer-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: linear-gradient(135deg, #FFFFFF 0%, #F4FAFF 68%, #EBF6FE 100%);
+        border-radius: 16px;
+        padding: 13px 15px;
+        text-decoration: none;
+        color: var(--text-dark);
+        box-shadow: 0 4px 12px rgba(0, 119, 163, 0.04);
+        position: relative;
+        overflow: hidden;
+        border: 1px solid #CBE7F9;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .trainer-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 161, 222, 0.12);
+        border-color: rgba(0, 161, 222, 0.45);
+    }
+
+    .trainer-card:active {
+        transform: scale(0.99);
+    }
+
+    .trainer-card::before {
+        content: '';
+        position: absolute;
+        left: 0; top: 0; bottom: 0;
+        width: 6px;
+        background: var(--kz-gold);
+    }
+
+    /* Зеленый акцент для бесплатных открытых модулей */
+    .trainer-card.free-card {
+        background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 65%, #DCFCE7 100%);
+        border-color: #86EFAC;
+    }
+
+    .trainer-card.free-card::before {
+        background: var(--green-accent);
+    }
+
+    /* Золотой акцент для карточки ТАРИФЫ */
+    .trainer-card.tarifs-card {
+        background: linear-gradient(135deg, #FFFFFF 0%, #FFFBEB 55%, #FEF3C7 100%);
+        border: 1.5px solid var(--kz-gold-dark);
+        box-shadow: 0 6px 18px rgba(217, 160, 0, 0.14);
+    }
+
+    .trainer-card.tarifs-card::before {
+        background: linear-gradient(180deg, var(--kz-gold) 0%, var(--kz-gold-dark) 100%);
+    }
+
+    .card-content { display: flex; align-items: center; gap: 13px; }
+    
+    .card-icon {
+        width: 48px; height: 48px;
+        background: linear-gradient(135deg, #FFFFFF 0%, #E0F2FE 100%);
+        border-radius: 14px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.4rem; flex-shrink: 0;
+        border: 1px solid rgba(0, 161, 222, 0.2);
+        box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.8);
+    }
+
+    .free-card .card-icon {
+        background: linear-gradient(135deg, #FFFFFF 0%, #D1FAE5 100%);
+        border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .tarifs-card .card-icon {
+        background: linear-gradient(135deg, #FFFFFF 0%, #FEF08A 100%);
+        border-color: rgba(217, 160, 0, 0.35);
+    }
+
+    .card-text h2 { 
+        font-size: 0.92rem; 
+        font-weight: 800; 
+        color: var(--text-dark); 
+        margin-bottom: 3px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+    
+    .card-text p { 
+        font-size: 0.74rem; 
+        color: var(--text-muted); 
+        font-weight: 600;
+        line-height: 1.3;
+    }
+
+    .badge-pill {
+        font-size: 0.61rem;
+        font-weight: 800;
+        background: var(--kz-gold-light);
+        color: #B45309;
+        border: 1px solid rgba(217, 160, 0, 0.35);
+        padding: 2px 7px;
+        border-radius: 10px;
+        text-transform: uppercase;
+    }
+
+    .badge-pill.free-pill {
+        background: var(--green-light);
+        color: var(--green-dark);
+        border-color: #86EFAC;
+    }
+
+    .badge-pill.blue-pill {
+        background: var(--kz-blue-light);
+        color: var(--kz-blue-dark);
+        border-color: rgba(0, 161, 222, 0.28);
+    }
+
+    .arrow-icon { width: 18px; height: 18px; fill: var(--kz-blue-dark); flex-shrink: 0; margin-left: 8px; }
+
+    /* Видеоплеер YouTube */
+    .video-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .video-caption {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--text-muted);
+        padding: 4px 6px 8px 6px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .video-container {
+        position: relative;
+        width: 100%; padding-top: 56.25%;
+        border-radius: 12px; overflow: hidden; background: #000;
+    }
+
+    .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+    /* Плавающая нижняя плашка конверсии */
+    .sticky-bottom-cta {
+        position: fixed;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 24px);
+        max-width: 500px;
+        background: rgba(15, 23, 42, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        color: #FFFFFF;
+        padding: 10px 14px;
+        border-radius: 18px;
+        border: 1px solid rgba(255, 199, 44, 0.45);
+        box-shadow: 0 10px 26px rgba(15, 23, 42, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        z-index: 95;
+    }
+
+    .sbc-text {
+        font-size: 0.72rem;
+        font-weight: 600;
+        line-height: 1.25;
+        color: #CBD5E1;
+    }
+
+    .sbc-text strong {
+        color: var(--kz-gold);
+        display: block;
+        font-size: 0.76rem;
+        font-weight: 800;
+    }
+
+    .sbc-btn {
+        background: var(--kz-gold);
+        color: var(--text-dark);
+        text-decoration: none;
+        font-size: 0.74rem;
+        font-weight: 900;
+        padding: 8px 13px;
+        border-radius: 12px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    /* 4. Футер */
+    footer {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        padding: 12px 16px 26px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .instagram-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: var(--kz-blue-dark);
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 0.82rem;
+        padding: 11px 22px;
+        border-radius: 22px;
+        background: var(--card-bg);
+        border: 1px solid rgba(0, 161, 222, 0.25);
+        box-shadow: 0 4px 12px rgba(0, 119, 163, 0.05);
+        transition: all 0.2s ease;
+    }
+
+    .instagram-link.cta-primary {
+        background: linear-gradient(135deg, var(--kz-gold) 0%, #FFD55A 100%);
+        color: var(--text-dark);
+        border-color: var(--kz-gold-dark);
+        font-weight: 800;
+        box-shadow: 0 4px 14px rgba(217, 160, 0, 0.22);
+    }
+
+    /* Логика переключения языков KZ / RU */
+    [lang-val] { display: none; }
+    body.lang-kz [lang-val="kz"] { display: inline; }
+    body.lang-ru [lang-val="ru"] { display: inline; }
+
+    p[lang-val], div[lang-val] { display: none; }
+    body.lang-kz p[lang-val="kz"], body.lang-kz div[lang-val="kz"] { display: block; }
+    body.lang-ru p[lang-val="ru"], body.lang-ru div[lang-val="ru"] { display: block; }
+
     @media (max-height: 680px) {
-        header { padding: 20px 16px; }
-        h1 { font-size: 1.2rem; }
+        header { padding: 18px 16px 22px 16px; }
+        h1 { font-size: 1.25rem; }
         .subtitle { font-size: 0.74rem; }
     }
 </style>
@@ -557,12 +841,21 @@
 </script> 
 </head>
     
-<body>
+<body class="lang-ru">
 
     <header>
-        <a href="https://instagram.com/doctors.speak" target="_blank" rel="noopener noreferrer" class="brand-badge">✨ @doctors.speak</a>
+        <div class="header-top-bar">
+            <a href="https://instagram.com/doctors.speak" target="_blank" rel="noopener noreferrer" class="brand-badge">✨ @doctors.speak</a>
+
+            <div class="lang-switch">
+                <button class="lang-btn" id="btn-kz" onclick="setLanguage('kz')">KZ</button>
+                <button class="lang-btn active" id="btn-ru" onclick="setLanguage('ru')">RU</button>
+            </div>
+        </div>
+
         <h1>MEDICAL ENGLISH</h1>
-        <p class="subtitle">BECOME INTERNATIONAL!</p>
+        <p class="subtitle" lang-val="ru">Платформа медицинского английского для врачей</p>
+        <p class="subtitle" lang-val="kz">Дәрігерлерге арналған медициналық ағылшын платформасы</p>
         
         <div id="authArea">
             <!-- Кнопки для гостя (прячутся обе, когда человек вошел в аккаунт) -->
@@ -583,17 +876,64 @@
     </header>
 
     <main>
-        <!-- Word of the Hour Quiz Box -->
+        <!-- 1. Word of the Hour Quiz Box (с озвучкой и кнопкой «Тренировать еще») -->
         <div class="woth-card">
             <div class="woth-header">
                 <span class="woth-title">⚡ Word of the hour</span>
-                <span class="woth-timer" id="wothTimer">Next in --:--</span>
+                <div class="woth-meta-right">
+                    <span class="woth-streak" id="wothStreakBadge">🔥 0</span>
+                    <span class="woth-timer" id="wothTimer">Next in --:--</span>
+                </div>
             </div>
-            <div class="woth-term" id="wothTerm">Loading...</div>
+            <div class="woth-term-row">
+                <div class="woth-term" id="wothTerm">Loading...</div>
+                <button type="button" class="speak-word-btn" onclick="speakCurrentWord()" title="Прослушать произношение">🔊</button>
+            </div>
             <div class="quiz-options" id="quizOptions">
                 <!-- Options injected via script -->
             </div>
-            <div class="quiz-feedback" id="quizFeedback"></div>
+            <div class="quiz-footer-row">
+                <div class="quiz-feedback" id="quizFeedback"></div>
+                <button type="button" class="next-word-btn" id="practiceMoreBtn" onclick="loadBonusWord()">
+                    <span lang-val="ru">⚡ Ещё слово (+1) ↻</span>
+                    <span lang-val="kz">⚡ Тағы сөз (+1) ↻</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. Умный навигатор для врача: бесплатный тест-драйв + переход к полному курсу -->
+        <div class="onboarding-card" id="onboardingCard">
+            <span class="ob-badge" id="obBadge" lang-val="ru">🔓 БЕСПЛАТНЫЙ ТЕСТ-ДРАЙВ ПЛАТФОРМЫ</span>
+            <span class="ob-badge" id="obBadgeKz" lang-val="kz">🔓 ПЛАТФОРМАНЫҢ ТЕГІН ТЕСТ-ДРАЙВЫ</span>
+            <div class="ob-title" id="obTitle" lang-val="ru">С чего начать врачу прямо сейчас без оплаты?</div>
+            <div class="ob-title" id="obTitleKz" lang-val="kz">Дәрігерге дәл қазір тегін неден бастауға болады?</div>
+
+            <div class="ob-steps-grid">
+                <a href="./test/" class="ob-step-link">
+                    <span lang-val="ru">1️⃣ Тест уровня</span>
+                    <span lang-val="kz">1️⃣ Деңгей тесті</span>
+                    <span>➔</span>
+                </a>
+                <a href="./anatomic/" class="ob-step-link">
+                    <span lang-val="ru">2️⃣ Анатомия (Free)</span>
+                    <span lang-val="kz">2️⃣ Анатомия (Free)</span>
+                    <span>➔</span>
+                </a>
+                <a href="./grammar/thereis/" class="ob-step-link">
+                    <span lang-val="ru">3️⃣ Урок №8 (Free)</span>
+                    <span lang-val="kz">3️⃣ 8-ші сабақ (Free)</span>
+                    <span>➔</span>
+                </a>
+                <a href="./interviews/" class="ob-step-link">
+                    <span lang-val="ru">4️⃣ Опрос пациента</span>
+                    <span lang-val="kz">4️⃣ Науқас сұрастыру</span>
+                    <span>➔</span>
+                </a>
+                <a href="./tarifs/" class="ob-step-link gold-full" id="obMainCta">
+                    <span lang-val="ru">💎 Открыть ВСЕ тренажеры, конспекты и видеокурс (Тарифы) ➔</span>
+                    <span lang-val="kz">💎 БАРЛЫҚ тренажерлер, конспектілер мен видеокурсты ашу ➔</span>
+                </a>
+            </div>
         </div>
         
         <!-- ==================== 1. КАТЕГОРИЯ: VOCABULARY ==================== -->
@@ -602,8 +942,12 @@
                 <div class="card-content">
                     <div class="card-icon">🧠</div>
                     <div class="card-text">
-                        <h2>VOCABULARY <span class="badge-pill">Практика</span></h2>
-                        <p>Anatomy, Clinical & Academic terms</p>
+                        <h2>
+                            <span>VOCABULARY</span>
+                            <span class="badge-pill free-pill" id="vocabCatBadge">1 FREE • 2 PRO</span>
+                        </h2>
+                        <p lang-val="ru">Анатомическая, Клиническая и Академическая лексика (PubMed / IELTS)</p>
+                        <p lang-val="kz">Анатомиялық, Клиникалық және Академиялық сөздік қор</p>
                     </div>
                 </div>
                 <div class="chevron-box">
@@ -612,13 +956,17 @@
             </summary>
 
             <div class="category-body">
-                <!-- Анатомический тренажер -->
-                <a href="./anatomic/" class="trainer-card">
+                <!-- Анатомический тренажер (FREE) -->
+                <a href="./anatomic/" class="trainer-card free-card">
                     <div class="card-content">
                         <div class="card-icon">🫀</div>
                         <div class="card-text">
-                            <h2>ANATOMY VOCABULARY</h2>
-                            <p>Organs and Bones</p>
+                            <h2>
+                                <span>ANATOMY VOCABULARY</span>
+                                <span class="badge-pill free-pill">🔓 FREE</span>
+                            </h2>
+                            <p lang-val="ru">Органы, кости и анатомические структуры (открыто бесплатно)</p>
+                            <p lang-val="kz">Ағзалар, сүйектер және анатомиялық құрылымдар (тегін ашық)</p>
                         </div>
                     </div>
                     <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -629,8 +977,11 @@
                     <div class="card-content">
                         <div class="card-icon" id="clinicalIcon">🔒</div>
                         <div class="card-text">
-                            <h2>CLINICAL VOCABULARY</h2>
-                            <p id="clinicalStatus">Terms for Doctors!</p>
+                            <h2>
+                                <span>CLINICAL VOCABULARY</span>
+                                <span class="badge-pill" id="clinicalBadge">STANDARD+</span>
+                            </h2>
+                            <p id="clinicalStatus">Симптомы, жалобы, осмотр и ведение пациентов в клинике</p>
                         </div>
                     </div>
                     <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -641,8 +992,11 @@
                     <div class="card-content">
                         <div class="card-icon" id="academicIcon">🔒</div>
                         <div class="card-text">
-                            <h2>ACADEMIC VOCABULARY</h2>
-                            <p id="academicStatus">Terms for Guidelines and IELTS!</p>
+                            <h2>
+                                <span>ACADEMIC VOCABULARY</span>
+                                <span class="badge-pill" id="academicBadge">STANDARD+</span>
+                            </h2>
+                            <p id="academicStatus">Термины для чтения зарубежных гайдлайнов, статей PubMed и сдачи IELTS</p>
                         </div>
                     </div>
                     <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -656,8 +1010,12 @@
                 <div class="card-content">
                     <div class="card-icon">🚀</div>
                     <div class="card-text">
-                        <h2>GRAMMAR <span class="badge-pill">Практика</span></h2>
-                        <p>Medical grammar lessons & exercises</p>
+                        <h2>
+                            <span>GRAMMAR & VIDEOCOURSE</span>
+                            <span class="badge-pill blue-pill">15 УРОКОВ + ЧАНКИ</span>
+                        </h2>
+                        <p lang-val="ru">Вся медицинская грамматика от A1 до B2: видео, конспекты и тренажеры</p>
+                        <p lang-val="kz">A1-ден B2-ге дейінгі медициналық грамматика: видео, конспект және тренажер</p>
                     </div>
                 </div>
                 <div class="chevron-box">
@@ -668,35 +1026,64 @@
             <div class="category-body">
                 <!-- Первое видео YouTube (Грамматика) -->
                 <div class="video-card">
+                    <div class="video-caption">
+                        <span>🎬</span>
+                        <span lang-val="ru">Демо-фрагмент видеокурса медицинской грамматики:</span>
+                        <span lang-val="kz">Медициналық грамматика видеокурсының демо-үзіндісі:</span>
+                    </div>
                     <div class="video-container">
                         <iframe 
                             src="https://www.youtube.com/embed/j8azjjNha1w" 
-                            title="YouTube video player" 
+                            title="YouTube video player"
+                            loading="lazy"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                             allowfullscreen>
                         </iframe>
                     </div>
                 </div>
 
-                <!-- Грамматика урок -->
-                <a href="./grammar/thereis/" class="trainer-card">
+                <!-- Бесплатный гид по Чанкам и Шпаргалка по грамматике -->
+                <a href="./grammar/chunks/" class="trainer-card free-card">
                     <div class="card-content">
-                        <div class="card-icon">🤓</div>
+                        <div class="card-icon">🧩</div>
                         <div class="card-text">
-                            <h2>GRAMMAR PRACTICE</h2>
-                            <p>Lesson 08</p>
+                            <h2>
+                                <span>CHUNKS & GRAMMAR CHEATSHEET</span>
+                                <span class="badge-pill free-pill">🔓 FREE</span>
+                            </h2>
+                            <p lang-val="ru">Метод «Чанков» + полная интерактивная шпаргалка по 15 темам</p>
+                            <p lang-val="kz">«Чанк» әдісі + барлық 15 тақырып бойынша интерактивті шпаргалка</p>
                         </div>
                     </div>
                     <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
                 </a>
 
-                <!-- Полный список грамматики -->
+                <!-- Бесплатный демо-урок 8 -->
+                <a href="./grammar/thereis/" class="trainer-card free-card">
+                    <div class="card-content">
+                        <div class="card-icon">🏥</div>
+                        <div class="card-text">
+                            <h2>
+                                <span>GRAMMAR PRACTICE: LESSON 08</span>
+                                <span class="badge-pill free-pill">🔓 FREE</span>
+                            </h2>
+                            <p lang-val="ru">Открытый тренажер по теме «There is / There are» в медицине</p>
+                            <p lang-val="kz">«There is / There are» тақырыбы бойынша ашық демо-тренажер</p>
+                        </div>
+                    </div>
+                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                </a>
+
+                <!-- Полный список грамматики (15 уроков + конспекты + видео + экзамен) -->
                 <a href="./grammar/" class="trainer-card">
                     <div class="card-content">
                         <div class="card-icon" id="grammarIcon">🔒</div>
                         <div class="card-text">
-                            <h2>GRAMMAR FULL LIST</h2>
-                            <p id="grammarStatus">Exercises from Videocourse</p>
+                            <h2>
+                                <span>GRAMMAR FULL COURSE (1–15)</span>
+                                <span class="badge-pill">🔥 15 МОДУЛЕЙ</span>
+                            </h2>
+                            <p id="grammarStatus">Все 15 уроков видеокурса, интерактивные конспекты (RU/KZ) и экзамен</p>
                         </div>
                     </div>
                     <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -710,8 +1097,12 @@
                 <div class="card-content">
                     <div class="card-icon">🗣️</div>
                     <div class="card-text">
-                        <h2>MEDICAL SKILLS <span class="badge-pill">Практика</span></h2>
-                        <p>Patient interviewing & USMLE prep</p>
+                        <h2>
+                            <span>MEDICAL SKILLS & USMLE</span>
+                            <span class="badge-pill free-pill">ТИЗЕР FREE</span>
+                        </h2>
+                        <p lang-val="ru">Опрос иностранных пациентов, чтение статей UpToDate/PubMed и USMLE</p>
+                        <p lang-val="kz">Науқастан анамнез жинау, ғылыми мақалаларды оқу және USMLE</p>
                     </div>
                 </div>
                 <div class="chevron-box">
@@ -722,23 +1113,32 @@
             <div class="category-body">
                 <!-- Второе видео YouTube -->
                 <div class="video-card">
+                    <div class="video-caption">
+                        <span>🎬</span>
+                        <span lang-val="ru">Как врачу опрашивать пациента на английском:</span>
+                        <span lang-val="kz">Науқастан ағылшынша анамнез жинау үлгісі:</span>
+                    </div>
                     <div class="video-container" style="padding-top: 100%;">
                         <iframe 
                             src="https://www.youtube.com/embed/LWgCd1LpFis?si=t04Zq5qFxqzghpVI" 
-                            title="YouTube video player" 
+                            title="YouTube video player"
+                            loading="lazy"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                             allowfullscreen>
                         </iframe>
                     </div>
                 </div>
 
-                <!-- Тренажер опросов -->
-                <a href="./interviews/" class="trainer-card">
+                <!-- Тренажер опросов пациентов -->
+                <a href="./interviews/" class="trainer-card free-card">
                     <div class="card-content">
                         <div class="card-icon" id="interviewIcon">🗣️</div>
                         <div class="card-text">
-                            <h2>PATIENT INTERVIEW</h2>
-                            <p id="interviewStatus">Exercises from Textbook</p>
+                            <h2>
+                                <span>PATIENT INTERVIEW</span>
+                                <span class="badge-pill free-pill" id="interviewBadge">ТИЗЕР FREE</span>
+                            </h2>
+                            <p id="interviewStatus">Тренажер сбора анамнеза и опроса пациента (доступен демо-тизер)</p>
                         </div>
                     </div>
                     <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -746,35 +1146,49 @@
 
                 <!-- Третье видео YouTube -->
                 <div class="video-card">
+                    <div class="video-caption">
+                        <span>🎬</span>
+                        <span lang-val="ru">Работа с научными статьями и клиническими гайдлайнами:</span>
+                        <span lang-val="kz">Ғылыми мақалалар мен клиникалық гайдлайндарды талдау:</span>
+                    </div>
                     <div class="video-container">
                         <iframe 
                             src="https://www.youtube.com/embed/Y43I2_iMBpU?si=pYzzE4GYoN_AhP9Z" 
-                            title="YouTube video player" 
+                            title="YouTube video player"
+                            loading="lazy"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                             allowfullscreen>
                         </iframe>
                     </div>
                 </div>
 
-                                <a href="https://kazdoctors.com/grammar/reading/" class="trainer-card">
+                <!-- Чтение статей -->
+                <a href="https://kazdoctors.com/grammar/reading/" class="trainer-card">
                     <div class="card-content">
                         <div class="card-icon">📖</div>
                         <div class="card-text">
-                            <h2>READING PRACTICE</h2>
-                            <p>Как читать статьи и гайдлайны</p>
+                            <h2>
+                                <span>READING PRACTICE & ARTICLES</span>
+                                <span class="badge-pill">PRO / PREMIUM</span>
+                            </h2>
+                            <p lang-val="ru">Как искать, читать и разбирать медицинские статьи и гайдлайны</p>
+                            <p lang-val="kz">Ғылыми мақалалар мен гайдлайндарды іздеу және оқу</p>
                         </div>
                     </div>
                     <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
                 </a>
-                
 
-                <!-- USMLE (перенесено внутрь Medical Skills) -->
+                <!-- USMLE -->
                 <a href="./usmle/" class="trainer-card">
                     <div class="card-content">
                         <div class="card-icon">📚</div>
                         <div class="card-text">
-                            <h2>USMLE PREPARATION</h2>
-                            <p>Тренажеры USMLE</p>
+                            <h2>
+                                <span>USMLE PREPARATION</span>
+                                <span class="badge-pill blue-pill">КЛИНИЧЕСКИЕ КЕЙСЫ</span>
+                            </h2>
+                            <p lang-val="ru">Тренажеры и разбор клинических задач формата USMLE</p>
+                            <p lang-val="kz">USMLE форматындағы клиникалық есептер мен тренажерлер</p>
                         </div>
                     </div>
                     <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -788,8 +1202,12 @@
                 <div class="card-content">
                     <div class="card-icon">🎮</div>
                     <div class="card-text">
-                        <h2>MEDICAL GAMES <span class="badge-pill">2 игры</span></h2>
-                        <p>Interactive medical vocabulary games</p>
+                        <h2>
+                            <span>MEDICAL GAMES</span>
+                            <span class="badge-pill free-pill">🔓 2 ИГРЫ FREE</span>
+                        </h2>
+                        <p lang-val="ru">Игровые тренажеры для быстрого запоминания медицинских терминов</p>
+                        <p lang-val="kz">Медициналық терминдерді ойын түрінде тез жаттау</p>
                     </div>
                 </div>
                 <div class="chevron-box">
@@ -799,24 +1217,32 @@
 
             <div class="category-body">
                 <!-- Игра 1: Run Doctor -->
-                <a href="./game/" class="trainer-card">
+                <a href="./game/" class="trainer-card free-card">
                     <div class="card-content">
                         <div class="card-icon">🏃‍♂️</div>
                         <div class="card-text">
-                            <h2>GAME: Run Doctor!</h2>
-                            <p>check your vocabulary!</p>
+                            <h2>
+                                <span>GAME: Run Doctor!</span>
+                                <span class="badge-pill free-pill">🔓 FREE</span>
+                            </h2>
+                            <p lang-val="ru">Аркадный забег врача: проверяйте словарный запас на скорости!</p>
+                            <p lang-val="kz">Дәрігер жүгірісі: сөздік қорыңызды жылдамдыққа тексеріңіз!</p>
                         </div>
                     </div>
                     <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
                 </a>
 
                 <!-- Игра 2: Syringe Shots -->
-                <a href="./syringes/" class="trainer-card">
+                <a href="./syringes/" class="trainer-card free-card">
                     <div class="card-content">
                         <div class="card-icon">💉</div>
                         <div class="card-text">
-                            <h2>GAME: Syringe Shots</h2>
-                            <p>check your vocabulary!</p>
+                            <h2>
+                                <span>GAME: Syringe Shots</span>
+                                <span class="badge-pill free-pill">🔓 FREE</span>
+                            </h2>
+                            <p lang-val="ru">Точный прицел: сбивайте верные переводы клинических терминов!</p>
+                            <p lang-val="kz">Дәл көздеу: клиникалық терминдердің дұрыс аудармасын табыңыз!</p>
                         </div>
                     </div>
                     <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -824,31 +1250,53 @@
             </div>
         </details>
 
-        <!-- Тест -->
-        <a href="./test/" class="trainer-card">
+        <!-- Тест уровня -->
+        <a href="./test/" class="trainer-card free-card">
             <div class="card-content">
                 <div class="card-icon">📝</div>
                 <div class="card-text">
-                    <h2>ENGLISH TEST</h2>
-                    <p>проверь свой мед.английский!</p>
+                    <h2>
+                        <span>ENGLISH LEVEL TEST</span>
+                        <span class="badge-pill free-pill">🔓 FREE ДИАГНОСТИКА</span>
+                    </h2>
+                    <p lang-val="ru">Проверьте свой текущий уровень медицинского английского за 5 минут!</p>
+                    <p lang-val="kz">Медициналық ағылшын деңгейіңізді 5 минутта тегін тексеріңіз!</p>
                 </div>
             </div>
             <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </a>
 
-        <!-- Тарифы -->
-        <a href="./tarifs/" class="trainer-card">
+        <!-- Тарифы (Главная продающая карточка) -->
+        <a href="./tarifs/" class="trainer-card tarifs-card">
             <div class="card-content">
                 <div class="card-icon">💎</div>
                 <div class="card-text">
-                    <h2>ТАРИФТЕР / ТАРИФЫ</h2>
-                    <p>Жеке сабақтар, материалдар / индивидуальные занятия и материалы</p>
+                    <h2>
+                        <span>ТАРИФТЕР / ТАРИФЫ</span>
+                        <span class="badge-pill">🔥 ОТ 7,990 ₸</span>
+                    </h2>
+                    <p lang-val="ru">Подписки STANDARD / PRO / PREMIUM / VIP, индивидуальные уроки и Speaking Club</p>
+                    <p lang-val="kz">STANDARD / PRO / PREMIUM / VIP жазылымдары, жеке сабақтар және Speaking Club</p>
                 </div>
             </div>
             <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </a>
 
     </main>
+
+    <!-- Плавающая нижняя плашка конверсии (скрывается при наличии активной подписки) -->
+    <div class="sticky-bottom-cta" id="stickyBottomCta">
+        <div class="sbc-text">
+            <strong lang-val="ru">🔥 Хотите выйти на уверенный медицинский B1?</strong>
+            <strong lang-val="kz">🔥 Сенімді медициналық B1 деңгейіне шыққыңыз келе ме?</strong>
+            <span lang-val="ru">Все тренажеры, конспекты и видеокурс — от 7,990 ₸/мес</span>
+            <span lang-val="kz">Барлық тренажерлер, конспектілер мен видеокурс — 7,990 ₸ бастап</span>
+        </div>
+        <a href="./tarifs/" class="sbc-btn">
+            <span lang-val="ru">💎 Тарифы ➔</span>
+            <span lang-val="kz">💎 Тарифтер ➔</span>
+        </a>
+    </div>
 
     <footer>
         <a href="https://wa.me/77081595038" target="_blank" class="instagram-link cta-primary">
@@ -875,6 +1323,20 @@
         premium: "PREMIUM",
         vip: "VIP 👑"
     };
+
+    // Переключение языка интерфейса (RU / KZ)
+    let currentLang = localStorage.getItem('selected_lang') || 'ru';
+
+    function setLanguage(lang) {
+        currentLang = lang;
+        document.body.className = 'lang-' + lang;
+        document.getElementById('btn-kz').classList.toggle('active', lang === 'kz');
+        document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
+        localStorage.setItem('selected_lang', lang);
+        localStorage.setItem('doctors_speak_lang', lang);
+    }
+
+    setLanguage(currentLang);
 
     // Генерация уникального ID устройства для защиты от мульти-входа
     function getDeviceUUID() {
@@ -910,14 +1372,16 @@
 
         // Если профиля еще нет в таблице — создаем его БЕЗ подписки (subscription_expires_at: null)
         if (!profile) {
+            const metaName = user.user_metadata?.name || null;
             await supabaseClient.from('profiles').insert({
                 id: user.id,
                 email: userEmail,
+                name: metaName,
                 current_device_id: localDeviceId,
                 subscription_expires_at: null,
                 tier: 'standard'
             });
-            return { sessionValid: true, hasActiveSub: false, name: null, tier: 'free' };
+            return { sessionValid: true, hasActiveSub: false, name: metaName, tier: 'free' };
         }
 
         // Проверяем, совпадает ли устройство с активным
@@ -992,16 +1456,23 @@
         // Открываем замочки только если у пользователя активна подписка
         if (hasActiveSub) {
             document.getElementById("clinicalIcon").textContent = "🩺";
-            document.getElementById("clinicalStatus").textContent = "for work with patients!";
+            document.getElementById("clinicalBadge").textContent = "✅ ОТКРЫТО";
+            document.getElementById("clinicalBadge").className = "badge-pill free-pill";
 
             document.getElementById("academicIcon").textContent = "📚";
-            document.getElementById("academicStatus").textContent = "for articles and IELTS!";
+            document.getElementById("academicBadge").textContent = "✅ ОТКРЫТО";
+            document.getElementById("academicBadge").className = "badge-pill free-pill";
 
             document.getElementById("grammarIcon").textContent = "📖";
-            document.getElementById("grammarStatus").textContent = "full practice!";
+            document.getElementById("vocabCatBadge").textContent = "✅ ВСЕ ОТКРЫТО";
 
             document.getElementById("interviewIcon").textContent = "🗣️";
-            document.getElementById("interviewStatus").textContent = "for working with patients!";
+            document.getElementById("interviewBadge").textContent = "✅ ОТКРЫТО";
+
+            // Скрываем нижнюю продающую плашку у платных подписчиков PRO / PREMIUM / VIP
+            if (tier === 'pro' || tier === 'premium' || tier === 'vip') {
+                document.getElementById("stickyBottomCta").style.display = "none";
+            }
         } else {
             document.getElementById("clinicalIcon").textContent = "🔒";
             document.getElementById("academicIcon").textContent = "🔒";
@@ -1023,13 +1494,9 @@
         document.getElementById("userArea").style.display = "none";
 
         document.getElementById("clinicalIcon").textContent = "🔒";
-        document.getElementById("clinicalStatus").textContent = "for work with patients!";
         document.getElementById("academicIcon").textContent = "🔒";
-        document.getElementById("academicStatus").textContent = "for articles and IELTS!";
         document.getElementById("grammarIcon").textContent = "🔒";
-        document.getElementById("grammarStatus").textContent = "full practice!";
         document.getElementById("interviewIcon").textContent = "🗣️";
-        document.getElementById("interviewStatus").textContent = "for working with patients!";
     }
 
     async function logout() {
@@ -1077,7 +1544,7 @@ const words = [
         { en: "Fatigue", kz: "Шаршау", ru: "Утомляемость", cat: "clinical" },
         { en: "Diarrhea", kz: "Іш өту", ru: "Диарея", cat: "clinical" },
         { en: "Insomnia", kz: "Ұйқысыздық", ru: "Бессонница", cat: "clinical" },
-        { en: "Dyspnea", kz: "Ырғақтың бұзылуы / Тыныс алудың тарылуы", ru: "Одышка", cat: "clinical" },
+        { en: "Dyspnea", kz: "Тыныс алудың тарылуы / Ентігу", ru: "Одышка", cat: "clinical" },
         { en: "Anemia", kz: "Анемия", ru: "Анемия", cat: "clinical" },
         { en: "Hyperglycemia", kz: "Гипергликемия", ru: "Гипергликемия", cat: "clinical" },
         { en: "Tachycardia", kz: "Тахикардия", ru: "Тахикардия", cat: "clinical" },
@@ -1087,22 +1554,29 @@ const words = [
         { en: "Increase", kz: "Ұлғайту / Өсу", ru: "Увеличение", cat: "academic" },
         { en: "Improve", kz: "Жақсарту", ru: "Улучшать", cat: "academic" },
         { en: "In contrast", kz: "Керісінше", ru: "В отличие / Напротив", cat: "academic" },
-        { en: "Significant", kz: "Маңызды", ru: "Значительный", cat: "academic" },
+        { en: "Significant", kz: "Маңызды / Елеулі", ru: "Значительный", cat: "academic" },
         { en: "Evidence", kz: "Дәлел", ru: "Доказательство", cat: "academic" },
         { en: "Demonstrate", kz: "Көрсету / Дәлелдеу", ru: "Демонстрировать", cat: "academic" },
         { en: "Objective", kz: "Мақсат / Объективті", ru: "Цель / Объективный", cat: "academic" },
         { en: "Decline", kz: "Төмендеу", ru: "Снижение / Упадок", cat: "academic" },
         { en: "Associated", kz: "Байланысты", ru: "Связанный", cat: "academic" },
         { en: "Beneficial", kz: "Пайдалы", ru: "Полезный / Благотворный", cat: "academic" },
-        { en: "Consist", kz: "Тұру", ru: "Состоять", cat: "academic" },
+        { en: "Consist", kz: "Тұру (құралу)", ru: "Состоять", cat: "academic" },
         { en: "Evaluate", kz: "Бағалау", ru: "Оценивать", cat: "academic" },
         { en: "Establish", kz: "Анықтау / Құру", ru: "Устанавливать", cat: "academic" },
-        { en: "Prevalence", kz: "Таралуы", ru: "Распространенность", cat: "academic" },
+        { en: "Prevalence", kz: "Таралу жиілігі", ru: "Распространенность", cat: "academic" },
         { en: "Subsequent", kz: "Кейінгі", ru: "Последующий", cat: "academic" }
     ];
 
     let lastHourEpoch = -1;
     let currentWordIndex = -1;
+    let dailySolvedCount = parseInt(localStorage.getItem('ds_daily_words_solved') || '0', 10) || 0;
+
+    function updateStreakBadge() {
+        const el = document.getElementById('wothStreakBadge');
+        if (el) el.textContent = `🔥 ${dailySolvedCount}`;
+    }
+    updateStreakBadge();
 
     function getHourlyRandomIndex(hourEpoch, length) {
         let h = hourEpoch ^ 0xdeadbeef;
@@ -1111,42 +1585,48 @@ const words = [
         return ((h ^= h >>> 16) >>> 0) % length;
     }
 
+    function renderWordCardByIndex(idx) {
+        currentWordIndex = idx;
+        const currentWord = words[currentWordIndex];
+        
+        document.getElementById('wothTerm').textContent = currentWord.en;
+        document.getElementById('quizFeedback').textContent = "";
+        document.getElementById('practiceMoreBtn').style.display = "none";
+
+        const correctOptionText = `${currentWord.kz} / ${currentWord.ru}`;
+        const sameCategoryWords = words.filter(w => w.cat === currentWord.cat && w.en !== currentWord.en);
+        
+        let options = [correctOptionText];
+        while (options.length < 3) {
+            const randomWord = sameCategoryWords[Math.floor(Math.random() * sameCategoryWords.length)];
+            const distractorText = `${randomWord.kz} / ${randomWord.ru}`;
+            if (!options.includes(distractorText)) {
+                options.push(distractorText);
+            }
+        }
+
+        options.sort(() => Math.random() - 0.5);
+
+        const optionsContainer = document.getElementById('quizOptions');
+        optionsContainer.innerHTML = '';
+
+        options.forEach(optionText => {
+            const btn = document.createElement('button');
+            btn.className = 'quiz-btn';
+            btn.textContent = optionText;
+            btn.onclick = () => checkAnswer(btn, optionText === correctOptionText);
+            optionsContainer.appendChild(btn);
+        });
+    }
+
     function updateWordOfTheHour() {
         const now = new Date();
         const currentHourEpoch = Math.floor(now.getTime() / (1000 * 60 * 60));
 
         if (currentHourEpoch !== lastHourEpoch) {
             lastHourEpoch = currentHourEpoch;
-            currentWordIndex = getHourlyRandomIndex(currentHourEpoch, words.length);
-            const currentWord = words[currentWordIndex];
-            
-            document.getElementById('wothTerm').textContent = currentWord.en;
-            document.getElementById('quizFeedback').textContent = "";
-
-            const correctOptionText = `${currentWord.kz} / ${currentWord.ru}`;
-            const sameCategoryWords = words.filter(w => w.cat === currentWord.cat && w.en !== currentWord.en);
-            
-            let options = [correctOptionText];
-            while (options.length < 3) {
-                const randomWord = sameCategoryWords[Math.floor(Math.random() * sameCategoryWords.length)];
-                const distractorText = `${randomWord.kz} / ${randomWord.ru}`;
-                if (!options.includes(distractorText)) {
-                    options.push(distractorText);
-                }
-            }
-
-            options.sort(() => Math.random() - 0.5);
-
-            const optionsContainer = document.getElementById('quizOptions');
-            optionsContainer.innerHTML = '';
-
-            options.forEach(optionText => {
-                const btn = document.createElement('button');
-                btn.className = 'quiz-btn';
-                btn.textContent = optionText;
-                btn.onclick = () => checkAnswer(btn, optionText === correctOptionText);
-                optionsContainer.appendChild(btn);
-            });
+            const hourlyIdx = getHourlyRandomIndex(currentHourEpoch, words.length);
+            renderWordCardByIndex(hourlyIdx);
         }
 
         const nextHourEpochMs = (currentHourEpoch + 1) * 3600000;
@@ -1175,12 +1655,35 @@ const words = [
 
         const feedback = document.getElementById('quizFeedback');
         if (isCorrect) {
-            feedback.textContent = "✅ Correct! Great job!";
+            dailySolvedCount += 1;
+            localStorage.setItem('ds_daily_words_solved', dailySolvedCount.toString());
+            updateStreakBadge();
+            feedback.textContent = currentLang === 'kz' ? "✅ Дұрыс! Жарайсыз!" : "✅ Верно! Отличная работа!";
             feedback.style.color = "var(--green-accent)";
         } else {
-            feedback.textContent = "❌ Incorrect. Try again next hour!";
+            feedback.textContent = currentLang === 'kz' ? "❌ Қате. Тағы байқап көріңіз!" : "❌ Ошибка. Попробуйте ещё слово!";
             feedback.style.color = "var(--red-accent)";
         }
+
+        // Показываем кнопку «Ещё слово (+1)», чтобы врач оставался на странице и тренировался дальше
+        document.getElementById('practiceMoreBtn').style.display = "inline-block";
+    }
+
+    function loadBonusWord() {
+        let nextIdx = Math.floor(Math.random() * words.length);
+        if (nextIdx === currentWordIndex) {
+            nextIdx = (nextIdx + 1) % words.length;
+        }
+        renderWordCardByIndex(nextIdx);
+    }
+
+    function speakCurrentWord() {
+        if (!('speechSynthesis' in window) || currentWordIndex < 0) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(words[currentWordIndex].en);
+        u.lang = 'en-US';
+        u.rate = 0.9;
+        window.speechSynthesis.speak(u);
     }
 
     updateWordOfTheHour();
