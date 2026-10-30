@@ -6,7 +6,7 @@
     <title>Doctors Speak — Medical English</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Подключение Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
@@ -16,11 +16,13 @@
             --kz-blue-light: #EBF8FC;
             --kz-gold: #FFC72C;
             --kz-gold-dark: #D9A000;
-            --bg-main: #F2F5F8;
+            --kz-gold-light: #FFFBEB;
+            --bg-main: #EEF3F8;
             --card-bg: #FFFFFF;
             --text-dark: #1E293B;
             --text-muted: #64748B;
-            --border-color: #E2E8F0;
+            --border-color: #DBE5F0;
+            --green-accent: #10B981;
         }
 
         * {
@@ -36,7 +38,7 @@
             min-height: 100vh;
             min-height: 100dvh;
             overflow-y: auto;
-            background: var(--bg-main);
+            background: radial-gradient(circle at top, #EBF8FC 0%, var(--bg-main) 65%);
             color: var(--text-dark);
             display: flex;
             flex-direction: column;
@@ -47,17 +49,18 @@
         header {
             position: relative;
             z-index: 1;
-            background: var(--kz-blue);
+            background: linear-gradient(145deg, #0088BB 0%, var(--kz-blue) 60%, #15B2E8 100%);
             color: #FFFFFF;
             text-align: center;
             padding: 20px 16px 24px 16px;
-            box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
+            box-shadow: 0 6px 18px rgba(0, 161, 222, 0.22);
             display: flex;
             flex-direction: column;
             align-items: center;
+            border-bottom-left-radius: 22px;
+            border-bottom-right-radius: 22px;
         }
 
-        /* Кнопка "Назад" в шапке */
         header .back-btn {
             display: inline-flex;
             align-items: center;
@@ -81,12 +84,6 @@
             background: rgba(255, 255, 255, 0.3);
         }
 
-        header .back-btn svg {
-            width: 16px;
-            height: 16px;
-            fill: var(--kz-gold);
-        }
-
         .header-badges {
             display: flex;
             align-items: center;
@@ -98,10 +95,10 @@
 
         .brand-badge {
             display: inline-block;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.16);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.32);
             color: #FFFFFF;
             font-weight: 700;
             font-size: 0.75rem;
@@ -110,10 +107,9 @@
             border-radius: 20px;
         }
 
-        /* Бейдж текущего тарифа пользователя */
         .tier-status-badge {
             display: none;
-            background: rgba(255, 199, 44, 0.22);
+            background: rgba(255, 199, 44, 0.24);
             border: 1px solid var(--kz-gold);
             color: var(--kz-gold);
             font-weight: 800;
@@ -125,7 +121,7 @@
         }
 
         h1 {
-            font-size: 1.35rem;
+            font-size: 1.38rem;
             font-weight: 900;
             line-height: 1.2;
             text-transform: uppercase;
@@ -142,41 +138,239 @@
             color: var(--kz-gold);
         }
 
-        /* 2. Основная зона с карточками уроков */
+        /* 2. Основная зона со сворачиваемыми категориями */
         main {
             position: relative;
             z-index: 1;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
             width: 100%;
-            max-width: 900px;
+            max-width: 860px;
             margin: 0 auto;
-            padding: 20px 16px;
+            padding: 20px 14px;
             flex-grow: 1;
             justify-content: flex-start;
         }
 
+        /* ==========================================================================
+           СХЛОПЫВАЮЩИЕСЯ КАТЕГОРИИ ВЕРХНЕГО УРОВНЯ (CATEGORY ACCORDIONS)
+           ========================================================================== */
+        details.category-box {
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 6px 18px rgba(0, 119, 163, 0.05);
+            overflow: hidden;
+            transition: all 0.25s ease;
+        }
+
+        summary.category-summary {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 18px;
+            cursor: pointer;
+            user-select: none;
+            background: linear-gradient(90deg, #FFFFFF 0%, #F8FBFF 100%);
+            position: relative;
+            transition: background 0.2s ease;
+        }
+
+        summary.category-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary.category-summary::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background: linear-gradient(180deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+        }
+
+        details.category-box.cat-free summary.category-summary::before {
+            background: linear-gradient(180deg, #10B981 0%, #059669 100%);
+        }
+
+        details.category-box.cat-exam summary.category-summary::before {
+            background: linear-gradient(180deg, var(--kz-gold) 0%, var(--kz-gold-dark) 100%);
+        }
+
+        details.category-box[open] > summary.category-summary {
+            background: linear-gradient(90deg, var(--kz-blue-light) 0%, #FFFFFF 100%);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .cat-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cat-main-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #EBF8FC 0%, #D6F1FA 100%);
+            border: 1px solid rgba(0, 161, 222, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .cat-header-text h2 {
+            font-size: 0.96rem;
+            font-weight: 900;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .cat-header-text p {
+            font-size: 0.74rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .cat-pill {
+            font-size: 0.64rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            background: var(--kz-blue-light);
+            color: var(--kz-blue-dark);
+            border: 1px solid rgba(0, 161, 222, 0.25);
+        }
+
+        .cat-pill.green {
+            background: #DCFCE7;
+            color: #15803D;
+            border-color: #86EFAC;
+        }
+
+        .cat-pill.gold {
+            background: var(--kz-gold-light);
+            color: #B45309;
+            border-color: rgba(217, 160, 0, 0.35);
+        }
+
+        .cat-chevron {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--kz-blue-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.25s ease;
+        }
+
+        .cat-chevron svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--kz-blue-dark);
+            transition: transform 0.25s ease;
+        }
+
+        details.category-box[open] .cat-chevron {
+            background: var(--kz-blue);
+        }
+
+        details.category-box[open] .cat-chevron svg {
+            transform: rotate(180deg);
+            fill: #FFFFFF;
+        }
+
+        .category-content {
+            padding: 14px;
+            background: #F8FAFC;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* ==========================================================================
+           БЫСТРЫЙ ФИЛЬТР УРОКОВ (ЧТОБЫ НЕ ЛИСТАТЬ ДО 15-ГО УРОКА)
+           ========================================================================== */
+        .quick-range-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            background: #FFFFFF;
+            padding: 6px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 4px;
+        }
+
+        .range-btn {
+            border: 1px solid transparent;
+            background: #F1F5F9;
+            color: var(--text-muted);
+            font-weight: 800;
+            font-size: 0.73rem;
+            padding: 8px 6px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.18s ease;
+        }
+
+        .range-btn:hover {
+            color: var(--kz-blue-dark);
+            background: var(--kz-blue-light);
+        }
+
+        .range-btn.active {
+            background: linear-gradient(135deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+            color: #FFFFFF;
+            box-shadow: 0 3px 10px rgba(0, 161, 222, 0.25);
+        }
+
+        .lesson-group.hidden-by-filter {
+            display: none !important;
+        }
+
+        /* ==========================================================================
+           КАРТОЧКИ УРОКОВ И ТРЕНАЖЕРОВ С ЛЕГКИМ НЕНАВЯЗЧИВЫМ ГРАДИЕНТОМ
+           ========================================================================== */
         .trainer-card {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: var(--card-bg);
+            background: linear-gradient(135deg, #FFFFFF 0%, #F4FAFF 65%, #E6F4FE 100%);
             border-radius: 16px;
-            padding: 14px 16px;
+            padding: 13px 16px;
             text-decoration: none;
             color: var(--text-dark);
             transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 3px 10px rgba(0, 119, 163, 0.05);
             position: relative;
             overflow: hidden;
-            border: 1px solid var(--border-color);
+            border: 1px solid #CBE7F9;
             width: 100%;
             text-align: left;
             cursor: pointer;
         }
 
-        /* Акцентная синяя полоса слева (стиль референса) */
+        .trainer-card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0, 161, 222, 0.12);
+            border-color: #7DD3FC;
+        }
+
         .trainer-card::before {
             content: '';
             position: absolute;
@@ -184,13 +378,27 @@
             top: 0;
             bottom: 0;
             width: 5px;
-            background: var(--kz-blue);
+            background: linear-gradient(180deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
         }
 
-        .trainer-card:active {
-            transform: translateY(1px);
-            background: #FAFAFA;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        /* Особый градиент для бесплатной карточки CHUNKS */
+        .trainer-card.chunks-card {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 60%, #DCFCE7 100%);
+            border-color: #86EFAC;
+        }
+
+        .trainer-card.chunks-card::before {
+            background: linear-gradient(180deg, #10B981 0%, #059669 100%);
+        }
+
+        /* Особый градиент для карточки ЭКЗАМЕНА */
+        .trainer-card.exam-card {
+            background: linear-gradient(135deg, #FFFFFF 0%, #FFFBEB 60%, #FEF3C7 100%);
+            border-color: #FCD34D;
+        }
+
+        .trainer-card.exam-card::before {
+            background: linear-gradient(180deg, var(--kz-gold) 0%, var(--kz-gold-dark) 100%);
         }
 
         .card-content {
@@ -202,42 +410,80 @@
         .card-icon {
             width: 46px;
             height: 46px;
-            background: var(--kz-blue-light);
+            background: linear-gradient(135deg, #FFFFFF 0%, #E0F2FE 100%);
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.3rem;
             flex-shrink: 0;
-            border: 1px solid rgba(0, 161, 222, 0.15);
+            border: 1px solid rgba(0, 161, 222, 0.22);
+            box-shadow: 0 2px 6px rgba(0, 119, 163, 0.06);
+        }
+
+        .chunks-card .card-icon {
+            background: linear-gradient(135deg, #FFFFFF 0%, #D1FAE5 100%);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .exam-card .card-icon {
+            background: linear-gradient(135deg, #FFFFFF 0%, #FEF08A 100%);
+            border-color: rgba(217, 160, 0, 0.35);
         }
 
         .card-text h2 {
-            font-size: 0.95rem;
+            font-size: 0.93rem;
             font-weight: 800;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
             color: var(--text-dark);
             line-height: 1.25;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
         }
 
         .card-text p {
-            font-size: 0.75rem;
+            font-size: 0.74rem;
             color: var(--text-muted);
             line-height: 1.3;
             font-weight: 600;
         }
 
+        .lesson-num-pill {
+            display: inline-block;
+            background: rgba(0, 161, 222, 0.12);
+            color: var(--kz-blue-dark);
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+
+        .free-pill-tag {
+            display: inline-block;
+            background: #10B981;
+            color: #FFFFFF;
+            font-size: 0.62rem;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
         .arrow-icon {
             width: 18px;
             height: 18px;
-            fill: var(--kz-blue);
+            fill: var(--kz-blue-dark);
             flex-shrink: 0;
             margin-left: 8px;
             transition: transform 0.25s ease;
         }
 
         /* ==========================================================================
-           СТИЛИ ДЛЯ РАСКРЫВАЮЩИХСЯ УРОКОВ (EXPAND / COLLAPSE) И ВИДЕО
+           ВЫПАДАЮЩЕЕ МЕНЮ УРОКА (ВИДЕО + КОНСПЕКТ + ТРЕНАЖЕР)
            ========================================================================== */
         .lesson-group {
             display: flex;
@@ -245,35 +491,32 @@
             width: 100%;
         }
 
-        /* Поворот стрелки при открытии урока */
         .lesson-group.open .trainer-card {
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
             border-bottom-color: transparent;
-            background: #F8FAFC;
+            background: linear-gradient(135deg, #EBF8FC 0%, #D6F1FA 100%);
         }
 
         .lesson-group.open .arrow-icon {
             transform: rotate(90deg);
         }
 
-        /* Выпадающая панель с видео, конспектом и тренажером */
         .lesson-dropdown {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s ease;
             opacity: 0;
             background: var(--card-bg);
-            border-left: 1px solid var(--border-color);
-            border-right: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
+            border-left: 1px solid #CBE7F9;
+            border-right: 1px solid #CBE7F9;
+            border-bottom: 1px solid #CBE7F9;
             border-bottom-left-radius: 16px;
             border-bottom-right-radius: 16px;
             position: relative;
             box-shadow: 0 6px 14px rgba(0, 0, 0, 0.03);
         }
 
-        /* Сохраняем синюю полоску слева и для раскрытого списка */
         .lesson-dropdown::before {
             content: '';
             position: absolute;
@@ -284,7 +527,6 @@
             background: var(--kz-blue);
         }
 
-        /* Увеличена максимальная высота, чтобы помещалось и видео 16:9, и кнопки ниже */
         .lesson-group.open .lesson-dropdown {
             max-height: 1200px;
             opacity: 1;
@@ -298,7 +540,6 @@
             border-top: 1px dashed var(--border-color);
         }
 
-        /* Контейнер для встроенного видео (16:9) */
         .video-embed-box {
             position: relative;
             width: 100%;
@@ -317,12 +558,10 @@
             display: block;
         }
 
-        /* ==========================================================================
-           ЗАГЛУШКА ДЛЯ ПОЛЬЗОВАТЕЛЕЙ БЕЗ ТАРИФА ПРЕМИУМ / ВИП (PAYWALL ВИДЕОУРОКА)
-           ========================================================================== */
+        /* Заглушка видеоурока для пользователей без Премиум / ВИП */
         .video-embed-box.locked {
             aspect-ratio: auto;
-            min-height: 220px;
+            min-height: 210px;
             background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
             display: flex;
             align-items: center;
@@ -420,24 +659,19 @@
             color: #94A3B8;
             text-decoration: underline;
             margin-top: 2px;
-            transition: color 0.15s ease;
-        }
-
-        .paywall-login-link:hover {
-            color: #FFFFFF;
         }
 
         .sub-link {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 9px 12px;
+            padding: 10px 12px;
             border-radius: 10px;
             text-decoration: none;
             font-size: 0.8rem;
             font-weight: 700;
             color: var(--text-dark);
-            background: var(--bg-main);
+            background: #F8FAFC;
             border: 1px solid var(--border-color);
             transition: all 0.15s ease;
         }
@@ -448,7 +682,6 @@
             color: var(--kz-blue-dark);
         }
 
-        /* Стиль для заблокированной кнопки конспекта (если тариф Стандарт или нет подписки) */
         .sub-link.locked-resource {
             opacity: 0.75;
             background: #F8FAFC;
@@ -460,11 +693,10 @@
             border-color: #FCD34D;
         }
 
-        /* Акцентная кнопка для перехода к самому тренажеру */
         .sub-link.primary-trainer {
-            background: var(--kz-blue-light);
+            background: linear-gradient(90deg, var(--kz-blue-light) 0%, #E0F2FE 100%);
             color: var(--kz-blue-dark);
-            border-color: rgba(0, 161, 222, 0.25);
+            border-color: rgba(0, 161, 222, 0.3);
         }
 
         .sub-link-left {
@@ -483,35 +715,19 @@
             border: 1px solid var(--border-color);
         }
 
-        /* 3. Подвал и кнопки внизу */
+        /* 3. Подвал */
         footer {
             position: relative;
             z-index: 1;
             text-align: center;
-            padding: 10px 16px 20px 16px;
+            padding: 10px 16px 24px 16px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 10px;
         }
 
-        .instagram-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--kz-blue-dark);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.82rem;
-            padding: 8px 18px;
-            border-radius: 20px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-        }
-
-        /* Кнопка "Назад" в футере */
-        footer .back-btn {
+        .instagram-link, footer .back-btn {
             display: inline-flex;
             align-items: center;
             gap: 6px;
@@ -520,16 +736,10 @@
             border: 1px solid var(--border-color);
             text-decoration: none;
             font-weight: 700;
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             padding: 8px 18px;
             border-radius: 20px;
-            transition: all 0.2s ease;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-        }
-
-        footer .back-btn:active {
-            transform: scale(0.96);
-            background: var(--bg-main);
         }
 
         footer .back-btn svg {
@@ -538,35 +748,24 @@
             fill: var(--kz-blue);
         }
 
-        @media (max-height: 640px) {
-            header { padding: 16px; }
-            h1 { font-size: 1.15rem; }
-            .subtitle { font-size: 0.72rem; }
-            .trainer-card { padding: 12px 14px; }
-            .card-icon { width: 40px; height: 40px; font-size: 1.15rem; }
-            .card-text h2 { font-size: 0.88rem; }
-            .card-text p { font-size: 0.7rem; }
-        }
-
-        /* Адаптивность: комфортная ширина на ноутбуках и поля на телефонах */
-        @media (min-width: 700px) {
-            main { padding: 28px 24px; gap: 14px; }
-            .video-embed-box { border-radius: 14px; }
-            .dropdown-links { padding: 16px 18px 18px 24px; }
-        }
-        @media (max-width: 480px) {
-            main { padding: 16px 12px; }
-            .video-embed-box { border-radius: 10px; }
-            .dropdown-links { padding: 10px 10px 12px 16px; }
+        @media (max-width: 520px) {
+            .quick-range-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            summary.category-summary {
+                padding: 14px;
+            }
+            .category-content {
+                padding: 10px;
+            }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <!-- Верхняя кнопка "Назад" -->
         <a href="https://kazdoctors.com" class="back-btn">
-            <span>⬅️Go back</span>
+            <span>⬅️ Go back</span>
         </a>
 
         <div class="header-badges">
@@ -574,601 +773,725 @@
             <div id="tierStatusBadge" class="tier-status-badge"></div>
         </div>
         <h1>Medical English</h1>
-        <p class="subtitle">Study Medical English with us!</p>
+        <p class="subtitle">Grammar, Chunks & Clinical Practice</p>
     </header>
 
     <main>
 
-        
-               <!-- grammar test! -->
-        <a href="./exam/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">💪</div>
-                <div class="card-text">
-                    <h2>VIDEOCOURSE EXAM</h2>
-                    <p>Проверьте свой результат!</p>
+        <!-- ==================================================================
+             КАТЕГОРИЯ 1 (СВЕРХУ): ЧАНКИ (FREE) И РАНДОМНЫЕ ТЕСТЫ
+             ================================================================== -->
+        <details class="category-box cat-free" open>
+            <summary class="category-summary">
+                <div class="cat-header-left">
+                    <div class="cat-main-icon">⚡</div>
+                    <div class="cat-header-text">
+                        <h2>
+                            <span>Чанки и Микс-тренажеры</span>
+                            <span class="cat-pill green">CHUNKS FREE</span>
+                        </h2>
+                        <p>Стартовый гид по чанкам + случайные вопросы по всем темам</p>
+                    </div>
                 </div>
-            </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+                <div class="cat-chevron">
+                    <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                </div>
+            </summary>
 
-        <!-- all random (прямая ссылка) -->
-        <a href="./random/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🤯</div>
-                <div class="card-text">
-                    <h2>ALL RANDOM</h2>
-                    <p>all topics in grammar & vocabulary</p>
-                </div>
-            </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+            <div class="category-content">
+                <!-- 1. CHUNKS (Бесплатный раздел на самом верху) -->
+                <a href="./chunks/" class="trainer-card chunks-card">
+                    <div class="card-content">
+                        <div class="card-icon">🧩</div>
+                        <div class="card-text">
+                            <h2>
+                                <span>CHUNKS (Метод чанков)</span>
+                                <span class="free-pill-tag">🔓 FREE</span>
+                            </h2>
+                            <p>Как БЫСТРО учить английский + вся шпаргалка по грамматике</p>
+                        </div>
+                    </div>
+                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                </a>
 
-                <!-- all random 2 (прямая ссылка) -->
-        <a href="./random2/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🤯</div>
-                <div class="card-text">
-                    <h2>ALL RANDOM B1/B2</h2>
-                    <p>all topics in B1/B2 levels</p>
-                </div>
-            </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
-        
+                <!-- 2. ALL RANDOM (A1-B1) -->
+                <a href="./random/" class="trainer-card">
+                    <div class="card-content">
+                        <div class="card-icon">🔀</div>
+                        <div class="card-text">
+                            <h2>ALL RANDOM (A1–B1)</h2>
+                            <p>Микс-тренажер по всем темам грамматики и словаря</p>
+                        </div>
+                    </div>
+                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                </a>
 
-        <!-- ================= УРОК 1 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🦦</div>
-                    <div class="card-text">
-                        <h2>To be & To do</h2>
-                        <p>Lesson 1</p>
+                <!-- 3. ALL RANDOM B1/B2 -->
+                <a href="./random2/" class="trainer-card">
+                    <div class="card-content">
+                        <div class="card-icon">🚀</div>
+                        <div class="card-text">
+                            <h2>ALL RANDOM (B1 / B2)</h2>
+                            <p>Продвинутый микс-тренажер клинического уровня B1/B2</p>
+                        </div>
                     </div>
-                </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <div class="video-embed-box">
-                        <iframe
-                            data-src="https://player.vimeo.com/video/1240358777?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                            title="LESSON 1 — To be &amp; To do"
-                            loading="lazy"
-                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                    <a href="https://kazdoctors.com/grammar/lesson1" class="sub-link theory-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./tobetodo/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
+                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                </a>
             </div>
-        </div>
+        </details>
 
-        <!-- ================= УРОК 2 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🐅</div>
-                    <div class="card-text">
-                        <h2>Present simple & continuous</h2>
-                        <p>Lesson 2</p>
+        <!-- ==================================================================
+             КАТЕГОРИЯ 2: УРОКИ ВИДЕОКУРСА (1–15) С БЫСТРЫМ ПЕРЕКЛЮЧАТЕЛЕМ
+             ================================================================== -->
+        <details class="category-box" open>
+            <summary class="category-summary">
+                <div class="cat-header-left">
+                    <div class="cat-main-icon">📚</div>
+                    <div class="cat-header-text">
+                        <h2>
+                            <span>Уроки курса (Lessons 1–15)</span>
+                            <span class="cat-pill">15 МОДУЛЕЙ</span>
+                        </h2>
+                        <p>Видеоразборы, интерактивные конспекты и тренажеры по темам</p>
                     </div>
                 </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <div class="video-embed-box">
-                        <iframe
-                            data-src="https://player.vimeo.com/video/1240400163?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                            title="LESSON 2 — Present simple &amp; continuous"
-                            loading="lazy"
-                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                    <a href="https://kazdoctors.com/grammar/lesson2" class="sub-link theory-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./present/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
+                <div class="cat-chevron">
+                    <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
                 </div>
-            </div>
-        </div>
+            </summary>
 
-        <!-- ================= УРОК 3 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🐘</div>
-                    <div class="card-text">
-                        <h2>Past Simple & Present Perfect</h2>
-                        <p>Lesson 3</p>
-                    </div>
+            <div class="category-content">
+                <!-- Панель быстрого переключения диапазона уроков (без долгого скролла) -->
+                <div class="quick-range-bar">
+                    <button type="button" class="range-btn active" onclick="filterLessonsRange('all', this)">Все (1–15)</button>
+                    <button type="button" class="range-btn" onclick="filterLessonsRange('1-5', this)">Уроки 1–5</button>
+                    <button type="button" class="range-btn" onclick="filterLessonsRange('6-10', this)">Уроки 6–10</button>
+                    <button type="button" class="range-btn" onclick="filterLessonsRange('11-15', this)">Уроки 11–15</button>
                 </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <div class="video-embed-box">
-                        <iframe
-                            data-src="https://player.vimeo.com/video/1240386843?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                            title="LESSON 3 — Past Simple &amp; Present Perfect"
-                            loading="lazy"
-                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                    <a href="https://kazdoctors.com/grammar/lesson3" class="sub-link theory-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./past/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
 
-        <!-- ================= УРОК 4 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🐶</div>
-                    <div class="card-text">
-                        <h2>Future Simple</h2>
-                        <p>Lesson 4</p>
+                <!-- ================= УРОК 1 ================= -->
+                <div class="lesson-group" data-lesson="1">
+                    <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                        <div class="card-content">
+                            <div class="card-icon">🩺</div>
+                            <div class="card-text">
+                                <h2>
+                                    <span class="lesson-num-pill">Lesson 01</span>
+                                    <span>To be & To do</span>
+                                </h2>
+                                <p>Состояние пациента vs действия врача</p>
+                            </div>
+                        </div>
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    </button>
+                    <div class="lesson-dropdown">
+                        <div class="dropdown-links">
+                            <div class="video-embed-box">
+                                <iframe
+                                    data-src="https://player.vimeo.com/video/1240358777?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                    title="LESSON 1 — To be &amp; To do"
+                                    loading="lazy"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <a href="https://kazdoctors.com/grammar/lesson1" class="sub-link theory-link">
+                                <span class="sub-link-left">📖 Теория и конспект</span>
+                                <span class="sub-badge">PDF / Статья</span>
+                            </a>
+                            <a href="./tobetodo/" class="sub-link primary-trainer">
+                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span>➔</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <div class="video-embed-box">
-                        <iframe
-                            data-src="https://player.vimeo.com/video/1240378650?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                            title="LESSON 4 — Future Simple"
-                            loading="lazy"
-                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                    <a href="https://kazdoctors.com/grammar/lesson4" class="sub-link theory-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./future/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
 
-        <!-- ================= УРОК 5 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🐱</div>
-                    <div class="card-text">
-                        <h2>Passive</h2>
-                        <p>Lesson 5</p>
+                <!-- ================= УРОК 2 ================= -->
+                <div class="lesson-group" data-lesson="2">
+                    <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                        <div class="card-content">
+                            <div class="card-icon">🫀</div>
+                            <div class="card-text">
+                                <h2>
+                                    <span class="lesson-num-pill">Lesson 02</span>
+                                    <span>Present Simple & Continuous</span>
+                                </h2>
+                                <p>Регулярная практика vs процесс прямо сейчас</p>
+                            </div>
+                        </div>
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    </button>
+                    <div class="lesson-dropdown">
+                        <div class="dropdown-links">
+                            <div class="video-embed-box">
+                                <iframe
+                                    data-src="https://player.vimeo.com/video/1240400163?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                    title="LESSON 2 — Present simple &amp; continuous"
+                                    loading="lazy"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <a href="https://kazdoctors.com/grammar/lesson2" class="sub-link theory-link">
+                                <span class="sub-link-left">📖 Теория и конспект</span>
+                                <span class="sub-badge">PDF / Статья</span>
+                            </a>
+                            <a href="./present/" class="sub-link primary-trainer">
+                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span>➔</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <div class="video-embed-box">
-                        <iframe
-                            data-src="https://player.vimeo.com/video/1240378647?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                            title="LESSON 5 — Passive"
-                            loading="lazy"
-                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                    <a href="https://kazdoctors.com/grammar/lesson5" class="sub-link theory-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./passive/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
 
-        <!-- ================= УРОК 6 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🐯</div>
-                    <div class="card-text">
-                        <h2>Modals</h2>
-                        <p>Lesson 6</p>
+                <!-- ================= УРОК 3 ================= -->
+                <div class="lesson-group" data-lesson="3">
+                    <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                        <div class="card-content">
+                            <div class="card-icon">🩻</div>
+                            <div class="card-text">
+                                <h2>
+                                    <span class="lesson-num-pill">Lesson 03</span>
+                                    <span>Past Simple & Present Perfect</span>
+                                </h2>
+                                <p>Архив анамнеза vs актуальный результат к осмотру</p>
+                            </div>
+                        </div>
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    </button>
+                    <div class="lesson-dropdown">
+                        <div class="dropdown-links">
+                            <div class="video-embed-box">
+                                <iframe
+                                    data-src="https://player.vimeo.com/video/1240386843?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                    title="LESSON 3 — Past Simple &amp; Present Perfect"
+                                    loading="lazy"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <a href="https://kazdoctors.com/grammar/lesson3" class="sub-link theory-link">
+                                <span class="sub-link-left">📖 Теория и конспект</span>
+                                <span class="sub-badge">PDF / Статья</span>
+                            </a>
+                            <a href="./past/" class="sub-link primary-trainer">
+                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span>➔</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <div class="video-embed-box">
-                        <iframe
-                            data-src="https://player.vimeo.com/video/1240378649?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                            title="LESSON 6 — Modals"
-                            loading="lazy"
-                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                    <a href="https://kazdoctors.com/grammar/lesson6" class="sub-link theory-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./modals/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
 
-        <!-- ================= УРОК 7 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🦈</div>
-                    <div class="card-text">
-                        <h2>Possessives</h2>
-                        <p>Lesson 7</p>
+                <!-- ================= УРОК 4 ================= -->
+                <div class="lesson-group" data-lesson="4">
+                    <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                        <div class="card-content">
+                            <div class="card-icon">📋</div>
+                            <div class="card-text">
+                                <h2>
+                                    <span class="lesson-num-pill">Lesson 04</span>
+                                    <span>Future Simple</span>
+                                </h2>
+                                <p>Прогноз лечения и планы операций (will / going to)</p>
+                            </div>
+                        </div>
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    </button>
+                    <div class="lesson-dropdown">
+                        <div class="dropdown-links">
+                            <div class="video-embed-box">
+                                <iframe
+                                    data-src="https://player.vimeo.com/video/1240378650?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                    title="LESSON 4 — Future Simple"
+                                    loading="lazy"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <a href="https://kazdoctors.com/grammar/lesson4" class="sub-link theory-link">
+                                <span class="sub-link-left">📖 Теория и конспект</span>
+                                <span class="sub-badge">PDF / Статья</span>
+                            </a>
+                            <a href="./future/" class="sub-link primary-trainer">
+                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span>➔</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <div class="video-embed-box">
-                        <iframe
-                            data-src="https://player.vimeo.com/video/1240386846?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                            title="LESSON 7 — Possessives"
-                            loading="lazy"
-                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                    <a href="https://kazdoctors.com/grammar/lesson7" class="sub-link theory-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./possessives/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
 
-        <!-- ================= УРОК 8 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🦁</div>
-                    <div class="card-text">
-                        <h2>There is / there are</h2>
-                        <p>Lesson 8</p>
+                <!-- ================= УРОК 5 ================= -->
+                <div class="lesson-group" data-lesson="5">
+                    <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                        <div class="card-content">
+                            <div class="card-icon">💉</div>
+                            <div class="card-text">
+                                <h2>
+                                    <span class="lesson-num-pill">Lesson 05</span>
+                                    <span>Passive Voice</span>
+                                </h2>
+                                <p>Страдательный залог в протоколах и статьях (to be + V3)</p>
+                            </div>
+                        </div>
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    </button>
+                    <div class="lesson-dropdown">
+                        <div class="dropdown-links">
+                            <div class="video-embed-box">
+                                <iframe
+                                    data-src="https://player.vimeo.com/video/1240378647?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                    title="LESSON 5 — Passive"
+                                    loading="lazy"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <a href="https://kazdoctors.com/grammar/lesson5" class="sub-link theory-link">
+                                <span class="sub-link-left">📖 Теория и конспект</span>
+                                <span class="sub-badge">PDF / Статья</span>
+                            </a>
+                            <a href="./passive/" class="sub-link primary-trainer">
+                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span>➔</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <div class="video-embed-box">
-                        <iframe
-                            data-src="https://player.vimeo.com/video/1240396124?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                            title="LESSON 8 — There is / there are"
-                            loading="lazy"
-                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                    <a href="https://kazdoctors.com/grammar/lesson8" class="sub-link theory-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./thereis/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
 
-        <!-- ================= УРОК 9 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🐴</div>
-                    <div class="card-text">
-                        <h2>Prepositions of time</h2>
-                        <p>Lesson 9</p>
+                <!-- ================= УРОК 6 ================= -->
+                <div class="lesson-group" data-lesson="6">
+                    <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                        <div class="card-content">
+                            <div class="card-icon">⚖️</div>
+                            <div class="card-text">
+                                <h2>
+                                    <span class="lesson-num-pill">Lesson 06</span>
+                                    <span>Modals</span>
+                                </h2>
+                                <p>Вероятность диагноза, рекомендации и противопоказания</p>
+                            </div>
+                        </div>
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    </button>
+                    <div class="lesson-dropdown">
+                        <div class="dropdown-links">
+                            <div class="video-embed-box">
+                                <iframe
+                                    data-src="https://player.vimeo.com/video/1240378649?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                    title="LESSON 6 — Modals"
+                                    loading="lazy"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <a href="https://kazdoctors.com/grammar/lesson6" class="sub-link theory-link">
+                                <span class="sub-link-left">📖 Теория и конспект</span>
+                                <span class="sub-badge">PDF / Статья</span>
+                            </a>
+                            <a href="./modals/" class="sub-link primary-trainer">
+                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span>➔</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <div class="video-embed-box">
-                        <iframe
-                            data-src="https://player.vimeo.com/video/1240400166?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                            title="LESSON 9 — Prepositions of time"
-                            loading="lazy"
-                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                    <a href="https://kazdoctors.com/grammar/lesson9" class="sub-link theory-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./prepositionsoftime/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
 
-        <!-- ================= УРОК 10 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🦅</div>
-                    <div class="card-text">
-                        <h2>Prepositions of place and motion</h2>
-                        <p>Lesson 10</p>
+                <!-- ================= УРОК 7 ================= -->
+                <div class="lesson-group" data-lesson="7">
+                    <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                        <div class="card-content">
+                            <div class="card-icon">🧬</div>
+                            <div class="card-text">
+                                <h2>
+                                    <span class="lesson-num-pill">Lesson 07</span>
+                                    <span>Possessives</span>
+                                </h2>
+                                <p>Принадлежность и чтение длинных цепочек терминов</p>
+                            </div>
+                        </div>
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    </button>
+                    <div class="lesson-dropdown">
+                        <div class="dropdown-links">
+                            <div class="video-embed-box">
+                                <iframe
+                                    data-src="https://player.vimeo.com/video/1240386846?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                    title="LESSON 7 — Possessives"
+                                    loading="lazy"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <a href="https://kazdoctors.com/grammar/lesson7" class="sub-link theory-link">
+                                <span class="sub-link-left">📖 Теория и конспект</span>
+                                <span class="sub-badge">PDF / Статья</span>
+                            </a>
+                            <a href="./possessives/" class="sub-link primary-trainer">
+                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span>➔</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <div class="video-embed-box">
-                        <iframe
-                            data-src="https://player.vimeo.com/video/1240396125?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                            title="LESSON 10 — Prepositions of place and motion"
-                            loading="lazy"
-                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                    <a href="https://kazdoctors.com/grammar/lesson10" class="sub-link theory-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./prepositionsofplace/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
 
-        <!-- ================= УРОК 11 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🐺</div>
-                    <div class="card-text">
-                        <h2>Conditionals</h2>
-                        <p>Lesson 11</p>
+                <!-- ================= УРОК 8 ================= -->
+                <div class="lesson-group" data-lesson="8">
+                    <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                        <div class="card-content">
+                            <div class="card-icon">🏥</div>
+                            <div class="card-text">
+                                <h2>
+                                    <span class="lesson-num-pill">Lesson 08</span>
+                                    <span>There is / there are</span>
+                                    <span class="free-pill-tag">FREE ТРЕНАЖЕР</span>
+                                </h2>
+                                <p>Наличие симптомов, показаний и очагов поражения</p>
+                            </div>
+                        </div>
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    </button>
+                    <div class="lesson-dropdown">
+                        <div class="dropdown-links">
+                            <div class="video-embed-box">
+                                <iframe
+                                    data-src="https://player.vimeo.com/video/1240396124?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                    title="LESSON 8 — There is / there are"
+                                    loading="lazy"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <a href="https://kazdoctors.com/grammar/lesson8" class="sub-link theory-link">
+                                <span class="sub-link-left">📖 Теория и конспект</span>
+                                <span class="sub-badge">PDF / Статья</span>
+                            </a>
+                            <a href="./thereis/" class="sub-link primary-trainer">
+                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span>➔</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <div class="video-embed-box">
-                        <iframe
-                            data-src="https://player.vimeo.com/video/1240396123?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                            title="LESSON 11 — Conditionals"
-                            loading="lazy"
-                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                    <a href="https://kazdoctors.com/grammar/lesson11" class="sub-link theory-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./conditionals/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
 
-        <!-- ================= УРОК 12 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🦉</div>
-                    <div class="card-text">
-                        <h2>Comparatives & Superlatives</h2>
-                        <p>Lesson 12</p>
+                <!-- ================= УРОК 9 ================= -->
+                <div class="lesson-group" data-lesson="9">
+                    <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                        <div class="card-content">
+                            <div class="card-icon">⏱️</div>
+                            <div class="card-text">
+                                <h2>
+                                    <span class="lesson-num-pill">Lesson 09</span>
+                                    <span>Prepositions of time</span>
+                                </h2>
+                                <p>Дебют симптомов, длительность терапии и дедлайны</p>
+                            </div>
+                        </div>
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    </button>
+                    <div class="lesson-dropdown">
+                        <div class="dropdown-links">
+                            <div class="video-embed-box">
+                                <iframe
+                                    data-src="https://player.vimeo.com/video/1240400166?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                    title="LESSON 9 — Prepositions of time"
+                                    loading="lazy"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <a href="https://kazdoctors.com/grammar/lesson9" class="sub-link theory-link">
+                                <span class="sub-link-left">📖 Теория и конспект</span>
+                                <span class="sub-badge">PDF / Статья</span>
+                            </a>
+                            <a href="./prepositionsoftime/" class="sub-link primary-trainer">
+                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span>➔</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <div class="video-embed-box">
-                        <iframe
-                            data-src="https://player.vimeo.com/video/1240386847?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                            title="LESSON 12 — Comparatives &amp; Superlatives"
-                            loading="lazy"
-                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                    <a href="https://kazdoctors.com/grammar/lesson12" class="sub-link theory-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./comparatives/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
 
-        <!-- ================= УРОК 13 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🦆</div>
-                    <div class="card-text">
-                        <h2>Articles</h2>
-                        <p>Lesson 13</p>
+                <!-- ================= УРОК 10 ================= -->
+                <div class="lesson-group" data-lesson="10">
+                    <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                        <div class="card-content">
+                            <div class="card-icon">🧭</div>
+                            <div class="card-text">
+                                <h2>
+                                    <span class="lesson-num-pill">Lesson 10</span>
+                                    <span>Prepositions of place and motion</span>
+                                </h2>
+                                <p>Анатомическая топография, иррадиация боли и катетеры</p>
+                            </div>
+                        </div>
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    </button>
+                    <div class="lesson-dropdown">
+                        <div class="dropdown-links">
+                            <div class="video-embed-box">
+                                <iframe
+                                    data-src="https://player.vimeo.com/video/1240396125?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                    title="LESSON 10 — Prepositions of place and motion"
+                                    loading="lazy"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <a href="https://kazdoctors.com/grammar/lesson10" class="sub-link theory-link">
+                                <span class="sub-link-left">📖 Теория и конспект</span>
+                                <span class="sub-badge">PDF / Статья</span>
+                            </a>
+                            <a href="./prepositionsofplace/" class="sub-link primary-trainer">
+                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span>➔</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <div class="video-embed-box">
-                        <iframe
-                            data-src="https://player.vimeo.com/video/1240396126?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                            title="LESSON 13 — Articles"
-                            loading="lazy"
-                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                    <a href="https://kazdoctors.com/grammar/lesson13" class="sub-link theory-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./articles/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
 
-        <!-- ================= УРОК 14 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🐳</div>
-                    <div class="card-text">
-                        <h2>Relative Clause</h2>
-                        <p>Lesson 14</p>
+                <!-- ================= УРОК 11 ================= -->
+                <div class="lesson-group" data-lesson="11">
+                    <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                        <div class="card-content">
+                            <div class="card-icon">🔀</div>
+                            <div class="card-text">
+                                <h2>
+                                    <span class="lesson-num-pill">Lesson 11</span>
+                                    <span>Conditionals</span>
+                                </h2>
+                                <p>Клинические алгоритмы «Если..., то...» (0, 1, 2, 3, Mixed)</p>
+                            </div>
+                        </div>
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    </button>
+                    <div class="lesson-dropdown">
+                        <div class="dropdown-links">
+                            <div class="video-embed-box">
+                                <iframe
+                                    data-src="https://player.vimeo.com/video/1240396123?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                    title="LESSON 11 — Conditionals"
+                                    loading="lazy"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <a href="https://kazdoctors.com/grammar/lesson11" class="sub-link theory-link">
+                                <span class="sub-link-left">📖 Теория и конспект</span>
+                                <span class="sub-badge">PDF / Статья</span>
+                            </a>
+                            <a href="./conditionals/" class="sub-link primary-trainer">
+                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span>➔</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <div class="video-embed-box">
-                        <iframe
-                            data-src="https://player.vimeo.com/video/1240386845?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                            title="LESSON 14 — Relative Clause"
-                            loading="lazy"
-                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                    <a href="https://kazdoctors.com/grammar/lesson14" class="sub-link theory-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./relativeclause/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
 
-        <!-- ================= УРОК 15 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🦜</div>
-                    <div class="card-text">
-                        <h2>Gerund, Infinitive, Past Participle</h2>
-                        <p>Lesson 15</p>
+                <!-- ================= УРОК 12 ================= -->
+                <div class="lesson-group" data-lesson="12">
+                    <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                        <div class="card-content">
+                            <div class="card-icon">📊</div>
+                            <div class="card-text">
+                                <h2>
+                                    <span class="lesson-num-pill">Lesson 12</span>
+                                    <span>Comparatives & Superlatives</span>
+                                </h2>
+                                <p>Сравнение динамики симптомов и тяжести патологий</p>
+                            </div>
+                        </div>
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    </button>
+                    <div class="lesson-dropdown">
+                        <div class="dropdown-links">
+                            <div class="video-embed-box">
+                                <iframe
+                                    data-src="https://player.vimeo.com/video/1240386847?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                    title="LESSON 12 — Comparatives &amp; Superlatives"
+                                    loading="lazy"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <a href="https://kazdoctors.com/grammar/lesson12" class="sub-link theory-link">
+                                <span class="sub-link-left">📖 Теория и конспект</span>
+                                <span class="sub-badge">PDF / Статья</span>
+                            </a>
+                            <a href="./comparatives/" class="sub-link primary-trainer">
+                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span>➔</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <div class="video-embed-box">
-                        <iframe
-                            data-src="https://player.vimeo.com/video/1240400165?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                            title="LESSON 15 — Gerund, Infinitive, Past Participle"
-                            loading="lazy"
-                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                    <a href="https://kazdoctors.com/grammar/lesson15" class="sub-link theory-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./gerund/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
 
-        <!-- chunks -->
-        <a href="./chunks/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🤓</div>
-                <div class="card-text">
-                    <h2>CHUNKS</h2>
-                    <p>Как БЫСТРО учить английский</p>
+                <!-- ================= УРОК 13 ================= -->
+                <div class="lesson-group" data-lesson="13">
+                    <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                        <div class="card-content">
+                            <div class="card-icon">🔬</div>
+                            <div class="card-text">
+                                <h2>
+                                    <span class="lesson-num-pill">Lesson 13</span>
+                                    <span>Articles</span>
+                                </h2>
+                                <p>Артикли a, an, the с симптомами, органами и диагнозами</p>
+                            </div>
+                        </div>
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    </button>
+                    <div class="lesson-dropdown">
+                        <div class="dropdown-links">
+                            <div class="video-embed-box">
+                                <iframe
+                                    data-src="https://player.vimeo.com/video/1240396126?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                    title="LESSON 13 — Articles"
+                                    loading="lazy"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <a href="https://kazdoctors.com/grammar/lesson13" class="sub-link theory-link">
+                                <span class="sub-link-left">📖 Теория и конспект</span>
+                                <span class="sub-badge">PDF / Статья</span>
+                            </a>
+                            <a href="./articles/" class="sub-link primary-trainer">
+                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span>➔</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- ================= УРОК 14 ================= -->
+                <div class="lesson-group" data-lesson="14">
+                    <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                        <div class="card-content">
+                            <div class="card-icon">🔗</div>
+                            <div class="card-text">
+                                <h2>
+                                    <span class="lesson-num-pill">Lesson 14</span>
+                                    <span>Relative Clause</span>
+                                </h2>
+                                <p>Придаточные со словами that, which, who, whose и where</p>
+                            </div>
+                        </div>
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    </button>
+                    <div class="lesson-dropdown">
+                        <div class="dropdown-links">
+                            <div class="video-embed-box">
+                                <iframe
+                                    data-src="https://player.vimeo.com/video/1240386845?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                    title="LESSON 14 — Relative Clause"
+                                    loading="lazy"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <a href="https://kazdoctors.com/grammar/lesson14" class="sub-link theory-link">
+                                <span class="sub-link-left">📖 Теория и конспект</span>
+                                <span class="sub-badge">PDF / Статья</span>
+                            </a>
+                            <a href="./relativeclause/" class="sub-link primary-trainer">
+                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span>➔</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= УРОК 15 ================= -->
+                <div class="lesson-group" data-lesson="15">
+                    <button type="button" class="trainer-card" onclick="toggleLesson(this)">
+                        <div class="card-content">
+                            <div class="card-icon">🧠</div>
+                            <div class="card-text">
+                                <h2>
+                                    <span class="lesson-num-pill">Lesson 15</span>
+                                    <span>Gerund, Infinitive, Past Participle</span>
+                                </h2>
+                                <p>Неличные формы глагола (-ing, to do, V3) в статьях</p>
+                            </div>
+                        </div>
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    </button>
+                    <div class="lesson-dropdown">
+                        <div class="dropdown-links">
+                            <div class="video-embed-box">
+                                <iframe
+                                    data-src="https://player.vimeo.com/video/1240400165?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                    title="LESSON 15 — Gerund, Infinitive, Past Participle"
+                                    loading="lazy"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <a href="https://kazdoctors.com/grammar/lesson15" class="sub-link theory-link">
+                                <span class="sub-link-left">📖 Теория и конспект</span>
+                                <span class="sub-badge">PDF / Статья</span>
+                            </a>
+                            <a href="./gerund/" class="sub-link primary-trainer">
+                                <span class="sub-link-left">🎯 Перейти к тренажеру</span>
+                                <span>➔</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
-      
+        </details>
+
+        <!-- ==================================================================
+             КАТЕГОРИЯ 3 (ВНИЗУ): ИТОГОВЫЙ ЭКЗАМЕН ПО ВИДЕОКУРСУ
+             ================================================================== -->
+        <details class="category-box cat-exam" open>
+            <summary class="category-summary">
+                <div class="cat-header-left">
+                    <div class="cat-main-icon">🎓</div>
+                    <div class="cat-header-text">
+                        <h2>
+                            <span>Итоговый экзамен курса</span>
+                            <span class="cat-pill gold">60 МИНУТ</span>
+                        </h2>
+                        <p>Финальная проверка знаний по всем 15 урокам с сертификатом</p>
+                    </div>
+                </div>
+                <div class="cat-chevron">
+                    <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                </div>
+            </summary>
+
+            <div class="category-content">
+                <a href="./exam/" class="trainer-card exam-card">
+                    <div class="card-content">
+                        <div class="card-icon">🏆</div>
+                        <div class="card-text">
+                            <h2>VIDEOCOURSE EXAM</h2>
+                            <p>60 вопросов (30 Grammar + 30 Vocabulary) • Именной результат</p>
+                        </div>
+                    </div>
+                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                </a>
+            </div>
+        </details>
+
     </main>
 
     <footer>
@@ -1176,7 +1499,6 @@
             <span>@doctors.speak</span>
         </a>
 
-        <!-- Нижняя кнопка "Назад" -->
         <a href="https://kazdoctors.com" class="back-btn">
             <svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
             <span>Go back</span>
@@ -1194,12 +1516,6 @@
             ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
             : null;
 
-        // Иерархия уровней подписки:
-        // 0 = none (не авторизован)
-        // 1 = standard (только тренажеры)
-        // 2 = pro (тренажеры + конспекты)
-        // 3 = premium (тренажеры + конспекты + видеоуроки)
-        // 4 = vip (все включено + личное ведение)
         const TIER_LEVELS = {
             none: 0,
             standard: 1,
@@ -1234,7 +1550,6 @@
             }
         });
 
-        // Отрисовка плашки «Видео доступно только в Премиум и ВИП»
         function renderLockedVideoState(tier) {
             const isLoggedIn = (tier !== "none");
             const currentTierLabel = TIER_NAMES_RU[tier] || "";
@@ -1268,7 +1583,6 @@
             });
         }
 
-        // Разблокировка видеоплееров ТОЛЬКО для подписчиков Премиум и ВИП
         function unlockVideosForPremiumAndVip() {
             videoBoxes.forEach((box, idx) => {
                 box.classList.remove('locked');
@@ -1287,7 +1601,6 @@
                 }
             });
 
-            // Если пользователь уже раскрыл урок — сразу подгружаем видео
             const openGroup = document.querySelector('.lesson-group.open');
             if (openGroup) {
                 const iframe = openGroup.querySelector('iframe');
@@ -1297,7 +1610,6 @@
             }
         }
 
-        // Настройка доступа к кнопкам «Теория и конспект» (нужен Про, Премиум или ВИП)
         function updateTheoryLinksState(tierLevel) {
             const theoryLinks = document.querySelectorAll('.theory-link');
             theoryLinks.forEach(link => {
@@ -1318,8 +1630,6 @@
             });
         }
 
-        // Определение тарифа пользователя из Supabase
-// Определение тарифа пользователя и активности подписки из таблицы profiles
         async function detectUserTier(session) {
             if (!session || !session.user) return "none";
 
@@ -1327,7 +1637,6 @@
             const userEmail = (user.email || "").toLowerCase().trim();
 
             try {
-                // Ищем профиль сначала по ID, затем по Email (как в session-guard.js)
                 let { data: profile } = await supabaseClient
                     .from('profiles')
                     .select('tier, subscription_expires_at')
@@ -1343,14 +1652,13 @@
                     profile = resByEmail.data;
                 }
 
-                // Если профиля нет или срок подписки истек — считаем, что активной подписки нет ("none")
                 if (!profile || !profile.subscription_expires_at) {
                     return "none";
                 }
 
                 const expiresAt = new Date(profile.subscription_expires_at);
                 if (isNaN(expiresAt.getTime()) || new Date() > expiresAt) {
-                    return "none"; // Подписка истекла
+                    return "none";
                 }
 
                 const dbTier = (profile.tier || "standard").toLowerCase().trim();
@@ -1365,7 +1673,6 @@
         }
 
         async function checkAuthAndTier() {
-            // Изначально блокируем видео до завершения проверки
             renderLockedVideoState("none");
 
             if (!supabaseClient) return;
@@ -1383,17 +1690,14 @@
 
             const tierLevel = TIER_LEVELS[currentUserTier] || 0;
 
-            // Показываем бейдж тарифа в шапке для авторизованных пользователей
             const badgeEl = document.getElementById('tierStatusBadge');
             if (tierLevel > 0 && badgeEl) {
                 badgeEl.textContent = `Тариф: ${TIER_NAMES_RU[currentUserTier]}`;
                 badgeEl.style.display = 'inline-block';
             }
 
-            // Проверяем доступ к конспектам (нужен уровень >= 2: pro, premium, vip)
             updateTheoryLinksState(tierLevel);
 
-            // Проверяем доступ к ВИДЕО (нужен уровень >= 3: ТОЛЬКО premium или vip)
             if (tierLevel >= TIER_LEVELS.premium) {
                 canWatchVideo = true;
                 unlockVideosForPremiumAndVip();
@@ -1406,13 +1710,30 @@
         checkAuthAndTier();
 
         // =========================================================================
-        // 2. ФУНКЦИЯ РАСКРЫТИЯ / СКРЫТИЯ УРОКА (ACCORDION)
+        // 2. БЫСТРЫЙ ФИЛЬТР УРОКОВ ПО ДИАПАЗОНАМ (1-5, 6-10, 11-15)
+        // =========================================================================
+        function filterLessonsRange(range, btnEl) {
+            document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
+            if (btnEl) btnEl.classList.add('active');
+
+            document.querySelectorAll('.lesson-group').forEach(group => {
+                const num = parseInt(group.getAttribute('data-lesson'), 10);
+                let visible = true;
+                if (range === '1-5') visible = (num >= 1 && num <= 5);
+                else if (range === '6-10') visible = (num >= 6 && num <= 10);
+                else if (range === '11-15') visible = (num >= 11 && num <= 15);
+
+                group.classList.toggle('hidden-by-filter', !visible);
+            });
+        }
+
+        // =========================================================================
+        // 3. ФУНКЦИЯ РАСКРЫТИЯ / СКРЫТИЯ УРОКА (ACCORDION)
         // =========================================================================
         function toggleLesson(buttonElement) {
             const currentGroup = buttonElement.parentElement;
             const isOpen = currentGroup.classList.contains('open');
 
-            // Закрываем все открытые уроки и останавливаем в них видео
             document.querySelectorAll('.lesson-group.open').forEach(group => {
                 group.classList.remove('open');
                 const iframe = group.querySelector('iframe');
@@ -1421,11 +1742,9 @@
                 }
             });
 
-            // Если нажатый урок был закрыт — открываем его
             if (!isOpen) {
                 currentGroup.classList.add('open');
 
-                // Подгружаем плеер Vimeo ТОЛЬКО если у пользователя тариф Премиум или ВИП
                 if (canWatchVideo) {
                     const iframe = currentGroup.querySelector('iframe');
                     if (iframe && iframe.dataset.src && !iframe.getAttribute('src')) {
