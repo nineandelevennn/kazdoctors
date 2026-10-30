@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>@doctors.speak — Lesson 14: Relative Clauses in Medicine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Подключение Supabase SDK для проверки подписки -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --kz-gold-light: #FFFBEB;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --success-bg: #DCFCE7;
+      --success-border: #22C55E;
+      --success-text: #15803D;
+      --error-bg: #FEE2E2;
+      --error-border: #EF4444;
+      --error-text: #B91C1C;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 40px;
+    }
+
+    /* Верхняя шапка с кнопкой назад и переключателем RU/KZ */
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+      color: #FFFFFF;
+      padding: 16px 20px 22px 20px;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-top {
+      max-width: 820px;
+      margin: 0 auto 12px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .header-right-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tier-badge {
+      display: none;
+      background: rgba(255, 199, 44, 0.25);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 20px;
+      padding: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 800;
+      font-size: 0.74rem;
+      padding: 5px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+    }
+
+    .header-title-box {
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .lesson-badge {
+      display: inline-block;
+      background: rgba(255, 199, 44, 0.2);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    header p {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       ЭКРАН ЗАГЛУШКИ ПРИ ОТСУТСТВИИ ПОДПИСКИ ПРО / ПРЕМИУМ / ВИП
+       ========================================================================== */
+    #authLoader {
+      width: 100%;
+      max-width: 520px;
+      margin: 40px auto;
+      padding: 30px 20px;
+      text-align: center;
+      font-weight: 700;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    #paywallGate {
+      display: none;
+      width: 100%;
+      max-width: 540px;
+      margin: 28px auto;
+      padding: 0 14px;
+    }
+
+    .paywall-card {
+      background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      border-radius: 22px;
+      padding: 28px 22px;
+      text-align: center;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.18);
+      border: 1px solid rgba(255, 199, 44, 0.35);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .pw-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      background: rgba(255, 199, 44, 0.16);
+      border: 1px solid rgba(255, 199, 44, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+    }
+
+    .pw-badge {
+      background: rgba(0, 161, 222, 0.22);
+      border: 1px solid rgba(0, 161, 222, 0.55);
+      color: #7DD3FC;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .pw-title {
+      font-size: 1.15rem;
+      font-weight: 900;
+      line-height: 1.3;
+      color: #FFFFFF;
+    }
+
+    .pw-desc {
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: #CBD5E1;
+      font-weight: 500;
+    }
+
+    .pw-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      margin-top: 6px;
+    }
+
+    .pw-btn-primary {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      padding: 13px 18px;
+      border-radius: 14px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(255, 199, 44, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .pw-btn-primary:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    .pw-btn-secondary {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 11px 16px;
+      border-radius: 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .pw-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    /* Контейнер защищенного урока (скрыт до подтверждения тарифа) */
+    #lessonContentWrapper {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Навигация по разделам урока */
+    .section-nav {
+      width: 100%;
+      max-width: 820px;
+      margin: 14px auto 0 auto;
+      padding: 0 14px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .nav-pill {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 9px 6px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .nav-pill.active {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      border-color: var(--kz-blue-dark);
+      box-shadow: 0 4px 12px rgba(0, 161, 222, 0.25);
+    }
+
+    /* Основной контейнер */
+    main {
+      width: 100%;
+      max-width: 820px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-section {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .tab-section.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Карточки теории */
+    .card-block {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-block::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: var(--kz-blue);
+    }
+
+    .card-block.gold::before {
+      background: var(--kz-gold-dark);
+    }
+
+    .card-block h2 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-block p {
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+
+    /* Сетка сравнения THAT vs WHICH */
+    .rel-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .rel-card {
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-main);
+    }
+
+    .rel-card.r-that { border-top: 4px solid var(--kz-blue); background: var(--kz-blue-light); }
+    .rel-card.r-which { border-top: 4px solid var(--kz-gold-dark); background: var(--kz-gold-light); }
+
+    .rel-title {
+      font-size: 0.88rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .comp-formula {
+      display: inline-block;
+      background: #FFFFFF;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      border: 1px dashed var(--kz-blue-dark);
+      margin-bottom: 8px;
+    }
+
+    .clinical-quote {
+      background: #FFFFFF;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.81rem;
+      border-left: 3px solid var(--text-dark);
+      margin-top: 8px;
+      line-height: 1.45;
+    }
+
+    /* Таблица союзных слов */
+    .grammar-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 0.77rem;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .grammar-table th {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: 800;
+    }
+
+    .grammar-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border-color);
+      background: #FFFFFF;
+      line-height: 1.45;
+    }
+
+    .grammar-table tr:nth-child(even) td {
+      background: #F8FAFC;
+    }
+
+    /* Интерактивный разбор статьи (OME & Biofilms) */
+    .abstract-box {
+      background: #FFFFFF;
+      border: 2px solid #CBD5E1;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .abstract-header {
+      background: #1E293B;
+      color: #FFFFFF;
+      padding: 10px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .abstract-controls {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .hl-btn {
+      border: none;
+      padding: 5px 10px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .hl-btn.that-type { background: #BAE6FD; color: #0369A1; }
+    .hl-btn.which-type { background: #FDE68A; color: #92400E; }
+    .hl-btn.reset { background: rgba(255,255,255,0.2); color: #FFFFFF; }
+
+    .abstract-body {
+      padding: 14px;
+      font-size: 0.84rem;
+      line-height: 1.68;
+      color: #334155;
+    }
+
+    .rc-that, .rc-which {
+      padding: 1px 5px;
+      border-radius: 5px;
+      transition: all 0.2s ease;
+    }
+
+    .abstract-body.show-that .rc-that {
+      background: #BAE6FD;
+      color: #0369A1;
+      font-weight: 800;
+      border-bottom: 2px solid #0284C7;
+    }
+
+    .abstract-body.show-which .rc-which {
+      background: #FDE68A;
+      color: #92400E;
+      font-weight: 800;
+      border-bottom: 2px solid #D97706;
+    }
+
+    /* Быстрые микро-упражнения внутри теории (Quick Check) */
+    .quick-check {
+      background: #F8FAFC;
+      border: 1px dashed var(--kz-blue);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .qc-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .qc-question {
+      font-size: 0.86rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+    }
+
+    .qc-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .qc-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .qc-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background: var(--kz-blue-light);
+    }
+
+    .qc-btn.correct {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    .qc-btn.wrong {
+      background: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    .qc-feedback {
+      display: none;
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      line-height: 1.35;
+    }
+
+    /* Карточки словаря */
+    .vocab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+      gap: 10px;
+    }
+
+    .vocab-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .vocab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .vocab-word {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+    }
+
+    .speak-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 161, 222, 0.3);
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+    }
+
+    .vocab-trans {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .vocab-example {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--bg-main);
+      padding: 7px 9px;
+      border-radius: 8px;
+      line-height: 1.35;
+    }
+
+    /* Кнопка перехода к следующему разделу или тренажеру */
+    .action-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      border-radius: 16px;
+      padding: 13px 18px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    @media (max-width: 560px) {
+      .section-nav {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      header h1 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ШАПКА УРОКА -->
+  <header>
+    <div class="header-top">
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅ К списку уроков</a>
+      <div class="header-right-controls">
+        <span id="userTierBadge" class="tier-badge"></span>
+        <div class="lang-switch">
+          <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
+          <button class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
+        </div>
+      </div>
+    </div>
+    <div class="header-title-box">
+      <span class="lesson-badge">Lesson 14 • A1–B1 Medical English</span>
+      <h1 id="uiTitle">Relative Clauses (Конструкции «который / чей / где»)</h1>
+      <p id="uiSubtitle">Как связывать сложные клинические мысли с помощью that, which, who, whose и where</p>
+    </div>
+  </header>
+
+  <!-- ИНДИКАТОР ПРОВЕРКИ ПОДПИСКИ -->
+  <div id="authLoader">🔄 Проверка подписки и доступа к конспекту...</div>
+
+  <!-- БЛОК PAYWALL (ПОКАЗЫВАЕТСЯ, ЕСЛИ НЕТ ТАРИФА ПРО / ПРЕМИУМ / ВИП) -->
+  <div id="paywallGate">
+    <div class="paywall-card">
+      <div class="pw-icon">🔒</div>
+      <span class="pw-badge" id="pwBadgeText">Доступно в тарифах ПРО / ПРЕМИУМ / ВИП</span>
+      <div class="pw-title" id="pwTitleText">Интерактивный конспект закрыт для вашего тарифа</div>
+      <p class="pw-desc" id="pwDescText">
+        Интерактивные конспекты с клиническим разбором статей, озвученным словарем и упражнениями открыты для подписок «Про», «Премиум» и «ВИП». Перейдите на страницу тарифов, чтобы подключить или повысить свой доступ:
+      </p>
+      <div class="pw-buttons">
+        <a href="https://kazdoctors.com/tarifs" class="pw-btn-primary" id="pwTarifsBtn">
+          🌟 Перейти к тарифам (kazdoctors.com/tarifs)
+        </a>
+        <a href="https://instagram.com/doctors.speak" target="_blank" class="pw-btn-secondary" id="pwContactBtn">
+          💬 Написать нам (@doctors.speak)
+        </a>
+        <a href="/login.html" class="pw-btn-secondary" id="pwLoginBtn" style="display:none;">
+          🔐 Войти в аккаунт
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ЗАЩИЩЕННЫЙ КОНТЕНТ УРОКА (ОТКРЫВАЕТСЯ ТОЛЬКО ДЛЯ PRO, PREMIUM, VIP) -->
+  <div id="lessonContentWrapper">
+    <!-- НАВИГАЦИЯ ПО ЭТАПАМ УРОКА -->
+    <nav class="section-nav">
+      <button class="nav-pill active" onclick="showTab(0)" id="nav0">1. That vs Which</button>
+      <button class="nav-pill" onclick="showTab(1)" id="nav1">2. Who/Whose и Статья</button>
+      <button class="nav-pill" onclick="showTab(2)" id="nav2">3. Словарь (14 слов)</button>
+      <button class="nav-pill" onclick="showTab(3)" id="nav3">4. Упражнения</button>
+    </nav>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main>
+      <!-- ВКЛАДКА 1: СМЫСЛ RELATIVE CLAUSE, THAT VS WHICH И КОГДА МОЖНО ОПУСТИТЬ THAT -->
+      <section class="tab-section active" id="tab0"></section>
+
+      <!-- ВКЛАДКА 2: ТАБЛИЦА WHO/WHOSE/WHERE/WHEN И РАЗБОР СТАТЬИ (OME & BIOFILMS) -->
+      <section class="tab-section" id="tab1"></section>
+
+      <!-- ВКЛАДКА 3: СЛОВАРЬ С ПРИМЕРАМИ -->
+      <section class="tab-section" id="tab2">
+        <div class="card-block">
+          <h2 id="uiVocabTitle">💊 Клинический словарь урока (14 терминов)</h2>
+          <p id="uiVocabDesc">Нажмите 🔊, чтобы прослушать произношение. Обратите внимание на работу Relative Clauses (who, that, which) в каждом клиническом примере.</p>
+          <div class="vocab-grid" id="vocabGrid"></div>
+        </div>
+        <button class="action-btn" onclick="showTab(3)" id="uiToExBtn">Перейти к упражнениям урока ➔</button>
+      </section>
+
+      <!-- ВКЛАДКА 4: ПРАКТИКУМ (EXERCISE 1 & 2 ИЗ PDF) -->
+      <section class="tab-section" id="tab3">
+        <div class="card-block gold">
+          <h2 id="uiEx1Title">✍️ Упражнение 1: Выберите правильное союзное слово (who, whose, which, that, where)</h2>
+          <p id="uiEx1Desc">Смотрите на слово перед пропуском (человек, болезнь, анализ, отделение) и на слово сразу после пропуска:</p>
+          <div id="ex1Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+
+        <div class="card-block">
+          <h2 id="uiEx2Title">🩺 Упражнение 2: Объедините два предложения с помощью Relative Clause</h2>
+          <p id="uiEx2Desc">Выберите грамматически верный способ соединить две клинические фразы в одно предложение:</p>
+          <div id="ex2Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+
+        <a href="./relativeclause/" class="action-btn" id="uiGoTrainerBtn">🎯 Запустить игровой тренажер по Уроку 14 ➔</a>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. ПРОВЕРКА ПОДПИСКИ SUPABASE (ДОСТУП ТОЛЬКО ДЛЯ PRO, PREMIUM, VIP)
+    // =========================================================================
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+    // Уровни подписок: конспект открывается только при уровне >= 2 (pro, premium, vip)
+    const TIER_LEVELS = {
+      none: 0,
+      free: 0,
+      standard: 1,
+      pro: 2,
+      premium: 3,
+      vip: 4
+    };
+
+    const TIER_LABELS = {
+      standard: { ru: "СТАНДАРТ", kz: "СТАНДАРТ" },
+      pro: { ru: "ТАРИФ: ПРО", kz: "ТАРИФ: ПРО" },
+      premium: { ru: "ТАРИФ: ПРЕМИУМ", kz: "ТАРИФ: ПРЕМИУМ" },
+      vip: { ru: "ТАРИФ: ВИП 👑", kz: "ТАРИФ: ВИП 👑" }
+    };
+
+    let currentViewerState = {
+      isLoggedIn: false,
+      hasActiveSub: false,
+      tier: "none"
+    };
+
+    async function verifySubscriptionAccess() {
+      if (!supabaseClient) {
+        showPaywallGate(false, "none");
+        return;
+      }
+
+      try {
+        const { data: sessionData, error: sessionErr } = await supabaseClient.auth.getSession();
+        if (sessionErr || !sessionData || !sessionData.session) {
+          currentViewerState = { isLoggedIn: false, hasActiveSub: false, tier: "none" };
+          showPaywallGate(false, "none");
+          return;
+        }
+
+        const user = sessionData.session.user;
+        const userEmail = (user.email || "").toLowerCase().trim();
+
+        // Ищем профиль сначала по ID, затем по Email
+        let { data: profile } = await supabaseClient
+          .from("profiles")
+          .select("id, email, tier, subscription_expires_at")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (!profile && userEmail) {
+          const resByEmail = await supabaseClient
+            .from("profiles")
+            .select("id, email, tier, subscription_expires_at")
+            .ilike("email", userEmail)
+            .maybeSingle();
+          profile = resByEmail.data;
+        }
+
+        if (!profile || !profile.subscription_expires_at) {
+          currentViewerState = { isLoggedIn: true, hasActiveSub: false, tier: "none" };
+          showPaywallGate(true, "none");
+          return;
+        }
+
+        const expiresAt = new Date(profile.subscription_expires_at);
+        const now = new Date();
+        const isSubActive = !isNaN(expiresAt.getTime()) && now <= expiresAt;
+
+        if (!isSubActive) {
+          currentViewerState = { isLoggedIn: true, hasActiveSub: false, tier: "expired" };
+          showPaywallGate(true, "expired");
+          return;
+        }
+
+        const userTier = (profile.tier || "standard").toLowerCase().trim();
+        const tierLevel = TIER_LEVELS[userTier] || 1;
+
+        currentViewerState = { isLoggedIn: true, hasActiveSub: true, tier: userTier };
+
+        // Если уровень тарифа >= 2 (pro, premium, vip) — открываем конспект!
+        if (tierLevel >= TIER_LEVELS.pro) {
+          unlockLessonContent(userTier);
+        } else {
+          // Если тариф standard (уровень 1) — показываем предложение перейти на страницу тарифов
+          showPaywallGate(true, "standard");
+        }
+      } catch (err) {
+        console.error("Subscription check error:", err);
+        showPaywallGate(false, "none");
+      }
+    }
+
+    function unlockLessonContent(tier) {
+      document.getElementById("authLoader").style.display = "none";
+      document.getElementById("paywallGate").style.display = "none";
+      document.getElementById("lessonContentWrapper").style.display = "flex";
+
+      const badge = document.getElementById("userTierBadge");
+      if (badge && TIER_LABELS[tier]) {
+        badge.textContent = TIER_LABELS[tier][currentLang];
+        badge.style.display = "inline-block";
+      }
+    }
+
+    function showPaywallGate(isLoggedIn, reasonTier) {
+      document.getElementById("authLoader").style.display = "none";
+      document.getElementById("lessonContentWrapper").style.display = "none";
+      document.getElementById("paywallGate").style.display = "block";
+      updatePaywallTexts(isLoggedIn, reasonTier);
+    }
+
+    function updatePaywallTexts(isLoggedIn, reasonTier) {
+      const isKz = (currentLang === "kz");
+      const badgeEl = document.getElementById("pwBadgeText");
+      const titleEl = document.getElementById("pwTitleText");
+      const descEl = document.getElementById("pwDescText");
+      const tarifsBtn = document.getElementById("pwTarifsBtn");
+      const contactBtn = document.getElementById("pwContactBtn");
+      const loginBtn = document.getElementById("pwLoginBtn");
+
+      badgeEl.textContent = isKz
+        ? "ПРО / ПРЕМИУМ / ВИП ТАРИФТЕРІНДЕ ҚОЛЖЕТІМДІ"
+        : "ДОСТУПНО В ТАРИФАХ ПРО / ПРЕМИУМ / ВИП";
+
+      tarifsBtn.textContent = isKz
+        ? "🌟 Тарифтер бетіне өту (kazdoctors.com/tarifs)"
+        : "🌟 Перейти к тарифам (kazdoctors.com/tarifs)";
+
+      contactBtn.textContent = isKz
+        ? "💬 Бізге жазу (@doctors.speak)"
+        : "💬 Написать нам (@doctors.speak)";
+
+      if (!isLoggedIn) {
+        titleEl.textContent = isKz
+          ? "Конспектіні ашу үшін аккаунтқа кіріңіз немесе жазылым таңдаңыз"
+          : "Войдите в аккаунт или подключите тариф для чтения конспекта";
+        descEl.textContent = isKz
+          ? "Бұл интерактивті конспект «Про», «Премиум» және «ВИП» жазылымдары бар дәрігерлерге арналған. Тарифтер бетінде өзіңізге ыңғайлы пакетті таңдай аласыз:"
+          : "Этот интерактивный конспект открыт для врачей с подпиской «Про», «Премиум» или «ВИП». Ознакомьтесь с вариантами доступа на странице тарифов:";
+        loginBtn.style.display = "inline-flex";
+        loginBtn.textContent = isKz ? "🔐 Аккаунтқа кіру" : "🔐 Уже есть подписка? Войти в аккаунт";
+      } else if (reasonTier === "standard") {
+        titleEl.textContent = isKz
+          ? "Сізде «Стандарт» тарифі белсенді (тек тренажерлер)"
+          : "У вас активен тариф «Стандарт» (только тренажеры)";
+        descEl.textContent = isKz
+          ? "Интерактивті конспектілер мен мақала талдауларын оқу үшін тарифіңізді «Про», «Премиум» немесе «ВИП» деңгейіне дейін жаңартуды ұсынамыз:"
+          : "Чтобы открывать интерактивные конспекты, разборы статей и грамматические справочники, обновите вашу подписку до тарифа «Про», «Премиум» или «ВИП» на странице тарифов:";
+        loginBtn.style.display = "none";
+      } else {
+        titleEl.textContent = isKz
+          ? "Жазылым мерзімі аяқталды немесе белсенді емес"
+          : "Ваша подписка не активна или истекла";
+        descEl.textContent = isKz
+          ? "Сабақ конспектілеріне қол жеткізу үшін «Про», «Премиум» немесе «ВИП» тарифін таңдаңыз:"
+          : "Для получения доступа к интерактивным конспектам выберите тариф «Про», «Премиум» или «ВИП» на странице тарифов:";
+        loginBtn.style.display = "none";
+      }
+    }
+
+    // =========================================================================
+    // 2. БАЗА ДАННЫХ УРОКА 14 (НА РУССКОМ И КАЗАХСКОМ ЯЗЫКАХ)
+    // =========================================================================
+    const LESSON14_DATA = {
+      ui: {
+        backBtn: { ru: "⬅ К списку уроков", kz: "⬅ Сабақтар тізіміне" },
+        title: {
+          ru: "Relative Clauses (Придаточные со словами «который / чей / где»)",
+          kz: "Relative Clauses (Анықтауыш бағыныңқы сөйлемдер)"
+        },
+        subtitle: {
+          ru: "Формулы: An object THAT DOES • A subject WHICH DOES • A person WHO DOES",
+          kz: "Формулалар: An object THAT DOES • A subject WHICH DOES • A person WHO DOES"
+        },
+        nav: [
+          { ru: "1. That vs Which", kz: "1. That және Which" },
+          { ru: "2. Who/Whose и Статья", kz: "2. Who/Whose және Мақала" },
+          { ru: "3. Словарь (14 слов)", kz: "3. Сөздік (14 сөз)" },
+          { ru: "4. Упражнения", kz: "4. Жаттығулар" }
+        ],
+        vocabTitle: {
+          ru: "💊 Клинический словарь урока (14 терминов)",
+          kz: "💊 Сабақтың клиникалық сөздігі (14 термин)"
+        },
+        vocabDesc: {
+          ru: "Нажмите 🔊 для прослушивания произношения. Все примеры показывают, как Relative Clauses сшивают два предложения в одно.",
+          kz: "Дұрыс айтылуын тыңдау үшін 🔊 басыңыз. Барлық мысалдар Relative Clauses арқылы екі сөйлемнің қалай бірігетінін көрсетеді."
+        },
+        toExBtn: {
+          ru: "Перейти к шагу 4: Быстрые упражнения ➔",
+          kz: "4-қадамға өту: Жылдам жаттығулар ➔"
+        },
+        ex1Title: {
+          ru: "✍️ Упражнение 1: Выберите правильное относительное местоимение",
+          kz: "✍️ 1-жаттығу: Дұрыс қатыстық есімдікті таңдаңыз"
+        },
+        ex1Desc: {
+          ru: "Определите связь: чей симптом (whose), какой предмет/анализ (which/that) или какое место (where):",
+          kz: "Байланысты анықтаңыз: кімнің/ненің симптомы (whose), қандай талдау/белгі (which/that) немесе қай орын (where):"
+        },
+        ex2Title: {
+          ru: "🩺 Упражнение 2: Объедините два предложения в одно с помощью Relative Clause",
+          kz: "🩺 2-жаттығу: Екі сөйлемді Relative Clause арқылы біріктіріңіз"
+        },
+        ex2Desc: {
+          ru: "Замените повторяющееся существительное или местоимение It на that / which:",
+          kz: "Қайталанатын зат есімді немесе It есімдігін that / which сөздерімен алмастырыңыз:"
+        },
+        goTrainerBtn: {
+          ru: "🎯 Перейти к основному тренажеру Урока 14 ➔",
+          kz: "🎯 14-сабақтың негізгі тренажеріне өту ➔"
+        }
+      },
+
+      // ВКЛАДКА 1: СМЫСЛ RELATIVE CLAUSE, РАЗНИЦА THAT VS WHICH И ОПУЩЕНИЕ THAT
+      tab0Html: {
+        ru: `
+          <div class="card-block">
+            <h2>🔗 Как соединить два простых предложения в одно профессиональное: THAT vs WHICH</h2>
+            <p>Вместо того чтобы говорить короткими рублеными фразами (<i>«У пациента были спазмы. Спазмы длились несколько часов»</i>), врачи в статьях и выписках соединяют их с помощью слов <b>THAT / WHICH / WHO («который / что»)</b>, за которыми идет дополнительный глагол:</p>
+
+            <div class="rel-grid">
+              <div class="rel-card r-that">
+                <div class="rel-title">
+                  <span>1️⃣ THAT («Нельзя вытащить!»)</span>
+                  <span style="font-size:0.72rem; color:var(--kz-blue-dark);">БЕЗ ЗАПЯТЫХ</span>
+                </div>
+                <span class="comp-formula">An object THAT + DOES</span>
+                <p style="font-size:0.8rem;">Обязательное уточнение (Defining Clause): выделяет предмет или человека из множества других. Если его убрать, смысл предложения станет непонятным. <b>Запятыми НЕ выделяется!</b></p>
+                <div class="clinical-quote">
+                  • <b>"The doctor <u>that treated so many patients</u> got an award."</b> <i>(именно тот врач, который пролечил столько пациентов)</i><br>
+                  • <b>"The side effects <u>that occur during chemotherapy</u> are manageable."</b>
+                </div>
+              </div>
+
+              <div class="rel-card r-which">
+                <div class="rel-title">
+                  <span>2️⃣ , WHICH , («Можно вытащить!»)</span>
+                  <span style="font-size:0.72rem; color:var(--kz-gold-dark);">В ЗАПЯТЫХ</span>
+                </div>
+                <span class="comp-formula">A subject, WHICH + DOES, ...</span>
+                <p style="font-size:0.8rem;">Попутное пояснение (Non-defining Clause): дает дополнительную деталь об уже известном объекте. Эту часть <b>можно безболезненно вынуть</b> из предложения!</p>
+                <div class="clinical-quote">
+                  • <b>"The results of the lab work-up, <u>which you did yesterday</u>, are now available."</b><br>
+                  • <b>"The doctor, <u>whom I saw yesterday</u>, came to our department."</b>
+                </div>
+              </div>
+            </div>
+
+            <div class="clinical-quote" style="border-left-color: #DC2626; margin-top: 12px;">
+              ⚠️ <b>Золотое правило пунктуации в английском:</b><br>
+              В русском языке мы <i>всегда</i> ставим запятую перед словом «который». В английском языке <b>перед словом THAT в определительном придаточном запятая НЕ ставится!</b> А если придаточное выделено запятыми — внутри него можно использовать только <b>which</b> (для предметов/всей ситуации) или <b>who / whom / whose</b> (для людей), но <b>не that</b>!
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>👻 Секрет беглой речи: когда слово THAT можно вообще не произносить?</h2>
+            <p>В медицинских текстах и устной речи слово <b>that</b> иногда просто опускается (становится «невидимым»). Как понять, когда его можно опустить, а когда нельзя?</p>
+            <div class="clinical-quote" style="border-left-color: var(--kz-blue);">
+              ✅ <b>МОЖНО опустить THAT</b> — если сразу после него идет <b>новое подлежащее + глагол</b>:<br>
+              • <i>"The insertion of the catheter <b>(that) you brought</b> was uncomplicated."</i> (катетер, который <u>вы принесли</u>).<br>
+              • <i>"The hot flashes <b>(that) she experienced</b> were most severe at night."</i> (приливы, которые <u>она испытывала</u>).<br><br>
+              ⛔ <b>НЕЛЬЗЯ опустить THAT</b> — если сразу после него идет <b>глагол</b> (то есть само слово <i>that</i> служит подлежащим):<br>
+              • <i>"The injury <b><u>that caused</u></b> the swelling was a direct blow."</i> (травма, <u>которая вызвала</u> отек).
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Быстрая проверка</span>
+              <div class="qc-question">Как правильно объединить два предложения: "The patient had cramping. The cramping lasted for several hours."?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Верно! Мы заменяем повтор The cramping на относительное местоимение that (или which): The patient had cramping that lasted for several hours.')">The patient had cramping that lasted for several hours.</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Ошибка: если мы уже поставили that, повторять местоимение it (that it lasted) нельзя — слово that само заменяет подлежащее!')">The patient had cramping that it lasted for several hours.</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">Перейти к шагу 2: Таблица Who / Whose / Where и Статья по ЛОР ➔</button>
+        `,
+        kz: `
+          <div class="card-block">
+            <h2>🔗 Екі жай сөйлемді бір кәсіби сөйлемге қалай біріктіреміз: THAT және WHICH</h2>
+            <p>Қысқа үзік сөйлемдермен сөйлеудің орнына (<i>«Науқаста спазм болды. Спазм бірнеше сағатқа созылды»</i>), дәрігерлер мақалалар мен ауру тарихында оларды <b>THAT / WHICH / WHO</b> сөздері арқылы біріктіреді. Қазақ тілінде бұл құрылым көбіне <b>есімше тұлғасымен (-ған/-ген, -атын/-етін)</b> аударылады:</p>
+
+            <div class="rel-grid">
+              <div class="rel-card r-that">
+                <div class="rel-title">
+                  <span>1️⃣ THAT («Алып тастауға болмайды!»)</span>
+                  <span style="font-size:0.72rem; color:var(--kz-blue-dark);">ҮТІРСІЗ</span>
+                </div>
+                <span class="comp-formula">An object THAT + DOES</span>
+                <p style="font-size:0.8rem;">Маңызды шектеуші анықтауыш (Defining Clause): затты немесе адамды басқалардан даралап көрсетеді. <b>Үтірмен бөлінбейді!</b></p>
+                <div class="clinical-quote">
+                  • <b>"The doctor <u>that treated so many patients</u> got an award."</b> <i>(осыншама науқасты емдеген дәрігер марапат алды)</i><br>
+                  • <b>"The side effects <u>that occur during chemotherapy</u> are manageable."</b>
+                </div>
+              </div>
+
+              <div class="rel-card r-which">
+                <div class="rel-title">
+                  <span>2️⃣ , WHICH , («Алып тастауға болады!»)</span>
+                  <span style="font-size:0.72rem; color:var(--kz-gold-dark);">ҮТІР АРҚЫЛЫ</span>
+                </div>
+                <span class="comp-formula">A subject, WHICH + DOES, ...</span>
+                <p style="font-size:0.8rem;">Қосымша түсіндірме (Non-defining Clause): бұрыннан белгілі зат туралы қосымша мәлімет береді. Оны сөйлемнен <b>алып тастаса да, негізгі ой бұзылмайды</b>!</p>
+                <div class="clinical-quote">
+                  • <b>"The results of the lab work-up, <u>which you did yesterday</u>, are now available."</b><br>
+                  • <b>"The doctor, <u>whom I saw yesterday</u>, came to our department."</b>
+                </div>
+              </div>
+            </div>
+
+            <div class="clinical-quote" style="border-left-color: #DC2626; margin-top: 12px;">
+              ⚠️ <b>Тыныс белгілерінің алтын ережесі:</b><br>
+              Ағылшын тілінде анықтауыш бағыныңқы сөйлемдегі <b>THAT сөзінің алдына үтір ҚОЙЫЛМАЙДЫ!</b> Ал егер қосымша ой екі жағынан үтірмен бөлінсе — онда тек <b>which</b> (заттар мен тұтас жағдай үшін) немесе <b>who / whom / whose</b> (адамдар үшін) қолданылады, бірақ <b>that қойылмайды</b>!
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>👻 Еркін сөйлеу құпиясы: THAT сөзін қашан мүлдем айтпай кетуге болады?</h2>
+            <p>Медициналық мәтіндерде <b>that</b> сөзі кейде түсіріліп айтылады. Оны қашан түсіріп тастауға болады?</p>
+            <div class="clinical-quote" style="border-left-color: var(--kz-blue);">
+              ✅ <b>THAT сөзін ТҮСІРІП ТАСТАУҒА БОЛАДЫ</b> — егер одан кейін <b>жаңа бастауыш + баяндауыш</b> тұрса:<br>
+              • <i>"The insertion of the catheter <b>(that) you brought</b> was uncomplicated."</i> (<u>сіз әкелген</u> катетерді енгізу).<br>
+              • <i>"The hot flashes <b>(that) she experienced</b> were most severe at night."</i> (<u>ол сезінген</u> ыстық құйылулар).<br><br>
+              ⛔ <b>THAT сөзін ТҮСІРУГЕ БОЛМАЙДЫ</b> — егер одан кейін бірден <b>етістік</b> тұрса:<br>
+              • <i>"The injury <b><u>that caused</u></b> the swelling was a direct blow."</i> (ісінуді <u>тудырған</u> жарақат).
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Жылдам тексеру</span>
+              <div class="qc-question">Екі сөйлемді қалай дұрыс біріктіреміз: "The patient had cramping. The cramping lasted for several hours."?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Дұрыс! Қайталанған The cramping сөзін that (немесе which) есімдігімен алмастырамыз: The patient had cramping that lasted for several hours.')">The patient had cramping that lasted for several hours.</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Қате: that қойылған соң, it есімдігін қайталауға болмайды (that сөзінің өзі бастауыштың орнын басып тұр)!')">The patient had cramping that it lasted for several hours.</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">2-қадамға өту: Who / Whose / Where кестесі және ЛОР мақаласы ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 2: ТАБЛИЦА ВСЕХ ОТНОСИТЕЛЬНЫХ СЛОВ И РАЗБОР СТАТЬИ (OME & BIOFILMS)
+      tab1Html: {
+        ru: `
+          <div class="card-block gold">
+            <h2>🧭 Все союзные слова Relative Clause в медицине: WHO, WHOSE, WHICH, THAT, WHERE, WHEN</h2>
+            <p>Помимо <b>that</b> и <b>which</b>, роль связки в клинических предложениях выполняют слова <b>who, whom, whose, where, when</b>. Сверьте правила их выбора:</p>
+
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Слово</th>
+                  <th>К чему относится?</th>
+                  <th>Что стоит после него?</th>
+                  <th>Клинический пример из урока</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>WHO</b><br>(который)</td>
+                  <td><b>Только люди</b><br>(врач, пациент, ребенок)</td>
+                  <td>Обычно сразу <b>глагол</b></td>
+                  <td>• The patient, <b>who</b> suffers from gout, is advised to avoid high-purine foods.<br>• The dermatologist, <b>who</b> removed the mole, will send it for biopsy.</td>
+                </tr>
+                <tr>
+                  <td><b>WHOM</b><br>(которого / кому)</td>
+                  <td><b>Только люди</b><br>(в роли объекта)</td>
+                  <td><b>Подлежащее + глагол</b></td>
+                  <td>• The doctor, <b>whom</b> I saw yesterday, came to our department.</td>
+                </tr>
+                <tr>
+                  <td><b>WHOSE</b><br>(чей / которого)</td>
+                  <td><b>И люди, И болезни/органы!</b><br>(принадлежность)</td>
+                  <td>Обязательно <b>существительное без артикля</b>!</td>
+                  <td>• The patient, <b>whose</b> follow-up was scheduled, did not return.<br>• The condition, <b>whose</b> flare started last night, has worsened.</td>
+                </tr>
+                <tr>
+                  <td><b>WHICH</b><br>(который / что)</td>
+                  <td><b>Предметы, анализы, болезни</b> ИЛИ вся ситуация целиком</td>
+                  <td>Глагол или подлежащее + глагол</td>
+                  <td>• We reviewed the test <b>which</b> confirmed the diagnosis.<br>• Biofilms comprise microbes in a colony, <b>which</b> reduces their process of dividing.</td>
+                </tr>
+                <tr>
+                  <td><b>THAT</b><br>(который)</td>
+                  <td><b>Предметы, симптомы и люди</b> (только без запятых!)</td>
+                  <td>Глагол или подлежащее + глагол</td>
+                  <td>• Gasping is a symptom <b>that</b> may occur during severe asthma attacks.</td>
+                </tr>
+                <tr>
+                  <td><b>WHERE</b><br>(где / в котором)</td>
+                  <td><b>Место, палата, отделение, участок органа</b></td>
+                  <td><b>Подлежащее + глагол</b> (что там происходит)</td>
+                  <td>• This is the ward <b>where</b> patients are treated for exposure-related illness.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="clinical-quote" style="border-left-color: var(--kz-blue); margin-top: 12px;">
+              🔥 <b>Главный лайфхак для тестов: как не перепутать WHO / WHICH и WHOSE?</b><br>
+              Посмотрите на слово <b>сразу после пропуска</b>:<br>
+              • Если там стоит <b>существительное</b>, принадлежащее первому слову (<i>follow-up — чей визит? пациента; flare — чья вспышка? болезни</i>) $\\rightarrow$ смело выбирайте <b>WHOSE</b>!<br>
+              • Если после пропуска сразу стоит <b>глагол</b> (<i>confirmed, suffers, may occur</i>) $\\rightarrow$ выбирайте <b>WHO / WHICH / THAT</b>.
+            </div>
+          </div>
+
+          <div class="card-block">
+            <h2>🔬 Практика чтения статьи: Otitis Media with Effusion (OME) & Biofilms</h2>
+            <p>Прочитайте научный отрывок о роли бактериальных биопленок при хроническом экссудативном среднем отите (<i>OME</i>) после острого среднего отита (<i>AOM</i>). Нажимайте на кнопки подсветки, чтобы увидеть разницу между <b>ограничительными конструкциями с THAT (без запятых)</b> и <b>пояснительной конструкцией с , WHICH (после запятой)</b>:</p>
+
+            <div class="abstract-box">
+              <div class="abstract-header">
+                <span>📄 Clinical Article: Middle Ear Effusions (OME) & Bacterial Biofilms</span>
+                <div class="abstract-controls">
+                  <button class="hl-btn that-type" onclick="toggleAbstractHighlight('that')">Конструкции с THAT (без запятых)</button>
+                  <button class="hl-btn which-type" onclick="toggleAbstractHighlight('which')">Конструкции с , WHICH (в запятых)</button>
+                  <button class="hl-btn reset" onclick="toggleAbstractHighlight('all')">Показать оба</button>
+                </div>
+              </div>
+              <div class="abstract-body show-that show-which" id="abstractBodyText">
+                Previously, health care providers would ask for a follow-up visit 2 weeks after diagnosis of AOM to determine <i>that the infection had resolved</i>. When they observed the tympanic membrane and found OME, they presumed a treatment failure had occurred and would prescribe more and stronger antibiotics. That practice is no longer followed, largely because of the discovery <i>that OME persists so long after AOM</i> and can easily be confused with persistent AOM.<br><br>
+                OME can become chronic (&gt;3 months in duration). When this occurs, ample evidence suggests <i>that the common otopathogens form biofilms</i>. Biofilms comprise microbes in a colony<span class="rc-which">, which reduces their process of dividing, slows their metabolism, and allows them to communicate</span> with each other to share survival mechanisms through a process called quorum sensing. Biofilm colonies exist in a matrix of DNA, and cover themselves with a shield of biomaterial <span class="rc-that">that prevents the penetration</span> of antibiotics and antibodies.<br><br>
+                Most clinicians are familiar with biofilms as bacteria <span class="rc-that">that grow on implanted catheters</span>. Biofilms of the <i>Pseudomonas sp</i> form in patients with cystic fibrosis. Biofilm colonies occasionally shed a few organisms from the colony, and the microbes change their biology and are termed planktonic. When biofilms form in chronic OME they consist of the major otopathogens as single-species colonies or as polymicrobial colonies consisting of 2 or even 3 species of otopathogen. Because the biofilms do not elicit an immune response, little clinical evidence shows <i>that they exist</i> because minimal inflammation is seen in the middle ear when the biofilms are present.
+              </div>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Вопрос по научной статье</span>
+              <div class="qc-question">Посмотрите на фразу во втором абзаце: "Biofilms comprise microbes in a colony, WHICH reduces their process of dividing..." Почему здесь после запятой стоит WHICH и глагол reduces с окончанием -s?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Блестяще! Запятая + which здесь относится ко всему предыдущему факту («то, что микробы объединяются в колонию, снижает...» = это снижает -> единственное число reduces)!')">Запятая + which относится ко всей ситуации целиком («что снижает их деление»), поэтому глагол стоит в единственном числе (reduces)</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Если бы относилось к слову microbes (мн. ч.) без запятой, глагол стоял бы без -s (reduce). А здесь запятая + which обобщает весь факт образования колонии!')">Это опечатка авторов статьи</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">Перейти к шагу 3: Словарь урока (14 слов) ➔</button>
+        `,
+        kz: `
+          <div class="card-block gold">
+            <h2>🧭 Медицинадағы барлық Relative Clause сөздері: WHO, WHOSE, WHICH, THAT, WHERE, WHEN</h2>
+            <p><b>That</b> пен <b>which</b> сөздерінен бөлек, клиникалық сөйлемдерді байланыстыру үшін <b>who, whom, whose, where, when</b> сөздері қолданылады. Оларды таңдау ережесімен танысыңыз:</p>
+
+            <table class="grammar-table">
+              <thead>
+                <tr>
+                  <th>Сөз</th>
+                  <th>Неге қатысты?</th>
+                  <th>Одан кейін не тұрады?</th>
+                  <th>Сабақтағы клиникалық мысал</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>WHO</b><br>(ол / -ған/-ген)</td>
+                  <td><b>Тек адамдар</b><br>(дәрігер, науқас, бала)</td>
+                  <td>Көбіне бірден <b>етістік</b></td>
+                  <td>• The patient, <b>who</b> suffers from gout, is advised to avoid high-purine foods.<br>• The dermatologist, <b>who</b> removed the mole, will send it for biopsy.</td>
+                </tr>
+                <tr>
+                  <td><b>WHOM</b><br>(оны / кімді)</td>
+                  <td><b>Тек адамдар</b><br>(толықтауыш рөлінде)</td>
+                  <td><b>Бастауыш + баяндауыш</b></td>
+                  <td>• The doctor, <b>whom</b> I saw yesterday, came to our department.</td>
+                </tr>
+                <tr>
+                  <td><b>WHOSE</b><br>(оның / кімнің / ненің)</td>
+                  <td><b>Адамдар ЖӘНЕ аурулар/ағзалар!</b><br>(тәуелділік)</td>
+                  <td>Міндетті түрде <b>артикльсіз зат есім</b>!</td>
+                  <td>• The patient, <b>whose</b> follow-up was scheduled, did not return.<br>• The condition, <b>whose</b> flare started last night, has worsened.</td>
+                </tr>
+                <tr>
+                  <td><b>WHICH</b><br>(ол / бұл жағдай)</td>
+                  <td><b>Заттар, талдаулар, аурулар</b> НЕМЕСЕ бүкіл жағдай</td>
+                  <td>Етістік немесе бастауыш + етістік</td>
+                  <td>• We reviewed the test <b>which</b> confirmed the diagnosis.<br>• Biofilms comprise microbes in a colony, <b>which</b> reduces their process of dividing.</td>
+                </tr>
+                <tr>
+                  <td><b>THAT</b><br>(-ған/-ген / -атын)</td>
+                  <td><b>Заттар, симптомдар және адамдар</b> (тек үтірсіз!)</td>
+                  <td>Етістік немесе бастауыш + етістік</td>
+                  <td>• Gasping is a symptom <b>that</b> may occur during severe asthma attacks.</td>
+                </tr>
+                <tr>
+                  <td><b>WHERE</b><br>(онда / қайда)</td>
+                  <td><b>Орын, палата, бөлімше, ағза бөлігі</b></td>
+                  <td><b>Бастауыш + етістік</b> (ол жерде не болады)</td>
+                  <td>• This is the ward <b>where</b> patients are treated for exposure-related illness.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="clinical-quote" style="border-left-color: var(--kz-blue); margin-top: 12px;">
+              🔥 <b>Тесттерге арналған басты лайфхак: WHO / WHICH пен WHOSE сөздерін қалай шатастырмаймыз?</b><br>
+              Бос орыннан <b>кейін тұрған бірінші сөзге</b> қараңыз:<br>
+              • Егер онда бірінші сөзге тәуелді <b>зат есім</b> тұрса (<i>follow-up — кімнің қабылдауы? науқастың; flare — ненің өршуі? аурудың</i>) $\\rightarrow$ ойланбастан <b>WHOSE</b> таңдаңыз!<br>
+              • Ал егер бос орыннан кейін бірден <b>етістік</b> тұрса (<i>confirmed, suffers, may occur</i>) $\\rightarrow$ <b>WHO / WHICH / THAT</b> таңдаңыз.
+            </div>
+          </div>
+
+          <div class="card-block">
+            <h2>🔬 Ғылыми мақаланы талдау: Otitis Media with Effusion (OME) & Biofilms</h2>
+            <p>Жедел ортаңғы отиттен (<i>AOM</i>) кейінгі созылмалы экссудативті ортаңғы отит (<i>OME</i>) кезіндегі бактериялық биоқабықшалар (<i>biofilms</i>) туралы ғылыми үзіндіні оқыңыз. <b>Үтірсіз THAT құрылымдары</b> мен <b>үтірден кейінгі , WHICH құрылымының</b> айырмашылығын көру үшін батырмаларды басыңыз:</p>
+
+            <div class="abstract-box">
+              <div class="abstract-header">
+                <span>📄 Clinical Article: Middle Ear Effusions (OME) & Bacterial Biofilms</span>
+                <div class="abstract-controls">
+                  <button class="hl-btn that-type" onclick="toggleAbstractHighlight('that')">THAT құрылымдары (үтірсіз)</button>
+                  <button class="hl-btn which-type" onclick="toggleAbstractHighlight('which')">, WHICH құрылымы (үтірмен)</button>
+                  <button class="hl-btn reset" onclick="toggleAbstractHighlight('all')">Екеуін де көрсету</button>
+                </div>
+              </div>
+              <div class="abstract-body show-that show-which" id="abstractBodyText">
+                Previously, health care providers would ask for a follow-up visit 2 weeks after diagnosis of AOM to determine <i>that the infection had resolved</i>. When they observed the tympanic membrane and found OME, they presumed a treatment failure had occurred and would prescribe more and stronger antibiotics. That practice is no longer followed, largely because of the discovery <i>that OME persists so long after AOM</i> and can easily be confused with persistent AOM.<br><br>
+                OME can become chronic (&gt;3 months in duration). When this occurs, ample evidence suggests <i>that the common otopathogens form biofilms</i>. Biofilms comprise microbes in a colony<span class="rc-which">, which reduces their process of dividing, slows their metabolism, and allows them to communicate</span> with each other to share survival mechanisms through a process called quorum sensing. Biofilm colonies exist in a matrix of DNA, and cover themselves with a shield of biomaterial <span class="rc-that">that prevents the penetration</span> of antibiotics and antibodies.<br><br>
+                Most clinicians are familiar with biofilms as bacteria <span class="rc-that">that grow on implanted catheters</span>. Biofilms of the <i>Pseudomonas sp</i> form in patients with cystic fibrosis. Biofilm colonies occasionally shed a few organisms from the colony, and the microbes change their biology and are termed planktonic. When biofilms form in chronic OME they consist of the major otopathogens as single-species colonies or as polymicrobial colonies consisting of 2 or even 3 species of otopathogen. Because the biofilms do not elicit an immune response, little clinical evidence shows <i>that they exist</i> because minimal inflammation is seen in the middle ear when the biofilms are present.
+              </div>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Ғылыми мақала бойынша сұрақ</span>
+              <div class="qc-question">Екінші абзацтағы сөйлемге қараңыз: "Biofilms comprise microbes in a colony, WHICH reduces their process of dividing..." Неліктен мұнда үтірден кейін WHICH және жекеше түрдегі reduces (-s жалғауымен) етістігі тұр?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Керемет! Үтір + which мұнда алдыңғы тұтас фактіге қатысты («микробтардың колонияға бірігуі олардың бөліну процесін баяулатады» -> жекеше түр reduces)!')">Үтір + which алдыңғы тұтас жағдайды қорытындылап тұр («ал бұл жағдай олардың бөлінуін азайтады»), сондықтан етістік жекеше түрде (reduces) тұр</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Егер microbes (көпше түр) сөзіне ғана қатысты болса, reduce болар еді. Ал мұнда үтір + which бүкіл сөйлемдегі процесті білдіреді!')">Бұл мақала авторларының қатесі</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">3-қадамға өту: Сабақ сөздігі (14 сөз) ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 3: СЛОВАРЬ (14 ТЕРМИНОВ С ПРИМЕРАМИ ИЗ СЛАЙДОВ 2 И 6)
+      vocabulary: [
+        {
+          en: "Gout",
+          ru: "Подагра",
+          kz: "Подагра (тұз байлану ауруы)",
+          ex: "The patient, <b>who suffers from gout</b>, is advised to avoid high-purine foods."
+        },
+        {
+          en: "Hot flashes",
+          ru: "Приливы жара",
+          kz: "Ыстық құйылулар (қызу толқындары)",
+          ex: "The <b>hot flashes that she experienced</b> were most severe at night."
+        },
+        {
+          en: "Incision",
+          ru: "Надрез / Хирургический разрез",
+          kz: "Тілік / Хирургиялық кесу",
+          ex: "The surgeon made an <b>incision that was 3 centimeters long</b> during the procedure."
+        },
+        {
+          en: "Injury",
+          ru: "Травма / Повреждение",
+          kz: "Жарақат / Зақымдану",
+          ex: "The <b>injury that caused the swelling</b> was a direct blow to the knee."
+        },
+        {
+          en: "Insertion",
+          ru: "Введение / Постановка (катетера, иглы)",
+          kz: "Енгізу / Орнату (катетерді)",
+          ex: "The <b>insertion</b> of the catheter <b>that you brought</b> was uncomplicated."
+        },
+        {
+          en: "Lab work-up",
+          ru: "Лабораторное обследование / Анализы",
+          kz: "Зертханалық тексерулер кешені",
+          ex: "The results of the <b>lab work-up, which you did yesterday</b>, are now available."
+        },
+        {
+          en: "Likely",
+          ru: "Вероятно / Скорее всего",
+          kz: "Ықтимал / Мүмкін",
+          ex: "The patient, <b>who likely caused the contagion</b>, was isolated."
+        },
+        {
+          en: "Limb",
+          ru: "Конечность (рука или нога)",
+          kz: "Аяқ-қол",
+          ex: "She pointed at the <b>limb, which she thought was lesioned</b>."
+        },
+        {
+          en: "Lump",
+          ru: "Шишка / Уплотнение / Узел",
+          kz: "Түйін / Тығыздану / Ісік",
+          ex: "The <b>lump that appeared on the skin</b> could be benign or malignant."
+        },
+        {
+          en: "Milestone",
+          ru: "Этап развития (ребенка) / Веха",
+          kz: "Даму кезеңі (баланың)",
+          ex: "Parents should follow the <b>milestones, which their babies have to meet</b> by age."
+        },
+        {
+          en: "Mole",
+          ru: "Родинка (невус)",
+          kz: "Мең (невус)",
+          ex: "The dermatologist, <b>who removed the mole</b>, will send it for biopsy."
+        },
+        {
+          en: "Occasional",
+          ru: "Периодический / Эпизодический / Редкий",
+          kz: "Ара-тұра болатын / Кездейсоқ",
+          ex: "She has <b>occasional</b> headaches, <b>which are usually triggered</b> by stress."
+        },
+        {
+          en: "Occur",
+          ru: "Случаться / Возникать / Происходить",
+          kz: "Орын алу / Пайда болу",
+          ex: "The side effects <b>that occur during chemotherapy</b> are manageable."
+        },
+        {
+          en: "Origin",
+          ru: "Начало / Происхождение / Источник",
+          kz: "Шығу тегі / Бастауы",
+          ex: "The <b>origin</b> of the disease <b>that causes the symptom</b> is not yet known."
+        }
+      ],
+
+      // ВКЛАДКА 4: УПРАЖНЕНИЕ 1 И УПРАЖНЕНИЕ 2 ИЗ PDF
+      ex1: [
+        {
+          q: "1. The patient, ___ follow-up was scheduled for next Monday, did not return. (who / whose / which)",
+          options: ["whose", "who", "which"],
+          correct: 0,
+          exp: {
+            ru: "После пропуска стоит существительное 'follow-up' (повторный визит — чей? пациента). Принадлежность всегда передается словом whose!",
+            kz: "Бос орыннан кейін 'follow-up' (қайта қабылдау — кімнің? науқастың) зат есімі тұр. Тәуелділік әрқашан whose сөзімен беріледі!"
+          }
+        },
+        {
+          q: "2. We reviewed the test ___ confirmed the diagnosis of contamination. (who / which / where)",
+          options: ["which (или that)", "who", "where"],
+          correct: 0,
+          exp: {
+            ru: "'The test' — неодушевленный предмет, а после пропуска сразу идет глагол 'confirmed' (анализ, который подтвердил диагноз) -> which.",
+            kz: "'The test' — жансыз зат есім, ал бос орыннан кейін бірден 'confirmed' етістігі тұр (диагнозды растаған талдау) -> which."
+          }
+        },
+        {
+          q: "3. The condition, ___ flare started last night, has worsened. (whose / that / when)",
+          options: ["whose", "that", "when"],
+          correct: 0,
+          exp: {
+            ru: "После пропуска стоит существительное 'flare' (обострение — чье? этого заболевания/состояния). Слово whose работает и с болезнями: The condition, whose flare started last night...",
+            kz: "Бос орыннан кейін 'flare' (өршу — ненің? осы аурудың/жағдайдың) зат есімі тұр. Whose сөзі аурулармен де қолданылады: The condition, whose flare started last night..."
+          }
+        },
+        {
+          q: "4. This is the ward ___ patients are treated for exposure-related illness. (who / where / which)",
+          options: ["where", "who", "which"],
+          correct: 0,
+          exp: {
+            ru: "'The ward' (палата/отделение) — это место, где лечат пациентов ('where patients are treated') -> where.",
+            kz: "'The ward' (палата/бөлімше) — науқастар емделетін орын ('where patients are treated') -> where."
+          }
+        },
+        {
+          q: "5. Gasping is a symptom ___ may occur during severe asthma attacks. (that / who / where)",
+          options: ["that (или which)", "who", "where"],
+          correct: 0,
+          exp: {
+            ru: "'A symptom' — неодушевленное понятие, за которым идет определяющее придаточное без запятых ('который может возникать...') -> that.",
+            kz: "'A symptom' — жансыз ұғым, одан кейін үтірсіз анықтауыш бағыныңқы сөйлем тұр ('пайда болуы мүмкін симптом') -> that."
+          }
+        }
+      ],
+
+      ex2: [
+        {
+          q: "1. The patient had cramping. The cramping lasted for several hours.",
+          options: [
+            "The patient had cramping that (which) lasted for several hours.",
+            "The patient had cramping where lasted for several hours.",
+            "The patient had cramping whose lasted for several hours."
+          ],
+          correct: 0,
+          exp: {
+            ru: "Заменяем повтор 'The cramping' во втором предложении на that (или which) и соединяем напрямую: The patient had cramping that lasted for several hours.",
+            kz: "Екінші сөйлемдегі 'The cramping' қайталауын that (немесе which) сөзімен алмастырып, біріктіреміз: The patient had cramping that lasted for several hours."
+          }
+        },
+        {
+          q: "2. We saw a case of glomerular filtration rate decrease. It was very sudden.",
+          options: [
+            "We saw a case of GFR decrease, which (that) was very sudden.",
+            "We saw a case of GFR decrease, who was very sudden.",
+            "We saw a case of GFR decrease, where it was very sudden."
+          ],
+          correct: 0,
+          exp: {
+            ru: "Местоимение 'It' заменяем на ', which' (или 'that'): We saw a case of GFR decrease, which was very sudden.",
+            kz: "'It' есімдігін ', which' (немесе 'that') сөзімен алмастырамыз: We saw a case of GFR decrease, which was very sudden."
+          }
+        },
+        {
+          q: "3. The doctor confirmed an exacerbation. It affected the lungs.",
+          options: [
+            "The doctor confirmed an exacerbation that (which) affected the lungs. / confirmed (that) an exacerbation affected the lungs.",
+            "The doctor confirmed an exacerbation who affected the lungs.",
+            "The doctor confirmed an exacerbation where affected the lungs."
+          ],
+          correct: 0,
+          exp: {
+            ru: "Два отличных способа: 1) через Relative Clause — an exacerbation that/which affected the lungs («обострение, которое затронуло легкие»); 2) через изъяснительный союз — confirmed (that) an exacerbation affected the lungs («подтвердил, что обострение затронуло легкие»).",
+            kz: "Екі дұрыс жолы бар: 1) Relative Clause арқылы — an exacerbation that/which affected the lungs («өкпені зақымдаған өршу»); 2) толықтауыш бағыныңқы арқылы — confirmed (that) an exacerbation affected the lungs."
+          }
+        },
+        {
+          q: "4. They examined the crust. It had formed around the surgical site.",
+          options: [
+            "They examined the crust which (that) had formed around the surgical site.",
+            "They examined the crust whose had formed around the surgical site.",
+            "They examined the crust which it had formed around the surgical site."
+          ],
+          correct: 0,
+          exp: {
+            ru: "Убираем 'It' и ставим which или that: They examined the crust which/that had formed around the surgical site.",
+            kz: "'It' есімдігін алып тастап, which немесе that қоямыз: They examined the crust which/that had formed around the surgical site."
+          }
+        },
+        {
+          q: "5. The contamination was severe. It delayed the test results.",
+          options: [
+            "The contamination, which delayed the test results, was severe. (или: was so severe that it delayed the test results)",
+            "The contamination, who delayed the test results, was severe.",
+            "The contamination where delayed the test results was severe."
+          ],
+          correct: 0,
+          exp: {
+            ru: "Мы можем вставить пояснительный Relative Clause внутрь запятых ('The contamination, which delayed the test results, was severe') или построить конструкцию следствия ('was so severe that it delayed the test results').",
+            kz: "Түсіндірмелі Relative Clause-ды екі жағынан үтірмен бөліп қоя аламыз ('The contamination, which delayed the test results, was severe') немесе нәтиже құрылымын жасаймыз ('was so severe that it delayed the test results')."
+          }
+        }
+      ]
+    };
+
+    // =========================================================================
+    // 3. ЛОГИКА ОТОБРАЖЕНИЯ, ОЗВУЧКИ И ПЕРЕКЛЮЧЕНИЯ ЯЗЫКОВ (RU / KZ)
+    // =========================================================================
+    let currentLang = localStorage.getItem('doctors_speak_lang') || 'ru';
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('doctors_speak_lang', lang);
+
+      document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
+      document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
+
+      const ui = LESSON14_DATA.ui;
+      document.getElementById('uiBackBtn').textContent = ui.backBtn[lang];
+      document.getElementById('uiTitle').textContent = ui.title[lang];
+      document.getElementById('uiSubtitle').textContent = ui.subtitle[lang];
+
+      ui.nav.forEach((item, index) => {
+        document.getElementById(`nav${index}`).textContent = item[lang];
+      });
+
+      document.getElementById('uiVocabTitle').textContent = ui.vocabTitle[lang];
+      document.getElementById('uiVocabDesc').textContent = ui.vocabDesc[lang];
+      document.getElementById('uiToExBtn').textContent = ui.toExBtn[lang];
+      document.getElementById('uiEx1Title').textContent = ui.ex1Title[lang];
+      document.getElementById('uiEx1Desc').textContent = ui.ex1Desc[lang];
+      document.getElementById('uiEx2Title').textContent = ui.ex2Title[lang];
+      document.getElementById('uiEx2Desc').textContent = ui.ex2Desc[lang];
+      document.getElementById('uiGoTrainerBtn').textContent = ui.goTrainerBtn[lang];
+
+      // Обновляем бейдж тарифа или тексты экрана Paywall при переключении языка
+      const badge = document.getElementById("userTierBadge");
+      if (badge && TIER_LABELS[currentViewerState.tier]) {
+        badge.textContent = TIER_LABELS[currentViewerState.tier][lang];
+      }
+      if (document.getElementById("paywallGate").style.display === "block") {
+        updatePaywallTexts(currentViewerState.isLoggedIn, currentViewerState.tier);
+      }
+
+      // Рендерим вкладки теории, словаря и упражнений
+      document.getElementById('tab0').innerHTML = LESSON14_DATA.tab0Html[lang];
+      document.getElementById('tab1').innerHTML = LESSON14_DATA.tab1Html[lang];
+      renderVocab();
+      renderExercises('ex1Container', LESSON14_DATA.ex1);
+      renderExercises('ex2Container', LESSON14_DATA.ex2);
+    }
+
+    function showTab(idx) {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`nav${i}`).classList.toggle('active', i === idx);
+        document.getElementById(`tab${i}`).classList.toggle('active', i === idx);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Подсветка Relative Clauses в статье об экссудативном среднем отите (OME & Biofilms)
+    function toggleAbstractHighlight(mode) {
+      const box = document.getElementById('abstractBodyText');
+      if (!box) return;
+      box.classList.remove('show-that', 'show-which');
+      if (mode === 'that' || mode === 'all') box.classList.add('show-that');
+      if (mode === 'which' || mode === 'all') box.classList.add('show-which');
+    }
+
+    // Проверка встроенных микро-вопросов в теории
+    function checkInlineQuiz(btn, isCorrect, feedbackText) {
+      const parent = btn.closest('.quick-check');
+      const allBtns = parent.querySelectorAll('.qc-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+      }
+
+      const fb = parent.querySelector('.qc-feedback');
+      fb.textContent = `💡 ${feedbackText}`;
+      fb.style.display = 'block';
+    }
+
+    // Рендер словаря с озвучкой Web Speech API
+    function renderVocab() {
+      const grid = document.getElementById('vocabGrid');
+      grid.innerHTML = '';
+      LESSON14_DATA.vocabulary.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'vocab-card';
+        div.innerHTML = `
+          <div class="vocab-header">
+            <span class="vocab-word">${item.en}</span>
+            <button class="speak-btn" onclick="speakEn('${item.en}')" title="Прослушать">🔊</button>
+          </div>
+          <div class="vocab-trans">${item[currentLang]}</div>
+          <div class="vocab-example">${item.ex}</div>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    function speakEn(word) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(word);
+      u.lang = 'en-US';
+      u.rate = 0.9;
+      window.speechSynthesis.speak(u);
+    }
+
+    // Рендер упражнений 1 и 2 из PDF
+    function renderExercises(containerId, list) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+      list.forEach(item => {
+        const box = document.createElement('div');
+        box.className = 'quick-check';
+        box.style.marginTop = '0';
+
+        const qEl = document.createElement('div');
+        qEl.className = 'qc-question';
+        qEl.textContent = item.q;
+
+        const optsEl = document.createElement('div');
+        optsEl.className = 'qc-options';
+
+        const fbEl = document.createElement('div');
+        fbEl.className = 'qc-feedback';
+        fbEl.textContent = `💡 ${item.exp[currentLang]}`;
+
+        item.options.forEach((optText, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'qc-btn';
+          btn.textContent = optText;
+          btn.onclick = () => {
+            const buttons = optsEl.querySelectorAll('.qc-btn');
+            buttons.forEach(b => b.disabled = true);
+            if (idx === item.correct) {
+              btn.classList.add('correct');
+            } else {
+              btn.classList.add('wrong');
+              buttons[item.correct].classList.add('correct');
+            }
+            fbEl.style.display = 'block';
+          };
+          optsEl.appendChild(btn);
+        });
+
+        box.appendChild(qEl);
+        box.appendChild(optsEl);
+        box.appendChild(fbEl);
+        container.appendChild(box);
+      });
+    }
+
+    // Инициализация языка и проверка подписки при загрузке страницы
+    setLang(currentLang);
+    verifySubscriptionAccess();
+  </script>
+</body>
+</html>
