@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>@doctors.speak — Метод «Чанков» и Вся Грамматика (Free Guide)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --kz-gold-light: #FFFBEB;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --success-bg: #DCFCE7;
+      --success-border: #22C55E;
+      --success-text: #15803D;
+      --error-bg: #FEE2E2;
+      --error-border: #EF4444;
+      --error-text: #B91C1C;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 40px;
+    }
+
+    /* Верхняя шапка */
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+      color: #FFFFFF;
+      padding: 16px 20px 22px 20px;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-top {
+      max-width: 860px;
+      margin: 0 auto 12px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .free-badge {
+      background: rgba(16, 185, 129, 0.25);
+      border: 1px solid #34D399;
+      color: #A7F3D0;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 20px;
+      padding: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 800;
+      font-size: 0.74rem;
+      padding: 5px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+    }
+
+    .header-title-box {
+      max-width: 860px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .lesson-badge {
+      display: inline-block;
+      background: rgba(255, 199, 44, 0.2);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    header p {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.92);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* Навигация по 4 вкладкам */
+    .section-nav {
+      width: 100%;
+      max-width: 860px;
+      margin: 14px auto 0 auto;
+      padding: 0 14px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .nav-pill {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 10px 6px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .nav-pill.active {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      border-color: var(--kz-blue-dark);
+      box-shadow: 0 4px 12px rgba(0, 161, 222, 0.25);
+    }
+
+    /* Основной контейнер */
+    main {
+      width: 100%;
+      max-width: 860px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-section {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .tab-section.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Карточки контента */
+    .card-block {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-block::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: var(--kz-blue);
+    }
+
+    .card-block.gold::before {
+      background: var(--kz-gold-dark);
+    }
+
+    .card-block h2 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-block p {
+      font-size: 0.84rem;
+      line-height: 1.55;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+
+    .clinical-quote {
+      background: #F8FAFC;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 0.82rem;
+      border-left: 4px solid var(--kz-blue);
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    /* Интерактивный трансформер чанков */
+    .chunk-lab {
+      background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      border-radius: 16px;
+      padding: 16px;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .chunk-lab-header {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--kz-gold);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .chunk-sentence-box {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .chunk-core {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: 900;
+    }
+
+    .chunk-var {
+      color: #7DD3FC;
+      border-bottom: 2px dashed #38BDF8;
+      padding-bottom: 1px;
+    }
+
+    .spec-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .spec-btn {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #FFFFFF;
+      padding: 7px 12px;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .spec-btn.active, .spec-btn:hover {
+      background: var(--kz-blue);
+      border-color: #7DD3FC;
+    }
+
+    /* 4 шага для выражения мнения (Speaking Chunks) */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .step-card {
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .step-card.s1 { border-top: 4px solid #0284C7; background: #F0F9FF; }
+    .step-card.s2 { border-top: 4px solid #D97706; background: var(--kz-gold-light); }
+    .step-card.s3 { border-top: 4px solid #16A34A; background: #F0FDF4; }
+    .step-card.s4 { border-top: 4px solid #7C3AED; background: #F5F3FF; }
+
+    .step-head {
+      font-size: 0.85rem;
+      font-weight: 900;
+      color: var(--text-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chunk-pill-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .chunk-pill {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 7px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.76rem;
+    }
+
+    .chunk-pill b {
+      color: var(--kz-blue-dark);
+      font-size: 0.8rem;
+    }
+
+    .speak-mini-btn {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 161, 222, 0.3);
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      cursor: pointer;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+    }
+
+    /* Интерактивный разбор ответа по 4 шагам */
+    .sample-box {
+      background: #FFFFFF;
+      border: 2px solid #CBD5E1;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .sample-header {
+      background: #1E293B;
+      color: #FFFFFF;
+      padding: 10px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .sample-body {
+      padding: 14px;
+      font-size: 0.83rem;
+      line-height: 1.65;
+      color: #334155;
+    }
+
+    .hl-chunk {
+      background: #FEF08A;
+      color: #854D0E;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 5px;
+      border-bottom: 2px solid #EAB308;
+    }
+
+    /* Шпаргалка по всем 15 темам грамматики */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .filter-chip {
+      background: #F1F5F9;
+      border: 1px solid var(--border-color);
+      color: var(--text-dark);
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .filter-chip.active {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      border-color: var(--kz-blue-dark);
+    }
+
+    .grammar-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+    }
+
+    .g-cheat-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-top: 4px solid var(--kz-blue);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .g-cheat-card.cat-structures { border-top-color: var(--kz-gold-dark); }
+    .g-cheat-card.cat-advanced { border-top-color: #7C3AED; }
+
+    .gc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .gc-title {
+      font-size: 0.9rem;
+      font-weight: 900;
+      color: var(--text-dark);
+    }
+
+    .gc-Meaning {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    .gc-formula {
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      padding: 7px 9px;
+      border-radius: 8px;
+      font-size: 0.73rem;
+      font-weight: 800;
+      line-height: 1.4;
+      border: 1px dashed rgba(0, 161, 222, 0.35);
+    }
+
+    .gc-words {
+      font-size: 0.71rem;
+      color: #B45309;
+      background: var(--kz-gold-light);
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+
+    .gc-examples {
+      font-size: 0.75rem;
+      color: var(--text-dark);
+      background: #F8FAFC;
+      padding: 8px 10px;
+      border-radius: 8px;
+      line-height: 1.42;
+      border-left: 3px solid var(--kz-blue);
+    }
+
+    /* Микро-тесты и тренажер */
+    .quick-check {
+      background: #F8FAFC;
+      border: 1px dashed var(--kz-blue);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 10px;
+    }
+
+    .qc-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .qc-question {
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+      line-height: 1.4;
+    }
+
+    .qc-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .qc-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.79rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-align: left;
+    }
+
+    .qc-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background: var(--kz-blue-light);
+    }
+
+    .qc-btn.correct {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    .qc-btn.wrong {
+      background: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    .qc-feedback {
+      display: none;
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.77rem;
+      font-weight: 600;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      line-height: 1.4;
+    }
+
+    /* Плашка счетчика баллов в тренажере */
+    .score-banner {
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      padding: 14px 18px;
+      border-radius: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .score-count {
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--kz-gold);
+    }
+
+    .reset-quiz-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #FFFFFF;
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      border-radius: 16px;
+      padding: 13px 18px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    @media (max-width: 580px) {
+      .section-nav {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      header h1 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ШАПКА СТРАНИЦЫ (ОТКРЫТА ДЛЯ ТАРИФА FREE) -->
+  <header>
+    <div class="header-top">
+      <a href="https://kazdoctors.com" class="back-btn" id="uiBackBtn">⬅ На главную</a>
+      <div class="header-right">
+        <span class="free-badge" id="uiFreeBadge">🔓 FREE ACCESS</span>
+        <div class="lang-switch">
+          <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
+          <button class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
+        </div>
+      </div>
+    </div>
+    <div class="header-title-box">
+      <span class="lesson-badge">@kazdoctors.english • @doctors.speak</span>
+      <h1 id="uiTitle">Метод «Чанков» и Вся Медицинская Грамматика</h1>
+      <p id="uiSubtitle">Как врачу заговорить на английском с помощью фраз-заготовок (чанков) и 15 базовых формул</p>
+    </div>
+  </header>
+
+  <!-- НАВИГАЦИЯ ПО 4 РАЗДЕЛАМ -->
+  <nav class="section-nav">
+    <button class="nav-pill active" onclick="showTab(0)" id="nav0">1. Что такое «Чанк»?</button>
+    <button class="nav-pill" onclick="showTab(1)" id="nav1">2. Фразы-заготовки (4 шага)</button>
+    <button class="nav-pill" onclick="showTab(2)" id="nav2">3. Шпаргалка (15 тем)</button>
+    <button class="nav-pill" onclick="showTab(3)" id="nav3">4. Тренажер (10 заданий)</button>
+  </nav>
+
+  <!-- ОСНОВНОЙ КОНТЕНТ -->
+  <main>
+    <!-- ВКЛАДКА 1: ЧТО ТАКОЕ ЧАНК + ИНТЕРАКТИВНЫЙ ТРАНСФОРМЕР ГАЙДЛАЙНОВ -->
+    <section class="tab-section active" id="tab0"></section>
+
+    <!-- ВКЛАДКА 2: ФРАЗЫ-ЗАГОТОВКИ ДЛЯ ВЫРАЖЕНИЯ МНЕНИЯ (4 ШАГА) -->
+    <section class="tab-section" id="tab1"></section>
+
+    <!-- ВКЛАДКА 3: ИНТЕРАКТИВНАЯ ШПАРГАЛКА ПО ВСЕМ 15 ТЕМАМ ГРАММАТИКИ -->
+    <section class="tab-section" id="tab2">
+      <div class="card-block">
+        <h2 id="uiCheatTitle">🗂️ Интерактивная шпаргалка по всей медицинской грамматике</h2>
+        <p id="uiCheatDesc">Выберите категорию ниже или изучайте карточки подряд. Нажмите 🔊 на любой карточке, чтобы прослушать примеры из жизни врача:</p>
+        <div class="filter-bar" id="grammarFilterBar"></div>
+        <div class="grammar-cards-grid" id="grammarCardsGrid"></div>
+      </div>
+      <button class="action-btn" onclick="showTab(3)" id="uiToQuizBtn">Перейти к шагу 4: Проверить себя в тренажере ➔</button>
+    </section>
+
+    <!-- ВКЛАДКА 4: ПРАКТИЧЕСКИЙ ТРЕНАЖЕР (10 ВОПРОСОВ) -->
+    <section class="tab-section" id="tab3">
+      <div class="score-banner">
+        <div>
+          <div style="font-size:0.75rem; color:#CBD5E1; font-weight:700;" id="uiScoreLabel">ВАШ ПРОГРЕСС В ТРЕНАЖЕРЕ:</div>
+          <div class="score-count" id="scoreDisplay">0 / 10</div>
+        </div>
+        <button class="reset-quiz-btn" onclick="resetPracticeQuiz()" id="uiResetBtn">🔄 Начать заново</button>
+      </div>
+
+      <div class="card-block gold">
+        <h2 id="uiQuizTitle">🎯 Практикум: Чанки, Связки и Грамматические формулы</h2>
+        <p id="uiQuizDesc">Выберите правильный вариант в каждой клинической ситуации и сразу прочитайте разбор:</p>
+        <div id="quizContainer" style="display:flex; flex-direction:column; gap:12px;"></div>
+      </div>
+
+      <a href="https://kazdoctors.com/tarifs" class="action-btn" id="uiUpgradeBtn">🌟 Открыть полный доступ ко всем тренажерам, конспектам и видеоурокам ➔</a>
+    </section>
+  </main>
+
+  <script>
+    // =========================================================================
+    // 1. БАЗА ДАННЫХ ИНТЕРАКТИВНОГО УЧЕБНИКА (RU / KZ)
+    // =========================================================================
+    const FREE_GUIDE_DATA = {
+      ui: {
+        backBtn: { ru: "⬅ На главную", kz: "⬅ Басты бетке" },
+        freeBadge: { ru: "🔓 ДОСТУПНО НА FREE", kz: "🔓 FREE ТАРИФІНДЕ АШЫҚ" },
+        title: {
+          ru: "Метод «Чанков» и Вся Медицинская Грамматика",
+          kz: "«Чанк» әдісі және Бүкіл Медициналық Грамматика"
+        },
+        subtitle: {
+          ru: "Стартовый интерактивный гид: как брать готовые структуры из гайдлайнов и строить предложения без ошибок",
+          kz: "Бастапқы интерактивті нұсқаулық: гайдлайндардан дайын құрылымдарды алып, қатесіз сөйлем құрау"
+        },
+        nav: [
+          { ru: "1. Что такое «Чанк»?", kz: "1. «Чанк» деген не?" },
+          { ru: "2. Фразы-заготовки", kz: "2. Дайын тіркестер" },
+          { ru: "3. Вся грамматика", kz: "3. Барлық грамматика" },
+          { ru: "4. Тренажер (10)", kz: "4. Тренажер (10)" }
+        ],
+        cheatTitle: {
+          ru: "🗂️ Интерактивная шпаргалка по всей медицинской грамматике (16 карточек)",
+          kz: "🗂️ Бүкіл медициналық грамматика бойынша интерактивті шпаргалка (16 карточка)"
+        },
+        cheatDesc: {
+          ru: "Все формулы, слова-маркеры и врачебные примеры в одном месте. Нажимайте 🔊 для прослушивания примеров.",
+          kz: "Барлық формулалар, маркер сөздер және дәрігерлік мысалдар бір жерде. Мысалдарды тыңдау үшін 🔊 басыңыз."
+        },
+        toQuizBtn: {
+          ru: "Перейти к шагу 4: Интерактивный тренажер (10 заданий) ➔",
+          kz: "4-қадамға өту: Интерактивті тренажер (10 тапсырма) ➔"
+        },
+        scoreLabel: {
+          ru: "ВАШ РЕЗУЛЬТАТ В ТРЕНАЖЕРЕ:",
+          kz: "ТРЕНАЖЕРДЕГІ НӘТИЖЕҢІЗ:"
+        },
+        resetBtn: {
+          ru: "🔄 Пройти заново",
+          kz: "🔄 Қайта бастау"
+        },
+        quizTitle: {
+          ru: "🎯 Практикум: проверьте понимание чанков и формул",
+          kz: "🎯 Практикум: чанктар мен формулаларды тексеріңіз"
+        },
+        quizDesc: {
+          ru: "Нажимайте на правильный вариант ответа — система сразу покажет объяснение:",
+          kz: "Дұрыс жауап нұсқасын басыңыз — жүйе бірден түсіндірмесін көрсетеді:"
+        },
+        upgradeBtn: {
+          ru: "🌟 Понравился формат? Посмотреть тарифы полного доступа (STANDARD / PRO / PREMIUM) ➔",
+          kz: "🌟 Формат ұнады ма? Толық доступ тарифтерін көру (STANDARD / PRO / PREMIUM) ➔"
+        },
+        filters: [
+          { id: "all", ru: "Все темы (16)", kz: "Барлығы (16)" },
+          { id: "tenses", ru: "Времена и Формы глагола (7)", kz: "Шақтар мен Етістік формалары (7)" },
+          { id: "structures", ru: "Модальные, Пассив, Артикли, Предлоги (5)", kz: "Модальді, Пассив, Артикль, Предлог (5)" },
+          { id: "advanced", ru: "Сравнения, Условия, Причастия (4)", kz: "Шырай, Шартты, Есімше/Герундий (4)" }
+        ]
+      },
+
+      // Примеры для интерактивного трансформера чанков во вкладке 1
+      chunkExamples: [
+        {
+          spec: { ru: "🫀 Кардиология (Оригинал из гайдлайна)", kz: "🫀 Кардиология (Гайдлайндағы түпнұсқа)" },
+          left: "Hypertension",
+          core: "is associated with",
+          right: "a significant increase in risk of adverse cardiovascular and kidney outcomes.",
+          tr: {
+            ru: "Артериальная гипертензия ассоциирована со значительным повышением риска неблагоприятных сердечно-сосудистых и почечных исходов.",
+            kz: "Артериялық гипертензия жүрек-қантамыр және бүйрек тарапынан жағымсыз салдарлар қаупінің айтарлықтай артуымен байланысты."
+          }
+        },
+        {
+          spec: { ru: "🦋 Эндокринология (Адаптация)", kz: "🦋 Эндокринология (Бейімделген нұсқа)" },
+          left: "Hypothyroidism",
+          core: "is associated with",
+          right: "weight gain and chronic fatigue.",
+          tr: {
+            ru: "Гипотиреоз ассоциирован с набором веса и хронической усталостью. (Читаем чужое — учимся говорить про свое!)",
+            kz: "Гипотиреоз салмақ қосумен және созылмалы шаршаумен байланысты. (Өзгенікін оқып, өз саламыз туралы айтуды үйренеміз!)"
+          }
+        },
+        {
+          spec: { ru: "🧠 Неврология (Адаптация)", kz: "🧠 Неврология (Бейімделген нұсқа)" },
+          left: "Untreated atrial fibrillation",
+          core: "is associated with",
+          right: "a high risk of ischemic stroke.",
+          tr: {
+            ru: "Нелеченая фибрилляция предсердий ассоциирована с высоким риском ишемического инсульта.",
+            kz: "Емделмеген жүрекше фибрилляциясы ишемиялық инсульттің жоғары қаупімен байланысты."
+          }
+        },
+        {
+          spec: { ru: "🦠 Инфекции / Педиатрия (Адаптация)", kz: "🦠 Инфекция / Педиатрия (Бейімделген)" },
+          left: "Severe dehydration in infants",
+          core: "is associated with",
+          right: "electrolyte imbalance and lethargy.",
+          tr: {
+            ru: "Тяжелое обезвоживание у младенцев ассоциировано с электролитным дисбалансом и вялостью.",
+            kz: "Нәрестелердегі ауыр сусыздану электролиттік теңгерімсіздікпен және әлсіздікпен байланысты."
+          }
+        }
+      ],
+
+      // ВКЛАДКА 1: ЧТО ТАКОЕ ЧАНК
+      tab0Html: {
+        ru: `
+          <div class="card-block">
+            <h2>🧩 Что такое «чанк» (chunk) и почему это главный секрет беглой речи?</h2>
+            <p><b>Чанк</b> — это готовый речевой шаблон, когда предложение строится строго определенным образом, чтобы передать конкретную мысль. В английском языке нельзя менять порядок слов наугад — иначе изменится смысл или получится грубая ошибка:</p>
+
+            <div class="clinical-quote">
+              🍎 <b>Простой пример на фразе «I love apples» (Я люблю яблоки):</b><br>
+              Порядок слов жестко зафиксирован: сначала <b>I</b> (кто), затем глагол <b>love</b> (что делает), и только потом <b>apples</b> (объект).<br>
+              • Нельзя сказать: ❌ <s>I apples love</s> | ❌ <s>Apples love me</s> | ❌ <s>I loves apples</s>.<br>
+              • Зато, зная чанк <b>"I love [___]"</b>, вы можете подставлять внутрь любые слова: <i>"I love oranges"</i>, или поменять глагол: <i>"I hate apples"</i>!
+            </div>
+
+            <div class="clinical-quote" style="border-left-color: var(--kz-gold-dark); background: var(--kz-gold-light);">
+              💡 <b>Главный принцип самообучения врача («Болмасаң да ұқсап бақ» / «Fake it till you make it»):</b><br>
+              Вам не нужно придумывать английские предложения с нуля! Когда вы читаете любой зарубежный гайдлайн (даже по чужой специальности), выцепляйте оттуда <b>готовые каркасы-чанки</b> и подставляйте в них свои диагнозы и симптомы. <b>Копируйте чужие структуры для своих мыслей!</b>
+            </div>
+
+            <div class="chunk-lab">
+              <div class="chunk-lab-header">🔬 Интерактивный тренажер: как эндокринолог берет чанк у кардиолога</div>
+              <p style="font-size:0.78rem; color:#CBD5E1; margin-bottom:2px;">Нажимайте на кнопки специальностей ниже и смотрите, как работает золотой медицинский чанк <b>[Диагноз] is associated with [Осложнение/Симптом]</b>:</p>
+              <div class="spec-buttons" id="chunkSpecBtns"></div>
+              <div class="chunk-sentence-box" id="chunkDisplayEn"></div>
+              <div style="font-size:0.78rem; color:#BAE6FD; font-weight:600;" id="chunkDisplayTr"></div>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Быстрая проверка</span>
+              <div class="qc-question">Вы — гастроэнтеролог и хотите сказать по модели чанка выше: «Прием НПВС ассоциирован с язвой желудка». Как вы построите фразу?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Блестяще! Вы взяли готовый академический чанк [A] is associated with [B] и получили идеальное предложение уровня B2/C1!')">NSAID use is associated with gastric ulcers.</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Нарушен порядок слов и потерян глагол to be (is). Чанк звучит строго: is associated with.')">NSAID use associated gastric ulcers with.</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">Перейти к шагу 2: Фразы-заготовки для выражения мнения (4 шага) ➔</button>
+        `,
+        kz: `
+          <div class="card-block">
+            <h2>🧩 «Чанк» (chunk) дегеніміз не және ол еркін сөйлеуге қалай көмектеседі?</h2>
+            <p><b>Чанк</b> — белгілі бір ойды жеткізу үшін сөйлемнің нақты бір қалыппен (шаблонмен) құрылуы. Ағылшын тілінде сөздердің орнын ойымызша ауыстыра алмаймыз — олай етсек, сөйлем мағынасы бұзылады немесе қате болады:</p>
+
+            <div class="clinical-quote">
+              🍎 <b>«I love apples» (Мен алма жақсы көремін) фразасы арқылы қарапайым мысал:</b><br>
+              Сөз тәртібі қатаң бекітілген: алдымен <b>I</b> (кім), сосын <b>love</b> (етістік), содан кейін ғана <b>apples</b> (нысан).<br>
+              • Былай айтуға болмайды: ❌ <s>I apples love</s> | ❌ <s>Apples love me</s> | ❌ <s>I loves apples</s>.<br>
+              • Есесіне, <b>"I love [___]"</b> чанкін білген соң, ішіндегі сөзді ғана ауыстыра бересіз: <i>"I love oranges"</i> немесе <i>"I hate apples"</i>!
+            </div>
+
+            <div class="clinical-quote" style="border-left-color: var(--kz-gold-dark); background: var(--kz-gold-light);">
+              💡 <b>Дәрігердің өз бетінше үйрену қағидасы («Болмасаң да ұқсап бақ» / «Fake it till you make it»):</b><br>
+              Сөйлемді нөлден бастап ойлап табудың қажеті жоқ! Шетелдік гайдлайндарды оқығанда (тіпті басқа мамандық бойынша болса да), ішінен <b>дайын чанк-құрылымдарды</b> жұлып алып, өз диагнозыңыз бен симптомдарыңызды қойыңыз. <b>Өз ойыңызды жеткізу үшін дайын құрылымдарды көшіріп қолданыңыз!</b>
+            </div>
+
+            <div class="chunk-lab">
+              <div class="chunk-lab-header">🔬 Интерактивті зертхана: эндокринолог кардиологтың чанкін қалай қолданады</div>
+              <p style="font-size:0.78rem; color:#CBD5E1; margin-bottom:2px;">Төмендегі мамандық батырмаларын басып, <b>[Диагноз] is associated with [Асқыну/Симптом]</b> алтын медициналық чанкінің қалай жұмыс істейтінін көріңіз:</p>
+              <div class="spec-buttons" id="chunkSpecBtns"></div>
+              <div class="chunk-sentence-box" id="chunkDisplayEn"></div>
+              <div style="font-size:0.78rem; color:#BAE6FD; font-weight:600;" id="chunkDisplayTr"></div>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Жылдам тексеру</span>
+              <div class="qc-question">Сіз гастроэнтерологсыз және жоғарыдағы чанк үлгісімен: «ҚҚСП (NSAID) қабылдау асқазан жарасымен байланысты» дегіңіз келеді. Сөйлемді қалай құрайсыз?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Керемет! Сіз дайын [A] is associated with [B] академиялық чанкін қолданып, мінсіз сөйлем құрадыңыз!')">NSAID use is associated with gastric ulcers.</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Сөз тәртібі бұзылған және is етістігі түсіп қалған. Дұрыс чанк: is associated with.')">NSAID use associated gastric ulcers with.</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">2-қадамға өту: Пікір білдіруге арналған дайын фразалар (4 қадам) ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 2: ФРАЗЫ-ЗАГОТОВКИ (ЧАНКИ) ДЛЯ ВЫРАЖЕНИЯ МНЕНИЯ (4 ШАГА)
+      tab1Html: {
+        ru: `
+          <div class="card-block">
+            <h2>🗣️ Фразы-заготовки (чанки): как структурно выразить любое мнение за 4 шага</h2>
+            <p>Когда на конференции, экзамене (IELTS / OET) или утренней планерке у вас спрашивают мнение, не пытайтесь говорить хаотично. Используйте <b>универсальную стратегию из 4 шагов</b> (её можно варьировать и подстраивать под себя):</p>
+
+            <div class="steps-grid">
+              <div class="step-card s1">
+                <div class="step-head">
+                  <span>1️⃣ Общее утверждение</span>
+                  <span>Мысль + Контекст</span>
+                </div>
+                <div class="chunk-pill-list">
+                  <div class="chunk-pill"><div><b>In my opinion, ...</b><br>По моему мнению, ...</div><button class="speak-mini-btn" onclick="speakEn('In my opinion')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>I believe that ...</b><br>Я считаю / полагаю, что ...</div><button class="speak-mini-btn" onclick="speakEn('I believe that')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>To my mind, ...</b><br>На мой взгляд, ...</div><button class="speak-mini-btn" onclick="speakEn('To my mind')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>One of the advantages / disadvantages of ___ is ___</b><br>Один из плюсов / минусов ... — это ...</div><button class="speak-mini-btn" onclick="speakEn('One of the advantages of this is')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>..., especially in ...</b><br>..., особенно в (контекст)</div><button class="speak-mini-btn" onclick="speakEn('especially in the modern world')">🔊</button></div>
+                </div>
+              </div>
+
+              <div class="step-card s2">
+                <div class="step-head">
+                  <span>2️⃣ Объяснение (Почему?)</span>
+                  <span>Причина и следствие</span>
+                </div>
+                <div class="chunk-pill-list">
+                  <div class="chunk-pill"><div><b>This is because ...</b><br>Это потому, что ...</div><button class="speak-mini-btn" onclick="speakEn('This is because')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>As a result, ...</b><br>В результате / Как следствие, ...</div><button class="speak-mini-btn" onclick="speakEn('As a result')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>Since / As ...</b><br>Поскольку / Так как ...</div><button class="speak-mini-btn" onclick="speakEn('Since')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>Due to (+ существительное)</b><br>Из-за / Вследствие ...</div><button class="speak-mini-btn" onclick="speakEn('Due to')">🔊</button></div>
+                </div>
+              </div>
+
+              <div class="step-card s3">
+                <div class="step-head">
+                  <span>3️⃣ Примеры</span>
+                  <span>Личный / Клинический опыт</span>
+                </div>
+                <div class="chunk-pill-list">
+                  <div class="chunk-pill"><div><b>For example, ...</b><br>Например, ...</div><button class="speak-mini-btn" onclick="speakEn('For example')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>For instance, ...</b><br>К примеру, ...</div><button class="speak-mini-btn" onclick="speakEn('For instance')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>In this case / In my case, ...</b><br>В данном случае / В моем случае, ...</div><button class="speak-mini-btn" onclick="speakEn('In my case')">🔊</button></div>
+                </div>
+              </div>
+
+              <div class="step-card s4">
+                <div class="step-head">
+                  <span>4️⃣ Вывод (Итог)</span>
+                  <span>Красивое завершение</span>
+                </div>
+                <div class="chunk-pill-list">
+                  <div class="chunk-pill"><div><b>Therefore, ... / That is why, ...</b><br>Следовательно, ... / Вот почему ...</div><button class="speak-mini-btn" onclick="speakEn('Therefore')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>In a nutshell, ...</b><br>Короче говоря / В двух словах, ...</div><button class="speak-mini-btn" onclick="speakEn('In a nutshell')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>Generally speaking, ...</b><br>Говоря в целом, ...</div><button class="speak-mini-btn" onclick="speakEn('Generally speaking')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>Overall, ... / All in all, ...</b><br>В целом / Подводя итог, ...</div><button class="speak-mini-btn" onclick="speakEn('Overall, all in all')">🔊</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>📝 Разбор готового ответа по 4 шагам (как это звучит целиком)</h2>
+            <p>Вопрос: <b>"Explain the importance of learning a new language. How can it benefit individuals and society?"</b> Посмотрите, как желтые фразы-заготовки (чанки) скрепляют весь монолог в единую логическую цепь:</p>
+
+            <div class="sample-box">
+              <div class="sample-header">
+                <span>🎙️ Образец ответа по формуле 4 шагов</span>
+                <button class="hl-btn" style="background:var(--kz-gold); color:var(--text-dark); border:none; padding:5px 12px; border-radius:10px; font-weight:800; font-size:0.72rem; cursor:pointer;" onclick="speakEn('I think that learning new languages is very important in the daily life of every person, especially in the modern world. This is because people can communicate freely. As a result, it can help build network. For example, I have many colleagues from abroad. Therefore, learning a new language is important.')">🔊 Прослушать ответ</button>
+              </div>
+              <div class="sample-body">
+                <b>1. Общее утверждение:</b><br>
+                <span class="hl-chunk">I think that</span> learning new languages is very important in the daily life of every person, <span class="hl-chunk">especially</span> in the modern world, where the borders between countries are open. <i>(Начали с I think that, снова выразили мысль "yes, it is important" и дали свой контекст через "especially").</i><br><br>
+                <b>2. Объяснение:</b><br>
+                <span class="hl-chunk">This is because</span> people from all over the world can communicate freely via internet and social media, or even travel to each other over long distance. <span class="hl-chunk">As a result,</span> it can help build network, exchange ideas, broaden life experience.<br><br>
+                <b>3. Примеры:</b><br>
+                <span class="hl-chunk">For example,</span> I have many colleagues from abroad with whom I stay in touch with the help of internet. <span class="hl-chunk">In my case,</span> it would not be possible if I did not know English. <i>(Обратите внимание: внутри примера использован Relative Clause "with whom" и Second Conditional "it would not be possible if I did not know"!)</i><br><br>
+                <b>4. Вывод:</b><br>
+                <span class="hl-chunk">Therefore,</span> learning a new language is important, <span class="hl-chunk">as</span> it is beneficial to stay abreast of the world, as well as connect with people from other countries.
+              </div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">Перейти к шагу 3: Интерактивная шпаргалка по всей грамматике ➔</button>
+        `,
+        kz: `
+          <div class="card-block">
+            <h2>🗣️ Дайын фразалар (чанктар): кез келген пікірді 4 қадаммен жүйелі жеткізу</h2>
+            <p>Конференцияда, емтиханда (IELTS / OET) немесе таңғы жиналыста сізден пікір сұрағанда, ойыңызды шашыратпай, <b>4 қадамнан тұратын әмбебап стратегияны</b> қолданыңыз:</p>
+
+            <div class="steps-grid">
+              <div class="step-card s1">
+                <div class="step-head">
+                  <span>1️⃣ Жалпы тұжырым</span>
+                  <span>Ой + Контекст</span>
+                </div>
+                <div class="chunk-pill-list">
+                  <div class="chunk-pill"><div><b>In my opinion, ...</b><br>Менің пікірімше, ...</div><button class="speak-mini-btn" onclick="speakEn('In my opinion')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>I believe that ...</b><br>Менің ойымша / Мен ... деп санаймын</div><button class="speak-mini-btn" onclick="speakEn('I believe that')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>To my mind, ...</b><br>Менің көзқарасым бойынша, ...</div><button class="speak-mini-btn" onclick="speakEn('To my mind')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>One of the advantages / disadvantages of ___ is ___</b><br>... артықшылықтарының / кемшіліктерінің бірі — ...</div><button class="speak-mini-btn" onclick="speakEn('One of the advantages of this is')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>..., especially in ...</b><br>..., әсіресе ... (контекст қосу)</div><button class="speak-mini-btn" onclick="speakEn('especially in the modern world')">🔊</button></div>
+                </div>
+              </div>
+
+              <div class="step-card s2">
+                <div class="step-head">
+                  <span>2️⃣ Түсіндірме (Неліктен?)</span>
+                  <span>Себеп пен салдар</span>
+                </div>
+                <div class="chunk-pill-list">
+                  <div class="chunk-pill"><div><b>This is because ...</b><br>Себебі / Бұның себебі — ...</div><button class="speak-mini-btn" onclick="speakEn('This is because')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>As a result, ...</b><br>Нәтижесінде / Соның салдарынан, ...</div><button class="speak-mini-btn" onclick="speakEn('As a result')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>Since / As ...</b><br>Өйткені / Болғандықтан ...</div><button class="speak-mini-btn" onclick="speakEn('Since')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>Due to (+ зат есім)</b><br>... байланысты / салдарынан</div><button class="speak-mini-btn" onclick="speakEn('Due to')">🔊</button></div>
+                </div>
+              </div>
+
+              <div class="step-card s3">
+                <div class="step-head">
+                  <span>3️⃣ Мысалдар</span>
+                  <span>Жеке / Клиникалық тәжірибе</span>
+                </div>
+                <div class="chunk-pill-list">
+                  <div class="chunk-pill"><div><b>For example, ...</b><br>Мысалы, ...</div><button class="speak-mini-btn" onclick="speakEn('For example')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>For instance, ...</b><br>Мысал ретінде, ...</div><button class="speak-mini-btn" onclick="speakEn('For instance')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>In this case / In my case, ...</b><br>Бұл жағдайда / Менің жағдайымда, ...</div><button class="speak-mini-btn" onclick="speakEn('In my case')">🔊</button></div>
+                </div>
+              </div>
+
+              <div class="step-card s4">
+                <div class="step-head">
+                  <span>4️⃣ Қорытынды</span>
+                  <span>Ойды түйіндеу</span>
+                </div>
+                <div class="chunk-pill-list">
+                  <div class="chunk-pill"><div><b>Therefore, ... / That is why, ...</b><br>Сондықтан, ... / Сол себепті ...</div><button class="speak-mini-btn" onclick="speakEn('Therefore')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>In a nutshell, ...</b><br>Қысқаша айтқанда / Тоқетері, ...</div><button class="speak-mini-btn" onclick="speakEn('In a nutshell')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>Generally speaking, ...</b><br>Жалпы алғанда, ...</div><button class="speak-mini-btn" onclick="speakEn('Generally speaking')">🔊</button></div>
+                  <div class="chunk-pill"><div><b>Overall, ... / All in all, ...</b><br>Қорыта келгенде, ...</div><button class="speak-mini-btn" onclick="speakEn('Overall, all in all')">🔊</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>📝 4 қадам бойынша құрылған дайын жауап үлгісі</h2>
+            <p>Сұрақ: <b>"Explain the importance of learning a new language. How can it benefit individuals and society?"</b> Сары түспен боялған дайын чанк-тіркестердің бүкіл жауапты қалай жүйелі біріктіріп тұрғанына қараңыз:</p>
+
+            <div class="sample-box">
+              <div class="sample-header">
+                <span>🎙️ 4 қадам формуласы бойынша жауап үлгісі</span>
+                <button class="hl-btn" style="background:var(--kz-gold); color:var(--text-dark); border:none; padding:5px 12px; border-radius:10px; font-weight:800; font-size:0.72rem; cursor:pointer;" onclick="speakEn('I think that learning new languages is very important in the daily life of every person, especially in the modern world. This is because people can communicate freely. As a result, it can help build network. For example, I have many colleagues from abroad. Therefore, learning a new language is important.')">🔊 Жауапты тыңдау</button>
+              </div>
+              <div class="sample-body">
+                <b>1. Жалпы тұжырым:</b><br>
+                <span class="hl-chunk">I think that</span> learning new languages is very important in the daily life of every person, <span class="hl-chunk">especially</span> in the modern world, where the borders between countries are open. <i>(I think that тіркесінен бастап, негізгі ойды қайталап, "especially" арқылы контекст бердік).</i><br><br>
+                <b>2. Түсіндірме:</b><br>
+                <span class="hl-chunk">This is because</span> people from all over the world can communicate freely via internet and social media, or even travel to each other over long distance. <span class="hl-chunk">As a result,</span> it can help build network, exchange ideas, broaden life experience.<br><br>
+                <b>3. Мысалдар:</b><br>
+                <span class="hl-chunk">For example,</span> I have many colleagues from abroad with whom I stay in touch with the help of internet. <span class="hl-chunk">In my case,</span> it would not be possible if I did not know English. <i>(Мысал ішінде Relative Clause "with whom" және Second Conditional "it would not be possible if I did not know" қолданылған!)</i><br><br>
+                <b>4. Қорытынды:</b><br>
+                <span class="hl-chunk">Therefore,</span> learning a new language is important, <span class="hl-chunk">as</span> it is beneficial to stay abreast of the world, as well as connect with people from other countries.
+              </div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">3-қадамға өту: Бүкіл грамматика бойынша интерактивті шпаргалка ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 3: ВСЕ 16 ТЕМ ИЗ ТАБЛИЦ ГРАММАТИКИ
+      grammarCards: [
+        {
+          cat: "tenses",
+          title: "1. Present Simple",
+          meaning: {
+            ru: "Регулярные действия врача, расписание, постоянные факты",
+            kz: "Дәрігердің күнделікті әрекеттері, кесте, тұрақты фактілер"
+          },
+          formula: "(+) Subject + Verb (he/she/it + -s/-es)<br>(?) Do / Does + subj + verb?<br>(-) Subj + don't / doesn't + verb",
+          words: "usually, never, always, rarely, sometimes, occasionally, sporadically, consistently, seldom",
+          examples: "• I <b>prescribe</b> paracetamol. She <b>discharges</b> patients.<br>• <b>Do</b> you <b>take</b> omeprazole? <b>Does</b> it <b>work</b>?<br>• We <b>don't do</b> ultrasound. He <b>doesn't know</b> hematology.",
+          audio: "I prescribe paracetamol. She discharges patients. Do you take omeprazole? Does it work?"
+        },
+        {
+          cat: "tenses",
+          title: "2. Present Continuous",
+          meaning: {
+            ru: "Процесс, который происходит прямо сейчас (в момент речи)",
+            kz: "Дәл қазір (сөйлеپ тұрған сәтте) болып жатқан процесс"
+          },
+          formula: "(+) Subj + am / is / are + V-ing<br>(?) Am / Is / Are + Subj + V-ing?<br>(-) Subj + am / is / are + not + V-ing",
+          words: "now, at the moment, currently",
+          examples: "• I <b>am studying</b> for the exam. She <b>is administering</b> propofol.<br>• <b>Are</b> you <b>auscultating</b> his heart? <b>Is</b> the hospital <b>working</b>?<br>• I <b>am not doing</b> anything wrong.",
+          audio: "I am studying for the exam. She is administering propofol. Are you auscultating his heart?"
+        },
+        {
+          cat: "tenses",
+          title: "3. Verb Forms (5 форм глагола)",
+          meaning: {
+            ru: "Правильные (Regular -ed) и Неправильные (Irregular) глаголы",
+            kz: "Дұрыс (-ed) және Бұрыс (Irregular) етістіктердің 5 формасы"
+          },
+          formula: "V1 — базовый глагол | V2 — Past (-ed / 2-я форма)<br>V3 — Past Participle (-ed / 3-я форма)<br>V-ing — Gerund | V-inf — TO + verb",
+          words: "Regular vs Irregular verbs",
+          examples: "<b>Regular:</b> V1 prescribe • V2 prescribed • V3 prescribed • Vinf to prescribe • Ving prescribing<br><b>Irregular:</b> V1 take • V2 took • V3 taken • Vinf to take • Ving taking",
+          audio: "prescribe, prescribed, prescribed. take, took, taken."
+        },
+        {
+          cat: "tenses",
+          title: "4. Present Perfect",
+          meaning: {
+            ru: "Действие в прошлом, результат которого важен прямо сейчас",
+            kz: "Өткенде болған, бірақ нәтижесі дәл қазір маңызды әрекет"
+          },
+          formula: "(+) Subj + HAVE / HAS + V3<br>(?) HAVE / HAS + subj + V3?<br>(-) Subj + HAVE / HAS not + V3",
+          words: "already, still, yet, so far, just, since",
+          examples: "• I <b>have injected</b> the drug already. She <b>has finished</b> the surgery.<br>• <b>Have</b> you <b>seen</b> the new patient? <b>Has</b> he <b>completed</b> bachelor's?<br>• I <b>have not done</b> the lumbar puncture before.",
+          audio: "I have injected the drug already. She has finished the surgery. Have you seen the new patient?"
+        },
+        {
+          cat: "tenses",
+          title: "5. Past Simple",
+          meaning: {
+            ru: "Завершенное действие в прошлом (вчера, год назад)",
+            kz: "Өткен шақта аяқталған іс-әрекет (кеше, былтыр)"
+          },
+          formula: "(+) Subj + V2 (-ed)<br>(?) Did + subj + V1?<br>(-) Subj + did not + V1",
+          words: "ago, yesterday, last week / month / year",
+          examples: "• I <b>prescribed</b> ceftriaxone. She <b>admitted</b> a new patient yesterday.<br>• <b>Did</b> you <b>study</b> biochemistry? <b>Did</b> the hospital <b>buy</b> a new MRI?<br>• The protocol <b>did not include</b> glucocorticosteroids.",
+          audio: "I prescribed ceftriaxone. She admitted a new patient yesterday. The protocol did not include glucocorticosteroids."
+        },
+        {
+          cat: "tenses",
+          title: "6. Future Simple (WILL)",
+          meaning: {
+            ru: "Спонтанные решения, обещания врачей и прогнозы на будущее",
+            kz: "Болашаққа болжам, уәде және жедел шешімдер"
+          },
+          formula: "(+) Subj + WILL + V1<br>(?) Will + subj + V1?<br>(-) Subj + will not (won't) + V1",
+          words: "tomorrow, in 5 min, next month / year",
+          examples: "• I <b>will prescribe</b> you warfarin. She <b>will be</b> here tomorrow.<br>• <b>Will</b> you <b>operate</b> tomorrow? <b>Will</b> X-ray <b>show</b> pneumonia?<br>• He <b>will not become</b> a pediatrician in 2 years.",
+          audio: "I will prescribe you warfarin. Will you operate tomorrow? Will X-ray show pneumonia?"
+        },
+        {
+          cat: "tenses",
+          title: "7. Future (BE GOING TO)",
+          meaning: {
+            ru: "Заранее запланированные действия и намерения («собираюсь сделать»)",
+            kz: "Алдын ала жоспарланған іс-әрекеттер мен ниет"
+          },
+          formula: "(+) S + am/is/are + GOING TO + V1<br>(?) Am/Is/Are + S + GOING TO + V1?<br>(-) S + am/is/are NOT + GOING TO + V1",
+          words: "tomorrow, in 5 min, next month / year",
+          examples: "• I <b>am going to begin</b> the surgery after the next patient.<br>• <b>Are</b> you <b>going to apply</b> for Master's next year?<br>• The hospital <b>is not going to raise</b> your salaries next month.",
+          audio: "I am going to begin the surgery after the next patient. Are you going to apply for Master's next year?"
+        },
+        {
+          cat: "structures",
+          title: "8. Passive Voice (Пассив)",
+          meaning: {
+            ru: "Объект не сам совершает действие, а действие совершается над ним",
+            kz: "Ырықсыз етіс: әрекет нысанның өзімен емес, оған бағытталып жасалады"
+          },
+          formula: "(+) S + TO BE + V3<br>(?) TO BE + S + V3?<br>(-) S + TO BE NOT + V3",
+          words: "by (кем — врачом), with (чем — скальпелем)",
+          examples: "• The drug <b>will be delivered</b> to the pharmacy tomorrow.<br>• <b>Is</b> the conference <b>going to be organized</b> in Hilton's hotel?<br>• He <b>was never checked</b> for lymphoma <b>by</b> any doctor.<br>• The incision <b>is done with</b> a scalpel.",
+          audio: "The drug will be delivered to the pharmacy tomorrow. The incision is done with a scalpel."
+        },
+        {
+          cat: "structures",
+          title: "9. Modals (Модальные глаголы)",
+          meaning: {
+            ru: "Умение, вероятность диагноза, рекомендации и обязанности",
+            kz: "Қабілет, ықтималдық, клиникалық ұсыныстар мен міндеттер"
+          },
+          formula: "(+) S + MODAL + V1<br>(?) MODAL + S + V1?<br>(-) S + MODAL NOT + V1",
+          words: "can, could, should, must, may, might, will, would",
+          examples: "• I <b>can do</b> ultrasound. She <b>can do</b> ultrasound too.<br>• <b>Should</b> he <b>be admitted</b> to the hospital? What <b>must</b> I <b>do</b>?<br>• The doctor <b>may not be</b> here tomorrow. We <b>might try</b> pantoprazole instead of omeprazole.",
+          audio: "I can do ultrasound. Should he be admitted to the hospital? We might try pantoprazole instead of omeprazole."
+        },
+        {
+          cat: "structures",
+          title: "10. Prepositions (Предлоги)",
+          meaning: {
+            ru: "Связывают слова по месту и времени (ставятся перед существительным или V-ing)",
+            kz: "Орын мен уақыт предлогтары (зат есім немесе герундий алдында)"
+          },
+          formula: "Usually BEFORE A NOUN or a GERUND (V-ing)",
+          words: "in, at, on, before, after, from, to, during, by",
+          examples: "• The patient is <b>IN</b> the room.<br>• I will see him <b>AT</b> 5 a.m.<br>• She was checked <b>BEFORE</b> the surgery, but <b>AFTER</b> the rounds.",
+          audio: "The patient is in the room. I will see him at 5 a.m. She was checked before the surgery, but after the rounds."
+        },
+        {
+          cat: "structures",
+          title: "11. There is / There are",
+          meaning: {
+            ru: "Указывает, что где-то что-то есть (или отсутствует) в любом времени",
+            kz: "Бір жерде бір нәрсенің бар (немесе жоқ) екенін білдіру"
+          },
+          formula: "There + TO BE (is / are / was / were / will be / must be) + NOUNS",
+          words: "there is (ед. ч.), there are (мн. ч.)",
+          examples: "• <b>There is</b> a patient in the room.<br>• <b>There was</b> a syringe in the refrigerator.<br>• <b>There must be</b> a nurse in the department.<br>• <b>There will not be</b> any doctors in the university.",
+          audio: "There is a patient in the room. There must be a nurse in the department."
+        },
+        {
+          cat: "structures",
+          title: "12. Articles (Артикли)",
+          meaning: {
+            ru: "Показывают, знаком ли нам объект по контексту или это общее понятие",
+            kz: "Заттың бізге таныс не бейтаныс екенін немесе жалпы ұғымды көрсетеді"
+          },
+          formula: "A/an + unknown object (впервые)<br>The + known object(s) (знакомый)<br>Zero article (—) + concept (общее понятие)",
+          words: "a, an, the, zero article (—)",
+          examples: "• There is <b>a</b> patient in the room. <b>The</b> patient is waiting.<br>• I did not see <b>the</b> results of <b>the</b> lab workup.<br>• I studied <b>—</b> biology long ago.",
+          audio: "There is a patient in the room. The patient is waiting. I did not see the results of the lab workup."
+        },
+        {
+          cat: "advanced",
+          title: "13. Comparatives & Superlatives",
+          meaning: {
+            ru: "Сравнительная (больше/дороже чем) и Превосходная (самый опытный) степени",
+            kz: "Салыстырмалы (-ырақ / than) және Күшейтпелі (ең / the most) шырайлар"
+          },
+          formula: "<b>Comparative:</b> short + ER | MORE / LESS + adj + THAN<br><b>Superlative:</b> THE + short + EST | THE MOST / LEAST + adj",
+          words: "than, the most, the least",
+          examples: "• The tumor is <b>BIGGER than</b> it was before, but <b>SMALLER</b> compared to the previous patient.<br>• It is <b>MORE EXPENSIVE</b> to treat chronic diseases.<br>• He is <b>the most experienced</b> surgeon in the country. I was <b>the fastest</b>.",
+          audio: "The tumor is bigger than it was before. He is the most experienced surgeon in the country."
+        },
+        {
+          cat: "advanced",
+          title: "14. Conditionals (0, 1, 2, 3)",
+          meaning: {
+            ru: "Условные предложения «Если..., то...» (реальные и нереальные)",
+            kz: "«Егер..., онда...» шартты сөйлемдері (шынайы және болжамды)"
+          },
+          formula: "0) If + S + V1, S + V1 (правило)<br>1) If + S + V1, S + WILL + V1 (реальный план)<br>2) If + S + V2, S + WOULD + V1 (гипотеза сейчас)<br>3) If + S + HAD + V3, S + WOULD HAVE + V3 (прошлое)",
+          words: "if, then, will, would, would have",
+          examples: "• <b>1st:</b> If I <b>see</b> any abnormalities, I <b>will let</b> you know.<br>• <b>2nd:</b> If he <b>knew</b> pharmacology better, he <b>wouldn't make</b> so many mistakes.<br>• <b>3rd:</b> If I <b>had not gone</b> to medical university, I <b>would have become</b> a lawyer.",
+          audio: "If I see any abnormalities, I will let you know. If he knew pharmacology better, he wouldn't make so many mistakes."
+        },
+        {
+          cat: "advanced",
+          title: "15. Possessives (Принадлежность)",
+          meaning: {
+            ru: "Три способа связать существительные: предлог OF, апостроф 's и цепочка слов",
+            kz: "Тәуелділіктің 3 жолы: OF предлогы, 's апострофы және зат есімдер тізбегі"
+          },
+          formula: "1) Object + OF + another object<br>2) Object + 's + another object<br>3) Object + object + object (главное слово в конце!)",
+          words: "of, 's, noun chains",
+          examples: "• This is the beginning <b>OF</b> the surgery = This is the <b>surgery's</b> beginning.<br>• I took the gloves <b>OF</b> the nurse = the <b>nurses'</b> gloves.<br>• <b>new treatment guideline</b> = the new guideline of treatment.<br>• <b>oncology department assessment</b>.",
+          audio: "This is the beginning of the surgery. Did you read the new treatment guideline?"
+        },
+        {
+          cat: "advanced",
+          title: "16. Relative Clause, Gerund & Participle",
+          meaning: {
+            ru: "Придаточные «который/чей/где», Герундий (-ing) и Причастие (V3 как прилагательное)",
+            kz: "Анықтауыш бағыныңқы сөйлемдер, Герундий (-ing) және Есімше (V3)"
+          },
+          formula: "<b>Relative:</b> that, which, who, whose, where, when, why<br><b>Gerund (V-ing):</b> глагол как сущ./прил./дееприч.<br><b>Past Participle (V3):</b> глагол как прилагательное",
+          words: "that, which, who, whose, where, V-ing, V3",
+          examples: "• <b>Relative:</b> She was the nurse <b>whose</b> lab coat you found. The surgery, <b>which</b> we performed yesterday, helped.<br>• <b>Gerund:</b> <b>Prescribing</b> antibiotics is an important decision. The <b>operating</b> doctor asked for light.<br>• <b>Participle:</b> The <b>published</b> information. The <b>discharged</b> patient came back.",
+          audio: "Prescribing antibiotics is an important decision. The discharged patient came back again."
+        }
+      ],
+
+      // ВКЛАДКА 4: 10 ИНТЕРАКТИВНЫХ ЗАДАНИЙ ТРЕНАЖЕРА
+      quiz: [
+        {
+          q: "1. [Метод Чанков] Вы прочитали в гайдлайне чанк 'Hypertension is associated with stroke'. Как правильно сказать по этому же шаблону: «Курение ассоциировано с раком легких»?",
+          options: [
+            "Smoking is associated with lung cancer.",
+            "Smoking associated to lung cancer.",
+            "Smoking is associate with lung cancer."
+          ],
+          correct: 0,
+          exp: {
+            ru: "Точное копирование структуры чанка: [Подлежащее] + is associated with + [Следствие/Риск]. Менять форму слов внутри чанка нельзя!",
+            kz: "Чанк құрылымын дәл көшіреміз: [Бастауыш] + is associated with + [Салдар/Қауіп]."
+          }
+        },
+        {
+          q: "2. [Фразы-заготовки: Шаг 2 — Объяснение] Вы высказали мнение и теперь хотите объяснить причину («Это потому, что пациенты часто пропускают прием таблеток»). Какой чанк подойдет?",
+          options: [
+            "This is because patients often skip their pills.",
+            "In a nutshell, patients often skip their pills.",
+            "For instance, patients often skip their pills."
+          ],
+          correct: 0,
+          exp: {
+            ru: "'This is because...' — идеальный чанк для Шага 2 (Объяснение причины). 'For instance' — это Шаг 3 (Пример), а 'In a nutshell' — Шаг 4 (Вывод).",
+            kz: "'This is because...' — 2-қадамға (Себебін түсіндіру) арналған чанк. 'For instance' — мысал келтіру, ал 'In a nutshell' — қорытынды."
+          }
+        },
+        {
+          q: "3. [Фразы-заготовки: Шаг 4 — Вывод] Какими фразами лучше всего подвести итог вашего выступления (Шаг 4)?",
+          options: [
+            "Therefore, ... / That is why, ... / In a nutshell, ... / Overall, ...",
+            "To my mind, ... / I believe that ...",
+            "For example, ... / In my case, ..."
+          ],
+          correct: 0,
+          exp: {
+            ru: "Для финального вывода (Шаг 4) используются резюмирующие чанки: Therefore (Следовательно), That is why (Вот почему), In a nutshell (В двух словах), Overall / All in all (В целом).",
+            kz: "Қорытынды жасау үшін (4-қадам) Therefore, That is why, In a nutshell, Overall / All in all тіркестері қолданылады."
+          }
+        },
+        {
+          q: "4. [Present Simple vs Continuous] Медсестра вводит пропофол пациенту ПРЯМО СЕЙЧАС (at the moment): 'She ___ propofol right now.'",
+          options: [
+            "is administering",
+            "administers",
+            "has administered"
+          ],
+          correct: 0,
+          exp: {
+            ru: "Действие происходит прямо сейчас (маркеры now, at the moment, currently) -> Present Continuous: Subj + is + V-ing (is administering).",
+            kz: "Іс-әрекет дәл қазір болып жатыр (now, at the moment) -> Present Continuous: Subj + is + V-ing (is administering)."
+          }
+        },
+        {
+          q: "5. [Present Perfect vs Past Simple] Врач говорит: «Я уже ввел препарат» (результат налицо, маркер already): 'I ___ the drug already.'",
+          options: [
+            "have injected",
+            "injected",
+            "did inject"
+          ],
+          correct: 0,
+          exp: {
+            ru: "Маркер 'already' (уже) и актуальный результат к настоящему моменту требуют Present Perfect: Subj + have/has + V3 (have injected).",
+            kz: "'Already' (әлдеқашан) маркері мен осы сәттегі нәтиже Present Perfect-ті талап етеді: Subj + have/has + V3 (have injected)."
+          }
+        },
+        {
+          q: "6. [Past Simple Negative] Как правильно сказать в прошедшем времени: «Протокол НЕ включал глюкокортикостероиды»?",
+          options: [
+            "The protocol did not include glucocorticosteroids.",
+            "The protocol did not included glucocorticosteroids.",
+            "The protocol not included glucocorticosteroids."
+          ],
+          correct: 0,
+          exp: {
+            ru: "Формула отрицания в Past Simple: Subj + did not + V1 (первая форма глагола без окончания -ed!): did not include.",
+            kz: "Past Simple болымсыз формасы: Subj + did not + V1 (-ed жалғауынсыз бастапқы етістік!): did not include."
+          }
+        },
+        {
+          q: "7. [Passive Voice] «Разрез делается скальпелем, а препарат будет доставлен завтра» — выберите правильную пару форм пассивного залога:",
+          options: [
+            "The incision is done with a scalpel. The drug will be delivered tomorrow.",
+            "The incision does with a scalpel. The drug will deliver tomorrow.",
+            "The incision is did with a scalpel. The drug will be deliver tomorrow."
+          ],
+          correct: 0,
+          exp: {
+            ru: "Формула Passive Voice всегда требует TO BE + V3: в настоящем — is done (с инструментом используется предлог with), в будущем — will be delivered.",
+            kz: "Passive Voice формуласы әрқашан TO BE + V3 талап етеді: осы шақта — is done, келер шақта — will be delivered."
+          }
+        },
+        {
+          q: "8. [Conditionals] «Если бы он знал фармакологию лучше (сейчас), он бы не совершал так много ошибок» — какой это тип условия?",
+          options: [
+            "If he knew pharmacology better, he wouldn't make so many mistakes. (Second Conditional)",
+            "If he knows pharmacology better, he wouldn't make so many mistakes.",
+            "If he will know pharmacology better, he won't make mistakes."
+          ],
+          correct: 0,
+          exp: {
+            ru: "Нереальная гипотеза в настоящем времени (Second Conditional): If + Subject + V2 (knew), Subject + would + V1 (wouldn't make).",
+            kz: "Осы шақтағы гипотетикалық шарт (Second Conditional): If + Subject + V2 (knew), Subject + would + V1 (wouldn't make)."
+          }
+        },
+        {
+          q: "9. [Possessive Noun Chains] Как компактно сказать через цепочку существительных: «the results of the assessment of the department of oncology»?",
+          options: [
+            "the results of the oncology department assessment",
+            "the results of the assessment department oncology",
+            "the oncology assessment department of results"
+          ],
+          correct: 0,
+          exp: {
+            ru: "В цепочке существительных (Object + object + object) главное слово ставится в конец: 'oncology department assessment' (оценка чего? онкологического отделения).",
+            kz: "Зат есімдер тізбегінде (Object + object + object) негізгі сөз ең соңында тұрады: 'oncology department assessment' (онкология бөлімшесін бағалау)."
+          }
+        },
+        {
+          q: "10. [Gerund vs Past Participle] Выберите верную пару: «Назначение (Prescribing/Prescribed) антибиотиков — важное решение» и «Выписанный (Discharging/Discharged) пациент вернулся снова»:",
+          options: [
+            "Prescribing antibiotics is an important decision. / The discharged patient came back again.",
+            "Prescribed antibiotics is an important decision. / The discharging patient came back again.",
+            "To prescribing antibiotics... / The discharge patient..."
+          ],
+          correct: 0,
+          exp: {
+            ru: "1) Процесс в роли существительного («Назначение чего-то») — это Gerund (Prescribing). 2) Какой? «Выписанный пациент» (действие совершено над ним) — это Past Participle V3 (The discharged patient).",
+            kz: "1) Зат есім рөліндегі процесс («Антибиотик тағайындау») — Gerund (Prescribing). 2) Қандай? «Шығарылған науқас» — Past Participle V3 (The discharged patient)."
+          }
+        }
+      ]
+    };
+
+    // =========================================================================
+    // 2. ЛОГИКА РАБОТЫ СТРАНИЦЫ, ФИЛЬТРОВ, ТРАНСФОРМЕРА ЧАНКОВ И ОЗВУЧКИ
+    // =========================================================================
+    let currentLang = localStorage.getItem('doctors_speak_lang') || 'ru';
+    let currentChunkIdx = 0;
+    let currentGrammarFilter = 'all';
+    let userScore = 0;
+    let answeredCount = 0;
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('doctors_speak_lang', lang);
+
+      document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
+      document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
+
+      const ui = FREE_GUIDE_DATA.ui;
+      document.getElementById('uiBackBtn').textContent = ui.backBtn[lang];
+      document.getElementById('uiFreeBadge').textContent = ui.freeBadge[lang];
+      document.getElementById('uiTitle').textContent = ui.title[lang];
+      document.getElementById('uiSubtitle').textContent = ui.subtitle[lang];
+
+      ui.nav.forEach((item, idx) => {
+        document.getElementById(`nav${idx}`).textContent = item[lang];
+      });
+
+      document.getElementById('uiCheatTitle').textContent = ui.cheatTitle[lang];
+      document.getElementById('uiCheatDesc').textContent = ui.cheatDesc[lang];
+      document.getElementById('uiToQuizBtn').textContent = ui.toQuizBtn[lang];
+      document.getElementById('uiScoreLabel').textContent = ui.scoreLabel[lang];
+      document.getElementById('uiResetBtn').textContent = ui.resetBtn[lang];
+      document.getElementById('uiQuizTitle').textContent = ui.quizTitle[lang];
+      document.getElementById('uiQuizDesc').textContent = ui.quizDesc[lang];
+      document.getElementById('uiUpgradeBtn').textContent = ui.upgradeBtn[lang];
+
+      // Рендерим вкладки
+      document.getElementById('tab0').innerHTML = FREE_GUIDE_DATA.tab0Html[lang];
+      document.getElementById('tab1').innerHTML = FREE_GUIDE_DATA.tab1Html[lang];
+
+      renderChunkTransformer();
+      renderGrammarFilters();
+      renderGrammarCards();
+      renderPracticeQuiz();
+    }
+
+    function showTab(idx) {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`nav${i}`).classList.toggle('active', i === idx);
+        document.getElementById(`tab${i}`).classList.toggle('active', i === idx);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Интерактивный трансформер чанка во вкладке 1
+    function renderChunkTransformer() {
+      const btnContainer = document.getElementById('chunkSpecBtns');
+      const enBox = document.getElementById('chunkDisplayEn');
+      const trBox = document.getElementById('chunkDisplayTr');
+      if (!btnContainer || !enBox || !trBox) return;
+
+      btnContainer.innerHTML = '';
+      FREE_GUIDE_DATA.chunkExamples.forEach((item, idx) => {
+        const b = document.createElement('button');
+        b.className = 'spec-btn' + (idx === currentChunkIdx ? ' active' : '');
+        b.textContent = item.spec[currentLang];
+        b.onclick = () => {
+          currentChunkIdx = idx;
+          renderChunkTransformer();
+        };
+        btnContainer.appendChild(b);
+      });
+
+      const activeItem = FREE_GUIDE_DATA.chunkExamples[currentChunkIdx];
+      enBox.innerHTML = `
+        "<span class="chunk-var">${activeItem.left}</span>
+        <span class="chunk-core">${activeItem.core}</span>
+        <span class="chunk-var">${activeItem.right}</span>"
+        <button class="speak-mini-btn" style="margin-left:8px; vertical-align:middle;" onclick="speakEn('${activeItem.left} ${activeItem.core} ${activeItem.right}')">🔊</button>
+      `;
+      trBox.textContent = `💡 ${activeItem.tr[currentLang]}`;
+    }
+
+    // Рендер фильтров и карточек шпаргалки по грамматике (Вкладка 3)
+    function renderGrammarFilters() {
+      const bar = document.getElementById('grammarFilterBar');
+      if (!bar) return;
+      bar.innerHTML = '';
+
+      FREE_GUIDE_DATA.ui.filters.forEach(f => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-chip' + (currentGrammarFilter === f.id ? ' active' : '');
+        btn.textContent = f[currentLang];
+        btn.onclick = () => {
+          currentGrammarFilter = f.id;
+          renderGrammarFilters();
+          renderGrammarCards();
+        };
+        bar.appendChild(btn);
+      });
+    }
+
+    function renderGrammarCards() {
+      const grid = document.getElementById('grammarCardsGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      const filtered = FREE_GUIDE_DATA.grammarCards.filter(
+        c => currentGrammarFilter === 'all' || c.cat === currentGrammarFilter
+      );
+
+      filtered.forEach(card => {
+        const div = document.createElement('div');
+        div.className = `g-cheat-card cat-${card.cat}`;
+        div.innerHTML = `
+          <div>
+            <div class="gc-header">
+              <span class="gc-title">${card.title}</span>
+              <button class="speak-mini-btn" onclick="speakEn(\`${card.audio}\`)" title="Прослушать примеры">🔊</button>
+            </div>
+            <div class="gc-Meaning" style="margin-top:4px;">${card.meaning[currentLang]}</div>
+          </div>
+          <div class="gc-formula">${card.formula}</div>
+          <div class="gc-words">🔑 <b>Words:</b> ${card.words}</div>
+          <div class="gc-examples">${card.examples}</div>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    // Проверка микро-вопроса во вкладке 1
+    function checkInlineQuiz(btn, isCorrect, feedbackText) {
+      const parent = btn.closest('.quick-check');
+      const allBtns = parent.querySelectorAll('.qc-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+      }
+
+      const fb = parent.querySelector('.qc-feedback');
+      fb.textContent = `💡 ${feedbackText}`;
+      fb.style.display = 'block';
+    }
+
+    // Рендер тренажера из 10 вопросов (Вкладка 4)
+    function renderPracticeQuiz() {
+      const container = document.getElementById('quizContainer');
+      if (!container) return;
+      container.innerHTML = '';
+      userScore = 0;
+      answeredCount = 0;
+      updateScoreDisplay();
+
+      FREE_GUIDE_DATA.quiz.forEach((item) => {
+        const box = document.createElement('div');
+        box.className = 'quick-check';
+        box.style.marginTop = '0';
+
+        const qEl = document.createElement('div');
+        qEl.className = 'qc-question';
+        qEl.textContent = item.q;
+
+        const optsEl = document.createElement('div');
+        optsEl.className = 'qc-options';
+
+        const fbEl = document.createElement('div');
+        fbEl.className = 'qc-feedback';
+        fbEl.textContent = `💡 ${item.exp[currentLang]}`;
+
+        item.options.forEach((optText, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'qc-btn';
+          btn.textContent = optText;
+          btn.onclick = () => {
+            const buttons = optsEl.querySelectorAll('.qc-btn');
+            buttons.forEach(b => b.disabled = true);
+            answeredCount++;
+            if (idx === item.correct) {
+              btn.classList.add('correct');
+              userScore++;
+            } else {
+              btn.classList.add('wrong');
+              buttons[item.correct].classList.add('correct');
+            }
+            updateScoreDisplay();
+            fbEl.style.display = 'block';
+          };
+          optsEl.appendChild(btn);
+        });
+
+        box.appendChild(qEl);
+        box.appendChild(optsEl);
+        box.appendChild(fbEl);
+        container.appendChild(box);
+      });
+    }
+
+    function updateScoreDisplay() {
+      const el = document.getElementById('scoreDisplay');
+      if (el) {
+        el.textContent = `${userScore} / ${FREE_GUIDE_DATA.quiz.length}`;
+      }
+    }
+
+    function resetPracticeQuiz() {
+      renderPracticeQuiz();
+    }
+
+    // Озвучка английских фраз через Web Speech API
+    function speakEn(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US';
+      u.rate = 0.92;
+      window.speechSynthesis.speak(u);
+    }
+
+    // Инициализация при загрузке
+    setLang(currentLang);
+  </script>
+</body>
+</html>
