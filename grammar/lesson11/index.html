@@ -1,0 +1,1741 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>@doctors.speak — Lesson 11: Conditionals in Medicine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Подключение Supabase SDK для проверки подписки -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --kz-gold-light: #FFFBEB;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --success-bg: #DCFCE7;
+      --success-border: #22C55E;
+      --success-text: #15803D;
+      --error-bg: #FEE2E2;
+      --error-border: #EF4444;
+      --error-text: #B91C1C;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 40px;
+    }
+
+    /* Верхняя шапка с кнопкой назад и переключателем RU/KZ */
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+      color: #FFFFFF;
+      padding: 16px 20px 22px 20px;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-top {
+      max-width: 820px;
+      margin: 0 auto 12px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .header-right-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tier-badge {
+      display: none;
+      background: rgba(255, 199, 44, 0.25);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 20px;
+      padding: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 800;
+      font-size: 0.74rem;
+      padding: 5px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+    }
+
+    .header-title-box {
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .lesson-badge {
+      display: inline-block;
+      background: rgba(255, 199, 44, 0.2);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    header p {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       ЭКРАН ЗАГЛУШКИ ПРИ ОТСУТСТВИИ ПОДПИСКИ ПРО / ПРЕМИУМ / ВИП
+       ========================================================================== */
+    #authLoader {
+      width: 100%;
+      max-width: 520px;
+      margin: 40px auto;
+      padding: 30px 20px;
+      text-align: center;
+      font-weight: 700;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    #paywallGate {
+      display: none;
+      width: 100%;
+      max-width: 540px;
+      margin: 28px auto;
+      padding: 0 14px;
+    }
+
+    .paywall-card {
+      background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      border-radius: 22px;
+      padding: 28px 22px;
+      text-align: center;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.18);
+      border: 1px solid rgba(255, 199, 44, 0.35);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .pw-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      background: rgba(255, 199, 44, 0.16);
+      border: 1px solid rgba(255, 199, 44, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+    }
+
+    .pw-badge {
+      background: rgba(0, 161, 222, 0.22);
+      border: 1px solid rgba(0, 161, 222, 0.55);
+      color: #7DD3FC;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .pw-title {
+      font-size: 1.15rem;
+      font-weight: 900;
+      line-height: 1.3;
+      color: #FFFFFF;
+    }
+
+    .pw-desc {
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: #CBD5E1;
+      font-weight: 500;
+    }
+
+    .pw-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      margin-top: 6px;
+    }
+
+    .pw-btn-primary {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      padding: 13px 18px;
+      border-radius: 14px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(255, 199, 44, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .pw-btn-primary:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    .pw-btn-secondary {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 11px 16px;
+      border-radius: 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .pw-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    /* Контейнер защищенного урока (скрыт до подтверждения тарифа) */
+    #lessonContentWrapper {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Навигация по разделам урока */
+    .section-nav {
+      width: 100%;
+      max-width: 820px;
+      margin: 14px auto 0 auto;
+      padding: 0 14px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .nav-pill {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 9px 6px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .nav-pill.active {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      border-color: var(--kz-blue-dark);
+      box-shadow: 0 4px 12px rgba(0, 161, 222, 0.25);
+    }
+
+    /* Основной контейнер */
+    main {
+      width: 100%;
+      max-width: 820px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-section {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .tab-section.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Карточки теории */
+    .card-block {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-block::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: var(--kz-blue);
+    }
+
+    .card-block.gold::before {
+      background: var(--kz-gold-dark);
+    }
+
+    .card-block h2 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-block p {
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+
+    /* Сетка типов Conditionals */
+    .cond-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .cond-card {
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-main);
+    }
+
+    .cond-card.c0 { border-top: 4px solid #0284C7; background: #F0F9FF; }
+    .cond-card.c1 { border-top: 4px solid #16A34A; background: #F0FDF4; }
+    .cond-card.c2 { border-top: 4px solid #D97706; background: var(--kz-gold-light); }
+    .cond-card.c3 { border-top: 4px solid #7C3AED; background: #F5F3FF; }
+
+    .cond-title {
+      font-size: 0.86rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .comp-formula {
+      display: inline-block;
+      background: #FFFFFF;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      border: 1px dashed var(--kz-blue-dark);
+      margin-bottom: 8px;
+    }
+
+    .clinical-quote {
+      background: #FFFFFF;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.81rem;
+      border-left: 3px solid var(--text-dark);
+      margin-top: 8px;
+      line-height: 1.45;
+    }
+
+    /* Таблица сводки Conditionals */
+    .grammar-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 0.77rem;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .grammar-table th {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: 800;
+    }
+
+    .grammar-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border-color);
+      background: #FFFFFF;
+      line-height: 1.45;
+    }
+
+    .grammar-table tr:nth-child(even) td {
+      background: #F8FAFC;
+    }
+
+    /* Интерактивный разбор статьи StatPearls (Thyrotoxicosis) */
+    .abstract-box {
+      background: #FFFFFF;
+      border: 2px solid #CBD5E1;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .abstract-header {
+      background: #1E293B;
+      color: #FFFFFF;
+      padding: 10px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .abstract-controls {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .hl-btn {
+      border: none;
+      padding: 5px 10px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .hl-btn.cond-type { background: #BAE6FD; color: #0369A1; }
+    .hl-btn.modal-type { background: #FDE68A; color: #92400E; }
+    .hl-btn.reset { background: rgba(255,255,255,0.2); color: #FFFFFF; }
+
+    .abstract-body {
+      padding: 14px;
+      font-size: 0.84rem;
+      line-height: 1.68;
+      color: #334155;
+    }
+
+    .c-if, .c-mod {
+      padding: 1px 5px;
+      border-radius: 5px;
+      transition: all 0.2s ease;
+    }
+
+    .abstract-body.show-if .c-if {
+      background: #BAE6FD;
+      color: #0369A1;
+      font-weight: 800;
+      border-bottom: 2px solid #0284C7;
+    }
+
+    .abstract-body.show-mod .c-mod {
+      background: #FDE68A;
+      color: #92400E;
+      font-weight: 800;
+      border-bottom: 2px solid #D97706;
+    }
+
+    /* Быстрые микро-упражнения внутри теории (Quick Check) */
+    .quick-check {
+      background: #F8FAFC;
+      border: 1px dashed var(--kz-blue);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .qc-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .qc-question {
+      font-size: 0.86rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+    }
+
+    .qc-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .qc-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .qc-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background: var(--kz-blue-light);
+    }
+
+    .qc-btn.correct {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    .qc-btn.wrong {
+      background: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    .qc-feedback {
+      display: none;
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      line-height: 1.35;
+    }
+
+    /* Карточки словаря */
+    .vocab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+      gap: 10px;
+    }
+
+    .vocab-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .vocab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .vocab-word {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+    }
+
+    .speak-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 161, 222, 0.3);
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+    }
+
+    .vocab-trans {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .vocab-example {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--bg-main);
+      padding: 7px 9px;
+      border-radius: 8px;
+      line-height: 1.35;
+    }
+
+    /* Кнопка перехода к следующему разделу или тренажеру */
+    .action-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      border-radius: 16px;
+      padding: 13px 18px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    @media (max-width: 560px) {
+      .section-nav {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      header h1 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ШАПКА УРОКА -->
+  <header>
+    <div class="header-top">
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅ К списку уроков</a>
+      <div class="header-right-controls">
+        <span id="userTierBadge" class="tier-badge"></span>
+        <div class="lang-switch">
+          <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
+          <button class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
+        </div>
+      </div>
+    </div>
+    <div class="header-title-box">
+      <span class="lesson-badge">Lesson 11 • A1–B1 Medical English</span>
+      <h1 id="uiTitle">Conditionals (Условные предложения в медицине)</h1>
+      <p id="uiSubtitle">Клиническое мышление «Если..., то...»: от правил патофизиологии до ретроспективного разбора кейсов</p>
+    </div>
+  </header>
+
+  <!-- ИНДИКАТОР ПРОВЕРКИ ПОДПИСКИ -->
+  <div id="authLoader">🔄 Проверка подписки и доступа к конспекту...</div>
+
+  <!-- БЛОК PAYWALL (ПОКАЗЫВАЕТСЯ, ЕСЛИ НЕТ ТАРИФА ПРО / ПРЕМИУМ / ВИП) -->
+  <div id="paywallGate">
+    <div class="paywall-card">
+      <div class="pw-icon">🔒</div>
+      <span class="pw-badge" id="pwBadgeText">Доступно в тарифах ПРО / ПРЕМИУМ / ВИП</span>
+      <div class="pw-title" id="pwTitleText">Интерактивный конспект закрыт для вашего тарифа</div>
+      <p class="pw-desc" id="pwDescText">
+        Интерактивные конспекты с клиническим разбором статей, озвученным словарем и упражнениями открыты для подписок «Про», «Премиум» и «ВИП». Перейдите на страницу тарифов, чтобы подключить или повысить свой доступ:
+      </p>
+      <div class="pw-buttons">
+        <a href="https://kazdoctors.com/tarifs" class="pw-btn-primary" id="pwTarifsBtn">
+          🌟 Перейти к тарифам (kazdoctors.com/tarifs)
+        </a>
+        <a href="https://instagram.com/doctors.speak" target="_blank" class="pw-btn-secondary" id="pwContactBtn">
+          💬 Написать нам (@doctors.speak)
+        </a>
+        <a href="/login.html" class="pw-btn-secondary" id="pwLoginBtn" style="display:none;">
+          🔐 Войти в аккаунт
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ЗАЩИЩЕННЫЙ КОНТЕНТ УРОКА (ОТКРЫВАЕТСЯ ТОЛЬКО ДЛЯ PRO, PREMIUM, VIP) -->
+  <div id="lessonContentWrapper">
+    <!-- НАВИГАЦИЯ ПО ЭТАПАМ УРОКА -->
+    <nav class="section-nav">
+      <button class="nav-pill active" onclick="showTab(0)" id="nav0">1. Реальные (0 и 1)</button>
+      <button class="nav-pill" onclick="showTab(1)" id="nav1">2. Нереальные и Статья</button>
+      <button class="nav-pill" onclick="showTab(2)" id="nav2">3. Словарь (14 слов)</button>
+      <button class="nav-pill" onclick="showTab(3)" id="nav3">4. Упражнения</button>
+    </nav>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main>
+      <!-- ВКЛАДКА 1: АЛГОРИТМ ИЗ 2 ВОПРОСОВ + ZERO И FIRST CONDITIONALS -->
+      <section class="tab-section active" id="tab0"></section>
+
+      <!-- ВКЛАДКА 2: SECOND, THIRD, MIXED CONDITIONALS И СТАТЬЯ STATPEARLS (THYROTOXICOSIS) -->
+      <section class="tab-section" id="tab1"></section>
+
+      <!-- ВКЛАДКА 3: СЛОВАРЬ С ПРИМЕРАМИ -->
+      <section class="tab-section" id="tab2">
+        <div class="card-block">
+          <h2 id="uiVocabTitle">💊 Клинический словарь урока (14 терминов)</h2>
+          <p id="uiVocabDesc">Нажмите 🔊, чтобы прослушать произношение. Все примеры построены в формате клинических условий «Если..., то...» (Zero, First, Second и Third Conditionals).</p>
+          <div class="vocab-grid" id="vocabGrid"></div>
+        </div>
+        <button class="action-btn" onclick="showTab(3)" id="uiToExBtn">Перейти к упражнениям урока ➔</button>
+      </section>
+
+      <!-- ВКЛАДКА 4: ПРАКТИКУМ (EXERCISE 1 & 2 ИЗ PDF) -->
+      <section class="tab-section" id="tab3">
+        <div class="card-block gold">
+          <h2 id="uiEx1Title">✍️ Упражнение 1: Выберите правильную форму Conditionals</h2>
+          <p id="uiEx1Desc">Смотрите на вторую часть предложения и подсказку в скобках (Zero / First / Second / Mixed):</p>
+          <div id="ex1Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+
+        <div class="card-block">
+          <h2 id="uiEx2Title">🩺 Упражнение 2: Раскройте скобки в условных предложениях</h2>
+          <p id="uiEx2Desc">Определите тип условия (правило, реальный план, гипотеза сейчас или прошлое) и выберите верную форму:</p>
+          <div id="ex2Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+
+        <a href="./conditionals/" class="action-btn" id="uiGoTrainerBtn">🎯 Запустить игровой тренажер по Уроку 11 ➔</a>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. ПРОВЕРКА ПОДПИСКИ SUPABASE (ДОСТУП ТОЛЬКО ДЛЯ PRO, PREMIUM, VIP)
+    // =========================================================================
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+    // Уровни подписок: конспект открывается только при уровне >= 2 (pro, premium, vip)
+    const TIER_LEVELS = {
+      none: 0,
+      free: 0,
+      standard: 1,
+      pro: 2,
+      premium: 3,
+      vip: 4
+    };
+
+    const TIER_LABELS = {
+      standard: { ru: "СТАНДАРТ", kz: "СТАНДАРТ" },
+      pro: { ru: "ТАРИФ: ПРО", kz: "ТАРИФ: ПРО" },
+      premium: { ru: "ТАРИФ: ПРЕМИУМ", kz: "ТАРИФ: ПРЕМИУМ" },
+      vip: { ru: "ТАРИФ: ВИП 👑", kz: "ТАРИФ: ВИП 👑" }
+    };
+
+    let currentViewerState = {
+      isLoggedIn: false,
+      hasActiveSub: false,
+      tier: "none"
+    };
+
+    async function verifySubscriptionAccess() {
+      if (!supabaseClient) {
+        showPaywallGate(false, "none");
+        return;
+      }
+
+      try {
+        const { data: sessionData, error: sessionErr } = await supabaseClient.auth.getSession();
+        if (sessionErr || !sessionData || !sessionData.session) {
+          currentViewerState = { isLoggedIn: false, hasActiveSub: false, tier: "none" };
+          showPaywallGate(false, "none");
+          return;
+        }
+
+        const user = sessionData.session.user;
+        const userEmail = (user.email || "").toLowerCase().trim();
+
+        // Ищем профиль сначала по ID, затем по Email
+        let { data: profile } = await supabaseClient
+          .from("profiles")
+          .select("id, email, tier, subscription_expires_at")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (!profile && userEmail) {
+          const resByEmail = await supabaseClient
+            .from("profiles")
+            .select("id, email, tier, subscription_expires_at")
+            .ilike("email", userEmail)
+            .maybeSingle();
+          profile = resByEmail.data;
+        }
+
+        if (!profile || !profile.subscription_expires_at) {
+          currentViewerState = { isLoggedIn: true, hasActiveSub: false, tier: "none" };
+          showPaywallGate(true, "none");
+          return;
+        }
+
+        const expiresAt = new Date(profile.subscription_expires_at);
+        const now = new Date();
+        const isSubActive = !isNaN(expiresAt.getTime()) && now <= expiresAt;
+
+        if (!isSubActive) {
+          currentViewerState = { isLoggedIn: true, hasActiveSub: false, tier: "expired" };
+          showPaywallGate(true, "expired");
+          return;
+        }
+
+        const userTier = (profile.tier || "standard").toLowerCase().trim();
+        const tierLevel = TIER_LEVELS[userTier] || 1;
+
+        currentViewerState = { isLoggedIn: true, hasActiveSub: true, tier: userTier };
+
+        // Если уровень тарифа >= 2 (pro, premium, vip) — открываем конспект!
+        if (tierLevel >= TIER_LEVELS.pro) {
+          unlockLessonContent(userTier);
+        } else {
+          // Если тариф standard (уровень 1) — показываем предложение перейти на страницу тарифов
+          showPaywallGate(true, "standard");
+        }
+      } catch (err) {
+        console.error("Subscription check error:", err);
+        showPaywallGate(false, "none");
+      }
+    }
+
+    function unlockLessonContent(tier) {
+      document.getElementById("authLoader").style.display = "none";
+      document.getElementById("paywallGate").style.display = "none";
+      document.getElementById("lessonContentWrapper").style.display = "flex";
+
+      const badge = document.getElementById("userTierBadge");
+      if (badge && TIER_LABELS[tier]) {
+        badge.textContent = TIER_LABELS[tier][currentLang];
+        badge.style.display = "inline-block";
+      }
+    }
+
+    function showPaywallGate(isLoggedIn, reasonTier) {
+      document.getElementById("authLoader").style.display = "none";
+      document.getElementById("lessonContentWrapper").style.display = "none";
+      document.getElementById("paywallGate").style.display = "block";
+      updatePaywallTexts(isLoggedIn, reasonTier);
+    }
+
+    function updatePaywallTexts(isLoggedIn, reasonTier) {
+      const isKz = (currentLang === "kz");
+      const badgeEl = document.getElementById("pwBadgeText");
+      const titleEl = document.getElementById("pwTitleText");
+      const descEl = document.getElementById("pwDescText");
+      const tarifsBtn = document.getElementById("pwTarifsBtn");
+      const contactBtn = document.getElementById("pwContactBtn");
+      const loginBtn = document.getElementById("pwLoginBtn");
+
+      badgeEl.textContent = isKz
+        ? "ПРО / ПРЕМИУМ / ВИП ТАРИФТЕРІНДЕ ҚОЛЖЕТІМДІ"
+        : "ДОСТУПНО В ТАРИФАХ ПРО / ПРЕМИУМ / ВИП";
+
+      tarifsBtn.textContent = isKz
+        ? "🌟 Тарифтер бетіне өту (kazdoctors.com/tarifs)"
+        : "🌟 Перейти к тарифам (kazdoctors.com/tarifs)";
+
+      contactBtn.textContent = isKz
+        ? "💬 Бізге жазу (@doctors.speak)"
+        : "💬 Написать нам (@doctors.speak)";
+
+      if (!isLoggedIn) {
+        titleEl.textContent = isKz
+          ? "Конспектіні ашу үшін аккаунтқа кіріңіз немесе жазылым таңдаңыз"
+          : "Войдите в аккаунт или подключите тариф для чтения конспекта";
+        descEl.textContent = isKz
+          ? "Бұл интерактивті конспект «Про», «Премиум» және «ВИП» жазылымдары бар дәрігерлерге арналған. Тарифтер бетінде өзіңізге ыңғайлы пакетті таңдай аласыз:"
+          : "Этот интерактивный конспект открыт для врачей с подпиской «Про», «Премиум» или «ВИП». Ознакомьтесь с вариантами доступа на странице тарифов:";
+        loginBtn.style.display = "inline-flex";
+        loginBtn.textContent = isKz ? "🔐 Аккаунтқа кіру" : "🔐 Уже есть подписка? Войти в аккаунт";
+      } else if (reasonTier === "standard") {
+        titleEl.textContent = isKz
+          ? "Сізде «Стандарт» тарифі белсенді (тек тренажерлер)"
+          : "У вас активен тариф «Стандарт» (только тренажеры)";
+        descEl.textContent = isKz
+          ? "Интерактивті конспектілер мен мақала талдауларын оқу үшін тарифіңізді «Про», «Премиум» немесе «ВИП» деңгейіне дейін жаңартуды ұсынамыз:"
+          : "Чтобы открывать интерактивные конспекты, разборы статей и грамматические справочники, обновите вашу подписку до тарифа «Про», «Премиум» или «ВИП» на странице тарифов:";
+        loginBtn.style.display = "none";
+      } else {
+        titleEl.textContent = isKz
+          ? "Жазылым мерзімі аяқталды немесе белсенді емес"
+          : "Ваша подписка не активна или истекла";
+        descEl.textContent = isKz
+          ? "Сабақ конспектілеріне қол жеткізу үшін «Про», «Премиум» немесе «ВИП» тарифін таңдаңыз:"
+          : "Для получения доступа к интерактивным конспектам выберите тариф «Про», «Премиум» или «ВИП» на странице тарифов:";
+        loginBtn.style.display = "none";
+      }
+    }
+
+    // =========================================================================
+    // 2. БАЗА ДАННЫХ УРОКА 11 (НА РУССКОМ И КАЗАХСКОМ ЯЗЫКАХ)
+    // =========================================================================
+    const LESSON11_DATA = {
+      ui: {
+        backBtn: { ru: "⬅ К списку уроков", kz: "⬅ Сабақтар тізіміне" },
+        title: {
+          ru: "Conditionals (Условные предложения в медицине)",
+          kz: "Conditionals (Медицинадағы шартты сөйлемдер)"
+        },
+        subtitle: {
+          ru: "0) IF I DO -> DO • 1) IF I DO -> WILL DO • 2) IF I DID -> WOULD DO • 3) IF I HAD DONE -> WOULD HAVE DONE",
+          kz: "0) IF I DO -> DO • 1) IF I DO -> WILL DO • 2) IF I DID -> WOULD DO • 3) IF I HAD DONE -> WOULD HAVE DONE"
+        },
+        nav: [
+          { ru: "1. Реальные (0 и 1)", kz: "1. Шынайы (0 және 1)" },
+          { ru: "2. Нереальные и Статья", kz: "2. Болжамды және Мақала" },
+          { ru: "3. Словарь (14 слов)", kz: "3. Сөздік (14 сөз)" },
+          { ru: "4. Упражнения", kz: "4. Жаттығулар" }
+        ],
+        vocabTitle: {
+          ru: "💊 Клинический словарь урока (14 терминов)",
+          kz: "💊 Сабақтың клиникалық сөздігі (14 термин)"
+        },
+        vocabDesc: {
+          ru: "Нажмите 🔊 для прослушивания произношения. Изучите, как каждый термин работает внутри условных предложений всех типов.",
+          kz: "Дұрыс айтылуын тыңдау үшін 🔊 басыңыз. Әр терминнің барлық типтегі шартты сөйлемдерде қалай қолданылатынына назар аударыңыз."
+        },
+        toExBtn: {
+          ru: "Перейти к шагу 4: Быстрые упражнения ➔",
+          kz: "4-қадамға өту: Жылдам жаттығулар ➔"
+        },
+        ex1Title: {
+          ru: "✍️ Упражнение 1: Выберите правильную форму глагола в Conditionals",
+          kz: "✍️ 1-жаттығу: Conditionals сөйлеміндегі дұрыс етістік формасын таңдаңыз"
+        },
+        ex1Desc: {
+          ru: "Ориентируйтесь на вторую половину предложения и подсказку типа условия в скобках:",
+          kz: "Сөйлемнің екінші бөлігіне және жақшадағы шарт түріне назар аударыңыз:"
+        },
+        ex2Title: {
+          ru: "🩺 Упражнение 2: Раскройте скобки по формуле нужного Conditional",
+          kz: "🩺 2-жаттығу: Қажетті Conditional формуласы бойынша жақшаны ашыңыз"
+        },
+        ex2Desc: {
+          ru: "Проверьте: это постоянное правило (Zero), реальный план (First), гипотеза сейчас (Second) или прошлое (Third/Mixed):",
+          kz: "Тексеріңіз: бұл тұрақты ереже ме (Zero), нақты жоспар ма (First), қазіргі болжам ба (Second) әлде өткен шақ па (Third/Mixed):"
+        },
+        goTrainerBtn: {
+          ru: "🎯 Перейти к основному тренажеру Урока 11 ➔",
+          kz: "🎯 11-сабақтың негізгі тренажеріне өту ➔"
+        }
+      },
+
+      // ВКЛАДКА 1: АЛГОРИТМ ВЫБОРА + ZERO И FIRST CONDITIONALS
+      tab0Html: {
+        ru: `
+          <div class="card-block">
+            <h2>🧠 Клиническое мышление врача = Условные предложения (Conditionals)</h2>
+            <p>Вся медицина построена на логике <b>«ЕСЛИ..., ТО...» (IF..., THEN...)</b>: <i>«Если мокрота зеленая — это бактериальная инфекция», «Если отек не спадет — мы введем стероид», «Если бы пациент получил терапию раньше — осложнений бы не было»</i>. Чтобы мгновенно выбрать нужную формулу в английском, задайте себе всего <b>2 вопроса</b>:</p>
+            <div class="clinical-quote" style="border-left-color: var(--kz-blue);">
+              1️⃣ <b>Условие РЕАЛИСТИЧНО или ГИПОТЕТИЧНО (воображаемо)?</b><br>
+              2️⃣ <b>Речь идет о НАСТОЯЩЕМ / БУДУЩЕМ или об уже ушедшем ПРОШЛОМ?</b>
+            </div>
+
+            <div class="cond-grid">
+              <div class="cond-card c0">
+                <div class="cond-title">
+                  <span>0️⃣ ZERO CONDITIONAL («Правило»)</span>
+                  <span>100% факт</span>
+                </div>
+                <span class="comp-formula">IF + Present Simple, Present Simple</span>
+                <p style="font-size:0.79rem;"><b>IF I DO, THEN YOU DO.</b> Законы анатомии, физиологии и стандартные правила (часто со словом <b>usually / often</b>):</p>
+                <div class="clinical-quote">
+                  • <b>"If the spinal cord <u>is damaged</u>, the patient <u>loses</u> function below the injury."</b><br>
+                  • <b>"If a tendon <u>is torn</u>, movement <u>becomes</u> difficult."</b><br>
+                  • <b>"If the pain <u>is</u> sharp, the patient usually <u>reports</u> it immediately."</b>
+                </div>
+              </div>
+
+              <div class="cond-card c1">
+                <div class="cond-title">
+                  <span>1️⃣ FIRST CONDITIONAL (План)</span>
+                  <span>Реальное будущее</span>
+                </div>
+                <span class="comp-formula">IF + Present Simple, WILL / MAY / MIGHT / SHOULD + V1</span>
+                <p style="font-size:0.79rem;"><b>IF I DO, THEN YOU WILL DO.</b> Реалистичный план действий врача для конкретного пациента на приеме или в стационаре:</p>
+                <div class="clinical-quote">
+                  • <b>"If sputum production <u>increases</u>, we <u>will check</u> for infection."</b><br>
+                  • <b>"If the swelling <u>doesn't go down</u>, we <u>will consider</u> a steroid injection."</b><br>
+                  • <b>"If they <u>operate</u> soon, the surgery <u>might prevent</u> the stroke."</b>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>⚠️ Главное правило для Zero и First Conditional</h2>
+            <p>Запомните железный закон английского языка: <b>в части предложения сразу после слова IF (условие) НИКОГДА не ставится глагол WILL!</b> Даже если мы говорим о завтрашнем дне (<i>tomorrow</i>), после <b>if</b> ставится <b>Present Simple</b>, а <b>will</b> стоит только во второй (главной) части:</p>
+            <div class="clinical-quote" style="border-left-color: var(--kz-gold-dark);">
+              ✅ <b>"If he <u>has</u> sharp pain <i>tomorrow</i>, he <u>will need</u> further imaging."</b><br>
+              <i>(Если у него завтра будет острая боль, ему потребуется дополнительная визуализация — после if стоит has, а не will have!).</i>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Быстрая проверка: Zero vs First Conditional</span>
+              <div class="qc-question">Посмотрите на предложение со словом usually (обычное правило): "If the swelling is severe, the doctor usually ___ surgery." Какую форму выберем?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Верно! Маркер usually показывает, что это общее медицинское правило (Zero Conditional: If + Present Simple, Present Simple) -> recommends.')">recommends (Zero Conditional — правило)</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Would recommend — это Second Conditional (нереальная гипотеза), а здесь в первой части стоит реальное настоящее is severe + слово usually.')">would recommend (Second Conditional)</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">Перейти к шагу 2: Нереальные условия (2, 3, Mixed) и Статья StatPearls ➔</button>
+        `,
+        kz: `
+          <div class="card-block">
+            <h2>🧠 Дәрігердің клиникалық ойлауы = Шартты сөйлемдер (Conditionals)</h2>
+            <p>Бүкіл медицина <b>«ЕГЕР..., ОНДА...» (IF..., THEN...)</b> логикасына құрылған: <i>«Егер қақырық жасыл болса — бұл бактериялық инфекция», «Егер ісіну басылмаса — стероид енгіземіз», «Егер науқас емді ертерек алғанда — асқыну болмас еді»</i>. Ағылшын тілінде дұрыс формуланы таңдау үшін өзіңізге <b>2 сұрақ</b> қойыңыз:</p>
+            <div class="clinical-quote" style="border-left-color: var(--kz-blue);">
+              1️⃣ <b>Шарт ШЫНАЙЫ ма, әлде БОЛЖАМДЫ (қиялдағы/гипотетикалық) ма?</b><br>
+              2️⃣ <b>Әңгіме ОСЫ / КЕЛЕР ШАҚ туралы ма, әлде өтіп кеткен ӨТКЕН ШАҚ туралы ма?</b>
+            </div>
+
+            <div class="cond-grid">
+              <div class="cond-card c0">
+                <div class="cond-title">
+                  <span>0️⃣ ZERO CONDITIONAL («Ереже»)</span>
+                  <span>100% заңдылық</span>
+                </div>
+                <span class="comp-formula">IF + Present Simple, Present Simple</span>
+                <p style="font-size:0.79rem;"><b>IF I DO, THEN YOU DO.</b> Анатомия мен патофизиология заңдылықтары және тұрақты клиникалық ережелер (көбіне <b>usually / often</b> сөздерімен):</p>
+                <div class="clinical-quote">
+                  • <b>"If the spinal cord <u>is damaged</u>, the patient <u>loses</u> function below the injury."</b><br>
+                  • <b>"If a tendon <u>is torn</u>, movement <u>becomes</u> difficult."</b><br>
+                  • <b>"If the pain <u>is</u> sharp, the patient usually <u>reports</u> it immediately."</b>
+                </div>
+              </div>
+
+              <div class="cond-card c1">
+                <div class="cond-title">
+                  <span>1️⃣ FIRST CONDITIONAL (Жоспар)</span>
+                  <span>Нақты болашақ</span>
+                </div>
+                <span class="comp-formula">IF + Present Simple, WILL / MAY / MIGHT / SHOULD + V1</span>
+                <p style="font-size:0.79rem;"><b>IF I DO, THEN YOU WILL DO.</b> Нақты науқасқа арналған шынайы емдеу және бақылау жоспары:</p>
+                <div class="clinical-quote">
+                  • <b>"If sputum production <u>increases</u>, we <u>will check</u> for infection."</b><br>
+                  • <b>"If the swelling <u>doesn't go down</u>, we <u>will consider</u> a steroid injection."</b><br>
+                  • <b>"If they <u>operate</u> soon, the surgery <u>might prevent</u> the stroke."</b>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>⚠️ Zero және First Conditional-ға арналған басты ереже</h2>
+            <p>Ағылшын тілінің темірдей заңын есте сақтаңыз: <b>IF сөзінен кейінгі шартты бөлікте ЕШҚАШАН WILL қойылмайды!</b> Тіпті ертеңгі күн (<i>tomorrow</i>) туралы айтсақ та, <b>if</b>-тен кейін <b>Present Simple</b> тұрады, ал <b>will</b> тек екінші (негізгі) бөлікте қойылады:</p>
+            <div class="clinical-quote" style="border-left-color: var(--kz-gold-dark);">
+              ✅ <b>"If he <u>has</u> sharp pain <i>tomorrow</i>, he <u>will need</u> further imaging."</b><br>
+              <i>(Егер ертең оның шаншып ауырсынуы болса, оған қосымша визуализация қажет болады — if-тен кейін will have емес, has тұрады!).</i>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Жылдам тексеру: Zero vs First Conditional</span>
+              <div class="qc-question">Usually (әдеттегі ереже) сөзі бар сөйлемге қараңыз: "If the swelling is severe, the doctor usually ___ surgery." Қай форманы таңдаймыз?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Дұрыс! Usually маркері бұл жалпы медициналық ереже екенін көрсетеді (Zero Conditional: If + Present Simple, Present Simple) -> recommends.')">recommends (Zero Conditional — ереже)</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Would recommend — Second Conditional (болжамды шарт), ал мұнда бірінші бөлікте is severe + usually тұр.')">would recommend (Second Conditional)</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">2-қадамға өту: Болжамды шарттар (2, 3, Mixed) және StatPearls мақаласы ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 2: SECOND, THIRD, MIXED CONDITIONALS И СТАТЬЯ STATPEARLS (THYROTOXICOSIS)
+      tab1Html: {
+        ru: `
+          <div class="card-block gold">
+            <h2>🔮 Нереальные и ретроспективные условия: Second, Third & Mixed Conditionals</h2>
+            <p>Когда условие <b>нереалистично (воображаемо)</b> или мы разбираем ситуацию, которая <b>уже случилась в прошлом</b>, в английском языке включается «сдвиг времени на шаг назад» и появляется частица <b>бы (would / could / might)</b>:</p>
+
+            <div class="cond-grid">
+              <div class="cond-card c2">
+                <div class="cond-title">
+                  <span>2️⃣ SECOND CONDITIONAL (Гипотеза сейчас)</span>
+                </div>
+                <span class="comp-formula">IF + Past Simple (V2 / were), WOULD / MIGHT + V1</span>
+                <p style="font-size:0.78rem;"><b>IF I DID, THEN YOU WOULD DO.</b> Воображаемая ситуация в настоящем или маловероятная гипотеза («Если бы сейчас было..., то...»):</p>
+                <div class="clinical-quote">
+                  • <b>"If I <u>were</u> the attending physician, I <u>would recommend</u> surgery."</b><br>
+                  • <b>"If the tendon <u>were</u> torn, the patient <u>wouldn't move</u> the joint at all."</b><br>
+                  • <b>"If her symptoms <u>were</u> less severe, we <u>might try</u> home care."</b>
+                </div>
+              </div>
+
+              <div class="cond-card c3">
+                <div class="cond-title">
+                  <span>3️⃣ THIRD & MIXED (Прошлое и его итог)</span>
+                </div>
+                <span class="comp-formula">IF + Past Perfect (had + V3), WOULD HAVE + V3 (или WOULD + V1)</span>
+                <p style="font-size:0.78rem;"><b>IF I HAD DONE, YOU WOULD HAVE DONE.</b> Условие в прошлом, которое уже нельзя изменить (разбор прошлых кейсов):</p>
+                <div class="clinical-quote">
+                  • <b>3rd:</b> <b>"If the patient <u>had received</u> supportive care, he <u>might have been</u> OK."</b><br>
+                  • <b>3rd/Mixed:</b> <b>"If the spinal cord <u>had been damaged</u>, he <u>would have lost</u> sensation."</b><br>
+                  • <b>Mixed:</b> <b>"If she <u>had received</u> treatment earlier</b> <i>(в прошлом)</i>, <b>the stroke effects <u>would be</u> less significant</b> <i>(сейчас)</i>."
+                </div>
+              </div>
+            </div>
+
+            <div class="clinical-quote" style="border-left-color: var(--kz-blue); margin-top: 12px;">
+              💡 <b>Два важных секрета для уровня B1:</b><br>
+              1. <b>Почему говорят "If I WERE..." и "If the tendon WERE torn"?</b> В академическом английском во 2-м типе условных предложений глагол <i>to be</i> после <i>if</i> ставится в форму <b>were</b> для ВСЕХ лиц (даже для <i>I, he, she, it</i>)!<br>
+              2. <b>Как отличить 1-й тип от 2-го у глагола SPREAD (распространяться)?</b> Три формы глагола одинаковы: <i>spread – spread – spread</i>. Секрет в окончании <b>-s</b> для 3-го лица ед. числа:<br>
+              • <i>"If the infection <b>spreads</b> (Present Simple с -s), the redness <b>will become</b> visible"</i> (1-й тип — реальность).<br>
+              • <i>"If the tumor <b>spread</b> (Past Simple без -s!), she <b>would need</b> urgent radiation"</i> (2-й тип — гипотеза).
+            </div>
+
+            <table class="grammar-table" style="margin-top:12px;">
+              <thead>
+                <tr>
+                  <th>Тип</th>
+                  <th>Часть с IF (Условие)</th>
+                  <th>Главная часть (Результат)</th>
+                  <th>Смысл для врача</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>Zero (0)</b></td>
+                  <td><b>If + Present Simple</b> (do/does)</td>
+                  <td><b>Present Simple</b> (do/does)</td>
+                  <td>Закон медицины / Правило (100%)</td>
+                </tr>
+                <tr>
+                  <td><b>First (1)</b></td>
+                  <td><b>If + Present Simple</b> (do/does)</td>
+                  <td><b>will / may / might / should + V1</b></td>
+                  <td>Реальный клинический план (сейчас/будущее)</td>
+                </tr>
+                <tr>
+                  <td><b>Second (2)</b></td>
+                  <td><b>If + Past Simple</b> (did / were)</td>
+                  <td><b>would / might / could + V1</b></td>
+                  <td>Гипотетическая ситуация в настоящем</td>
+                </tr>
+                <tr>
+                  <td><b>Third (3)</b></td>
+                  <td><b>If + Past Perfect</b> (had + V3)</td>
+                  <td><b>would / might + have + V3</b></td>
+                  <td>Ретроспектива: условие и результат в прошлом</td>
+                </tr>
+                <tr>
+                  <td><b>Mixed</b></td>
+                  <td><b>If + Past Perfect</b> (had + V3)</td>
+                  <td><b>would + V1</b> (результат сейчас)</td>
+                  <td>Прошлое событие влияет на состояние сейчас</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card-block">
+            <h2>🔬 Практика чтения NCBI StatPearls: Thyrotoxicosis (Тиреотоксикоз)</h2>
+            <p>Прочитайте отрывок из клинического руководства <b>StatPearls: Thyrotoxicosis</b>. Обратите внимание на супер-популярную в медицинских статьях сокращенную форму <b>"If left untreated..."</b> (<i>Если оставить без лечения...</i> = <i>If it is left untreated</i>). Нажимайте на кнопки подсветки:</p>
+
+            <div class="abstract-box">
+              <div class="abstract-header">
+                <span>📖 NCBI StatPearls: Thyrotoxicosis — Introduction</span>
+                <div class="abstract-controls">
+                  <button class="hl-btn cond-type" onclick="toggleAbstractHighlight('if')">Условные конструкции (If...)</button>
+                  <button class="hl-btn modal-type" onclick="toggleAbstractHighlight('mod')">Модальные и Пассивные выводы</button>
+                  <button class="hl-btn reset" onclick="toggleAbstractHighlight('all')">Показать оба</button>
+                </div>
+              </div>
+              <div class="abstract-body show-if show-mod" id="abstractBodyText">
+                <b>Thyrotoxicosis</b> is a clinical condition characterized by excessive thyroid hormone activity, primarily T3 and T4, regardless of the underlying cause. While often confused with hyperthyroidism, the latter specifically refers to a form of thyrotoxicosis, involving excessive hormone production by the thyroid gland. Other causes of thyrotoxicosis include, but <span class="c-mod">are not limited to</span>, Graves disease (where autoantibodies bind to and stimulate the thyroid-stimulating hormone [TSH] receptor), thyroiditis (which releases hormones from damaged thyroid tissue), toxic nodules and multinodular goiter (where autonomous nodules produce hormones), and iatrogenic or factitious thyrotoxicosis due to exogenous hormone intake. <span class="c-if">If left untreated</span>, thyrotoxicosis <span class="c-mod">can result in</span> serious complications such as cardiovascular dysfunction, osteoporosis, and, in severe cases, thyroid storm — a life-threatening emergency. [1][2]<br><br>
+                Additionally, PTU carries a higher risk of hepatotoxicity. Agranulocytosis occurs in approximately 1 in 300 patients treated with thionamides and typically presents with symptoms such as sore throat, mouth ulcers, and high fever. A differential white blood cell count <span class="c-mod">is recommended</span> for all patients on thionamides experiencing febrile illness or pharyngitis. Minor adverse effects of thionamides include pruritus, arthralgia, and gastrointestinal upset. <span class="c-if">If patients continue to have</span> anti-TSH receptor antibodies or signs of hyperthyroidism after 18 months of treatment, options such as radioiodine therapy or surgery <span class="c-mod">should be considered</span>. [23]
+              </div>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ Вопрос по статье StatPearls</span>
+              <div class="qc-question">Посмотрите на финальное предложение статьи: "If patients continue to have anti-TSH receptor antibodies..., options such as radioiodine therapy or surgery should be considered." Какой это тип условного предложения?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Блестяще! В части с if стоит Present Simple (continue), а в главной части — модальная рекомендация в пассиве (should be considered). Это реальный клинический алгоритм (First / Zero Conditional)!')">First / Zero Conditional (реальный клинический алгоритм)</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'В Third Conditional стояло бы If patients had continued..., should have been considered (о прошлом). А здесь реальное руководство к действию!')">Third Conditional (нереальное прошлое)</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">Перейти к шагу 3: Словарь урока (14 слов) ➔</button>
+        `,
+        kz: `
+          <div class="card-block gold">
+            <h2>🔮 Болжамды және ретроспективті шарттар: Second, Third & Mixed Conditionals</h2>
+            <p>Шарт <b>болжамды (қиялдағы/екіталай)</b> болғанда немесе біз <b>өткен шақта болып кеткен</b> клиникалық жағдайды талдағанда, ағылшын тілінде шақ бір қадам артқа шегінеді де, <b>«еді» (would / could / might)</b> көмекші сөзі қосылады:</p>
+
+            <div class="cond-grid">
+              <div class="cond-card c2">
+                <div class="cond-title">
+                  <span>2️⃣ SECOND CONDITIONAL (Қазіргі гипотеза)</span>
+                </div>
+                <span class="comp-formula">IF + Past Simple (V2 / were), WOULD / MIGHT + V1</span>
+                <p style="font-size:0.78rem;"><b>IF I DID, THEN YOU WOULD DO.</b> Осы немесе келер шақтағы ойдан шығарылған, ықтималдығы аз болжам («Егер қазір осындай болса, онда бүйтер еді...»):</p>
+                <div class="clinical-quote">
+                  • <b>"If I <u>were</u> the attending physician, I <u>would recommend</u> surgery."</b><br>
+                  • <b>"If the tendon <u>were</u> torn, the patient <u>wouldn't move</u> the joint at all."</b><br>
+                  • <b>"If her symptoms <u>were</u> less severe, we <u>might try</u> home care."</b>
+                </div>
+              </div>
+
+              <div class="cond-card c3">
+                <div class="cond-title">
+                  <span>3️⃣ THIRD & MIXED (Өткен шақ талдауы)</span>
+                </div>
+                <span class="comp-formula">IF + Past Perfect (had + V3), WOULD HAVE + V3 (немесе WOULD + V1)</span>
+                <p style="font-size:0.78rem;"><b>IF I HAD DONE, YOU WOULD HAVE DONE.</b> Өткенде болып кеткен, енді өзгертуге келмейтін жағдай (клиникалық талдау):</p>
+                <div class="clinical-quote">
+                  • <b>3rd:</b> <b>"If the patient <u>had received</u> supportive care, he <u>might have been</u> OK."</b><br>
+                  • <b>3rd/Mixed:</b> <b>"If the spinal cord <u>had been damaged</u>, he <u>would have lost</u> sensation."</b><br>
+                  • <b>Mixed:</b> <b>"If she <u>had received</u> treatment earlier</b> <i>(өткенде)</i>, <b>the stroke effects <u>would be</u> less significant</b> <i>(қазір)</i>."
+                </div>
+              </div>
+            </div>
+
+            <div class="clinical-quote" style="border-left-color: var(--kz-blue); margin-top: 12px;">
+              💡 <b>B1 деңгейіне арналған 2 маңызды құпия:</b><br>
+              1. <b>Неліктен "If I WERE..." және "If the tendon WERE torn" деп айтылады?</b> Академиялық ағылшын тілінде 2-типтегі шартты сөйлемдерде <i>if</i>-тен кейін барлық жақтарда (тіпті жекеше түрдегі <i>I, he, she, it</i> үшін де) <b>were</b> формасы қолданылады!<br>
+              2. <b>SPREAD (таралу) етістігінде 1-тип пен 2-типті қалай ажыратамыз?</b> Бұл бұрыс етістіктің үш формасы да бірдей: <i>spread – spread – spread</i>. Айырмашылығы 3-жақтағы <b>-s</b> жалғауында:<br>
+              • <i>"If the infection <b>spreads</b> (-s жалғауы бар Present Simple), the redness <b>will become</b> visible"</i> (1-тип — шынайы).<br>
+              • <i>"If the tumor <b>spread</b> (-s жалғауы жоқ Past Simple!), she <b>would need</b> urgent radiation"</i> (2-тип — гипотеза).
+            </div>
+
+            <table class="grammar-table" style="margin-top:12px;">
+              <thead>
+                <tr>
+                  <th>Түрі</th>
+                  <th>IF бөлігі (Шарт)</th>
+                  <th>Негізгі бөлік (Нәтиже)</th>
+                  <th>Дәрігер үшін мағынасы</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>Zero (0)</b></td>
+                  <td><b>If + Present Simple</b> (do/does)</td>
+                  <td><b>Present Simple</b> (do/does)</td>
+                  <td>Медицина заңдылығы / Ереже (100%)</td>
+                </tr>
+                <tr>
+                  <td><b>First (1)</b></td>
+                  <td><b>If + Present Simple</b> (do/does)</td>
+                  <td><b>will / may / might / should + V1</b></td>
+                  <td>Нақты клиникалық жоспар (қазір/болашақта)</td>
+                </tr>
+                <tr>
+                  <td><b>Second (2)</b></td>
+                  <td><b>If + Past Simple</b> (did / were)</td>
+                  <td><b>would / might / could + V1</b></td>
+                  <td>Осы шақтағы гипотетикалық болжам</td>
+                </tr>
+                <tr>
+                  <td><b>Third (3)</b></td>
+                  <td><b>If + Past Perfect</b> (had + V3)</td>
+                  <td><b>would / might + have + V3</b></td>
+                  <td>Ретроспектива: өткен шақтағы шарт пен нәтиже</td>
+                </tr>
+                <tr>
+                  <td><b>Mixed</b></td>
+                  <td><b>If + Past Perfect</b> (had + V3)</td>
+                  <td><b>would + V1</b> (қазіргі нәтиже)</td>
+                  <td>Өткендегі жағдайдың қазіргі күйге әсері</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card-block">
+            <h2>🔬 NCBI StatPearls мақаласын талдау: Thyrotoxicosis (Тиреотоксикоз)</h2>
+            <p><b>StatPearls: Thyrotoxicosis</b> клиникалық нұсқаулығынан үзінді оқыңыз. Медициналық мақалаларда өте жиі кездесетін қысқартылған <b>"If left untreated..."</b> (<i>Егер емделмесе / емсіз қалдырылса...</i> = <i>If it is left untreated</i>) құрылымына назар аударыңыз:</p>
+
+            <div class="abstract-box">
+              <div class="abstract-header">
+                <span>📖 NCBI StatPearls: Thyrotoxicosis — Introduction</span>
+                <div class="abstract-controls">
+                  <button class="hl-btn cond-type" onclick="toggleAbstractHighlight('if')">Шартты құрылымдар (If...)</button>
+                  <button class="hl-btn modal-type" onclick="toggleAbstractHighlight('mod')">Модальді және Пассив қорытындылар</button>
+                  <button class="hl-btn reset" onclick="toggleAbstractHighlight('all')">Екеуін де көрсету</button>
+                </div>
+              </div>
+              <div class="abstract-body show-if show-mod" id="abstractBodyText">
+                <b>Thyrotoxicosis</b> is a clinical condition characterized by excessive thyroid hormone activity, primarily T3 and T4, regardless of the underlying cause. While often confused with hyperthyroidism, the latter specifically refers to a form of thyrotoxicosis, involving excessive hormone production by the thyroid gland. Other causes of thyrotoxicosis include, but <span class="c-mod">are not limited to</span>, Graves disease (where autoantibodies bind to and stimulate the thyroid-stimulating hormone [TSH] receptor), thyroiditis (which releases hormones from damaged thyroid tissue), toxic nodules and multinodular goiter (where autonomous nodules produce hormones), and iatrogenic or factitious thyrotoxicosis due to exogenous hormone intake. <span class="c-if">If left untreated</span>, thyrotoxicosis <span class="c-mod">can result in</span> serious complications such as cardiovascular dysfunction, osteoporosis, and, in severe cases, thyroid storm — a life-threatening emergency. [1][2]<br><br>
+                Additionally, PTU carries a higher risk of hepatotoxicity. Agranulocytosis occurs in approximately 1 in 300 patients treated with thionamides and typically presents with symptoms such as sore throat, mouth ulcers, and high fever. A differential white blood cell count <span class="c-mod">is recommended</span> for all patients on thionamides experiencing febrile illness or pharyngitis. Minor adverse effects of thionamides include pruritus, arthralgia, and gastrointestinal upset. <span class="c-if">If patients continue to have</span> anti-TSH receptor antibodies or signs of hyperthyroidism after 18 months of treatment, options such as radioiodine therapy or surgery <span class="c-mod">should be considered</span>. [23]
+              </div>
+            </div>
+
+            <div class="quick-check">
+              <span class="qc-badge">⚡ StatPearls мақаласы бойынша сұрақ</span>
+              <div class="qc-question">Мақаланың соңғы сөйлеміне қараңыз: "If patients continue to have anti-TSH receptor antibodies..., options such as radioiodine therapy or surgery should be considered." Бұл шартты сөйлемнің қай түрі?</div>
+              <div class="qc-options">
+                <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Керемет! If бөлігінде Present Simple (continue), ал негізгі бөлікте модальді пассив ұсыныс (should be considered) тұр. Бұл нақты клиникалық алгоритм (First / Zero Conditional)!')">First / Zero Conditional (нақты клиникалық алгоритм)</button>
+                <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Third Conditional болса, If patients had continued..., should have been considered болар еді. Ал мұнда нақты емдеу алгоритмі берілген!')">Third Conditional (өткен шақтағы болжам)</button>
+              </div>
+              <div class="qc-feedback"></div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(2)">3-қадамға өту: Сабақ сөздігі (14 сөз) ➔</button>
+        `
+      },
+
+      // ВКЛАДКА 3: СЛОВАРЬ (14 ТЕРМИНОВ С ПРИМЕРАМИ ИЗ СЛАЙДОВ 2 И 6)
+      vocabulary: [
+        {
+          en: "Severe",
+          ru: "Тяжелой степени / Выраженный",
+          kz: "Ауыр дәрежелі / Айқын",
+          ex: "<b>If</b> her symptoms <b>were</b> less <b>severe</b>, we <b>might try</b> home care. <i>(Second Conditional — гипотеза сейчас).</i>"
+        },
+        {
+          en: "Sharp",
+          ru: "Острый / Колющий (о боли)",
+          kz: "Өткір / Шаншып ауыратын",
+          ex: "<b>If</b> he <b>has sharp</b> pain tomorrow, he <b>will need</b> further imaging. <i>(First Conditional — реальное будущее).</i>"
+        },
+        {
+          en: "Significant",
+          ru: "Значительный / Существенный",
+          kz: "Елеулі / Айтарлықтай",
+          ex: "<b>If</b> the patient <b>shows significant</b> improvement, we <b>will discharge</b> her. <i>(First Conditional).</i>"
+        },
+        {
+          en: "Spinal cord",
+          ru: "Спинной мозг",
+          kz: "Жұлын",
+          ex: "<b>If</b> the <b>spinal cord is damaged</b>, the patient <b>loses</b> function below the injury. <i>(Zero Conditional — закон неврологии).</i>"
+        },
+        {
+          en: "Spread",
+          ru: "Распространяться (spread – spread – spread)",
+          kz: "Таралу / Жайылу",
+          ex: "<b>If</b> the tumor <b>spread</b> to the spine, she <b>would need</b> urgent radiation. <i>(Second Conditional — V2 spread без -s!).</i>"
+        },
+        {
+          en: "Sputum",
+          ru: "Мокрота",
+          kz: "Қақырық",
+          ex: "<b>If</b> the <b>sputum is</b> green, it often <b>indicates</b> a bacterial infection. <i>(Zero Conditional — правило диагностики).</i>"
+        },
+        {
+          en: "Stiffness",
+          ru: "Скованность / Ригидность / Жесткость",
+          kz: "Қозғалыстың шектелуі / Сіресу (ригидтілік)",
+          ex: "<b>If stiffness lasts</b> more than a week, the joint <b>may need</b> medical attention. <i>(First Conditional с модальным may).</i>"
+        },
+        {
+          en: "Stroke",
+          ru: "Инсульт (ОНМК)",
+          kz: "Инсульт",
+          ex: "<b>If</b> they <b>operate</b> soon, the surgery <b>might prevent</b> the <b>stroke</b>. <i>(First Conditional с модальным might).</i>"
+        },
+        {
+          en: "Supportive care",
+          ru: "Поддерживающая (симптоматическая) терапия",
+          kz: "Демеуші (симптоматикалық) терапия",
+          ex: "<b>If</b> the patient <b>had received supportive care</b>, he <b>might have been</b> OK. <i>(Third Conditional — о прошлом).</i>"
+        },
+        {
+          en: "Surface",
+          ru: "Поверхность",
+          kz: "Беткей (үстіңгі беті)",
+          ex: "<b>If</b> swelling <b>occurs</b>, it usually <b>means</b> there is inflammation on the <b>surface</b>. <i>(Zero Conditional).</i>"
+        },
+        {
+          en: "Surgery",
+          ru: "Хирургическое вмешательство / Операция",
+          kz: "Хирургиялық ота / Хирургия",
+          ex: "<b>If</b> I <b>were</b> the attending physician, I <b>would recommend surgery</b>. <i>(Second Conditional: If I were...).</i>"
+        },
+        {
+          en: "Swallowing",
+          ru: "Глотание (акт глотания)",
+          kz: "Жұтыну",
+          ex: "<b>If</b> she <b>struggles</b> with <b>swallowing</b> again, the doctor <b>will order</b> a scan. <i>(First Conditional).</i>"
+        },
+        {
+          en: "Swelling",
+          ru: "Припухлость / Отечность",
+          kz: "Ісіну / Ісік",
+          ex: "<b>If</b> the <b>swelling doesn't go down</b>, we <b>will consider</b> a steroid injection. <i>(First Conditional).</i>"
+        },
+        {
+          en: "Tendon",
+          ru: "Сухожилие",
+          kz: "Сіңір",
+          ex: "<b>If</b> a <b>tendon is torn</b>, movement <b>becomes</b> difficult. <i>(Zero Conditional — правило травматологии).</i>"
+        }
+      ],
+
+      // ВКЛАДКА 4: УПРАЖНЕНИЕ 1 И УПРАЖНЕНИЕ 2 ИЗ PDF
+      ex1: [
+        {
+          q: "1. If the swelling is severe, the doctor usually ___ surgery. (Zero / First)",
+          options: ["recommends (или will recommend без usually)", "would recommend", "recommended"],
+          correct: 0,
+          exp: {
+            ru: "В первой части стоит Present Simple ('is severe'), а маркер 'usually' указывает на стандартное врачебное правило (Zero Conditional) -> recommends (или will recommend в First Conditional).",
+            kz: "Бірінші бөлікте Present Simple ('is severe') тұр, ал 'usually' маркері стандартты дәрігерлік ережені (Zero Conditional) көрсетеді -> recommends (немесе First Conditional-да will recommend)."
+          }
+        },
+        {
+          q: "2. If he ___ a stroke, he might need supportive care for months. (Second / Mixed)",
+          options: ["had", "has", "had had"],
+          correct: 0,
+          exp: {
+            ru: "Для построения гипотетического условия 2-го типа (Second Conditional: «Если бы у него случился инсульт, ему могла бы потребоваться...») после if ставим Past Simple -> had.",
+            kz: "2-типтегі болжамды шартты (Second Conditional: «Егер ол инсульт алса, оған бірнеше ай демеуші терапия қажет болуы мүмкін еді») құру үшін if-тен кейін Past Simple қойылады -> had."
+          }
+        },
+        {
+          q: "3. If the tendon ___ torn, the patient wouldn't move the joint at all. (Second)",
+          options: ["were", "is", "had been"],
+          correct: 0,
+          exp: {
+            ru: "Во второй части стоит 'wouldn't move' (Second Conditional — нереальное условие сейчас: на самом деле пациент двигает суставом, значит сухожилие НЕ порвано). После if используем форму were!",
+            kz: "Екінші бөлікте 'wouldn't move' (Second Conditional — қазіргі болжамды шарт) тұр. Академиялық ереже бойынша if-тен кейін were формасы қолданылады!"
+          }
+        },
+        {
+          q: "4. If sputum production increases, we ___ for infection. (First)",
+          options: ["will check", "check", "would check"],
+          correct: 0,
+          exp: {
+            ru: "Реальный план действий врача (First Conditional): If + Present Simple (increases), в главной части -> will check.",
+            kz: "Дәрігердің нақты іс-әрекет жоспары (First Conditional): If + Present Simple (increases), негізгі бөлікте -> will check."
+          }
+        },
+        {
+          q: "5. If the spinal cord ___, he would have lost sensation. (Third / Mixed)",
+          options: ["had been damaged", "is damaged", "was damaged"],
+          correct: 0,
+          exp: {
+            ru: "В главной части стоит 'would have lost' (результат в прошлом). Значит, само условие повреждения спинного мозга тоже относится к прошлому (Past Perfect Passive) -> had been damaged.",
+            kz: "Негізгі бөлікте 'would have lost' (өткен шақтағы нәтиже) тұр. Демек, жұлынның зақымдану шарты да өткен шаққа қатысты (Past Perfect Passive) -> had been damaged."
+          }
+        }
+      ],
+
+      ex2: [
+        {
+          q: "1. If the pain is sharp, the patient usually ___ (report) it immediately.",
+          options: ["reports", "would report", "would have reported"],
+          correct: 0,
+          exp: {
+            ru: "Zero Conditional (постоянное правило с маркером 'usually') + 3-е лицо ед. ч. ('the patient') -> Present Simple с окончанием -s: reports.",
+            kz: "Zero Conditional ('usually' маркері бар тұрақты ереже) + 3-жақ жекеше түр ('the patient') -> -s жалғауы бар Present Simple: reports."
+          }
+        },
+        {
+          q: "2. If the infection spreads to the surface of the skin, the redness ___ (become) visible.",
+          options: ["becomes / will become", "would become", "became"],
+          correct: 0,
+          exp: {
+            ru: "В части с if стоит Present Simple ('spreads' с окончанием -s!). Значит, это реальное условие: либо закон патофизиологии (Zero -> becomes), либо прогноз для пациента (First -> will become).",
+            kz: "If бөлігінде Present Simple ('spreads' -s жалғауымен!) тұр. Демек, бұл шынайы шарт: патофизиология заңдылығы (Zero -> becomes) немесе науқасқа болжам (First -> will become)."
+          }
+        },
+        {
+          q: "3. If she had received treatment earlier, the stroke effects ___ (be) less significant.",
+          options: ["would have been / would be", "will be", "are"],
+          correct: 0,
+          exp: {
+            ru: "Условие в прошлом ('had received'): если мы оцениваем прошлый исход — Third Conditional (would have been), а если оцениваем состояние пациентки сейчас — Mixed Conditional (would be). Оба варианта верны!",
+            kz: "Өткен шақтағы шарт ('had received'): өткен нәтижені айтсақ — Third Conditional (would have been), ал науқастың қазіргі жағдайын айтсақ — Mixed Conditional (would be). Екеуі де дұрыс!"
+          }
+        },
+        {
+          q: "4. If the patient had spinal cord injury, he ___ (not feel) anything below the waist.",
+          options: ["would not feel", "will not feel", "does not feel"],
+          correct: 0,
+          exp: {
+            ru: "После if стоит Past Simple ('had spinal cord injury' — гипотеза 2-го типа Second Conditional). Значит, во второй части ставим would not (wouldn't) feel.",
+            kz: "If-тен кейін Past Simple ('had spinal cord injury' — 2-типтегі гипотеза Second Conditional) тұр. Демек, екінші бөлікте would not (wouldn't) feel қойылады."
+          }
+        },
+        {
+          q: "5. If the stiffness continues for more than 3 days, we ___ (schedule) a follow-up.",
+          options: ["will schedule", "would schedule", "scheduled"],
+          correct: 0,
+          exp: {
+            ru: "Конкретная инструкция пациенту на будущее (First Conditional): If + Present Simple (continues) -> we will schedule a follow-up.",
+            kz: "Науқасқа болашаққа берілген нақты нұсқаулық (First Conditional): If + Present Simple (continues) -> we will schedule a follow-up."
+          }
+        }
+      ]
+    };
+
+    // =========================================================================
+    // 3. ЛОГИКА ОТОБРАЖЕНИЯ, ОЗВУЧКИ И ПЕРЕКЛЮЧЕНИЯ ЯЗЫКОВ (RU / KZ)
+    // =========================================================================
+    let currentLang = localStorage.getItem('doctors_speak_lang') || 'ru';
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('doctors_speak_lang', lang);
+
+      document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
+      document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
+
+      const ui = LESSON11_DATA.ui;
+      document.getElementById('uiBackBtn').textContent = ui.backBtn[lang];
+      document.getElementById('uiTitle').textContent = ui.title[lang];
+      document.getElementById('uiSubtitle').textContent = ui.subtitle[lang];
+
+      ui.nav.forEach((item, index) => {
+        document.getElementById(`nav${index}`).textContent = item[lang];
+      });
+
+      document.getElementById('uiVocabTitle').textContent = ui.vocabTitle[lang];
+      document.getElementById('uiVocabDesc').textContent = ui.vocabDesc[lang];
+      document.getElementById('uiToExBtn').textContent = ui.toExBtn[lang];
+      document.getElementById('uiEx1Title').textContent = ui.ex1Title[lang];
+      document.getElementById('uiEx1Desc').textContent = ui.ex1Desc[lang];
+      document.getElementById('uiEx2Title').textContent = ui.ex2Title[lang];
+      document.getElementById('uiEx2Desc').textContent = ui.ex2Desc[lang];
+      document.getElementById('uiGoTrainerBtn').textContent = ui.goTrainerBtn[lang];
+
+      // Обновляем бейдж тарифа или тексты экрана Paywall при переключении языка
+      const badge = document.getElementById("userTierBadge");
+      if (badge && TIER_LABELS[currentViewerState.tier]) {
+        badge.textContent = TIER_LABELS[currentViewerState.tier][lang];
+      }
+      if (document.getElementById("paywallGate").style.display === "block") {
+        updatePaywallTexts(currentViewerState.isLoggedIn, currentViewerState.tier);
+      }
+
+      // Рендерим вкладки теории, словаря и упражнений
+      document.getElementById('tab0').innerHTML = LESSON11_DATA.tab0Html[lang];
+      document.getElementById('tab1').innerHTML = LESSON11_DATA.tab1Html[lang];
+      renderVocab();
+      renderExercises('ex1Container', LESSON11_DATA.ex1);
+      renderExercises('ex2Container', LESSON11_DATA.ex2);
+    }
+
+    function showTab(idx) {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`nav${i}`).classList.toggle('active', i === idx);
+        document.getElementById(`tab${i}`).classList.toggle('active', i === idx);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Подсветка конструкций в статье StatPearls (Thyrotoxicosis)
+    function toggleAbstractHighlight(mode) {
+      const box = document.getElementById('abstractBodyText');
+      if (!box) return;
+      box.classList.remove('show-if', 'show-mod');
+      if (mode === 'if' || mode === 'all') box.classList.add('show-if');
+      if (mode === 'mod' || mode === 'all') box.classList.add('show-mod');
+    }
+
+    // Проверка встроенных микро-вопросов в теории
+    function checkInlineQuiz(btn, isCorrect, feedbackText) {
+      const parent = btn.closest('.quick-check');
+      const allBtns = parent.querySelectorAll('.qc-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+      }
+
+      const fb = parent.querySelector('.qc-feedback');
+      fb.textContent = `💡 ${feedbackText}`;
+      fb.style.display = 'block';
+    }
+
+    // Рендер словаря с озвучкой Web Speech API
+    function renderVocab() {
+      const grid = document.getElementById('vocabGrid');
+      grid.innerHTML = '';
+      LESSON11_DATA.vocabulary.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'vocab-card';
+        div.innerHTML = `
+          <div class="vocab-header">
+            <span class="vocab-word">${item.en}</span>
+            <button class="speak-btn" onclick="speakEn('${item.en}')" title="Прослушать">🔊</button>
+          </div>
+          <div class="vocab-trans">${item[currentLang]}</div>
+          <div class="vocab-example">${item.ex}</div>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    function speakEn(word) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(word);
+      u.lang = 'en-US';
+      u.rate = 0.9;
+      window.speechSynthesis.speak(u);
+    }
+
+    // Рендер упражнений 1 и 2 из PDF
+    function renderExercises(containerId, list) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+      list.forEach(item => {
+        const box = document.createElement('div');
+        box.className = 'quick-check';
+        box.style.marginTop = '0';
+
+        const qEl = document.createElement('div');
+        qEl.className = 'qc-question';
+        qEl.textContent = item.q;
+
+        const optsEl = document.createElement('div');
+        optsEl.className = 'qc-options';
+
+        const fbEl = document.createElement('div');
+        fbEl.className = 'qc-feedback';
+        fbEl.textContent = `💡 ${item.exp[currentLang]}`;
+
+        item.options.forEach((optText, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'qc-btn';
+          btn.textContent = optText;
+          btn.onclick = () => {
+            const buttons = optsEl.querySelectorAll('.qc-btn');
+            buttons.forEach(b => b.disabled = true);
+            if (idx === item.correct) {
+              btn.classList.add('correct');
+            } else {
+              btn.classList.add('wrong');
+              buttons[item.correct].classList.add('correct');
+            }
+            fbEl.style.display = 'block';
+          };
+          optsEl.appendChild(btn);
+        });
+
+        box.appendChild(qEl);
+        box.appendChild(optsEl);
+        box.appendChild(fbEl);
+        container.appendChild(box);
+      });
+    }
+
+    // Инициализация языка и проверка подписки при загрузке страницы
+    setLang(currentLang);
+    verifySubscriptionAccess();
+  </script>
+</body>
+</html>
