@@ -1,0 +1,2336 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Doctors Speak — Как искать и читать медицинские статьи на английском</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Подключение Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --kz-blue: #00A1DE;
+            --kz-blue-dark: #0077A3;
+            --kz-blue-light: #EBF8FC;
+            --kz-gold: #FFC72C;
+            --kz-gold-dark: #D9A000;
+            --kz-gold-light: #FFFBEB;
+            --bg-main: #EEF3F8;
+            --card-bg: #FFFFFF;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+            --border-color: #DBE5F0;
+            --green-accent: #10B981;
+            --green-light: #DCFCE7;
+            --green-dark: #15803D;
+            --red-accent: #EF4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            overflow-y: auto;
+            background: radial-gradient(circle at top, #EBF8FC 0%, var(--bg-main) 65%);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding-bottom: 40px;
+        }
+
+        /* 1. Верхняя шапка */
+        header {
+            position: relative;
+            z-index: 20;
+            background: linear-gradient(145deg, #0077A3 0%, var(--kz-blue) 58%, #15B2E8 100%);
+            color: #FFFFFF;
+            text-align: center;
+            padding: 18px 16px 24px 16px;
+            box-shadow: 0 6px 20px rgba(0, 161, 222, 0.24);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+        }
+
+        .header-top-bar {
+            width: 100%;
+            max-width: 860px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        header .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.76rem;
+            padding: 6px 14px;
+            border-radius: 20px;
+            transition: all 0.2s ease;
+        }
+
+        header .back-btn:active {
+            transform: scale(0.96);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .lang-switch {
+            display: inline-flex;
+            background: rgba(0, 0, 0, 0.22);
+            border-radius: 20px;
+            padding: 3px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .lang-btn {
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 800;
+            font-size: 0.72rem;
+            padding: 4px 11px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn.active {
+            background: var(--kz-gold);
+            color: var(--text-dark);
+        }
+
+        .header-badges {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+
+        .brand-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.32);
+            color: #FFFFFF;
+            font-weight: 700;
+            font-size: 0.72rem;
+            letter-spacing: 0.5px;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .tier-status-badge {
+            display: inline-block;
+            background: rgba(255, 199, 44, 0.24);
+            border: 1px solid var(--kz-gold);
+            color: var(--kz-gold);
+            font-weight: 800;
+            font-size: 0.71rem;
+            letter-spacing: 0.5px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        h1 {
+            font-size: 1.32rem;
+            font-weight: 900;
+            line-height: 1.25;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #FFFFFF;
+            max-width: 680px;
+        }
+
+        .subtitle {
+            font-size: 0.77rem;
+            margin-top: 5px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--kz-gold);
+        }
+
+        /* Шкала прогресса вебинара */
+        .progress-widget {
+            width: 100%;
+            max-width: 540px;
+            background: rgba(15, 23, 42, 0.28);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 16px;
+            padding: 10px 14px;
+            margin-top: 12px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .pw-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.73rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-bottom: 6px;
+        }
+
+        .pw-bar-bg {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .pw-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--kz-gold) 0%, #34D399 100%);
+            border-radius: 10px;
+            transition: width 0.35s ease;
+        }
+
+        /* 2. Основной контейнер */
+        main {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 20px 14px;
+            flex-grow: 1;
+        }
+
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            font-weight: 900;
+            color: var(--kz-blue-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            margin-top: 4px;
+        }
+
+        .section-label::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1.5px solid var(--border-color);
+        }
+
+        /* ==========================================================================
+           БЛОК 1 (СВЕРХУ): ОБЩИЙ ИНТЕРАКТИВНЫЙ КОНСПЕКТ ВЕБИНАРА (PRO / PREMIUM / VIP)
+           ========================================================================== */
+        .master-guide-card {
+            background: linear-gradient(135deg, #FFFFFF 0%, #FFFBEB 65%, #FEF3C7 100%);
+            border: 2px solid var(--kz-gold-dark);
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: 0 8px 22px rgba(217, 160, 0, 0.14);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .master-guide-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 6px;
+            background: linear-gradient(180deg, var(--kz-gold) 0%, var(--kz-gold-dark) 100%);
+        }
+
+        .mg-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .mg-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .mg-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #FFFFFF 0%, #FDE68A 100%);
+            border: 1px solid rgba(217, 160, 0, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .mg-info h2 {
+            font-size: 1.02rem;
+            font-weight: 900;
+            color: var(--text-dark);
+            line-height: 1.25;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .mg-info p {
+            font-size: 0.78rem;
+            color: #475569;
+            font-weight: 600;
+            margin-top: 3px;
+            line-height: 1.4;
+        }
+
+        .tier-pill {
+            font-size: 0.64rem;
+            font-weight: 800;
+            padding: 3px 9px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            background: #1E293B;
+            color: var(--kz-gold);
+        }
+
+        .tier-pill.unlocked {
+            background: var(--green-light);
+            color: var(--green-dark);
+            border: 1px solid #86EFAC;
+        }
+
+        .mg-features-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .mg-feat {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(217, 160, 0, 0.35);
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 0.71rem;
+            font-weight: 700;
+            color: #78350F;
+        }
+
+        .open-guide-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            color: var(--kz-gold);
+            border: 1px solid var(--kz-gold-dark);
+            border-radius: 14px;
+            padding: 13px 18px;
+            font-size: 0.86rem;
+            font-weight: 900;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .open-guide-btn:hover {
+            background: #000000;
+            transform: translateY(-1px);
+        }
+
+        /* Раскрывающийся полный интерактивный конспект (для PRO / PREMIUM / VIP) */
+        #masterGuidePanel {
+            display: none;
+            background: var(--card-bg);
+            border: 2px solid var(--kz-blue);
+            border-radius: 20px;
+            padding: 18px 16px;
+            box-shadow: 0 10px 28px rgba(0, 119, 163, 0.12);
+            flex-direction: column;
+            gap: 16px;
+            animation: fadeIn 0.25s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .guide-tabs-nav {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+        }
+
+        .g-tab-btn {
+            background: #F1F5F9;
+            border: 1px solid var(--border-color);
+            border-radius: 11px;
+            padding: 9px 6px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.18s ease;
+        }
+
+        .g-tab-btn.active {
+            background: var(--kz-blue);
+            color: #FFFFFF;
+            border-color: var(--kz-blue-dark);
+        }
+
+        .guide-tab-body {
+            display: none;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .guide-tab-body.active {
+            display: flex;
+        }
+
+        .guide-box {
+            background: #F8FAFC;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--kz-blue);
+            border-radius: 14px;
+            padding: 14px;
+        }
+
+        .guide-box.gold {
+            border-left-color: var(--kz-gold-dark);
+            background: var(--kz-gold-light);
+        }
+
+        .guide-box.red {
+            border-left-color: var(--red-accent);
+            background: #FEF2F2;
+        }
+
+        .guide-box.green {
+            border-left-color: var(--green-accent);
+            background: #F0FDF4;
+        }
+
+        .guide-box h3 {
+            font-size: 0.92rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .guide-box p, .guide-box li {
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .guide-box ul {
+            padding-left: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        /* Таблица сравнения 9 медицинских баз данных */
+        .table-scroll {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .db-table {
+            width: 100%;
+            min-width: 580px;
+            border-collapse: collapse;
+            font-size: 0.74rem;
+        }
+
+        .db-table th {
+            background: #1E293B;
+            color: #FFFFFF;
+            padding: 9px 8px;
+            text-align: left;
+            font-weight: 800;
+        }
+
+        .db-table td {
+            padding: 8px;
+            border-bottom: 1px solid var(--border-color);
+            background: #FFFFFF;
+            line-height: 1.35;
+        }
+
+        .db-table tr:nth-child(even) td {
+            background: #F8FAFC;
+        }
+
+        /* Карточки AI-промптов с кнопкой копирования */
+        .prompt-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .prompt-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .prompt-badge {
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: var(--kz-blue-dark);
+            background: var(--kz-blue-light);
+            padding: 3px 9px;
+            border-radius: 8px;
+        }
+
+        .copy-prompt-btn {
+            background: var(--kz-gold);
+            color: var(--text-dark);
+            border: 1px solid var(--kz-gold-dark);
+            border-radius: 8px;
+            padding: 5px 10px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .prompt-text {
+            font-size: 0.78rem;
+            color: var(--text-dark);
+            background: #F8FAFC;
+            padding: 9px 11px;
+            border-radius: 8px;
+            border-left: 3px solid var(--kz-gold-dark);
+            line-height: 1.45;
+            font-weight: 600;
+        }
+
+        /* ==========================================================================
+           БЛОК 2 (НИЖЕ): ПЛЕЙЛИСТ ИЗ 7 ВИДЕОНАРЕЗОК С ЗАКРЕПЛЯЮЩИМИ ВОПРОСАМИ
+           ========================================================================== */
+        .playlist-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .lesson-group {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .trainer-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F4FAFF 65%, #E6F4FE 100%);
+            border-radius: 16px;
+            padding: 14px 16px;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 10px rgba(0, 119, 163, 0.05);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #CBE7F9;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .trainer-card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0, 161, 222, 0.12);
+            border-color: #7DD3FC;
+        }
+
+        .trainer-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 5px;
+            background: linear-gradient(180deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+        }
+
+        .lesson-group.completed-clip .trainer-card {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 70%, #DCFCE7 100%);
+            border-color: #86EFAC;
+        }
+
+        .lesson-group.completed-clip .trainer-card::before {
+            background: linear-gradient(180deg, #10B981 0%, #059669 100%);
+        }
+
+        .card-content {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .card-icon {
+            width: 46px;
+            height: 46px;
+            background: linear-gradient(135deg, #FFFFFF 0%, #E0F2FE 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            border: 1px solid rgba(0, 161, 222, 0.22);
+        }
+
+        .card-text h2 {
+            font-size: 0.92rem;
+            font-weight: 800;
+            margin-bottom: 3px;
+            color: var(--text-dark);
+            line-height: 1.25;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .card-text p {
+            font-size: 0.74rem;
+            color: var(--text-muted);
+            line-height: 1.3;
+            font-weight: 600;
+        }
+
+        .clip-num-pill {
+            display: inline-block;
+            background: rgba(0, 161, 222, 0.12);
+            color: var(--kz-blue-dark);
+            font-size: 0.64rem;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+
+        .done-pill-tag {
+            display: none;
+            background: var(--green-light);
+            color: var(--green-dark);
+            border: 1px solid #86EFAC;
+            font-size: 0.62rem;
+            font-weight: 800;
+            padding: 1px 6px;
+            border-radius: 6px;
+        }
+
+        .lesson-group.completed-clip .done-pill-tag {
+            display: inline-block;
+        }
+
+        .arrow-icon {
+            width: 18px;
+            height: 18px;
+            fill: var(--kz-blue-dark);
+            flex-shrink: 0;
+            margin-left: 8px;
+            transition: transform 0.25s ease;
+        }
+
+        .lesson-group.open .trainer-card {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            border-bottom-color: transparent;
+            background: linear-gradient(135deg, #EBF8FC 0%, #D6F1FA 100%);
+        }
+
+        .lesson-group.open .arrow-icon {
+            transform: rotate(90deg);
+        }
+
+        .lesson-dropdown {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s ease;
+            opacity: 0;
+            background: var(--card-bg);
+            border-left: 1px solid #CBE7F9;
+            border-right: 1px solid #CBE7F9;
+            border-bottom: 1px solid #CBE7F9;
+            border-bottom-left-radius: 16px;
+            border-bottom-right-radius: 16px;
+            position: relative;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.03);
+        }
+
+        .lesson-dropdown::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 5px;
+            background: var(--kz-blue);
+        }
+
+        .lesson-group.open .lesson-dropdown {
+            max-height: 2200px;
+            opacity: 1;
+        }
+
+        .dropdown-content-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 14px 16px 16px 20px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        /* Видеоплеер 16:9 (Vimeo Unlisted / Hidden Embed) */
+        .video-embed-box {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #0F172A;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .video-embed-box iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
+
+        .video-embed-box.locked {
+            aspect-ratio: auto;
+            min-height: 200px;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 16px;
+        }
+
+        .video-paywall {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 480px;
+            gap: 9px;
+            color: #FFFFFF;
+        }
+
+        .paywall-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 199, 44, 0.18);
+            border: 1px solid rgba(255, 199, 44, 0.45);
+            color: var(--kz-gold);
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .paywall-title {
+            font-size: 0.92rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            line-height: 1.3;
+        }
+
+        .paywall-desc {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #CBD5E1;
+            line-height: 1.45;
+        }
+
+        .paywall-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            margin-top: 4px;
+        }
+
+        .paywall-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 9px 14px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-decoration: none;
+            flex: 1 1 165px;
+        }
+
+        .paywall-btn.tarifs {
+            background: var(--kz-gold);
+            color: var(--text-dark);
+            border: 1px solid var(--kz-gold-dark);
+        }
+
+        .paywall-btn.contact {
+            background: rgba(0, 161, 222, 0.22);
+            color: #FFFFFF;
+            border: 1px solid rgba(0, 161, 222, 0.55);
+        }
+
+        /* Блок закрепляющих вопросов */
+        .clip-summary-note {
+            background: var(--kz-blue-light);
+            border-left: 4px solid var(--kz-blue);
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 0.78rem;
+            line-height: 1.45;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .clip-quiz-box {
+            background: #F8FAFC;
+            border: 1px dashed var(--kz-blue);
+            border-radius: 14px;
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .cq-header {
+            font-size: 0.7rem;
+            font-weight: 900;
+            color: var(--kz-blue-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .cq-item {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 11px 12px;
+        }
+
+        .cq-q {
+            font-size: 0.81rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            line-height: 1.38;
+        }
+
+        .cq-opts {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .cq-btn {
+            background: #F8FAFC;
+            border: 1px solid var(--border-color);
+            border-radius: 9px;
+            padding: 8px 11px;
+            font-size: 0.77rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.15s ease;
+        }
+
+        .cq-btn:hover:not(:disabled) {
+            background: var(--kz-blue-light);
+            border-color: var(--kz-blue);
+        }
+
+        .cq-btn.correct {
+            background: var(--green-light);
+            border-color: var(--green-accent);
+            color: var(--green-dark);
+        }
+
+        .cq-btn.wrong {
+            background: #FEE2E2;
+            border-color: var(--red-accent);
+            color: #991B1B;
+        }
+
+        .cq-fb {
+            display: none;
+            margin-top: 7px;
+            padding: 7px 9px;
+            border-radius: 8px;
+            font-size: 0.74rem;
+            font-weight: 600;
+            background: var(--kz-blue-light);
+            color: var(--kz-blue-dark);
+            line-height: 1.38;
+        }
+
+        .mark-done-btn {
+            background: #FFFFFF;
+            border: 1px dashed var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 9px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.15s ease;
+        }
+
+        .lesson-group.completed-clip .mark-done-btn {
+            background: var(--green-light);
+            border-color: var(--green-accent);
+            color: var(--green-dark);
+        }
+
+        /* Модальное окно блокировки Конспекта */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.72);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .modal-card {
+            background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+            color: #FFFFFF;
+            max-width: 460px;
+            width: 100%;
+            border-radius: 22px;
+            padding: 24px 20px;
+            border: 1.5px solid var(--kz-gold);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 16px 24px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .instagram-link, footer .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--kz-blue-dark);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 8px 18px;
+            border-radius: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        @media (max-width: 560px) {
+            .guide-tabs-nav {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            h1 { font-size: 1.15rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-top-bar">
+            <a href="https://kazdoctors.com" class="back-btn" id="uiBackBtn">⬅️ На главную</a>
+
+            <div class="lang-switch">
+                <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
+                <button class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
+            </div>
+        </div>
+
+        <div class="header-badges">
+            <div class="brand-badge">Dr. Alikhan Karymsakov • @doctors.speak</div>
+            <a href="https://kazdoctors.com/tarifs" id="tierStatusBadge" class="tier-status-badge">Тариф: FREE</a>
+        </div>
+        <h1 id="uiMainTitle">Как искать и читать медицинские статьи на английском</h1>
+        <p class="subtitle" id="uiMainSubtitle">PubMed • Cochrane • UpToDate • Критическая оценка • Нелинейное чтение и ИИ</p>
+
+        <!-- Трекер прохождения 7 видеонарезок вебинара -->
+        <div class="progress-widget">
+            <div class="pw-top-row">
+                <span id="uiProgLabel">📈 Прогресс разбора вебинара:</span>
+                <span id="progressCountText" style="color:var(--kz-gold);">0 / 7 тем (0%)</span>
+            </div>
+            <div class="pw-bar-bg">
+                <div class="pw-bar-fill" id="progressBarFill"></div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ==================================================================
+             1. ВЕРХНИЙ БЛОК: ОБЩИЙ ИНТЕРАКТИВНЫЙ КОНСПЕКТ И ПРОМПТЫ (PRO / PREMIUM / VIP)
+             ================================================================== -->
+        <div class="section-label" id="uiSec1Label">📖 База знаний, Таблица баз и AI-промпты</div>
+
+        <div class="master-guide-card">
+            <div class="mg-top-row">
+                <div class="mg-left">
+                    <div class="mg-icon">🔬</div>
+                    <div class="mg-info">
+                        <h2>
+                            <span id="uiGuideTitle">Полный интерактивный конспект: Поиск, Оценка и Чтение статей</span>
+                            <span class="tier-pill" id="guideTierPill">🔒 ПРО / ПРЕМИУМ / ВИП</span>
+                        </h2>
+                        <p id="uiGuideDesc">
+                            Вся выжимка вебинара: сравнительная таблица 9 медицинских баз (PubMed, Cochrane, UpToDate), чек-лист достоверности, 5 шагов чтения и 6 готовых промптов для ChatGPT.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mg-features-pills">
+                <span class="mg-feat">✓ Таблица 9 баз (PubMed / UpToDate / Cochrane)</span>
+                <span class="mg-feat">✓ 5 шагов нелинейного чтения</span>
+                <span class="mg-feat">✓ Чек-лист PICO & Red Flags</span>
+                <span class="mg-feat">✓ Стратегия для уровня Beginner</span>
+                <span class="mg-feat">✓ 6 готовых промптов для ChatGPT</span>
+            </div>
+
+            <button type="button" class="open-guide-btn" onclick="handleMasterGuideClick()" id="uiOpenGuideBtn">
+                📖 ОТКРЫТЬ ИНТЕРАКТИВНЫЙ КОНСПЕКТ ВЕБИНАРА ⌄
+            </button>
+        </div>
+
+        <!-- Раскрывающийся интерактивный конспект (для PRO, PREMIUM, VIP) -->
+        <section id="masterGuidePanel">
+            <div class="guide-tabs-nav">
+                <button type="button" class="g-tab-btn active" onclick="switchGuideTab(0)" id="gTabBtn0">1. Где искать (9 баз)</button>
+                <button type="button" class="g-tab-btn" onclick="switchGuideTab(1)" id="gTabBtn1">2. Отбор и Достоверность</button>
+                <button type="button" class="g-tab-btn" onclick="switchGuideTab(2)" id="gTabBtn2">3. 5 шагов и Beginner</button>
+                <button type="button" class="g-tab-btn" onclick="switchGuideTab(3)" id="gTabBtn3">4. Бонус: ИИ и 6 Промптов</button>
+            </div>
+
+            <div class="guide-tab-body active" id="gTab0"></div>
+            <div class="guide-tab-body" id="gTab1"></div>
+            <div class="guide-tab-body" id="gTab2"></div>
+            <div class="guide-tab-body" id="gTab3"></div>
+        </section>
+
+        <!-- ==================================================================
+             2. НИЖНИЙ БЛОК: ПЛЕЙЛИСТ ВИДЕОНАРЕЗОК ВЕБИНАРА С ВОПРОСАМИ
+             ================================================================== -->
+        <div class="section-label" id="uiSec2Label">🎬 Плейлист видеонарезок вебинара (с практикой)</div>
+
+        <div class="playlist-container" id="playlistContainer"></div>
+
+    </main>
+
+    <!-- Модальное окно Paywall для Конспекта (если у пользователя нет PRO / PREMIUM / VIP) -->
+    <div class="modal-overlay" id="guidePaywallModal" onclick="if(event.target===this) closeGuidePaywall()">
+        <div class="modal-card">
+            <div style="font-size:2.1rem;">🔒</div>
+            <span class="paywall-badge">Доступно в тарифах «ПРО», «ПРЕМИУМ» и «ВИП»</span>
+            <h3 style="font-size:1.08rem; font-weight:900;">Интерактивный конспект закрыт для вашего тарифа</h3>
+            <p class="paywall-desc">
+                Полный конспект со сравнительной таблицей баз данных, алгоритмом нелинейного чтения и готовыми AI-промптами доступен подписчикам тарифов «Про», «Премиум» и «ВИП».
+            </p>
+            <div class="paywall-actions" style="width:100%;">
+                <a href="https://kazdoctors.com/tarifs" class="paywall-btn tarifs">🌟 Перейти к тарифам</a>
+                <a href="https://wa.me/77081595038?text=Здравствуйте!%20Хочу%20открыть%20доступ%20к%20модулю%20Чтения%20статей" target="_blank" class="paywall-btn contact">💬 WhatsApp</a>
+            </div>
+            <button type="button" onclick="closeGuidePaywall()" style="background:none; border:none; color:#94A3B8; font-size:0.76rem; font-weight:700; margin-top:4px; cursor:pointer;">Закрыть окно ✕</button>
+        </div>
+    </div>
+
+    <footer>
+        <a href="https://instagram.com/doctors.speak" target="_blank" class="instagram-link">
+            <span>📸 Instagram @doctors.speak</span>
+        </a>
+        <a href="https://kazdoctors.com" class="back-btn">
+            <span>⬅️ Go back</span>
+        </a>
+    </footer>
+
+    <script>
+        // =========================================================================
+        // 1. ВСТАВЬТЕ СЮДА ССЫЛКИ ИЛИ EMBED-КОДЫ НА ВАШИ СКРЫТЫЕ ВИДЕО С VIMEO
+        // Поддерживается:
+        // - полный код <iframe src="https://player.vimeo.com/video/123456?h=abcd..."></iframe>
+        // - ссылка плеер-эмбеда: "https://player.vimeo.com/video/123456789?h=abcdef123"
+        // - скрытая ссылка Vimeo: "https://vimeo.com/123456789/abcdef123"
+        // =========================================================================
+        const WEBINAR_VIDEOS = {
+            clip1: "https://player.vimeo.com/video/YOUR_VIDEO_ID_1?h=YOUR_HASH_1", // 1. Для чего врачу читать статьи
+            clip2: "https://player.vimeo.com/video/YOUR_VIDEO_ID_2?h=YOUR_HASH_2", // 2. Где искать статьи (9 баз данных)
+            clip3: "https://player.vimeo.com/video/YOUR_VIDEO_ID_3?h=YOUR_HASH_3", // 3. Как отбирать статьи и проверять достоверность
+            clip4: "https://player.vimeo.com/video/YOUR_VIDEO_ID_4?h=YOUR_HASH_4", // 4. На что обращать внимание (PICO, p-value, Red flags)
+            clip5: "https://player.vimeo.com/video/YOUR_VIDEO_ID_5?h=YOUR_HASH_5", // 5. Пошаговая стратегия чтения (5 шагов) и лайфхаки
+            clip6: "https://player.vimeo.com/video/YOUR_VIDEO_ID_6?h=YOUR_HASH_6", // 6. Что делать, если у вас уровень Beginner + Разбор статьи
+            clip7: "https://player.vimeo.com/video/YOUR_VIDEO_ID_7?h=YOUR_HASH_7"  // 7. Бонус: Как использовать ChatGPT для статей и английского
+        };
+
+        // Функция, которая корректно обрабатывает скрытые (unlisted) ссылки и iframe-коды Vimeo
+        function normalizeVimeoEmbedUrl(rawInput) {
+            if (!rawInput) return "";
+            let str = rawInput.trim();
+
+            // 1. Если вставлен полный HTML-код <iframe ... src="...">, достаем из него атрибут src
+            if (str.includes("<iframe")) {
+                const match = str.match(/src=["']([^"']+)["']/i);
+                if (match && match[1]) {
+                    str = match[1].replace(/&amp;/g, "&");
+                }
+            }
+
+            // 2. Если вставлена скрытая ссылка вида https://vimeo.com/123456789/abcdef1234
+            const unlistedMatch = str.match(/vimeo\.com\/(\d+)\/([a-zA-Z0-9]+)/);
+            if (unlistedMatch && !str.includes("player.vimeo.com")) {
+                return `https://player.vimeo.com/video/${unlistedMatch[1]}?h=${unlistedMatch[2]}&badge=0&autopause=0&player_id=0&app_id=58479`;
+            }
+
+            // 3. Если вставлена обычная ссылка https://vimeo.com/123456789
+            const simpleMatch = str.match(/^https?:\/\/(?:www\.)?vimeo\.com\/(\d+)/);
+            if (simpleMatch && !str.includes("player.vimeo.com")) {
+                return `https://player.vimeo.com/video/${simpleMatch[1]}?badge=0&autopause=0&player_id=0&app_id=58479`;
+            }
+
+            return str;
+        }
+
+        // =========================================================================
+        // 2. ПРОВЕРКА ПОДПИСКИ SUPABASE (PRO+ ДЛЯ КОНСПЕКТА, PREMIUM+ ДЛЯ ВИДЕО)
+        // =========================================================================
+        const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+        const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+        const TIER_LEVELS = { none: 0, free: 0, standard: 1, pro: 2, premium: 3, vip: 4 };
+        const TIER_NAMES = {
+            none: "FREE",
+            free: "FREE",
+            standard: "STANDARD",
+            pro: "PRO",
+            premium: "PREMIUM",
+            vip: "VIP 👑"
+        };
+
+        let currentUserTier = "none";
+        let canReadGuide = false;  // true для PRO, PREMIUM, VIP
+        let canWatchVideo = false; // true только для PREMIUM и VIP
+        let currentLang = localStorage.getItem('doctors_speak_lang') || 'ru';
+
+        async function detectUserTier(session) {
+            if (!session || !session.user) return "none";
+            const user = session.user;
+            const userEmail = (user.email || "").toLowerCase().trim();
+
+            try {
+                let { data: profile } = await supabaseClient
+                    .from('profiles')
+                    .select('tier, subscription_expires_at')
+                    .eq('id', user.id)
+                    .maybeSingle();
+
+                if (!profile && userEmail) {
+                    const resByEmail = await supabaseClient
+                        .from('profiles')
+                        .select('tier, subscription_expires_at')
+                        .ilike('email', userEmail)
+                        .maybeSingle();
+                    profile = resByEmail.data;
+                }
+
+                if (!profile || !profile.subscription_expires_at) return "none";
+                const expiresAt = new Date(profile.subscription_expires_at);
+                if (isNaN(expiresAt.getTime()) || new Date() > expiresAt) return "none";
+
+                const dbTier = (profile.tier || "standard").toLowerCase().trim();
+                return TIER_LEVELS[dbTier] !== undefined ? dbTier : "none";
+            } catch (err) {
+                console.warn("Profile check error:", err);
+                return "none";
+            }
+        }
+
+        async function checkAuthAndTier() {
+            if (supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient.auth.getSession();
+                    if (!error && data && data.session) {
+                        currentUserTier = await detectUserTier(data.session);
+                    }
+                } catch (e) {
+                    currentUserTier = "none";
+                }
+            }
+
+            const level = TIER_LEVELS[currentUserTier] || 0;
+            canReadGuide = (level >= TIER_LEVELS.pro);       // Конспект: PRO (2), PREMIUM (3), VIP (4)
+            canWatchVideo = (level >= TIER_LEVELS.premium);  // Видео: PREMIUM (3), VIP (4)
+
+            updateAccessBadgesUI();
+            renderPlaylist();
+        }
+
+        function updateAccessBadgesUI() {
+            const isKz = (currentLang === 'kz');
+            const topBadge = document.getElementById('tierStatusBadge');
+            if (topBadge) {
+                topBadge.textContent = `Тариф: ${TIER_NAMES[currentUserTier] || "FREE"}`;
+            }
+
+            const guidePill = document.getElementById('guideTierPill');
+            if (guidePill) {
+                if (canReadGuide) {
+                    guidePill.className = "tier-pill unlocked";
+                    guidePill.textContent = isKz ? "✅ АШЫҚ (PRO+)" : "✅ ДОСТУП ОТКРЫТ";
+                } else {
+                    guidePill.className = "tier-pill";
+                    guidePill.textContent = isKz ? "🔒 ПРО / ПРЕМИУМ / ВИП" : "🔒 ПРО / ПРЕМИУМ / ВИП";
+                }
+            }
+        }
+
+        // =========================================================================
+        // 3. БАЗА ДАННЫХ: КОНСПЕКТ, ТАБЛИЦА БАЗ, AI-ПРОМПТЫ И 7 ВИДЕОНАРЕЗОК
+        // =========================================================================
+        const MODULE_DATA = {
+            ui: {
+                backBtn: { ru: "⬅️ На главную", kz: "⬅️ Басты бетке" },
+                mainTitle: {
+                    ru: "Как искать и читать медицинские статьи на английском",
+                    kz: "Ағылшын тіліндегі медициналық мақалаларды қалай іздеу және оқу керек?"
+                },
+                mainSubtitle: {
+                    ru: "PubMed • Cochrane • UpToDate • Критическая оценка • Нелинейное чтение и ИИ",
+                    kz: "PubMed • Cochrane • UpToDate • Сыни бағалау • Сызықтық емес оқу және ЖИ"
+                },
+                progLabel: {
+                    ru: "📈 Прогресс разбора вебинара:",
+                    kz: "📈 Вебинарды меңгеру прогресі:"
+                },
+                sec1Label: {
+                    ru: "📖 База знаний, Таблица баз и AI-промпты (PRO / PREMIUM / VIP)",
+                    kz: "📖 Білім базасы, Дерекқорлар кестесі және AI-промпттар (PRO / PREMIUM / VIP)"
+                },
+                guideTitle: {
+                    ru: "Полный интерактивный конспект: Поиск, Оценка и Чтение статей",
+                    kz: "Толық интерактивті конспект: Мақалаларды іздеу, бағалау және оқу"
+                },
+                guideDesc: {
+                    ru: "Вся выжимка вебинара: сравнительная таблица 9 медицинских баз (PubMed, Cochrane, UpToDate), чек-лист достоверности, 5 шагов чтения и 6 готовых промптов для ChatGPT.",
+                    kz: "Вебинардың толық конспектісі: 9 медициналық базаның салыстырмалы кестесі, сенімділік чек-парағы, 5 қадамдық оқу стратегиясы және ChatGPT-ге арналған 6 дайын промпт."
+                },
+                openGuideBtn: {
+                    ru: "📖 ОТКРЫТЬ ИНТЕРАКТИВНЫЙ КОНСПЕКТ ВЕБИНАРА ⌄",
+                    kz: "📖 ВЕБИНАРДЫҢ ИНТЕРАКТИВТІ КОНСПЕКТІСІН АШУ ⌄"
+                },
+                closeGuideBtn: {
+                    ru: "🔼 СВЕРНУТЬ ИНТЕРАКТИВНЫЙ КОНСПЕКТ",
+                    kz: "🔼 ИНТЕРАКТИВТІ КОНСПЕКТІНІ ЖАБУ"
+                },
+                guideTabs: [
+                    { ru: "1. Где искать (9 баз)", kz: "1. Қайдан іздеу (9 база)" },
+                    { ru: "2. Отбор и Достоверность", kz: "2. Іріктеу мен Сенімділік" },
+                    { ru: "3. 5 шагов и Beginner", kz: "3. 5 қадам және Beginner" },
+                    { ru: "4. Бонус: ИИ и 6 Промптов", kz: "4. Бонус: ЖИ және 6 Промпт" }
+                ],
+                sec2Label: {
+                    ru: "🎬 Плейлист видеонарезок вебинара (с вопросами для закрепления)",
+                    kz: "🎬 Вебинардың видео-үзінділер плейлисті (бекіту сұрақтарымен)"
+                }
+            },
+
+            // Вкладка 1 Конспекта: Зачем читать + Сравнительная таблица 9 баз + Маршруты поиска
+            guideTab0Html: {
+                ru: `
+                    <div class="guide-box">
+                        <h3>🎯 Главная цель чтения научных статей для врача</h3>
+                        <p><b>Цель — решить конкретный клинический или научный вопрос, а не просто «прочитать статью»!</b> Статьи позволяют:</p>
+                        <ul>
+                            <li>Иметь актуальные и достоверные знания и находить современные схемы лечения по вашей специальности;</li>
+                            <li>Отличать субъективное мнение эксперта от реальных данных клинических исследований;</li>
+                            <li>Проверять, на чём реально основаны клинические рекомендации (guidelines), и находить идеи для собственных публикаций.</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-box gold">
+                        <h3>🧭 Готовые маршруты поиска под вашу задачу</h3>
+                        <ul>
+                            <li>📝 <b>Если пишете научную статью:</b> PubMed ➔ Google Scholar ➔ ScienceDirect ➔ Cochrane</li>
+                            <li>🩺 <b>Если нужен быстрый клинический ответ у постели пациента:</b> UpToDate ➔ Cochrane ➔ ClinicalKey</li>
+                            <li>🔓 <b>Если статья закрыта (нет Full Text):</b> ResearchGate (написать авторам напрямую) / PubMed Central</li>
+                            <li>📋 <b>Если нужен клинический протокол (Guideline):</b> NHS / национальные и международные рекомендации</li>
+                        </ul>
+                    </div>
+
+                    <div class="table-scroll">
+                        <table class="db-table">
+                            <thead>
+                                <tr>
+                                    <th>Ресурс</th>
+                                    <th>Главная цель и Что содержит</th>
+                                    <th>Доказательность</th>
+                                    <th>Full Text</th>
+                                    <th>Лучшее применение</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><b>PubMed</b></td><td>Поиск биомедицинской литературы (MEDLINE + статьи)</td><td>Высокий контроль</td><td>Часто только abstract</td><td>Систематический поиск</td></tr>
+                                <tr><td><b>Cochrane Library</b></td><td>Систематические обзоры и метаанализы</td><td><b>Максимальный (Highest)</b></td><td>Full review</td><td>Высший уровень доказательности (Evidence)</td></tr>
+                                <tr><td><b>UpToDate</b></td><td>Готовые клинические сводки и экспертные рекомендации</td><td>Высокий</td><td>Summary</td><td>Решение у постели пациента</td></tr>
+                                <tr><td><b>Google Scholar</b></td><td>Широкий поиск всего научного (статьи, диссертации, книги)</td><td>Смешанный</td><td>Иногда PDF</td><td>Быстрый старт в теме</td></tr>
+                                <tr><td><b>ScienceDirect</b></td><td>Издательская база журналов Elsevier</td><td>Высокий</td><td>Full text</td><td>Чтение полных текстов статей</td></tr>
+                                <tr><td><b>ClinicalKey</b></td><td>Клиническая база (статьи, гайдлайны, книги)</td><td>Высокий</td><td>Full text</td><td>Клиническая практика</td></tr>
+                                <tr><td><b>ResearchGate</b></td><td>Соцсеть ученых (статьи, препринты, контакт с авторами)</td><td>Нерегулируемый</td><td>Часто PDF</td><td>Запросить полный текст у авторов</td></tr>
+                                <tr><td><b>NHS</b></td><td>Клинические протоколы Великобритании</td><td>Guideline-level</td><td>Full text</td><td>Практические гайдлайны</td></tr>
+                                <tr><td><b>NCBI</b></td><td>Экосистема данных (PubMed + гены + книги)</td><td>Варьирует</td><td>Mixed</td><td>Исследовательская инфраструктура</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `,
+                kz: `
+                    <div class="guide-box">
+                        <h3>🎯 Дәрігер үшін ғылыми мақалаларды оқудың басты мақсаты</h3>
+                        <p><b>Мақсат — жай ғана «мақаланы оқып шығу» емес, нақты клиникалық немесе ғылыми сұрақты шешу!</b> Мақалалар мүмкіндік береді:</p>
+                        <ul>
+                            <li>Өз мамандығыңыз бойынша ең заманауи әрі дәлелді емдеу әдістерін табуға;</li>
+                            <li>Сарапшының жеке пікірін нақты зерттеу деректерінен ажыратуға;</li>
+                            <li>Клиникалық хаттамалардың (guidelines) неге негізделгенін тексеруге және өз зерттеулеріңізге идея табуға.</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-box gold">
+                        <h3>🧭 Мақсатыңызға сай дайын іздеу маршруттары</h3>
+                        <ul>
+                            <li>📝 <b>Егер ғылыми мақала жазсаңыз:</b> PubMed ➔ Google Scholar ➔ ScienceDirect ➔ Cochrane</li>
+                            <li>🩺 <b>Науқас жанында жедел клиникалық жауап қажет болса:</b> UpToDate ➔ Cochrane ➔ ClinicalKey</li>
+                            <li>🔓 <b>Егер толық мәтін (Full Text) жабық болса:</b> ResearchGate (авторлардан тікелей сұрау) / PubMed Central</li>
+                            <li>📋 <b>Клиникалық хаттама (Guideline) қажет болса:</b> NHS / халықаралық ұсынымдар</li>
+                        </ul>
+                    </div>
+
+                    <div class="table-scroll">
+                        <table class="db-table">
+                            <thead>
+                                <tr>
+                                    <th>Ресурс</th>
+                                    <th>Басты мақсаты мен Мазмұны</th>
+                                    <th>Дәлелділік деңгейі</th>
+                                    <th>Full Text</th>
+                                    <th>Ең тиімді қолданылуы</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><b>PubMed</b></td><td>Биомедициналық әдебиеттер (MEDLINE + мақалалар)</td><td>Жоғары бақылау</td><td>Көбіне тек abstract</td><td>Жүйелі ғылыми іздеу</td></tr>
+                                <tr><td><b>Cochrane Library</b></td><td>Жүйелі шолулар мен мета-анализдер</td><td><b>Ең жоғары (Highest)</b></td><td>Full review</td><td>Ең жоғары дәлелділік базасы</td></tr>
+                                <tr><td><b>UpToDate</b></td><td>Дайын клиникалық қорытындылар мен ұсынымдар</td><td>Жоғары</td><td>Summary</td><td>Науқас төсегі жанында шешім қабылдау</td></tr>
+                                <tr><td><b>Google Scholar</b></td><td>Кең ауқымды іздеу (мақала, диссертация, кітап)</td><td>Аралас</td><td>Кейде PDF</td><td>Тақырыпты жылдам бастау</td></tr>
+                                <tr><td><b>ScienceDirect</b></td><td>Elsevier баспасының журналдар базасы</td><td>Жоғары</td><td>Full text</td><td>Толық мақалаларды оқу</td></tr>
+                                <tr><td><b>ClinicalKey</b></td><td>Клиникалық база (мақалалар, гайдлайндар, кітаптар)</td><td>Жоғары</td><td>Full text</td><td>Клиникалық тәжірибе</td></tr>
+                                <tr><td><b>ResearchGate</b></td><td>Ғалымдар желісі (мақалалар, препринттер)</td><td>Реттелмейді</td><td>Жиі PDF бар</td><td>Мақаланы автордан тікелей алу</td></tr>
+                                <tr><td><b>NHS</b></td><td>Ұлыбританияның клиникалық хаттамалары</td><td>Guideline-level</td><td>Full text</td><td>Практикалық басшылық</td></tr>
+                                <tr><td><b>NCBI</b></td><td>Деректер экожүйесі (PubMed + гендер + кітаптар)</td><td>Әртүрлі</td><td>Mixed</td><td>Зерттеу инфрақұрылымы</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `
+            },
+
+            // Вкладка 2 Конспекта: Как отбирать статьи, Достоверность, PICO и Красные флаги
+            guideTab1Html: {
+                ru: `
+                    <div class="guide-box">
+                        <h3>🔍 5 шагов первичного отбора статьи (Скрининг за 2 минуты)</h3>
+                        <ul>
+                            <li><b>1. Читаем Title (Заголовок):</b> подходит ли он под ваш запрос?</li>
+                            <li><b>2. Проверяем достоверность источника:</b>
+                                <br>• <b>Журнал:</b> рецензируемый ли он (<i>peer-reviewed</i>), какой у него <i>Impact Factor</i>?
+                                <br>• <b>Год публикации:</b> не устарели ли данные?
+                                <br>• <b>Количество цитирований статьи</b> (показывает признание в научном мире).
+                                <br>• <b>Авторы:</b> профессора с высоким <i>H-index</i> (индексом Хирша) из авторитетных университетов?
+                            </li>
+                            <li><b>3. Открываем Abstract и смотрим на ПОСЛЕДНИЕ предложения:</b> соответствует ли вывод вашим интересам?</li>
+                            <li><b>4. Смотрим на цель исследования:</b> ищем фразу-маркер <i>«This study aimed to... / The aim is to clarify...»</i>.</li>
+                            <li><b>5. Оцениваем результаты и метод сбора данных в Abstract.</b></li>
+                        </ul>
+                        <p style="margin-top:8px;">💡 <b>С чего начинать?</b> Если вы еще не погрузились в тему — начинайте с <b>Literature Review & Meta-analysis</b>. Если ищете конкретные цифры и узкие данные — переходите к <b>оригинальным исследованиям (Original Research)</b>.</p>
+                    </div>
+
+                    <div class="guide-box green">
+                        <h3>✅ На что обязательно обращать внимание внутри статьи</h3>
+                        <ul>
+                            <li><b>Цель исследования (Aim / Objective)</b> — что именно хотели проверить?</li>
+                            <li><b>Кого изучали (Population)</b> — адекватна ли выборка пациентов?</li>
+                            <li><b>Что сравнивали (Intervention vs Control)</b> — была ли контрольная группа?</li>
+                            <li><b>Основной результат (Primary Outcome)</b> и <b>Статистический анализ (особенно p-value)</b>.</li>
+                            <li><b>Ограничения (Limitations)</b> — честно ли авторы указали слабые стороны своей работы?</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-box red">
+                        <h3>🚩 Что должно насторожить врача («Красные флаги» плохих статей)</h3>
+                        <ul>
+                            <li>Много громких выводов при минимуме реальных данных;</li>
+                            <li>Нет статистической значимости или статистический анализ проведен некорректно;</li>
+                            <li>Полное игнорирование авторами ограничений (limitations) исследования;</li>
+                            <li>Отсутствие ясного фокуса: в цели заявлено одно, а в результатах описывается совсем другое;</li>
+                            <li>Данные собраны на бессмысленной или нерепрезентативной популяции.</li>
+                        </ul>
+                    </div>
+                `,
+                kz: `
+                    <div class="guide-box">
+                        <h3>🔍 Мақаланы бастапқы іріктеудің 5 қадамы (2 минуттық скрининг)</h3>
+                        <ul>
+                            <li><b>1. Title (Тақырыпты) оқимыз:</b> сіздің сұранысыңызға сәйкес келе ме?</li>
+                            <li><b>2. Дереккөздің сенімділігін тексереміз:</b>
+                                <br>• <b>Журнал:</b> рецензияланатын журнал ма (<i>peer-reviewed</i>), <i>Impact Factor</i> қандай?
+                                <br>• <b>Жарияланған жылы:</b> деректер ескіріп қалмаған ба?
+                                <br>• <b>Дәйексөз алу саны (Citations):</b> мақалаға басқа ғалымдар қанша рет сілтеме жасаған?
+                                <br>• <b>Авторлар:</b> беделді университеттердің жоғары <i>H-index</i> (Хирш индексі) бар профессорлары ма?
+                            </li>
+                            <li><b>3. Abstract-ты ашып, СОҢҒЫ сөйлемдеріне қараймыз:</b> қорытындысы сізге қажет пе?</li>
+                            <li><b>4. Зерттеу мақсатына қараймыз:</b> <i>«This study aimed to... / The aim is to clarify...»</i> маркерін іздейміз.</li>
+                            <li><b>5. Abstract ішіндегі нәтижелер мен дерек жинау әдісін бағалаймыз.</b></li>
+                        </ul>
+                        <p style="margin-top:8px;">💡 <b>Неден бастау керек?</b> Тақырыппен жаңа танысып жатсаңыз — <b>Literature Review & Meta-analysis</b>-тен бастаңыз. Нақты деректер іздесеңіз — <b>түпнұсқалық зерттеулерді (Original Research)</b> ашыңыз.</p>
+                    </div>
+
+                    <div class="guide-box green">
+                        <h3>✅ Мақала ішінде міндетті түрде назар аударатын 6 пункт</h3>
+                        <ul>
+                            <li><b>Зерттеу мақсаты (Aim / Objective)</b>;</li>
+                            <li><b>Кімдер зерттелді (Population)</b> — науқастар тобы дұрыс таңдалған ба?</li>
+                            <li><b>Не салыстырылды (Intervention vs Control)</b> — бақылау тобы болды ма?</li>
+                            <li><b>Негізгі нәтиже (Primary Outcome)</b> және <b>Статистикалық талдау (әсіресе p саны)</b>;</li>
+                            <li><b>Шектеулер (Limitations)</b> — авторлар жұмыстың әлсіз тұстарын ашық жазған ба?</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-box red">
+                        <h3>🚩 Дәрігерді не секемдендіруі керек («Қызыл жалаушалар»)</h3>
+                        <ul>
+                            <li>Деректер аз, бірақ тым «қатты» әрі көп қорытынды жасалған;</li>
+                            <li>Статистикалық маңыздылығы жоқ немесе статистикасы күмәнді;</li>
+                            <li>Зерттеудің әлсіз жақтарын (limitations) мүлдем елемеу;</li>
+                            <li>Анық фокустың жоқтығы: мақсатында бір нәрсе, ал нәтижесінде басқа нәрсе жазылған.</li>
+                        </ul>
+                    </div>
+                `
+            },
+
+            // Вкладка 3 Конспекта: 5 шагов чтения + Советы для уровня Beginner + Разбор статьи по СД2
+            guideTab2Html: {
+                ru: `
+                    <div class="guide-box">
+                        <h3>⚡ Пошаговая стратегия нелинейного чтения статьи (5 шагов)</h3>
+                        <p>Опытные клиницисты и ученые <b>никогда не читают статью линейно</b> от первого до последнего слова. Читайте в таком порядке:</p>
+                        <ul>
+                            <li><b>Шаг 1. Abstract:</b> понять, нужна ли статья и достоверна ли она. Внутри самого абстракта читаем в порядке: <b>сначала Вывод (последние строки) ➔ потом Цель (Aim) ➔ потом Результаты (Findings) ➔ потом Методы (Methods)</b>.</li>
+                            <li><b>Шаг 2. Conclusion:</b> выцепляем одну главную клиническую мысль статьи.</li>
+                            <li><b>Шаг 3. Figures & Tables (Графики и Таблицы):</b> <b>цифры всегда читаем раньше текста!</b> Сначала изучите таблицы и графики, и только потом переходите к тексту.</li>
+                            <li><b>Шаг 4. Results:</b> смотрим, какие объективные цифры реально получили авторы (ищем слова-маркеры: <i>increase, decrease, significant, associated with</i>).</li>
+                            <li><b>Шаг 5. Discussion:</b> читаем в самом конце — это то, <b>что авторы думают</b> о своих результатах, а не то, что они доказали!</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-box gold">
+                        <h3>🌱 Что делать, если у вас начинающий уровень английского (Beginner)?</h3>
+                        <ul>
+                            <li><b>Не учите «английский вообще» — учите научный минимум!</b> Понимание науки важнее идеального знания языка, а навык чтения статей развивается гораздо быстрее разговорной речи.</li>
+                            <li><b>Сконцентрируйтесь на 3 вещах:</b>
+                                <br>1) <b>Глаголах</b> (<i>demonstrate, evaluate, indicate, reduce, confirm</i>);
+                                <br>2) <b>Логических связках-чанках</b> (<i>however, therefore, clinically, the result is that...</i>);
+                                <br>3) <b>Медицинских терминах</b> — строго по мере надобности в вашей узкой теме.
+                            </li>
+                            <li><b>Как правильно пользоваться переводчиком:</b> переводите <b>целые предложения</b> (чтобы видеть структуру), а не каждое отдельное слово по словарю!</li>
+                            <li><b>Правило двух прочтений:</b> читайте одну статью дважды — <b>первый раз</b> для улавливания общего смысла, <b>второй раз</b> для разбора деталей и грамматики.</li>
+                        </ul>
+                    </div>
+                `,
+                kz: `
+                    <div class="guide-box">
+                        <h3>⚡ Мақаланы сызықтық емес оқудың 5 қадамдық стратегиясы</h3>
+                        <p>Тәжірибелі дәрігерлер мақаланы басынан аяғына дейін <b>сызықтық түрде оқымайды</b>. Оқу реті мынадай болуы керек:</p>
+                        <ul>
+                            <li><b>1-қадам. Abstract:</b> мақаланың қажеттілігі мен сенімділігін түсіну. Абстракт ішіндегі реттілік: <b>алдымен Қорытынды (соңғы сөйлемдер) ➔ сосын Мақсат (Aim) ➔ сосын Нәтижелер (Findings) ➔ соңында Әдістер (Methods)</b>.</li>
+                            <li><b>2-қадам. Conclusion:</b> мақаланың бір басты клиникалық ойын табу.</li>
+                            <li><b>3-қадам. Figures & Tables (Кестелер мен Графиктер):</b> <b>сандарды мәтіннен бұрын оқимыз!</b> Алдымен кестелерді қарап шығып, содан кейін ғана мәтінге өтіңіз.</li>
+                            <li><b>4-қадам. Results:</b> авторлардың нақты қандай нәтиже алғанын көру (маркер сөздерді іздеу: <i>increase, decrease, significant</i>).</li>
+                            <li><b>5-қадам. Discussion:</b> ең соңында оқылады — бұл авторлардың дәлелдеген фактісі емес, нәтиже туралы <b>өз ойлары мен талқылауы</b>!</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-box gold">
+                        <h3>🌱 Ағылшын тілі деңгейіңіз бастапқы (Beginner) болса не істеу керек?</h3>
+                        <ul>
+                            <li><b>«Жалпы ағылшынды» емес — ғылыми минимумды үйреніңіз!</b> Ғылым логикасын түсіну тілді мінсіз білуден маңыздырақ, ал оқу дағдысы сөйлеуден әлдеқайда тез дамиды.</li>
+                            <li><b>Назарды 3 нәрсеге шоғырландырыңыз:</b>
+                                <br>1) <b>Етістіктерге</b> (<i>demonstrate, evaluate, indicate, reduce, confirm</i>);
+                                <br>2) <b>Логикалық байланыстырғыш чанктарға</b> (<i>however, therefore, clinically, the result is that...</i>);
+                                <br>3) <b>Медициналық терминдерге</b> — тек өз тақырыбыңызға қажеттілерін ғана.
+                            </li>
+                            <li><b>Аудармашыны қалай дұрыс қолдану керек:</b> жеке сөздерді емес, <b>тұтас сөйлемдерді</b> аударыңыз!</li>
+                            <li><b>Екі рет оқу ережесі:</b> бір мақаланы екі рет оқыңыз — <b>бірінші рет</b> жалпы мағынасын түсіну үшін, <b>екінші рет</b> детальдарын талдау үшін.</li>
+                        </ul>
+                    </div>
+                `
+            },
+
+            // Вкладка 4 Конспекта: Бонус по ИИ (ChatGPT / Gemini / Claude / NotebookLM) + 6 промптов с копированием
+            aiPrompts: [
+                {
+                    title: "Промпт 1. Учим 10 базовых медицинских слов (A0–A1)",
+                    text: "Ты профессиональный преподаватель медицинского английского языка. Я начинающий (уровень А0-А1). Дай мне 10 простых английских слов на тему «повседневная жизнь» / «медицина». Для каждого слова: перевод, транскрипция, простое предложение, мини-упражнение на запоминание."
+                },
+                {
+                    title: "Промпт 2. 10 главных фраз для опроса пациента",
+                    text: "Представь, что я врач и учу английский с нуля. Дай мне 10 самых важных простых фраз для общения с пациентом: приветствие, жалобы, вопросы о боли, объяснение лечения. Для каждой фразы: перевод, произношение, когда использовать."
+                },
+                {
+                    title: "Промпт 3. Короткий профильный текст с разбором",
+                    text: "Напиши короткий английский текст (5-6 предложений) уровня A2 на тему «Doctor at work». Затем: переведи построчно, объясни каждое новое слово, задай 3 простых вопроса по тексту."
+                },
+                {
+                    title: "Промпт 4. Простое объяснение медицинской грамматики",
+                    text: "Объясни мне одну английскую грамматическую тему очень просто, как взрослому начинающему врачу: сначала правило, потом 5 медицинских примеров, потом 5 упражнений с проверкой. Начни с Present Simple."
+                },
+                {
+                    title: "Промпт 5. Тренировка письменной речи с проверкой",
+                    text: "Дай мне простое письменное задание уровня A1-A2: например, написать 5 предложений о своём рабочем дне в клинике. После моего ответа исправь ошибки и объясни их просто."
+                },
+                {
+                    title: "Промпт 6. Ролевая симуляция «Врач — Пациент»",
+                    text: "Давай сыграем диалог: ты пациент, я врач. Используй очень простой английский. Задавай мне короткие вопросы или отвечай на мои. После каждого моего ответа исправляй ошибки и предлагай лучший вариант."
+                }
+            ],
+
+            // 7 ВИДЕОНАРЕЗОК ПЛЕЙЛИСТА + ЗАКРЕПЛЯЮЩИЕ ВОПРОСЫ (ОТВЕТЫ РАСПРЕДЕЛЕНЫ МЕЖДУ A, B, C!)
+            clips: [
+                {
+                    id: 1,
+                    videoKey: "clip1",
+                    icon: "🎯",
+                    title: {
+                        ru: "Для чего врачу читать научные статьи?",
+                        kz: "Дәрігерге ғылыми мақалаларды оқу не үшін қажет?"
+                    },
+                    sub: {
+                        ru: "Актуальные схемы лечения, критическое мышление и проверка гайдлайнов (Слайд 3)",
+                        kz: "Заманауи емдеу әдістері, сыни ойлау және гайдлайндарды тексеру (3-слайд)"
+                    },
+                    summary: {
+                        ru: "💡 Главная цель врача — решить конкретный клинический или научный вопрос, а не просто «прочитать статью» ради галочки.",
+                        kz: "💡 Дәрігердің басты мақсаты — жай ғана «мақала оқу» емес, нақты клиникалық немесе ғылыми сұрақты шешу."
+                    },
+                    quiz: [
+                        {
+                            q: {
+                                ru: "1. В чем заключается главная практическая цель чтения научной статьи для практикующего врача?",
+                                kz: "1. Практикалық дәрігер үшін ғылыми мақаланы оқудың басты мақсаты неде?"
+                            },
+                            opts: {
+                                ru: [
+                                    "A) Выписать и выучить наизусть все незнакомые слова со страницы",
+                                    "B) Решить конкретный клинический или научный вопрос и проверить доказательную базу рекомендаций",
+                                    "C) Прочитать статью от первого до последнего слова без пропусков"
+                                ],
+                                kz: [
+                                    "A) Беттегі барлық таныс емес сөздерді көшіріп жаттап алу",
+                                    "B) Нақты клиникалық немесе ғылыми сұрақты шешу және ұсынымдардың дәлелді негізін тексеру",
+                                    "C) Мақаланы бірінші сөзінен соңғы сөзіне дейін қалдырмай оқып шығу"
+                                ]
+                            },
+                            ans: 1, // Вариант B!
+                            exp: {
+                                ru: "Верно (Вариант B)! Мы открываем статью, чтобы найти ответ на клинический/научный вопрос и отличить мнение эксперта от данных исследований.",
+                                kz: "Дұрыс (B нұсқасы)! Мақаланы клиникалық немесе ғылыми сұрақты шешу үшін оқимыз."
+                            }
+                        },
+                        {
+                            q: {
+                                ru: "2. Что позволяет сделать навык чтения первоисточников при работе с клиническими рекомендациями (гайдлайнами)?",
+                                kz: "2. Түпнұсқа мақалаларды оқу дағдысы клиникалық хаттамалармен (гайдлайндармен) жұмыс істегенде не береді?"
+                            },
+                            opts: {
+                                ru: [
+                                    "A) Полностью отказаться от клинических протоколов",
+                                    "B) Заменить сбор анамнеза у пациента",
+                                    "C) Отличать субъективное мнение эксперта от реальных данных исследований, на которых основаны рекомендации"
+                                ],
+                                kz: [
+                                    "A) Клиникалық хаттамалардан толық бас тартуға",
+                                    "B) Науқастан анамнез жинауды алмастыруға",
+                                    "C) Сарапшының жеке пікірін нақты зерттеу деректерінен ажыратуға және ұсынымдардың негізін тексеруге"
+                                ]
+                            },
+                            ans: 2, // Вариант C!
+                            exp: {
+                                ru: "Точно (Вариант C)! Чтение первоисточников развивает критическое мышление и позволяет видеть, какие данные стоят за каждой строчкой гайдлайна.",
+                                kz: "Дәл солай (C нұсқасы)! Бұл сыни ойлауды дамытып, гайдлайнның неге негізделгенін көруге мүмкіндік береді."
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 2,
+                    videoKey: "clip2",
+                    icon: "🌐",
+                    title: {
+                        ru: "Где искать статьи: обзор 9 баз данных и алгоритмы",
+                        kz: "Мақалаларды қайдан іздейміз: 9 дерекқорға шолу"
+                    },
+                    sub: {
+                        ru: "PubMed, Cochrane, UpToDate, Google Scholar, ScienceDirect, ResearchGate (Слайды 4–7)",
+                        kz: "PubMed, Cochrane, UpToDate, Google Scholar, ScienceDirect, ResearchGate (4–7 слайдтар)"
+                    },
+                    summary: {
+                        ru: "💡 Для быстрых решений у постели пациента: UpToDate -> Cochrane -> ClinicalKey. Для написания своей статьи: PubMed -> Google Scholar -> ScienceDirect -> Cochrane.",
+                        kz: "💡 Науқас жанында жедел шешім үшін: UpToDate -> Cochrane -> ClinicalKey. Ал мақала жазу үшін: PubMed -> Google Scholar -> ScienceDirect -> Cochrane."
+                    },
+                    quiz: [
+                        {
+                            q: {
+                                ru: "1. Какая база данных содержит систематические обзоры и метаанализы и обладает МАКСИМАЛЬНЫМ (Highest) уровнем доказательности?",
+                                kz: "1. Қай дерекқор жүйелі шолулар мен мета-анализдерді қамтиды және ЕҢ ЖОҒАРЫ (Highest) дәлелділік деңгейіне ие?"
+                            },
+                            opts: {
+                                ru: [
+                                    "A) ResearchGate",
+                                    "B) Cochrane Library",
+                                    "C) Google Scholar"
+                                ],
+                                kz: [
+                                    "A) ResearchGate",
+                                    "B) Cochrane Library",
+                                    "C) Google Scholar"
+                                ]
+                            },
+                            ans: 1, // Вариант B!
+                            exp: {
+                                ru: "Верно (Вариант B)! Cochrane Library — золотой стандарт систематических обзоров и метаанализов с максимальным уровнем доказательности.",
+                                kz: "Дұрыс (B нұсқасы)! Cochrane Library — ең жоғары дәлелділік деңгейіндегі жүйелі шолулар мен мета-анализдер базасы."
+                            }
+                        },
+                        {
+                            q: {
+                                ru: "2. Что лучше всего сделать, если вы нашли нужную статью в PubMed, но полный текст (Full Text) платный и закрыт?",
+                                kz: "2. Егер PubMed-тен қажетті мақаланы тапсаңыз, бірақ оның толық мәтіні (Full Text) жабық болса не істеген жөн?"
+                            },
+                            opts: {
+                                ru: [
+                                    "A) Проверить наличие PDF в PubMed Central или найти статью на ResearchGate и запросить полный текст напрямую у авторов",
+                                    "B) Придумать результаты статьи самостоятельно по заголовку",
+                                    "C) Искать только в британских протоколах NHS"
+                                ],
+                                kz: [
+                                    "A) PubMed Central-дан тексеру немесе ResearchGate арқылы авторлардан толық мәтінді тікелей сұрау",
+                                    "B) Мақала нәтижелерін тақырыбына қарап ойдан құрастыру",
+                                    "C) Тек NHS хаттамаларынан іздеу"
+                                ]
+                            },
+                            ans: 0, // Вариант A!
+                            exp: {
+                                ru: "Отлично (Вариант A)! На ResearchGate часто выложены полные PDF-файлы или можно напрямую связаться с авторами исследования.",
+                                kz: "Тамаша (A нұсқасы)! ResearchGate немесе PubMed Central арқылы толық мәтінді тегін табуға болады."
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 3,
+                    videoKey: "clip3",
+                    icon: "🛡️",
+                    title: {
+                        ru: "Как отбирать статьи и проверять их достоверность?",
+                        kz: "Мақалаларды қалай іріктеу және сенімділігін тексеру керек?"
+                    },
+                    sub: {
+                        ru: "Impact Factor, Peer-review, H-index авторов и выбор типа статьи (Слайды 8–10)",
+                        kz: "Impact Factor, Peer-review, авторлардың H-index көрсеткіші (8–10 слайдтар)"
+                    },
+                    summary: {
+                        ru: "💡 Сначала проверяем заголовок, качество журнала (Impact Factor, peer-reviewed), год, цитирования и H-index авторов, а затем читаем последние предложения Abstract.",
+                        kz: "💡 Алдымен тақырыпты, журнал сапасын (Impact Factor, peer-reviewed), жылын, цитата санын және авторлардың H-index-ін тексеріп, сосын Abstract-тың соңғы сөйлемдерін оқимыз."
+                    },
+                    quiz: [
+                        {
+                            q: {
+                                ru: "1. С какого типа статей лучше всего начинать изучение темы, если вы еще в нее глубоко не погрузились?",
+                                kz: "1. Егер сіз зерттеу тақырыбына әлі терең бойламаған болсаңыз, қандай мақала түрінен бастаған дұрыс?"
+                            },
+                            opts: {
+                                ru: [
+                                    "A) С узких экспериментальных исследований на животных",
+                                    "B) С писем в редакцию (Letters to the Editor)",
+                                    "C) С обзорных статей и метаанализов (Literature Review & Meta-analysis)"
+                                ],
+                                kz: [
+                                    "A) Жануарларға жасалған тар эксперименттік зерттеулерден",
+                                    "B) Редакцияға жазылған хаттардан (Letters to the Editor)",
+                                    "C) Әдебиеттік шолулар мен мета-анализдерден (Literature Review & Meta-analysis)"
+                                ]
+                            },
+                            ans: 2, // Вариант C!
+                            exp: {
+                                ru: "Верно (Вариант C)! Обзоры литературы и метаанализы дают общую картину темы, а оригинальные исследования нужны, когда вы ищете конкретные узкие данные.",
+                                kz: "Дұрыс (C нұсқасы)! Тақырыпты жаңа бастағанда Literature Review & Meta-analysis ең толық түсінік береді."
+                            }
+                        },
+                        {
+                            q: {
+                                ru: "2. На какую часть Abstract нужно посмотреть в первую очередь сразу после заголовка, чтобы понять, подходит ли статья вашим интересам?",
+                                kz: "2. Тақырыптан кейін мақаланың сізге сәйкес келетінін тез түсіну үшін Abstract-тың қай бөлігіне бірінші қарау керек?"
+                            },
+                            opts: {
+                                ru: [
+                                    "A) На список ключевых слов (Keywords)",
+                                    "B) На последние предложения Abstract (вывод авторов) и на цель («this study aimed to...»)",
+                                    "C) На почтовый индекс университета авторов"
+                                ],
+                                kz: [
+                                    "A) Түйінді сөздер тізіміне (Keywords)",
+                                    "B) Abstract-тың соңғы сөйлемдеріне (қорытындысына) және зерттеу мақсатына («this study aimed to...»)",
+                                    "C) Университеттің пошталық индексіне"
+                                ]
+                            },
+                            ans: 1, // Вариант B!
+                            exp: {
+                                ru: "Точно (Вариант B)! Последние строки Abstract сразу говорят о главном выводе работы и экономят ваше время.",
+                                kz: "Дәл солай (B нұсқасы)! Abstract-тың соңғы сөйлемдері мен мақсаты мақаланың не туралы екенін бірден көрсетеді."
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 4,
+                    videoKey: "clip4",
+                    icon: "🚩",
+                    title: {
+                        ru: "На что обращать внимание: PICO, статистика и «Красные флаги»",
+                        kz: "Неге назар аудару керек: PICO, статистика және «Қызыл жалаушалар»"
+                    },
+                    sub: {
+                        ru: "6 обязательных пунктов проверки и признаки плохо написанных статей (Слайды 11–12)",
+                        kz: "Тексерудің 6 міндетті пункті және сапасыз мақалалардың белгілері (11–12 слайдтар)"
+                    },
+                    summary: {
+                        ru: "💡 Всегда проверяйте: Aim, Population, Intervention vs Control, Primary Outcome, p-value и Limitations. Остерегайтесь статей с громкими заявлениями без статистической значимости!",
+                        kz: "💡 Әрқашан тексеріңіз: Aim, Population, Intervention vs Control, Primary Outcome, p-value және Limitations."
+                    },
+                    quiz: [
+                        {
+                            q: {
+                                ru: "1. Какой из перечисленных признаков должен сразу НАСТОРОЖИТЬ врача при чтении научной статьи?",
+                                kz: "1. Ғылыми мақаланы оқығанда төмендегі белгілердің қайсысы дәрігерді бірден СЕКЕМДЕНДІРУІ тиіс?"
+                            },
+                            opts: {
+                                ru: [
+                                    "A) Авторы подробно перечислили ограничения (limitations) своего исследования",
+                                    "B) В статье много «громких» категоричных выводов при минимуме данных и полном игнорировании слабых сторон работы",
+                                    "C) В статье четко указана контрольная группа и статистическая значимость (p-value)"
+                                ],
+                                kz: [
+                                    "A) Авторлар зерттеудің шектеулерін (limitations) ашық көрсеткен",
+                                    "B) Деректер аз болса да, тым «қатты» қорытындылар жасалған және жұмыстың әлсіз тұстары мүлдем жазылмаған",
+                                    "C) Бақылау тобы мен статистикалық маңыздылық (p-value) нақты көрсетілген"
+                                ]
+                            },
+                            ans: 1, // Вариант B!
+                            exp: {
+                                ru: "Верно (Вариант B)! Громкие заявления при малом объеме данных и скрытие ограничений (limitations) — главный признак некачественной публикации.",
+                                kz: "Дұрыс (B нұсқасы)! Деректер аз бола тұра үлкен мәлімдеме жасау және limitations жазбау — сапасыз мақала белгісі."
+                            }
+                        },
+                        {
+                            q: {
+                                ru: "2. Почему в качественной научной статье обязательно должен присутствовать блок Limitations (Ограничения исследования)?",
+                                kz: "2. Неліктен сапалы ғылыми мақалада міндетті түрде Limitations (Зерттеу шектеулері) блогы болуы керек?"
+                            },
+                            opts: {
+                                ru: [
+                                    "A) Чтобы увеличить объем текста для журнала",
+                                    "B) Чтобы запутать рецензентов",
+                                    "C) Он показывает научную честность авторов и помогает врачу понять границы применимости результатов (например, малая выборка или телефонный опрос)"
+                                ],
+                                kz: [
+                                    "A) Журнал үшін мәтін көлемін көбейту мақсатында",
+                                    "B) Рецензенттерді шатастыру үшін",
+                                    "C) Ол авторлардың ғылыми адалдығын көрсетеді және дәрігерге нәтижелерді қолдану шегін түсінуге көмектеседі"
+                                ]
+                            },
+                            ans: 2, // Вариант C!
+                            exp: {
+                                ru: "Отлично (Вариант C)! У каждого исследования есть слабые стороны, и честное их указание — признак высокой доказательной культуры.",
+                                kz: "Тамаша (C нұсқасы)! Кез келген зерттеудің шектеулері болады, оны ашық көрсету — ғылыми сапа белгісі."
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 5,
+                    videoKey: "clip5",
+                    icon: "⚡",
+                    title: {
+                        ru: "Пошаговая стратегия чтения (5 шагов) и лайфхаки",
+                        kz: "Мақаланы оқудың 5 қадамдық стратегиясы мен лайфхактар"
+                    },
+                    sub: {
+                        ru: "Почему нельзя читать статью линейно и почему таблицы смотрят раньше текста (Слайды 13–14)",
+                        kz: "Неліктен мақаланы сызықтық оқуға болмайды және кестелерді мәтіннен бұрын қарау керек (13–14 слайдтар)"
+                    },
+                    summary: {
+                        ru: "💡 Порядок чтения: 1) Abstract -> 2) Conclusion -> 3) Figures & Tables (цифры раньше текста!) -> 4) Results -> 5) Discussion (что авторы думают, а не что доказали).",
+                        kz: "💡 Оқу реті: 1) Abstract -> 2) Conclusion -> 3) Figures & Tables (сандар мәтіннен бұрын!) -> 4) Results -> 5) Discussion."
+                    },
+                    quiz: [
+                        {
+                            q: {
+                                ru: "1. Какой порядок чтения разделов полной научной статьи является самым эффективным и экономит время врача?",
+                                kz: "1. Толық ғылыми мақала бөлімдерін оқудың қай реттілігі ең тиімді және дәрігер уақытын үнемдейді?"
+                            },
+                            opts: {
+                                ru: [
+                                    "A) Abstract ➔ Conclusion ➔ Figures & Tables (таблицы и графики) ➔ Results ➔ Discussion",
+                                    "B) Сначала список литературы (References), потом благодарности, потом введение",
+                                    "C) Строго линейно слово за словом с первой страницы до последней, переводя каждое слово со словарем"
+                                ],
+                                kz: [
+                                    "A) Abstract ➔ Conclusion ➔ Figures & Tables (кестелер мен графиктер) ➔ Results ➔ Discussion",
+                                    "B) Алдымен әдебиеттер тізімі (References), сосын алғыс сөздер, сосын кіріспе",
+                                    "C) Бірінші беттен соңғы бетке дейін әр сөзді сөздікпен аударып сызықтық оқу"
+                                ]
+                            },
+                            ans: 0, // Вариант A!
+                            exp: {
+                                ru: "Верно (Вариант A)! Нелинейное чтение (с переходом от выводов к таблицам/графикам и только затем к тексту Results и Discussion) дает максимум пользы за 10–15 минут.",
+                                kz: "Дұрыс (A нұсқасы)! Сызықтық емес оқу (қорытындыдан кестелерге, сосын Results пен Discussion-ға өту) уақытты үнемдейді."
+                            }
+                        },
+                        {
+                            q: {
+                                ru: "2. В чем заключается ключевая разница между разделами Results и Discussion?",
+                                kz: "2. Results пен Discussion бөлімдерінің арасындағы басты айырмашылық неде?"
+                            },
+                            opts: {
+                                ru: [
+                                    "A) Между ними нет никакой разницы — там написан один и тот же текст",
+                                    "B) В Results пишут цели работы, а в Discussion — формулы расчета",
+                                    "C) Results показывает то, что авторы реально получили в цифрах, а Discussion — то, что авторы ДУМАЮТ об этих результатах"
+                                ],
+                                kz: [
+                                    "A) Екеуінің арасында ешқандай айырмашылық жоқ",
+                                    "B) Results бөлімінде зерттеу мақсаты, ал Discussion-да формулалар жазылады",
+                                    "C) Results — нақты алынған объективті деректер, ал Discussion — авторлардың дәлелдегені емес, сол нәтижелер туралы ӨЗ ОЙЛАРЫ"
+                                ]
+                            },
+                            ans: 2, // Вариант C!
+                            exp: {
+                                ru: "Блестяще (Вариант C)! Сначала оценивайте сухие факты в таблицах и Results, и только в конце читайте интерпретацию авторов в Discussion.",
+                                kz: "Керемет (C нұсқасы)! Алдымен кестелер мен Results-тағы нақты деректерді бағалап, соңында ғана Discussion оқыңыз."
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 6,
+                    videoKey: "clip6",
+                    icon: "🌱",
+                    title: {
+                        ru: "Стратегия для уровня Beginner + Разбор реальных статей",
+                        kz: "Beginner деңгейіне арналған стратегия + Нақты мақалаларды талдау"
+                    },
+                    sub: {
+                        ru: "На чем сфокусироваться начинающим, как пользоваться переводчиком и правило 2 прочтений (Слайды 15–18)",
+                        kz: "Бастаушыларға неге көңіл бөлу керек, аудармашыны қолдану және 2 рет оқу ережесі (15–18 слайдтар)"
+                    },
+                    summary: {
+                        ru: "💡 Понимание науки важнее знания языка! Фокусируйтесь на глаголах и логических связках (however, therefore), переводите целые предложения (а не отдельные слова) и читайте статью дважды.",
+                        kz: "💡 Ғылымды түсіну тілді білуден маңыздырақ! Етістіктер мен логикалық байланыстарға (however, therefore) мән беріңіз, тұтас сөйлемдерді аударыңыз және мақаланы 2 рет оқыңыз."
+                    },
+                    quiz: [
+                        {
+                            q: {
+                                ru: "1. Как правильно использовать онлайн-переводчик при чтении статьи, если ваш уровень английского — начинающий (Beginner)?",
+                                kz: "1. Егер ағылшын тілі деңгейіңіз бастапқы (Beginner) болса, мақала оқығанда онлайн-аудармашыны қалай дұрыс қолдану керек?"
+                            },
+                            opts: {
+                                ru: [
+                                    "A) Переводить каждое слово по отдельности, выписывая по 10 значений из словаря",
+                                    "B) Использовать переводчик только для целых предложений (или чанков), чтобы понимать связную мысль и грамматическую конструкцию",
+                                    "C) Переводить только предлоги и артикли"
+                                ],
+                                kz: [
+                                    "A) Әр сөзді жеке-жеке сөздіктен 10 мағынасымен аудару",
+                                    "B) Тұтас ой мен грамматикалық құрылымды түсіну үшін аудармашыны тек тұтас сөйлемдерге қолдану",
+                                    "C) Тек предлогтар мен артикльдерді аудару"
+                                ]
+                            },
+                            ans: 1, // Вариант B!
+                            exp: {
+                                ru: "Верно (Вариант B)! Пословный перевод разрушает смысл научных чанков. Переводите предложения целиком и читайте статью дважды (1-й раз — смысл, 2-й раз — детали).",
+                                kz: "Дұрыс (B нұсқасы)! Сөзбе-сөз аудару ғылыми чанктардың мағынасын бұзады. Сөйлемді тұтас аударып, мақаланы екі рет оқыңыз."
+                            }
+                        },
+                        {
+                            q: {
+                                ru: "2. В предложении из разобранной статьи по отиту: «...cover themselves with a shield of biomaterial THAT prevents the penetration of antibiotics» — какую роль играет слово THAT?",
+                                kz: "2. Отит туралы мақаладағы сөйлемде: «...cover themselves with a shield of biomaterial THAT prevents the penetration of antibiotics» — THAT сөзі қандай рөл атқарады?"
+                            },
+                            opts: {
+                                ru: [
+                                    "A) Указательное местоимение «тот далекий предмет»",
+                                    "B) Предлог времени",
+                                    "C) Относительное местоимение Relative Clause («который предотвращает проникновение антибиотиков»), вводящее дополнительный глагол"
+                                ],
+                                kz: [
+                                    "A) «Ана бір зат» деген сілтеу есімдігі",
+                                    "B) Уақыт предлогы",
+                                    "C) Қосымша етістікті байланыстыратын Relative Clause («антибиотиктердің өтуіне жол бермейтін қалқан»)"
+                                ]
+                            },
+                            ans: 2, // Вариант C!
+                            exp: {
+                                ru: "Отлично (Вариант C)! Зная грамматическую формулу An object THAT DOES, вы легко читаете даже сложные микробиологические тексты.",
+                                kz: "Тамаша (C нұсқасы)! An object THAT DOES формуласын білу арқылы күрделі ғылыми сөйлемдерді оңай түсінесіз."
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 7,
+                    videoKey: "clip7",
+                    icon: "🤖",
+                    title: {
+                        ru: "Бонус: Как врачу использовать ChatGPT, Gemini, Claude и NotebookLM",
+                        kz: "Бонус: Дәрігерге ChatGPT, Gemini, Claude және NotebookLM-ді қалай қолдану керек?"
+                    },
+                    sub: {
+                        ru: "Опасность ИИ-галлюцинаций в науке и 6 готовых промптов для изучения английского (Слайды 20–21)",
+                        kz: "Ғылымдағы ЖИ галлюцинацияларының қаупі және ағылшын тілін оқуға арналған 6 дайын промпт (20–21 слайдтар)"
+                    },
+                    summary: {
+                        ru: "💡 ИИ отлично помогает разбирать грамматику и тренировать диалоги «Врач-Пациент», но при чтении научных статей может галлюцинировать и выдумывать несуществующие источники!",
+                        kz: "💡 ЖИ ағылшын тілін үйренуге тамаша көмектеседі, бірақ ғылыми мақалаларды талдағанда галлюцинация беріп, жоқ дереккөздерді ойдан шығаруы мүмкін!"
+                    },
+                    quiz: [
+                        {
+                            q: {
+                                ru: "1. Какая главная опасность подстерегает врача при слепом использовании ChatGPT для поиска и анализа научных статей?",
+                                kz: "1. Ғылыми мақалаларды іздеу және талдау үшін ChatGPT-ге толық сеніп тапсырғанда қандай басты қауіп бар?"
+                            },
+                            opts: {
+                                ru: [
+                                    "A) ИИ отвечает слишком медленно",
+                                    "B) Проблема галлюцинаций: ИИ может сделать неверные клинические выводы и сослаться на ненастоящие (выдуманные) источники",
+                                    "C) ИИ не умеет переводить с английского на русский"
+                                ],
+                                kz: [
+                                    "A) ЖИ тым баяу жауап береді",
+                                    "B) Галлюцинация мәселесі: ЖИ қате клиникалық қорытынды жасап, өмірде жоқ (ойдан шығарылған) дереккөздерге сілтеме беруі мүмкін",
+                                    "C) ЖИ ағылшын тілінен аудара алмайды"
+                                ]
+                            },
+                            ans: 1, // Вариант B!
+                            exp: {
+                                ru: "Верно (Вариант B)! Никогда не вставляйте ссылки от ChatGPT в свою статью без проверки в PubMed — нейросети часто выдумывают правдоподобные названия статей.",
+                                kz: "Дұрыс (B нұсқасы)! ЖИ берген сілтемелерді міндетті түрде PubMed арқылы тексеру керек."
+                            }
+                        },
+                        {
+                            q: {
+                                ru: "2. Как наиболее эффективно использовать ChatGPT для самостоятельной тренировки медицинского английского?",
+                                kz: "2. Медициналық ағылшын тілін өз бетінше жаттықтыру үшін ChatGPT-ді қалай ең тиімді қолдануға болады?"
+                            },
+                            opts: {
+                                ru: [
+                                    "A) Задавать четкие структурные промпты по своему уровню (например, сыграть ролевой диалог «врач-пациент» с исправлением ваших ошибок после каждой реплики)",
+                                    "B) Просить написать за вас диссертацию без вашего участия",
+                                    "C) Просто писать слово «Hello» без указания контекста и вашего уровня"
+                                ],
+                                kz: [
+                                    "A) Өз деңгейіңізді көрсетіп, нақты құрылымдық промпттар беру (мысалы, қателеріңізді түзете отырып «дәрігер-науқас» диалогын ойнау)",
+                                    "B) Сіздің қатысуыңызсыз диссертация жазып беруді сұрау",
+                                    "C) Контекст пен деңгейді көрсетпей жай ғана «Hello» деп жазу"
+                                ]
+                            },
+                            ans: 0, // Вариант A!
+                            exp: {
+                                ru: "Отлично (Вариант A)! В верхнем конспекте во вкладке №4 вы можете в 1 клик скопировать все 6 готовых промптов для своих тренировок.",
+                                kz: "Тамаша (A нұсқасы)! Жоғарыдағы конспектінің 4-бөлімінен барлық 6 дайын промптты 1 басумен көшіріп ала аласыз."
+                            }
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // =========================================================================
+        // 4. ЛОГИКА КОНСПЕКТА, КОПИРОВАНИЯ ПРОМПТОВ И АККОРДЕОНОВ ПЛЕЙЛИСТА
+        // =========================================================================
+        function handleMasterGuideClick() {
+            if (!canReadGuide) {
+                document.getElementById('guidePaywallModal').style.display = 'flex';
+                return;
+            }
+            const panel = document.getElementById('masterGuidePanel');
+            const btn = document.getElementById('uiOpenGuideBtn');
+            const isOpen = (panel.style.display === 'flex');
+
+            if (isOpen) {
+                panel.style.display = 'none';
+                btn.textContent = MODULE_DATA.ui.openGuideBtn[currentLang];
+            } else {
+                panel.style.display = 'flex';
+                btn.textContent = MODULE_DATA.ui.closeGuideBtn[currentLang];
+                panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function closeGuidePaywall() {
+            document.getElementById('guidePaywallModal').style.display = 'none';
+        }
+
+        function switchGuideTab(tabIdx) {
+            for (let i = 0; i < 4; i++) {
+                document.getElementById(`gTabBtn${i}`).classList.toggle('active', i === tabIdx);
+                document.getElementById(`gTab${i}`).classList.toggle('active', i === tabIdx);
+            }
+        }
+
+        function buildAiPromptsTabHtml() {
+            const isKz = (currentLang === 'kz');
+            let html = `
+                <div class="guide-box red">
+                    <h3>⚠️ ${isKz ? "Ғылыми мақалаларды оқығанда ЖИ (ChatGPT, Gemini, Claude, NotebookLM) қолдану ережесі" : "Правила безопасности при работе с ИИ (ChatGPT, Gemini, Claude, NotebookLM)"}</h3>
+                    <ul>
+                        <li><b>${isKz ? "Галлюцинация мәселесі:" : "Проблемы с галлюцинациями:"}</b> ${isKz ? "ЖИ мақала бойынша қате клиникалық қорытынды жасап, өмірде жоқ дереккөздерге сілтеме беруі мүмкін." : "нейросеть может делать неверные выводы и ссылаться на ненастоящие (выдуманные) источники."}</li>
+                        <li><b>${isKz ? "Шешім:" : "Решение:"}</b> ${isKz ? "Мақалаларды талдау үшін мәтінді өзіңіз жүктейтін құралдарды (мысалы, NotebookLM) қолданыңыз, ал ағылшын тілін үйрену үшін төмендегі 6 дайын промптты көшіріп алыңыз:" : "для разбора конкретной статьи загружайте её PDF напрямую (например, в NotebookLM), а для изучения медицинского английского используйте 6 готовых промптов ниже:"}</li>
+                    </ul>
+                </div>
+            `;
+
+            MODULE_DATA.aiPrompts.forEach((p, idx) => {
+                const copyLabel = isKz ? "📋 Промптты көшіру" : "📋 Скопировать промпт";
+                html += `
+                    <div class="prompt-card">
+                        <div class="prompt-top">
+                            <span class="prompt-badge">${p.title}</span>
+                            <button type="button" class="copy-prompt-btn" onclick="copyAiPrompt(${idx}, this)">${copyLabel}</button>
+                        </div>
+                        <div class="prompt-text">"${p.text}"</div>
+                    </div>
+                `;
+            });
+            return html;
+        }
+
+        function copyAiPrompt(idx, btnEl) {
+            const promptObj = MODULE_DATA.aiPrompts[idx];
+            if (!promptObj) return;
+            navigator.clipboard.writeText(promptObj.text).then(() => {
+                const oldText = btnEl.textContent;
+                btnEl.textContent = currentLang === 'kz' ? "✅ Көшірілді!" : "✅ Скопировано!";
+                setTimeout(() => { btnEl.textContent = oldText; }, 1800);
+            });
+        }
+
+        function renderMasterGuideContent() {
+            document.getElementById('gTab0').innerHTML = MODULE_DATA.guideTab0Html[currentLang];
+            document.getElementById('gTab1').innerHTML = MODULE_DATA.guideTab1Html[currentLang];
+            document.getElementById('gTab2').innerHTML = MODULE_DATA.guideTab2Html[currentLang];
+            document.getElementById('gTab3').innerHTML = buildAiPromptsTabHtml();
+        }
+
+        // Рендер плейлиста из 7 видеонарезок с поддержкой скрытых ссылок Vimeo и вопросами (A, B, C)
+        function renderPlaylist() {
+            const container = document.getElementById('playlistContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const completedList = getCompletedClips();
+            const isKz = (currentLang === 'kz');
+
+            MODULE_DATA.clips.forEach((clip) => {
+                const isDone = completedList.includes(clip.id);
+                const rawVideoInput = WEBINAR_VIDEOS[clip.videoKey] || "";
+                const embedUrl = normalizeVimeoEmbedUrl(rawVideoInput);
+
+                const group = document.createElement('div');
+                group.className = 'lesson-group' + (isDone ? ' completed-clip' : '');
+                group.id = `clipGroup_${clip.id}`;
+
+                const doneTagText = isKz ? "✓ Өтілді" : "✓ Пройдено";
+
+                let videoBoxHtml = '';
+                if (canWatchVideo) {
+                    videoBoxHtml = `
+                        <div class="video-embed-box">
+                            <iframe
+                                data-src="${embedUrl}"
+                                title="${clip.title[currentLang]}"
+                                loading="lazy"
+                                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    `;
+                } else {
+                    const tierLabel = TIER_NAMES[currentUserTier] || "FREE";
+                    const lockDesc = isKz
+                        ? `Сізде «${tierLabel}» тарифі белсенді. Вебинардың видео-үзінділері тек «Премиум» және «ВИП» жазылымдарында ашық. Төмендегі бекіту сұрақтарын қазір орындай аласыз!`
+                        : `У вас активен тариф «${tierLabel}». Видеонарезки вебинара доступны в подписках «Премиум» и «ВИП». При этом закрепляющие вопросы ниже открыты для вас уже сейчас!`;
+
+                    videoBoxHtml = `
+                        <div class="video-embed-box locked">
+                            <div class="video-paywall">
+                                <span class="paywall-badge">🔒 ${isKz ? "Видео «Премиум» және «ВИП» тарифтерінде ашық" : "Видео доступно в тарифах «Премиум» и «ВИП»"}</span>
+                                <div class="paywall-title">🎬 ${clip.title[currentLang]}</div>
+                                <p class="paywall-desc">${lockDesc}</p>
+                                <div class="paywall-actions">
+                                    <a href="https://kazdoctors.com/tarifs" class="paywall-btn tarifs">🌟 ${isKz ? "Тарифтер (Премиум / ВИП)" : "Тарифы (Премиум / ВИП)"}</a>
+                                    <a href="https://wa.me/77081595038?text=Здравствуйте!%20Хочу%20подключить%20тариф%20Премиум%20для%20просмотра%20видео" target="_blank" class="paywall-btn contact">💬 WhatsApp</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Собираем закрепляющие вопросы
+                let quizItemsHtml = '';
+                clip.quiz.forEach((qObj, qIdx) => {
+                    let optsHtml = '';
+                    qObj.opts[currentLang].forEach((optText, oIdx) => {
+                        optsHtml += `<button type="button" class="cq-btn" onclick="checkClipQuiz(this, ${clip.id}, ${qIdx}, ${oIdx})">${optText}</button>`;
+                    });
+                    quizItemsHtml += `
+                        <div class="cq-item" id="cq_${clip.id}_${qIdx}">
+                            <div class="cq-q">${qObj.q[currentLang]}</div>
+                            <div class="cq-opts">${optsHtml}</div>
+                            <div class="cq-fb">💡 ${qObj.exp[currentLang]}</div>
+                        </div>
+                    `;
+                });
+
+                const markBtnText = isDone
+                    ? (isKz ? "✅ Тақырып өтілді (басып алып тастау)" : "✅ Тема отмечена пройденной (нажмите для отмены)")
+                    : (isKz ? "✓ Тақырыпты өтілді деп белгілеу" : "✓ Отметить тему пройденной");
+
+                group.innerHTML = `
+                    <button type="button" class="trainer-card" onclick="toggleClipAccordion(this)">
+                        <div class="card-content">
+                            <div class="card-icon">${clip.icon}</div>
+                            <div class="card-text">
+                                <h2>
+                                    <span class="clip-num-pill">Часть 0${clip.id}</span>
+                                    <span>${clip.title[currentLang]}</span>
+                                    <span class="done-pill-tag">${doneTagText}</span>
+                                </h2>
+                                <p>${clip.sub[currentLang]}</p>
+                            </div>
+                        </div>
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    </button>
+                    <div class="lesson-dropdown">
+                        <div class="dropdown-content-inner">
+                            ${videoBoxHtml}
+                            <div class="clip-summary-note">${clip.summary[currentLang]}</div>
+                            <div class="clip-quiz-box">
+                                <div class="cq-header">✍️ ${isKz ? "Бекіту сұрақтары:" : "Вопросы на закрепление видео:"}</div>
+                                ${quizItemsHtml}
+                            </div>
+                            <button type="button" class="mark-done-btn" onclick="toggleClipCompleted(${clip.id})">${markBtnText}</button>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(group);
+            });
+
+            updateProgressBarUI();
+        }
+
+        function checkClipQuiz(btnEl, clipId, qIdx, chosenIdx) {
+            const clip = MODULE_DATA.clips.find(c => c.id === clipId);
+            if (!clip) return;
+            const qObj = clip.quiz[qIdx];
+            const parent = document.getElementById(`cq_${clipId}_${qIdx}`);
+            const allBtns = parent.querySelectorAll('.cq-btn');
+
+            allBtns.forEach(b => b.disabled = true);
+            if (chosenIdx === qObj.ans) {
+                btnEl.classList.add('correct');
+            } else {
+                btnEl.classList.add('wrong');
+                allBtns[qObj.ans].classList.add('correct');
+            }
+            parent.querySelector('.cq-fb').style.display = 'block';
+        }
+
+        function toggleClipAccordion(buttonEl) {
+            const currentGroup = buttonEl.parentElement;
+            const isOpen = currentGroup.classList.contains('open');
+
+            document.querySelectorAll('.lesson-group.open').forEach(group => {
+                group.classList.remove('open');
+                const iframe = group.querySelector('iframe');
+                if (iframe && iframe.getAttribute('src')) {
+                    iframe.removeAttribute('src');
+                }
+            });
+
+            if (!isOpen) {
+                currentGroup.classList.add('open');
+                if (canWatchVideo) {
+                    const iframe = currentGroup.querySelector('iframe');
+                    if (iframe && iframe.dataset.src && !iframe.getAttribute('src')) {
+                        iframe.setAttribute('src', iframe.dataset.src);
+                    }
+                }
+            }
+        }
+
+        function getCompletedClips() {
+            try {
+                return JSON.parse(localStorage.getItem('ds_completed_reading_clips') || '[]');
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function toggleClipCompleted(clipId) {
+            let list = getCompletedClips();
+            if (list.includes(clipId)) {
+                list = list.filter(id => id !== clipId);
+            } else {
+                list.push(clipId);
+            }
+            localStorage.setItem('ds_completed_reading_clips', JSON.stringify(list));
+            renderPlaylist();
+        }
+
+        function updateProgressBarUI() {
+            const list = getCompletedClips();
+            const count = list.length;
+            const total = MODULE_DATA.clips.length;
+            const pct = Math.round((count / total) * 100);
+            const isKz = (currentLang === 'kz');
+
+            document.getElementById('progressCountText').textContent = isKz
+                ? `${count} / ${total} тақырып (${pct}%)`
+                : `${count} / ${total} тем (${pct}%)`;
+            document.getElementById('progressBarFill').style.width = `${pct}%`;
+        }
+
+        function setLang(lang) {
+            currentLang = lang;
+            localStorage.setItem('doctors_speak_lang', lang);
+            localStorage.setItem('selected_lang', lang);
+
+            document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
+            document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
+
+            const ui = MODULE_DATA.ui;
+            document.getElementById('uiBackBtn').textContent = ui.backBtn[lang];
+            document.getElementById('uiMainTitle').textContent = ui.mainTitle[lang];
+            document.getElementById('uiMainSubtitle').textContent = ui.mainSubtitle[lang];
+            document.getElementById('uiProgLabel').textContent = ui.progLabel[lang];
+            document.getElementById('uiSec1Label').textContent = ui.sec1Label[lang];
+            document.getElementById('uiGuideTitle').textContent = ui.guideTitle[lang];
+            document.getElementById('uiGuideDesc').textContent = ui.guideDesc[lang];
+
+            const panel = document.getElementById('masterGuidePanel');
+            const isOpen = (panel && panel.style.display === 'flex');
+            document.getElementById('uiOpenGuideBtn').textContent = isOpen ? ui.closeGuideBtn[lang] : ui.openGuideBtn[lang];
+
+            ui.guideTabs.forEach((t, idx) => {
+                document.getElementById(`gTabBtn${idx}`).textContent = t[lang];
+            });
+
+            document.getElementById('uiSec2Label').textContent = ui.sec2Label[lang];
+
+            updateAccessBadgesUI();
+            renderMasterGuideContent();
+            renderPlaylist();
+        }
+
+        // Запуск при загрузке
+        setLang(currentLang);
+        checkAuthAndTier();
+    </script>
+</body>
+</html>
