@@ -1,0 +1,1983 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>@doctors.speak — How to Interview Patients in English (Interactive Textbook)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Подключение Supabase SDK для проверки подписки -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --kz-gold-light: #FFFBEB;
+      --bg-main: #EEF3F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #DBE5F0;
+      --success-bg: #DCFCE7;
+      --success-border: #22C55E;
+      --success-text: #15803D;
+      --error-bg: #FEE2E2;
+      --error-border: #EF4444;
+      --error-text: #B91C1C;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #EBF8FC 0%, var(--bg-main) 65%);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 45px;
+    }
+
+    /* 1. Шапка учебника */
+    header {
+      width: 100%;
+      background: linear-gradient(140deg, #0077A3 0%, var(--kz-blue) 60%, #15B2E8 100%);
+      color: #FFFFFF;
+      padding: 16px 18px 22px 18px;
+      box-shadow: 0 6px 20px rgba(0, 161, 222, 0.22);
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      border-bottom-left-radius: 22px;
+      border-bottom-right-radius: 22px;
+    }
+
+    .header-top {
+      max-width: 880px;
+      margin: 0 auto 10px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.76rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .header-right-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tier-badge {
+      display: none;
+      background: rgba(255, 199, 44, 0.25);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 20px;
+      padding: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 800;
+      font-size: 0.73rem;
+      padding: 4px 11px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+    }
+
+    .header-title-box {
+      max-width: 880px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .lesson-badge {
+      display: inline-block;
+      background: rgba(255, 199, 44, 0.2);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    header h1 {
+      font-size: 1.24rem;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    header p {
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.92);
+      margin-top: 3px;
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       ЭКРАН ЗАГЛУШКИ ПРИ ОТСУТСТВИИ ПОДПИСКИ ПРО / ПРЕМИУМ / ВИП
+       ========================================================================== */
+    #authLoader {
+      width: 100%;
+      max-width: 520px;
+      margin: 45px auto;
+      padding: 30px 20px;
+      text-align: center;
+      font-weight: 700;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    #paywallGate {
+      display: none;
+      width: 100%;
+      max-width: 540px;
+      margin: 28px auto;
+      padding: 0 14px;
+    }
+
+    .paywall-card {
+      background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      border-radius: 22px;
+      padding: 28px 22px;
+      text-align: center;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.18);
+      border: 1px solid rgba(255, 199, 44, 0.35);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .pw-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      background: rgba(255, 199, 44, 0.16);
+      border: 1px solid rgba(255, 199, 44, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+    }
+
+    .pw-badge {
+      background: rgba(0, 161, 222, 0.22);
+      border: 1px solid rgba(0, 161, 222, 0.55);
+      color: #7DD3FC;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .pw-title {
+      font-size: 1.14rem;
+      font-weight: 900;
+      line-height: 1.3;
+      color: #FFFFFF;
+    }
+
+    .pw-desc {
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: #CBD5E1;
+      font-weight: 500;
+    }
+
+    .pw-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      margin-top: 6px;
+    }
+
+    .pw-btn-primary {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      padding: 13px 18px;
+      border-radius: 14px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(255, 199, 44, 0.25);
+    }
+
+    .pw-btn-secondary {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 11px 16px;
+      border-radius: 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    /* Контейнер защищенного учебника */
+    #textbookWrapper {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Навигация по 5 разделам учебника */
+    .section-nav {
+      width: 100%;
+      max-width: 880px;
+      margin: 14px auto 0 auto;
+      padding: 0 14px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+    }
+
+    .nav-pill {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 9px 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .nav-pill.active {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      border-color: var(--kz-blue-dark);
+      box-shadow: 0 4px 12px rgba(0, 161, 222, 0.25);
+    }
+
+    main {
+      width: 100%;
+      max-width: 880px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-section {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .tab-section.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Карточки теории */
+    .card-block {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-block::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 5px;
+      background: var(--kz-blue);
+    }
+
+    .card-block.gold::before {
+      background: var(--kz-gold-dark);
+    }
+
+    .card-block h2 {
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-block p {
+      font-size: 0.84rem;
+      line-height: 1.55;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+
+    /* Этапы структуры опроса и сетка SOCRATES */
+    .flow-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .flow-step-box {
+      background: linear-gradient(135deg, #FFFFFF 0%, #F0F9FF 100%);
+      border: 1px solid #BAE6FD;
+      border-radius: 12px;
+      padding: 11px 10px;
+      font-size: 0.77rem;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .flow-step-num {
+      display: inline-block;
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      font-size: 0.65rem;
+      font-weight: 900;
+      padding: 2px 7px;
+      border-radius: 6px;
+      margin-bottom: 4px;
+    }
+
+    .socrates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .soc-card {
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--kz-gold-dark);
+      border-radius: 12px;
+      padding: 11px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .soc-letter {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      font-weight: 900;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .soc-info {
+      flex: 1;
+      font-size: 0.77rem;
+      line-height: 1.35;
+    }
+
+    .soc-info b {
+      color: var(--kz-blue-dark);
+      font-size: 0.82rem;
+    }
+
+    /* Поиск и Схлопывающиеся блоки Разговорника (HPI, PMH, Explaining) */
+    .search-input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border-color);
+      background: #F8FAFC;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    .search-input:focus {
+      border-color: var(--kz-blue);
+      background: #FFFFFF;
+    }
+
+    details.phrase-accordion {
+      background: var(--card-bg);
+      border: 1px solid #CBE7F9;
+      border-radius: 15px;
+      margin-bottom: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 119, 163, 0.04);
+    }
+
+    summary.phrase-summary {
+      list-style: none;
+      padding: 13px 15px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.86rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #FFFFFF 0%, #F4FAFF 100%);
+    }
+
+    summary.phrase-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    details.phrase-accordion[open] summary.phrase-summary {
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .phrase-list-body {
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      background: #F8FAFC;
+    }
+
+    .phrase-row {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 11px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ph-en {
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      line-height: 1.35;
+    }
+
+    .ph-tr {
+      font-size: 0.77rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-top: 2px;
+      line-height: 1.35;
+    }
+
+    .speak-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 161, 222, 0.3);
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      cursor: pointer;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+    }
+
+    /* ==========================================================================
+       ВКЛАДКА 4: СИМУЛЯТОР 6 КЛИНИЧЕСКИХ КЕЙСОВ С ПОДСВЕТКОЙ ЧАНКОВ
+       ========================================================================== */
+    .case-selector-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+      gap: 7px;
+      margin-bottom: 12px;
+    }
+
+    .case-tab-btn {
+      background: #F8FAFC;
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      padding: 10px 8px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.18s ease;
+    }
+
+    .case-tab-btn.active {
+      background: linear-gradient(135deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+      color: #FFFFFF;
+      border-color: var(--kz-blue-dark);
+      box-shadow: 0 4px 12px rgba(0, 161, 222, 0.25);
+    }
+
+    .case-stage-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed var(--border-color);
+    }
+
+    .stage-pill-btn {
+      background: #F1F5F9;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 7px 12px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .stage-pill-btn.active {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border-color: var(--kz-gold-dark);
+    }
+
+    .dialogue-box {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .dlg-line {
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .dlg-line.doc {
+      background: #F0F9FF;
+      border-left: 4px solid var(--kz-blue);
+    }
+
+    .dlg-line.pat {
+      background: #F8FAFC;
+      border-left: 4px solid var(--kz-gold-dark);
+    }
+
+    .dlg-speaker {
+      font-size: 0.68rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .dlg-line.doc .dlg-speaker { color: var(--kz-blue-dark); }
+    .dlg-line.pat .dlg-speaker { color: #B45309; }
+
+    /* Подсветка ЧАНКОВ в объяснении диагноза */
+    .explain-card {
+      background: #FFFFFF;
+      border: 2px solid #CBD5E1;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .explain-header {
+      background: #1E293B;
+      color: #FFFFFF;
+      padding: 10px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chunk-toggle-btn {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: none;
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .explain-body {
+      padding: 14px;
+      font-size: 0.84rem;
+      line-height: 1.7;
+      color: var(--text-dark);
+    }
+
+    .c-hl {
+      padding: 1px 4px;
+      border-radius: 5px;
+      transition: all 0.2s ease;
+    }
+
+    .explain-body.chunks-active .c-hl {
+      background: #FEF08A;
+      color: #854D0E;
+      font-weight: 800;
+      border-bottom: 2px solid #EAB308;
+    }
+
+    /* ==========================================================================
+       ВКЛАДКА 5: ПРАКТИКУМ ИЗ УЧЕБНИКА (УПРАЖНЕНИЯ 1–6)
+       ========================================================================== */
+    .quick-check {
+      background: #F8FAFC;
+      border: 1px dashed var(--kz-blue);
+      border-radius: 14px;
+      padding: 13px;
+      margin-bottom: 10px;
+    }
+
+    .qc-question {
+      font-size: 0.84rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--text-dark);
+      line-height: 1.4;
+    }
+
+    .qc-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .qc-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-align: left;
+    }
+
+    .qc-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background: var(--kz-blue-light);
+    }
+
+    .qc-btn.correct {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    .qc-btn.wrong {
+      background: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    .qc-feedback {
+      display: none;
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      line-height: 1.4;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--kz-gold) 0%, #FFD55A 100%);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      border-radius: 16px;
+      padding: 14px 18px;
+      font-size: 0.88rem;
+      font-weight: 900;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 14px rgba(217, 160, 0, 0.25);
+    }
+
+    @media (max-width: 640px) {
+      .section-nav {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .section-nav .nav-pill:last-child {
+        grid-column: span 2;
+      }
+      header h1 {
+        font-size: 1.12rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. ШАПКА УЧЕБНИКА -->
+  <header>
+    <div class="header-top">
+      <a href="https://kazdoctors.com" class="back-btn" id="uiBackBtn">⬅ На главную</a>
+      <div class="header-right-controls">
+        <span id="userTierBadge" class="tier-badge"></span>
+        <div class="lang-switch">
+          <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
+          <button class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
+        </div>
+      </div>
+    </div>
+    <div class="header-title-box">
+      <span class="lesson-badge">@doctors.speak • Interactive Textbook</span>
+      <h1 id="uiTitle">How to Interview Patients in English (Опрос пациента)</h1>
+      <p id="uiSubtitle">Структура анамнеза (SOCRATES) • Озвученный разговорник (EN/KZ/RU) • 6 Клинических кейсов и Практикум</p>
+    </div>
+  </header>
+
+  <!-- ИНДИКАТОР ПРОВЕРКИ ПОДПИСКИ -->
+  <div id="authLoader">🔄 Проверка подписки и загрузка интерактивного учебника...</div>
+
+  <!-- БЛОК PAYWALL (ПОКАЗЫВАЕТСЯ, ЕСЛИ НЕТ ТАРИФА ПРО / ПРЕМИУМ / ВИП) -->
+  <div id="paywallGate">
+    <div class="paywall-card">
+      <div class="pw-icon">🔒</div>
+      <span class="pw-badge" id="pwBadgeText">ДОСТУПНО В ТАРИФАХ ПРО / ПРЕМИУМ / ВИП</span>
+      <div class="pw-title" id="pwTitleText">Интерактивный учебник по опросу пациентов закрыт для вашего тарифа</div>
+      <p class="pw-desc" id="pwDescText">
+        Полный интерактивный учебник с озвученным разговорником (HPI, PMH, Explaining), разбором 6 клинических диалогов и практикумом открыт для подписок «Про», «Премиум» и «ВИП».
+      </p>
+      <div class="pw-buttons">
+        <a href="https://kazdoctors.com/tarifs" class="pw-btn-primary" id="pwTarifsBtn">
+          🌟 Перейти к тарифам (kazdoctors.com/tarifs)
+        </a>
+        <a href="https://wa.me/77081595038?text=Здравствуйте!%20Хочу%20подключить%20доступ%20к%20учебнику%20Patient%20Interviewing" target="_blank" class="pw-btn-secondary" id="pwContactBtn">
+          💬 Написать нам в WhatsApp
+        </a>
+        <a href="/login.html" class="pw-btn-secondary" id="pwLoginBtn" style="display:none;">
+          🔐 Войти в аккаунт
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ЗАЩИЩЕННЫЙ КОНТЕНТ УЧЕБНИКА (ОТКРЫВАЕТСЯ ДЛЯ PRO, PREMIUM, VIP) -->
+  <div id="textbookWrapper">
+    <nav class="section-nav">
+      <button class="nav-pill active" onclick="showTab(0)" id="nav0">1. Структура & SOCRATES</button>
+      <button class="nav-pill" onclick="showTab(1)" id="nav1">2. Фразы: Сбор анамнеза</button>
+      <button class="nav-pill" onclick="showTab(2)" id="nav2">3. Фразы: Объяснение</button>
+      <button class="nav-pill" onclick="showTab(3)" id="nav3">4. 6 Кейсов (Чанки)</button>
+      <button class="nav-pill" onclick="showTab(4)" id="nav4">5. Упражнения (1–6)</button>
+    </nav>
+
+    <main>
+      <!-- ВКЛАДКА 1: КАК ПОЛЬЗОВАТЬСЯ, СТРУКТУРА ОПРОСА, SOCRATES И ACTIVE LISTENING -->
+      <section class="tab-section active" id="tab0"></section>
+
+      <!-- ВКЛАДКА 2: ОЗВУЧЕННЫЙ РАЗГОВОРНИК СБОРА АНАМНЕЗА (HPI & PMH — 16 КАТЕГОРИЙ) -->
+      <section class="tab-section" id="tab1">
+        <div class="card-block">
+          <h2 id="uiHpiTitle">🗣️ Сбор анамнеза: History of Present Illness (HPI) & Past Medical History (PMH)</h2>
+          <p id="uiHpiDesc">Нажмите 🔊 рядом с любой фразой, чтобы прослушать правильную американскую интонацию. Используйте поиск ниже для быстрого нахождения нужного вопроса:</p>
+          <input type="text" id="phraseSearchInput" class="search-input" placeholder="🔍 Поиск по фразам (например: pain, fever, allergy, smoke, масштабировать)..." oninput="filterPhrasebook()">
+          <div id="hpiPmhContainer"></div>
+        </div>
+        <button class="action-btn" onclick="showTab(2)" id="uiToTab2Btn">Перейти к шагу 3: Как объяснять диагноз и лечение пациенту ➔</button>
+      </section>
+
+      <!-- ВКЛАДКА 3: ОБЪЯСНЕНИЕ ДИАГНОЗА, РИСКОВ И ЛЕЧЕНИЯ ПАЦИЕНТУ (9 БЛОКОВ) -->
+      <section class="tab-section" id="tab2">
+        <div class="card-block gold">
+          <h2 id="uiExpTitle">💡 Explaining & Educating: Как объяснять пациенту диагноз и лечение</h2>
+          <p id="uiExpDesc">Мало собрать анамнез — важно простыми словами объяснить пациенту суть болезни, успокоить его (Reassurance) и проверить понимание:</p>
+          <div id="explainingContainer"></div>
+        </div>
+        <button class="action-btn" onclick="showTab(3)" id="uiToTab3Btn">Перейти к шагу 4: Разбор 6 реальных клинических диалогов ➔</button>
+      </section>
+
+      <!-- ВКЛАДКА 4: 6 КЛИНИЧЕСКИХ КЕЙСОВ (ДИАЛОГИ + ПОДСВЕТКА ЧАНКОВ) -->
+      <section class="tab-section" id="tab3">
+        <div class="card-block">
+          <h2 id="uiCasesTitle">🏥 6 Клинических Кейсов: от жалобы до объяснения диагноза</h2>
+          <p id="uiCasesDesc">Выберите клинический случай ниже. Изучите, какие вопросы задает врач по алгоритму, и нажмите кнопку «✨ Подсветить Чанки» на этапе объяснения диагноза:</p>
+
+          <div class="case-selector-grid" id="caseSelectorBar"></div>
+          <div class="case-stage-bar" id="caseStageBar"></div>
+          <div id="caseContentArea"></div>
+        </div>
+        <button class="action-btn" onclick="showTab(4)" id="uiToTab4Btn">Перейти к шагу 5: Выполнить упражнения учебника ➔</button>
+      </section>
+
+      <!-- ВКЛАДКА 5: ПРАКТИКУМ ИЗ УЧЕБНИКА (ВСЕ 6 БЛОКОВ УПРАЖНЕНИЙ) -->
+      <section class="tab-section" id="tab4">
+        <div class="card-block gold" id="exercisesWrapper"></div>
+        <a href="./index.html" class="action-btn" id="uiGoTrainerBtn">🎯 Перейти к основному тренажеру опроса пациентов ➔</a>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. ПРОВЕРКА ПОДПИСКИ SUPABASE (ДОСТУП ТОЛЬКО ДЛЯ PRO, PREMIUM, VIP)
+    // =========================================================================
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+    const TIER_LEVELS = { none: 0, free: 0, standard: 1, pro: 2, premium: 3, vip: 4 };
+    const TIER_LABELS = {
+      standard: { ru: "СТАНДАРТ", kz: "СТАНДАРТ" },
+      pro: { ru: "ТАРИФ: ПРО", kz: "ТАРИФ: ПРО" },
+      premium: { ru: "ТАРИФ: ПРЕМИУМ", kz: "ТАРИФ: ПРЕМИУМ" },
+      vip: { ru: "ТАРИФ: ВИП 👑", kz: "ТАРИФ: ВИП 👑" }
+    };
+
+    let currentViewerState = { isLoggedIn: false, hasActiveSub: false, tier: "none" };
+    let currentLang = localStorage.getItem('doctors_speak_lang') || 'ru';
+    let activeCaseIdx = 0;
+    let activeCaseStage = 0; // 0 = Chief Complaint, 1 = Remaining History, 2 = Explaining + Chunks
+    let chunksHighlighted = true;
+
+    async function verifySubscriptionAccess() {
+      if (!supabaseClient) {
+        showPaywallGate(false, "none");
+        return;
+      }
+
+      try {
+        const { data: sessionData, error: sessionErr } = await supabaseClient.auth.getSession();
+        if (sessionErr || !sessionData || !sessionData.session) {
+          currentViewerState = { isLoggedIn: false, hasActiveSub: false, tier: "none" };
+          showPaywallGate(false, "none");
+          return;
+        }
+
+        const user = sessionData.session.user;
+        const userEmail = (user.email || "").toLowerCase().trim();
+
+        let { data: profile } = await supabaseClient
+          .from("profiles")
+          .select("id, email, tier, subscription_expires_at")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (!profile && userEmail) {
+          const resByEmail = await supabaseClient
+            .from("profiles")
+            .select("id, email, tier, subscription_expires_at")
+            .ilike("email", userEmail)
+            .maybeSingle();
+          profile = resByEmail.data;
+        }
+
+        if (!profile || !profile.subscription_expires_at) {
+          currentViewerState = { isLoggedIn: true, hasActiveSub: false, tier: "none" };
+          showPaywallGate(true, "none");
+          return;
+        }
+
+        const expiresAt = new Date(profile.subscription_expires_at);
+        if (isNaN(expiresAt.getTime()) || new Date() > expiresAt) {
+          currentViewerState = { isLoggedIn: true, hasActiveSub: false, tier: "expired" };
+          showPaywallGate(true, "expired");
+          return;
+        }
+
+        const userTier = (profile.tier || "standard").toLowerCase().trim();
+        const tierLevel = TIER_LEVELS[userTier] || 1;
+        currentViewerState = { isLoggedIn: true, hasActiveSub: true, tier: userTier };
+
+        if (tierLevel >= TIER_LEVELS.pro) {
+          unlockTextbook(userTier);
+        } else {
+          showPaywallGate(true, "standard");
+        }
+      } catch (err) {
+        console.error("Subscription check error:", err);
+        showPaywallGate(false, "none");
+      }
+    }
+
+    function unlockTextbook(tier) {
+      document.getElementById("authLoader").style.display = "none";
+      document.getElementById("paywallGate").style.display = "none";
+      document.getElementById("textbookWrapper").style.display = "flex";
+
+      const badge = document.getElementById("userTierBadge");
+      if (badge && TIER_LABELS[tier]) {
+        badge.textContent = TIER_LABELS[tier][currentLang];
+        badge.style.display = "inline-block";
+      }
+    }
+
+    function showPaywallGate(isLoggedIn, reasonTier) {
+      document.getElementById("authLoader").style.display = "none";
+      document.getElementById("textbookWrapper").style.display = "none";
+      document.getElementById("paywallGate").style.display = "block";
+      updatePaywallTexts(isLoggedIn, reasonTier);
+    }
+
+    function updatePaywallTexts(isLoggedIn, reasonTier) {
+      const isKz = (currentLang === "kz");
+      document.getElementById("pwBadgeText").textContent = isKz
+        ? "ПРО / ПРЕМИУМ / ВИП ТАРИФТЕРІНДЕ ҚОЛЖЕТІМДІ"
+        : "ДОСТУПНО В ТАРИФАХ ПРО / ПРЕМИУМ / ВИП";
+      document.getElementById("pwTarifsBtn").textContent = isKz
+        ? "🌟 Тарифтер бетіне өту (kazdoctors.com/tarifs)"
+        : "🌟 Перейти к тарифам (kazdoctors.com/tarifs)";
+
+      const titleEl = document.getElementById("pwTitleText");
+      const descEl = document.getElementById("pwDescText");
+      const loginBtn = document.getElementById("pwLoginBtn");
+
+      if (!isLoggedIn) {
+        titleEl.textContent = isKz
+          ? "Оқулықты ашу үшін аккаунтқа кіріңіз немесе тариф таңдаңыз"
+          : "Войдите в аккаунт или подключите тариф для чтения учебника";
+        descEl.textContent = isKz
+          ? "Науқастан ағылшынша анамнез жинау бойынша интерактивті оқулық «Про», «Премиум» және «ВИП» жазылымдарында ашық:"
+          : "Интерактивный учебник по опросу пациентов открыт для врачей с подпиской «Про», «Премиум» или «ВИП»:";
+        loginBtn.style.display = "inline-flex";
+      } else if (reasonTier === "standard") {
+        titleEl.textContent = isKz
+          ? "Сізде «Стандарт» тарифі белсенді (тек тренажерлер)"
+          : "У вас активен тариф «Стандарт» (только тренажеры)";
+        descEl.textContent = isKz
+          ? "Интерактивті оқулықты, клиникалық диалогтарды және сөздікті ашу үшін тарифіңізді «Про», «Премиум» немесе «ВИП» деңгейіне жаңартыңыз:"
+          : "Чтобы открыть интерактивный учебник, разборы 6 кейсов и озвученный разговорник, обновите подписку до тарифа «Про», «Премиум» или «ВИП»:";
+        loginBtn.style.display = "none";
+      } else {
+        titleEl.textContent = isKz
+          ? "Жазылым мерзімі аяқталды немесе белсенді емес"
+          : "Ваша подписка не активна или истекла";
+        loginBtn.style.display = "none";
+      }
+    }
+
+    // =========================================================================
+    // 2. ПОЛНАЯ БАЗА ДАННЫХ УЧЕБНИКА "PATIENT INTERVIEWING" (НА RU / KZ / EN)
+    // =========================================================================
+    const TEXTBOOK_DATA = {
+      // Вкладка 1: Методика, Структура опроса, SOCRATES и Active Listening
+      tab0Html: {
+        ru: `
+          <div class="card-block">
+            <h2>📘 Как правильно работать с этим учебником (Метод американских медшкол)</h2>
+            <p>Этот учебник построен по системе, которой обучают студентов и резидентов в США для сдачи клинического этапа USMLE / OET и работы с реальными пациентами. Главный секрет успеха:</p>
+            <div class="flow-steps">
+              <div class="flow-step-box">
+                <span class="flow-step-num">ПРАВИЛО 1</span><br>
+                <b>Не зубрить, а ПОНИМАТЬ:</b><br>
+                <b>ПОЧЕМУ (Why)</b> вопросы идут именно в таком порядке и <b>КАК (How)</b> строится их грамматика.
+              </div>
+              <div class="flow-step-box">
+                <span class="flow-step-num">ПРАВИЛО 2</span><br>
+                <b>Мыслить «Чанками» (Chunks):</b><br>
+                Воспринимайте фразы как готовые блоки-конструкторы, которые легко переносить из одного кейса в другой.
+              </div>
+              <div class="flow-step-box">
+                <span class="flow-step-num">ПРАВИЛО 3</span><br>
+                <b>Практика вслух:</b><br>
+                Озвучивайте диалоги с коллегами или тренируйтесь голосом с ChatGPT / Gemini.
+              </div>
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>🧭 Строгая структура медицинского опроса (НЕ нарушайте этот порядок!)</h2>
+            <p>Нарушение последовательности блоков превращает беседу с пациентом в хаос. Классическое интервью всегда идет по 5 этапам:</p>
+            <div class="flow-steps">
+              <div class="flow-step-box"><span class="flow-step-num">ШАГ 1</span><br><b>Greeting & Rapport</b><br>Приветствие и контакт</div>
+              <div class="flow-step-box"><span class="flow-step-num">ШАГ 2</span><br><b>Chief Complaint (CC)</b><br>Основная жалоба</div>
+              <div class="flow-step-box"><span class="flow-step-num">ШАГ 3</span><br><b>HPI (SOCRATES)</b><br>Анамнез заболевания</div>
+              <div class="flow-step-box"><span class="flow-step-num">ШАГ 4</span><br><b>PMH, Meds, Social, ROS</b><br>Анамнез жизни и систем</div>
+              <div class="flow-step-box"><span class="flow-step-num">ШАГ 5</span><br><b>Explaining & Closing</b><br>Объяснение и завершение</div>
+            </div>
+
+            <h2 style="margin-top:14px;">🏛️ Мнемоника «SOCRATES» для сбора анамнеза заболевания (HPI)</h2>
+            <p>Чтобы на приеме не забыть ни одного клинического вопроса по боли или симптому, держите в голове имя древнегреческого философа <b>SOCRATES</b> (нажмите 🔊 для прослушивания):</p>
+
+            <div class="socrates-grid">
+              <div class="soc-card">
+                <div class="soc-letter">S</div>
+                <div class="soc-info"><b>Site (Место локализации)</b><br>"Where does it hurt?" — Где болит?</div>
+                <button class="speak-btn" onclick="speakEn('Where does it hurt?')">🔊</button>
+              </div>
+              <div class="soc-card">
+                <div class="soc-letter">O</div>
+                <div class="soc-info"><b>Onset (Начало симптома)</b><br>"When did it begin?" — Когда началось?</div>
+                <button class="speak-btn" onclick="speakEn('When did it begin?')">🔊</button>
+              </div>
+              <div class="soc-card">
+                <div class="soc-letter">C</div>
+                <div class="soc-info"><b>Characteristic (Характер)</b><br>"How does it hurt?" — Какая боль?</div>
+                <button class="speak-btn" onclick="speakEn('How does it hurt?')">🔊</button>
+              </div>
+              <div class="soc-card">
+                <div class="soc-letter">R</div>
+                <div class="soc-info"><b>Radiation (Иррадиация)</b><br>"Does it travel anywhere?" — Отдает ли куда-то?</div>
+                <button class="speak-btn" onclick="speakEn('Does it travel anywhere?')">🔊</button>
+              </div>
+              <div class="soc-card">
+                <div class="soc-letter">A</div>
+                <div class="soc-info"><b>Associated symptoms (Сопутствующие)</b><br>"Any other symptoms?" — Другие жалобы?</div>
+                <button class="speak-btn" onclick="speakEn('Any other symptoms?')">🔊</button>
+              </div>
+              <div class="soc-card">
+                <div class="soc-letter">T</div>
+                <div class="soc-info"><b>Timing (Частота и время)</b><br>"How often does it hurt?" — Как часто?</div>
+                <button class="speak-btn" onclick="speakEn('How often does it hurt?')">🔊</button>
+              </div>
+              <div class="soc-card">
+                <div class="soc-letter">E</div>
+                <div class="soc-info"><b>Exacerbating factors (Триггеры)</b><br>"What causes or worsens it?" — Что усиливает?</div>
+                <button class="speak-btn" onclick="speakEn('What causes or worsens it?')">🔊</button>
+              </div>
+              <div class="soc-card">
+                <div class="soc-letter">S</div>
+                <div class="soc-info"><b>Severity (Тяжесть по шкале 0–10)</b><br>"How bad does it hurt?" — Насколько сильно?</div>
+                <button class="speak-btn" onclick="speakEn('How bad does it hurt?')">🔊</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-block">
+            <h2>🤝 Инструменты активного слушания и эмпатии (Active Listening & Empathy)</h2>
+            <p>Пациент доверяет врачу, который умеет слушать: задавайте открытые вопросы, поддерживайте зрительный контакт, перефразируйте и выражайте эмпатию:</p>
+            <div class="socrates-grid">
+              <div class="soc-card">
+                <div class="soc-info"><b>"I understand this must be uncomfortable."</b><br>Я понимаю, это, должно быть, неприятно.</div>
+                <button class="speak-btn" onclick="speakEn('I understand this must be uncomfortable.')">🔊</button>
+              </div>
+              <div class="soc-card">
+                <div class="soc-info"><b>"That sounds difficult. I can see why you're concerned."</b><br>Звучит непросто. Понимаю, почему вы встревожены.</div>
+                <button class="speak-btn" onclick="speakEn('That sounds difficult. I can see why you are concerned.')">🔊</button>
+              </div>
+              <div class="soc-card">
+                <div class="soc-info"><b>"That must be frustrating."</b><br>Должно быть, это очень изматывает/расстраивает.</div>
+                <button class="speak-btn" onclick="speakEn('That must be frustrating.')">🔊</button>
+              </div>
+              <div class="soc-card">
+                <div class="soc-info"><b>"You did the right thing by coming in."</b><br>Вы поступили совершенно правильно, что обратились к нам.</div>
+                <button class="speak-btn" onclick="speakEn('You did the right thing by coming in.')">🔊</button>
+              </div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">Перейти к шагу 2: Озвученный разговорник сбора анамнеза (HPI & PMH) ➔</button>
+        `,
+        kz: `
+          <div class="card-block">
+            <h2>📘 Оқулықты қалай тиімді қолдану керек (Америкалық медицина мектептерінің әдісі)</h2>
+            <p>Бұл оқулық АҚШ-та дәрігерлерге науқастан анамнез жинауды үйрету стандарты бойынша құрастырылған. Басты 3 қағида:</p>
+            <div class="flow-steps">
+              <div class="flow-step-box">
+                <span class="flow-step-num">1-ЕРЕЖЕ</span><br>
+                <b>Жаттамаңыз — ТҮСІНІҢІЗ:</b><br>
+                <b>НЕГЕ (Why)</b> сұрақтар дәл осы ретпен қойылады және <b>ҚАЛАЙ (How)</b> олардың грамматикасы құрылады.
+              </div>
+              <div class="flow-step-box">
+                <span class="flow-step-num">2-ЕРЕЖЕ</span><br>
+                <b>«Чанктармен» (Chunks) ойлаңыз:</b><br>
+                Фразаларды басқа жағдайларда дайын күйінде қайталауға болатын құрылым-бөліктер ретінде қабылдаңыз.
+              </div>
+              <div class="flow-step-box">
+                <span class="flow-step-num">3-ЕРЕЖЕ</span><br>
+                <b>Дауыстап практика жасау:</b><br>
+                Диалогтарды әріптестеріңізбен немесе ChatGPT / Gemini-мен дауыстап жаттықтырыңыз.
+              </div>
+            </div>
+          </div>
+
+          <div class="card-block gold">
+            <h2>🧭 Медициналық сұхбаттың қатаң құрылымы (Бұл реттілікті бұзбаңыз!)</h2>
+            <p>Сұхбаттың реттілігін бұзу консультация ағынын шатастырады. Стандартты анамнез жинау 5 кезеңнен тұрады:</p>
+            <div class="flow-steps">
+              <div class="flow-step-box"><span class="flow-step-num">1-ҚАДАМ</span><br><b>Greeting & Rapport</b><br>Сәлемдесу және байланыс</div>
+              <div class="flow-step-box"><span class="flow-step-num">2-ҚАДАМ</span><br><b>Chief Complaint (CC)</b><br>Негізгі шағым</div>
+              <div class="flow-step-box"><span class="flow-step-num">3-ҚАДАМ</span><br><b>HPI (SOCRATES)</b><br>Қазіргі ауру тарихы</div>
+              <div class="flow-step-box"><span class="flow-step-num">4-ҚАДАМ</span><br><b>PMH, Meds, Social, ROS</b><br>Өткен тарих және жүйелер</div>
+              <div class="flow-step-box"><span class="flow-step-num">5-ҚАДАМ</span><br><b>Explaining & Closing</b><br>Түсіндіру және аяқтау</div>
+            </div>
+
+            <h2 style="margin-top:14px;">🏛️ Қазіргі ауру тарихын (HPI) сұрастыруға арналған «SOCRATES» мнемоникасы</h2>
+            <p>Науқастың шағымын сұрастырғанда бірде-бір маңызды сұрақты ұмытпау үшін <b>SOCRATES</b> мнемоникасын қолданыңыз (тыңдау үшін 🔊 басыңыз):</p>
+
+            <div class="socrates-grid">
+              <div class="soc-card">
+                <div class="soc-letter">S</div>
+                <div class="soc-info"><b>Site (Орны)</b><br>"Where does it hurt?" — Қай жеріңіз ауырады?</div>
+                <button class="speak-btn" onclick="speakEn('Where does it hurt?')">🔊</button>
+              </div>
+              <div class="soc-card">
+                <div class="soc-letter">O</div>
+                <div class="soc-info"><b>Onset (Басталуы)</b><br>"When did it begin?" — Қашан басталды?</div>
+                <button class="speak-btn" onclick="speakEn('When did it begin?')">🔊</button>
+              </div>
+              <div class="soc-card">
+                <div class="soc-letter">C</div>
+                <div class="soc-info"><b>Characteristic (Сипаты)</b><br>"How does it hurt?" — Қалай ауырады?</div>
+                <button class="speak-btn" onclick="speakEn('How does it hurt?')">🔊</button>
+              </div>
+              <div class="soc-card">
+                <div class="soc-letter">R</div>
+                <div class="soc-info"><b>Radiation (Таралуы)</b><br>"Does it travel anywhere?" — Басқа жаққа беріле ме?</div>
+                <button class="speak-btn" onclick="speakEn('Does it travel anywhere?')">🔊</button>
+              </div>
+              <div class="soc-card">
+                <div class="soc-letter">A</div>
+                <div class="soc-info"><b>Associated symptoms (Қосалқы белгілер)</b><br>"Any other symptoms?" — Басқа шағымдар бар ма?</div>
+                <button class="speak-btn" onclick="speakEn('Any other symptoms?')">🔊</button>
+              </div>
+              <div class="soc-card">
+                <div class="soc-letter">T</div>
+                <div class="soc-info"><b>Timing (Жиілігі мен уақыты)</b><br>"How often does it hurt?" — Қаншалықты жиі?</div>
+                <button class="speak-btn" onclick="speakEn('How often does it hurt?')">🔊</button>
+              </div>
+              <div class="soc-card">
+                <div class="soc-letter">E</div>
+                <div class="soc-info"><b>Exacerbating factors (Өршітуші факторлар)</b><br>"What causes or worsens it?" — Не нашарлатады?</div>
+                <button class="speak-btn" onclick="speakEn('What causes or worsens it?')">🔊</button>
+              </div>
+              <div class="soc-card">
+                <div class="soc-letter">S</div>
+                <div class="soc-info"><b>Severity (Ауырлығы 0–10 шкаласымен)</b><br>"How bad does it hurt?" — Қаншалықты қатты?</div>
+                <button class="speak-btn" onclick="speakEn('How bad does it hurt?')">🔊</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-block">
+            <h2>🤝 Белсенді тыңдау және Эмпатия құралдары (Active Listening & Empathy)</h2>
+            <p>Науқаспен сенімді байланыс орнату үшін эмпатия фразаларын қолданыңыз:</p>
+            <div class="socrates-grid">
+              <div class="soc-card">
+                <div class="soc-info"><b>"I understand this must be uncomfortable."</b><br>Бұл сізге жайсыз екенін түсінемін.</div>
+                <button class="speak-btn" onclick="speakEn('I understand this must be uncomfortable.')">🔊</button>
+              </div>
+              <div class="soc-card">
+                <div class="soc-info"><b>"That sounds difficult. I can see why you're concerned."</b><br>Қиын екен. Неліктен алаңдап тұрғаныңызды түсінемін.</div>
+                <button class="speak-btn" onclick="speakEn('That sounds difficult. I can see why you are concerned.')">🔊</button>
+              </div>
+              <div class="soc-card">
+                <div class="soc-info"><b>"That must be frustrating."</b><br>Бұл сізді қатты шаршатқан болар.</div>
+                <button class="speak-btn" onclick="speakEn('That must be frustrating.')">🔊</button>
+              </div>
+              <div class="soc-card">
+                <div class="soc-info"><b>"You did the right thing by coming in."</b><br>Дәрігерге қаралып өте дұрыс жасадыңыз.</div>
+                <button class="speak-btn" onclick="speakEn('You did the right thing by coming in.')">🔊</button>
+              </div>
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="showTab(1)">2-қадамға өту: Анамнез жинау сөздігі (HPI & PMH) ➔</button>
+        `
+      },
+
+      // Вкладка 2: Все фразы HPI (9 категорий) и PMH (7 категорий) со слайдов 18–23
+      hpiPmhCategories: [
+        {
+          title: { ru: "1. Starting Questions (Общие вводные вопросы)", kz: "1. Starting Questions (Жалпы кіріспе сұрақтар)" },
+          items: [
+            { en: "What brings you in today?", kz: "Бүгін сізді не мазалап келді?", ru: "Что вас привело сегодня?" },
+            { en: "What seems to be the problem?", kz: "Қандай шағымыңыз бар?", ru: "В чем заключается проблема?" },
+            { en: "How can I help you today?", kz: "Бүгін сізге қалай көмектесе аламын?", ru: "Чем я могу вам сегодня помочь?" },
+            { en: "Can you describe what's been bothering you?", kz: "Сізді не мазалап жүргенін сипаттап бере аласыз ба?", ru: "Можете описать, что вас беспокоит?" },
+            { en: "Can you tell me more about that?", kz: "Бұл туралы толығырақ айтып бере аласыз ба?", ru: "Можете рассказать об этом подробнее?" }
+          ]
+        },
+        {
+          title: { ru: "2. Onset and Timing (Время и начало симптомов)", kz: "2. Onset and Timing (Симптомдардың басталу уақыты)" },
+          items: [
+            { en: "When did the symptoms begin?", kz: "Симптомдар қашан басталды?", ru: "Когда появились симптомы?" },
+            { en: "Has this happened before?", kz: "Бұл бұрын болды ма?", ru: "Такое случалось раньше?" },
+            { en: "Did it start suddenly or gradually?", kz: "Бұл кенеттен басталды ма, әлде біртіндеп пе?", ru: "Это началось внезапно или постепенно?" },
+            { en: "How long have you been feeling this way?", kz: "Осылай сезінгеніңізге қанша уақыт болды?", ru: "Как долго вы себя так чувствуете?" },
+            { en: "Is it constant or does it come and go?", kz: "Ол тұрақты ма, әлде әлсін-әлсін пайда бола ма?", ru: "Боль постоянная или она то появляется, то исчезает?" },
+            { en: "Has it been getting better, worse, or staying the same?", kz: "Жағдайыңыз жақсарып, нашарлап немесе өзгеріссіз қалып жатыр ма?", ru: "Состояние улучшается, ухудшается или остается прежним?" }
+          ]
+        },
+        {
+          title: { ru: "3. Site and Localization (Локализация и иррадиация)", kz: "3. Site and Localization (Орналасуы және таралуы)" },
+          items: [
+            { en: "Where exactly do you feel it?", kz: "Дәл қай жеріңіз ауырып тұр?", ru: "Где именно вы это чувствуете?" },
+            { en: "Can you point to the area?", kz: "Сол аймақты көрсете аласыз ба?", ru: "Можете показать это место?" },
+            { en: "Does the pain stay in one place or spread anywhere?", kz: "Ауырсыну бір жерде ме, әлде басқа жаққа тарай ма?", ru: "Боль остается в одном месте или куда-то распространяется?" },
+            { en: "Does it radiate to other parts of your body?", kz: "Ол дененің басқа бөліктеріне беріле ме?", ru: "Отдает ли она в другие части тела?" }
+          ]
+        },
+        {
+          title: { ru: "4. Characteristics & Severity (Характер и тяжесть 0–10)", kz: "4. Characteristics & Severity (Симптомның сипаты мен ауырлығы)" },
+          items: [
+            { en: "How would you describe the pain?", kz: "Ауырсынуды қалай сипаттар едіңіз?", ru: "Как бы вы описали боль?" },
+            { en: "Is it sharp, dull, burning, or throbbing?", kz: "Ол өткір ме, сыздаған ба, ашыған ба, әлде лүпілдеген бе?", ru: "Она острая, тупая, жгучая или пульсирующая?" },
+            { en: "Is it mild, moderate, or severe?", kz: "Ол әлсіз бе, орташа ма, әлде күшті ме?", ru: "Она слабая, умеренная или сильная?" },
+            { en: "On a scale from 0 to 10, how bad is it?", kz: "0-ден 10-ға дейінгі шкала бойынша ол қаншалықты қатты?", ru: "По шкале от 0 до 10, насколько она сильная?" }
+          ]
+        },
+        {
+          title: { ru: "5. Frequency and Triggers (Частота и триггеры)", kz: "5. Frequency and Triggers (Жиілігі мен қоздырғыштары)" },
+          items: [
+            { en: "How often does it happen?", kz: "Бұл қаншалықты жиі болады?", ru: "Как часто это происходит?" },
+            { en: "Does anything make it worse?", kz: "Бірдеңе оны нашарлата ма (күшейте ме)?", ru: "Что-то усиливает боль?" },
+            { en: "Does anything make it better?", kz: "Бірдеңе оны жеңілдете ме?", ru: "Что-то облегчает боль?" },
+            { en: "Have you noticed any triggers?", kz: "Қандай да бір қоздырғыш факторларды байқадыңыз ба?", ru: "Заметили ли вы какие-либо триггеры?" },
+            { en: "What begins it?", kz: "Ол неден басталады?", ru: "С чего это начинается?" }
+          ]
+        },
+        {
+          title: { ru: "6. Associated Symptoms (Сопутствующие симптомы)", kz: "6. Associated Symptoms (Қосалқы симптомдар)" },
+          items: [
+            { en: "Have you noticed any other symptoms?", kz: "Басқа симптомдарды байқадыңыз ба?", ru: "Заметили ли вы какие-либо другие симптомы?" },
+            { en: "Do you have a fever, nausea, or dizziness?", kz: "Температураңыз, жүрек айнуыңыз немесе басыңыздың айналуы бар ма?", ru: "У вас есть температура, тошнота или головокружение?" },
+            { en: "Are you experiencing any shortness of breath?", kz: "Сізде ентігу байқала ма?", ru: "Беспокоит ли вас одышка?" },
+            { en: "Any changes in appetite or weight?", kz: "Тәбетіңіз немесе салмағыңыз өзгерді ме?", ru: "Есть ли изменения в аппетите или весе?" }
+          ]
+        },
+        {
+          title: { ru: "7. Medications & Relief Attempts (Попытки самолечения)", kz: "7. Medications & Relief Attempts (Дәрі-дәрмектер және емделу әрекеттері)" },
+          items: [
+            { en: "Have you taken anything for it? Did it help?", kz: "Ол үшін бірдеңе іштіңіз бе? Ол көмектесті ме?", ru: "Вы принимали что-нибудь от этого? Это помогло?" },
+            { en: "Have you tried any home remedies?", kz: "Үй жағдайында емделу тәсілдерін қолданып көрдіңіз бе?", ru: "Пробовали ли вы какие-либо домашние (народные) средства?" },
+            { en: "What dose of the drug do you take? How much and how often?", kz: "Дәрінің қандай мөлшерін қабылдайсыз? Қанша және қаншалықты жиі?", ru: "Какую дозировку вы принимаете? Сколько и как часто?" }
+          ]
+        },
+        {
+          title: { ru: "8. Personal Response & Clarification (Влияние на жизнь и Уточнение)", kz: "8. Personal Response & Clarification (Күнделікті өмірге әсері және Нақтылау)" },
+          items: [
+            { en: "Does it affect your daily activities? Are you able to work normally?", kz: "Бұл сіздің күнделікті іс-әрекетіңізге әсер ете ме? Қалыпты жұмыс істей аласыз ба?", ru: "Влияет ли это на повседневную жизнь? Можете ли вы нормально работать?" },
+            { en: "Does it interfere with your sleep?", kz: "Бұл ұйқыңызға кедергі келтіре ме?", ru: "Мешает ли это вашему сну?" },
+            { en: "Let me make sure I understood correctly... Did I get that right?", kz: "Сізді дұрыс түсінгеніме көз жеткізейін... Дұрыс түсіндім бе?", ru: "Позвольте убедиться, что я правильно понял... Я правильно понял?" },
+            { en: "Could you clarify what you mean by...?", kz: "... дегеніңізді нақтылап түсіндіріп жібересіз бе?", ru: "Не могли бы вы уточнить, что вы имеете в виду под...?" },
+            { en: "Let me summarize your complaints...", kz: "Шағымдарыңызды қорытындылап өтейін...", ru: "Позвольте мне подытожить ваши жалобы..." }
+          ]
+        },
+        {
+          title: { ru: "9. Past Medical History & Surgeries (Перенесенные болезни и операции)", kz: "9. Past Medical History & Surgeries (Аурулар мен оталар анамнезі)" },
+          items: [
+            { en: "Do you have any chronic medical conditions?", kz: "Сізде созылмалы аурулар бар ма?", ru: "Есть ли у вас хронические заболевания?" },
+            { en: "Have you ever been diagnosed with any serious illnesses?", kz: "Сізге бұрын-соңды ауыр дерт диагнозы қойылды ма?", ru: "Ставили ли вам когда-нибудь диагноз серьезного заболевания?" },
+            { en: "Do you have high blood pressure or diabetes?", kz: "Сізде жоғары қан қысымы немесе қант диабеті бар ма?", ru: "У вас есть гипертония или диабет?" },
+            { en: "Have you ever been hospitalized? Have you had any surgeries?", kz: "Сіз бұрын-соңды ауруханаға жаттыңыз ба? Сізге ота жасалды ма?", ru: "Вы когда-нибудь лежали в больнице? Были ли у вас операции?" },
+            { en: "When was your last hospital stay?", kz: "Соңғы рет ауруханада қашан жаттыңыз?", ru: "Когда вы последний раз лежали в больнице?" }
+          ]
+        },
+        {
+          title: { ru: "10. Family History (Семейный и наследственный анамнез)", kz: "10. Family History (Отбасылық анамнез)" },
+          items: [
+            { en: "Do any medical conditions run in your family?", kz: "Отбасыңызда тұқым қуалайтын аурулар бар ма?", ru: "Есть ли в вашей семье наследственные заболевания?" },
+            { en: "Is there a history of heart disease, diabetes, or cancer in your family?", kz: "Отбасыңызда жүрек ауруы, диабет немесе қатерлі ісік жағдайлары болды ма?", ru: "Были ли в семье случаи болезней сердца, диабета или рака?" },
+            { en: "Which family member? At what age were they diagnosed?", kz: "Отбасының қай мүшесінде? Оларға қай жаста диагноз қойылды?", ru: "У какого члена семьи? В каком возрасте им поставили диагноз?" }
+          ]
+        },
+        {
+          title: { ru: "11. Medications & Allergies (Препараты, БАДы и Аллергоанамнез)", kz: "11. Medications & Allergies (Дәрі-дәрмектер және Аллергия)" },
+          items: [
+            { en: "Are you currently taking any medications? Can you list them for me?", kz: "Қазір қандай да бір дәрі қабылдап жүрсіз бе? Оларды тізіп бере аласыз ба?", ru: "Принимаете ли вы сейчас какие-либо лекарства? Можете их перечислить?" },
+            { en: "Do you take any over-the-counter drugs or supplements?", kz: "Рецептсіз дәрілерді немесе БАД-тарды қабылдайсыз ба?", ru: "Принимаете ли вы безрецептурные препараты или добавки?" },
+            { en: "What dose are you on?", kz: "Қандай мөлшерде қабылдайсыз?", ru: "В какой дозировке вы их принимаете?" },
+            { en: "Are you allergic to any medications? What happens when you take it?", kz: "Қандай да бір дәріге аллергияңыз бар ма? Оны қабылдағанда қандай реакция болады?", ru: "Есть ли у вас аллергия на лекарства? Какая реакция происходит при приеме?" }
+          ]
+        },
+        {
+          title: { ru: "12. Social, Lifestyle, Travel & Closing (Образ жизни и Завершение опроса)", kz: "12. Social, Lifestyle, Travel & Closing (Әлеуметтік анамнез және Аяқтау)" },
+          items: [
+            { en: "What do you do for a living? Is your job physically demanding or stressful?", kz: "Кім болып жұмыс істейсіз? Жұмысыңыз физикалық тұрғыдан ауыр ма әлде стрессті ме?", ru: "Кем вы работаете? Ваша работа физически тяжелая или стрессовая?" },
+            { en: "Do you smoke? How many per day? Have you tried to quit?", kz: "Темекі шегесіз бе? Күніне қанша тал? Тастауға тырысып көрдіңіз бе?", ru: "Вы курите? Сколько в день? Пробовали ли вы бросить?" },
+            { en: "Do you drink alcohol? Do you exercise regularly? How would you describe your diet?", kz: "Алкоголь ішесіз бе? Спортпен айналысасыз ба? Тамақтану режиміңіз қандай?", ru: "Вы употребляете алкоголь? Занимаетесь спортом? Как опишете свой рацион?" },
+            { en: "How have you been feeling emotionally? Have you been under a lot of stress lately?", kz: "Эмоционалды жағдайыңыз қалай? Соңғы уақытта қатты стресс болды ма?", ru: "Как вы себя чувствуете эмоционально? Был ли сильный стресс в последнее время?" },
+            { en: "Are you sexually active? Do you use protection?", kz: "Жыныстық өмір сүресіз бе? Қорғану құралдарын қолданасыз ба?", ru: "Живете ли вы половой жизнью? Используете ли средства защиты?" },
+            { en: "Have you traveled anywhere recently? Have you been in contact with anyone sick?", kz: "Жақында сапарға шықтыңыз ба? Ауырған адамдармен байланыста болдыңыз ба?", ru: "Вы куда-нибудь ездили недавно? Контактировали ли с кем-то больным?" },
+            { en: "Is there anything else I should know? Do you have any concerns to discuss?", kz: "Мен білуім керек тағы бірдеңе бар ма? Талқылағыңыз келетін мәселелер бар ма?", ru: "Есть ли что-то еще, что мне нужно знать? Есть ли опасения, которые хотите обсудить?" }
+          ]
+        }
+      ],
+
+      // Вкладка 3: Explaining and Educating (Слайды 24–26)
+      explainingCategories: [
+        {
+          title: { ru: "1. Signalling Phrases & Explaining Diagnosis (Вводные фразы и Диагноз)", kz: "1. Signalling Phrases & Explaining Diagnosis (Диагнозды түсіндіру)" },
+          items: [
+            { en: "Let me explain what's going on. I'll go through the results with you.", kz: "Не болып жатқанын түсіндіруге рұқсат етіңіз. Мен нәтижелерді сізбен бірге қарап шығамын.", ru: "Позвольте мне объяснить, что происходит. Я разберу результаты вместе с вами." },
+            { en: "First, I'll explain the diagnosis. Let's talk about the next steps.", kz: "Алдымен мен диагнозды түсіндіремін. Келесі қадамдар туралы сөйлесейік.", ru: "Сначала я объясню диагноз. Давайте поговорим о следующих шагах." },
+            { en: "You have [condition]. This means that... It's a condition where...", kz: "Сізде [ауру] бар. Бұл ... дегенді білдіреді. Бұл ... болатын жағдай.", ru: "У вас [состояние]. Это означает, что... Это состояние, при котором..." },
+            { en: "It looks like it might be... We think it's likely to be...", kz: "Бұл ... болуы мүмкін сияқты. Біз бұл ... болуы ықтимал деп ойлаймыз.", ru: "Похоже, это может быть... Мы думаем, что скорее всего это..." }
+          ]
+        },
+        {
+          title: { ru: "2. Reassurance, Causes & Risks (Успокоение, Причины и Риски)", kz: "2. Reassurance, Causes & Risks (Тыныштандыру, Себептер мен Қауіптер)" },
+          items: [
+            { en: "There's no need to worry. This is a very common condition. You're in good hands.", kz: "Мазасыздануға негіз жоқ. Бұл өте жиі кездесетін жағдай. Сіз сенімді қолдасыз.", ru: "Нет причин для беспокойства. Это очень распространенное состояние. Вы в надежных руках." },
+            { en: "We'll work together to manage this.", kz: "Біз бұнымен күресу үшін бірге жұмыс істейміз.", ru: "Мы будем работать вместе, чтобы справиться с этим." },
+            { en: "This can be caused by... It may be due to...", kz: "Бұл ... салдарынан болуы мүмкін. Бұл ... байланысты болуы мүмкін.", ru: "Это может быть вызвано... Это может быть связано с..." },
+            { en: "If untreated, it could lead to... It's important to monitor this because...", kz: "Емделмеген жағдайда, бұл ... әкелуі мүмкін. Бұны бақылау маңызды, өйткені...", ru: "Без лечения это может привести к... Важно следить за этим, потому что..." }
+          ]
+        },
+        {
+          title: { ru: "3. Treatment, Advice & Side Effects (Лечение, Рекомендации и Побочные эффекты)", kz: "3. Treatment, Advice & Side Effects (Емдеу, Кеңес беру және Жанама әсерлер)" },
+          items: [
+            { en: "I'm going to prescribe... You'll need to take... This should help with...", kz: "Мен ... тағайындаймын. Сізге ... қабылдау керек болады. Бұл ... көмектесуі керек.", ru: "Я собираюсь назначить... Вам нужно будет принимать... Это должно помочь с..." },
+            { en: "There are other options. We can also consider... Another alternative is...", kz: "Басқа да нұсқалар бар. Біз сондай-ақ ... қарастыра аламыз. Тағы бір балама нұсқа — бұл...", ru: "Есть и другие варианты. Мы также можем рассмотреть... Еще одна альтернатива — это..." },
+            { en: "Make sure you... Try to avoid... Drink plenty of water and get enough rest.", kz: "Сіздің ... екеніңізге көз жеткізіңіз. ... аулақ болуға тырысыңыз. Көп су ішіңіз және жеткілікті демалыңыз.", ru: "Убедитесь, что вы... Постарайтесь избегать... Пейте много воды и больше отдыхайте." },
+            { en: "Some people experience... You might feel a bit... If the symptoms get worse...", kz: "Кейбір адамдарда ... байқалады. Сіз аздап ... сезінуіңіз мүмкін. Егер симптомдар нашарласа...", ru: "Некоторые люди сталкиваются с... Вы можете почувствовать небольшую... Если симптомы ухудшатся..." }
+          ]
+        },
+        {
+          title: { ru: "4. Checking Understanding & Follow-up (Проверка понимания и Наблюдение)", kz: "4. Checking Understanding & Follow-up (Түсінгенін тексеру және Бақылау)" },
+          items: [
+            { en: "Does that make sense? Do you have any questions?", kz: "Бұл түсінікті ме? Сұрақтарыңыз бар ма?", ru: "Вам все ясно? У вас есть вопросы?" },
+            { en: "Can you tell me in your own words? Just to make sure we're on the same page...", kz: "Өз сөзіңізбен айтып бере аласыз ба? Бір-бірімізді дұрыс түсінгенімізге көз жеткізу үшін...", ru: "Можете пересказать своими словами? Просто чтобы убедиться, что мы правильно друг друга поняли..." },
+            { en: "I'd like to see you again in... We'll monitor your progress.", kz: "Мен сізді ... кейін қайта көргім келеді. Біз сіздің жағдайыңызды бақылаймыз.", ru: "Я хотел бы снова увидеть вас через... Мы будем следить за вашим состоянием." },
+            { en: "If your symptoms don't improve, we may need to do more tests.", kz: "Егер симптомдарыңыз жақсармаса, бізге қосымша талдаулар жасау қажет болуы мүмкін.", ru: "Если ваши симптомы не улучшатся, нам может потребоваться провести дополнительные анализы." }
+          ]
+        }
+      ],
+
+      // Вкладка 4: Все 6 Клинических Кейсов из PDF (Слайды 29–58)
+      clinicalCases: [
+        {
+          id: 1,
+          title: "Case 1: Hypertension",
+          sub: { ru: "Головная боль, АД 150/95, курение", kz: "Бас ауруы, АҚ 150/95, темекі шегу" },
+          cc: [
+            { sp: "Doctor", text: "What brings you in today?" },
+            { sp: "Patient", text: "I've been having headaches lately." },
+            { sp: "Doctor", text: "I see. Can you tell me more about the headaches?" },
+            { sp: "Patient", text: "They usually start in the morning and feel like pressure at the back of my head." },
+            { sp: "Doctor", text: "When did this start?" },
+            { sp: "Patient", text: "Maybe about two or three weeks ago." },
+            { sp: "Doctor", text: "How often do you get them?" },
+            { sp: "Patient", text: "Almost every day now." },
+            { sp: "Doctor", text: "On a scale from 0 to 10, how severe is the pain?" },
+            { sp: "Patient", text: "Around a 5 or 6." },
+            { sp: "Doctor", text: "Do you notice anything that makes it better or worse?" },
+            { sp: "Patient", text: "Rest helps a bit. Stress seems to make it worse." },
+            { sp: "Doctor", text: "Have you noticed any other symptoms? For example, dizziness or blurred vision?" },
+            { sp: "Patient", text: "Yes, sometimes I feel a bit dizzy." },
+            { sp: "Doctor", text: "Have you checked your blood pressure recently? Do you remember the reading?" },
+            { sp: "Patient", text: "Yes, I checked it at a pharmacy. I think it was around 150 over 95." }
+          ],
+          pmh: [
+            { sp: "Doctor", text: "Do you have any chronic medical conditions? Have you ever been hospitalized or had surgeries?" },
+            { sp: "Patient", text: "Not that I know of. Just my appendix removed when I was a teenager." },
+            { sp: "Doctor", text: "Are you currently taking any medications? Do you have any allergies?" },
+            { sp: "Patient", text: "Just ibuprofen sometimes for headaches. No allergies." },
+            { sp: "Doctor", text: "Does anyone in your family have high blood pressure, heart disease, stroke, or diabetes?" },
+            { sp: "Patient", text: "My father has high blood pressure and had a stroke in his 60s. My mother has diabetes." },
+            { sp: "Doctor", text: "Do you smoke? How many cigarettes a day and for how long?" },
+            { sp: "Patient", text: "Yes, about a pack a day for around 20 years." },
+            { sp: "Doctor", text: "What do you do for a living? How would you describe your diet?" },
+            { sp: "Patient", text: "I work in an office. Probably not very healthy — lots of fast food." },
+            { sp: "Doctor", text: "Is there anything else you'd like to mention about your health?" },
+            { sp: "Patient", text: "No, I think that's everything." }
+          ],
+          explainHtml: `
+            • <span class="c-hl">Let me explain what's going on.</span><br>
+            • Your blood pressure <span class="c-hl">is higher than normal</span>. <span class="c-hl">This is called</span> high blood pressure, or hypertension. <span class="c-hl">It means that</span> the force of blood against your blood vessel walls is too strong.<br>
+            • <span class="c-hl">This condition is quite common</span>, and many people don't feel any symptoms at first. <span class="c-hl">However, if it's not controlled, it can increase the risk of</span> heart disease, stroke, and kidney problems over time.<br>
+            • <span class="c-hl">In your case, it's not dangerously high, but it's something we need to manage carefully.</span><br>
+            • <span class="c-hl">Treatment usually involves a combination of</span> lifestyle changes and, if necessary, medication. <span class="c-hl">I'd recommend</span> reducing salt in your diet, staying physically active, and maintaining a healthy weight. <span class="c-hl">I'm also going to prescribe a medication that helps</span> lower your blood pressure.<br>
+            • <span class="c-hl">You'll need to take it</span> once a day, preferably at the same time each day.<br>
+            • <span class="c-hl">We'll monitor</span> your blood pressure regularly <span class="c-hl">to see how well the treatment is working</span>.<br>
+            • <span class="c-hl">Does that make sense? Do you have any questions about the condition or the treatment?</span>
+          `
+        },
+        {
+          id: 2,
+          title: "Case 2: Acute Bronchitis",
+          sub: { ru: "Кашель с желтой мокротой 5 дней, аллергия на пенициллин", kz: "5 күн сары қақырықты жөтел, пенициллинге аллергия" },
+          cc: [
+            { sp: "Doctor", text: "What seems to be the problem?" },
+            { sp: "Patient", text: "I've had a bad cough for a few days — about five days now." },
+            { sp: "Doctor", text: "Did it start suddenly or gradually? Is the cough dry or with mucus?" },
+            { sp: "Patient", text: "It started gradually. I'm coughing up some yellowish mucus." },
+            { sp: "Doctor", text: "Have you had a fever? Any shortness of breath or chest pain?" },
+            { sp: "Patient", text: "Yes, a low-grade fever in the evenings. A little shortness of breath when I walk fast, and some discomfort when I cough." },
+            { sp: "Doctor", text: "Have you taken anything for it? Has it helped?" },
+            { sp: "Patient", text: "Just some cough syrup. Not much." }
+          ],
+          pmh: [
+            { sp: "Doctor", text: "Do you have any chronic lung conditions, like asthma or COPD?" },
+            { sp: "Patient", text: "No." },
+            { sp: "Doctor", text: "Do you have any allergies? What happens when you take it?" },
+            { sp: "Patient", text: "I'm allergic to penicillin. I get a rash." },
+            { sp: "Doctor", text: "Anyone in your family with asthma or allergies?" },
+            { sp: "Patient", text: "My sister has asthma." },
+            { sp: "Doctor", text: "Do you smoke? What do you do for work? Are you exposed to dust or chemicals?" },
+            { sp: "Patient", text: "About 10 cigarettes a day. I work in construction, so yes, quite often exposed to dust." },
+            { sp: "Doctor", text: "Have you been around anyone who was sick recently?" },
+            { sp: "Patient", text: "Yes, a coworker had a bad cold." }
+          ],
+          explainHtml: `
+            • <span class="c-hl">Let me go through your condition step by step.</span><br>
+            • <span class="c-hl">Based on your symptoms and examination, it looks like you have</span> acute bronchitis. <span class="c-hl">This means that</span> the airways in your lungs are inflamed, <span class="c-hl">usually due to</span> a viral infection.<br>
+            • <span class="c-hl">That's why you've been experiencing</span> coughing, chest discomfort, and possibly some mucus production.<br>
+            • <span class="c-hl">The good news is that this condition is usually temporary and tends to improve on its own within</span> a couple of weeks.<br>
+            • <span class="c-hl">Because it's most often caused by a virus, antibiotics are not usually needed. Instead, treatment focuses on relieving your symptoms.</span><br>
+            • <span class="c-hl">I recommend getting plenty of rest, drinking fluids, and you can use over-the-counter medication to reduce</span> fever or discomfort if needed.<br>
+            • <span class="c-hl">If you develop</span> a high fever, shortness of breath, <span class="c-hl">or if your symptoms don't improve, you should come back for a reassessment.</span><br>
+            • <span class="c-hl">Do you follow what I've explained? Is anything unclear?</span>
+          `
+        },
+        {
+          id: 3,
+          title: "Case 3: Type 2 Diabetes",
+          sub: { ru: "Слабость, жажда 3–4 л, полиурия, потеря веса", kz: "Шаршау, шөлдеу 3–4 л, полиурия, салмақ жоғалту" },
+          cc: [
+            { sp: "Doctor", text: "What brings you in today? Can you tell me more about that?" },
+            { sp: "Patient", text: "I've been feeling very tired all the time, even after resting, for a couple of months." },
+            { sp: "Doctor", text: "Have you noticed any other symptoms?" },
+            { sp: "Patient", text: "Yes, I feel very thirsty all the time. I drink maybe 3 or 4 liters a day." },
+            { sp: "Doctor", text: "And how about urination? Are you going more often than usual?" },
+            { sp: "Patient", text: "Yes, especially at night." },
+            { sp: "Doctor", text: "Have you noticed any changes in your weight or blurred vision?" },
+            { sp: "Patient", text: "I've lost some weight without trying, and my vision has been a bit blurry." }
+          ],
+          pmh: [
+            { sp: "Doctor", text: "Have you ever had problems with your blood sugar before? Any allergies?" },
+            { sp: "Patient", text: "No. No known allergies." },
+            { sp: "Doctor", text: "Does anyone in your family have diabetes? At what age was she diagnosed?" },
+            { sp: "Patient", text: "Yes, my mother does. In her 50s." },
+            { sp: "Doctor", text: "Can you tell me about your diet and physical activity?" },
+            { sp: "Patient", text: "I eat a lot of carbohydrates and sweets. I have a desk job and don't exercise much." }
+          ],
+          explainHtml: `
+            • <span class="c-hl">I'd like to explain your results clearly.</span><br>
+            • <span class="c-hl">Your blood tests show that</span> your blood sugar levels <span class="c-hl">are higher than normal. This condition is called</span> type 2 diabetes.<br>
+            • <span class="c-hl">In simple terms, it means that</span> your body is not using insulin effectively, so sugar builds up in your blood instead of being used for energy.<br>
+            • <span class="c-hl">This is a long-term condition, but it can be managed very effectively with the right approach.</span><br>
+            • <span class="c-hl">If it's not controlled, it can lead to complications such as</span> heart disease, nerve damage, or vision problems over time.<br>
+            • <span class="c-hl">The good news is that there are several ways to manage it. Treatment usually includes</span> changes in diet, regular physical activity, and sometimes medication.<br>
+            • <span class="c-hl">It's also important to monitor</span> your blood sugar regularly, <span class="c-hl">and we'll schedule follow-up visits to track your progress.</span><br>
+            • <span class="c-hl">We'll work on this together step by step. How do you feel about this? Do you have any questions or concerns?</span>
+          `
+        },
+        {
+          id: 4,
+          title: "Case 4: Appendicitis",
+          sub: { ru: "Миграция боли в правую подвздошную область, 8/10", kz: "Ауырсынудың оң жақ мықын аймағына ауысуы, 8/10" },
+          cc: [
+            { sp: "Doctor", text: "What seems to be the problem? Can you show me where the pain is?" },
+            { sp: "Patient", text: "I have a strong pain in my stomach. It started around the middle, but now it's more on the right side." },
+            { sp: "Doctor", text: "When did the pain start? How would you describe it on a scale from 0 to 10?" },
+            { sp: "Patient", text: "About 12 hours ago. It's sharp now, around 8 out of 10." },
+            { sp: "Doctor", text: "Does anything make it better or worse? Have you had nausea, vomiting, or fever?" },
+            { sp: "Patient", text: "Moving makes it worse. Yes, I felt nauseous, vomited once, and lost my appetite." }
+          ],
+          pmh: [
+            { sp: "Doctor", text: "Do you have any medical conditions or previous surgeries? Have you taken anything for the pain?" },
+            { sp: "Patient", text: "No previous surgeries. I took some painkillers, but they didn't really help." },
+            { sp: "Doctor", text: "Do you have any allergies? Is there anything else you think I should know?" },
+            { sp: "Patient", text: "No allergies. That's all." }
+          ],
+          explainHtml: `
+            • <span class="c-hl">Let me explain what we think is happening.</span><br>
+            • <span class="c-hl">Based on your symptoms and the examination, it looks like you may have</span> appendicitis. <span class="c-hl">This means that</span> your appendix, a small pouch in the lower right side of your abdomen, is inflamed and infected.<br>
+            • <span class="c-hl">This condition usually causes</span> pain that starts around the belly button and then moves to the lower right side. <span class="c-hl">It can also be associated with</span> nausea, fever, and loss of appetite.<br>
+            • Appendicitis <span class="c-hl">is a condition that usually requires</span> surgery, <span class="c-hl">because if</span> the appendix bursts, <span class="c-hl">it can lead to a serious</span> infection in the abdomen.<br>
+            • <span class="c-hl">The treatment is</span> an operation to remove the appendix. <span class="c-hl">It's a common and generally safe procedure, and most people recover well.</span><br>
+            • <span class="c-hl">We would plan to perform</span> the surgery <span class="c-hl">as soon as possible. Before that, we'll run some tests and prepare you for the procedure.</span><br>
+            • <span class="c-hl">Do you understand what I've explained? Do you have any questions about the procedure?</span>
+          `
+        },
+        {
+          id: 5,
+          title: "Case 5: Pediatric URI",
+          sub: { ru: "Педиатрия: ОРВИ у ребенка, опрос родителя", kz: "Педиатрия: баладағы ЖРВИ, ата-ананы сұрастыру" },
+          cc: [
+            { sp: "Doctor", text: "What seems to be the problem with your child? How long has this been going on?" },
+            { sp: "Parent", text: "He's had a runny nose and mostly dry cough for about three days." },
+            { sp: "Doctor", text: "Has he had a fever? What was the highest temperature?" },
+            { sp: "Parent", text: "Yes, a mild fever around 38 degrees. It comes and goes." },
+            { sp: "Doctor", text: "Is he having any difficulty breathing? How is his appetite and fluid intake?" },
+            { sp: "Parent", text: "Breathing seems okay. He's eating and drinking a bit less than usual, and he's more irritable." }
+          ],
+          pmh: [
+            { sp: "Doctor", text: "Does your child have any chronic conditions? Was he born full-term?" },
+            { sp: "Parent", text: "No chronic conditions, he was born full-term." },
+            { sp: "Doctor", text: "What are you giving him for the fever? Does he attend daycare?" },
+            { sp: "Parent", text: "Paracetamol every 6 hours if needed. Yes, he attends daycare and several kids were sick." },
+            { sp: "Doctor", text: "Is he urinating normally?" },
+            { sp: "Parent", text: "Yes, I think so." }
+          ],
+          explainHtml: `
+            • <span class="c-hl">I'll explain what's going on with your child.</span><br>
+            • <span class="c-hl">From what I can see, your child has</span> a viral upper respiratory infection. <span class="c-hl">In simple terms, this is</span> a common cold that affects the nose and throat.<br>
+            • <span class="c-hl">That's why you're seeing symptoms like</span> a runny nose, mild fever, cough, and irritability.<br>
+            • <span class="c-hl">The good news is that this is very common in</span> children <span class="c-hl">and usually gets better on its own within</span> a few days to a week.<br>
+            • <span class="c-hl">Since it's caused by a virus, antibiotics are not needed. Treatment is mainly supportive.</span><br>
+            • <span class="c-hl">Make sure your child gets plenty of rest and drinks enough fluids. You can use</span> fever-reducing medication <span class="c-hl">if needed, according to the recommended dose.</span><br>
+            • <span class="c-hl">If your child develops</span> a high fever, has difficulty breathing, is not drinking fluids, <span class="c-hl">please come back or seek medical help.</span><br>
+            • <span class="c-hl">Does everything make sense? Is there anything you're worried about?</span>
+          `
+        },
+        {
+          id: 6,
+          title: "Case 6: GERD (Reflux)",
+          sub: { ru: "Изжога после еды и лежа, кислый привкус во рту", kz: "Тамақтан соң және жатқанда қыжыл, ауыздағы қышқыл дәм" },
+          cc: [
+            { sp: "Doctor", text: "What brings you in today? How often do you get these symptoms?" },
+            { sp: "Patient", text: "I've been having a burning feeling in my chest almost every day after eating for a few weeks." },
+            { sp: "Doctor", text: "Does anything make it better or worse?" },
+            { sp: "Patient", text: "It gets worse after heavy meals and when I lie down. Sometimes antacids help." },
+            { sp: "Doctor", text: "Do you notice a sour or bitter taste in your mouth? Does the pain spread to your arm or jaw?" },
+            { sp: "Patient", text: "Yes, a sour taste at night. No, the pain stays in the chest." }
+          ],
+          pmh: [
+            { sp: "Doctor", text: "Have you ever had an endoscopy? Any family history of stomach ulcers or cancer?" },
+            { sp: "Patient", text: "No, never. No family history." },
+            { sp: "Doctor", text: "Can you describe your typical diet? Do you eat late at night or drink coffee?" },
+            { sp: "Patient", text: "I eat a lot of fried and spicy food, often late dinners, and drink coffee every day. I also smoke a pack a day." }
+          ],
+          explainHtml: `
+            • <span class="c-hl">Let me go over your condition.</span><br>
+            • <span class="c-hl">Based on your symptoms, it looks like you may have</span> acid reflux, <span class="c-hl">also known as</span> GERD. <span class="c-hl">This happens when</span> stomach acid flows back into the esophagus, <span class="c-hl">which is</span> the tube that connects your mouth to your stomach.<br>
+            • <span class="c-hl">This can cause symptoms like</span> a burning sensation in your chest, <span class="c-hl">often called</span> heartburn, <span class="c-hl">as well as</span> a sour taste in your mouth.<br>
+            • <span class="c-hl">This condition is quite common and is often related to</span> diet and lifestyle factors. <span class="c-hl">The good news is that it can usually be managed effectively.</span><br>
+            • <span class="c-hl">I would recommend avoiding</span> large or heavy meals, <span class="c-hl">especially before</span> lying down. <span class="c-hl">It also helps to reduce</span> spicy or fatty foods, caffeine, and alcohol.<br>
+            • <span class="c-hl">I may prescribe medication that</span> reduces stomach acid, <span class="c-hl">which should help relieve your symptoms.</span><br>
+            • <span class="c-hl">If the symptoms persist or get worse, we may need to do further tests.</span><br>
+            • <span class="c-hl">Does that explanation make sense? Do you have any questions?</span>
+          `
+        }
+      ],
+
+      // Вкладка 5: Упражнения из учебника (Слайды 59–66) с вариантами A, B, C
+      exercises: [
+        {
+          q: "1. [Ex. 1 & 3] Patient says: 'I have a cough for 5 days.' What is the best next question?",
+          opts: [
+            "A) Do you like cold weather?",
+            "B) Do you eat late at night?",
+            "C) Is it dry or productive (wet)?"
+          ],
+          ans: 2, // C
+          exp: {
+            ru: "Верно (C)! При жалобе на кашель мы уточняем его характер по SOCRATES: 'Is it dry or productive (wet)?'",
+            kz: "Дұрыс (C)! Жөтел кезінде оның сипатын нақтылаймыз: 'Is it dry or productive (wet)?'"
+          }
+        },
+        {
+          q: "2. [Ex. 2 — Вежливость врача] Как вежливо и естественно спросить пациента «В чем проблема / Что случилось?», учитывая, что прямые фразы 'What is the problem?' и 'What happened?' звучат грубо?",
+          opts: [
+            "A) What is your problem?!",
+            "B) What seems to be the problem? / Please tell me what has happened.",
+            "C) Why you came here?"
+          ],
+          ans: 1, // B
+          exp: {
+            ru: "Отлично (B)! В английском языке 'What is the problem?' и 'What happened?' звучат резко. Врачи используют мягкие формы: 'What seems to be the problem?' или 'What brings you in today?'",
+            kz: "Тамаша (B)! 'What is the problem?' дөрекі естіледі, сондықтан дәрігерлер 'What seems to be the problem?' немесе 'What brings you in today?' деп сұрайды."
+          }
+        },
+        {
+          q: "3. [Ex. 3] Patient says: 'I feel very tired and thirsty.' What is the most appropriate follow-up question?",
+          opts: [
+            "A) Have you been drinking more fluids than usual?",
+            "B) Is there stiffness in your joints?",
+            "C) Do you have a sore throat when swallowing?"
+          ],
+          ans: 0, // A
+          exp: {
+            ru: "Верно (A)! При сочетании слабости и жажды (подозрение на СД) врач уточняет объем выпиваемой жидкости (polydipsia) и частоту мочеиспускания.",
+            kz: "Дұрыс (A)! Шаршау мен шөлдеу кезінде ішетін сұйықтық мөлшерін нақтылаймыз."
+          }
+        },
+        {
+          q: "4. [Ex. 3] Patient says: 'I feel dizzy.' What is the best clarifying question?",
+          opts: [
+            "A) Is your chest burning after meals?",
+            "B) How many times a day do you go to the toilet?",
+            "C) Do you feel like the room is spinning?"
+          ],
+          ans: 2, // C
+          exp: {
+            ru: "Точно (C)! При головокружении важно отличить истинное вертиго ('Do you feel like the room is spinning?') от предобморочного состояния.",
+            kz: "Дәл солай (C)! Бас айналғанда шынайы вертигоны ('Do you feel like the room is spinning?') нақтылаймыз."
+          }
+        },
+        {
+          q: "5. [Ex. 4a] Doctor asks: 'Is the cough dry or productive?' Which patient response is natural and appropriate?",
+          opts: [
+            "A) Around 7 out of 10.",
+            "B) I have sputum with it.",
+            "C) Since Monday."
+          ],
+          ans: 1, // B
+          exp: {
+            ru: "Верно (B)! На альтернативный вопрос (сухой или продуктивный?) пациент отвечает: 'I have sputum with it' (У меня отходит мокрота).",
+            kz: "Дұрыс (B)! Науқас қақырық бар екенін айтады: 'I have sputum with it'."
+          }
+        },
+        {
+          q: "6. [Ex. 5 — Диалог] Doctor: '___?' → Patient: 'Yes, moving makes it worse.' Какой вопрос задал врач?",
+          opts: [
+            "A) Does anything worsen (make worse) the pain?",
+            "B) When did the pain start?",
+            "C) Where is the pain located?"
+          ],
+          ans: 0, // A
+          exp: {
+            ru: "Верно (A)! Пациент называет усиливающий триггер (движение), значит врач спросил про Exacerbating factors: 'Does anything worsen it / make it worse?'",
+            kz: "Дұрыс (A)! Науқас ауырсынуды күшейтетін факторды атады, демек сұрақ: 'Does anything worsen it?'"
+          }
+        },
+        {
+          q: "7. [Ex. 6 — Исправление ошибки врача] Врач ошибочно сказал без вспомогательного глагола: 'When start pain?' и 'How long you have cough?' Как звучат грамматически правильные вопросы?",
+          opts: [
+            "A) When pain started? / How long you coughing?",
+            "B) When did the pain start? / How long have you had a cough (been coughing)?",
+            "C) Start pain when? / Cough how long?"
+          ],
+          ans: 1, // B
+          exp: {
+            ru: "Блестяще (B)! Точка в прошлом — Past Simple ('When did the pain start?'), а длительность симптома до настоящего момента — Present Perfect ('How long have you had / been coughing?').",
+            kz: "Керемет (B)! Басталу уақыты — Past Simple ('When did the pain start?'), ал ұзақтығы — Present Perfect ('How long have you had...')."
+          }
+        },
+        {
+          q: "8. [Ex. 6 — Исправление ошибки врача] Врач грубо сказал пациенту: 'I you not understand, repeat.' Как сказать это профессионально и вежливо?",
+          opts: [
+            "A) Repeat again now!",
+            "B) Why you speak unclear?",
+            "C) Let me make sure I understood correctly... / Could you please repeat or clarify what you mean?"
+          ],
+          ans: 2, // C
+          exp: {
+            ru: "Отлично (C)! Вежливые чанки переспрашивания и уточнения создают доверие между врачом и пациентом.",
+            kz: "Тамаша (C)! Сыпайы нақтылау фразалары науқаспен сенімді байланыс орнатады."
+          }
+        }
+      ]
+    };
+
+    // =========================================================================
+    // 3. ФУНКЦИИ ОТРИСОВКИ, ПОИСКА, ПОДСВЕТКИ ЧАНКОВ И ОЗВУЧКИ (WEB SPEECH API)
+    // =========================================================================
+    function showTab(idx) {
+      for (let i = 0; i < 5; i++) {
+        document.getElementById(`nav${i}`).classList.toggle('active', i === idx);
+        document.getElementById(`tab${i}`).classList.toggle('active', i === idx);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function speakEn(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US';
+      u.rate = 0.92;
+      window.speechSynthesis.speak(u);
+    }
+
+    // Рендер разговорника (Вкладки 2 и 3)
+    function renderPhraseCategories(containerId, categoriesArray, searchFilter = "") {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      container.innerHTML = "";
+      const q = searchFilter.trim().toLowerCase();
+
+      categoriesArray.forEach((cat, idx) => {
+        const filteredItems = cat.items.filter(item =>
+          !q ||
+          item.en.toLowerCase().includes(q) ||
+          item.ru.toLowerCase().includes(q) ||
+          item.kz.toLowerCase().includes(q)
+        );
+        if (filteredItems.length === 0) return;
+
+        const details = document.createElement("details");
+        details.className = "phrase-accordion";
+        if (idx === 0 || q.length > 0) details.open = true;
+
+        let rowsHtml = "";
+        filteredItems.forEach(item => {
+          const safeEn = item.en.replace(/'/g, "\\'");
+          rowsHtml += `
+            <div class="phrase-row">
+              <div>
+                <div class="ph-en">${item.en}</div>
+                <div class="ph-tr">${item[currentLang]}</div>
+              </div>
+              <button type="button" class="speak-btn" onclick="speakEn('${safeEn}')" title="Прослушать">🔊</button>
+            </div>
+          `;
+        });
+
+        details.innerHTML = `
+          <summary class="phrase-summary">
+            <span>${cat.title[currentLang]}</span>
+            <span style="font-size:0.72rem; color:var(--kz-blue-dark);">${filteredItems.length} фраз ⌄</span>
+          </summary>
+          <div class="phrase-list-body">${rowsHtml}</div>
+        `;
+        container.appendChild(details);
+      });
+    }
+
+    function filterPhrasebook() {
+      const val = document.getElementById("phraseSearchInput").value || "";
+      renderPhraseCategories("hpiPmhContainer", TEXTBOOK_DATA.hpiPmhCategories, val);
+    }
+
+    // Рендер 6 Клинических Кейсов (Вкладка 4)
+    function renderClinicalCases() {
+      const selectorBar = document.getElementById("caseSelectorBar");
+      const stageBar = document.getElementById("caseStageBar");
+      const contentArea = document.getElementById("caseContentArea");
+      if (!selectorBar || !stageBar || !contentArea) return;
+
+      selectorBar.innerHTML = "";
+      TEXTBOOK_DATA.clinicalCases.forEach((c, idx) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "case-tab-btn" + (idx === activeCaseIdx ? " active" : "");
+        btn.innerHTML = `<div>${c.title}</div><div style="font-size:0.65rem; opacity:0.85; font-weight:600; margin-top:2px;">${c.sub[currentLang]}</div>`;
+        btn.onclick = () => {
+          activeCaseIdx = idx;
+          renderClinicalCases();
+        };
+        selectorBar.appendChild(btn);
+      });
+
+      const isKz = (currentLang === "kz");
+      const stages = [
+        isKz ? "1. Негізгі шағым (Chief Complaint)" : "1. Основная жалоба (Chief Complaint)",
+        isKz ? "2. Өмір анамнезі (PMH, Meds, Social)" : "2. Анамнез жизни (PMH, Meds, Social)",
+        isKz ? "3. Диагнозды түсіндіру + ЧАНКТАР ✨" : "3. Объяснение пациенту + ЧАНКИ ✨"
+      ];
+
+      stageBar.innerHTML = "";
+      stages.forEach((stLabel, sIdx) => {
+        const sBtn = document.createElement("button");
+        sBtn.type = "button";
+        sBtn.className = "stage-pill-btn" + (sIdx === activeCaseStage ? " active" : "");
+        sBtn.textContent = stLabel;
+        sBtn.onclick = () => {
+          activeCaseStage = sIdx;
+          renderClinicalCases();
+        };
+        stageBar.appendChild(sBtn);
+      });
+
+      const currentCase = TEXTBOOK_DATA.clinicalCases[activeCaseIdx];
+
+      if (activeCaseStage === 0 || activeCaseStage === 1) {
+        const lines = activeCaseStage === 0 ? currentCase.cc : currentCase.pmh;
+        let dlgHtml = `<div class="dialogue-box">`;
+        lines.forEach(line => {
+          const isDoc = (line.sp === "Doctor");
+          const safeText = line.text.replace(/'/g, "\\'");
+          dlgHtml += `
+            <div class="dlg-line ${isDoc ? 'doc' : 'pat'}">
+              <div>
+                <span class="dlg-speaker">${isDoc ? '👨‍⚕️ Doctor' : '🧑 Patient / Parent'}</span>
+                <div>${line.text}</div>
+              </div>
+              <button type="button" class="speak-btn" onclick="speakEn('${safeText}')">🔊</button>
+            </div>
+          `;
+        });
+        dlgHtml += `</div>`;
+        contentArea.innerHTML = dlgHtml;
+      } else {
+        const toggleLabel = chunksHighlighted
+          ? (isKz ? "✨ Чанктар боялған (өшіру)" : "✨ Чанки подсвечены (выключить)")
+          : (isKz ? "✨ Чанктарды бояп көрсету" : "✨ Подсветить Чанки (шаблоны)");
+
+        contentArea.innerHTML = `
+          <div class="explain-card">
+            <div class="explain-header">
+              <span>👨‍⚕️ ${currentCase.title} — Explaining to the Patient</span>
+              <button type="button" class="chunk-toggle-btn" onclick="toggleCaseChunks()">${toggleLabel}</button>
+            </div>
+            <div class="explain-body ${chunksHighlighted ? 'chunks-active' : ''}" id="caseExplainBody">
+              ${currentCase.explainHtml}
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function toggleCaseChunks() {
+      chunksHighlighted = !chunksHighlighted;
+      renderClinicalCases();
+    }
+
+    // Рендер упражнений учебника (Вкладка 5)
+    function renderExercisesTab() {
+      const wrapper = document.getElementById("exercisesWrapper");
+      if (!wrapper) return;
+      const isKz = (currentLang === "kz");
+
+      let html = `
+        <h2>✍️ ${isKz ? "Оқулық жаттығулары (59–66 беттер): Өзіңізді тексеріңіз" : "Практикум из учебника (стр. 59–66): Проверьте себя"}</h2>
+        <p>${isKz ? "Әр клиникалық жағдай үшін ең дұрыс әрі сыпайы дәрігер сұрағын таңдаңыз:" : "Выберите наиболее грамотный и вежливый вариант вопроса или ответа врача:"}</p>
+      `;
+
+      TEXTBOOK_DATA.exercises.forEach((ex, idx) => {
+        let optsHtml = "";
+        ex.opts.forEach((optText, oIdx) => {
+          optsHtml += `<button type="button" class="qc-btn" onclick="checkExerciseItem(this, ${idx}, ${oIdx})">${optText}</button>`;
+        });
+
+        html += `
+          <div class="quick-check" id="exBox_${idx}">
+            <div class="qc-question">${ex.q}</div>
+            <div class="qc-options">${optsHtml}</div>
+            <div class="qc-feedback">💡 ${ex.exp[currentLang]}</div>
+          </div>
+        `;
+      });
+
+      wrapper.innerHTML = html;
+    }
+
+    function checkExerciseItem(btnEl, exIdx, chosenIdx) {
+      const ex = TEXTBOOK_DATA.exercises[exIdx];
+      const box = document.getElementById(`exBox_${exIdx}`);
+      const allBtns = box.querySelectorAll(".qc-btn");
+      allBtns.forEach(b => b.disabled = true);
+
+      if (chosenIdx === ex.ans) {
+        btnEl.classList.add("correct");
+      } else {
+        btnEl.classList.add("wrong");
+        allBtns[ex.ans].classList.add("correct");
+      }
+      box.querySelector(".qc-feedback").style.display = "block";
+    }
+
+    // Переключение языка RU / KZ
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('doctors_speak_lang', lang);
+      localStorage.setItem('selected_lang', lang);
+
+      document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
+      document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
+
+      const isKz = (lang === 'kz');
+      document.getElementById('uiBackBtn').textContent = isKz ? "⬅ Басты бетке" : "⬅ На главную";
+      document.getElementById('uiTitle').textContent = isKz
+        ? "How to Interview Patients in English (Науқастан анамнез жинау)"
+        : "How to Interview Patients in English (Опрос пациента)";
+      document.getElementById('uiSubtitle').textContent = isKz
+        ? "Анамнез құрылымы (SOCRATES) • Дыбысталған сөздік (EN/KZ/RU) • 6 Клиникалық кейс және Практикум"
+        : "Структура анамнеза (SOCRATES) • Озвученный разговорник (EN/KZ/RU) • 6 Клинических кейсов и Практикум";
+
+      const navLabels = isKz
+        ? ["1. Құрылым & SOCRATES", "2. Фразалар: Анамнез", "3. Фразалар: Түсіндіру", "4. 6 Кейс (Чанктар)", "5. Жаттығулар (1–6)"]
+        : ["1. Структура & SOCRATES", "2. Фразы: Сбор анамнеза", "3. Фразы: Объяснение", "4. 6 Кейсов (Чанки)", "5. Упражнения (1–6)"];
+      navLabels.forEach((lbl, i) => {
+        document.getElementById(`nav${i}`).textContent = lbl;
+      });
+
+      document.getElementById('tab0').innerHTML = TEXTBOOK_DATA.tab0Html[lang];
+      renderPhraseCategories("hpiPmhContainer", TEXTBOOK_DATA.hpiPmhCategories);
+      renderPhraseCategories("explainingContainer", TEXTBOOK_DATA.explainingCategories);
+      renderClinicalCases();
+      renderExercisesTab();
+
+      if (document.getElementById("paywallGate").style.display === "block") {
+        updatePaywallTexts(currentViewerState.isLoggedIn, currentViewerState.tier);
+      }
+    }
+
+    // Инициализация при загрузке
+    setLang(currentLang);
+    verifySubscriptionAccess();
+  </script>
+</body>
+</html>
