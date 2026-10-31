@@ -3,25 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctors Speak — Медицинский английский для врачей и студентов</title>
+    <title>Doctors Speak — Medical English</title>
 
-    <!-- 8. Мета-теги и Open Graph превью для WhatsApp, Instagram и Telegram -->
-    <meta name="description" content="Интерактивная платформа медицинского английского для врачей и резидентов Казахстана: тренажеры лексики, 15 модулей грамматики, опрос пациентов, чтение статей PubMed и подготовка презентаций.">
+    <!-- Open Graph превью для красивых ссылок в WhatsApp, Instagram и Telegram -->
+    <meta name="description" content="Платформа медицинского английского для врачей и студентов: тренажеры лексики, 15 модулей грамматики, опрос пациентов, чтение статей PubMed и презентации.">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Doctors Speak">
-    <meta property="og:title" content="Doctors Speak — Медицинский английский для врачей">
-    <meta property="og:description" content="Бесплатно проверьте свой уровень за 5 минут. Тренажеры клинической лексики, опрос пациентов, чтение статей UpToDate/PubMed и видеокурс.">
+    <meta property="og:title" content="Doctors Speak — Medical English">
+    <meta property="og:description" content="Интерактивные тренажеры, видеокурс и конспекты для врачей и резидентов. Проверьте свой уровень бесплатно за 5 минут!">
     <meta property="og:url" content="https://kazdoctors.com/">
     <meta property="og:image" content="https://kazdoctors.com/icon-192.png">
     <meta name="twitter:card" content="summary_large_image">
 
-    <!-- 7. Единый шрифт Inter (как в Instagram @doctors.speak) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#0077A3">
+    <meta name="theme-color" content="#00A1DE">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="DoctorsSpeak">
@@ -29,28 +28,28 @@
 
     <style>
         :root {
-            --kz-blue: #0088C2;
-            --kz-blue-dark: #005F88;
-            --kz-blue-light: #EDF7FC;
+            --kz-blue: #00A1DE;
+            --kz-blue-dark: #0077A3;
+            --kz-blue-light: #EBF8FC;
             --kz-gold: #FFC72C;
-            --kz-gold-dark: #B88200;
+            --kz-gold-dark: #D9A000;
             --kz-gold-light: #FFFBEB;
-            --bg-main: #F4F7FA;
+            --bg-main: #F0F6FA;
             --card-bg: #FFFFFF;
-            --text-dark: #0F172A;
-            --text-muted: #475569;
-            --border-color: #E2E8F0;
-            --green-accent: #059669;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+            --border-color: #DBE5F0;
+            --green-accent: #10B981;
             --green-light: #DCFCE7;
             --green-dark: #065F46;
-            --red-accent: #DC2626;
+            --red-accent: #EF4444;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -58,325 +57,337 @@
             width: 100%;
             min-height: 100vh;
             min-height: 100dvh;
-            background: var(--bg-main);
+            overflow-y: auto;
+            background: radial-gradient(circle at top, #EBF8FC 0%, var(--bg-main) 60%);
             color: var(--text-dark);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding-bottom: 72px;
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
+            padding-bottom: 70px;
         }
 
-        /* 1. Шапка сайта с чистой иерархией и одним главным действием */
+        /* 1. Шапка сайта в цветовой гамме INDEX FRIDAY (компактная и яркая) */
         header {
-            background: linear-gradient(145deg, #0B253A 0%, #005F88 60%, #0088C2 100%);
+            position: relative;
+            z-index: 10;
+            background: linear-gradient(150deg, #0082B8 0%, var(--kz-blue) 55%, #22B8CF 90%, var(--kz-gold) 135%);
             color: #FFFFFF;
-            padding: 16px 16px 26px 16px;
-            border-bottom-left-radius: 24px;
-            border-bottom-right-radius: 24px;
-            box-shadow: 0 6px 20px rgba(11, 37, 58, 0.14);
+            text-align: center;
+            padding: 18px 16px 24px 16px;
+            box-shadow: 0 8px 24px rgba(0, 161, 222, 0.22);
+            border-bottom-left-radius: 26px;
+            border-bottom-right-radius: 26px;
+            overflow: hidden;
         }
 
-        .header-container {
-            width: 100%;
-            max-width: 560px;
-            margin: 0 auto;
+        header::after {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 160px;
+            height: 160px;
+            background: radial-gradient(circle, rgba(255, 199, 44, 0.35) 0%, rgba(255, 199, 44, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
         }
 
         .header-top-bar {
+            width: 100%;
+            max-width: 520px;
+            margin: 0 auto 10px auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 18px;
+            gap: 8px;
         }
 
         .brand-badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.45);
             color: #FFFFFF;
             font-weight: 700;
-            font-size: 0.875rem;
+            font-size: 0.76rem;
+            letter-spacing: 0.4px;
+            padding: 5px 14px;
+            border-radius: 20px;
             text-decoration: none;
-            padding: 6px 12px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.22);
-            transition: background 0.2s ease;
-        }
-
-        .brand-badge:hover {
-            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
         }
 
         .top-right-controls {
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .top-login-link {
-            color: #FFFFFF;
-            text-decoration: none;
-            font-size: 0.875rem;
-            font-weight: 600;
-            padding: 6px 12px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.14);
-            border: 1px solid rgba(255, 255, 255, 0.28);
-            transition: background 0.2s ease;
-        }
-
-        .top-login-link:hover {
-            background: rgba(255, 255, 255, 0.24);
+            gap: 8px;
         }
 
         .lang-switch {
             display: inline-flex;
-            background: rgba(0, 0, 0, 0.28);
-            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
             padding: 3px;
-            border: 1px solid rgba(255, 255, 255, 0.22);
+            border: 1px solid rgba(255, 255, 255, 0.35);
         }
 
         .lang-btn {
             border: none;
             background: transparent;
             color: rgba(255, 255, 255, 0.85);
-            font-weight: 700;
-            font-size: 0.8125rem;
-            padding: 4px 10px;
-            border-radius: 7px;
+            font-weight: 800;
+            font-size: 0.72rem;
+            padding: 4px 11px;
+            border-radius: 16px;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
         .lang-btn.active {
-            background: #FFFFFF;
+            background: var(--kz-gold);
             color: var(--text-dark);
         }
 
-        .hero-box {
-            text-align: left;
-        }
-
         h1 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            line-height: 1.25;
-            letter-spacing: -0.02em;
+            font-size: 1.45rem;
+            font-weight: 900;
+            line-height: 1.18;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
             color: #FFFFFF;
-            margin-bottom: 8px;
+            max-width: 400px;
+            margin: 0 auto;
+            text-shadow: 0 2px 10px rgba(0, 80, 120, 0.2);
         }
 
         .subtitle {
-            font-size: 0.9375rem;
-            line-height: 1.45;
-            font-weight: 400;
-            color: rgba(255, 255, 255, 0.88);
-            margin-bottom: 18px;
+            font-size: 0.8rem;
+            margin-top: 4px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--kz-gold);
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
         }
 
-        /* Главное действие на первом экране (Пункт 2 аудита) */
-        .hero-primary-cta {
+        /* Панель входа / приветствия в шапке */
+        #authArea {
+            margin-top: 14px;
+            text-align: center;
+            max-width: 520px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #guestActions {
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 1 главная кнопка для нового посетителя + компактные кнопки входа */
+        .hero-test-btn {
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             width: 100%;
-            background: var(--kz-gold);
+            max-width: 380px;
+            background: linear-gradient(135deg, var(--kz-gold) 0%, #FFD55A 100%);
             color: var(--text-dark);
+            border: 1px solid rgba(255, 255, 255, 0.65);
+            padding: 11px 18px;
+            border-radius: 22px;
+            font-size: 0.84rem;
+            font-weight: 800;
             text-decoration: none;
-            font-size: 0.96rem;
-            font-weight: 700;
-            padding: 14px 18px;
-            border-radius: 14px;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
-            transition: transform 0.15s ease, background 0.15s ease;
+            box-shadow: 0 6px 16px rgba(0, 60, 90, 0.18);
+            transition: transform 0.15s ease;
         }
 
-        .hero-primary-cta:hover {
-            background: #FFD24C;
+        .hero-test-btn:active {
+            transform: scale(0.97);
         }
 
-        .hero-primary-cta:active {
-            transform: scale(0.99);
-        }
-
-        .guest-sub-row {
-            margin-top: 10px;
-            font-size: 0.8125rem;
-            color: rgba(255, 255, 255, 0.8);
-            display: flex;
-            justify-content: space-between;
+        .guest-auth-links {
+            display: inline-flex;
             align-items: center;
-            flex-wrap: wrap;
             gap: 8px;
         }
 
-        .guest-sub-row a {
+        .auth-btn, #logoutButton {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 7px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            background: var(--card-bg);
+            color: var(--kz-blue-dark);
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.15s ease;
+        }
+
+        .auth-btn.register-btn {
+            background: rgba(255, 255, 255, 0.22);
             color: #FFFFFF;
-            font-weight: 600;
-            text-decoration: underline;
-            text-underline-offset: 3px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
 
-        /* Панель авторизованного врача */
-        #userArea {
-            display: none;
-            margin-top: 14px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.18);
-        }
-
-        .user-bar-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
+        #userArea { display: none; }
 
         #welcomeMessage {
-            font-size: 0.9375rem;
-            font-weight: 700;
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.95rem;
+            font-weight: 900;
+            letter-spacing: 0.4px;
             color: #FFFFFF;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
         }
 
-        .user-controls-right {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
+        .user-plan-row {
+            margin-bottom: 10px;
         }
 
         .plan-badge {
             display: inline-flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.35);
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.22);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             color: #FFFFFF;
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 5px 11px;
-            border-radius: 8px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            text-transform: uppercase;
             text-decoration: none;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
         }
 
         .plan-badge.active-plan {
-            background: rgba(255, 199, 44, 0.22);
+            background: rgba(255, 199, 44, 0.25);
             border-color: var(--kz-gold);
             color: var(--kz-gold);
         }
 
-        #logoutButton, .admin-btn {
-            padding: 5px 11px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            background: rgba(0, 0, 0, 0.2);
-            color: #FFFFFF;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        /* 2. Основная зона (Читаемый кегль 14–16 px) */
+        /* 2. Основная зона */
         main {
+            position: relative;
+            z-index: 1;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
             width: 100%;
-            max-width: 560px;
+            max-width: 520px;
             margin: 0 auto;
-            padding: 20px 16px;
+            padding: 16px 14px;
             flex-grow: 1;
         }
 
-        /* Тренажер «Слово часа» */
+        /* ==========================================================================
+           WORD OF THE HOUR (С ОЗВУЧКОЙ И ВЫВОДОМ ТОЛЬКО ВЫБРАННОГО ЯЗЫКА)
+           ========================================================================== */
         .woth-card {
             background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 18px;
-            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+            border: 1px solid rgba(217, 160, 0, 0.28);
+            border-left: 6px solid var(--kz-gold);
+            border-radius: 18px;
+            padding: 14px 16px;
+            text-align: center;
+            box-shadow: 0 6px 18px rgba(0, 119, 163, 0.06);
         }
 
         .woth-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 8px;
-            margin-bottom: 10px;
+            gap: 6px;
+            margin-bottom: 4px;
         }
 
         .woth-title {
-            font-size: 0.8125rem;
-            font-weight: 700;
-            color: var(--kz-blue-dark);
-            background: var(--kz-blue-light);
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--kz-gold-dark);
+            background: var(--kz-gold-light);
             padding: 4px 10px;
-            border-radius: 8px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
         }
 
         .woth-meta-right {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .woth-streak {
-            font-size: 0.8125rem;
-            font-weight: 700;
+            font-size: 0.7rem;
+            font-weight: 800;
             background: var(--green-light);
             color: var(--green-dark);
-            padding: 4px 9px;
-            border-radius: 8px;
+            padding: 4px 8px;
+            border-radius: 10px;
         }
 
         .woth-timer {
-            font-size: 0.8125rem;
-            color: var(--text-muted);
-            font-weight: 600;
+            font-size: 0.7rem;
+            color: var(--kz-blue-dark);
+            font-weight: 700;
+            background: var(--kz-blue-light);
+            padding: 4px 9px;
+            border-radius: 10px;
         }
 
         .woth-term-row {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             gap: 10px;
-            margin: 6px 0 14px 0;
+            margin: 6px 0 8px 0;
         }
 
         .woth-term {
-            font-size: 1.375rem;
-            font-weight: 800;
+            font-size: 1.3rem;
+            font-weight: 900;
             color: var(--text-dark);
-            letter-spacing: -0.01em;
         }
 
         .speak-word-btn {
-            padding: 6px 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            background: #F8FAFC;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 161, 222, 0.3);
+            background: var(--kz-blue-light);
             color: var(--kz-blue-dark);
             cursor: pointer;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            transition: background 0.15s ease;
-        }
-
-        .speak-word-btn:hover {
-            background: var(--kz-blue-light);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
         }
 
         .quiz-options {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
+            text-align: left;
         }
 
         .quiz-btn {
@@ -384,10 +395,10 @@
             background: #F8FAFC;
             color: var(--text-dark);
             border: 1px solid var(--border-color);
-            padding: 12px 14px;
-            border-radius: 10px;
+            padding: 10px 14px;
+            border-radius: 11px;
             font-weight: 600;
-            font-size: 0.9375rem; /* 15px */
+            font-size: 0.88rem; /* 14px+ */
             cursor: pointer;
             transition: all 0.15s ease;
             text-align: left;
@@ -399,15 +410,15 @@
         }
 
         .quiz-btn.correct {
-            background: var(--green-light) !important;
-            color: var(--green-dark) !important;
+            background: #DEF7EC !important;
+            color: #03543F !important;
             border-color: var(--green-accent) !important;
             font-weight: 700;
         }
 
         .quiz-btn.incorrect {
-            background: #FEE2E2 !important;
-            color: #991B1B !important;
+            background: #FDE8E8 !important;
+            color: #9B1C1C !important;
             border-color: var(--red-accent) !important;
         }
 
@@ -416,14 +427,14 @@
             align-items: center;
             justify-content: space-between;
             gap: 8px;
-            margin-top: 10px;
+            margin-top: 8px;
             min-height: 24px;
             flex-wrap: wrap;
         }
 
         .quiz-feedback {
-            font-size: 0.875rem; /* 14px */
-            font-weight: 700;
+            font-size: 0.8rem;
+            font-weight: 800;
         }
 
         .next-word-btn {
@@ -431,35 +442,39 @@
             background: var(--kz-blue);
             color: #FFFFFF;
             border: none;
-            padding: 7px 14px;
-            border-radius: 8px;
-            font-size: 0.8125rem;
-            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 0.74rem;
+            font-weight: 800;
             cursor: pointer;
             margin-left: auto;
         }
 
-        /* Заголовок секции */
-        .section-heading {
-            font-size: 1.0625rem;
+        /* ==========================================================================
+           НОВАЯ АРХИТЕКТУРА КАТЕГОРИЙ И КОМПАКТНЫХ ВЛОЖЕННЫХ МОДУЛЕЙ
+           (Чтобы глаз не терялся при раскрытии!)
+           ========================================================================== */
+        .section-caption {
+            font-size: 0.74rem;
             font-weight: 800;
-            color: var(--text-dark);
-            margin-top: 6px;
-            letter-spacing: -0.01em;
+            color: var(--kz-blue-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            margin: 4px 0 -2px 4px;
         }
 
-        /* Складывающиеся категории на нативных <details> */
         details.category-group {
             background: var(--card-bg);
-            border-radius: 16px;
+            border-radius: 18px;
             border: 1px solid var(--border-color);
-            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+            box-shadow: 0 5px 15px rgba(0, 119, 163, 0.05);
             overflow: hidden;
-            transition: border-color 0.2s ease;
+            transition: all 0.22s ease;
         }
 
-        details.category-group:hover {
-            border-color: #CBD5E1;
+        details.category-group[open] {
+            border-color: rgba(0, 161, 222, 0.45);
+            box-shadow: 0 8px 22px rgba(0, 119, 163, 0.1);
         }
 
         summary.category-header {
@@ -467,11 +482,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px;
+            padding: 14px 16px;
             cursor: pointer;
             position: relative;
             user-select: none;
-            background: var(--card-bg);
+            background: linear-gradient(90deg, #FFFFFF 0%, #F8FBFF 100%);
+            transition: background 0.2s ease;
         }
 
         summary.category-header::-webkit-details-marker {
@@ -482,33 +498,70 @@
             content: '';
             position: absolute;
             left: 0; top: 0; bottom: 0;
-            width: 4px;
-            background: var(--kz-blue);
+            width: 6px;
+            background: linear-gradient(180deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
         }
 
         details.category-group[open] > summary.category-header {
-            background: #F8FAFC;
+            background: linear-gradient(90deg, var(--kz-blue-light) 0%, #FFFFFF 100%);
             border-bottom: 1px solid var(--border-color);
         }
 
+        .cat-head-left {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .cat-icon-box {
+            width: 46px;
+            height: 46px;
+            background: linear-gradient(135deg, #EBF8FC 0%, #D6F1FA 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            flex-shrink: 0;
+            border: 1px solid rgba(0, 161, 222, 0.2);
+        }
+
+        .cat-head-text h2 {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            flex-wrap: wrap;
+            margin-bottom: 2px;
+        }
+
+        .cat-head-text p {
+            font-size: 0.82rem; /* 13.2px+ */
+            color: var(--text-muted);
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
         .chevron-box {
-            width: 28px;
-            height: 28px;
-            border-radius: 8px;
-            background: #F1F5F9;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--kz-blue-light);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            margin-left: 10px;
-            transition: all 0.2s ease;
+            margin-left: 8px;
+            transition: all 0.25s ease;
         }
 
         .chevron-icon {
             width: 18px;
             height: 18px;
-            fill: var(--text-muted);
-            transition: transform 0.2s ease;
+            fill: var(--kz-blue);
+            transition: transform 0.25s ease;
         }
 
         details.category-group[open] .chevron-box {
@@ -520,128 +573,152 @@
             fill: #FFFFFF;
         }
 
+        /* Внутренний список: древовидный отступ слева + компактные строки */
         .category-body {
-            padding: 12px;
-            background: #F8FAFC;
+            padding: 10px 12px 12px 18px;
+            background: #F4F8FB;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 7px;
+            border-left: 3px solid rgba(0, 161, 222, 0.25);
+            margin-left: 14px;
+            margin-right: 10px;
+            margin-top: 8px;
+            margin-bottom: 10px;
+            border-radius: 0 12px 12px 0;
         }
 
-        /* Карточки модулей и тренажеров (Увеличенный текст 14.5–16 px, без капса) */
-        .trainer-card {
+        /* Компактная строка модуля (визуально четко отличается от заголовка категории!) */
+        .module-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: var(--card-bg);
-            border-radius: 14px;
-            padding: 14px 16px;
+            background: #FFFFFF;
+            border-radius: 12px;
+            padding: 10px 12px;
             text-decoration: none;
             color: var(--text-dark);
-            border: 1px solid var(--border-color);
-            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+            border: 1px solid #E2ECF5;
+            transition: all 0.16s ease;
+            gap: 10px;
         }
 
-        .trainer-card:hover {
+        .module-row:hover {
             border-color: var(--kz-blue);
-            box-shadow: 0 4px 12px rgba(0, 136, 194, 0.08);
+            transform: translateX(2px);
+            box-shadow: 0 3px 10px rgba(0, 119, 163, 0.07);
         }
 
-        .trainer-card.free-card {
-            border-left: 4px solid var(--green-accent);
+        .module-row.free-row {
+            background: linear-gradient(90deg, #FFFFFF 0%, #F2FDF7 100%);
+            border-color: #A7F3D0;
         }
 
-        .card-content {
+        .mod-left {
             display: flex;
-            align-items: flex-start;
-            gap: 12px;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
         }
 
-        .status-icon {
+        .mod-mini-icon {
             width: 36px;
             height: 36px;
-            background: var(--kz-blue-light);
-            color: var(--kz-blue-dark);
             border-radius: 10px;
+            background: var(--kz-blue-light);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.95rem;
-            font-weight: 700;
+            font-size: 1.05rem;
             flex-shrink: 0;
+            border: 1px solid rgba(0, 161, 222, 0.15);
+        }
+
+        .free-row .mod-mini-icon {
+            background: var(--green-light);
+            border-color: rgba(16, 185, 129, 0.25);
+        }
+
+        .mod-info {
+            min-width: 0;
+        }
+
+        .mod-title {
+            font-size: 0.88rem; /* 14.1px */
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1.25;
+        }
+
+        .mod-desc {
+            font-size: 0.82rem; /* 13.2px */
+            color: var(--text-muted);
+            font-weight: 500;
+            line-height: 1.3;
             margin-top: 2px;
         }
 
-        .free-card .status-icon {
-            background: var(--green-light);
-            color: var(--green-dark);
-        }
-
-        .card-text h2 {
-            font-size: 1rem; /* 16px */
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 4px;
+        .mod-right {
             display: flex;
             align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            line-height: 1.3;
-        }
-
-        .card-text p {
-            font-size: 0.9rem; /* 14.4px — решает проблему мелкого шрифта 11.84px */
-            color: var(--text-muted);
-            font-weight: 400;
-            line-height: 1.45;
+            gap: 6px;
+            flex-shrink: 0;
         }
 
         .badge-pill {
-            font-size: 0.72rem;
-            font-weight: 700;
-            background: #F1F5F9;
-            color: var(--text-muted);
-            border: 1px solid var(--border-color);
-            padding: 2px 8px;
-            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            background: var(--kz-gold-light);
+            color: #B45309;
+            border: 1px solid rgba(217, 160, 0, 0.35);
+            padding: 3px 8px;
+            border-radius: 8px;
+            white-space: nowrap;
         }
 
         .badge-pill.free-pill {
             background: var(--green-light);
             color: var(--green-dark);
-            border-color: #A7F3D0;
+            border-color: #86EFAC;
         }
 
-        .arrow-icon {
-            width: 18px;
-            height: 18px;
-            fill: #94A3B8;
-            flex-shrink: 0;
-            margin-left: 8px;
+        .badge-pill.blue-pill {
+            background: var(--kz-blue-light);
+            color: var(--kz-blue-dark);
+            border-color: rgba(0, 161, 222, 0.28);
         }
 
-        /* Видеоплеер YouTube внутри Грамматики */
-        .video-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 10px;
+        /* Компактный спойлер для демо-видео внутри Грамматики */
+        details.video-spoiler {
+            background: #FFFFFF;
+            border: 1px dashed var(--kz-blue);
+            border-radius: 11px;
+            padding: 8px 11px;
         }
 
-        .video-caption {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            padding: 2px 4px 8px 4px;
+        details.video-spoiler summary {
+            list-style: none;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--kz-blue-dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        details.video-spoiler summary::-webkit-details-marker {
+            display: none;
         }
 
         .video-container {
             position: relative;
             width: 100%;
             padding-top: 56.25%;
-            border-radius: 10px;
+            border-radius: 9px;
             overflow: hidden;
             background: #000;
+            margin-top: 8px;
         }
 
         .video-container iframe {
@@ -651,149 +728,59 @@
             border: 0;
         }
 
-        /* ==========================================================================
-           3 ОТКРЫТЫЕ КАРТОЧКИ ТАРИФОВ С КОНТЕКСТНЫМИ ССЫЛКАМИ WHATSAPP (Пункты 5 и 6)
-           ========================================================================== */
-        .pricing-preview-section {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 8px;
-        }
-
-        .plan-open-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 18px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
-        }
-
-        .plan-open-card.featured-hit {
-            border: 2px solid var(--kz-blue);
-            background: linear-gradient(180deg, #FFFFFF 0%, #F4FAFF 100%);
-            box-shadow: 0 6px 18px rgba(0, 136, 194, 0.1);
-        }
-
-        .plan-top-line {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .plan-name-title {
-            font-size: 1.0625rem;
-            font-weight: 800;
-            color: var(--text-dark);
+        /* Карточка перехода ко всем Тарифам */
+        .tarifs-banner-card {
             display: flex;
             align-items: center;
-            gap: 8px;
-        }
-
-        .hit-tag {
-            font-size: 0.72rem;
-            font-weight: 700;
-            background: var(--kz-blue);
-            color: #FFFFFF;
-            padding: 2px 8px;
-            border-radius: 6px;
-        }
-
-        .plan-price-val {
-            font-size: 1.125rem;
-            font-weight: 800;
-            color: var(--kz-blue-dark);
-        }
-
-        .plan-price-val small {
-            font-size: 0.8125rem;
-            font-weight: 500;
-            color: var(--text-muted);
-        }
-
-        .plan-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            font-size: 0.9rem; /* 14.4px */
+            justify-content: space-between;
+            background: linear-gradient(135deg, #FFFFFF 0%, #FFFBEB 55%, #FEF3C7 100%);
+            border: 1.5px solid var(--kz-gold-dark);
+            border-radius: 18px;
+            padding: 15px 16px;
+            text-decoration: none;
             color: var(--text-dark);
+            box-shadow: 0 6px 18px rgba(217, 160, 0, 0.12);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s ease;
         }
 
-        .plan-list li {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
+        .tarifs-banner-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 6px;
+            background: linear-gradient(180deg, var(--kz-gold) 0%, var(--kz-gold-dark) 100%);
         }
 
-        .plan-list li::before {
-            content: '✓';
-            color: var(--green-accent);
-            font-weight: 800;
+        .tarifs-banner-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .arrow-icon {
+            width: 18px;
+            height: 18px;
+            fill: var(--kz-blue-dark);
             flex-shrink: 0;
         }
 
-        .plan-wa-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            background: var(--kz-blue);
-            color: #FFFFFF;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 700;
-            padding: 12px 16px;
-            border-radius: 12px;
-            margin-top: 4px;
-            transition: background 0.15s ease;
-        }
-
-        .plan-wa-btn:hover {
-            background: var(--kz-blue-dark);
-        }
-
-        .plan-open-card.featured-hit .plan-wa-btn {
-            background: var(--text-dark);
-            color: var(--kz-gold);
-        }
-
-        .more-tarifs-link {
-            text-align: center;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--kz-blue-dark);
-            text-decoration: none;
-            padding: 10px;
-            border-radius: 12px;
-            background: #FFFFFF;
-            border: 1px solid var(--border-color);
-        }
-
-        /* ==========================================================================
-           1. КОМПАКТНЫЙ НИЖНИЙ БАННЕР 56 PX ПО СКРОЛЛУ С КРЕСТИКОМ (Пункт 1 аудита)
-           ========================================================================== */
+        /* Компактная плавающая плашка 56 px по скроллу с крестиком */
         .sticky-bottom-cta {
             position: fixed;
-            bottom: 12px;
+            bottom: 10px;
             left: 50%;
-            transform: translateX(-50%) translateY(120%);
+            transform: translateX(-50%) translateY(130%);
             width: calc(100% - 24px);
-            max-width: 520px;
-            height: 56px;
-            background: rgba(15, 23, 42, 0.96);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            max-width: 500px;
+            height: 54px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             color: #FFFFFF;
             padding: 0 12px 0 16px;
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.25);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 199, 44, 0.45);
+            box-shadow: 0 10px 26px rgba(15, 23, 42, 0.3);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -813,11 +800,11 @@
         .sbc-link {
             color: #FFFFFF;
             text-decoration: none;
-            font-size: 0.875rem;
-            font-weight: 600;
+            font-size: 0.82rem;
+            font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             flex: 1;
             white-space: nowrap;
             overflow: hidden;
@@ -826,17 +813,17 @@
 
         .sbc-link strong {
             color: var(--kz-gold);
-            font-weight: 700;
+            font-weight: 800;
         }
 
         .sbc-close-btn {
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             border-radius: 8px;
             border: none;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.12);
             color: #CBD5E1;
-            font-size: 1rem;
+            font-size: 0.95rem;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -844,40 +831,43 @@
             flex-shrink: 0;
         }
 
-        .sbc-close-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            color: #FFFFFF;
-        }
-
-        /* 4. Футер (Только на выбранном языке, без дублей) */
+        /* 4. Футер */
         footer {
+            position: relative;
+            z-index: 1;
             text-align: center;
-            padding: 12px 16px 28px 16px;
+            padding: 10px 16px 26px 16px;
             display: flex;
             flex-direction: column;
             gap: 10px;
             align-items: center;
-            max-width: 560px;
-            width: 100%;
-            margin: 0 auto;
         }
 
-        .footer-link {
+        .instagram-link {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 100%;
-            color: var(--text-dark);
+            gap: 8px;
+            color: var(--kz-blue-dark);
             text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            padding: 12px 20px;
-            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.84rem;
+            padding: 11px 22px;
+            border-radius: 22px;
             background: var(--card-bg);
-            border: 1px solid var(--border-color);
+            border: 1px solid rgba(0, 161, 222, 0.25);
+            box-shadow: 0 4px 12px rgba(0, 119, 163, 0.05);
         }
 
-        /* 3. Строгая логика показа ТОЛЬКО выбранного языка (KZ или RU) */
+        .instagram-link.cta-primary {
+            background: linear-gradient(135deg, var(--kz-gold) 0%, #FFD55A 100%);
+            color: var(--text-dark);
+            border-color: var(--kz-gold-dark);
+            font-weight: 800;
+            box-shadow: 0 4px 14px rgba(217, 160, 0, 0.22);
+        }
+
+        /* Показ строго одного выбранного языка (KZ или RU) */
         [lang-val] { display: none !important; }
         body.lang-kz span[lang-val="kz"] { display: inline !important; }
         body.lang-ru span[lang-val="ru"] { display: inline !important; }
@@ -904,112 +894,94 @@
 </head>
 <body class="lang-ru">
 
-    <!-- 1. ШАПКА САЙТА: Вход в углу + 1 главное действие для нового врача -->
+    <!-- 1. ШАПКА САЙТА (Лаконичная, в цветах INDEX FRIDAY + Приветствие перед именем) -->
     <header>
-        <div class="header-container">
-            <div class="header-top-bar">
-                <a href="https://instagram.com/doctors.speak" target="_blank" rel="noopener noreferrer" class="brand-badge">@doctors.speak</a>
+        <div class="header-top-bar">
+            <a href="https://instagram.com/doctors.speak" target="_blank" rel="noopener noreferrer" class="brand-badge">✨ @doctors.speak</a>
 
-                <div class="top-right-controls">
-                    <a href="login.html" id="topLoginLink" class="top-login-link">
-                        <span lang-val="ru">Войти</span>
-                        <span lang-val="kz">Кіру</span>
+            <div class="top-right-controls">
+                <div class="lang-switch">
+                    <button type="button" class="lang-btn" id="btn-kz" onclick="setLanguage('kz')">KZ</button>
+                    <button type="button" class="lang-btn active" id="btn-ru" onclick="setLanguage('ru')">RU</button>
+                </div>
+            </div>
+        </div>
+
+        <h1>MEDICAL ENGLISH</h1>
+        <p class="subtitle" lang-val="ru">Платформа для врачей и студентов</p>
+        <p class="subtitle" lang-val="kz">Дәрігерлер мен студенттерге арналған платформа</p>
+
+        <div id="authArea">
+            <!-- Блок для гостя: 1 главная кнопка уровня + компактный вход -->
+            <div id="guestActions">
+                <a href="./test/" class="hero-test-btn">
+                    <span lang-val="ru">🎯 Бесплатно проверить уровень за 5 минут</span>
+                    <span lang-val="kz">🎯 Деңгейді 5 минутта тегін тексеру</span>
+                </a>
+                <div class="guest-auth-links">
+                    <a href="login.html" id="loginButton" class="auth-btn">
+                        <span lang-val="ru">🔐 Войти</span>
+                        <span lang-val="kz">🔐 Кіру</span>
                     </a>
-                    <div class="lang-switch" role="group" aria-label="Выбор языка">
-                        <button type="button" class="lang-btn" id="btn-kz" onclick="setLanguage('kz')">KZ</button>
-                        <button type="button" class="lang-btn active" id="btn-ru" onclick="setLanguage('ru')">RU</button>
-                    </div>
+                    <a href="register.html" id="registerButton" class="auth-btn register-btn">
+                        <span lang-val="ru">✍️ Регистрация</span>
+                        <span lang-val="kz">✍️ Тіркелу</span>
+                    </a>
                 </div>
             </div>
 
-            <div class="hero-box">
-                <h1 lang-val="ru">Медицинский английский для врачей и студентов</h1>
-                <h1 lang-val="kz" style="display:none;">Дәрігерлер мен студенттерге арналған медициналық ағылшын тілі</h1>
-
-                <p class="subtitle" lang-val="ru">Клиническая лексика, опрос пациентов, чтение статей PubMed и подготовка докладов на международные конференции.</p>
-                <p class="subtitle" lang-val="kz">Клиникалық сөздік қор, науқастан анамнез жинау, PubMed мақалаларын оқу және халықаралық конференцияларға дайындық.</p>
-
-                <!-- Главное целевое действие для нового посетителя -->
-                <div id="guestActions">
-                    <a href="./test/" class="hero-primary-cta">
-                        <span lang-val="ru">Бесплатно проверить уровень за 5 минут →</span>
-                        <span lang-val="kz">Деңгейді 5 минутта тегін тексеру →</span>
-                    </a>
-                    <div class="guest-sub-row">
-                        <span lang-val="ru">Бесплатные тренажеры открыты ниже</span>
-                        <span lang-val="kz">Тегін тренажерлер төменде ашық</span>
-                        <a href="register.html" id="registerButton">
-                            <span lang-val="ru">Создать аккаунт</span>
-                            <span lang-val="kz">Тіркелу</span>
-                        </a>
-                    </div>
+            <!-- Блок авторизованного пользователя (с приветствием HELLO, ИМЯ! 👋) -->
+            <div id="userArea">
+                <span id="welcomeMessage"></span>
+                <div class="user-plan-row">
+                    <a href="./tarifs/" id="userPlanBadge" class="plan-badge">YOUR PLAN: FREE</a>
                 </div>
-
-                <!-- Блок авторизованного пользователя -->
-                <div id="userArea">
-                    <div class="user-bar-inner">
-                        <span id="welcomeMessage"></span>
-                        <div class="user-controls-right">
-                            <a href="./tarifs/" id="userPlanBadge" class="plan-badge">Тариф: Free</a>
-                            <button type="button" id="logoutButton" onclick="logout()">
-                                <span lang-val="ru">Выйти</span>
-                                <span lang-val="kz">Шығу</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <button type="button" id="logoutButton" onclick="logout()">🚪 LOG OUT</button>
             </div>
         </div>
     </header>
 
     <main>
-        <!-- Блок «Слово часа» (выводит переводы строго на выбранном языке) -->
-        <section class="woth-card" id="wothSection">
+        <!-- Блок «Слово часа» -->
+        <div class="woth-card" id="wothSection">
             <div class="woth-header">
-                <span class="woth-title">
-                    <span lang-val="ru">Слово часа</span>
-                    <span lang-val="kz">Сағат сөзі</span>
-                </span>
+                <span class="woth-title">⚡ Word of the hour</span>
                 <div class="woth-meta-right">
-                    <span class="woth-streak" id="wothStreakBadge">0</span>
-                    <span class="woth-timer" id="wothTimer">--:--</span>
+                    <span class="woth-streak" id="wothStreakBadge">🔥 0</span>
+                    <span class="woth-timer" id="wothTimer">Next in --:--</span>
                 </div>
             </div>
             <div class="woth-term-row">
                 <div class="woth-term" id="wothTerm">Loading...</div>
-                <button type="button" class="speak-word-btn" onclick="speakCurrentWord()">
-                    <span lang-val="ru">Озвучить</span>
-                    <span lang-val="kz">Тыңдау</span>
-                </button>
+                <button type="button" class="speak-word-btn" onclick="speakCurrentWord()" title="Прослушать произношение">🔊</button>
             </div>
             <div class="quiz-options" id="quizOptions"></div>
             <div class="quiz-footer-row">
                 <div class="quiz-feedback" id="quizFeedback"></div>
                 <button type="button" class="next-word-btn" id="practiceMoreBtn" onclick="loadBonusWord()">
-                    <span lang-val="ru">Ещё слово →</span>
-                    <span lang-val="kz">Тағы сөз →</span>
+                    <span lang-val="ru">⚡ Ещё слово (+1) ↻</span>
+                    <span lang-val="kz">⚡ Тағы сөз (+1) ↻</span>
                 </button>
             </div>
-        </section>
-
-        <div class="section-heading">
-            <span lang-val="ru">Учебные разделы и тренажеры</span>
-            <span lang-val="kz">Оқу бөлімдері мен тренажерлер</span>
         </div>
 
-        <!-- ==================== 1. КАТЕГОРИЯ: МЕДИЦИНСКАЯ ЛЕКСИКА ==================== -->
-        <details class="category-group" open>
+        <div class="section-caption">
+            <span lang-val="ru">Выберите категорию обучения (нажмите для раскрытия):</span>
+            <span lang-val="kz">Оқу санатын таңдаңыз (ашу үшін басыңыз):</span>
+        </div>
+
+        <!-- ==================== 1. КАТЕГОРИЯ: VOCABULARY ==================== -->
+        <details class="category-group">
             <summary class="category-header">
-                <div class="card-content">
-                    <div class="status-icon">Aa</div>
-                    <div class="card-text">
+                <div class="cat-head-left">
+                    <div class="cat-icon-box">🧠</div>
+                    <div class="cat-head-text">
                         <h2>
-                            <span lang-val="ru">Медицинский словарный запас</span>
-                            <span lang-val="kz">Медициналық сөздік қор</span>
-                            <span class="badge-pill free-pill" id="vocabCatBadge">1 Free</span>
+                            <span>Vocabulary</span>
+                            <span class="badge-pill free-pill" id="vocabCatBadge">1 Free · 2 Standard+</span>
                         </h2>
-                        <p lang-val="ru">Анатомические, клинические и академические термины для работы и чтения статей</p>
-                        <p lang-val="kz">Жұмыс пен ғылыми мақалаларды оқуға арналған анатомиялық, клиникалық және академиялық терминдер</p>
+                        <p lang-val="ru">Анатомическая, клиническая и академическая лексика</p>
+                        <p lang-val="kz">Анатомиялық, клиникалық және академиялық сөздік қор</p>
                     </div>
                 </div>
                 <div class="chevron-box">
@@ -1018,72 +990,65 @@
             </summary>
 
             <div class="category-body">
-                <!-- Анатомический тренажер (FREE) -->
-                <a href="./anatomic/" class="trainer-card free-card">
-                    <div class="card-content">
-                        <div class="status-icon">✓</div>
-                        <div class="card-text">
-                            <h2>
-                                <span lang-val="ru">Анатомическая лексика</span>
-                                <span lang-val="kz">Анатомиялық лексика</span>
-                                <span class="badge-pill free-pill">Free</span>
-                            </h2>
-                            <p lang-val="ru">Органы, кости и базовые анатомические структуры (доступно бесплатно)</p>
-                            <p lang-val="kz">Ағзалар, сүйектер және базалық анатомиялық құрылымдар (тегін ашық)</p>
+                <!-- 1. Анатомический тренажер (FREE) -->
+                <a href="./anatomic/" class="module-row free-row">
+                    <div class="mod-left">
+                        <div class="mod-mini-icon">🫀</div>
+                        <div class="mod-info">
+                            <div class="mod-title">Anatomy Vocabulary</div>
+                            <div class="mod-desc" lang-val="ru">Органы, кости и структуры тела</div>
+                            <div class="mod-desc" lang-val="kz">Ағзалар, сүйектер және дене құрылымдары</div>
                         </div>
                     </div>
-                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    <div class="mod-right">
+                        <span class="badge-pill free-pill">🔓 Free</span>
+                    </div>
                 </a>
 
-                <!-- Клинический тренажер -->
-                <a href="./clinical" class="trainer-card">
-                    <div class="card-content">
-                        <div class="status-icon" id="clinicalIcon">🔒</div>
-                        <div class="card-text">
-                            <h2>
-                                <span lang-val="ru">Клиническая лексика</span>
-                                <span lang-val="kz">Клиникалық лексика</span>
-                                <span class="badge-pill" id="clinicalBadge">Standard+</span>
-                            </h2>
-                            <p lang-val="ru">Симптомы, жалобы, физикальный осмотр и ведение пациентов в стационаре</p>
-                            <p lang-val="kz">Симптомдар, шағымдар, физикалық тексеру және науқастарды емдеу</p>
+                <!-- 2. Клинический тренажер (STANDARD+) -->
+                <a href="./clinical" class="module-row">
+                    <div class="mod-left">
+                        <div class="mod-mini-icon" id="clinicalIcon">🔒</div>
+                        <div class="mod-info">
+                            <div class="mod-title">Clinical Vocabulary</div>
+                            <div class="mod-desc" lang-val="ru">Симптомы, жалобы и осмотр пациентов</div>
+                            <div class="mod-desc" lang-val="kz">Симптомдар, шағымдар және науқасты қарау</div>
                         </div>
                     </div>
-                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    <div class="mod-right">
+                        <span class="badge-pill" id="clinicalBadge">Standard+</span>
+                    </div>
                 </a>
 
-                <!-- Академический тренажер -->
-                <a href="./academic/" class="trainer-card">
-                    <div class="card-content">
-                        <div class="status-icon" id="academicIcon">🔒</div>
-                        <div class="card-text">
-                            <h2>
-                                <span lang-val="ru">Академическая лексика (PubMed & IELTS)</span>
-                                <span lang-val="kz">Академиялық лексика (PubMed & IELTS)</span>
-                                <span class="badge-pill" id="academicBadge">Standard+</span>
-                            </h2>
-                            <p lang-val="ru">Лексика для чтения зарубежных гайдлайнов, научных публикаций и сдачи экзаменов</p>
-                            <p lang-val="kz">Шетелдік гайдлайндар мен ғылыми мақалаларды оқуға және емтихан тапсыруға арналған сөздер</p>
+                <!-- 3. Академический тренажер (STANDARD+) -->
+                <a href="./academic/" class="module-row">
+                    <div class="mod-left">
+                        <div class="mod-mini-icon" id="academicIcon">🔒</div>
+                        <div class="mod-info">
+                            <div class="mod-title">Academic Vocabulary</div>
+                            <div class="mod-desc" lang-val="ru">Термины для статей PubMed, гайдлайнов и IELTS</div>
+                            <div class="mod-desc" lang-val="kz">PubMed мақалалары, гайдлайндар және IELTS терминдері</div>
                         </div>
                     </div>
-                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    <div class="mod-right">
+                        <span class="badge-pill" id="academicBadge">Standard+</span>
+                    </div>
                 </a>
             </div>
         </details>
 
-        <!-- ==================== 2. КАТЕГОРИЯ: ГРАММАТИКА И ВИДЕОКУРС ==================== -->
+        <!-- ==================== 2. КАТЕГОРИЯ: GRAMMAR & VIDEOCOURSE ==================== -->
         <details class="category-group">
             <summary class="category-header">
-                <div class="card-content">
-                    <div class="status-icon">15</div>
-                    <div class="card-text">
+                <div class="cat-head-left">
+                    <div class="cat-icon-box">🚀</div>
+                    <div class="cat-head-text">
                         <h2>
-                            <span lang-val="ru">Медицинская грамматика и видеокурс</span>
-                            <span lang-val="kz">Медициналық грамматика және видеокурс</span>
-                            <span class="badge-pill free-pill">2 Free</span>
+                            <span>Grammar & Videocourse</span>
+                            <span class="badge-pill blue-pill">15 уроков + Чанки</span>
                         </h2>
-                        <p lang-val="ru">15 структурированных уроков от A1 до B2: видеоразборы, конспекты и практика</p>
-                        <p lang-val="kz">A1-ден B2-ге дейінгі 15 жүйелі сабақ: видео-талдау, конспектілер және тренажерлер</p>
+                        <p lang-val="ru">Медицинская грамматика A1–B2: видео, конспекты и тренажеры</p>
+                        <p lang-val="kz">A1–B2 медициналық грамматикасы: видео, конспект және тренажерлер</p>
                     </div>
                 </div>
                 <div class="chevron-box">
@@ -1092,89 +1057,84 @@
             </summary>
 
             <div class="category-body">
-                <!-- Демо-видео YouTube -->
-                <div class="video-card">
-                    <div class="video-caption">
-                        <span lang-val="ru">Пример разбора медицинской грамматики:</span>
-                        <span lang-val="kz">Медициналық грамматиканы талдау үлгісі:</span>
+                <!-- 1. Метод Чанков и шпаргалка (FREE) -->
+                <a href="./grammar/chunks/" class="module-row free-row">
+                    <div class="mod-left">
+                        <div class="mod-mini-icon">🧩</div>
+                        <div class="mod-info">
+                            <div class="mod-title" lang-val="ru">Метод «Чанков» и шпаргалка</div>
+                            <div class="mod-title" lang-val="kz">«Чанк» әдісі және шпаргалка</div>
+                            <div class="mod-desc" lang-val="ru">Готовые речевые конструкции + все 15 таблиц времен</div>
+                            <div class="mod-desc" lang-val="kz">Дайын сөйлем үлгілері + барлық 15 грамматика кестесі</div>
+                        </div>
                     </div>
+                    <div class="mod-right">
+                        <span class="badge-pill free-pill">🔓 Free</span>
+                    </div>
+                </a>
+
+                <!-- 2. Демо-тренажер Урока 8 (FREE) -->
+                <a href="./grammar/thereis/" class="module-row free-row">
+                    <div class="mod-left">
+                        <div class="mod-mini-icon">🏥</div>
+                        <div class="mod-info">
+                            <div class="mod-title">Lesson 08: There is / There are</div>
+                            <div class="mod-desc" lang-val="ru">Открытый демо-тренажер по медицинской грамматике</div>
+                            <div class="mod-desc" lang-val="kz">Медициналық грамматика бойынша ашық демо-тренажер</div>
+                        </div>
+                    </div>
+                    <div class="mod-right">
+                        <span class="badge-pill free-pill">🔓 Free</span>
+                    </div>
+                </a>
+
+                <!-- 3. Полный курс грамматики (15 уроков + Экзамен) -->
+                <a href="./grammar/" class="module-row">
+                    <div class="mod-left">
+                        <div class="mod-mini-icon" id="grammarIcon">🔒</div>
+                        <div class="mod-info">
+                            <div class="mod-title">Grammar Full Course (Lessons 1–15)</div>
+                            <div class="mod-desc" lang-val="ru">Все тренажеры (Standard), конспекты (Pro) и видеоуроки (Premium)</div>
+                            <div class="mod-desc" lang-val="kz">Барлық тренажерлер (Standard), конспектілер (Pro) және видеолар (Premium)</div>
+                        </div>
+                    </div>
+                    <div class="mod-right">
+                        <span class="badge-pill" id="grammarBadge">15 уроков</span>
+                    </div>
+                </a>
+
+                <!-- Компактный спойлер с демо-видео YouTube (не занимает экран без клика) -->
+                <details class="video-spoiler">
+                    <summary>
+                        <span lang-val="ru">🎬 Посмотреть демо-фрагмент видеоурока</span>
+                        <span lang-val="kz">🎬 Видеосабақтың демо-үзіндісін көру</span>
+                        <span>⌄</span>
+                    </summary>
                     <div class="video-container">
                         <iframe 
                             src="https://www.youtube.com/embed/j8azjjNha1w" 
-                            title="Разбор медицинской грамматики"
+                            title="Демо видеокурса медицинской грамматики"
                             loading="lazy"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                             allowfullscreen>
                         </iframe>
                     </div>
-                </div>
-
-                <!-- Бесплатный гид по Чанкам и Шпаргалка -->
-                <a href="./grammar/chunks/" class="trainer-card free-card">
-                    <div class="card-content">
-                        <div class="status-icon">✓</div>
-                        <div class="card-text">
-                            <h2>
-                                <span lang-val="ru">Метод «Чанков» и шпаргалка по 15 темам</span>
-                                <span lang-val="kz">«Чанк» әдісі және 15 тақырып бойынша шпаргалка</span>
-                                <span class="badge-pill free-pill">Free</span>
-                            </h2>
-                            <p lang-val="ru">Как брать готовые речевые шаблоны из зарубежных гайдлайнов + сводная таблица времен</p>
-                            <p lang-val="kz">Шетелдік гайдлайндардан дайын сөйлем үлгілерін алу + барлық шақтар кестесі</p>
-                        </div>
-                    </div>
-                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-                </a>
-
-                <!-- Бесплатный демо-урок 8 -->
-                <a href="./grammar/thereis/" class="trainer-card free-card">
-                    <div class="card-content">
-                        <div class="status-icon">✓</div>
-                        <div class="card-text">
-                            <h2>
-                                <span lang-val="ru">Урок 8: Конструкция There is / There are</span>
-                                <span lang-val="kz">8-сабақ: There is / There are құрылымы</span>
-                                <span class="badge-pill free-pill">Free</span>
-                            </h2>
-                            <p lang-val="ru">Открытый тренажер: описание наличия или отсутствия симптомов и патологий</p>
-                            <p lang-val="kz">Симптомдар мен патологиялардың бар-жоғын сипаттауға арналған ашық тренажер</p>
-                        </div>
-                    </div>
-                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-                </a>
-
-                <!-- Полный список грамматики (15 уроков) -->
-                <a href="./grammar/" class="trainer-card">
-                    <div class="card-content">
-                        <div class="status-icon" id="grammarIcon">🔒</div>
-                        <div class="card-text">
-                            <h2>
-                                <span lang-val="ru">Полный курс грамматики (Уроки 1–15 + Экзамен)</span>
-                                <span lang-val="kz">Толық грамматика курсы (1–15 сабақтар + Емтихан)</span>
-                                <span class="badge-pill">15 уроков</span>
-                            </h2>
-                            <p lang-val="ru">Все тренажеры, интерактивные конспекты на примерах UpToDate/NCBI и видеоуроки</p>
-                            <p lang-val="kz">Барлық тренажерлер, UpToDate/NCBI негізіндегі конспектілер және видеосабақтар</p>
-                        </div>
-                    </div>
-                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-                </a>
+                </details>
             </div>
         </details>
 
-        <!-- ==================== 3. КАТЕГОРИЯ: ВРАЧЕБНЫЕ НАВЫКИ И USMLE ==================== -->
+        <!-- ==================== 3. КАТЕГОРИЯ: MEDICAL SKILLS & USMLE ==================== -->
         <details class="category-group">
             <summary class="category-header">
-                <div class="card-content">
-                    <div class="status-icon">MD</div>
-                    <div class="card-text">
+                <div class="cat-head-left">
+                    <div class="cat-icon-box">🗣️</div>
+                    <div class="cat-head-text">
                         <h2>
-                            <span lang-val="ru">Клинические навыки: опрос, статьи, доклады</span>
-                            <span lang-val="kz">Клиникалық машықтар: анамнез, мақала, баяндама</span>
-                            <span class="badge-pill free-pill">Демо Free</span>
+                            <span>Medical Skills & USMLE</span>
+                            <span class="badge-pill free-pill">Тизер Free</span>
                         </h2>
-                        <p lang-val="ru">Сбор анамнеза у иностранных пациентов, работа с литературой, презентации и USMLE</p>
-                        <p lang-val="kz">Науқастан анамнез жинау, ғылыми мақалалармен жұмыс, презентациялар және USMLE</p>
+                        <p lang-val="ru">Опрос пациентов, научные статьи, презентации и USMLE</p>
+                        <p lang-val="kz">Науқас сұрастыру, ғылыми мақалалар, презентация және USMLE</p>
                     </div>
                 </div>
                 <div class="chevron-box">
@@ -1183,123 +1143,113 @@
             </summary>
 
             <div class="category-body">
-                <!-- Тренажер опросов пациентов (Тизер Free) -->
-                <a href="./interviews/" class="trainer-card free-card">
-                    <div class="card-content">
-                        <div class="status-icon" id="interviewIcon">✓</div>
-                        <div class="card-text">
-                            <h2>
-                                <span lang-val="ru">Тренажер опроса пациента (Patient Interview)</span>
-                                <span lang-val="kz">Науқасты сұрастыру тренажері (Patient Interview)</span>
-                                <span class="badge-pill free-pill" id="interviewBadge">Демо Free</span>
-                            </h2>
-                            <p lang-val="ru">Отработка вопросов для сбора жалоб и анамнеза по системе SOCRATES</p>
-                            <p lang-val="kz">SOCRATES жүйесі бойынша шағымдар мен анамнез жинау сұрақтарын жаттықтыру</p>
+                <!-- 1. Тренажер опроса пациентов (Тизер Free / Полный в Standard+) -->
+                <a href="./interviews/" class="module-row free-row">
+                    <div class="mod-left">
+                        <div class="mod-mini-icon" id="interviewIcon">🗣️</div>
+                        <div class="mod-info">
+                            <div class="mod-title">Patient Interview (Тренажер)</div>
+                            <div class="mod-desc" lang-val="ru">Практика сбора анамнеза (демо-тизер открыт бесплатно)</div>
+                            <div class="mod-desc" lang-val="kz">Анамнез жинау практикасы (демо-тизер тегін ашық)</div>
                         </div>
                     </div>
-                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    <div class="mod-right">
+                        <span class="badge-pill free-pill" id="interviewBadge">Тизер Free</span>
+                    </div>
                 </a>
 
-                <!-- Учебник по опросу на английском -->
-                <a href="https://kazdoctors.com/reading/" class="trainer-card">
-                    <div class="card-content">
-                        <div class="status-icon">🔒</div>
-                        <div class="card-text">
-                            <h2>
-                                <span lang-val="ru">Интерактивный учебник по опросу пациентов</span>
-                                <span lang-val="kz">Ағылшынша анамнез жинау оқулығы</span>
-                                <span class="badge-pill">Pro / Premium</span>
-                            </h2>
-                            <p lang-val="ru">Озвученный разговорник врача, объяснение диагноза и разбор 6 клинических диалогов</p>
-                            <p lang-val="kz">Дәрігердің дыбысталған сөздігі, диагнозды түсіндіру және 6 клиникалық диалог</p>
+                <!-- 2. Учебник по опросу на английском (PRO / PREMIUM / VIP) -->
+                <a href="https://kazdoctors.com/reading/" class="module-row">
+                    <div class="mod-left">
+                        <div class="mod-mini-icon" id="interviewBookIcon">🔒</div>
+                        <div class="mod-info">
+                            <div class="mod-title" lang-val="ru">Опрос на английском (Учебник)</div>
+                            <div class="mod-title" lang-val="kz">Ағылшынша анамнез жинау (Оқулық)</div>
+                            <div class="mod-desc" lang-val="ru">Озвученный разговорник SOCRATES и 6 клинических диалогов</div>
+                            <div class="mod-desc" lang-val="kz">SOCRATES дыбысталған сөздігі және 6 клиникалық диалог</div>
                         </div>
                     </div>
-                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    <div class="mod-right">
+                        <span class="badge-pill" id="proBadge1">Pro / Premium</span>
+                    </div>
                 </a>
 
-                <!-- Чтение статей: Видеоуроки и конспект -->
-                <a href="https://kazdoctors.com/reading/" class="trainer-card">
-                    <div class="card-content">
-                        <div class="status-icon">🔒</div>
-                        <div class="card-text">
-                            <h2>
-                                <span lang-val="ru">Поиск и чтение научных статей (Видеоуроки)</span>
-                                <span lang-val="kz">Ғылыми мақалаларды іздеу және оқу (Видеосабақтар)</span>
-                                <span class="badge-pill">Pro / Premium</span>
-                            </h2>
-                            <p lang-val="ru">Алгоритмы работы с PubMed, Cochrane, UpToDate и критическая оценка исследований</p>
-                            <p lang-val="kz">PubMed, Cochrane, UpToDate базаларымен жұмыс және зерттеулерді сыни бағалау</p>
+                <!-- 3. Статьи и гайдлайны — Видеоуроки и конспект (PRO / PREMIUM / VIP) -->
+                <a href="https://kazdoctors.com/reading/" class="module-row">
+                    <div class="mod-left">
+                        <div class="mod-mini-icon" id="readingVidIcon">🔒</div>
+                        <div class="mod-info">
+                            <div class="mod-title" lang-val="ru">Статьи и гайдлайны: Видеоуроки</div>
+                            <div class="mod-title" lang-val="kz">Мақалалар мен гайдлайндар: Видеосабақтар</div>
+                            <div class="mod-desc" lang-val="ru">Как искать, отбирать и разбирать статьи в PubMed и Cochrane</div>
+                            <div class="mod-desc" lang-val="kz">PubMed пен Cochrane-де мақалаларды іздеу және талдау</div>
                         </div>
                     </div>
-                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    <div class="mod-right">
+                        <span class="badge-pill" id="proBadge2">Pro / Premium</span>
+                    </div>
                 </a>
 
-                <!-- Чтение статей: Практика -->
-                <a href="https://kazdoctors.com/grammar/reading/" class="trainer-card">
-                    <div class="card-content">
-                        <div class="status-icon">🔒</div>
-                        <div class="card-text">
-                            <h2>
-                                <span lang-val="ru">Практикум по чтению статей и гайдлайнов</span>
-                                <span lang-val="kz">Мақалалар мен гайдлайндарды оқу практикумы</span>
-                                <span class="badge-pill">Pro / Premium</span>
-                            </h2>
-                            <p lang-val="ru">Тренажер разбора реальных медицинских абстрактов и клинических руководств</p>
-                            <p lang-val="kz">Нақты медициналық абстрактілер мен клиникалық нұсқаулықтарды талдау тренажері</p>
+                <!-- 4. Статьи и гайдлайны — Практика (PRO / PREMIUM / VIP) -->
+                <a href="https://kazdoctors.com/grammar/reading/" class="module-row">
+                    <div class="mod-left">
+                        <div class="mod-mini-icon" id="readingPracIcon">🔒</div>
+                        <div class="mod-info">
+                            <div class="mod-title" lang-val="ru">Статьи и гайдлайны: Практика</div>
+                            <div class="mod-title" lang-val="kz">Мақалалар мен гайдлайндар: Практика</div>
+                            <div class="mod-desc" lang-val="ru">Тренажер чтения и понимания научных абстрактов</div>
+                            <div class="mod-desc" lang-val="kz">Ғылыми абстрактілерді оқу және түсіну тренажері</div>
                         </div>
                     </div>
-                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    <div class="mod-right">
+                        <span class="badge-pill" id="proBadge3">Pro / Premium</span>
+                    </div>
                 </a>
 
-                <!-- Презентации и постеры -->
-                <a href="https://kazdoctors.com/presentations/" class="trainer-card">
-                    <div class="card-content">
-                        <div class="status-icon">🔒</div>
-                        <div class="card-text">
-                            <h2>
-                                <span lang-val="ru">Медицинские презентации и научные постеры</span>
-                                <span lang-val="kz">Медициналық презентациялар мен ғылыми постерлер</span>
-                                <span class="badge-pill">Pro / Premium</span>
-                            </h2>
-                            <p lang-val="ru">Структура слайдов для конференций, готовые фразы докладчика на английском и подача</p>
-                            <p lang-val="kz">Конференция слайдтарының құрылымы, баяндамашының дайын фразалары және шешендік өнер</p>
+                <!-- 5. Презентации и постеры (PRO / PREMIUM / VIP) -->
+                <a href="https://kazdoctors.com/presentations/" class="module-row">
+                    <div class="mod-left">
+                        <div class="mod-mini-icon" id="presIcon">🔒</div>
+                        <div class="mod-info">
+                            <div class="mod-title">Presentations & Posters</div>
+                            <div class="mod-desc" lang-val="ru">Как составлять и докладывать презентации на конференциях</div>
+                            <div class="mod-desc" lang-val="kz">Конференцияларға презентация мен постер дайындау</div>
                         </div>
                     </div>
-                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    <div class="mod-right">
+                        <span class="badge-pill" id="proBadge4">Pro / Premium</span>
+                    </div>
                 </a>
 
-                <!-- USMLE -->
-                <a href="./usmle/" class="trainer-card">
-                    <div class="card-content">
-                        <div class="status-icon">US</div>
-                        <div class="card-text">
-                            <h2>
-                                <span lang-val="ru">Подготовка к USMLE (Клинические задачи)</span>
-                                <span lang-val="kz">USMLE емтиханына дайындық (Клиникалық кейстер)</span>
-                                <span class="badge-pill">Кейсы</span>
-                            </h2>
-                            <p lang-val="ru">Разбор клинических виньеток и тестовых вопросов международного образца</p>
-                            <p lang-val="kz">Халықаралық үлгідегі клиникалық есептер мен тест сұрақтарын талдау</p>
+                <!-- 6. USMLE Preparation -->
+                <a href="./usmle/" class="module-row">
+                    <div class="mod-left">
+                        <div class="mod-mini-icon">📚</div>
+                        <div class="mod-info">
+                            <div class="mod-title">USMLE Preparation</div>
+                            <div class="mod-desc" lang-val="ru">Тренажеры и клинические задачи формата USMLE</div>
+                            <div class="mod-desc" lang-val="kz">USMLE форматындағы клиникалық есептер мен тренажерлер</div>
                         </div>
                     </div>
-                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    <div class="mod-right">
+                        <span class="badge-pill blue-pill">Кейсы</span>
+                    </div>
                 </a>
             </div>
         </details>
 
-        <!-- ==================== 4. КАТЕГОРИЯ: ИГРОВЫЕ ТРЕНАЖЕРЫ ==================== -->
+        <!-- ==================== 4. КАТЕГОРИЯ: MEDICAL GAMES ==================== -->
         <details class="category-group">
             <summary class="category-header">
-                <div class="card-content">
-                    <div class="status-icon">2x</div>
-                    <div class="card-text">
+                <div class="cat-head-left">
+                    <div class="cat-icon-box">🎮</div>
+                    <div class="cat-head-text">
                         <h2>
-                            <span lang-val="ru">Игровые тренажеры терминов</span>
-                            <span lang-val="kz">Терминдерге арналған ойын тренажерлері</span>
-                            <span class="badge-pill free-pill">2 Free</span>
+                            <span>Medical Games</span>
+                            <span class="badge-pill free-pill">🔓 2 игры Free</span>
                         </h2>
-                        <p lang-val="ru">Быстрая тренировка перевода медицинских слов в динамичном формате</p>
-                        <p lang-val="kz">Медициналық сөздердің аудармасын динамикалық форматта жылдам жаттықтыру</p>
+                        <p lang-val="ru">Игровые тренажеры для быстрого запоминания терминов</p>
+                        <p lang-val="kz">Терминдерді ойын түрінде тез жаттауға арналған тренажерлер</p>
                     </div>
                 </div>
                 <div class="chevron-box">
@@ -1308,131 +1258,73 @@
             </summary>
 
             <div class="category-body">
-                <a href="./game/" class="trainer-card free-card">
-                    <div class="card-content">
-                        <div class="status-icon">✓</div>
-                        <div class="card-text">
-                            <h2>
-                                <span>Run Doctor</span>
-                                <span class="badge-pill free-pill">Free</span>
-                            </h2>
-                            <p lang-val="ru">Тренировка скорости вспоминания клинических терминов в движении</p>
-                            <p lang-val="kz">Клиникалық терминдерді жылдам еске түсіруге арналған интерактивті жаттығу</p>
+                <a href="./game/" class="module-row free-row">
+                    <div class="mod-left">
+                        <div class="mod-mini-icon">🏃‍♂️</div>
+                        <div class="mod-info">
+                            <div class="mod-title">Game: Run Doctor!</div>
+                            <div class="mod-desc" lang-val="ru">Проверьте словарный запас на скорости</div>
+                            <div class="mod-desc" lang-val="kz">Сөздік қорыңызды жылдамдыққа тексеріңіз</div>
                         </div>
                     </div>
-                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    <div class="mod-right">
+                        <span class="badge-pill free-pill">🔓 Free</span>
+                    </div>
                 </a>
 
-                <a href="./syringes/" class="trainer-card free-card">
-                    <div class="card-content">
-                        <div class="status-icon">✓</div>
-                        <div class="card-text">
-                            <h2>
-                                <span>Syringe Shots</span>
-                                <span class="badge-pill free-pill">Free</span>
-                            </h2>
-                            <p lang-val="ru">Закрепление перевода симптомов и анатомических терминов на точность</p>
-                            <p lang-val="kz">Симптомдар мен анатомиялық терминдердің аудармасын дәлдікке бекіту</p>
+                <a href="./syringes/" class="module-row free-row">
+                    <div class="mod-left">
+                        <div class="mod-mini-icon">💉</div>
+                        <div class="mod-info">
+                            <div class="mod-title">Game: Syringe Shots</div>
+                            <div class="mod-desc" lang-val="ru">Сбивайте верные переводы клинических терминов</div>
+                            <div class="mod-desc" lang-val="kz">Клиникалық терминдердің дұрыс аудармасын табыңыз</div>
                         </div>
                     </div>
-                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    <div class="mod-right">
+                        <span class="badge-pill free-pill">🔓 Free</span>
+                    </div>
                 </a>
             </div>
         </details>
 
-        <!-- ==================== 5. 3 ОТКРЫТЫЕ КАРТОЧКИ ТАРИФОВ С КОНТЕКСТНЫМИ ССЫЛКАМИ WHATSAPP ==================== -->
-        <section class="pricing-preview-section" id="pricingPreview">
-            <div class="section-heading">
-                <span lang-val="ru">Тарифы полного доступа</span>
-                <span lang-val="kz">Толық доступ тарифтері</span>
-            </div>
-
-            <!-- Карточка 1: STANDARD -->
-            <div class="plan-open-card">
-                <div class="plan-top-line">
-                    <div class="plan-name-title">Standard</div>
-                    <div class="plan-price-val">7 990 ₸ <small lang-val="ru">/ мес</small><small lang-val="kz">/ ай</small></div>
+        <!-- Яркая карточка перехода к Тарифам -->
+        <a href="./tarifs/" class="tarifs-banner-card">
+            <div class="cat-head-left">
+                <div class="cat-icon-box" style="background: linear-gradient(135deg, #FFFFFF 0%, #FEF08A 100%); border-color: rgba(217,160,0,0.4);">💎</div>
+                <div class="cat-head-text">
+                    <h2>
+                        <span lang-val="ru">Тарифы и программы обучения</span>
+                        <span lang-val="kz">Тарифтер мен оқу бағдарламалары</span>
+                        <span class="badge-pill">от 7 990 ₸</span>
+                    </h2>
+                    <p lang-val="ru">Подписки Standard / Pro / Premium / VIP, индивидуальные занятия и Speaking Club</p>
+                    <p lang-val="kz">Standard / Pro / Premium / VIP жазылымдары, жеке сабақтар және Speaking Club</p>
                 </div>
-                <ul class="plan-list">
-                    <li>
-                        <span lang-val="ru">Все тренажеры лексики (Clinical & Academic), 15 модулей грамматики и опрос пациентов</span>
-                        <span lang-val="kz">Барлық сөздік (Clinical & Academic), 15 грамматика модулі және науқасты сұрастыру тренажерлері</span>
-                    </li>
-                    <li>
-                        <span lang-val="ru">Выгода при оплате за 6 месяцев: 39 990 ₸ (−17%)</span>
-                        <span lang-val="kz">6 айға төлегенде тиімді баға: 39 990 ₸ (−17%)</span>
-                    </li>
-                </ul>
-                <a href="https://wa.me/77081595038?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D1%82%D0%B0%D1%80%D0%B8%D1%84%20STANDARD" target="_blank" rel="noopener noreferrer" class="plan-wa-btn" lang-val="ru">Подключить Standard в WhatsApp</a>
-                <a href="https://wa.me/77081595038?text=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%D0%B5%D1%82%D1%81%D1%96%D0%B7%20%D0%B1%D0%B5%2C%20STANDARD%20%D1%82%D0%B0%D1%80%D0%B8%D1%84%D1%96%D0%BD%20%D2%9B%D0%BE%D1%81%D2%9B%D1%8B%D0%BC%20%D0%BA%D0%B5%D0%BB%D0%B5%D0%B4%D1%96" target="_blank" rel="noopener noreferrer" class="plan-wa-btn" lang-val="kz">WhatsApp арқылы Standard қосу</a>
             </div>
-
-            <!-- Карточка 2: PREMIUM (Хит) -->
-            <div class="plan-open-card featured-hit">
-                <div class="plan-top-line">
-                    <div class="plan-name-title">
-                        <span>Premium</span>
-                        <span class="hit-tag" lang-val="ru">Выбор врачей</span>
-                        <span class="hit-tag" lang-val="kz">Дәрігерлер таңдауы</span>
-                    </div>
-                    <div class="plan-price-val">22 990 ₸ <small lang-val="ru">/ мес</small><small lang-val="kz">/ ай</small></div>
-                </div>
-                <ul class="plan-list">
-                    <li>
-                        <span lang-val="ru">Все тренажеры + интерактивные конспекты + полный видеокурс (грамматика, опрос, статьи, презентации)</span>
-                        <span lang-val="kz">Барлық тренажерлер + интерактивті конспектілер + толық видеокурс (грамматика, анамнез, мақалалар, презентация)</span>
-                    </li>
-                    <li>
-                        <span lang-val="ru">Пакеты со скидкой: 3 мес — 59 990 ₸ (−13%) · 6 мес — 99 990 ₸ (−28%)</span>
-                        <span lang-val="kz">Жеңілдікпен пакеттер: 3 ай — 59 990 ₸ (−13%) · 6 ай — 99 990 ₸ (−28%)</span>
-                    </li>
-                </ul>
-                <a href="https://wa.me/77081595038?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D1%82%D0%B0%D1%80%D0%B8%D1%84%20PREMIUM" target="_blank" rel="noopener noreferrer" class="plan-wa-btn" lang-val="ru">Подключить Premium в WhatsApp</a>
-                <a href="https://wa.me/77081595038?text=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%D0%B5%D1%82%D1%81%D1%96%D0%B7%20%D0%B1%D0%B5%2C%20PREMIUM%20%D1%82%D0%B0%D1%80%D0%B8%D1%84%D1%96%D0%BD%20%D2%9B%D0%BE%D1%81%D2%9B%D1%8B%D0%BC%20%D0%BA%D0%B5%D0%BB%D0%B5%D0%B4%D1%96" target="_blank" rel="noopener noreferrer" class="plan-wa-btn" lang-val="kz">WhatsApp арқылы Premium қосу</a>
-            </div>
-
-            <!-- Карточка 3: VIP -->
-            <div class="plan-open-card">
-                <div class="plan-top-line">
-                    <div class="plan-name-title">VIP (с преподавателем)</div>
-                    <div class="plan-price-val">57 990 ₸ <small lang-val="ru">/ мес</small><small lang-val="kz">/ ай</small></div>
-                </div>
-                <ul class="plan-list">
-                    <li>
-                        <span lang-val="ru">Полный доступ Premium + 4 индивидуальных занятия по 60 минут с преподавателем и проверкой заданий</span>
-                        <span lang-val="kz">Толық Premium доступы + оқытушымен 60 минуттық 4 жеке сабақ және тапсырмаларды тексеру</span>
-                    </li>
-                </ul>
-                <a href="https://wa.me/77081595038?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D1%82%D0%B0%D1%80%D0%B8%D1%84%20VIP" target="_blank" rel="noopener noreferrer" class="plan-wa-btn" lang-val="ru">Записаться на VIP в WhatsApp</a>
-                <a href="https://wa.me/77081595038?text=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%D0%B5%D1%82%D1%81%D1%96%D0%B7%20%D0%B1%D0%B5%2C%20VIP%20%D1%82%D0%B0%D1%80%D0%B8%D1%84%D1%96%D0%BD%D0%B5%20%D0%B6%D0%B0%D0%B7%D1%8B%D0%BB%D2%93%D1%8B%D0%BC%20%D0%BA%D0%B5%D0%BB%D0%B5%D0%B4%D1%96" target="_blank" rel="noopener noreferrer" class="plan-wa-btn" lang-val="kz">WhatsApp арқылы VIP-ке жазылу</a>
-            </div>
-
-            <a href="./tarifs/" class="more-tarifs-link">
-                <span lang-val="ru">Все тарифы (Pro, Speaking Club, Индивидуальные уроки) и таблица сравнения →</span>
-                <span lang-val="kz">Барлық тарифтер (Pro, Speaking Club, Жеке сабақтар) және салыстыру кестесі →</span>
-            </a>
-        </section>
+            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+        </a>
 
     </main>
 
-    <!-- 1. Компактная плавающая строка 56 px: появляется только после скролла ниже теста и закрывается крестиком -->
-    <div class="sticky-bottom-cta" id="stickyBottomCta" role="region" aria-label="Предложение подписки">
+    <!-- Компактная плавающая строка 54 px: появляется только после прокрутки ниже "Слова часа" и закрывается крестиком -->
+    <div class="sticky-bottom-cta" id="stickyBottomCta">
         <a href="./tarifs/" class="sbc-link">
-            <span lang-val="ru">От 7 990 ₸/мес · <strong>Тарифы →</strong></span>
-            <span lang-val="kz">Айына 7 990 ₸ бастап · <strong>Тарифтер →</strong></span>
+            <span lang-val="ru">🔥 Полный доступ от 7 990 ₸/мес · <strong>Тарифы ➔</strong></span>
+            <span lang-val="kz">🔥 Толық доступ 7 990 ₸/айдан · <strong>Тарифтер ➔</strong></span>
         </a>
-        <button type="button" class="sbc-close-btn" onclick="dismissStickyBar()" aria-label="Закрыть баннер">✕</button>
+        <button type="button" class="sbc-close-btn" onclick="dismissStickyBar()" aria-label="Закрыть">✕</button>
     </div>
 
     <footer>
-        <a href="https://wa.me/77081595038?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D0%BF%D1%80%D0%BE%D0%BA%D0%BE%D0%BD%D1%81%D1%83%D0%BB%D1%8C%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%D1%81%D1%8F%20%D0%BF%D0%BE%20%D0%BE%D0%B1%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D1%8E%20%D0%BD%D0%B0%20kazdoctors.com" target="_blank" rel="noopener noreferrer" class="footer-link" lang-val="ru">
-            Задать вопрос в WhatsApp
+        <a href="https://wa.me/77081595038?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BF%D0%BE%D0%BB%D1%83%D1%87%D0%B8%D1%82%D1%8C%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%20%D0%BD%D0%B0%20kazdoctors.com" target="_blank" rel="noopener noreferrer" class="instagram-link cta-primary" lang-val="ru">
+            🔥 Записаться и получить доступ (WhatsApp)
         </a>
-        <a href="https://wa.me/77081595038?text=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%D0%B5%D1%82%D1%81%D1%96%D0%B7%20%D0%B1%D0%B5%2C%20kazdoctors.com%20%D0%B1%D0%BE%D0%B9%D1%8B%D0%BD%D1%88%D0%B0%20%D0%BA%D0%B5%D2%A3%D0%B5%D1%81%20%D0%B0%D0%BB%D2%93%D1%8B%D0%BC%20%D0%BA%D0%B5%D0%BB%D0%B5%D0%B4%D1%96" target="_blank" rel="noopener noreferrer" class="footer-link" lang-val="kz">
-            WhatsApp арқылы сұрақ қою
+        <a href="https://wa.me/77081595038?text=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%D0%B5%D1%82%D1%81%D1%96%D0%B7%20%D0%B1%D0%B5!%20kazdoctors.com%20%D1%81%D0%B0%D0%B9%D1%82%D1%8B%D0%BD%D0%B0%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%20%D0%B0%D0%BB%D2%93%D1%8B%D0%BC%20%D0%BA%D0%B5%D0%BB%D0%B5%D0%B4%D1%96" target="_blank" rel="noopener noreferrer" class="instagram-link cta-primary" lang-val="kz">
+            🔥 Жазылу және доступ алу (WhatsApp)
         </a>
-        <a href="https://instagram.com/doctors.speak" target="_blank" rel="noopener noreferrer" class="footer-link">
-            Instagram @doctors.speak
+        <a href="https://instagram.com/doctors.speak" target="_blank" rel="noopener noreferrer" class="instagram-link">
+            <span>📸 Instagram @doctors.speak</span>
         </a>
     </footer>
 
@@ -1446,11 +1338,19 @@
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     const PLAN_DISPLAY_NAMES = {
-        free: "Free",
-        standard: "Standard",
-        pro: "Pro",
-        premium: "Premium",
-        vip: "VIP"
+        free: "FREE",
+        standard: "STANDARD",
+        pro: "PRO",
+        premium: "PREMIUM",
+        vip: "VIP 👑"
+    };
+
+    const TIER_LEVELS = {
+        free: 0,
+        standard: 1,
+        pro: 2,
+        premium: 3,
+        vip: 4
     };
 
     let currentLang = localStorage.getItem('selected_lang') || 'ru';
@@ -1460,7 +1360,6 @@
     function setLanguage(lang) {
         currentLang = lang;
         document.body.className = 'lang-' + lang;
-        document.documentElement.lang = lang === 'kz' ? 'kk' : 'ru';
         document.getElementById('btn-kz').classList.toggle('active', lang === 'kz');
         document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
         localStorage.setItem('selected_lang', lang);
@@ -1471,7 +1370,20 @@
         }
     }
 
-    // Управление компактным 56px баннером по прокрутке ниже блока "Слово часа"
+    // Авто-сворачивание других категорий при открытии одной (чтобы экран не растягивался)
+    document.querySelectorAll('details.category-group').forEach((targetGroup) => {
+        targetGroup.addEventListener('toggle', () => {
+            if (targetGroup.open) {
+                document.querySelectorAll('details.category-group').forEach((otherGroup) => {
+                    if (otherGroup !== targetGroup && otherGroup.open) {
+                        otherGroup.removeAttribute('open');
+                    }
+                });
+            }
+        });
+    });
+
+    // Управление нижней плашкой 54px по скроллу
     function dismissStickyBar() {
         stickyDismissed = true;
         sessionStorage.setItem('ds_sticky_dismissed', '1');
@@ -1583,62 +1495,81 @@
 
     function showLoggedIn(user, hasActiveSub, profileName, tier) {
         document.getElementById("guestActions").style.display = "none";
-        document.getElementById("topLoginLink").style.display = "none";
         document.getElementById("userArea").style.display = "block";
 
-        const fallbackEmailName = user.email ? user.email.split('@')[0] : "Doctor";
-        const displayName = (profileName && profileName.trim()) || user.user_metadata?.name || fallbackEmailName;
+        // Приветственная надпись перед именем (HELLO, ИМЯ! 👋)
+        const fallbackEmailName = user.email ? user.email.split('@')[0] : "DOCTOR";
+        const displayName = (
+            (profileName && profileName.trim()) ||
+            user.user_metadata?.name ||
+            fallbackEmailName
+        ).toUpperCase();
 
-        document.getElementById("welcomeMessage").textContent = `${displayName}`;
+        document.getElementById("welcomeMessage").textContent = `HELLO, ${displayName}! 👋`;
 
+        // Обновляем строчку YOUR PLAN
         const planBadge = document.getElementById("userPlanBadge");
-        const planLabel = PLAN_DISPLAY_NAMES[tier] || (hasActiveSub ? "Standard" : "Free");
-        planBadge.textContent = `Тариф: ${planLabel}`;
+        const planLabel = PLAN_DISPLAY_NAMES[tier] || (hasActiveSub ? "STANDARD" : "FREE");
+        planBadge.textContent = `YOUR PLAN: ${planLabel}`;
         planBadge.classList.toggle("active-plan", hasActiveSub);
 
-        if (hasActiveSub) {
-            document.getElementById("clinicalIcon").textContent = "✓";
-            document.getElementById("clinicalBadge").textContent = "Открыто";
+        const tierLevel = TIER_LEVELS[tier] || 0;
+
+        // 1. Логика для тарифа STANDARD и выше (tierLevel >= 1): открываются все тренажеры
+        if (tierLevel >= 1) {
+            document.getElementById("clinicalIcon").textContent = "🩺";
+            document.getElementById("clinicalBadge").textContent = "✅ Открыто";
             document.getElementById("clinicalBadge").className = "badge-pill free-pill";
 
-            document.getElementById("academicIcon").textContent = "✓";
-            document.getElementById("academicBadge").textContent = "Открыто";
+            document.getElementById("academicIcon").textContent = "📚";
+            document.getElementById("academicBadge").textContent = "✅ Открыто";
             document.getElementById("academicBadge").className = "badge-pill free-pill";
 
-            document.getElementById("grammarIcon").textContent = "✓";
-            document.getElementById("vocabCatBadge").textContent = "Открыто";
+            document.getElementById("grammarIcon").textContent = "📖";
+            document.getElementById("grammarBadge").textContent = "✅ Тренажеры";
+            document.getElementById("grammarBadge").className = "badge-pill free-pill";
 
-            document.getElementById("interviewIcon").textContent = "✓";
-            document.getElementById("interviewBadge").textContent = "Открыто";
+            document.getElementById("vocabCatBadge").textContent = "✅ Все открыто";
+            document.getElementById("interviewBadge").textContent = "✅ Открыто";
+        }
 
-            if (tier === 'pro' || tier === 'premium' || tier === 'vip') {
-                isPaidSubscriber = true;
-                document.getElementById("stickyBottomCta").classList.remove("visible");
+        // 2. Логика для тарифа PRO, PREMIUM и VIP (tierLevel >= 2): открываются учебники и конспекты
+        if (tierLevel >= 2) {
+            isPaidSubscriber = true;
+            document.getElementById("stickyBottomCta").classList.remove("visible");
+
+            document.getElementById("interviewBookIcon").textContent = "📘";
+            document.getElementById("readingVidIcon").textContent = "📖";
+            document.getElementById("readingPracIcon").textContent = "🔬";
+            document.getElementById("presIcon").textContent = "🎤";
+
+            const proStatus = tierLevel >= 3 ? "✅ Видео + Конспект" : "✅ Конспект открыт";
+            ["proBadge1", "proBadge2", "proBadge3", "proBadge4"].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.textContent = proStatus;
+                    el.className = "badge-pill free-pill";
+                }
+            });
+
+            if (tierLevel >= 3) {
+                document.getElementById("grammarBadge").textContent = "✅ Полный курс";
             }
-        } else {
-            document.getElementById("clinicalIcon").textContent = "🔒";
-            document.getElementById("academicIcon").textContent = "🔒";
-            document.getElementById("grammarIcon").textContent = "🔒";
         }
 
         if (!document.getElementById("adminBtn")) {
             const adminBtn = document.createElement("a");
             adminBtn.id = "adminBtn";
             adminBtn.href = "admin.html";
-            adminBtn.className = "admin-btn";
-            adminBtn.textContent = "Admin";
-            document.querySelector(".user-controls-right").insertBefore(adminBtn, document.getElementById("logoutButton"));
+            adminBtn.textContent = "⚙️ ADMIN";
+            adminBtn.style.cssText = "display: inline-block; margin-right: 8px; padding: 7px 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.5); background: var(--card-bg); color: var(--kz-blue-dark); font-size: 0.75rem; font-weight: 800; text-decoration: none;";
+            document.getElementById("userArea").insertBefore(adminBtn, document.getElementById("logoutButton"));
         }
     }
 
     function showLoggedOut() {
-        document.getElementById("guestActions").style.display = "block";
-        document.getElementById("topLoginLink").style.display = "inline-flex";
+        document.getElementById("guestActions").style.display = "flex";
         document.getElementById("userArea").style.display = "none";
-
-        document.getElementById("clinicalIcon").textContent = "🔒";
-        document.getElementById("academicIcon").textContent = "🔒";
-        document.getElementById("grammarIcon").textContent = "🔒";
     }
 
     async function logout() {
@@ -1687,25 +1618,25 @@ const words = [
         { en: "Diarrhea", kz: "Іш өту", ru: "Диарея", cat: "clinical" },
         { en: "Insomnia", kz: "Ұйқысыздық", ru: "Бессонница", cat: "clinical" },
         { en: "Dyspnea", kz: "Ентігу (тыныс тарылуы)", ru: "Одышка", cat: "clinical" },
-        { en: "Anemia", kz: "Анемия (қаназдық)", ru: "Анемия", cat: "clinical" },
+        { en: "Anemia", kz: "Анемия", ru: "Анемия", cat: "clinical" },
         { en: "Hyperglycemia", kz: "Гипергликемия", ru: "Гипергликемия", cat: "clinical" },
         { en: "Tachycardia", kz: "Тахикардия", ru: "Тахикардия", cat: "clinical" },
         { en: "Inflammation", kz: "Қабыну", ru: "Воспаление", cat: "clinical" },
 
         // --- 15 ACADEMIC TERMS ---
-        { en: "Increase", kz: "Ұлғаю / Өсу", ru: "Увеличение / Рост", cat: "academic" },
+        { en: "Increase", kz: "Ұлғайту / Өсу", ru: "Увеличение", cat: "academic" },
         { en: "Improve", kz: "Жақсарту", ru: "Улучшать", cat: "academic" },
         { en: "In contrast", kz: "Керісінше", ru: "В отличие / Напротив", cat: "academic" },
-        { en: "Significant", kz: "Маңызды / Елеулі", ru: "Значительный / Достоверный", cat: "academic" },
-        { en: "Evidence", kz: "Дәлел", ru: "Доказательство / Данные", cat: "academic" },
+        { en: "Significant", kz: "Маңызды / Елеулі", ru: "Значительный", cat: "academic" },
+        { en: "Evidence", kz: "Дәлел", ru: "Доказательство", cat: "academic" },
         { en: "Demonstrate", kz: "Көрсету / Дәлелдеу", ru: "Демонстрировать", cat: "academic" },
-        { en: "Objective", kz: "Зерттеу мақсаты", ru: "Цель / Объективный", cat: "academic" },
-        { en: "Decline", kz: "Төмендеу", ru: "Снижение / Ухудшение", cat: "academic" },
-        { en: "Associated", kz: "Байланысты", ru: "Ассоциированный / Связанный", cat: "academic" },
-        { en: "Beneficial", kz: "Пайдалы / Тиімді", ru: "Полезный / Благотворный", cat: "academic" },
-        { en: "Consist", kz: "Тұру (құралу)", ru: "Состоять из", cat: "academic" },
+        { en: "Objective", kz: "Мақсат / Объективті", ru: "Цель / Объективный", cat: "academic" },
+        { en: "Decline", kz: "Төмендеу", ru: "Снижение / Упадок", cat: "academic" },
+        { en: "Associated", kz: "Байланысты", ru: "Связанный", cat: "academic" },
+        { en: "Beneficial", kz: "Пайдалы", ru: "Полезный / Благотворный", cat: "academic" },
+        { en: "Consist", kz: "Тұру (құралу)", ru: "Состоять", cat: "academic" },
         { en: "Evaluate", kz: "Бағалау", ru: "Оценивать", cat: "academic" },
-        { en: "Establish", kz: "Анықтау / Қою (диагноз)", ru: "Устанавливать", cat: "academic" },
+        { en: "Establish", kz: "Анықтау / Құру", ru: "Устанавливать", cat: "academic" },
         { en: "Prevalence", kz: "Таралу жиілігі", ru: "Распространенность", cat: "academic" },
         { en: "Subsequent", kz: "Кейінгі", ru: "Последующий", cat: "academic" }
     ];
@@ -1717,9 +1648,7 @@ const words = [
 
     function updateStreakBadge() {
         const el = document.getElementById('wothStreakBadge');
-        if (el) {
-            el.textContent = currentLang === 'kz' ? `Бүгін: ${dailySolvedCount}` : `Сегодня: ${dailySolvedCount}`;
-        }
+        if (el) el.textContent = `🔥 ${dailySolvedCount}`;
     }
 
     function getHourlyRandomIndex(hourEpoch, length) {
@@ -1748,7 +1677,7 @@ const words = [
         renderWordCardByIndex(idx);
     }
 
-    // 3. Отображаем варианты ответа ТОЛЬКО на выбранном языке (без двойных строк KZ / RU)
+    // Выводим варианты ответа только на выбранном языке (KZ или RU)
     function renderWordCardByIndex(idx) {
         currentWordIndex = idx;
         const currentWord = words[currentWordIndex];
@@ -1793,7 +1722,7 @@ const words = [
         const secs = Math.floor((diffMs % 60000) / 1000);
 
         const pad = n => n.toString().padStart(2, '0');
-        document.getElementById('wothTimer').textContent = `${pad(mins)}:${pad(secs)}`;
+        document.getElementById('wothTimer').textContent = `Next in ${pad(mins)}:${pad(secs)}`;
     }
 
     function checkAnswer(selectedBtn, isCorrect) {
@@ -1815,10 +1744,10 @@ const words = [
             dailySolvedCount += 1;
             localStorage.setItem('ds_daily_words_solved', dailySolvedCount.toString());
             updateStreakBadge();
-            feedback.textContent = currentLang === 'kz' ? "Дұрыс! Жарайсыз!" : "Верно! Отличная работа!";
+            feedback.textContent = currentLang === 'kz' ? "✅ Дұрыс! Жарайсыз!" : "✅ Верно! Отличная работа!";
             feedback.style.color = "var(--green-accent)";
         } else {
-            feedback.textContent = currentLang === 'kz' ? "Қате. Тағы байқап көріңіз!" : "Ошибка. Попробуйте ещё слово!";
+            feedback.textContent = currentLang === 'kz' ? "❌ Қате. Тағы байқап көріңіз!" : "❌ Ошибка. Попробуйте ещё слово!";
             feedback.style.color = "var(--red-accent)";
         }
 
