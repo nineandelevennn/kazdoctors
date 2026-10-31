@@ -1,0 +1,2133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Doctors Speak — Medical Presentations & Conferences</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Подключение Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --kz-blue: #00A1DE;
+            --kz-blue-dark: #0077A3;
+            --kz-blue-light: #EBF8FC;
+            --kz-gold: #FFC72C;
+            --kz-gold-dark: #D9A000;
+            --kz-gold-light: #FFFBEB;
+            --bg-main: #EEF3F8;
+            --card-bg: #FFFFFF;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+            --border-color: #DBE5F0;
+            --green-accent: #10B981;
+            --green-light: #DCFCE7;
+            --green-dark: #15803D;
+            --red-accent: #EF4444;
+            --purple-accent: #7C3AED;
+            --purple-light: #F5F3FF;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            overflow-y: auto;
+            background: radial-gradient(circle at top, #EBF8FC 0%, var(--bg-main) 65%);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding-bottom: 40px;
+        }
+
+        /* 1. Верхняя шапка */
+        header {
+            position: relative;
+            z-index: 20;
+            background: linear-gradient(145deg, #0077A3 0%, var(--kz-blue) 58%, #15B2E8 100%);
+            color: #FFFFFF;
+            text-align: center;
+            padding: 18px 16px 24px 16px;
+            box-shadow: 0 6px 20px rgba(0, 161, 222, 0.24);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+        }
+
+        .header-top-bar {
+            width: 100%;
+            max-width: 860px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        header .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.76rem;
+            padding: 6px 14px;
+            border-radius: 20px;
+            transition: all 0.2s ease;
+        }
+
+        header .back-btn:active {
+            transform: scale(0.96);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .lang-switch {
+            display: inline-flex;
+            background: rgba(0, 0, 0, 0.22);
+            border-radius: 20px;
+            padding: 3px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .lang-btn {
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 800;
+            font-size: 0.72rem;
+            padding: 4px 11px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn.active {
+            background: var(--kz-gold);
+            color: var(--text-dark);
+        }
+
+        .header-badges {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+
+        .brand-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.32);
+            color: #FFFFFF;
+            font-weight: 700;
+            font-size: 0.72rem;
+            letter-spacing: 0.5px;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .tier-status-badge {
+            display: inline-block;
+            background: rgba(255, 199, 44, 0.24);
+            border: 1px solid var(--kz-gold);
+            color: var(--kz-gold);
+            font-weight: 800;
+            font-size: 0.71rem;
+            letter-spacing: 0.5px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        h1 {
+            font-size: 1.32rem;
+            font-weight: 900;
+            line-height: 1.25;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #FFFFFF;
+            max-width: 680px;
+        }
+
+        .subtitle {
+            font-size: 0.77rem;
+            margin-top: 5px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--kz-gold);
+        }
+
+        /* Шкала прогресса вебинара */
+        .progress-widget {
+            width: 100%;
+            max-width: 540px;
+            background: rgba(15, 23, 42, 0.28);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 16px;
+            padding: 10px 14px;
+            margin-top: 12px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .pw-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.73rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-bottom: 6px;
+        }
+
+        .pw-bar-bg {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .pw-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--kz-gold) 0%, #34D399 100%);
+            border-radius: 10px;
+            transition: width 0.35s ease;
+        }
+
+        /* 2. Основной контейнер */
+        main {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 20px 14px;
+            flex-grow: 1;
+        }
+
+        /* Разделитель секций */
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            font-weight: 900;
+            color: var(--kz-blue-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            margin-top: 4px;
+        }
+
+        .section-label::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1.5px solid var(--border-color);
+        }
+
+        /* ==========================================================================
+           БЛОК 1 (СВЕРХУ): ОБЩИЙ ИНТЕРАКТИВНЫЙ КОНСПЕКТ ВЕБИНАРА (PRO / PREMIUM / VIP)
+           ========================================================================== */
+        .master-guide-card {
+            background: linear-gradient(135deg, #FFFFFF 0%, #FFFBEB 65%, #FEF3C7 100%);
+            border: 2px solid var(--kz-gold-dark);
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: 0 8px 22px rgba(217, 160, 0, 0.14);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .master-guide-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 6px;
+            background: linear-gradient(180deg, var(--kz-gold) 0%, var(--kz-gold-dark) 100%);
+        }
+
+        .mg-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .mg-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .mg-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #FFFFFF 0%, #FDE68A 100%);
+            border: 1px solid rgba(217, 160, 0, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .mg-info h2 {
+            font-size: 1.02rem;
+            font-weight: 900;
+            color: var(--text-dark);
+            line-height: 1.25;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .mg-info p {
+            font-size: 0.78rem;
+            color: #475569;
+            font-weight: 600;
+            margin-top: 3px;
+            line-height: 1.4;
+        }
+
+        .tier-pill {
+            font-size: 0.64rem;
+            font-weight: 800;
+            padding: 3px 9px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            background: #1E293B;
+            color: var(--kz-gold);
+        }
+
+        .tier-pill.unlocked {
+            background: var(--green-light);
+            color: var(--green-dark);
+            border: 1px solid #86EFAC;
+        }
+
+        .mg-features-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .mg-feat {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(217, 160, 0, 0.35);
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 0.71rem;
+            font-weight: 700;
+            color: #78350F;
+        }
+
+        .open-guide-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            color: var(--kz-gold);
+            border: 1px solid var(--kz-gold-dark);
+            border-radius: 14px;
+            padding: 13px 18px;
+            font-size: 0.86rem;
+            font-weight: 900;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .open-guide-btn:hover {
+            background: #000000;
+            transform: translateY(-1px);
+        }
+
+        /* Раскрывающийся полный интерактивный конспект (для PRO / PREMIUM / VIP) */
+        #masterGuidePanel {
+            display: none;
+            background: var(--card-bg);
+            border: 2px solid var(--kz-blue);
+            border-radius: 20px;
+            padding: 18px 16px;
+            box-shadow: 0 10px 28px rgba(0, 119, 163, 0.12);
+            flex-direction: column;
+            gap: 16px;
+            animation: fadeIn 0.25s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .guide-tabs-nav {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+        }
+
+        .g-tab-btn {
+            background: #F1F5F9;
+            border: 1px solid var(--border-color);
+            border-radius: 11px;
+            padding: 9px 6px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.18s ease;
+        }
+
+        .g-tab-btn.active {
+            background: var(--kz-blue);
+            color: #FFFFFF;
+            border-color: var(--kz-blue-dark);
+        }
+
+        .guide-tab-body {
+            display: none;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .guide-tab-body.active {
+            display: flex;
+        }
+
+        .guide-box {
+            background: #F8FAFC;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--kz-blue);
+            border-radius: 14px;
+            padding: 14px;
+        }
+
+        .guide-box.gold {
+            border-left-color: var(--kz-gold-dark);
+            background: var(--kz-gold-light);
+        }
+
+        .guide-box.red {
+            border-left-color: var(--red-accent);
+            background: #FEF2F2;
+        }
+
+        .guide-box.green {
+            border-left-color: var(--green-accent);
+            background: #F0FDF4;
+        }
+
+        .guide-box h3 {
+            font-size: 0.92rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .guide-box p, .guide-box li {
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .guide-box ul {
+            padding-left: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        /* Карточки озвученного словарика докладчика */
+        .phrase-section-title {
+            font-size: 0.82rem;
+            font-weight: 900;
+            color: var(--kz-blue-dark);
+            background: var(--kz-blue-light);
+            padding: 6px 12px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-top: 6px;
+        }
+
+        .phrase-item {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .phrase-en {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1.4;
+        }
+
+        .phrase-tr {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-top: 3px;
+            line-height: 1.35;
+        }
+
+        .speak-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 161, 222, 0.3);
+            background: var(--kz-blue-light);
+            color: var(--kz-blue-dark);
+            cursor: pointer;
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.82rem;
+        }
+
+        /* ==========================================================================
+           БЛОК 2 (НИЖЕ): ПЛЕЙЛИСТ ИЗ 8 ВИДЕОНАРЕЗОК С ЗАКРЕПЛЯЮЩИМИ ВОПРОСАМИ
+           ========================================================================== */
+        .playlist-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .lesson-group {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .trainer-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F4FAFF 65%, #E6F4FE 100%);
+            border-radius: 16px;
+            padding: 14px 16px;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 10px rgba(0, 119, 163, 0.05);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #CBE7F9;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .trainer-card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0, 161, 222, 0.12);
+            border-color: #7DD3FC;
+        }
+
+        .trainer-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 5px;
+            background: linear-gradient(180deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+        }
+
+        .lesson-group.completed-clip .trainer-card {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 70%, #DCFCE7 100%);
+            border-color: #86EFAC;
+        }
+
+        .lesson-group.completed-clip .trainer-card::before {
+            background: linear-gradient(180deg, #10B981 0%, #059669 100%);
+        }
+
+        .card-content {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .card-icon {
+            width: 46px;
+            height: 46px;
+            background: linear-gradient(135deg, #FFFFFF 0%, #E0F2FE 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            border: 1px solid rgba(0, 161, 222, 0.22);
+        }
+
+        .card-text h2 {
+            font-size: 0.92rem;
+            font-weight: 800;
+            margin-bottom: 3px;
+            color: var(--text-dark);
+            line-height: 1.25;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .card-text p {
+            font-size: 0.74rem;
+            color: var(--text-muted);
+            line-height: 1.3;
+            font-weight: 600;
+        }
+
+        .clip-num-pill {
+            display: inline-block;
+            background: rgba(0, 161, 222, 0.12);
+            color: var(--kz-blue-dark);
+            font-size: 0.64rem;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+
+        .done-pill-tag {
+            display: none;
+            background: var(--green-light);
+            color: var(--green-dark);
+            border: 1px solid #86EFAC;
+            font-size: 0.62rem;
+            font-weight: 800;
+            padding: 1px 6px;
+            border-radius: 6px;
+        }
+
+        .lesson-group.completed-clip .done-pill-tag {
+            display: inline-block;
+        }
+
+        .arrow-icon {
+            width: 18px;
+            height: 18px;
+            fill: var(--kz-blue-dark);
+            flex-shrink: 0;
+            margin-left: 8px;
+            transition: transform 0.25s ease;
+        }
+
+        .lesson-group.open .trainer-card {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            border-bottom-color: transparent;
+            background: linear-gradient(135deg, #EBF8FC 0%, #D6F1FA 100%);
+        }
+
+        .lesson-group.open .arrow-icon {
+            transform: rotate(90deg);
+        }
+
+        .lesson-dropdown {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s ease;
+            opacity: 0;
+            background: var(--card-bg);
+            border-left: 1px solid #CBE7F9;
+            border-right: 1px solid #CBE7F9;
+            border-bottom: 1px solid #CBE7F9;
+            border-bottom-left-radius: 16px;
+            border-bottom-right-radius: 16px;
+            position: relative;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.03);
+        }
+
+        .lesson-dropdown::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 5px;
+            background: var(--kz-blue);
+        }
+
+        .lesson-group.open .lesson-dropdown {
+            max-height: 2000px;
+            opacity: 1;
+        }
+
+        .dropdown-content-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 14px 16px 16px 20px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        /* Видеоплеер 16:9 и экран блокировки для не-Премиум/ВИП */
+        .video-embed-box {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #0F172A;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .video-embed-box iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
+
+        .video-embed-box.locked {
+            aspect-ratio: auto;
+            min-height: 200px;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 16px;
+        }
+
+        .video-paywall {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 480px;
+            gap: 9px;
+            color: #FFFFFF;
+        }
+
+        .paywall-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 199, 44, 0.18);
+            border: 1px solid rgba(255, 199, 44, 0.45);
+            color: var(--kz-gold);
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .paywall-title {
+            font-size: 0.92rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            line-height: 1.3;
+        }
+
+        .paywall-desc {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #CBD5E1;
+            line-height: 1.45;
+        }
+
+        .paywall-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            margin-top: 4px;
+        }
+
+        .paywall-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 9px 14px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-decoration: none;
+            flex: 1 1 165px;
+        }
+
+        .paywall-btn.tarifs {
+            background: var(--kz-gold);
+            color: var(--text-dark);
+            border: 1px solid var(--kz-gold-dark);
+        }
+
+        .paywall-btn.contact {
+            background: rgba(0, 161, 222, 0.22);
+            color: #FFFFFF;
+            border: 1px solid rgba(0, 161, 222, 0.55);
+        }
+
+        /* Блок закрепляющих вопросов внутри каждой видеонарезки */
+        .clip-summary-note {
+            background: var(--kz-blue-light);
+            border-left: 4px solid var(--kz-blue);
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 0.78rem;
+            line-height: 1.45;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .clip-quiz-box {
+            background: #F8FAFC;
+            border: 1px dashed var(--kz-blue);
+            border-radius: 14px;
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .cq-header {
+            font-size: 0.7rem;
+            font-weight: 900;
+            color: var(--kz-blue-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .cq-item {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 11px 12px;
+        }
+
+        .cq-q {
+            font-size: 0.81rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            line-height: 1.38;
+        }
+
+        .cq-opts {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .cq-btn {
+            background: #F8FAFC;
+            border: 1px solid var(--border-color);
+            border-radius: 9px;
+            padding: 8px 11px;
+            font-size: 0.77rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.15s ease;
+        }
+
+        .cq-btn:hover:not(:disabled) {
+            background: var(--kz-blue-light);
+            border-color: var(--kz-blue);
+        }
+
+        .cq-btn.correct {
+            background: var(--green-light);
+            border-color: var(--green-accent);
+            color: var(--green-dark);
+        }
+
+        .cq-btn.wrong {
+            background: #FEE2E2;
+            border-color: var(--red-accent);
+            color: #991B1B;
+        }
+
+        .cq-fb {
+            display: none;
+            margin-top: 7px;
+            padding: 7px 9px;
+            border-radius: 8px;
+            font-size: 0.74rem;
+            font-weight: 600;
+            background: var(--kz-blue-light);
+            color: var(--kz-blue-dark);
+            line-height: 1.38;
+        }
+
+        .mark-done-btn {
+            background: #FFFFFF;
+            border: 1px dashed var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 9px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.15s ease;
+        }
+
+        .lesson-group.completed-clip .mark-done-btn {
+            background: var(--green-light);
+            border-color: var(--green-accent);
+            color: var(--green-dark);
+        }
+
+        /* Модальное окно блокировки Конспекта (если нет тарифа ПРО / ПРЕМИУМ / ВИП) */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.72);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .modal-card {
+            background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+            color: #FFFFFF;
+            max-width: 460px;
+            width: 100%;
+            border-radius: 22px;
+            padding: 24px 20px;
+            border: 1.5px solid var(--kz-gold);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        /* 3. Подвал */
+        footer {
+            text-align: center;
+            padding: 10px 16px 24px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .instagram-link, footer .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--kz-blue-dark);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 8px 18px;
+            border-radius: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        @media (max-width: 560px) {
+            .guide-tabs-nav {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            h1 { font-size: 1.15rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-top-bar">
+            <a href="https://kazdoctors.com" class="back-btn" id="uiBackBtn">⬅️ На главную</a>
+
+            <div class="lang-switch">
+                <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
+                <button class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
+            </div>
+        </div>
+
+        <div class="header-badges">
+            <div class="brand-badge">Dr. Alikhan Karymsakov • @doctors.speak</div>
+            <a href="https://kazdoctors.com/tarifs" id="tierStatusBadge" class="tier-status-badge">Тариф: FREE</a>
+        </div>
+        <h1 id="uiMainTitle">Как готовить презентации на медицинские конференции</h1>
+        <p class="subtitle" id="uiMainSubtitle">Структура слайдов • Фразы на английском • Подача • Примеры и Постеры</p>
+
+        <!-- Трекер прохождения 8 видеонарезок вебинара -->
+        <div class="progress-widget">
+            <div class="pw-top-row">
+                <span id="uiProgLabel">📈 Прогресс разбора вебинара:</span>
+                <span id="progressCountText" style="color:var(--kz-gold);">0 / 8 тем (0%)</span>
+            </div>
+            <div class="pw-bar-bg">
+                <div class="pw-bar-fill" id="progressBarFill"></div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ==================================================================
+             1. ВЕРХНИЙ БЛОК: ОБЩИЙ ИНТЕРАКТИВНЫЙ КОНСПЕКТ И СЛОВАРИК (PRO / PREMIUM / VIP)
+             ================================================================== -->
+        <div class="section-label" id="uiSec1Label">📖 База знаний и Словарик фраз</div>
+
+        <div class="master-guide-card">
+            <div class="mg-top-row">
+                <div class="mg-left">
+                    <div class="mg-icon">📑</div>
+                    <div class="mg-info">
+                        <h2>
+                            <span id="uiGuideTitle">Полный интерактивный конспект + Словарик докладчика</span>
+                            <span class="tier-pill" id="guideTierPill">🔒 ПРО / ПРЕМИУМ / ВИП</span>
+                        </h2>
+                        <p id="uiGuideDesc">
+                            Вся выжимка вебинара в одном месте: схемы слайдов (Clinical Case & Research), постеры и готовые английские фразы с озвучкой произношения (🔊).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mg-features-pills" id="uiGuidePills">
+                <span class="mg-feat">✓ Принципы и 5 ошибок слайдов</span>
+                <span class="mg-feat">✓ Структура Case Report (7 шагов)</span>
+                <span class="mg-feat">✓ Структура Research (6 шагов)</span>
+                <span class="mg-feat">✓ Научные постеры</span>
+                <span class="mg-feat">✓ Озвученный словарик фраз (EN/RU/KZ)</span>
+            </div>
+
+            <button type="button" class="open-guide-btn" onclick="handleMasterGuideClick()" id="uiOpenGuideBtn">
+                📖 ОТКРЫТЬ ИНТЕРАКТИВНЫЙ КОНСПЕКТ И СЛОВАРИК ⌄
+            </button>
+        </div>
+
+        <!-- Раскрывающийся интерактивный конспект (открывается при тарифе PRO, PREMIUM, VIP) -->
+        <section id="masterGuidePanel">
+            <div class="guide-tabs-nav">
+                <button type="button" class="g-tab-btn active" onclick="switchGuideTab(0)" id="gTabBtn0">1. Принципы и Постеры</button>
+                <button type="button" class="g-tab-btn" onclick="switchGuideTab(1)" id="gTabBtn1">2. Схемы: Кейс и Наука</button>
+                <button type="button" class="g-tab-btn" onclick="switchGuideTab(2)" id="gTabBtn2">3. Словарик: Кейс (🔊)</button>
+                <button type="button" class="g-tab-btn" onclick="switchGuideTab(3)" id="gTabBtn3">4. Словарик: Наука (🔊)</button>
+            </div>
+
+            <div class="guide-tab-body active" id="gTab0"></div>
+            <div class="guide-tab-body" id="gTab1"></div>
+            <div class="guide-tab-body" id="gTab2"></div>
+            <div class="guide-tab-body" id="gTab3"></div>
+        </section>
+
+        <!-- ==================================================================
+             2. НИЖНИЙ БЛОК: ПЛЕЙЛИСТ ВИДЕОНАРЕЗОК ВЕБИНАРА С ВОПРОСАМИ
+             ================================================================== -->
+        <div class="section-label" id="uiSec2Label">🎬 Плейлист видеонарезок вебинара (с практикой)</div>
+
+        <div class="playlist-container" id="playlistContainer"></div>
+
+    </main>
+
+    <!-- Модальное окно Paywall для Конспекта (если у пользователя нет PRO / PREMIUM / VIP) -->
+    <div class="modal-overlay" id="guidePaywallModal" onclick="if(event.target===this) closeGuidePaywall()">
+        <div class="modal-card">
+            <div style="font-size:2.1rem;">🔒</div>
+            <span class="paywall-badge" id="modalBadgeText">Доступно в тарифах «ПРО», «ПРЕМИУМ» и «ВИП»</span>
+            <h3 style="font-size:1.08rem; font-weight:900;" id="modalTitleText">Интерактивный конспект и Словарик фраз закрыты для вашего тарифа</h3>
+            <p class="paywall-desc" id="modalDescText">
+                Полный конспект со схемами клинических докладов и озвученным словариком английских фраз доступен подписчикам тарифов «Про», «Премиум» и «ВИП».
+            </p>
+            <div class="paywall-actions" style="width:100%;">
+                <a href="https://kazdoctors.com/tarifs" class="paywall-btn tarifs" id="modalTarifsBtn">🌟 Перейти к тарифам</a>
+                <a href="https://wa.me/77081595038?text=Здравствуйте!%20Хочу%20открыть%20доступ%20к%20модулю%20Презентаций" target="_blank" class="paywall-btn contact" id="modalWaBtn">💬 WhatsApp</a>
+            </div>
+            <button type="button" onclick="closeGuidePaywall()" style="background:none; border:none; color:#94A3B8; font-size:0.76rem; font-weight:700; margin-top:4px; cursor:pointer;" id="modalCloseBtn">Закрыть окно ✕</button>
+        </div>
+    </div>
+
+    <footer>
+        <a href="https://instagram.com/doctors.speak" target="_blank" class="instagram-link">
+            <span>📸 Instagram @doctors.speak</span>
+        </a>
+        <a href="https://kazdoctors.com" class="back-btn">
+            <span>⬅️ Go back</span>
+        </a>
+    </footer>
+
+    <script>
+        // =========================================================================
+        // 1. ВСТАВЬТЕ СЮДА ССЫЛКИ НА ВАШИ ВИДЕОНАРЕЗКИ (VIMEO ИЛИ YOUTUBE EMBED)
+        // =========================================================================
+        const WEBINAR_VIDEOS = {
+            clip1: "https://player.vimeo.com/video/1241520590", // 1. Общие принципы презентаций
+            clip2: "https://player.vimeo.com/video/1241520561", // 2. Частые ошибки: плохие и хорошие слайды
+            clip3: "https://player.vimeo.com/video/1241520461", // 3. Клинические случаи: структура и пример
+            clip4: "https://player.vimeo.com/video/1241520392", // 4. Научные исследования: структура и пример
+            clip5: "https://player.vimeo.com/video/1241520201", // 5. Научные постеры: правило 30 секунд
+            clip6: "https://player.vimeo.com/video/1241519911", // 6. Ораторское мастерство и заключение
+            clip7: "https://player.vimeo.com/video/1241519854", // 7. Словарик: фразы для клинического случая
+            clip8: "https://player.vimeo.com/video/1241519760"  // 8. Словарик: фразы для научного исследования
+        };
+
+        // =========================================================================
+        // 2. ПРОВЕРКА ПОДПИСКИ SUPABASE (PRO+ ДЛЯ КОНСПЕКТА, PREMIUM+ ДЛЯ ВИДЕО)
+        // =========================================================================
+        const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+        const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+        const TIER_LEVELS = { none: 0, free: 0, standard: 1, pro: 2, premium: 3, vip: 4 };
+        const TIER_NAMES = {
+            none: "FREE",
+            free: "FREE",
+            standard: "STANDARD",
+            pro: "PRO",
+            premium: "PREMIUM",
+            vip: "VIP 👑"
+        };
+
+        let currentUserTier = "none";
+        let canReadGuide = false;  // true для PRO, PREMIUM, VIP
+        let canWatchVideo = false; // true только для PREMIUM и VIP
+        let currentLang = localStorage.getItem('doctors_speak_lang') || 'ru';
+
+        async function detectUserTier(session) {
+            if (!session || !session.user) return "none";
+            const user = session.user;
+            const userEmail = (user.email || "").toLowerCase().trim();
+
+            try {
+                let { data: profile } = await supabaseClient
+                    .from('profiles')
+                    .select('tier, subscription_expires_at')
+                    .eq('id', user.id)
+                    .maybeSingle();
+
+                if (!profile && userEmail) {
+                    const resByEmail = await supabaseClient
+                        .from('profiles')
+                        .select('tier, subscription_expires_at')
+                        .ilike('email', userEmail)
+                        .maybeSingle();
+                    profile = resByEmail.data;
+                }
+
+                if (!profile || !profile.subscription_expires_at) return "none";
+                const expiresAt = new Date(profile.subscription_expires_at);
+                if (isNaN(expiresAt.getTime()) || new Date() > expiresAt) return "none";
+
+                const dbTier = (profile.tier || "standard").toLowerCase().trim();
+                return TIER_LEVELS[dbTier] !== undefined ? dbTier : "none";
+            } catch (err) {
+                console.warn("Profile check error:", err);
+                return "none";
+            }
+        }
+
+        async function checkAuthAndTier() {
+            if (supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient.auth.getSession();
+                    if (!error && data && data.session) {
+                        currentUserTier = await detectUserTier(data.session);
+                    }
+                } catch (e) {
+                    currentUserTier = "none";
+                }
+            }
+
+            const level = TIER_LEVELS[currentUserTier] || 0;
+            canReadGuide = (level >= TIER_LEVELS.pro);       // Конспект: PRO (2), PREMIUM (3), VIP (4)
+            canWatchVideo = (level >= TIER_LEVELS.premium);  // Видео: PREMIUM (3), VIP (4)
+
+            updateAccessBadgesUI();
+            renderPlaylist();
+        }
+
+        function updateAccessBadgesUI() {
+            const isKz = (currentLang === 'kz');
+            const topBadge = document.getElementById('tierStatusBadge');
+            if (topBadge) {
+                topBadge.textContent = `Тариф: ${TIER_NAMES[currentUserTier] || "FREE"}`;
+            }
+
+            const guidePill = document.getElementById('guideTierPill');
+            if (guidePill) {
+                if (canReadGuide) {
+                    guidePill.className = "tier-pill unlocked";
+                    guidePill.textContent = isKz ? "✅ АШЫҚ (PRO+)" : "✅ ДОСТУП ОТКРЫТ";
+                } else {
+                    guidePill.className = "tier-pill";
+                    guidePill.textContent = isKz ? "🔒 ПРО / ПРЕМИУМ / ВИП" : "🔒 ПРО / ПРЕМИУМ / ВИП";
+                }
+            }
+        }
+
+        // =========================================================================
+        // 3. БАЗА ДАННЫХ: КОНСПЕКТ, ОЗВУЧЕННЫЙ СЛОВАРИК И 8 ВИДЕОНАРЕЗОК (RU / KZ)
+        // =========================================================================
+        const MODULE_DATA = {
+            ui: {
+                backBtn: { ru: "⬅️ На главную", kz: "⬅️ Басты бетке" },
+                mainTitle: {
+                    ru: "Как готовить презентации на медицинские конференции",
+                    kz: "Медициналық конференцияларға презентацияны қалай дайындау керек?"
+                },
+                mainSubtitle: {
+                    ru: "Структура слайдов • Фразы на английском • Подача • Примеры и Постеры",
+                    kz: "Слайдтар құрылымы • Ағылшынша фразалар • Шешендік өнер • Мысалдар мен Постерлер"
+                },
+                progLabel: {
+                    ru: "📈 Прогресс разбора вебинара:",
+                    kz: "📈 Вебинарды меңгеру прогресі:"
+                },
+                sec1Label: {
+                    ru: "📖 База знаний и Словарик фраз (PRO / PREMIUM / VIP)",
+                    kz: "📖 Білім базасы және Фразалар сөздігі (PRO / PREMIUM / VIP)"
+                },
+                guideTitle: {
+                    ru: "Полный интерактивный конспект + Словарик докладчика",
+                    kz: "Толық интерактивті конспект + Баяндамашы сөздігі"
+                },
+                guideDesc: {
+                    ru: "Вся выжимка вебинара: правила слайдов, структура клинических кейсов и исследований, постеры и озвученные английские фразы (🔊).",
+                    kz: "Вебинардың толық конспектісі: слайд ережелері, клиникалық кейс пен зерттеу құрылымы, постерлер және дыбысталған ағылшын фразалары (🔊)."
+                },
+                openGuideBtn: {
+                    ru: "📖 ОТКРЫТЬ ИНТЕРАКТИВНЫЙ КОНСПЕКТ И СЛОВАРИК ⌄",
+                    kz: "📖 ИНТЕРАКТИВТІ КОНСПЕКТ ПЕН СӨЗДІКТІ АШУ ⌄"
+                },
+                closeGuideBtn: {
+                    ru: "🔼 СВЕРНУТЬ ИНТЕРАКТИВНЫЙ КОНСПЕКТ",
+                    kz: "🔼 ИНТЕРАКТИВТІ КОНСПЕКТІНІ ЖАБУ"
+                },
+                guideTabs: [
+                    { ru: "1. Принципы и Постеры", kz: "1. Қағидалар мен Постер" },
+                    { ru: "2. Схемы: Кейс и Наука", kz: "2. Құрылым: Кейс пен Ғылым" },
+                    { ru: "3. Словарик: Кейс (🔊)", kz: "3. Сөздік: Кейс (🔊)" },
+                    { ru: "4. Словарик: Наука (🔊)", kz: "4. Сөздік: Зерттеу (🔊)" }
+                ],
+                sec2Label: {
+                    ru: "🎬 Плейлист видеонарезок вебинара (с вопросами для закрепления)",
+                    kz: "🎬 Вебинардың видео-үзінділер плейлисті (бекіту сұрақтарымен)"
+                }
+            },
+
+            // Вкладка 1 Конспекта: Общие принципы, Частые ошибки, Плохие vs Хорошие слайды, Постеры, Ораторское мастерство
+            guideTab0Html: {
+                ru: `
+                    <div class="guide-box">
+                        <h3>🌟 Общие принципы — САМОЕ ВАЖНОЕ</h3>
+                        <ul>
+                            <li><b>Говорите просто:</b> избегайте перегруженных слайдов. <b>Одна идея = один слайд.</b> Простой дизайн. Говорите легким английским, избегая сложных оборотов. <b>Приоритетнее понятность, а не имидж!</b></li>
+                            <li><b>Визуализируйте:</b> схемы вместо сплошного текста, изображения вместо текстовых описаний, графики вместо сложных таблиц.</li>
+                            <li><b>Структура — это всё:</b> слушатель в зале в каждую секунду должен понимать, в какой точке вашего рассказа он находится.</li>
+                            <li><b>Помните, что вас слушают такие же люди:</b> уважайте тайминг, улыбайтесь, подстраивайтесь под аудиторию и ориентируйтесь на понимание.</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-box red">
+                        <h3>🚫 5 главных ошибок плохих слайдов ("We don't do that here")</h3>
+                        <ul>
+                            <li><b>1. Слишком много информации и текста</b> (выписана вся история пациента подряд и каждое слово докладчика).</li>
+                            <li><b>2. Мелкий шрифт</b> (задние ряды ничего не видят) и злоупотребление <b>жирным/курсивом/подчеркиванием</b>.</li>
+                            <li><b>3. Кислотный контрастный цвет и пестрый фон.</b></li>
+                            <li><b>Почему это опасно:</b> люди физиологически <b>НЕ могут читать и слушать одновременно</b>! Аудитория отвлекается на чтение, теряет нить, а вы теряете свои ораторские навыки.</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-box green">
+                        <h3>✅ Признаки идеального слайда (Правило 3 секунд)</h3>
+                        <ul>
+                            <li><b>Легко считывается за 3 секунды:</b> минимум слов, крупный шрифт, графический алгоритм или линейный график динамики (например, график <i>15% decrease in Symptom Score</i> вместо 4 абзацев текста).</li>
+                            <li><b>Докладчик объясняет, а не читает со слайда!</b></li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-box gold">
+                        <h3>🖼️ Научные постеры (Scientific Posters) и Ораторское мастерство</h3>
+                        <ul>
+                            <li><b>Постер — это НЕ «статья на стене»!</b> Это визуал, понятный за <b>30 секунд</b>: крупные заголовки, минимум текста, 1–2 главных графика в центре, много «воздуха» и <b>QR-код</b> на полную статью и контакты.</li>
+                            <li><b>Ораторское мастерство — это навык, а не талант:</b> приветствуйте и улыбайтесь, говорите медленно и делайте паузы, смотрите в зал (не читайте!), меняйте интонацию, используйте лазерную указку осмысленно и репетируйте заранее по таймеру.</li>
+                            <li><b>Главный вывод:</b> хороший доклад — это не демонстрация знаний, а ясная передача клинического мышления!</li>
+                        </ul>
+                    </div>
+                `,
+                kz: `
+                    <div class="guide-box">
+                        <h3>🌟 Жалпы қағидалар — ЕҢ МАҢЫЗДЫСЫ</h3>
+                        <ul>
+                            <li><b>Қарапайым сөйлеңіз:</b> тым көп мәтіні бар слайдтардан аулақ болыңыз. <b>Бір идея = бір слайд.</b> Қарапайым дизайн. Жеңіл ағылшын тілімен сөйлеңіз. <b>Имиджден гөрі түсініктілік маңыздырақ!</b></li>
+                            <li><b>Визуализация жасаңыз:</b> мәтін орнына сызбалар (алгоритмдер), сипаттама орнына суреттер, кестелер орнына графиктер қолданыңыз.</li>
+                            <li><b>Құрылым — бәрінің негізі:</b> тыңдаушы баяндаманың қай жерінде тұрғанын әрдайым түсінуі керек.</li>
+                            <li><b>Сізді өзіңіз сияқты адамдар тыңдап отырғанын есте сақтаңыз:</b> таймингті құрметтеңіз, күлімсіреңіз, аудиторияға бейімделіңіз.</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-box red">
+                        <h3>🚫 Нашар слайдтардың 5 басты қатесі ("We don't do that here")</h3>
+                        <ul>
+                            <li><b>1. Тым көп ақпарат пен мәтін</b> (науқастың бүкіл ауру тарихы мен баяндамашының әр сөзі слайдқа жазылған).</li>
+                            <li><b>2. Ұсақ қаріп (шрифт)</b> және қалың/курсив/астын сызуды шектен тыс қолдану.</li>
+                            <li><b>3. Көзді ауыртатын контрастты түстер мен фон.</b></li>
+                            <li><b>Неліктен бұл зиян:</b> адамдар бір уақытта <b>оқып әрі тыңдай АЛМАЙДЫ</b>! Тыңдаушы слайдты оқуға алаңдап, негізгі ойды жоғалтады.</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-box green">
+                        <h3>✅ Мінсіз слайд белгілері (3 секунд ережесі)</h3>
+                        <ul>
+                            <li><b>3 секунд ішінде оңай оқылады:</b> аз сөз, ірі шрифт, графикалық алгоритм немесе динамика графигі (мысалы, мәтін орнына <i>15% decrease in Symptom Score</i> графигі).</li>
+                            <li><b>Баяндамашы слайдтан оқымайды, түсіндіріп береді!</b></li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-box gold">
+                        <h3>🖼️ Ғылыми постерлер (Scientific Posters) және Шешендік шеберлік</h3>
+                        <ul>
+                            <li><b>Постер — «қабырғадағы мақала» ЕМЕС!</b> Ол <b>30 секундта</b> түсінікті болатын визуал: ірі тақырыптар, аз мәтін, ортада 1–2 негізгі график, бос кеңістік («ауа») және <b>QR-код</b>.</li>
+                            <li><b>Шешендік өнер — талант емес, жаттығатын машық:</b> амандасып күлімсіреңіз, баяу сөйлеп пауза жасаңыз, аудиторияға қараңыз (оқымаңыз!), указканы орынды қолданыңыз және тайминг бойынша алдын ала дайындалыңыз.</li>
+                            <li><b>Басты қорытынды:</b> жақсы баяндама — білімді көрсету емес, клиникалық ойлауды анық жеткізу!</li>
+                        </ul>
+                    </div>
+                `
+            },
+
+            // Вкладка 2 Конспекта: Сравнение структуры Клинического случая (7 шагов) и Научного исследования (6 шагов) + Примеры по ТБ
+            guideTab1Html: {
+                ru: `
+                    <div class="guide-box">
+                        <h3>🩺 Структура презентации КЛИНИЧЕСКОГО СЛУЧАЯ (7 шагов)</h3>
+                        <ul>
+                            <li><b>1. TITLE:</b> коротко и по сути (<i>Bedaquiline in TB: a clinical case</i>).</li>
+                            <li><b>2. BACKGROUND:</b> почему эта тема и этот случай важны? (<i>TB is a big problem -> new approach -> tried on our patient</i>).</li>
+                            <li><b>3. QUICK DEMOGRAPHIC:</b> возраст, пол, основная жалоба (<i>45 y.o. male, coughed with sputum</i>).</li>
+                            <li><b>4. CLINICAL INFORMATION:</b> основные клинические и диагностические находки (<i>checked labs/CT -> MDR-TB was found</i>).</li>
+                            <li><b>5. DEVELOPMENT:</b> динамика лечения, что решали и на что обращали внимание (<i>usual drugs didn't help -> Bedaquiline helped, monitored ALT/AST</i>).</li>
+                            <li><b>6. DISCUSSION:</b> чем этот случай интересен и как соотносится со статьями (<i>studies show it is useful, but carries hepatotoxicity risk</i>).</li>
+                            <li><b>7. TAKE HOME MESSAGES (Conclusions):</b> ключевые выводы для коллег (<i>Bedaquiline is a good choice, but monitor liver enzymes!</i>).</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-box gold">
+                        <h3>🔬 Структура презентации НАУЧНОГО ИССЛЕДОВАНИЯ (6 шагов)</h3>
+                        <ul>
+                            <li><b>1. TITLE:</b> коротко и по сути (<i>Adherence to Treatment in TB</i>).</li>
+                            <li><b>2. INTRODUCTION & AIM:</b> почему тема важна и что до сих пор неизвестно? Какова цель? (<i>People don't take drugs -> we wanted to know why</i>).</li>
+                            <li><b>3. METHODS:</b> каких пациентов выбирали (выборка), как опрашивали, как считали статистику и конфаундеры (<i>100 TB patients, survey, statistics, checked for confounders</i>).</li>
+                            <li><b>4. RESULTS:</b> только КЛЮЧЕВЫЕ цифры, графики и диаграммы (<i>80M/20F, 60/100 non-adherent, 30 alcohol use, 45 unaware, p &lt; 0.05</i>).</li>
+                            <li><b>5. DISCUSSION & LIMITATIONS:</b> как понимать результаты, сравнение с другими работами и ограничения исследования (<i>poor education & alcoholism explain non-adherence; self-reported bias, small sample size</i>).</li>
+                            <li><b>6. CONCLUSION & LESSONS:</b> практические выводы (<i>have to educate patients better and address alcohol use</i>).</li>
+                        </ul>
+                    </div>
+                `,
+                kz: `
+                    <div class="guide-box">
+                        <h3>🩺 КЛИНИКАЛЫҚ ЖАҒДАЙ (Clinical Case) презентациясының құрылымы (7 қадам)</h3>
+                        <ul>
+                            <li><b>1. TITLE:</b> қысқа әрі нақты (<i>Bedaquiline in TB: a clinical case</i>).</li>
+                            <li><b>2. BACKGROUND:</b> бұл тақырып пен жағдай неліктен маңызды? (<i>TB is a big problem -> new approach -> tried on our patient</i>).</li>
+                            <li><b>3. QUICK DEMOGRAPHIC:</b> жасы, жынысы, негізгі шағымы (<i>45 y.o. male, coughed with sputum</i>).</li>
+                            <li><b>4. CLINICAL INFORMATION:</b> негізгі клиникалық және диагностикалық деректер (<i>checked labs/CT -> MDR-TB was found</i>).</li>
+                            <li><b>5. DEVELOPMENT:</b> емдеу динамикасы, не шешілді, неге назар аударылды (<i>usual drugs didn't help -> Bedaquiline helped, monitored ALT/AST</i>).</li>
+                            <li><b>6. DISCUSSION:</b> бұл жағдай несімен қызықты және басқа зерттеулермен салыстыру (<i>studies show it is useful, but carries hepatotoxicity risk</i>).</li>
+                            <li><b>7. TAKE HOME MESSAGES (Conclusions):</b> әріптестерге арналған негізгі түйін (<i>Bedaquiline is a good choice, but monitor liver enzymes!</i>).</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-box gold">
+                        <h3>🔬 ҒЫЛЫМИ ЗЕРТТЕУ (Scientific Research) презентациясының құрылымы (6 қадам)</h3>
+                        <ul>
+                            <li><b>1. TITLE:</b> қысқа әрі нақты (<i>Adherence to Treatment in TB</i>).</li>
+                            <li><b>2. INTRODUCTION & AIM:</b> тақырыптың өзектілігі, не белгісіз және зерттеу мақсаты (<i>People don't take drugs -> we wanted to know why</i>).</li>
+                            <li><b>3. METHODS:</b> қандай науқастар таңдалды, қалай зерттелді, статистика (<i>100 TB patients, survey, statistics, checked for confounders</i>).</li>
+                            <li><b>4. RESULTS:</b> тек НЕГІЗГІ нәтижелер, графиктер мен диаграммалар (<i>80M/20F, 60/100 non-adherent, 30 alcohol use, 45 unaware, p &lt; 0.05</i>).</li>
+                            <li><b>5. DISCUSSION & LIMITATIONS:</b> нәтижелерді талдау, басқа жұмыстармен салыстыру және зерттеу шектеулері (<i>poor education & alcoholism; self-reported bias, small sample size</i>).</li>
+                            <li><b>6. CONCLUSION & LESSONS:</b> практикалық қорытындылар (<i>have to educate patients better and address alcohol use</i>).</li>
+                        </ul>
+                    </div>
+                `
+            },
+
+            // Вкладка 3 Конспекта: Полный озвученный словарик для Клинического случая (Слайды 14–19)
+            casePhrases: [
+                {
+                    sec: "1. TITLE & BACKGROUND (Приветствие и Актуальность)",
+                    items: [
+                        { en: "Good morning, ladies and gentlemen. Thank you for the opportunity to present our work.", ru: "Доброе утро, дамы и господа. Благодарю за возможность представить нашу работу.", kz: "Қайырлы таң, ханымдар мен мырзалар. Жұмысымызды таныстыру мүмкіндігі үшін алғыс білдіремін." },
+                        { en: "Today I would like to present a clinical case of tuberculosis treated with bedaquiline.", ru: "Сегодня я хотел бы представить клинический случай туберкулеза, пролеченного бедаквилином.", kz: "Бүгін мен бедаквилинмен емделген туберкулездің клиникалық жағдайын ұсынғым келеді." },
+                        { en: "Tuberculosis remains a major global health problem, particularly in its drug-resistant forms.", ru: "Туберкулез остается важнейшей глобальной проблемой здравоохранения, особенно в его лекарственно-устойчивых формах.", kz: "Туберкулез, әсіресе оның дәріге төзімді түрлері, жаһандық денсаулық сақтаудың басты мәселесі болып қала беруде." },
+                        { en: "The management of multidrug-resistant tuberculosis is challenging and often requires the use of newer agents, such as bedaquiline.", ru: "Ведение пациентов с МЛУ-ТБ представляет сложность и часто требует применения новых препаратов, таких как бедаквилин.", kz: "Көптеген дәріге төзімді туберкулезді емдеу күрделі және жиі бедаквилин сияқты жаңа препараттарды қолдануды талап етеді." },
+                        { en: "However, these treatments may be associated with adverse effects, including hepatotoxicity.", ru: "Однако эти схемы лечения могут быть ассоциированы с побочными эффектами, включая гепатотоксичность.", kz: "Дегенмен, бұл емдеу түрлері гепатоуыттылық сияқты жағымсыз әсерлермен байланысты болуы мүмкін." }
+                    ]
+                },
+                {
+                    sec: "2. DEMOGRAPHICS (Демография и Жалобы при поступлении)",
+                    items: [
+                        { en: "This is a case of a 45-year-old male.", ru: "Это клинический случай 45-летнего мужчины.", kz: "Бұл 45 жастағы ер адамның клиникалық жағдайы." },
+                        { en: "He presented with persistent cough, weight loss, and night sweats for approximately three months.", ru: "Он обратился с жалобами на длительный кашель, потерю веса и ночную потливость на протяжении около трех месяцев.", kz: "Ол шамамен үш ай бойы созылмалы жөтелге, салмақ жоғалтуға және түнгі тершеңдікке шағымданып келді." },
+                        { en: "His past medical history was unremarkable, and he had no known liver disease.", ru: "Его прошлый медицинский анамнез был без особенностей, и у него не было известных заболеваний печени.", kz: "Оның бұрынғы медициналық анамнезінде ерекшеліктер болмаған және бауыр аурулары тіркелмеген." }
+                    ]
+                },
+                {
+                    sec: "3. CLINICAL INFO (Осмотр, Анализы и КТ)",
+                    items: [
+                        { en: "On physical examination, the patient appeared cachectic. Vital signs were stable.", ru: "При физикальном осмотре пациент выглядел кахектичным. Жизненные показатели были стабильными.", kz: "Физикалық тексеру кезінде науқас кахексиялық күйде болды. Тіршілік көрсеткіштері тұрақты болды." },
+                        { en: "Chest auscultation revealed bilateral crackles, predominantly in the upper lung fields.", ru: "Аускультация легких выявила двусторонние хрипы, преимущественно в верхних легочных полях.", kz: "Кеуде қуысын аускультациялауда екі жақты сырылдар, әсіресе өкпенің жоғарғы бөліктерінде анықталды." },
+                        { en: "Laboratory tests confirmed the presence of Mycobacterium tuberculosis.", ru: "Лабораторные анализы подтвердили наличие Mycobacterium tuberculosis.", kz: "Зертханалық талдаулар Mycobacterium tuberculosis бар екенін растады." },
+                        { en: "Drug susceptibility testing demonstrated resistance to isoniazid and rifampicin.", ru: "Тест на лекарственную чувствительность показал устойчивость к изониазиду и рифампицину.", kz: "Дәріге сезімталдық тесті изониазид пен рифампицинге төзімділікті көрсетті." },
+                        { en: "Chest CT scan showed multiple cavitary lesions in both upper lobes.", ru: "КТ органов грудной клетки показала множественные кавернозные очаги в обеих верхних долях.", kz: "Кеуде қуысының КТ сканерлеуі екі жоғарғы бөлікте де көптеген каверналық ошақтарды көрсетті." },
+                        { en: "Based on these findings, a diagnosis of multidrug-resistant tuberculosis was established.", ru: "На основании этих данных был установлен диагноз туберкулеза с множественной лекарственной устойчивостью.", kz: "Осы деректер негізінде көптеген дәріге төзімді туберкулез диагнозы қойылды." }
+                    ]
+                },
+                {
+                    sec: "4. DEVELOPMENT (Динамика лечения и Побочные эффекты)",
+                    items: [
+                        { en: "The patient was started on bedaquiline, along with other second-line anti-tuberculosis drugs.", ru: "Пациенту был начат прием бедаквилина вместе с другими противотуберкулезными препаратами второго ряда.", kz: "Науқасқа екінші қатардағы басқа да туберкулезге қарсы препараттармен бірге бедаквилин тағайындалды." },
+                        { en: "Treatment was well tolerated initially. Over the following months, the patient showed significant clinical improvement.", ru: "Изначально лечение переносилось хорошо. В последующие месяцы пациент показал значительное клиническое улучшение.", kz: "Бастапқыда ем жақсы көтерілді. Келесі айларда науқаста айтарлықтай клиникалық жақсару байқалды." },
+                        { en: "His symptoms gradually resolved, and follow-up imaging demonstrated regression of pulmonary lesions. Sputum cultures converted to negative.", ru: "Его симптомы постепенно разрешились, а контрольная визуализация показала регресс легочных очагов. Посевы мокроты стали отрицательными.", kz: "Симптомдары біртіндеп басылып, бақылау суреттері өкпе ошақтарының регрессиясын көрсетті. Қақырық егіндісі теріс нәтижеге айналды." },
+                        { en: "However, during treatment, we observed a progressive increase in liver enzyme levels. ALT and AST were elevated up to three times the upper limit of normal.", ru: "Однако во время лечения мы наблюдали прогрессирующий рост печеночных ферментов. АЛТ и АСТ были повышены до 3 верхних границ нормы.", kz: "Алайда ем барысында бауыр ферменттерінің өсуін байқадық. АЛТ мен АСТ қалыптың жоғарғы шегінен 3 есеге дейін жоғарылады." },
+                        { en: "Given the clinical improvement and absence of severe hepatotoxicity, the decision was made to continue therapy under close supervision.", ru: "Учитывая клиническое улучшение и отсутствие тяжелой гепатотоксичности, было принято решение продолжить терапию под тщательным наблюдением.", kz: "Клиникалық жақсаруды және ауыр гепатоуыттылықтың жоқтығын ескере отырып, емді жіті бақылаумен жалғастыру туралы шешім қабылданды." }
+                    ]
+                },
+                {
+                    sec: "5. DISCUSSION & CONCLUSION (Обсуждение и Выводы)",
+                    items: [
+                        { en: "This case highlights both the effectiveness and potential risks of bedaquiline in the treatment of multidrug-resistant tuberculosis.", ru: "Этот случай подчеркивает как эффективность, так и потенциальные риски бедаквилина в лечении МЛУ-ТБ.", kz: "Бұл жағдай КДТ-ТБ емдеудегі бедаквилиннің тиімділігін де, ықтимал қауіптерін де көрсетеді." },
+                        { en: "This finding is consistent with previous reports. To the best of our knowledge, this is the first case of TB treated with bedaquiline in Kazakhstan.", ru: "Эта находка согласуется с предыдущими отчетами. Насколько нам известно, это первый случай ТБ, пролеченный бедаквилином в Казахстане.", kz: "Бұл нәтиже алдыңғы зерттеулермен сәйкес келеді. Біздің білуімізше, бұл Қазақстанда бедаквилинмен емделген алғашқы ТБ жағдайы." },
+                        { en: "In conclusion, bedaquiline can be an effective option in the management of MDR-TB. However, clinicians should be aware of possible hepatotoxicity and monitor patients accordingly.", ru: "В заключение, бедаквилин может быть эффективной опцией в ведении МЛУ-ТБ. Однако клиницисты должны помнить о возможной гепатотоксичности и мониторировать пациентов.", kz: "Қорытындылай келе, бедаквилин КДТ-ТБ емдеуде тиімді таңдау бола алады. Дегенмен дәрігерлер гепатоуыттылық қаупін ескеріп, науқастарды бақылауы тиіс." },
+                        { en: "Thank you for your attention. I would be happy to answer any questions.", ru: "Благодарю за внимание. Буду рад ответить на любые вопросы.", kz: "Назарларыңызға рақмет. Кез келген сұрақтарыңызға қуана жауап беремін." }
+                    ]
+                }
+            ],
+
+            // Вкладка 4 Конспекта: Полный озвученный словарик для Научного исследования (Слайды 20–25)
+            researchPhrases: [
+                {
+                    sec: "1. TITLE, INTRODUCTION & AIM (Введение и Цель исследования)",
+                    items: [
+                        { en: "Today I will talk about medication adherence among patients with tuberculosis.", ru: "Сегодня я расскажу о приверженности лечению (комплаентности) среди пациентов с туберкулезом.", kz: "Бүгін мен туберкулезбен ауыратын науқастардың емге бейімділігі (комплаенттілігі) туралы айтамын." },
+                        { en: "Successful treatment depends not only on effective drugs, but also on patient adherence.", ru: "Успешное лечение зависит не только от эффективных препаратов, но и от приверженности пациента.", kz: "Табысты ем тек тиімді препараттарға ғана емес, науқастың ем тәртібін сақтауына да байланысты." },
+                        { en: "There is still limited data on the behavioral factors influencing adherence in everyday clinical practice.", ru: "До сих пор недостаточно данных о поведенческих факторах, влияющих на приверженность в повседневной клинической практике.", kz: "Күнделікті клиникалық тәжірибеде комплаенттілікке әсер ететін мінез-құлық факторлары туралы деректер әлі де аз." },
+                        { en: "The aim of this study was to evaluate how frequently patients with tuberculosis do not take their medications as prescribed, and to identify possible reasons for non-adherence.", ru: "Целью данного исследования было оценить, как часто пациенты с ТБ не принимают препараты по назначению, и выявить возможные причины неприверженности.", kz: "Зерттеудің мақсаты — ТБ науқастарының дәрілерді тағайындау бойынша қаншалықты жиі ішпейтінін бағалау және оның себептерін анықтау болды." }
+                    ]
+                },
+                {
+                    sec: "2. METHODS & RESULTS (Методы и Результаты)",
+                    items: [
+                        { en: "We conducted a survey-based study. A total of 100 patients diagnosed with tuberculosis were included.", ru: "Мы провели исследование на основе анкетирования. Всего было включено 100 пациентов с диагнозом туберкулез.", kz: "Біз сауалнама негізінде зерттеу жүргіздік. Туберкулез диагнозы бар барлығы 100 науқас қамтылды." },
+                        { en: "We found that 60 out of 100 patients did not take their medications as prescribed. This indicates a high rate of non-adherence in our study population.", ru: "Мы обнаружили, что 60 из 100 пациентов не принимали препараты согласно назначению. Это указывает на высокий уровень неприверженности в нашей выборке.", kz: "100 науқастың 60-ы дәрі-дәрмекті тағайындау бойынша қабылдамағанын анықтадық. Бұл біздің топтағы төмен комплаенттіліктің жоғары деңгейін көрсетеді." },
+                        { en: "Among the patients with poor adherence, 30 reported alcohol use. Additionally, 45 patients stated that they were not aware of the importance of regular medication intake.", ru: "Среди пациентов с низкой приверженностью 30 сообщили об употреблении алкоголя. Кроме того, 45 пациентов заявили, что не знали о важности регулярного приема таблеток.", kz: "Ем тәртібін бұзған науқастардың ішінде 30-ы алкоголь қолданатынын айтты. Сонымен қатар, 45 науқас дәріні үзбей ішудің маңыздылығын білмегенін жеткізді." },
+                        { en: "Our results suggest that lack of awareness and alcohol use are important contributors to poor adherence. These factors may be modifiable with appropriate interventions.", ru: "Наши результаты показывают, что недостаток информированности и употребление алкоголя — важные факторы низкой приверженности. Эти факторы могут быть модифицируемыми.", kz: "Нәтижелеріміз хабарсыздық пен алкоголь қолдану төмен комплаенттіліктің маңызды себептері екенін көрсетеді. Бұл факторларды түзетуге болады." }
+                    ]
+                },
+                {
+                    sec: "3. DISCUSSION, LIMITATIONS & CONCLUSION (Обсуждение, Ограничения и Вывод)",
+                    items: [
+                        { en: "These findings are consistent with previous studies showing that social and educational factors play a key role in treatment adherence.", ru: "Эти данные согласуются с предыдущими исследованиями, показывающими, что социальные и образовательные факторы играют ключевую роль в приверженности.", kz: "Бұл деректер әлеуметтік және білім беру факторларының емге бейімділікте шешуші рөл атқаратынын көрсететін алдыңғы зерттеулермен сәйкес келеді." },
+                        { en: "This study has several limitations. It is based on self-reported data, which may introduce bias. In addition, the sample size was relatively small.", ru: "У этого исследования есть несколько ограничений. Оно основано на данных самоотчета, что может вносить систематическую ошибку (bias). Кроме того, размер выборки был относительно небольшим.", kz: "Бұл зерттеудің бірнеше шектеуі бар. Ол науқастардың өз жауаптарына негізделген, бұл қателікке (bias) әкелуі мүмкін. Сонымен қатар, іріктеме көлемі салыстырмалы түрде шағын болды." },
+                        { en: "In conclusion, non-adherence to tuberculosis treatment is common. Targeted educational and behavioral interventions are needed.", ru: "В заключение, неприверженность лечению туберкулеза распространена широко. Необходимы целевые образовательные и поведенческие вмешательства.", kz: "Қорытындылай келе, туберкулез емін сақтамау жиі кездеседі. Мақсатты білім беру және мінез-құлықтық шаралар қажет." }
+                    ]
+                }
+            ],
+
+            // 8 ВИДЕОНАРЕЗОК ПЛЕЙЛИСТА + ЗАКРЕПЛЯЮЩИЕ ВОПРОСЫ К КАЖДОЙ
+            clips: [
+                {
+                    id: 1,
+                    videoKey: "clip1",
+                    icon: "🎯",
+                    title: {
+                        ru: "Общие принципы идеальной презентации",
+                        kz: "Мінсіз презентацияның жалпы қағидалары"
+                    },
+                    sub: {
+                        ru: "Простота, визуализация, структура и уважение к аудитории (Слайд 3)",
+                        kz: "Қарапайымдылық, визуализация, құрылым және аудиторияны құрметтеу (3-слайд)"
+                    },
+                    summary: {
+                        ru: "💡 Главное правило: одна идея — один слайд. Говорите легким медицинским английским: для аудитории приоритетнее понятность, а не сложный имидж докладчика.",
+                        kz: "💡 Басты ереже: бір идея — бір слайд. Жеңіл медициналық ағылшын тілімен сөйлеңіз: имиджден гөрі тыңдаушының сізді түсінгені маңыздырақ."
+                    },
+                    quiz: [
+                        {
+                            q: {
+                                ru: "1. Что является главным приоритетом при выборе английских слов и конструкций для доклада на конференции?",
+                                kz: "1. Конференцияда баяндама жасау үшін ағылшынша сөздер мен құрылымдарды таңдағанда не басты басымдыққа ие?"
+                            },
+                            opts: {
+                                ru: ["Максимально сложные редкие обороты для солидного имиджа", "Понятность для слушателей (легкий английский без перегруза)", "Чтение полного текста статьи с листа"],
+                                kz: ["Имидж үшін өте күрделі сирек сөз тіркестерін қолдану", "Тыңдаушыларға түсінікті болуы (күрделі емес жеңіл ағылшын тілі)", "Мақаланың толық мәтінін қағаздан оқу"]
+                            },
+                            ans: 1,
+                            exp: {
+                                ru: "Верно! Приоритетнее понятность, а не имидж: говорите простым, ясным английским языком.",
+                                kz: "Дұрыс! Имиджден гөрі түсініктілік маңыздырақ: қарапайым әрі анық ағылшын тілінде сөйлеңіз."
+                            }
+                        },
+                        {
+                            q: {
+                                ru: "2. Чем лучше заменить сплошной текст, описания и громоздкие таблицы на слайде?",
+                                kz: "2. Слайдтағы тұтас мәтінді, сипаттамалар мен үлкен кестелерді немен алмастырған дұрыс?"
+                            },
+                            opts: {
+                                ru: ["Мелким шрифтом в 3 колонки с курсивом", "Анимацией каждого отдельного слова", "Схемами вместо текста, изображениями вместо описаний и графиками вместо таблиц"],
+                                kz: ["3 бағанға бөлінген ұсақ қаріппен", "Әр сөзге жеке анимация қосумен", "Мәтін орнына сызбалармен, сипаттама орнына суреттермен және кесте орнына графиктермен"]
+                            },
+                            ans: 2,
+                            exp: {
+                                ru: "Отлично! Визуализация (схемы, снимки КТ/МРТ, графики) воспринимается за секунды.",
+                                kz: "Тамаша! Визуализация (сызбалар, суреттер, графиктер) бірнеше секундта-ақ қабылданады."
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 2,
+                    videoKey: "clip2",
+                    icon: "⚖️",
+                    title: {
+                        ru: "Частые ошибки: разбор плохих и хороших слайдов",
+                        kz: "Жиі кездесетін қателер: нашар және жақсы слайдтарды талдау"
+                    },
+                    sub: {
+                        ru: "Почему люди не могут читать и слушать одновременно? Правило 3 секунд (Слайды 4–6)",
+                        kz: "Неліктен адамдар бір уақытта оқып әрі тыңдай алмайды? 3 секунд ережесі (4–6 слайдтар)"
+                    },
+                    summary: {
+                        ru: "💡 Хороший слайд считывается за 3 секунды: минимум слов, крупный шрифт, алгоритм или наглядный график динамики вместо буллитов.",
+                        kz: "💡 Жақсы слайд 3 секундта оқылады: аз сөз, ірі шрифт, ұзын тізімдердің орнына алгоритм немесе динамика графигі."
+                    },
+                    quiz: [
+                        {
+                            q: {
+                                ru: "1. Что происходит с залом, когда докладчик выводит на экран слайд, полностью забитый мелким текстом (Text-Heavy Slide)?",
+                                kz: "1. Баяндамашы экранға ұсақ мәтінге толы слайдты (Text-Heavy Slide) шығарғанда залда не болады?"
+                            },
+                            opts: {
+                                ru: ["Слушатели лучше запоминают каждую деталь", "Это повышает авторитет докладчика", "Аудитория отвлекается на чтение, перестает слушать спикера и теряет нить рассказа"],
+                                kz: ["Тыңдаушылар әр детальді жақсырақ есте сақтайды", "Бұл баяндамашының беделін арттырады", "Аудитория оқуға алаңдап, спикерді тыңдауды қояды және негізгі ойды жоғалтады"]
+                            },
+                            ans: 2,
+                            exp: {
+                                ru: "Точно! Люди не могут читать и слушать одновременно — перегруженный слайд убивает ваши ораторские навыки.",
+                                kz: "Дәл солай! Адамдар бір уақытта оқып әрі тыңдай алмайды."
+                            }
+                        },
+                        {
+                            q: {
+                                ru: "2. За сколько секунд зритель должен легко считывать главную мысль хорошего слайда?",
+                                kz: "2. Көрермен жақсы слайдтың негізгі ойын неше секундта оңай түсініп үлгеруі керек?"
+                            },
+                            opts: {
+                                ru: ["За 3 секунды", "За 2 минуты чтения", "За 45 секунд"],
+                                kz: ["3 секунд ішінде", "2 минут оқығаннан кейін", "45 секундта"]
+                            },
+                            ans: 0,
+                            exp: {
+                                ru: "Верно! Хороший слайд читается за 3 секунды, а все детали докладчик объясняет устно.",
+                                kz: "Дұрыс! Жақсы слайд 3 секундта оқылады, ал қалғанын баяндамашы ауызша түсіндіреді."
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 3,
+                    videoKey: "clip3",
+                    icon: "🩺",
+                    title: {
+                        ru: "Клинические случаи (Case Report): структура и пример",
+                        kz: "Клиникалық жағдайлар (Case Report): құрылымы мен мысалы"
+                    },
+                    sub: {
+                        ru: "7 обязательных шагов клинического кейса на примере Bedaquiline in TB (Слайды 7–8)",
+                        kz: "Bedaquiline in TB мысалындағы клиникалық кейстің 7 қадамы (7–8 слайдтар)"
+                    },
+                    summary: {
+                        ru: "💡 7 шагов Case Report: 1) Title -> 2) Background -> 3) Quick Demographic -> 4) Clinical Info -> 5) Development -> 6) Discussion -> 7) Take Home Messages.",
+                        kz: "💡 Case Report-тың 7 қадамы: 1) Title -> 2) Background -> 3) Quick Demographic -> 4) Clinical Info -> 5) Development -> 6) Discussion -> 7) Take Home Messages."
+                    },
+                    quiz: [
+                        {
+                            q: {
+                                ru: "1. Что должно входить в блок QUICK DEMOGRAPHIC (Шаг 3) при докладе клинического случая?",
+                                kz: "1. Клиникалық жағдайды баяндағанда QUICK DEMOGRAPHIC (3-қадам) блогына не кіруі керек?"
+                            },
+                            opts: {
+                                ru: ["Вся выписка из амбулаторной карты с детства", "Только возраст, пол и основная жалоба пациента (например, 45 y.o. male, coughed with sputum)", "Подробный обзор литературы за 20 лет"],
+                                kz: ["Бала кезінен бастап бүкіл амбулаториялық карта көшірмесі", "Тек науқастың жасы, жынысы және негізгі шағымы (мысалы, 45 y.o. male, coughed with sputum)", "Соңғы 20 жылдағы әдебиеттерге толық шолу"]
+                            },
+                            ans: 1,
+                            exp: {
+                                ru: "Верно! Демография дается максимально емко: возраст, пол и ведущий симптом при обращении.",
+                                kz: "Дұрыс! Демография өте қысқа беріледі: жасы, жынысы және негізгі шағымы."
+                            }
+                        },
+                        {
+                            q: {
+                                ru: "2. В каком разделе клинического доклада описывается то, как менялась тактика лечения и как возник гепатит на фоне приема бедаквилина?",
+                                kz: "2. Емдеу тактикасының қалай өзгергені және бедаквилин фонында гепатиттің қалай пайда болғаны қай бөлімде сипатталады?"
+                            },
+                            opts: {
+                                ru: ["В разделе DEVELOPMENT (Динамика и развитие случая)", "В разделе TITLE (Заголовок)", "В разделе BACKGROUND (Актуальность)"],
+                                kz: ["DEVELOPMENT (Жағдайдың даму динамикасы) бөлімінде", "TITLE (Тақырып) бөлімінде", "BACKGROUND (Өзектілік) бөлімінде"]
+                            },
+                            ans: 0,
+                            exp: {
+                                ru: "Отлично! В блоке Development мы показываем клинический ход событий: что не сработало, что назначили и с чем столкнулись.",
+                                kz: "Тамаша! Development блогында емдеу барысы мен динамикасы көрсетіледі."
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 4,
+                    videoKey: "clip4",
+                    icon: "📊",
+                    title: {
+                        ru: "Научные исследования (Research): структура и пример",
+                        kz: "Ғылыми зерттеулер (Research): құрылымы мен мысалы"
+                    },
+                    sub: {
+                        ru: "6 шагов презентации исследования на примере Adherence to Treatment in TB (Слайды 9–10)",
+                        kz: "Adherence to Treatment in TB мысалындағы зерттеудің 6 қадамы (9–10 слайдтар)"
+                    },
+                    summary: {
+                        ru: "💡 6 шагов научного доклада (IMRaD): 1) Title -> 2) Introduction & Aim -> 3) Methods -> 4) Results -> 5) Discussion -> 6) Conclusion & Lessons.",
+                        kz: "💡 Ғылыми баяндаманың 6 қадамы: 1) Title -> 2) Introduction & Aim -> 3) Methods -> 4) Results -> 5) Discussion -> 6) Conclusion & Lessons."
+                    },
+                    quiz: [
+                        {
+                            q: {
+                                ru: "1. На какие два главных вопроса должен отвечать слайд INTRODUCTION & AIM в научном докладе?",
+                                kz: "1. Ғылыми баяндамадағы INTRODUCTION & AIM слайды қандай екі негізгі сұраққа жауап беруі тиіс?"
+                            },
+                            opts: {
+                                ru: ["Какие p-значения получились в таблицах?", "Какой благодарностью закончить выступление?", "Почему эта тема важна и что до сих пор неизвестно (пробел в знаниях / цель)?"],
+                                kz: ["Кестелерде қандай p-мәндері шықты?", "Баяндаманы қандай алғыспен аяқтау керек?",  "Бұл тақырып неліктен маңызды және әлі күнге дейін не белгісіз (зерттеу мақсаты)?"]
+                            },
+                            ans: 2,
+                            exp: {
+                                ru: "Верно! Во введении мы показываем масштаб проблемы и то, почему мы вообще решили провести это исследование.",
+                                kz: "Дұрыс! Кіріспеде мәселенің маңыздылығы мен зерттеу мақсаты көрсетіледі."
+                            }
+                        },
+                        {
+                            q: {
+                                ru: "2. В каком разделе обязательно указывается проверка на вмешивающиеся факторы (Checked for confounders) и способ отбора 100 пациентов?",
+                                kz: "2. 100 науқасты іріктеу әдісі және қосымша факторларды тексеру (Checked for confounders) қай бөлімде көрсетіледі?"
+                            },
+                            opts: {
+                                ru: ["METHODS (Методы исследования)", "RESULTS (Результаты)", "CONCLUSIONS (Выводы)"],
+                                kz: ["METHODS (Зерттеу әдістері)", "RESULTS (Нәтижелер)", "CONCLUSIONS (Қорытындылар)"]
+                            },
+                            ans: 0,
+                            exp: {
+                                ru: "Точно! Выборка, дизайн опроса, статистика и контроль конфаундеров — это фундамент раздела Methods.",
+                                kz: "Дәл солай! Іріктеме, сауалнама дизайны мен статистика Methods бөлімінде беріледі."
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 5,
+                    videoKey: "clip5",
+                    icon: "🖼️",
+                    title: {
+                        ru: "Кратко о научных постерах: правило 30 секунд",
+                        kz: "Ғылыми постерлер туралы қысқаша: 30 секунд ережесі"
+                    },
+                    sub: {
+                        ru: "Почему постер — это не «статья на стене», и как сделать выигрышный дизайн (Слайд 11)",
+                        kz: "Неліктен постер «қабырғадағы мақала» емес және ұтымды дизайнды қалай жасауға болады (11-слайд)"
+                    },
+                    summary: {
+                        ru: "💡 Постер должен считываться с расстояния за 30 секунд: крупные заголовки, 1–2 главных графика в центре, много «воздуха» и QR-код.",
+                        kz: "💡 Постер 30 секунд ішінде алыстан оқылуы керек: ірі тақырыптар, ортада 1–2 негізгі график, бос кеңістік («ауа») және QR-код."
+                    },
+                    quiz: [
+                        {
+                            q: {
+                                ru: "1. В чем заключается главная ошибка большинства врачей при подготовке научного постера на конференцию?",
+                                kz: "1. Конференцияға ғылыми постер дайындағанда дәрігерлердің көпшілігі жіберетін басты қателік неде?"
+                            },
+                            opts: {
+                                ru: ["Превращают постер в «статью на стене» со сплошным мелким текстом без визуальной иерархии", "Добавляют QR-код со ссылкой на публикацию", "Делают акцент на 1–2 крупных графиках результатов"],
+                                kz: ["Постерді визуалды иерархиясы жоқ, ұсақ мәтінге толы «қабырғадағы мақалаға» айналдырады", "Мақалаға сілтеме беретін QR-код қосады", "Нәтижелерді 1–2 ірі графикпен көрсетеді"]
+                            },
+                            ans: 0,
+                            exp: {
+                                ru: "Верно! Постер — это визуал, понятный за 30 секунд, а не распечатанный текст статьи.",
+                                kz: "Дұрыс! Постер — мақала мәтіні емес, 30 секундта түсінікті болатын визуал."
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 6,
+                    videoKey: "clip6",
+                    icon: "🎙️",
+                    title: {
+                        ru: "Ораторское мастерство и главный вывод вебинара",
+                        kz: "Шешендік шеберлік және вебинардың басты қорытындысы"
+                    },
+                    sub: {
+                        ru: "Как держаться на сцене, работать голосом, указкой и укладываться в тайминг (Слайды 12–13)",
+                        kz: "Сахнада өзін ұстау, дауыс ырғағы, указка және тайминг (12–13 слайдтар)"
+                    },
+                    summary: {
+                        ru: "💡 Ораторское мастерство — это навык, а не врожденный талант. Ваша цель — не рассказать всё, а сделать так, чтобы вас поняли!",
+                        kz: "💡 Шешендік өнер — туа біткен талант емес, жаттығатын дағды. Мақсатыңыз — бәрін айтып шығу емес, тыңдаушыға түсінікті етіп жеткізу!"
+                    },
+                    quiz: [
+                        {
+                            q: {
+                                ru: "1. Какое правило подачи помогает удерживать внимание зала и производить профессиональное впечатление?",
+                                kz: "1. Залдың назарын ұстап тұруға және кәсіби әсер қалдыруға қандай ереже көмектеседі?"
+                            },
+                            opts: {
+                                ru: ["Говорить медленно, делать паузы, смотреть на аудиторию (не читать!) и осмысленно использовать указку", "Говорить максимально быстро без пауз, глядя только в экран ноутбука", "Непрерывно водить лазерной указкой кругами по всему экрану"],
+                                kz: ["Баяу сөйлеу, пауза жасау, аудиторияға қарау (оқымау!) және указканы орынды қолдану", "Ноутбук экранына қарап, үзіліссіз өте тез сөйлеу", "Лазерлік указканы экран бетінде тоқтаусыз айналдыру"]
+                            },
+                            ans: 0,
+                            exp: {
+                                ru: "Блестяще! Контакт глазами с залом, спокойный темп с паузами и точечное использование указки создают уровень международного спикера.",
+                                kz: "Керемет! Залмен көз байланысы, паузалар және указканы нақты қолдану кәсіби деңгейді көрсетеді."
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 7,
+                    videoKey: "clip7",
+                    icon: "🗣️",
+                    title: {
+                        ru: "Словарик докладчика (Ч. 1): Фразы для Клинического случая",
+                        kz: "Баяндамашы сөздігі (1-бөлім): Клиникалық жағдай фразалары"
+                    },
+                    sub: {
+                        ru: "Готовые английские чанки от приветствия до ответа на вопросы (Слайды 14–19)",
+                        kz: "Амандасудан бастап сұрақтарға жауап беруге дейінгі дайын ағылшынша чанктар (14–19 слайдтар)"
+                    },
+                    summary: {
+                        ru: "💡 Используйте готовые академические клише: 'He presented with...', 'Based on these findings, a diagnosis of ... was established', 'This finding is consistent with previous reports'.",
+                        kz: "💡 Дайын академиялық клишелерді қолданыңыз: 'He presented with...', 'Based on these findings, a diagnosis of ... was established', 'This finding is consistent with previous reports'."
+                    },
+                    quiz: [
+                        {
+                            q: {
+                                ru: "1. Как профессионально сказать на английском: «На основании этих данных был установлен диагноз МЛУ-ТБ»?",
+                                kz: "1. Ағылшын тілінде кәсіби түрде қалай айтамыз: «Осы деректер негізінде КДТ-ТБ диагнозы қойылды»?"
+                            },
+                            opts: {
+                                ru: ["By these findings we made diagnosis MDR-TB.", "Based on these findings, a diagnosis of multidrug-resistant tuberculosis was established.", "This findings did diagnosis of tuberculosis."],
+                                kz: ["By these findings we made diagnosis MDR-TB.", "Based on these findings, a diagnosis of multidrug-resistant tuberculosis was established.", "This findings did diagnosis of tuberculosis."]
+                            },
+                            ans: 1,
+                            exp: {
+                                ru: "Золотой медицинский чанк для любой презентации: 'Based on these findings, a diagnosis of [X] was established'!",
+                                kz: "Кез келген презентацияға арналған алтын чанк: 'Based on these findings, a diagnosis of [X] was established'!"
+                            }
+                        },
+                        {
+                            q: {
+                                ru: "2. Какой фразой лучше всего подчеркнуть уникальность вашего клинического случая в разделе Discussion?",
+                                kz: "2. Discussion бөлімінде клиникалық жағдайыңыздың бірегейлігін қай фразамен көрсеткен дұрыс?"
+                            },
+                            opts: {
+                                ru: ["Nobody knows more than us about this case...", "To the best of our knowledge, this is the first case of...", "We think maybe this is number one case..."],
+                                kz: ["Nobody knows more than us about this case...", "To the best of our knowledge, this is the first case of...", "We think maybe this is number one case..."]
+                            },
+                            ans: 1,
+                            exp: {
+                                ru: "'To the best of our knowledge, this is the first case of...' («Насколько нам известно, это первый случай...») — стандарт международных журналов и конгрессов.",
+                                kz: "'To the best of our knowledge, this is the first case of...' («Біздің білуімізше, бұл алғашқы жағдай...») — халықаралық конгрестер стандарты."
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 8,
+                    videoKey: "clip8",
+                    icon: "🧬",
+                    title: {
+                        ru: "Словарик докладчика (Ч. 2): Фразы для Научного исследования",
+                        kz: "Баяндамашы сөздігі (2-бөлім): Ғылыми зерттеу фразалары"
+                    },
+                    sub: {
+                        ru: "Как озвучить цель, выборку, результаты и ограничения исследования (Слайды 20–25)",
+                        kz: "Зерттеу мақсатын, іріктемені, нәтижелер мен шектеулерді ағылшынша баяндау (20–25 слайдтар)"
+                    },
+                    summary: {
+                        ru: "💡 Ключевые фразы для науки: 'The aim of this study was to evaluate...', 'A total of 100 patients were included', 'This study has several limitations. It is based on self-reported data, which may introduce bias'.",
+                        kz: "💡 Ғылыми баяндамаға арналған негізгі фразалар: 'The aim of this study was to evaluate...', 'A total of 100 patients were included', 'This study has several limitations'."
+                    },
+                    quiz: [
+                        {
+                            q: {
+                                ru: "1. Как грамотно сформулировать цель исследования на слайде INTRODUCTION & AIM?",
+                                kz: "1. INTRODUCTION & AIM слайдында зерттеу мақсатын қалай сауатты тұжырымдаймыз?"
+                            },
+                            opts: {
+                                ru: ["The aim of this study was to evaluate... and to identify...", "We wanted just to see what happens with...", "Our goal is look at patients..."],
+                                kz: ["The aim of this study was to evaluate... and to identify...", "We wanted just to see what happens with...", "Our goal is look at patients..."]
+                            },
+                            ans: 0,
+                            exp: {
+                                ru: "Верно! 'The aim of this study was to evaluate [X] and to identify [Y]' — безупречная академическая формула.",
+                                kz: "Дұрыс! 'The aim of this study was to evaluate [X] and to identify [Y]' — мінсіз академиялық формула."
+                            }
+                        },
+                        {
+                            q: {
+                                ru: "2. Как на английском честно указать ограничения исследования (Limitations) в разделе Discussion?",
+                                kz: "2. Discussion бөлімінде зерттеу шектеулерін (Limitations) ағылшынша қалай кәсіби түрде айтамыз?"
+                            },
+                            opts: {
+                                ru: ["This study has several limitations. It is based on self-reported data, which may introduce bias.", "Our study is bad because patients lied.", "We had small patients and mistakes."],
+                                kz: ["This study has several limitations. It is based on self-reported data, which may introduce bias.", "Our study is bad because patients lied.", "We had small patients and mistakes."]
+                            },
+                            ans: 0,
+                            exp: {
+                                ru: "Отлично! Упоминание 'limitations', 'self-reported data' и 'may introduce bias' показывает вашу высокую научную зрелость перед комиссией.",
+                                kz: "Тамаша! 'Limitations', 'self-reported data' және 'may introduce bias' тіркестерін қолдану жоғары ғылыми деңгейді көрсетеді."
+                            }
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // =========================================================================
+        // 4. ЛОГИКА КОНСПЕКТА, ОЗВУЧКИ СЛОВАРИКА И АККОРДЕОНОВ ПЛЕЙЛИСТА
+        // =========================================================================
+        function handleMasterGuideClick() {
+            if (!canReadGuide) {
+                document.getElementById('guidePaywallModal').style.display = 'flex';
+                return;
+            }
+            const panel = document.getElementById('masterGuidePanel');
+            const btn = document.getElementById('uiOpenGuideBtn');
+            const isOpen = (panel.style.display === 'flex');
+
+            if (isOpen) {
+                panel.style.display = 'none';
+                btn.textContent = MODULE_DATA.ui.openGuideBtn[currentLang];
+            } else {
+                panel.style.display = 'flex';
+                btn.textContent = MODULE_DATA.ui.closeGuideBtn[currentLang];
+                panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function closeGuidePaywall() {
+            document.getElementById('guidePaywallModal').style.display = 'none';
+        }
+
+        function switchGuideTab(tabIdx) {
+            for (let i = 0; i < 4; i++) {
+                document.getElementById(`gTabBtn${i}`).classList.toggle('active', i === tabIdx);
+                document.getElementById(`gTab${i}`).classList.toggle('active', i === tabIdx);
+            }
+        }
+
+        function renderMasterGuideContent() {
+            document.getElementById('gTab0').innerHTML = MODULE_DATA.guideTab0Html[currentLang];
+            document.getElementById('gTab1').innerHTML = MODULE_DATA.guideTab1Html[currentLang];
+            document.getElementById('gTab2').innerHTML = buildPhrasebookHtml(MODULE_DATA.casePhrases);
+            document.getElementById('gTab3').innerHTML = buildPhrasebookHtml(MODULE_DATA.researchPhrases);
+        }
+
+        function buildPhrasebookHtml(sectionsArray) {
+            let html = '';
+            sectionsArray.forEach(secObj => {
+                html += `<div class="phrase-section-title">${secObj.sec}</div>`;
+                secObj.items.forEach(item => {
+                    const safeSpeech = item.en.replace(/'/g, "\\'");
+                    html += `
+                        <div class="phrase-item">
+                            <div>
+                                <div class="phrase-en">"${item.en}"</div>
+                                <div class="phrase-tr">${item[currentLang]}</div>
+                            </div>
+                            <button type="button" class="speak-btn" onclick="speakEn('${safeSpeech}')" title="Прослушать">🔊</button>
+                        </div>
+                    `;
+                });
+            });
+            return html;
+        }
+
+        function speakEn(text) {
+            if (!('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.lang = 'en-US';
+            u.rate = 0.92;
+            window.speechSynthesis.speak(u);
+        }
+
+        // Рендер плейлиста из 8 видеонарезок с проверкой PREMIUM/VIP для видео и вопросами
+        function renderPlaylist() {
+            const container = document.getElementById('playlistContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const completedList = getCompletedClips();
+            const isKz = (currentLang === 'kz');
+
+            MODULE_DATA.clips.forEach((clip) => {
+                const isDone = completedList.includes(clip.id);
+                const videoUrl = WEBINAR_VIDEOS[clip.videoKey] || "";
+
+                const group = document.createElement('div');
+                group.className = 'lesson-group' + (isDone ? ' completed-clip' : '');
+                group.id = `clipGroup_${clip.id}`;
+
+                const doneTagText = isKz ? "✓ Өтілді" : "✓ Пройдено";
+
+                // Контейнер видео: открывается только для PREMIUM и VIP
+                let videoBoxHtml = '';
+                if (canWatchVideo) {
+                    videoBoxHtml = `
+                        <div class="video-embed-box">
+                            <iframe
+                                data-src="${videoUrl}"
+                                title="${clip.title[currentLang]}"
+                                loading="lazy"
+                                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    `;
+                } else {
+                    const tierLabel = TIER_NAMES[currentUserTier] || "FREE";
+                    const lockDesc = isKz
+                        ? `Сізде «${tierLabel}» тарифі белсенді. Вебинардың видео-үзінділері тек «Премиум» және «ВИП» жазылымдарында ашық. Төмендегі бекіту сұрақтарын қазір орындай аласыз!`
+                        : `У вас активен тариф «${tierLabel}». Видеонарезки вебинара доступны в подписках «Премиум» и «ВИП». При этом закрепляющие вопросы ниже открыты для вас уже сейчас!`;
+
+                    videoBoxHtml = `
+                        <div class="video-embed-box locked">
+                            <div class="video-paywall">
+                                <span class="paywall-badge">🔒 ${isKz ? "Видео «Премиум» және «ВИП» тарифтерінде ашық" : "Видео доступно в тарифах «Премиум» и «ВИП»"}</span>
+                                <div class="paywall-title">🎬 ${clip.title[currentLang]}</div>
+                                <p class="paywall-desc">${lockDesc}</p>
+                                <div class="paywall-actions">
+                                    <a href="https://kazdoctors.com/tarifs" class="paywall-btn tarifs">🌟 ${isKz ? "Тарифтер (Премиум / ВИП)" : "Тарифы (Премиум / ВИП)"}</a>
+                                    <a href="https://wa.me/77081595038?text=Здравствуйте!%20Хочу%20подключить%20тариф%20Премиум%20для%20просмотра%20видео" target="_blank" class="paywall-btn contact">💬 WhatsApp</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Собираем закрепляющие вопросы для этой нарезки
+                let quizItemsHtml = '';
+                clip.quiz.forEach((qObj, qIdx) => {
+                    let optsHtml = '';
+                    qObj.opts[currentLang].forEach((optText, oIdx) => {
+                        optsHtml += `<button type="button" class="cq-btn" onclick="checkClipQuiz(this, ${clip.id}, ${qIdx}, ${oIdx})">${optText}</button>`;
+                    });
+                    quizItemsHtml += `
+                        <div class="cq-item" id="cq_${clip.id}_${qIdx}">
+                            <div class="cq-q">${qObj.q[currentLang]}</div>
+                            <div class="cq-opts">${optsHtml}</div>
+                            <div class="cq-fb">💡 ${qObj.exp[currentLang]}</div>
+                        </div>
+                    `;
+                });
+
+                const markBtnText = isDone
+                    ? (isKz ? "✅ Тақырып өтілді (басып алып тастау)" : "✅ Тема отмечена пройденной (нажмите для отмены)")
+                    : (isKz ? "✓ Тақырыпты өтілді деп белгілеу" : "✓ Отметить тему пройденной");
+
+                group.innerHTML = `
+                    <button type="button" class="trainer-card" onclick="toggleClipAccordion(this)">
+                        <div class="card-content">
+                            <div class="card-icon">${clip.icon}</div>
+                            <div class="card-text">
+                                <h2>
+                                    <span class="clip-num-pill">Часть 0${clip.id}</span>
+                                    <span>${clip.title[currentLang]}</span>
+                                    <span class="done-pill-tag">${doneTagText}</span>
+                                </h2>
+                                <p>${clip.sub[currentLang]}</p>
+                            </div>
+                        </div>
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                    </button>
+                    <div class="lesson-dropdown">
+                        <div class="dropdown-content-inner">
+                            ${videoBoxHtml}
+                            <div class="clip-summary-note">${clip.summary[currentLang]}</div>
+                            <div class="clip-quiz-box">
+                                <div class="cq-header">✍️ ${isKz ? "Бекіту сұрақтары:" : "Вопросы на закрепление видео:"}</div>
+                                ${quizItemsHtml}
+                            </div>
+                            <button type="button" class="mark-done-btn" onclick="toggleClipCompleted(${clip.id})">${markBtnText}</button>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(group);
+            });
+
+            updateProgressBarUI();
+        }
+
+        function checkClipQuiz(btnEl, clipId, qIdx, chosenIdx) {
+            const clip = MODULE_DATA.clips.find(c => c.id === clipId);
+            if (!clip) return;
+            const qObj = clip.quiz[qIdx];
+            const parent = document.getElementById(`cq_${clipId}_${qIdx}`);
+            const allBtns = parent.querySelectorAll('.cq-btn');
+
+            allBtns.forEach(b => b.disabled = true);
+            if (chosenIdx === qObj.ans) {
+                btnEl.classList.add('correct');
+            } else {
+                btnEl.classList.add('wrong');
+                allBtns[qObj.ans].classList.add('correct');
+            }
+            parent.querySelector('.cq-fb').style.display = 'block';
+        }
+
+        function toggleClipAccordion(buttonEl) {
+            const currentGroup = buttonEl.parentElement;
+            const isOpen = currentGroup.classList.contains('open');
+
+            document.querySelectorAll('.lesson-group.open').forEach(group => {
+                group.classList.remove('open');
+                const iframe = group.querySelector('iframe');
+                if (iframe && iframe.getAttribute('src')) {
+                    iframe.removeAttribute('src');
+                }
+            });
+
+            if (!isOpen) {
+                currentGroup.classList.add('open');
+                if (canWatchVideo) {
+                    const iframe = currentGroup.querySelector('iframe');
+                    if (iframe && iframe.dataset.src && !iframe.getAttribute('src')) {
+                        iframe.setAttribute('src', iframe.dataset.src);
+                    }
+                }
+            }
+        }
+
+        // Прогресс прохождения 8 тем вебинара
+        function getCompletedClips() {
+            try {
+                return JSON.parse(localStorage.getItem('ds_completed_presentations_clips') || '[]');
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function toggleClipCompleted(clipId) {
+            let list = getCompletedClips();
+            if (list.includes(clipId)) {
+                list = list.filter(id => id !== clipId);
+            } else {
+                list.push(clipId);
+            }
+            localStorage.setItem('ds_completed_presentations_clips', JSON.stringify(list));
+            renderPlaylist();
+        }
+
+        function updateProgressBarUI() {
+            const list = getCompletedClips();
+            const count = list.length;
+            const total = MODULE_DATA.clips.length;
+            const pct = Math.round((count / total) * 100);
+            const isKz = (currentLang === 'kz');
+
+            document.getElementById('progressCountText').textContent = isKz
+                ? `${count} / ${total} тақырып (${pct}%)`
+                : `${count} / ${total} тем (${pct}%)`;
+            document.getElementById('progressBarFill').style.width = `${pct}%`;
+        }
+
+        // Переключение языка RU / KZ
+        function setLang(lang) {
+            currentLang = lang;
+            localStorage.setItem('doctors_speak_lang', lang);
+            localStorage.setItem('selected_lang', lang);
+
+            document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
+            document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
+
+            const ui = MODULE_DATA.ui;
+            document.getElementById('uiBackBtn').textContent = ui.backBtn[lang];
+            document.getElementById('uiMainTitle').textContent = ui.mainTitle[lang];
+            document.getElementById('uiMainSubtitle').textContent = ui.mainSubtitle[lang];
+            document.getElementById('uiProgLabel').textContent = ui.progLabel[lang];
+            document.getElementById('uiSec1Label').textContent = ui.sec1Label[lang];
+            document.getElementById('uiGuideTitle').textContent = ui.guideTitle[lang];
+            document.getElementById('uiGuideDesc').textContent = ui.guideDesc[lang];
+
+            const panel = document.getElementById('masterGuidePanel');
+            const isOpen = (panel && panel.style.display === 'flex');
+            document.getElementById('uiOpenGuideBtn').textContent = isOpen ? ui.closeGuideBtn[lang] : ui.openGuideBtn[lang];
+
+            ui.guideTabs.forEach((t, idx) => {
+                document.getElementById(`gTabBtn${idx}`).textContent = t[lang];
+            });
+
+            document.getElementById('uiSec2Label').textContent = ui.sec2Label[lang];
+
+            updateAccessBadgesUI();
+            renderMasterGuideContent();
+            renderPlaylist();
+        }
+
+        // Запуск при загрузке
+        setLang(currentLang);
+        checkAuthAndTier();
+    </script>
+</body>
+</html>
