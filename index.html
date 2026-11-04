@@ -189,7 +189,6 @@
             gap: 10px;
         }
 
-        /* 1 главная кнопка для нового посетителя + компактные кнопки входа */
         .hero-test-btn {
             display: inline-flex;
             align-items: center;
@@ -299,9 +298,7 @@
             flex-grow: 1;
         }
 
-        /* ==========================================================================
-           WORD OF THE HOUR (С ОЗВУЧКОЙ И ВЫВОДОМ ТОЛЬКО ВЫБРАННОГО ЯЗЫКА)
-           ========================================================================== */
+        /* WORD OF THE HOUR */
         .woth-card {
             background: var(--card-bg);
             border: 1px solid rgba(217, 160, 0, 0.28);
@@ -398,7 +395,7 @@
             padding: 10px 14px;
             border-radius: 11px;
             font-weight: 600;
-            font-size: 0.88rem; /* 14px+ */
+            font-size: 0.88rem;
             cursor: pointer;
             transition: all 0.15s ease;
             text-align: left;
@@ -450,10 +447,7 @@
             margin-left: auto;
         }
 
-        /* ==========================================================================
-           НОВАЯ АРХИТЕКТУРА КАТЕГОРИЙ И КОМПАКТНЫХ ВЛОЖЕННЫХ МОДУЛЕЙ
-           (Чтобы глаз не терялся при раскрытии!)
-           ========================================================================== */
+        /* КАТЕГОРИИ И ВЛОЖЕННЫЕ МОДУЛИ */
         .section-caption {
             font-size: 0.74rem;
             font-weight: 800;
@@ -538,7 +532,7 @@
         }
 
         .cat-head-text p {
-            font-size: 0.82rem; /* 13.2px+ */
+            font-size: 0.82rem;
             color: var(--text-muted);
             font-weight: 500;
             line-height: 1.3;
@@ -573,7 +567,6 @@
             fill: #FFFFFF;
         }
 
-        /* Внутренний список: древовидный отступ слева + компактные строки */
         .category-body {
             padding: 10px 12px 12px 18px;
             background: #F4F8FB;
@@ -588,7 +581,6 @@
             border-radius: 0 12px 12px 0;
         }
 
-        /* Компактная строка модуля (визуально четко отличается от заголовка категории!) */
         .module-row {
             display: flex;
             align-items: center;
@@ -644,14 +636,14 @@
         }
 
         .mod-title {
-            font-size: 0.88rem; /* 14.1px */
+            font-size: 0.88rem;
             font-weight: 800;
             color: var(--text-dark);
             line-height: 1.25;
         }
 
         .mod-desc {
-            font-size: 0.82rem; /* 13.2px */
+            font-size: 0.82rem;
             color: var(--text-muted);
             font-weight: 500;
             line-height: 1.3;
@@ -688,7 +680,6 @@
             border-color: rgba(0, 161, 222, 0.28);
         }
 
-        /* Компактный спойлер для демо-видео внутри Грамматики */
         details.video-spoiler {
             background: #FFFFFF;
             border: 1px dashed var(--kz-blue);
@@ -715,10 +706,10 @@
             position: relative;
             width: 100%;
             padding-top: 56.25%;
-            border-radius: 9px;
+            border-radius: 12px;
             overflow: hidden;
             background: #000;
-            margin-top: 8px;
+            margin-top: 4px;
         }
 
         .video-container iframe {
@@ -728,7 +719,6 @@
             border: 0;
         }
 
-        /* Карточка перехода ко всем Тарифам */
         .tarifs-banner-card {
             display: flex;
             align-items: center;
@@ -764,7 +754,6 @@
             flex-shrink: 0;
         }
 
-        /* Компактная плавающая плашка 56 px по скроллу с крестиком */
         .sticky-bottom-cta {
             position: fixed;
             bottom: 10px;
@@ -831,7 +820,6 @@
             flex-shrink: 0;
         }
 
-        /* 4. Футер */
         footer {
             position: relative;
             z-index: 1;
@@ -867,7 +855,6 @@
             box-shadow: 0 4px 14px rgba(217, 160, 0, 0.22);
         }
 
-        /* Показ строго одного выбранного языка (KZ или RU) */
         [lang-val] { display: none !important; }
         body.lang-kz span[lang-val="kz"] { display: inline !important; }
         body.lang-ru span[lang-val="ru"] { display: inline !important; }
@@ -894,7 +881,7 @@
 </head>
 <body class="lang-ru">
 
-    <!-- 1. ШАПКА САЙТА (Лаконичная, в цветах INDEX FRIDAY + Приветствие перед именем) -->
+    <!-- 1. ШАПКА САЙТА -->
     <header>
         <div class="header-top-bar">
             <a href="https://instagram.com/doctors.speak" target="_blank" rel="noopener noreferrer" class="brand-badge">✨ @doctors.speak</a>
@@ -912,7 +899,6 @@
         <p class="subtitle" lang-val="kz">Дәрігерлер мен студенттерге арналған платформа</p>
 
         <div id="authArea">
-            <!-- Блок для гостя: 1 главная кнопка уровня + компактный вход -->
             <div id="guestActions">
                 <a href="./test/" class="hero-test-btn">
                     <span lang-val="ru">🎯 Проверьте свой уровень за 10 минут!</span>
@@ -930,7 +916,6 @@
                 </div>
             </div>
 
-            <!-- Блок авторизованного пользователя (с приветствием HELLO, ИМЯ! 👋) -->
             <div id="userArea">
                 <span id="welcomeMessage"></span>
                 <div class="user-plan-row">
@@ -965,23 +950,23 @@
             </div>
         </div>
 
-        <!-- Контейнер для адаптивности видео -->
-<div class="video-container">
-    <iframe 
-        src="https://www.youtube.com/embed/_rQEPiwss0M" 
-        title="YouTube video player" 
-        loading="lazy" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-        allowfullscreen>
-    </iframe>
-</div>
+        <!-- Приветственное видео YouTube -->
+        <div class="video-container">
+            <iframe 
+                src="https://www.youtube.com/embed/_rQEPiwss0M" 
+                title="YouTube video player" 
+                loading="lazy" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowfullscreen>
+            </iframe>
+        </div>
 
         <div class="section-caption">
             <span lang-val="ru">Выберите категорию обучения (нажмите для раскрытия):</span>
             <span lang-val="kz">Оқу санатын таңдаңыз (ашу үшін басыңыз):</span>
         </div>
 
-<!-- ==================== 1. КАТЕГОРИЯ: VOCABULARY ==================== -->
+        <!-- ==================== 1. КАТЕГОРИЯ: VOCABULARY ==================== -->
         <details class="category-group">
             <summary class="category-header">
                 <div class="cat-head-left">
@@ -1000,13 +985,13 @@
                 </div>
             </summary>
 
-            <!-- Блок 1: Аудирование (отдельно перед тренажерами) -->
-            <div class="category-body" style="margin-bottom: 6px; border-left-color: var(--green-accent);">
+            <div class="category-body">
+                <!-- 1. Listening (стоит в том же списке первым) -->
                 <a href="./listening/" class="module-row free-row">
                     <div class="mod-left">
                         <div class="mod-mini-icon">🎧</div>
                         <div class="mod-info">
-                            <div class="mod-title">Listening (Аудио в дорогу)</div>
+                            <div class="mod-title">Listening</div>
                             <div class="mod-desc" lang-val="ru">Услышьте термины в диалогах!</div>
                             <div class="mod-desc" lang-val="kz">Терминдерді диалогтарда естіп көріңіз!</div>
                         </div>
@@ -1015,11 +1000,8 @@
                         <span class="badge-pill free-pill">🔓 Free</span>
                     </div>
                 </a>
-            </div>
 
-            <!-- Блок 2: Тренажеры лексики -->
-            <div class="category-body" style="margin-top: 0;">
-                <!-- 1. Анатомический тренажер (FREE) -->
+                <!-- 2. Анатомический тренажер (FREE) -->
                 <a href="./anatomic/" class="module-row free-row">
                     <div class="mod-left">
                         <div class="mod-mini-icon">🫀</div>
@@ -1034,7 +1016,7 @@
                     </div>
                 </a>
 
-                <!-- 2. Клинический тренажер (STANDARD+) -->
+                <!-- 3. Клинический тренажер (STANDARD+) -->
                 <a href="./clinical" class="module-row">
                     <div class="mod-left">
                         <div class="mod-mini-icon" id="clinicalIcon">🔒</div>
@@ -1049,7 +1031,7 @@
                     </div>
                 </a>
 
-                <!-- 3. Академический тренажер (STANDARD+) -->
+                <!-- 4. Академический тренажер (STANDARD+) -->
                 <a href="./academic/" class="module-row">
                     <div class="mod-left">
                         <div class="mod-mini-icon" id="academicIcon">🔒</div>
@@ -1132,7 +1114,6 @@
                     </div>
                 </a>
 
-                <!-- Компактный спойлер с демо-видео YouTube (не занимает экран без клика) -->
                 <details class="video-spoiler">
                     <summary>
                         <span lang-val="ru">🎬 Посмотреть демо-фрагмент видеоурока</span>
@@ -1172,7 +1153,6 @@
             </summary>
 
             <div class="category-body">
-                <!-- 1. Тренажер опроса пациентов (Тизер Free / Полный в Standard+) -->
                 <a href="./interviews/" class="module-row free-row">
                     <div class="mod-left">
                         <div class="mod-mini-icon" id="interviewIcon">🗣️</div>
@@ -1187,7 +1167,6 @@
                     </div>
                 </a>
 
-                <!-- 2. Учебник по опросу на английском (PRO / PREMIUM / VIP) -->
                 <a href="https://kazdoctors.com/inter/" class="module-row">
                     <div class="mod-left">
                         <div class="mod-mini-icon" id="interviewBookIcon">🔒</div>
@@ -1203,7 +1182,6 @@
                     </div>
                 </a>
 
-                <!-- 3. Статьи и гайдлайны — Видеоуроки и конспект (PRO / PREMIUM / VIP) -->
                 <a href="https://kazdoctors.com/reading/" class="module-row">
                     <div class="mod-left">
                         <div class="mod-mini-icon" id="readingVidIcon">🔒</div>
@@ -1219,7 +1197,6 @@
                     </div>
                 </a>
 
-                <!-- 4. Статьи и гайдлайны — Практика (PRO / PREMIUM / VIP) -->
                 <a href="https://kazdoctors.com/grammar/reading/" class="module-row">
                     <div class="mod-left">
                         <div class="mod-mini-icon" id="readingPracIcon">🔒</div>
@@ -1235,7 +1212,6 @@
                     </div>
                 </a>
 
-                <!-- 5. Презентации и постеры (PRO / PREMIUM / VIP) -->
                 <a href="https://kazdoctors.com/presentations/" class="module-row">
                     <div class="mod-left">
                         <div class="mod-mini-icon" id="presIcon">🔒</div>
@@ -1250,7 +1226,6 @@
                     </div>
                 </a>
 
-                <!-- 6. USMLE Preparation -->
                 <a href="./usmle/" class="module-row">
                     <div class="mod-left">
                         <div class="mod-mini-icon">📚</div>
@@ -1336,7 +1311,7 @@
 
     </main>
 
-    <!-- Компактная плавающая строка 54 px: появляется только после прокрутки ниже "Слова часа" и закрывается крестиком -->
+    <!-- Компактная плавающая строка 54 px -->
     <div class="sticky-bottom-cta" id="stickyBottomCta">
         <a href="./tarifs/" class="sbc-link">
             <span lang-val="ru">🔥 Полный доступ от 7 990 ₸/мес · <strong>Тарифы ➔</strong></span>
@@ -1399,7 +1374,6 @@
         }
     }
 
-    // Авто-сворачивание других категорий при открытии одной (чтобы экран не растягивался)
     document.querySelectorAll('details.category-group').forEach((targetGroup) => {
         targetGroup.addEventListener('toggle', () => {
             if (targetGroup.open) {
@@ -1412,7 +1386,6 @@
         });
     });
 
-    // Управление нижней плашкой 54px по скроллу
     function dismissStickyBar() {
         stickyDismissed = true;
         sessionStorage.setItem('ds_sticky_dismissed', '1');
@@ -1433,7 +1406,6 @@
         }
     }, { passive: true });
 
-    // Генерация уникального ID устройства для защиты от мульти-входа
     function getDeviceUUID() {
         let deviceId = localStorage.getItem('app_device_id');
         if (!deviceId) {
@@ -1443,7 +1415,6 @@
         return deviceId;
     }
 
-    // Проверка: 1 устройство + наличие активной подписки + получение ИМЕНИ и ТАРИФА
     async function verifyUserAccess(user) {
         const localDeviceId = getDeviceUUID();
         const userEmail = (user.email || '').toLowerCase().trim();
@@ -1526,7 +1497,6 @@
         document.getElementById("guestActions").style.display = "none";
         document.getElementById("userArea").style.display = "block";
 
-        // Приветственная надпись перед именем (HELLO, ИМЯ! 👋)
         const fallbackEmailName = user.email ? user.email.split('@')[0] : "DOCTOR";
         const displayName = (
             (profileName && profileName.trim()) ||
@@ -1536,7 +1506,6 @@
 
         document.getElementById("welcomeMessage").textContent = `HELLO, ${displayName}! 👋`;
 
-        // Обновляем строчку YOUR PLAN
         const planBadge = document.getElementById("userPlanBadge");
         const planLabel = PLAN_DISPLAY_NAMES[tier] || (hasActiveSub ? "STANDARD" : "FREE");
         planBadge.textContent = `YOUR PLAN: ${planLabel}`;
@@ -1544,7 +1513,6 @@
 
         const tierLevel = TIER_LEVELS[tier] || 0;
 
-        // 1. Логика для тарифа STANDARD и выше (tierLevel >= 1): открываются все тренажеры
         if (tierLevel >= 1) {
             document.getElementById("clinicalIcon").textContent = "🩺";
             document.getElementById("clinicalBadge").textContent = "✅ Открыто";
@@ -1562,7 +1530,6 @@
             document.getElementById("interviewBadge").textContent = "✅ Открыто";
         }
 
-        // 2. Логика для тарифа PRO, PREMIUM и VIP (tierLevel >= 2): открываются учебники и конспекты
         if (tierLevel >= 2) {
             isPaidSubscriber = true;
             document.getElementById("stickyBottomCta").classList.remove("visible");
@@ -1618,7 +1585,6 @@
 
 <script>
 const words = [
-        // --- 15 ANATOMICAL TERMS ---
         { en: "Heart", kz: "Жүрек", ru: "Сердце", cat: "anatomy" },
         { en: "Bone", kz: "Сүйек", ru: "Кость", cat: "anatomy" },
         { en: "Humerus", kz: "Тоқпан жілік", ru: "Плечевая кость", cat: "anatomy" },
@@ -1635,7 +1601,6 @@ const words = [
         { en: "Thyroid", kz: "Қалқанша без", ru: "Щитовидная железа", cat: "anatomy" },
         { en: "Aorta", kz: "Аорта", ru: "Аорта", cat: "anatomy" },
 
-        // --- 15 CLINICAL TERMS ---
         { en: "Fever", kz: "Қызба", ru: "Лихорадка", cat: "clinical" },
         { en: "Cough", kz: "Жөтел", ru: "Кашель", cat: "clinical" },
         { en: "Edema", kz: "Ісіну", ru: "Отек", cat: "clinical" },
@@ -1652,7 +1617,6 @@ const words = [
         { en: "Tachycardia", kz: "Тахикардия", ru: "Тахикардия", cat: "clinical" },
         { en: "Inflammation", kz: "Қабыну", ru: "Воспаление", cat: "clinical" },
 
-        // --- 15 ACADEMIC TERMS ---
         { en: "Increase", kz: "Ұлғайту / Өсу", ru: "Увеличение", cat: "academic" },
         { en: "Improve", kz: "Жақсарту", ru: "Улучшать", cat: "academic" },
         { en: "In contrast", kz: "Керісінше", ru: "В отличие / Напротив", cat: "academic" },
@@ -1706,7 +1670,6 @@ const words = [
         renderWordCardByIndex(idx);
     }
 
-    // Выводим варианты ответа только на выбранном языке (KZ или RU)
     function renderWordCardByIndex(idx) {
         currentWordIndex = idx;
         const currentWord = words[currentWordIndex];
