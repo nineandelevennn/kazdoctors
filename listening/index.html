@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctors Speak — Аудио-тренажер в дорогу (EN / KZ / RU)</title>
+    <title>Doctors Speak — Аудио-тренажер медицинских терминов</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -46,43 +46,31 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding-bottom: 40px;
+            padding-bottom: 36px;
         }
 
-        /* 1. Верхняя шапка в стиле INDEX FRIDAY */
+        /* 1. Компактная шапка */
         header {
             position: relative;
             z-index: 10;
             background: linear-gradient(150deg, #0082B8 0%, var(--kz-blue) 55%, #22B8CF 90%, var(--kz-gold) 135%);
             color: #FFFFFF;
             text-align: center;
-            padding: 18px 16px 24px 16px;
-            box-shadow: 0 8px 24px rgba(0, 161, 222, 0.22);
-            border-bottom-left-radius: 26px;
-            border-bottom-right-radius: 26px;
+            padding: 16px 14px 20px 14px;
+            box-shadow: 0 6px 20px rgba(0, 161, 222, 0.2);
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
             overflow: hidden;
-        }
-
-        header::after {
-            content: '';
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 160px;
-            height: 160px;
-            background: radial-gradient(circle, rgba(255, 199, 44, 0.35) 0%, rgba(255, 199, 44, 0) 70%);
-            border-radius: 50%;
-            pointer-events: none;
         }
 
         .header-top-bar {
             width: 100%;
-            max-width: 780px;
-            margin: 0 auto 12px auto;
+            max-width: 560px;
+            margin: 0 auto 10px auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
+            gap: 8px;
         }
 
         .back-btn {
@@ -96,133 +84,76 @@
             border: 1px solid rgba(255, 255, 255, 0.4);
             text-decoration: none;
             font-weight: 700;
-            font-size: 0.76rem;
-            padding: 6px 14px;
-            border-radius: 20px;
-            transition: all 0.2s ease;
-        }
-
-        .back-btn:active {
-            transform: scale(0.96);
-        }
-
-        .header-badges {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 6px;
-        }
-
-        .brand-badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.18);
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            color: #FFFFFF;
-            font-weight: 700;
-            font-size: 0.73rem;
-            padding: 4px 12px;
-            border-radius: 20px;
+            font-size: 0.75rem;
+            padding: 6px 13px;
+            border-radius: 18px;
         }
 
         .tier-status-badge {
             display: inline-block;
-            background: rgba(255, 199, 44, 0.25);
-            border: 1px solid var(--kz-gold);
-            color: var(--kz-gold);
+            background: rgba(0, 0, 0, 0.22);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #FFFFFF;
             font-weight: 800;
-            font-size: 0.72rem;
-            padding: 4px 12px;
-            border-radius: 20px;
+            font-size: 0.7rem;
+            padding: 5px 12px;
+            border-radius: 18px;
             text-transform: uppercase;
             text-decoration: none;
         }
 
+        .tier-status-badge.active-sub {
+            background: rgba(255, 199, 44, 0.25);
+            border-color: var(--kz-gold);
+            color: var(--kz-gold);
+        }
+
         h1 {
-            font-size: 1.35rem;
+            font-size: 1.25rem;
             font-weight: 900;
             line-height: 1.2;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
             color: #FFFFFF;
-            max-width: 600px;
+            max-width: 480px;
             margin: 0 auto;
-            text-shadow: 0 2px 10px rgba(0, 80, 120, 0.2);
         }
 
         .subtitle {
-            font-size: 0.78rem;
-            margin-top: 5px;
-            font-weight: 800;
-            letter-spacing: 0.6px;
+            font-size: 0.76rem;
+            margin-top: 4px;
+            font-weight: 700;
             color: var(--kz-gold);
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-        }
-
-        /* Шкала прогресса прослушанных выпусков */
-        .progress-widget {
-            width: 100%;
-            max-width: 520px;
-            background: rgba(15, 23, 42, 0.26);
-            border: 1px solid rgba(255, 255, 255, 0.28);
-            border-radius: 16px;
-            padding: 10px 14px;
-            margin: 12px auto 0 auto;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-
-        .pw-top-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.73rem;
-            font-weight: 800;
-            color: #FFFFFF;
-            margin-bottom: 6px;
-        }
-
-        .pw-bar-bg {
-            width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.22);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .pw-bar-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--kz-gold) 0%, #34D399 100%);
-            border-radius: 10px;
-            transition: width 0.35s ease;
         }
 
         /* 2. Основной контейнер */
         main {
-            position: relative;
-            z-index: 1;
+            width: 100%;
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 16px 12px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
-            width: 100%;
-            max-width: 780px;
-            margin: 0 auto;
-            padding: 18px 14px;
+            gap: 12px;
             flex-grow: 1;
         }
 
-        /* Панель фильтрации плейлиста: Все (8) | Қазақша (4) | Русский (4) */
-        .filter-bar {
+        /* Панель управления: фильтр языка + кнопка "Раскрыть / Скрыть все" */
+        .controls-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0 3px 10px rgba(0, 119, 163, 0.04);
+        }
+
+        .filter-row {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 6px;
-            background: #FFFFFF;
-            padding: 6px;
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 12px rgba(0, 119, 163, 0.04);
         }
 
         .filter-btn {
@@ -230,474 +161,293 @@
             background: #F1F5F9;
             color: var(--text-muted);
             font-weight: 800;
-            font-size: 0.76rem;
-            padding: 10px 8px;
-            border-radius: 11px;
+            font-size: 0.74rem;
+            padding: 9px 6px;
+            border-radius: 10px;
             cursor: pointer;
             text-align: center;
-            transition: all 0.2s ease;
+            transition: all 0.18s ease;
         }
 
         .filter-btn.active {
-            background: linear-gradient(135deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+            background: var(--kz-blue);
             color: #FFFFFF;
-            box-shadow: 0 3px 10px rgba(0, 161, 222, 0.25);
+            box-shadow: 0 2px 8px rgba(0, 161, 222, 0.25);
         }
 
-        /* Заголовок языкового блока плейлиста */
-        .playlist-section-header {
+        .toggle-all-btn {
+            width: 100%;
+            background: var(--kz-blue-light);
+            color: var(--kz-blue-dark);
+            border: 1px solid rgba(0, 161, 222, 0.3);
+            padding: 9px 12px;
+            border-radius: 10px;
+            font-size: 0.76rem;
+            font-weight: 800;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-top: 6px;
-            padding: 4px 6px;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.18s ease;
         }
 
-        .psh-title {
-            font-size: 0.92rem;
+        .toggle-all-btn:active {
+            transform: scale(0.99);
+        }
+
+        /* Заголовок секции языка */
+        .lang-section-title {
+            font-size: 0.8rem;
             font-weight: 900;
             color: var(--kz-blue-dark);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .psh-badge {
-            font-size: 0.68rem;
-            font-weight: 800;
-            background: var(--green-light);
-            color: var(--green-dark);
-            border: 1px solid #86EFAC;
-            padding: 3px 9px;
-            border-radius: 10px;
-        }
-
-        /* Карточки выпусков плейлиста */
-        .track-group {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-
-        .trainer-card {
+            margin: 6px 0 2px 4px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: linear-gradient(135deg, #FFFFFF 0%, #F4FAFF 68%, #EBF6FE 100%);
-            border-radius: 16px;
-            padding: 14px 16px;
-            text-decoration: none;
-            color: var(--text-dark);
-            transition: all 0.2s ease;
-            box-shadow: 0 3px 10px rgba(0, 119, 163, 0.05);
-            position: relative;
-            overflow: hidden;
+        }
+
+        /* ==========================================================================
+           КОМПАКТНЫЕ КАРТОЧКИ ВЫПУСКОВ ("Выпуск 1", "Выпуск 2"...)
+           ========================================================================== */
+        .track-item {
+            background: var(--card-bg);
             border: 1px solid #CBE7F9;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 119, 163, 0.04);
+            transition: border-color 0.2s ease;
+        }
+
+        .track-header-btn {
             width: 100%;
-            text-align: left;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F8FCFF 100%);
+            border: none;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
             cursor: pointer;
+            text-align: left;
+            position: relative;
         }
 
-        .trainer-card:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(0, 161, 222, 0.12);
-            border-color: #7DD3FC;
-        }
-
-        .trainer-card::before {
+        .track-header-btn::before {
             content: '';
             position: absolute;
             left: 0; top: 0; bottom: 0;
-            width: 6px;
-            background: linear-gradient(180deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+            width: 5px;
+            background: var(--kz-blue);
         }
 
-        /* Бесплатные выпуски (№1 KZ и №1 RU) выделены зеленым акцентом */
-        .track-group.free-track .trainer-card,
-        .track-group.completed-track .trainer-card {
-            background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 65%, #DCFCE7 100%);
-            border-color: #86EFAC;
-        }
-
-        .track-group.free-track .trainer-card::before,
-        .track-group.completed-track .trainer-card::before {
-            background: linear-gradient(180deg, #10B981 0%, #059669 100%);
-        }
-
-        .card-content {
+        .track-left {
             display: flex;
             align-items: center;
-            gap: 13px;
+            gap: 10px;
             min-width: 0;
         }
 
-        .card-icon {
-            width: 46px;
-            height: 46px;
-            background: linear-gradient(135deg, #FFFFFF 0%, #E0F2FE 100%);
-            border-radius: 14px;
+        .play-badge {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: var(--kz-blue-light);
+            color: var(--kz-blue-dark);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
+            font-size: 0.9rem;
+            font-weight: 800;
             flex-shrink: 0;
-            border: 1px solid rgba(0, 161, 222, 0.22);
         }
 
-        .track-group.free-track .card-icon,
-        .track-group.completed-track .card-icon {
-            background: linear-gradient(135deg, #FFFFFF 0%, #D1FAE5 100%);
-            border-color: rgba(16, 185, 129, 0.3);
-        }
-
-        .card-text {
+        .track-titles {
             min-width: 0;
         }
 
-        .card-text h2 {
-            font-size: 0.92rem;
+        .track-name {
+            font-size: 0.9rem;
             font-weight: 800;
-            margin-bottom: 3px;
             color: var(--text-dark);
-            line-height: 1.25;
+            line-height: 1.2;
+        }
+
+        .track-words {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 2px;
+        }
+
+        .track-right {
             display: flex;
             align-items: center;
-            gap: 6px;
-            flex-wrap: wrap;
+            gap: 8px;
+            flex-shrink: 0;
         }
 
-        .card-text p {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            line-height: 1.35;
-            font-weight: 600;
-        }
-
-        .words-preview-Line {
-            font-size: 0.74rem;
-            color: var(--kz-blue-dark);
-            font-weight: 700;
-            margin-top: 4px;
-        }
-
-        .track-pill {
-            display: inline-block;
-            background: rgba(0, 161, 222, 0.12);
-            color: var(--kz-blue-dark);
-            font-size: 0.64rem;
+        .free-tag {
+            font-size: 0.62rem;
             font-weight: 800;
+            background: var(--green-light);
+            color: var(--green-dark);
             padding: 2px 7px;
             border-radius: 6px;
             text-transform: uppercase;
         }
 
-        .access-pill {
-            display: inline-block;
-            font-size: 0.64rem;
-            font-weight: 800;
-            padding: 2px 8px;
-            border-radius: 8px;
-            text-transform: uppercase;
-            background: var(--kz-gold-light);
-            color: #B45309;
-            border: 1px solid rgba(217, 160, 0, 0.35);
-        }
-
-        .access-pill.free {
-            background: var(--green-light);
-            color: var(--green-dark);
-            border-color: #86EFAC;
-        }
-
-        .done-pill {
-            display: none;
-            background: var(--green-light);
-            color: var(--green-dark);
-            border: 1px solid #86EFAC;
-            font-size: 0.62rem;
-            font-weight: 800;
-            padding: 1px 6px;
-            border-radius: 6px;
-        }
-
-        .track-group.completed-track .done-pill {
-            display: inline-block;
-        }
-
-        .arrow-icon {
+        .chevron-svg {
             width: 18px;
             height: 18px;
             fill: var(--kz-blue-dark);
-            flex-shrink: 0;
-            margin-left: 8px;
-            transition: transform 0.25s ease;
+            transition: transform 0.22s ease;
         }
 
-        /* Выпадающая панель с плеером Vimeo и карточками 5 слов */
-        .track-group.open .trainer-card {
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-            border-bottom-color: transparent;
-            background: linear-gradient(135deg, #EBF8FC 0%, #D6F1FA 100%);
+        /* Состояние открытого выпуска */
+        .track-item.open {
+            border-color: var(--kz-blue);
         }
 
-        .track-group.open .arrow-icon {
+        .track-item.open .track-header-btn {
+            background: var(--kz-blue-light);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .track-item.open .chevron-svg {
             transform: rotate(90deg);
         }
 
-        .track-dropdown {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s ease;
-            opacity: 0;
-            background: var(--card-bg);
-            border-left: 1px solid #CBE7F9;
-            border-right: 1px solid #CBE7F9;
-            border-bottom: 1px solid #CBE7F9;
-            border-bottom-left-radius: 16px;
-            border-bottom-right-radius: 16px;
-            position: relative;
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.03);
+        .track-body {
+            display: none;
+            padding: 10px;
+            background: #0F172A;
         }
 
-        .track-dropdown::before {
-            content: '';
-            position: absolute;
-            left: 0; top: 0; bottom: 0;
-            width: 6px;
-            background: var(--kz-blue);
+        .track-item.open .track-body {
+            display: block;
         }
 
-        .track-group.open .track-dropdown {
-            max-height: 1600px;
-            opacity: 1;
-        }
-
-        .dropdown-inner {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            padding: 14px 16px 16px 20px;
-            border-top: 1px dashed var(--border-color);
-        }
-
-        /* Плеер Vimeo 16:9 и блок Paywall для закрытых выпусков */
-        .video-embed-box {
+        .video-box {
             position: relative;
             width: 100%;
             aspect-ratio: 16 / 9;
-            background: #0F172A;
-            border-radius: 12px;
+            background: #000000;
+            border-radius: 10px;
             overflow: hidden;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
         }
 
-        .video-embed-box iframe {
+        .video-box iframe {
             width: 100%;
             height: 100%;
             border: 0;
             display: block;
         }
 
-        .video-embed-box.locked {
-            aspect-ratio: auto;
-            min-height: 210px;
-            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* ==========================================================================
+           ПРОДАЮЩИЙ CTA-БЛОК ВНИЗУ (ДЛЯ ГОСТЕЙ И ТАРИФА FREE)
+           ========================================================================== */
+        .upsell-cta-card {
+            margin-top: 10px;
+            background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+            color: #FFFFFF;
+            border-radius: 20px;
             padding: 20px 16px;
-        }
-
-        .video-paywall {
+            border: 1.5px solid rgba(255, 199, 44, 0.5);
+            box-shadow: 0 10px 26px rgba(15, 23, 42, 0.18);
+            text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-align: center;
-            max-width: 460px;
             gap: 10px;
-            color: #FFFFFF;
         }
 
-        .paywall-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(255, 199, 44, 0.18);
-            border: 1px solid rgba(255, 199, 44, 0.45);
+        .upsell-badge {
+            background: rgba(255, 199, 44, 0.2);
+            border: 1px solid var(--kz-gold);
             color: var(--kz-gold);
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             font-weight: 800;
             padding: 4px 12px;
-            border-radius: 20px;
+            border-radius: 14px;
             text-transform: uppercase;
+            letter-spacing: 0.4px;
         }
 
-        .paywall-title {
-            font-size: 0.94rem;
-            font-weight: 800;
-            color: #FFFFFF;
+        .upsell-title {
+            font-size: 1.02rem;
+            font-weight: 900;
             line-height: 1.3;
+            color: #FFFFFF;
         }
 
-        .paywall-desc {
-            font-size: 0.76rem;
-            font-weight: 600;
+        .upsell-desc {
+            font-size: 0.8rem;
             color: #CBD5E1;
             line-height: 1.45;
+            font-weight: 500;
+            max-width: 460px;
         }
 
-        .paywall-actions {
+        .upsell-buttons {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-direction: column;
             gap: 8px;
             width: 100%;
             margin-top: 4px;
         }
 
-        .paywall-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            padding: 9px 14px;
-            border-radius: 12px;
-            font-size: 0.76rem;
-            font-weight: 800;
+        .upsell-btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, var(--kz-gold) 0%, #FFD55A 100%);
+            color: var(--text-dark);
             text-decoration: none;
-            flex: 1 1 165px;
+            font-size: 0.84rem;
+            font-weight: 900;
+            padding: 12px 16px;
+            border-radius: 14px;
+            box-shadow: 0 4px 14px rgba(255, 199, 44, 0.25);
         }
 
-        .paywall-btn.tarifs {
-            background: var(--kz-gold);
-            color: var(--text-dark);
-            border: 1px solid var(--kz-gold-dark);
-        }
-
-        .paywall-btn.contact {
-            background: rgba(0, 161, 222, 0.22);
+        .upsell-btn-wa {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
             color: #FFFFFF;
-            border: 1px solid rgba(0, 161, 222, 0.55);
-        }
-
-        .paywall-login-link {
-            font-size: 0.72rem;
-            font-weight: 700;
-            color: #94A3B8;
-            text-decoration: underline;
-            margin-top: 2px;
-        }
-
-        /* Шпаргалка по 5 терминам внутри выпуска */
-        .terms-cheat-box {
-            background: #F8FAFC;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 10px 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .tc-header {
-            font-size: 0.7rem;
-            font-weight: 800;
-            color: var(--kz-blue-dark);
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            margin-bottom: 2px;
-        }
-
-        .tc-row {
-            background: #FFFFFF;
-            border: 1px solid var(--border-color);
-            border-radius: 9px;
-            padding: 7px 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            text-decoration: none;
             font-size: 0.8rem;
-        }
-
-        .tc-en {
-            font-weight: 800;
-            color: var(--text-dark);
-        }
-
-        .tc-tr {
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .speak-mini-btn {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: 1px solid rgba(0, 161, 222, 0.3);
-            background: var(--kz-blue-light);
-            color: var(--kz-blue-dark);
-            cursor: pointer;
-            flex-shrink: 0;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.76rem;
-        }
-
-        .mark-done-btn {
-            background: #FFFFFF;
-            border: 1px dashed var(--border-color);
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            font-weight: 800;
-            padding: 9px 12px;
-            border-radius: 10px;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.15s ease;
-        }
-
-        .track-group.completed-track .mark-done-btn {
-            background: var(--green-light);
-            border-color: var(--green-accent);
-            color: var(--green-dark);
+            font-weight: 700;
+            padding: 11px 16px;
+            border-radius: 14px;
         }
 
         /* 3. Подвал */
         footer {
             text-align: center;
-            padding: 12px 16px 26px 16px;
+            padding: 12px 14px 20px 14px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .instagram-link {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
+            gap: 6px;
             color: var(--kz-blue-dark);
             text-decoration: none;
             font-weight: 700;
-            font-size: 0.82rem;
-            padding: 10px 20px;
-            border-radius: 22px;
+            font-size: 0.8rem;
+            padding: 9px 18px;
+            border-radius: 20px;
             background: var(--card-bg);
-            border: 1px solid rgba(0, 161, 222, 0.25);
-            box-shadow: 0 4px 12px rgba(0, 119, 163, 0.05);
-        }
-
-        @media (max-width: 520px) {
-            h1 { font-size: 1.18rem; }
-            .filter-btn { font-size: 0.7rem; padding: 9px 4px; }
+            border: 1px solid var(--border-color);
         }
     </style>
 </head>
@@ -705,40 +455,45 @@
 
     <header>
         <div class="header-top-bar">
-            <a href="https://kazdoctors.com" class="back-btn">⬅️ На главную / Басты бетке</a>
+            <a href="https://kazdoctors.com" class="back-btn">⬅️ На главную</a>
             <a href="https://kazdoctors.com/tarifs" id="tierStatusBadge" class="tier-status-badge">Тариф: FREE</a>
         </div>
-
-        <div class="header-badges">
-            <div class="brand-badge">🎧 @doctors.speak • Audio & Video Playlist</div>
-        </div>
-        <h1>Аудио-тренажер медицинских терминов</h1>
-        <p class="subtitle">Слушайте в дороге или дома • Қазақша (1–4) & Русский (5–8)</p>
-
-        <!-- Трекер прослушанных выпусков -->
-        <div class="progress-widget">
-            <div class="pw-top-row">
-                <span>🎧 Прослушано выпусков:</span>
-                <span id="progressCountText" style="color:var(--kz-gold);">0 / 8 (0%)</span>
-            </div>
-            <div class="pw-bar-bg">
-                <div class="pw-bar-fill" id="progressBarFill"></div>
-            </div>
-        </div>
+        <h1>Аудио-тренажер в дорогу</h1>
+        <p class="subtitle">Все 8 выпусков открыты бесплатно • Қазақша & Русский</p>
     </header>
 
     <main>
-
-        <!-- Фильтр плейлиста по языку -->
-        <div class="filter-bar">
-            <button type="button" class="filter-btn active" id="fBtnAll" onclick="setPlaylistFilter('all')">Все выпуски (8)</button>
-            <button type="button" class="filter-btn" id="fBtnKz" onclick="setPlaylistFilter('kz')">🇰🇿 Қазақша (1–4)</button>
-            <button type="button" class="filter-btn" id="fBtnRu" onclick="setPlaylistFilter('ru')">🇷🇺 Русский (5–8)</button>
+        <!-- Панель фильтрации и кнопка «Раскрыть / Скрыть все видео» -->
+        <div class="controls-card">
+            <div class="filter-row">
+                <button type="button" class="filter-btn active" id="fBtnAll" onclick="setFilter('all')">Все (8)</button>
+                <button type="button" class="filter-btn" id="fBtnKz" onclick="setFilter('kz')">🇰🇿 Қазақша (4)</button>
+                <button type="button" class="filter-btn" id="fBtnRu" onclick="setFilter('ru')">🇷🇺 Русский (4)</button>
+            </div>
+            <button type="button" class="toggle-all-btn" id="toggleAllBtn" onclick="toggleAllVideos()">
+                <span>📂 Раскрыть все видео</span>
+            </button>
         </div>
 
-        <!-- Контейнер плейлиста (генерируется автоматически) -->
-        <div id="playlistRoot" style="display:flex; flex-direction:column; gap:12px;"></div>
+        <!-- Список выпусков (все свернуты по умолчанию) -->
+        <div id="playlistContainer" style="display:flex; flex-direction:column; gap:8px;"></div>
 
+        <!-- CTA-блок для тех, кто на FREE или не авторизован (скрывается у платных подписчиков) -->
+        <section class="upsell-cta-card" id="freeUserUpsellCard">
+            <span class="upsell-badge">🔥 Полный доступ к платформе</span>
+            <div class="upsell-title">Понравился аудио-формат? Откройте всю систему Medical English!</div>
+            <p class="upsell-desc">
+                В полных тарифах вас ждут тренажеры клинической и академической лексики (PubMed / IELTS), 15 уроков медицинской грамматики, курс по опросу пациентов и чтению статей.
+            </p>
+            <div class="upsell-buttons">
+                <a href="https://kazdoctors.com/tarifs" class="upsell-btn-primary">
+                    💎 Посмотреть тарифы (от 7 990 ₸/мес) ➔
+                </a>
+                <a href="https://wa.me/77081595038?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%AF%20%D0%BF%D0%BE%D1%81%D0%BB%D1%83%D1%88%D0%B0%D0%BB(%D0%B0)%20%D0%B0%D1%83%D0%B4%D0%B8%D0%BE-%D0%B2%D1%8B%D0%BF%D1%83%D1%81%D0%BA%D0%B8%20%D0%BD%D0%B0%20kazdoctors.com%20%D0%B8%20%D1%85%D0%BE%D1%87%D1%83%20%D0%BF%D0%BE%D0%B4%D0%BA%D0%BB%D1%8E%D1%87%D0%B8%D1%82%D1%8C%20%D0%BF%D0%BE%D0%BB%D0%BD%D1%8B%D0%B9%20%D1%82%D0%B0%D1%80%D0%B8%D1%84" target="_blank" rel="noopener noreferrer" class="upsell-btn-wa">
+                    💬 Написать в WhatsApp и получить доступ
+                </a>
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -750,11 +505,8 @@
     <script>
         // =========================================================================
         // 1. ВСТАВЬТЕ СЮДА ССЫЛКИ ИЛИ IFRAME-КОДЫ ВАШИХ 8 РОЛИКОВ С VIMEO
-        // Поддерживается как полный код <iframe src="...">, так и ссылки вида:
-        // "https://player.vimeo.com/video/123456789?h=abcdef123" или "https://vimeo.com/123456789/abcdef123"
         // =========================================================================
-        const VIMEO_PLAYLIST_LINKS = {
-            // --- ПЕРВЫЕ 4 ВИДЕО: НА КАЗАХСКОМ ЯЗЫКЕ ---
+        const VIMEO_LINKS = {
             kz1: "https://player.vimeo.com/video/1243084760", // 🔓 БЕСПЛАТНО (Открыто всем)
             kz2: "https://player.vimeo.com/video/1243084892", // 🔒 Только STANDARD и выше
             kz3: "https://player.vimeo.com/video/1243084620", // 🔒 Только STANDARD и выше
@@ -767,16 +519,14 @@
             ru4: "https://player.vimeo.com/video/1243084619"  // 🔒 Только STANDARD и выше
         };
 
-        // Функция автоматического распознавания скрытых (unlisted) ссылок и iframe-кодов Vimeo
-        function normalizeVimeoEmbedUrl(rawInput) {
+        // Автоматическое распознавание скрытых ссылок и iframe-кодов Vimeo
+        function normalizeVimeoUrl(rawInput) {
             if (!rawInput) return "";
             let str = rawInput.trim();
 
             if (str.includes("<iframe")) {
                 const match = str.match(/src=["']([^"']+)["']/i);
-                if (match && match[1]) {
-                    str = match[1].replace(/&amp;/g, "&");
-                }
+                if (match && match[1]) str = match[1].replace(/&amp;/g, "&");
             }
 
             const unlistedMatch = str.match(/vimeo\.com\/(\d+)\/([a-zA-Z0-9]+)/);
@@ -793,160 +543,156 @@
         }
 
         // =========================================================================
-        // 2. ОПИСАНИЕ ВСЕХ 8 ВЫПУСКОВ ПЛЕЙЛИСТА (4 КАЗАХСКИХ + 4 РУССКИХ)
+        // 2. СПИСОК 8 ВЫПУСКОВ (КОМПАКТНЫЙ ФОРМАТ)
         // =========================================================================
-        const PLAYLIST_TRACKS = [
-            // --- КАЗАХСКИЙ ПЛЕЙЛИСТ (1–4) ---
-            {
-                id: "kz1",
-                numLabel: "KZ • Выпуск 01",
-                langGroup: "kz",
-                isFree: true, // Первое казахское видео открыто БЕСПЛАТНО
-                icon: "🎧",
-                title: "Формат А: «Пимслер әдісі» (Сұрақ ➔ Пауза ➔ Жауап)",
-                desc: "Дәрігердің негізгі сұрақтарын дауыстап еске түсіру жаттығуы",
-                wordsLine: "Cough • Shortness of breath • Headache • Earache • Blurry vision",
-                terms: [
-                    { en: "Cough", tr: "Жөтел — How long have you had the cough?" },
-                    { en: "Shortness of breath", tr: "Ентігу — Are you experiencing any shortness of breath?" },
-                    { en: "Headache", tr: "Бас ауруы — Can you tell me more about the headaches?" },
-                    { en: "Earache", tr: "Құлақ ауруы — The child has had an earache since yesterday." },
-                    { en: "Blurry vision", tr: "Көздің бұлдырауы — Dizziness or blurry vision" }
-                ]
-            },
-            {
-                id: "kz2",
-                numLabel: "KZ • Выпуск 02",
-                langGroup: "kz",
-                isFree: false, // Закрыто для Free (нужен Standard+)
-                icon: "🧩",
-                title: "Формат Б: «Қар кесегі әдісі» (Термин ➔ Тіркес ➔ Чанк)",
-                desc: "Жеке терминнен толық клиникалық сөйлемге дейін құрастыру",
-                wordsLine: "Dehydration • Edema • GFR • Rigidity • Jaundice",
-                terms: [
-                    { en: "Dehydration", tr: "Сусыздану — Persistent vomiting may cause severe dehydration." },
-                    { en: "Edema", tr: "Ісіну — Pulmonary edema affects the lungs." },
-                    { en: "GFR", tr: "Шумақтық сүзілу жылдамдығы — A progressive decline in GFR" },
-                    { en: "Rigidity", tr: "Сіресу / Ригидтілік — Physical examination revealed neck rigidity." },
-                    { en: "Jaundice", tr: "Сарғаю — Overt signs of jaundice" }
-                ]
-            },
-            {
-                id: "kz3",
-                numLabel: "KZ • Выпуск 03",
-                langGroup: "kz",
-                isFree: false, // Закрыто для Free (нужен Standard+)
-                icon: "🩺",
-                title: "Формат В: «Аудио-симуляция: Науқасты қарау»",
-                desc: "Аускультация және жалпы қарау кезіндегі дәрігер командалары",
-                wordsLine: "Inhale • Exhale • Breathe in • Breathe out • Pale",
-                terms: [
-                    { en: "Inhale", tr: "Ішке дем тарту — Please inhale deeply through your nose." },
-                    { en: "Exhale", tr: "Дем шығару — Now exhale slowly through your mouth." },
-                    { en: "Breathe in", tr: "Терең дем алу — Take a deep breath. Breathe in, please." },
-                    { en: "Breathe out", tr: "Толық дем шығару — Breathe out completely." },
-                    { en: "Pale", tr: "Бозарған — The patient's skin was pale and cold." }
-                ]
-            },
-            {
-                id: "kz4",
-                numLabel: "KZ • Выпуск 04",
-                langGroup: "kz",
-                isFree: false, // Закрыто для Free (нужен Standard+)
-                icon: "🗣️",
-                title: "Формат Г: «Науқас сөзі vs Дәрігер термині»",
-                desc: "Науқастың қарапайым шағымын медициналық терминге айналдыру",
-                wordsLine: "Wheezing • Malaise • Fatigue • Numbness • Weakness",
-                terms: [
-                    { en: "Wheezing", tr: "Ысқырықты тыныс — Noisy, whistling breathing" },
-                    { en: "Malaise", tr: "Жалпы дімкәстік — Fever and general malaise" },
-                    { en: "Fatigue", tr: "Қатты шаршағыштық — Tired all the time / Chronic fatigue" },
-                    { en: "Numbness", tr: "Ұю / Жансыздану — Numbness in his left arm" },
-                    { en: "Weakness", tr: "Бұлшықет әлсіздігі — Sudden muscle weakness" }
-                ]
-            },
+        const TRACKS = [
+            // Казахские выпуски (1–4)
+            { id: "kz1", lang: "kz", title: "Выпуск 1 (Қазақша)", words: "cough, shortness of breath, headache, earache, blurry vision" },
+            { id: "kz2", lang: "kz", title: "Выпуск 2 (Қазақша)", words: "dehydration, edema, GFR, rigidity, jaundice" },
+            { id: "kz3", lang: "kz", title: "Выпуск 3 (Қазақша)", words: "inhale, exhale, breathe in, breathe out, pale" },
+            { id: "kz4", lang: "kz", title: "Выпуск 4 (Қазақша)", words: "wheezing, malaise, fatigue, numbness, weakness" },
 
-            // --- РУССКИЙ ПЛЕЙЛИСТ (5–8) ---
-            {
-                id: "ru1",
-                numLabel: "RU • Выпуск 01",
-                langGroup: "ru",
-                isFree: true, // Первое русское видео открыто БЕСПЛАТНО
-                icon: "🎧",
-                title: "Формат А: «Эффект Пимслера» (Вопрос ➔ Пауза ➔ Ответ)",
-                desc: "Активное вспоминание вслух ключевых вопросов врача на приеме",
-                wordsLine: "Cough • Shortness of breath • Headache • Earache • Blurry vision",
-                terms: [
-                    { en: "Cough", tr: "Кашель — Is the cough dry or with mucus?" },
-                    { en: "Shortness of breath", tr: "Одышка — Are you experiencing any shortness of breath?" },
-                    { en: "Headache", tr: "Головная боль — I have been having headaches lately." },
-                    { en: "Earache", tr: "Боль в ухе — The child has had an earache since yesterday." },
-                    { en: "Blurry vision", tr: "Нечеткость зрения — Dizziness or blurry vision" }
-                ]
-            },
-            {
-                id: "ru2",
-                numLabel: "RU • Выпуск 02",
-                langGroup: "ru",
-                isFree: false, // Закрыто для Free (нужен Standard+)
-                icon: "🧩",
-                title: "Формат Б: «Метод Снежного кома» (Слово ➔ Связка ➔ Чанк)",
-                desc: "Пошаговое наращивание клинической фразы вокруг термина",
-                wordsLine: "Dehydration • Edema • GFR • Rigidity • Jaundice",
-                terms: [
-                    { en: "Dehydration", tr: "Обезвоживание — Persistent vomiting may cause severe dehydration." },
-                    { en: "Edema", tr: "Отек — Pulmonary edema affects the lungs." },
-                    { en: "GFR", tr: "СКФ — A progressive decline in GFR" },
-                    { en: "Rigidity", tr: "Ригидность мышц — Physical examination revealed neck rigidity." },
-                    { en: "Jaundice", tr: "Желтуха — Overt signs of jaundice" }
-                ]
-            },
-            {
-                id: "ru3",
-                numLabel: "RU • Выпуск 03",
-                langGroup: "ru",
-                isFree: false, // Закрыто для Free (нужен Standard+)
-                icon: "🩺",
-                title: "Формат В: «Аудио-симуляция: Осмотр и команды врача»",
-                desc: "Команды пациенту при аускультации легких и физикальном осмотре",
-                wordsLine: "Inhale • Exhale • Breathe in • Breathe out • Pale",
-                terms: [
-                    { en: "Inhale", tr: "Сделать вдох — Please inhale deeply through your nose." },
-                    { en: "Exhale", tr: "Сделать выдох — Now exhale slowly through your mouth." },
-                    { en: "Breathe in", tr: "Вдохните — Take a deep breath. Breathe in, please." },
-                    { en: "Breathe out", tr: "Выдохните — Breathe out completely." },
-                    { en: "Pale", tr: "Бледный — The patient's skin was pale and cold." }
-                ]
-            },
-            {
-                id: "ru4",
-                numLabel: "RU • Выпуск 04",
-                langGroup: "ru",
-                isFree: false, // Закрыто для Free (нужен Standard+)
-                icon: "🗣️",
-                title: "Формат Г: «Язык пациента vs Термин врача»",
-                desc: "Перевод бытовых жалоб пациента на профессиональный медицинский язык",
-                wordsLine: "Wheezing • Malaise • Fatigue • Numbness • Weakness",
-                terms: [
-                    { en: "Wheezing", tr: "Свистящее дыхание / Хрипы — Noisy, whistling breathing" },
-                    { en: "Malaise", tr: "Общее недомогание — Fever and general malaise" },
-                    { en: "Fatigue", tr: "Повышенная утомляемость — Chronic fatigue" },
-                    { en: "Numbness", tr: "Онемение — Numbness and tingling" },
-                    { en: "Weakness", tr: "Мышечная слабость — Sudden muscle weakness" }
-                ]
-            }
+            // Русские выпуски (1–4)
+            { id: "ru1", lang: "ru", title: "Выпуск 1 (Русский)", words: "cough, shortness of breath, headache, earache, blurry vision" },
+            { id: "ru2", lang: "ru", title: "Выпуск 2 (Русский)", words: "dehydration, edema, GFR, rigidity, jaundice" },
+            { id: "ru3", lang: "ru", title: "Выпуск 3 (Русский)", words: "inhale, exhale, breathe in, breathe out, pale" },
+            { id: "ru4", lang: "ru", title: "Выпуск 4 (Русский)", words: "wheezing, malaise, fatigue, numbness, weakness" }
         ];
 
+        let currentFilter = "all";
+        let areAllExpanded = false;
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            areAllExpanded = false;
+            document.getElementById('fBtnAll').classList.toggle('active', filter === 'all');
+            document.getElementById('fBtnKz').classList.toggle('active', filter === 'kz');
+            document.getElementById('fBtnRu').classList.toggle('active', filter === 'ru');
+            updateToggleAllBtnText();
+            renderTracks();
+        }
+
+        function renderTracks() {
+            const container = document.getElementById('playlistContainer');
+            container.innerHTML = '';
+
+            const sections = [];
+            if (currentFilter === 'all' || currentFilter === 'kz') {
+                sections.push({ code: 'kz', label: '🇰🇿 Қазақша (Выпуски 1–4)' });
+            }
+            if (currentFilter === 'all' || currentFilter === 'ru') {
+                sections.push({ code: 'ru', label: '🇷🇺 Русский (Выпуски 1–4)' });
+            }
+
+            sections.forEach(sec => {
+                const header = document.createElement('div');
+                header.className = 'lang-section-title';
+                header.innerHTML = `<span>${sec.label}</span>`;
+                container.appendChild(header);
+
+                const list = TRACKS.filter(t => t.lang === sec.code);
+                list.forEach((track, idx) => {
+                    const embedUrl = normalizeVimeoUrl(VIMEO_LINKS[track.id]);
+                    const item = document.createElement('div');
+                    item.className = 'track-item';
+
+                    item.innerHTML = `
+                        <button type="button" class="track-header-btn" onclick="toggleSingleTrack(this)">
+                            <div class="track-left">
+                                <div class="play-badge">▶</div>
+                                <div class="track-titles">
+                                    <div class="track-name">${track.title}</div>
+                                    <div class="track-words">${track.words}</div>
+                                </div>
+                            </div>
+                            <div class="track-right">
+                                <span class="free-tag">Free</span>
+                                <svg class="chevron-svg" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                            </div>
+                        </button>
+                        <div class="track-body">
+                            <div class="video-box">
+                                <iframe
+                                    data-src="${embedUrl}"
+                                    title="${track.title}"
+                                    loading="lazy"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(item);
+                });
+            });
+        }
+
+        // Открытие / закрытие одного выпуска
+        function toggleSingleTrack(btnEl) {
+            const item = btnEl.parentElement;
+            const isOpen = item.classList.contains('open');
+            const iframe = item.querySelector('iframe');
+
+            if (isOpen) {
+                item.classList.remove('open');
+                if (iframe && iframe.getAttribute('src')) {
+                    iframe.removeAttribute('src');
+                }
+            } else {
+                item.classList.add('open');
+                if (iframe && iframe.dataset.src && !iframe.getAttribute('src')) {
+                    iframe.setAttribute('src', iframe.dataset.src);
+                }
+            }
+
+            syncToggleAllState();
+        }
+
+        // Кнопка «Раскрыть все видео» / «Скрыть все видео»
+        function toggleAllVideos() {
+            const items = document.querySelectorAll('.track-item');
+            areAllExpanded = !areAllExpanded;
+
+            items.forEach(item => {
+                const iframe = item.querySelector('iframe');
+                if (areAllExpanded) {
+                    item.classList.add('open');
+                    if (iframe && iframe.dataset.src && !iframe.getAttribute('src')) {
+                        iframe.setAttribute('src', iframe.dataset.src);
+                    }
+                } else {
+                    item.classList.remove('open');
+                    if (iframe && iframe.getAttribute('src')) {
+                        iframe.removeAttribute('src');
+                    }
+                }
+            });
+
+            updateToggleAllBtnText();
+        }
+
+        function syncToggleAllState() {
+            const items = Array.from(document.querySelectorAll('.track-item'));
+            areAllExpanded = items.length > 0 && items.every(el => el.classList.contains('open'));
+            updateToggleAllBtnText();
+        }
+
+        function updateToggleAllBtnText() {
+            const btn = document.getElementById('toggleAllBtn');
+            btn.innerHTML = areAllExpanded
+                ? `<span>📁 Скрыть все видео</span>`
+                : `<span>📂 Раскрыть все видео</span>`;
+        }
+
         // =========================================================================
-        // 3. ПРОВЕРКА ТАРИФА В SUPABASE (ОТКРЫТИЕ №2, №3, №4 ДЛЯ STANDARD И ВЫШЕ)
+        // 3. ПРОВЕРКА ПОДПИСКИ SUPABASE (СКРЫВАЕМ РЕКЛАМНЫЙ БЛОК У ПЛАТНЫХ ПОДПИСЧИКОВ)
         // =========================================================================
         const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
         const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
         const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
-        const TIER_LEVELS = { none: 0, free: 0, standard: 1, pro: 2, premium: 3, vip: 4 };
-        const TIER_NAMES = {
-            none: "FREE",
+        const PLAN_NAMES = {
             free: "FREE",
             standard: "STANDARD",
             pro: "PRO",
@@ -954,16 +700,16 @@
             vip: "VIP 👑"
         };
 
-        let currentUserTier = "none";
-        let hasStandardOrHigher = false; // true для standard (1), pro (2), premium (3), vip (4)
-        let currentFilter = "all";
-
-        async function detectUserTier(session) {
-            if (!session || !session.user) return "none";
-            const user = session.user;
-            const userEmail = (user.email || "").toLowerCase().trim();
+        async function checkUserSubscription() {
+            if (!supabaseClient) return;
 
             try {
+                const { data } = await supabaseClient.auth.getSession();
+                if (!data || !data.session) return;
+
+                const user = data.session.user;
+                const userEmail = (user.email || "").toLowerCase().trim();
+
                 let { data: profile } = await supabaseClient
                     .from('profiles')
                     .select('tier, subscription_expires_at')
@@ -979,274 +725,26 @@
                     profile = resByEmail.data;
                 }
 
-                if (!profile || !profile.subscription_expires_at) return "none";
-                const expiresAt = new Date(profile.subscription_expires_at);
-                if (isNaN(expiresAt.getTime()) || new Date() > expiresAt) return "none";
+                if (profile && profile.subscription_expires_at) {
+                    const expiresAt = new Date(profile.subscription_expires_at);
+                    if (!isNaN(expiresAt.getTime()) && new Date() <= expiresAt) {
+                        const activeTier = (profile.tier || 'standard').toLowerCase().trim();
+                        const badgeEl = document.getElementById('tierStatusBadge');
+                        badgeEl.textContent = `Тариф: ${PLAN_NAMES[activeTier] || "STANDARD"}`;
+                        badgeEl.classList.add('active-sub');
 
-                const dbTier = (profile.tier || "standard").toLowerCase().trim();
-                return TIER_LEVELS[dbTier] !== undefined ? dbTier : "none";
-            } catch (err) {
-                console.warn("Ошибка проверки тарифа:", err);
-                return "none";
-            }
-        }
-
-        async function checkAuthAndTier() {
-            if (supabaseClient) {
-                try {
-                    const { data, error } = await supabaseClient.auth.getSession();
-                    if (!error && data && data.session) {
-                        currentUserTier = await detectUserTier(data.session);
-                    }
-                } catch (e) {
-                    currentUserTier = "none";
-                }
-            }
-
-            const level = TIER_LEVELS[currentUserTier] || 0;
-            // Выпуски 2, 3, 4 открываются, если у пользователя тариф Standard (1) или выше!
-            hasStandardOrHigher = (level >= TIER_LEVELS.standard);
-
-            const badgeEl = document.getElementById('tierStatusBadge');
-            if (badgeEl) {
-                badgeEl.textContent = `Тариф: ${TIER_NAMES[currentUserTier] || "FREE"}`;
-            }
-
-            renderPlaylist();
-        }
-
-        // =========================================================================
-        // 4. ОТРИСОВКА ПЛЕЙЛИСТА И АККОРДЕОНОВ
-        // =========================================================================
-        function setPlaylistFilter(filterVal) {
-            currentFilter = filterVal;
-            document.getElementById('fBtnAll').classList.toggle('active', filterVal === 'all');
-            document.getElementById('fBtnKz').classList.toggle('active', filterVal === 'kz');
-            document.getElementById('fBtnRu').classList.toggle('active', filterVal === 'ru');
-            renderPlaylist();
-        }
-
-        function renderPlaylist() {
-            const root = document.getElementById('playlistRoot');
-            if (!root) return;
-            root.innerHTML = '';
-
-            const completedList = getCompletedTracks();
-
-            const groupsToRender = [];
-            if (currentFilter === 'all' || currentFilter === 'kz') {
-                groupsToRender.push({
-                    code: 'kz',
-                    headerTitle: "🇰🇿 Қазақша плейлист (Выпуски 1–4)",
-                    headerBadge: hasStandardOrHigher ? "✅ Барлығы ашық" : "1 Free · 3 Standard+"
-                });
-            }
-            if (currentFilter === 'all' || currentFilter === 'ru') {
-                groupsToRender.push({
-                    code: 'ru',
-                    headerTitle: "🇷🇺 Русский плейлист (Выпуски 5–8)",
-                    headerBadge: hasStandardOrHigher ? "✅ Все открыты" : "1 Free · 3 Standard+"
-                });
-            }
-
-            groupsToRender.forEach(groupMeta => {
-                const secHeader = document.createElement('div');
-                secHeader.className = 'playlist-section-header';
-                secHeader.innerHTML = `
-                    <div class="psh-title">${groupMeta.headerTitle}</div>
-                    <span class="psh-badge">${groupMeta.headerBadge}</span>
-                `;
-                root.appendChild(secHeader);
-
-                const tracks = PLAYLIST_TRACKS.filter(t => t.langGroup === groupMeta.code);
-
-                tracks.forEach(track => {
-                    const isUnlocked = track.isFree || hasStandardOrHigher;
-                    const isDone = completedList.includes(track.id);
-                    const rawUrl = VIMEO_PLAYLIST_LINKS[track.id] || "";
-                    const embedUrl = normalizeVimeoEmbedUrl(rawUrl);
-
-                    const cardWrap = document.createElement('div');
-                    cardWrap.className = 'track-group' +
-                        (track.isFree ? ' free-track' : '') +
-                        (isDone ? ' completed-track' : '');
-
-                    // Статус-бейдж на карточке
-                    let statusPillHtml = '';
-                    if (track.isFree) {
-                        statusPillHtml = `<span class="access-pill free">🔓 FREE</span>`;
-                    } else if (hasStandardOrHigher) {
-                        statusPillHtml = `<span class="access-pill free">✅ ОТКРЫТО</span>`;
-                    } else {
-                        statusPillHtml = `<span class="access-pill">🔒 STANDARD+</span>`;
-                    }
-
-                    // Содержимое видеобокса: плеер Vimeo (если открыто) или Paywall (если закрыто)
-                    let videoAreaHtml = '';
-                    if (isUnlocked) {
-                        videoAreaHtml = `
-                            <div class="video-embed-box">
-                                <iframe
-                                    data-src="${embedUrl}"
-                                    title="${track.title}"
-                                    loading="lazy"
-                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                                    referrerpolicy="strict-origin-when-cross-origin"
-                                    allowfullscreen>
-                                </iframe>
-                            </div>
-                        `;
-                    } else {
-                        const isKzTrack = (track.langGroup === 'kz');
-                        const lockTitle = isKzTrack
-                            ? "Бұл аудио-шығарылым «Стандарт» және одан жоғары тарифтерде ашық"
-                            : "Этот аудио-выпуск доступен на тарифе «Стандарт» и выше";
-                        const lockDesc = isKzTrack
-                            ? "1-ші шығарылым тегін ашық, ал 2, 3 және 4-ші шығарылымдарды тыңдау үшін «Стандарт», «Про», «Премиум» немесе «ВИП» жазылымын қосыңыз:"
-                            : "1-й выпуск открыт бесплатно, а выпуски №2, №3 и №4 открываются для подписчиков тарифов «Стандарт», «Про», «Премиум» и «ВИП»:";
-
-                        videoAreaHtml = `
-                            <div class="video-embed-box locked">
-                                <div class="video-paywall">
-                                    <span class="paywall-badge">🔒 Доступно с тарифа «Стандарт» (от 7 990 ₸)</span>
-                                    <div class="paywall-title">${lockTitle}</div>
-                                    <p class="paywall-desc">${lockDesc}</p>
-                                    <div class="paywall-actions">
-                                        <a href="https://kazdoctors.com/tarifs" class="paywall-btn tarifs">
-                                            🌟 Выбрать тариф (Standard+)
-                                        </a>
-                                        <a href="https://wa.me/77081595038?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BF%D0%BE%D0%B4%D0%BA%D0%BB%D1%8E%D1%87%D0%B8%D1%82%D1%8C%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%20%D0%BA%20%D0%B0%D1%83%D0%B4%D0%B8%D0%BE-%D0%BF%D0%BB%D0%B5%D0%B9%D0%BB%D0%B8%D1%81%D1%82%D1%83%20(Standard)" target="_blank" rel="noopener noreferrer" class="paywall-btn contact">
-                                            💬 Подключить в WhatsApp
-                                        </a>
-                                    </div>
-                                    <a href="/login.html" class="paywall-login-link">Уже есть подписка? Войти в аккаунт ➔</a>
-                                </div>
-                            </div>
-                        `;
-                    }
-
-                    // Шпаргалка из 5 терминов этого выпуска с озвучкой
-                    let termsRowsHtml = '';
-                    track.terms.forEach(tObj => {
-                        const safeWord = tObj.en.replace(/'/g, "\\'");
-                        termsRowsHtml += `
-                            <div class="tc-row">
-                                <div>
-                                    <span class="tc-en">${tObj.en}</span> — <span class="tc-tr">${tObj.tr}</span>
-                                </div>
-                                <button type="button" class="speak-mini-btn" onclick="speakWord('${safeWord}')" title="Прослушать термин">🔊</button>
-                            </div>
-                        `;
-                    });
-
-                    const doneBtnLabel = isDone
-                        ? "✅ Выпуск прослушан (нажмите для отмены)"
-                        : "✓ Отметить выпуск прослушанным";
-
-                    cardWrap.innerHTML = `
-                        <button type="button" class="trainer-card" onclick="toggleTrackAccordion(this, ${isUnlocked})">
-                            <div class="card-content">
-                                <div class="card-icon">${isUnlocked ? track.icon : "🔒"}</div>
-                                <div class="card-text">
-                                    <h2>
-                                        <span class="track-pill">${track.numLabel}</span>
-                                        <span>${track.title}</span>
-                                        ${statusPillHtml}
-                                        <span class="done-pill">✓ Прослушано</span>
-                                    </h2>
-                                    <p>${track.desc}</p>
-                                    <div class="words-preview-Line">📌 5 терминов: ${track.wordsLine}</div>
-                                </div>
-                            </div>
-                            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-                        </button>
-                        <div class="track-dropdown">
-                            <div class="dropdown-inner">
-                                ${videoAreaHtml}
-                                <div class="terms-cheat-box">
-                                    <div class="tc-header">📋 Термины этого выпуска (нажмите 🔊 для произношения):</div>
-                                    ${termsRowsHtml}
-                                </div>
-                                <button type="button" class="mark-done-btn" onclick="toggleTrackCompleted('${track.id}')">${doneBtnLabel}</button>
-                            </div>
-                        </div>
-                    `;
-
-                    root.appendChild(cardWrap);
-                });
-            });
-
-            updateProgressBarUI();
-        }
-
-        // Открытие/закрытие выпуска и ленивая подгрузка плеера Vimeo
-        function toggleTrackAccordion(btnEl, isUnlocked) {
-            const currentGroup = btnEl.parentElement;
-            const isOpen = currentGroup.classList.contains('open');
-
-            // Закрываем другие открытые выпуски и останавливаем их плееры
-            document.querySelectorAll('.track-group.open').forEach(group => {
-                group.classList.remove('open');
-                const iframe = group.querySelector('iframe');
-                if (iframe && iframe.getAttribute('src')) {
-                    iframe.removeAttribute('src');
-                }
-            });
-
-            if (!isOpen) {
-                currentGroup.classList.add('open');
-                if (isUnlocked) {
-                    const iframe = currentGroup.querySelector('iframe');
-                    if (iframe && iframe.dataset.src && !iframe.getAttribute('src')) {
-                        iframe.setAttribute('src', iframe.dataset.src);
+                        // Прячем нижний продающий блок, если у врача уже куплен платный тариф
+                        const upsellCard = document.getElementById('freeUserUpsellCard');
+                        if (upsellCard) upsellCard.style.display = 'none';
                     }
                 }
-            }
-        }
-
-        // Озвучка отдельного термина через Web Speech API
-        function speakWord(word) {
-            if (!('speechSynthesis' in window)) return;
-            window.speechSynthesis.cancel();
-            const u = new SpeechSynthesisUtterance(word);
-            u.lang = 'en-US';
-            u.rate = 0.9;
-            window.speechSynthesis.speak(u);
-        }
-
-        // Сохранение прогресса прослушанных выпусков
-        function getCompletedTracks() {
-            try {
-                return JSON.parse(localStorage.getItem('ds_completed_audio_tracks') || '[]');
             } catch (e) {
-                return [];
+                console.warn("Auth check error:", e);
             }
         }
 
-        function toggleTrackCompleted(trackId) {
-            let list = getCompletedTracks();
-            if (list.includes(trackId)) {
-                list = list.filter(id => id !== trackId);
-            } else {
-                list.push(trackId);
-            }
-            localStorage.setItem('ds_completed_audio_tracks', JSON.stringify(list));
-            renderPlaylist();
-        }
-
-        function updateProgressBarUI() {
-            const list = getCompletedTracks();
-            const count = list.length;
-            const total = PLAYLIST_TRACKS.length;
-            const pct = Math.round((count / total) * 100);
-
-            document.getElementById('progressCountText').textContent = `${count} / ${total} (${pct}%)`;
-            document.getElementById('progressBarFill').style.width = `${pct}%`;
-        }
-
-        // Инициализация при загрузке страницы
-        renderPlaylist();
-        checkAuthAndTier();
+        renderTracks();
+        checkUserSubscription();
     </script>
 </body>
 </html>
