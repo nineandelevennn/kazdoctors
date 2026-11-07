@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@doctors.speak — Генератор карусели Instagram (Зимний марафон)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Библиотека для сохранения HTML-слайдов в готовые PNG-картинки -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+    <style>
+        :root {
+            --kz-blue: #00A1DE;
+            --kz-blue-dark: #006B96;
+            --kz-blue-deep: #0B192C;
+            --kz-blue-light: #EBF8FC;
+            --kz-gold: #FFC72C;
+            --kz-gold-dark: #D9A000;
+            --kz-gold-light: #FFFBEB;
+            --green-accent: #10B981;
+            --green-light: #DCFCE7;
+            --text-dark: #0F172A;
+            --text-muted: #475569;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background: #1E293B;
+            color: #FFFFFF;
+            padding: 24px 16px 60px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .toolbar {
+            max-width: 1100px;
+            width: 100%;
+            background: #0F172A;
+            border: 1px solid rgba(255, 199, 44, 0.4);
+            border-radius: 18px;
+            padding: 18px 22px;
+            margin-bottom: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .toolbar-info h1 {
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: var(--kz-gold);
+            margin-bottom: 4px;
+        }
+
+        .toolbar-info p {
+            font-size: 0.8rem;
+            color: #CBD5E1;
+            font-weight: 500;
+        }
+
+        .download-all-btn {
+            background: linear-gradient(135deg, var(--kz-gold) 0%, #FFD55A 100%);
+            color: var(--text-dark);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 900;
+            font-size: 0.85rem;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(255, 199, 44, 0.3);
+            transition: transform 0.15s ease;
+        }
+
+        .download-all-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* Сетка слайдов */
+        .slides-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 28px;
+            width: 100%;
+            max-width: 1200px;
+            justify-items: center;
+        }
+
+        .slide-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Сам слайд Instagram в пропорции 4:5 (380x475px на экране -> рендерится в 1140x1425px при скачивании) */
+        .ig-slide {
+            width: 380px;
+            height: 475px;
+            border-radius: 0px; /* Без скругления углов, чтобы при экспорте в PNG края были четкими */
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 26px 24px 22px 24px;
+            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
+            user-select: none;
+        }
+
+        /* Темы фонов для слайдов */
+        .theme-hero {
+            background: linear-gradient(145deg, #07192B 0%, #005A82 55%, #00A1DE 100%);
+            color: #FFFFFF;
+        }
+
+        .theme-light {
+            background: radial-gradient(circle at top right, #EBF8FC 0%, #F8FAFC 65%);
+            color: var(--text-dark);
+        }
+
+        .theme-dark {
+            background: linear-gradient(150deg, #0F172A 0%, #1E293B 65%, #0C2D48 100%);
+            color: #FFFFFF;
+        }
+
+        .theme-gold {
+            background: linear-gradient(145deg, #0B192C 0%, #1E293B 60%, #3B2F0B 100%);
+            color: #FFFFFF;
+        }
+
+        /* Декоративные свечения */
+        .glow-circle {
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 199, 44, 0.32) 0%, rgba(255, 199, 44, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .glow-blue {
+            position: absolute;
+            bottom: -70px;
+            left: -70px;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(0, 161, 222, 0.28) 0%, rgba(0, 161, 222, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* Верхняя строка каждого слайда */
+        .slide-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .brand-pill {
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 4px 11px;
+            border-radius: 20px;
+            letter-spacing: 0.4px;
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #FFFFFF;
+        }
+
+        .theme-light .brand-pill {
+            background: var(--kz-blue-light);
+            border-color: rgba(0, 161, 222, 0.3);
+            color: var(--kz-blue-dark);
+        }
+
+        .slide-num {
+            font-size: 0.72rem;
+            font-weight: 900;
+            opacity: 0.75;
+        }
+
+        /* Контентная часть слайда */
+        .slide-body {
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+            margin: auto 0;
+        }
+
+        .tag-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            width: fit-content;
+            font-size: 0.66rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            background: var(--kz-gold);
+            color: var(--text-dark);
+        }
+
+        .tag-badge.blue {
+            background: var(--kz-blue);
+            color: #FFFFFF;
+        }
+
+        .tag-badge.green {
+            background: var(--green-accent);
+            color: #FFFFFF;
+        }
+
+        .slide-title {
+            font-size: 1.38rem;
+            font-weight: 900;
+            line-height: 1.18;
+            letter-spacing: -0.3px;
+        }
+
+        .slide-title .gold-text {
+            color: var(--kz-gold);
+        }
+
+        .slide-title .blue-text {
+            color: var(--kz-blue);
+        }
+
+        .slide-subtitle {
+            font-size: 0.8rem;
+            font-weight: 600;
+            line-height: 1.4;
+            opacity: 0.92;
+        }
+
+        /* Карточки-пункты внутри слайдов */
+        .item-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 10px 12px;
+            font-size: 0.76rem;
+            line-height: 1.38;
+            font-weight: 600;
+        }
+
+        .theme-light .item-box {
+            background: #FFFFFF;
+            border: 1px solid #DBE5F0;
+            border-left: 4px solid var(--kz-blue);
+            box-shadow: 0 3px 10px rgba(0, 119, 163, 0.05);
+            color: var(--text-dark);
+        }
+
+        .theme-light .item-box.pain {
+            border-left-color: #EF4444;
+        }
+
+        .theme-light .item-box.success {
+            border-left-color: var(--green-accent);
+            background: #F0FDF4;
+        }
+
+        .item-box strong {
+            font-weight: 800;
+            display: block;
+            margin-bottom: 2px;
+            font-size: 0.8rem;
+        }
+
+        .hero-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .metric-card {
+            background: rgba(15, 23, 42, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 12px;
+            padding: 9px 10px;
+        }
+
+        .metric-val {
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: var(--kz-gold);
+            line-height: 1.1;
+        }
+
+        .metric-lbl {
+            font-size: 0.67rem;
+            font-weight: 600;
+            color: #E2E8F0;
+            margin-top: 2px;
+        }
+
+        .lifetime-banner {
+            background: linear-gradient(135deg, var(--kz-gold) 0%, #FFD55A 100%);
+            color: var(--text-dark);
+            border-radius: 12px;
+            padding: 10px 12px;
+            font-size: 0.78rem;
+            font-weight: 900;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(255, 199, 44, 0.3);
+        }
+
+        /* Нижняя строка слайда (стрелка свайпа) */
+        .slide-footer {
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.68rem;
+            font-weight: 800;
+            opacity: 0.85;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .theme-light .slide-footer {
+            border-top-color: #DBE5F0;
+            color: var(--kz-blue-dark);
+        }
+
+        .dl-single-btn {
+            background: rgba(255, 255, 255, 0.12);
+            color: #FFFFFF;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 7px 14px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .dl-single-btn:hover {
+            background: var(--kz-blue);
+            border-color: var(--kz-blue);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toolbar">
+        <div class="toolbar-info">
+            <h1>📸 Генератор карусели Instagram: «Зимний Марафон B1» (8 слайдов)</h1>
+            <p>💡 Вы можете кликнуть на любой текст на слайде, чтобы изменить его. Нажмите кнопку справа, чтобы скачать все 8 картинок в высоком разрешении (1080×1350 px).</p>
+        </div>
+        <button class="download-all-btn" onclick="downloadAllSlides()">📥 Скачать все 8 слайдов (PNG)</button>
+    </div>
+
+    <div class="slides-grid">
+
+        <!-- ==================== СЛАЙД 1: ОБЛОЖКА (HOOK) ==================== -->
+        <div class="slide-wrapper">
+            <div class="ig-slide theme-hero" id="slide1" contenteditable="true" spellcheck="false">
+                <div class="glow-circle"></div>
+                <div class="slide-top">
+                    <span class="brand-pill">✨ @doctors.speak • kazdoctors.com</span>
+                    <span class="slide-num">1 / 8</span>
+                </div>
+
+                <div class="slide-body">
+                    <span class="tag-badge">❄️ ЗИМНИЙ ПОТОК ДЛЯ ВРАЧЕЙ И РЕЗИДЕНТОВ</span>
+                    <div class="slide-title">
+                        ЗИМНИЙ МАРАФОН МЕДИЦИНСКОГО АНГЛИЙСКОГО
+                    </div>
+                    <p class="slide-subtitle">
+                        За 3 месяца пройдем все материалы платформы и выведем ваш английский на уверенный <b>уровень B1 включительно</b>.
+                    </p>
+
+                    <div class="hero-metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-val">3 месяца</div>
+                            <div class="metric-lbl">системной практики до уровня B1</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-val">10 Zoom</div>
+                            <div class="metric-lbl">3 Journal + 3 Speaking клуба + 4 разбора</div>
+                        </div>
+                    </div>
+
+                    <div class="lifetime-banner">
+                        🔓 + Доступ ко всему сайту kazdoctors.com НАВСЕГДА
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <span>Как устроена программа</span>
+                    <span>Листайте ➔</span>
+                </div>
+            </div>
+            <button class="dl-single-btn" onclick="downloadSlide('slide1', 1)">📥 Скачать слайд 1</button>
+        </div>
+
+        <!-- ==================== СЛАЙД 2: ПРОБЛЕМА ==================== -->
+        <div class="slide-wrapper">
+            <div class="ig-slide theme-light" id="slide2" contenteditable="true" spellcheck="false">
+                <div class="slide-top">
+                    <span class="brand-pill">@doctors.speak</span>
+                    <span class="slide-num">2 / 8</span>
+                </div>
+
+                <div class="slide-body">
+                    <span class="tag-badge blue">ЗНАКОМАЯ СИТУАЦИЯ?</span>
+                    <div class="slide-title">
+                        Почему врачи учат английский годами, но <span class="blue-text">боятся говорить?</span>
+                    </div>
+
+                    <div class="item-box pain">
+                        <strong>❌ Учите «общий английский» без медицины</strong>
+                        Топики про путешествия не помогают понять статью в PubMed или собрать анамнез у иностранца.
+                    </div>
+
+                    <div class="item-box pain">
+                        <strong>❌ Зубрите отдельные слова вместо «чанков»</strong>
+                        Слова забываются через 2 дня, а в речи все равно возникает ступор при построении фразы.
+                    </div>
+
+                    <div class="item-box pain">
+                        <strong>❌ Нет дедлайна и живой врачебной среды</strong>
+                        Курсы, купленные «в стол», откладываются из-за дежурств, усталости и нехватки контроля.
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <span>Как мы решили эти 3 проблемы</span>
+                    <span>Листайте ➔</span>
+                </div>
+            </div>
+            <button class="dl-single-btn" onclick="downloadSlide('slide2', 2)">📥 Скачать слайд 2</button>
+        </div>
+
+        <!-- ==================== СЛАЙД 3: РЕШЕНИЕ И ПЛАТФОРМА ==================== -->
+        <div class="slide-wrapper">
+            <div class="ig-slide theme-dark" id="slide3" contenteditable="true" spellcheck="false">
+                <div class="glow-circle"></div>
+                <div class="slide-top">
+                    <span class="brand-pill">@doctors.speak</span>
+                    <span class="slide-num">3 / 8</span>
+                </div>
+
+                <div class="slide-body">
+                    <span class="tag-badge">СИСТЕМА БЕЗ ВОДЫ</span>
+                    <div class="slide-title">
+                        За 3 месяца вы пройдете <span class="gold-text">ВСЕ материалы</span> нашей платформы
+                    </div>
+                    <p class="slide-subtitle">
+                        Никакой школьной зубрежки — учимся на реальных гайдлайнах UpToDate, статьях NCBI и клинических диалогах:
+                    </p>
+
+                    <div class="item-box">
+                        <strong>🧩 1. Метод «Чанков» и 15 модулей грамматики</strong>
+                        Видеоразборы, двуязычные конспекты (RU/KZ) и интерактивные тренажеры от A1 до B1+.
+                    </div>
+
+                    <div class="item-box">
+                        <strong>🫀 2. Вся медицинская лексика + Аудио в дорогу</strong>
+                        Анатомический, клинический и академический словарь для работы, статей и IELTS.
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <span>Что будет на живых созвонах</span>
+                    <span>Листайте ➔</span>
+                </div>
+            </div>
+            <button class="dl-single-btn" onclick="downloadSlide('slide3', 3)">📥 Скачать слайд 3</button>
+        </div>
+
+        <!-- ==================== СЛАЙД 4: 10 ЖИВЫХ ВСТРЕЧ В ZOOM ==================== -->
+        <div class="slide-wrapper">
+            <div class="ig-slide theme-light" id="slide4" contenteditable="true" spellcheck="false">
+                <div class="slide-top">
+                    <span class="brand-pill">@doctors.speak</span>
+                    <span class="slide-num">4 / 8</span>
+                </div>
+
+                <div class="slide-body">
+                    <span class="tag-badge blue">МАКСИМУМ ПРАКТИКИ</span>
+                    <div class="slide-title">
+                        <span class="blue-text">10 живых созвонов</span> в Zoom за время марафона
+                    </div>
+                    <p class="slide-subtitle">
+                        Вы не останетесь один на один с записями — мы тренируем навыки вживую в кругу коллег:
+                    </p>
+
+                    <div class="item-box">
+                        <strong>🔬 3 Journal Clubs (Журнальных клуба)</strong>
+                        Вместе ищем, оцениваем достоверность и разбираем медицинские статьи и гайдлайны в оригинале.
+                    </div>
+
+                    <div class="item-box">
+                        <strong>🗣️ 3 Speaking Clubs (Разговорных клуба)</strong>
+                        Снимаем языковой барьер: разыгрываем опрос пациента, обсуждаем клинические случаи и диагнозы.
+                    </div>
+
+                    <div class="item-box">
+                        <strong>🎓 4 практических Zoom-разбора</strong>
+                        Разбор самой важной грамматики, сложных мест, ответы на вопросы и проверка вашего прогресса.
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <span>Ваши навыки через 3 месяца</span>
+                    <span>Листайте ➔</span>
+                </div>
+            </div>
+            <button class="dl-single-btn" onclick="downloadSlide('slide4', 4)">📥 Скачать слайд 4</button>
+        </div>
+
+        <!-- ==================== СЛАЙД 5: 3 ГЛАВНЫХ РЕЗУЛЬТАТА ==================== -->
+        <div class="slide-wrapper">
+            <div class="ig-slide theme-light" id="slide5" contenteditable="true" spellcheck="false">
+                <div class="slide-top">
+                    <span class="brand-pill">@doctors.speak</span>
+                    <span class="slide-num">5 / 8</span>
+                </div>
+
+                <div class="slide-body">
+                    <span class="tag-badge green">ВАШ РЕЗУЛЬТАТ К КОНЦУ ЗИМЫ</span>
+                    <div class="slide-title">
+                        С чем вы выйдете после 3 месяцев марафона:
+                    </div>
+
+                    <div class="item-box success">
+                        <strong>✅ 1. Уверенный медицинский уровень B1</strong>
+                        Строите предложения без ступора, используя готовые грамматические формулы и чанки.
+                    </div>
+
+                    <div class="item-box success">
+                        <strong>✅ 2. Свободное чтение статей PubMed & UpToDate</strong>
+                        Понимаете структуру абстрактов, методы, статистику и выводы без пословного перевода.
+                    </div>
+
+                    <div class="item-box success">
+                        <strong>✅ 3. Опрос иностранного пациента на английском</strong>
+                        Собираете жалобы и анамнез по алгоритму SOCRATES и грамотно объясняете пациенту диагноз и лечение.
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <span>Главный бонус для участников</span>
+                    <span>Листайте ➔</span>
+                </div>
+            </div>
+            <button class="dl-single-btn" onclick="downloadSlide('slide5', 5)">📥 Скачать слайд 5</button>
+        </div>
+
+        <!-- ==================== СЛАЙД 6: ДОСТУП К САЙТУ НАВСЕГДА ==================== -->
+        <div class="slide-wrapper">
+            <div class="ig-slide theme-gold" id="slide6" contenteditable="true" spellcheck="false">
+                <div class="glow-circle"></div>
+                <div class="slide-top">
+                    <span class="brand-pill">@doctors.speak</span>
+                    <span class="slide-num">6 / 8</span>
+                </div>
+
+                <div class="slide-body">
+                    <span class="tag-badge">💎 ЭКСКЛЮЗИВ ЗИМНЕГО ПОТОКА</span>
+                    <div class="slide-title">
+                        Полный доступ к сайту <span class="gold-text">остается у вас НАВСЕГДА!</span>
+                    </div>
+                    <p class="slide-subtitle">
+                        Обычно подписка на платформу открывается помесячно. Но участникам зимнего марафона мы дарим <b>бессрочный доступ (Lifetime)</b> ко всем разделам:
+                    </p>
+
+                    <div class="item-box">
+                        <strong>📚 Все видеоуроки, конспекты и тренажеры</strong>
+                        15 уроков грамматики, тренажеры Clinical & Academic, курсы по чтению статей, презентациям и опросу пациентов + все будущие обновления.
+                    </div>
+
+                    <div class="lifetime-banner">
+                        Никаких повторных абонентских плат — база знаний всегда в вашем телефоне!
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <span>Стоимость участия</span>
+                    <span>Листайте ➔</span>
+                </div>
+            </div>
+            <button class="dl-single-btn" onclick="downloadSlide('slide6', 6)">📥 Скачать слайд 6</button>
+        </div>
+
+        <!-- ==================== СЛАЙД 7: СТОИМОСТЬ ==================== -->
+        <div class="slide-wrapper">
+            <div class="ig-slide theme-dark" id="slide7" contenteditable="true" spellcheck="false">
+                <div class="glow-blue"></div>
+                <div class="slide-top">
+                    <span class="brand-pill">@doctors.speak</span>
+                    <span class="slide-num">7 / 8</span>
+                </div>
+
+                <div class="slide-body">
+                    <span class="tag-badge">ВСЕ ВКЛЮЧЕНО</span>
+                    <div class="slide-title">
+                        Стоимость участия за все 3 месяца:
+                    </div>
+
+                    <div style="background:rgba(255,199,44,0.14); border:2px solid var(--kz-gold); border-radius:16px; padding:14px; text-align:center;">
+                        <div style="font-size:0.72rem; color:#CBD5E1; font-weight:700; text-transform:uppercase;">Полный пакет (3 месяца + вечный доступ)</div>
+                        <div style="font-size:2.05rem; font-weight:900; color:var(--kz-gold); line-height:1.15; margin:4px 0;">99 990 ₸</div>
+                        <div style="font-size:0.74rem; color:#A7F3D0; font-weight:700;">≈ 33 330 ₸ в месяц за живую работу и вечный доступ к сайту</div>
+                    </div>
+
+                    <div class="item-box">
+                        ✓ <b>3 месяца</b> системного обучения до уровня B1<br>
+                        ✓ <b>10 живых Zoom-встреч</b> (3 Journal + 3 Speaking + 4 разбора)<br>
+                        ✓ <b>Вечный доступ</b> ко всем материалам kazdoctors.com<br>
+                        ✓ Именной сертификат после финального экзамена
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <span>Как забронировать место</span>
+                    <span>Листайте ➔</span>
+                </div>
+            </div>
+            <button class="dl-single-btn" onclick="downloadSlide('slide7', 7)">📥 Скачать слайд 7</button>
+        </div>
+
+        <!-- ==================== СЛАЙД 8: ПРИЗЫВ К ДЕЙСТВИЮ (CTA) ==================== -->
+        <div class="slide-wrapper">
+            <div class="ig-slide theme-hero" id="slide8" contenteditable="true" spellcheck="false">
+                <div class="glow-circle"></div>
+                <div class="slide-top">
+                    <span class="brand-pill">✨ @doctors.speak</span>
+                    <span class="slide-num">8 / 8</span>
+                </div>
+
+                <div class="slide-body">
+                    <span class="tag-badge">🚀 НАБОР ОТКРЫТ</span>
+                    <div class="slide-title">
+                        Сделайте эту зиму точкой прорыва в вашей карьере!
+                    </div>
+                    <p class="slide-subtitle">
+                        Из-за живой практики на Speaking и Journal клубах количество участников в группе строго ограничено.
+                    </p>
+
+                    <div class="lifetime-banner" style="font-size:0.86rem; padding:14px 12px;">
+                        📩 Напишите слово «ЗИМА» нам в Директ @doctors.speak
+                    </div>
+
+                    <div class="item-box" style="text-align:center;">
+                        Или переходите по ссылке в шапке профиля <b>kazdoctors.com</b>, чтобы задать вопрос в WhatsApp и занять место в группе!
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <span>Сохраните пост, чтобы не потерять 🔖</span>
+                    <span>@doctors.speak</span>
+                </div>
+            </div>
+            <button class="dl-single-btn" onclick="downloadSlide('slide8', 8)">📥 Скачать слайд 8</button>
+        </div>
+
+    </div>
+
+    <script>
+        async function downloadSlide(elementId, slideNumber) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+
+            // Рендерим в масштабе x3 (получается четкий размер 1140x1425px для Instagram)
+            const canvas = await html2canvas(el, {
+                scale: 3,
+                useCORS: true,
+                backgroundColor: null
+            });
+
+            const link = document.createElement('a');
+            link.download = `doctors_speak_winter_marathon_slide_${slideNumber}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        async function downloadAllSlides() {
+            for (let i = 1; i <= 8; i++) {
+                await downloadSlide(`slide${i}`, i);
+                await new Promise(r => setTimeout(r, 350));
+            }
+        }
+    </script>
+</body>
+</html>
