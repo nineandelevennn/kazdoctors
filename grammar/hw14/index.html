@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- Подключение Supabase SDK -->
+    <!-- Подключение Supabase SDK (для автоподстановки имени ученика, если он вошел в аккаунт) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
@@ -48,7 +48,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding-bottom: 36px;
+            padding-bottom: 30px;
         }
 
         /* 1. Шапка страницы */
@@ -56,18 +56,16 @@
             background: linear-gradient(150deg, #0082B8 0%, var(--kz-blue) 55%, #22B8CF 90%, var(--kz-gold) 135%);
             color: #FFFFFF;
             text-align: center;
-            padding: 16px 16px 22px 16px;
+            padding: 16px 16px 20px 16px;
             box-shadow: 0 8px 24px rgba(0, 161, 222, 0.2);
             border-bottom-left-radius: 24px;
             border-bottom-right-radius: 24px;
-            position: relative;
-            overflow: hidden;
         }
 
         .header-top-bar {
             width: 100%;
-            max-width: 560px;
-            margin: 0 auto 10px auto;
+            max-width: 540px;
+            margin: 0 auto 8px auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -90,56 +88,41 @@
             border-radius: 18px;
         }
 
-        .lang-switch {
-            display: inline-flex;
-            background: rgba(0, 0, 0, 0.22);
-            border-radius: 20px;
-            padding: 3px;
-            border: 1px solid rgba(255, 255, 255, 0.35);
-        }
-
-        .lang-btn {
-            border: none;
-            background: transparent;
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 800;
+        .brand-pill {
             font-size: 0.72rem;
-            padding: 4px 11px;
-            border-radius: 16px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .lang-btn.active {
-            background: var(--kz-gold);
-            color: var(--text-dark);
+            font-weight: 800;
+            color: #FFFFFF;
+            background: rgba(0, 0, 0, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            padding: 5px 12px;
+            border-radius: 18px;
         }
 
         h1 {
-            font-size: 1.28rem;
+            font-size: 1.22rem;
             font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
             color: #FFFFFF;
             max-width: 480px;
             margin: 0 auto;
         }
 
         .subtitle {
-            font-size: 0.76rem;
+            font-size: 0.74rem;
             margin-top: 4px;
             font-weight: 800;
             color: var(--kz-gold);
             text-transform: uppercase;
-            letter-spacing: 0.6px;
+            letter-spacing: 0.5px;
         }
 
         /* 2. Основной контейнер */
         main {
             width: 100%;
-            max-width: 560px;
+            max-width: 540px;
             margin: 0 auto;
-            padding: 18px 14px;
+            padding: 16px 14px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
@@ -154,30 +137,69 @@
             box-shadow: 0 6px 20px rgba(0, 119, 163, 0.06);
         }
 
-        /* Стартовый экран ДЗ */
-        .intro-badge {
-            display: inline-block;
+        /* Выбор языка на стартовом экране */
+        .step-label {
+            font-size: 0.74rem;
+            font-weight: 800;
+            color: var(--kz-blue-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .lang-choice-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .lang-choice-card {
+            border: 2px solid var(--border-color);
+            background: #F8FAFC;
+            border-radius: 14px;
+            padding: 12px 10px;
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.18s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .lang-choice-card span {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .lang-choice-card.selected {
+            border-color: var(--kz-blue);
             background: var(--kz-blue-light);
             color: var(--kz-blue-dark);
-            font-size: 0.7rem;
-            font-weight: 800;
-            padding: 4px 10px;
-            border-radius: 10px;
-            text-transform: uppercase;
-            margin-bottom: 10px;
+            box-shadow: 0 4px 12px rgba(0, 161, 222, 0.15);
+        }
+
+        .lang-choice-card.selected span {
+            color: var(--kz-blue-dark);
         }
 
         .intro-title {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: 900;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             line-height: 1.3;
         }
 
         .intro-desc {
-            font-size: 0.84rem;
+            font-size: 0.82rem;
             color: var(--text-muted);
-            line-height: 1.5;
+            line-height: 1.45;
             font-weight: 500;
             margin-bottom: 14px;
         }
@@ -195,14 +217,14 @@
             border-left: 4px solid var(--kz-blue);
             border-radius: 11px;
             padding: 9px 10px;
-            font-size: 0.75rem;
+            font-size: 0.74rem;
             font-weight: 700;
             line-height: 1.3;
         }
 
         .topic-pill span {
             display: block;
-            font-size: 0.65rem;
+            font-size: 0.64rem;
             color: var(--kz-blue-dark);
             font-weight: 800;
             text-transform: uppercase;
@@ -214,13 +236,6 @@
             flex-direction: column;
             gap: 6px;
             margin-bottom: 16px;
-        }
-
-        .name-input-group label {
-            font-size: 0.75rem;
-            font-weight: 800;
-            color: var(--text-dark);
-            text-transform: uppercase;
         }
 
         .name-input {
@@ -247,7 +262,7 @@
             border: 1px solid var(--kz-gold-dark);
             padding: 14px 18px;
             border-radius: 16px;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 0.4px;
@@ -260,11 +275,11 @@
             transform: scale(0.98);
         }
 
-        /* Экран выполнения вопросов */
+        /* Экран прохождения вопросов */
         #quizScreen {
             display: none;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
         }
 
         .quiz-top-meta {
@@ -272,7 +287,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 8px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .q-counter {
@@ -313,7 +328,7 @@
             background: #E2E8F0;
             border-radius: 10px;
             overflow: hidden;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
         .progress-bar-fill {
@@ -337,17 +352,18 @@
         }
 
         .question-context {
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             font-weight: 600;
             color: var(--text-muted);
             margin-bottom: 6px;
+            line-height: 1.4;
         }
 
         .question-prompt {
-            font-size: 1rem;
+            font-size: 0.96rem;
             font-weight: 800;
             color: var(--text-dark);
-            line-height: 1.4;
+            line-height: 1.42;
             margin-bottom: 14px;
             background: #F8FAFC;
             padding: 12px 14px;
@@ -422,7 +438,7 @@
         }
 
         /* ==========================================================================
-           3. ЭКРАН ОТЧЕТА ДЛЯ ПРЕПОДАВАТЕЛЯ (REPORT CARD)
+           3. ЭКРАН РЕЗУЛЬТАТОВ ДЛЯ СКРИНШОТА (КОМПАКТНЫЙ И НАГЛЯДНЫЙ)
            ========================================================================== */
         #resultScreen {
             display: none;
@@ -430,35 +446,47 @@
             gap: 14px;
         }
 
+        .screenshot-hint-banner {
+            background: var(--kz-gold-light);
+            border: 1.5px dashed var(--kz-gold-dark);
+            color: #92400E;
+            padding: 10px 12px;
+            border-radius: 14px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-align: center;
+        }
+
         .report-card {
             background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
             color: #FFFFFF;
             border-radius: 22px;
-            padding: 20px 18px;
+            padding: 18px 16px;
             border: 2px solid var(--kz-gold);
             box-shadow: 0 12px 30px rgba(15, 23, 42, 0.22);
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
         }
 
         .rc-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             gap: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+            padding-bottom: 10px;
         }
 
         .rc-student-name {
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: 900;
             color: var(--kz-gold);
+            line-height: 1.2;
         }
 
         .rc-meta {
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             color: #CBD5E1;
             font-weight: 600;
             margin-top: 3px;
@@ -466,24 +494,25 @@
 
         .rc-percent-badge {
             background: rgba(255, 199, 44, 0.2);
-            border: 1px solid var(--kz-gold);
+            border: 1.5px solid var(--kz-gold);
             color: var(--kz-gold);
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: 900;
             padding: 6px 12px;
             border-radius: 12px;
+            flex-shrink: 0;
         }
 
-        /* Крупные счетчики Правильных и Неправильных ответов */
+        /* Счетчики Правильных и Неправильных */
         .rc-totals-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+            gap: 8px;
         }
 
         .rc-stat-box {
-            border-radius: 14px;
-            padding: 12px;
+            border-radius: 12px;
+            padding: 9px 10px;
             text-align: center;
         }
 
@@ -498,7 +527,7 @@
         }
 
         .rc-stat-num {
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             font-weight: 900;
             line-height: 1.1;
         }
@@ -507,24 +536,24 @@
         .wrong-box .rc-stat-num { color: #F87171; }
 
         .rc-stat-label {
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             font-weight: 700;
             color: #E2E8F0;
-            margin-top: 3px;
+            margin-top: 2px;
         }
 
-        /* Разбивка по Урокам 1–4 */
+        /* Таблица результатов по урокам и номерам вопросов (1–12) */
         .rc-lessons-breakdown {
             display: flex;
             flex-direction: column;
             gap: 7px;
-            background: rgba(255, 255, 255, 0.06);
-            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 11px 12px;
             border-radius: 14px;
         }
 
         .rc-lb-title {
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             font-weight: 800;
             text-transform: uppercase;
             color: #94A3B8;
@@ -532,53 +561,54 @@
             margin-bottom: 2px;
         }
 
-        .rc-lesson-row {
+        .rc-lesson-block {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 0.78rem;
-            font-weight: 700;
-            padding: 6px 8px;
-            border-radius: 8px;
+            flex-direction: column;
+            gap: 5px;
+            padding: 7px 9px;
+            border-radius: 10px;
             background: rgba(255, 255, 255, 0.05);
         }
 
-        .rc-actions {
+        .rc-lesson-top {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #F8FAFC;
         }
 
-        .wa-send-btn {
-            width: 100%;
-            background: #10B981;
-            color: #FFFFFF;
-            text-decoration: none;
-            padding: 13px 16px;
-            border-radius: 14px;
-            font-size: 0.84rem;
-            font-weight: 900;
-            text-align: center;
+        .q-badges-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+
+        .q-num-chip {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
-        }
-
-        .copy-report-btn {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.14);
-            color: #FFFFFF;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 11px 16px;
-            border-radius: 14px;
-            font-size: 0.8rem;
+            gap: 4px;
+            padding: 4px 6px;
+            border-radius: 7px;
+            font-size: 0.72rem;
             font-weight: 800;
-            cursor: pointer;
         }
 
-        /* Детальный список ошибок под карточкой отчета */
+        .q-num-chip.chip-ok {
+            background: rgba(16, 185, 129, 0.25);
+            border: 1px solid #34D399;
+            color: #A7F3D0;
+        }
+
+        .q-num-chip.chip-err {
+            background: rgba(239, 68, 68, 0.28);
+            border: 1px solid #F87171;
+            color: #FECACA;
+        }
+
+        /* Детальный список ошибок под карточкой */
         .mistakes-review-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -600,7 +630,7 @@
 
         @media (max-width: 480px) {
             .topics-grid { grid-template-columns: 1fr; }
-            h1 { font-size: 1.15rem; }
+            h1 { font-size: 1.12rem; }
         }
     </style>
 </head>
@@ -609,45 +639,36 @@
     <header>
         <div class="header-top-bar">
             <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅️ К урокам</a>
-            <div class="lang-switch">
-                <button type="button" class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
-                <button type="button" class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
-            </div>
+            <span class="brand-pill">@doctors.speak</span>
         </div>
         <h1 id="uiHeaderTitle">Домашнее задание: Уроки 1–4</h1>
-        <p class="subtitle" id="uiHeaderSub">Контрольная проверка • 12 клинических ситуаций</p>
+        <p class="subtitle" id="uiHeaderSub">Проверка базовой грамматики • 12 заданий</p>
     </header>
 
     <main>
-        <!-- ==================== ЭКРАН 1: СТАРТ ДЗ ==================== -->
+        <!-- ==================== ЭКРАН 1: ВЫБОР ЯЗЫКА И СТАРТ ДЗ ==================== -->
         <section class="card" id="startScreen">
-            <span class="intro-badge">📝 Диагностическое ДЗ (~5 минут)</span>
-            <h2 class="intro-title" id="uiIntroTitle">Проверьте усвоение первых 4 уроков медицинской грамматики</h2>
-            <p class="intro-desc" id="uiIntroDesc">
-                Вам предстоит решить 12 показательных клинических заданий (по 3 на каждый урок). В конце страница сформирует готовый отчет с количеством правильных и неправильных ответов для показа преподавателю.
-            </p>
-
-            <div class="topics-grid">
-                <div class="topic-pill">
-                    <span>Lesson 01</span>
-                    Present Simple & To Be (Физиология и статус)
-                </div>
-                <div class="topic-pill">
-                    <span>Lesson 02</span>
-                    Present Continuous (Текущие симптомы)
-                </div>
-                <div class="topic-pill">
-                    <span>Lesson 03</span>
-                    Past Simple (Сбор анамнеза и кейсы)
-                </div>
-                <div class="topic-pill">
-                    <span>Lesson 04</span>
-                    Present Perfect (Длительность и анализы)
-                </div>
+            <span class="step-label" id="uiLangStepLabel">1. Выберите язык выполнения задания / Тапсырма тілін таңдаңыз:</span>
+            <div class="lang-choice-grid">
+                <button type="button" class="lang-choice-card" id="langCardKz" onclick="selectStartLang('kz')">
+                    <div>🇰🇿 Қазақша</div>
+                    <span>Сұрақтар мен нәтиже қазақ тілінде</span>
+                </button>
+                <button type="button" class="lang-choice-card selected" id="langCardRu" onclick="selectStartLang('ru')">
+                    <div>🇷🇺 Русский</div>
+                    <span>Вопросы и отчет на русском языке</span>
+                </button>
             </div>
 
+            <h2 class="intro-title" id="uiIntroTitle">Домашняя работа по Урокам 1–4 (12 вопросов)</h2>
+            <p class="intro-desc" id="uiIntroDesc">
+                В каждом уроке по 3 практических задания. После ответа на все 12 вопросов откроется итоговая таблица с вашими ответами по номерам — сделайте её скриншот и отправьте преподавателю.
+            </p>
+
+            <div class="topics-grid" id="uiTopicsGrid"></div>
+
             <div class="name-input-group">
-                <label for="studentNameInput" id="uiNameLabel">Ваше Имя (для отчета преподавателю):</label>
+                <label class="step-label" for="studentNameInput" id="uiNameLabel" style="margin-bottom:2px;">2. Ваше Имя (будет видно на скриншоте):</label>
                 <input type="text" id="studentNameInput" class="name-input" placeholder="Например: Айгерим / Dr. Askar">
             </div>
 
@@ -671,7 +692,7 @@
             </div>
 
             <div>
-                <span class="lesson-tag" id="qLessonTag">Lesson 01</span>
+                <span class="lesson-tag" id="qLessonTag">Урок 1</span>
                 <div class="question-context" id="qContextText"></div>
                 <div class="question-prompt" id="qPromptText"></div>
                 <div class="options-list" id="qOptionsList"></div>
@@ -682,49 +703,44 @@
             </div>
         </section>
 
-        <!-- ==================== ЭКРАН 3: ОТЧЕТ ДЛЯ ПРЕПОДАВАТЕЛЯ ==================== -->
+        <!-- ==================== ЭКРАН 3: ИТОГОВЫЙ ОТЧЕТ ДЛЯ СКРИНШОТА ==================== -->
         <section id="resultScreen">
+            <div class="screenshot-hint-banner" id="uiScreenshotBanner">
+                📸 Сделайте скриншот карточки ниже и отправьте преподавателю
+            </div>
+
             <div class="report-card" id="teacherReportCard">
                 <div class="rc-header">
                     <div>
-                        <div style="font-size:0.68rem; text-transform:uppercase; color:#94A3B8; font-weight:800;">Отчет о выполнении ДЗ (Уроки 1–4)</div>
+                        <div style="font-size:0.66rem; text-transform:uppercase; color:#94A3B8; font-weight:800;" id="uiReportHeaderSub">ДЗ: Уроки 1–4 • @doctors.speak</div>
                         <div class="rc-student-name" id="rcStudentName">Doctor</div>
                         <div class="rc-meta" id="rcMetaInfo">Дата: -- • Время: --</div>
                     </div>
-                    <div class="rc-percent-badge" id="rcPercentBadge">100%</div>
+                    <div class="rc-percent-badge" id="rcPercentBadge">0%</div>
                 </div>
 
                 <!-- Блок Правильных / Неправильных ответов -->
                 <div class="rc-totals-grid">
                     <div class="rc-stat-box correct-box">
                         <div class="rc-stat-num" id="rcCorrectCount">0</div>
-                        <div class="rc-stat-label" id="uiCorrectLbl">✅ Правильных ответов</div>
+                        <div class="rc-stat-label" id="uiCorrectLbl">✅ Правильных</div>
                     </div>
                     <div class="rc-stat-box wrong-box">
                         <div class="rc-stat-num" id="rcWrongCount">0</div>
-                        <div class="rc-stat-label" id="uiWrongLbl">❌ Неправильных ответов</div>
+                        <div class="rc-stat-label" id="uiWrongLbl">❌ Неправильных</div>
                     </div>
                 </div>
 
-                <!-- Детализация по каждому из 4 уроков -->
+                <!-- Детализация по каждому уроку и каждому номеру вопроса (№1 – №12) -->
                 <div class="rc-lessons-breakdown">
-                    <div class="rc-lb-title" id="uiBreakdownTitle">Результат по темам (Уроки 1–4):</div>
-                    <div id="rcLessonsRows"></div>
-                </div>
-
-                <div class="rc-actions">
-                    <a href="#" target="_blank" rel="noopener noreferrer" class="wa-send-btn" id="waReportLink">
-                        📲 Отправить результат в WhatsApp
-                    </a>
-                    <button type="button" class="copy-report-btn" onclick="copyTextReport(this)" id="uiCopyBtn">
-                        📋 Скопировать текст (или скриншот)
-                    </button>
+                    <div class="rc-lb-title" id="uiBreakdownTitle">Ответы по номерам вопросов (1–12):</div>
+                    <div id="rcLessonsRows" style="display:flex; flex-direction:column; gap:7px;"></div>
                 </div>
             </div>
 
-            <!-- Разбор ошибок (если есть) -->
+            <!-- Подробный разбор ошибок под скриншотом (если есть ошибки) -->
             <div class="mistakes-review-card" id="mistakesCard" style="display:none;">
-                <h3 style="font-size:0.9rem; font-weight:900;" id="uiMistakesTitle">🔍 Разбор ваших ошибок:</h3>
+                <h3 style="font-size:0.88rem; font-weight:900;" id="uiMistakesTitle">🔍 Разбор ваших ошибок:</h3>
                 <div id="mistakesListContainer" style="display:flex; flex-direction:column; gap:8px;"></div>
             </div>
 
@@ -736,7 +752,7 @@
 
     <script>
         // =========================================================================
-        // 1. ЗВУКОВЫЕ ЭФФЕКТЫ (ИСПОЛЬЗУЮТ ВАШИ ФАЙЛЫ В КОРНЕ САЙТА)
+        // 1. ЗВУКОВЫЕ ЭФФЕКТЫ САЙТА
         // =========================================================================
         const sfxStart = new Audio('/start.mp3');
         const sfxOk = new Audio('/ok.mp3');
@@ -750,256 +766,271 @@
         }
 
         // =========================================================================
-        // 2. БАЗА ИЗ 12 ПОКАЗАТЕЛЬНЫХ ВОПРОСОВ ПО УРОКАМ 1–4 (ПО 3 НА КАЖДЫЙ УРОК)
-        // Правильные ответы равномерно распределены между A (0), B (1) и C (2)
+        // 2. ТЕМЫ УРОКОВ 1–4 И 12 КЛИНИЧЕСКИХ ЗАДАНИЙ (НА RU И KZ)
         // =========================================================================
         const LESSONS_META = [
-            { id: 1, title: "Урок 1: Present Simple & To Be" },
-            { id: 2, title: "Урок 2: Present Continuous" },
-            { id: 3, title: "Урок 3: Past Simple (Анамнез)" },
-            { id: 4, title: "Урок 4: Present Perfect" }
+            {
+                id: 1,
+                shortTag: "Lesson 01",
+                title: {
+                    ru: "Урок 1: To be & To do (Глагол в предложении)",
+                    kz: "1-сабақ: To be & To do (Сөйлемдегі етістік)"
+                }
+            },
+            {
+                id: 2,
+                shortTag: "Lesson 02",
+                title: {
+                    ru: "Урок 2: Present Simple & Continuous",
+                    kz: "2-сабақ: Present Simple & Continuous"
+                }
+            },
+            {
+                id: 3,
+                shortTag: "Lesson 03",
+                title: {
+                    ru: "Урок 3: Past Simple & Present Perfect",
+                    kz: "3-сабақ: Past Simple & Present Perfect"
+                }
+            },
+            {
+                id: 4,
+                shortTag: "Lesson 04",
+                title: {
+                    ru: "Урок 4: Future (will / be going to)",
+                    kz: "4-сабақ: Future (will / be going to)"
+                }
+            }
         ];
 
         const QUESTIONS = [
-            // --- УРОК 1: PRESENT SIMPLE & TO BE (3 вопроса) ---
+            // ================= УРОК 1: TO BE & TO DO (Вопросы 1–3) =================
             {
+                num: 1,
                 lessonId: 1,
-                lessonLabel: "Lesson 01 • Present Simple & To Be",
                 context: {
-                    ru: "Анатомия и физиология (постоянный научный факт):",
-                    kz: "Анатомия және физиология (тұрақты ғылыми факт):"
+                    ru: "Урок 1 (To be vs To do): В предложении нет глагола действия — мы описываем состояние («Пациент в сознании, жизненные показатели стабильны»). Какой глагол обязателен в английском?",
+                    kz: "1-сабақ (To be vs To do): Сөйлемде қимыл етістігі жоқ — науқастың күйін сипаттаймыз («Науқас есін біледі, тіршілік көрсеткіштері тұрақты»). Ағылшын тілінде қай етістік міндетті?"
                 },
-                prompt: "The pulmonary artery ___ deoxygenated blood from the right ventricle to the lungs.",
-                opts: [
-                    "A) is carrying",
-                    "B) carries",
-                    "C) carry"
-                ],
+                prompt: "The patient ___ conscious, and his vital signs ___ stable.",
+                opts: {
+                    ru: ["A) does ... do", "B) is ... are", "C) глагол не нужен (пропуск)"],
+                    kz: ["A) does ... do", "B) is ... are", "C) етістік қажет емес (бос орын)"]
+                },
                 ans: 1, // B
                 exp: {
-                    ru: "Для постоянных анатомических и физиологических законов используется Present Simple. Так как 'artery' — единственное число (it), добавляем окончание -es: carries.",
-                    kz: "Тұрақты анатомиялық заңдылықтар үшін Present Simple қолданылады. 'Artery' жекеше түрде (it) болғандықтан: carries."
+                    ru: "В английском предложении всегда должен быть глагол! Когда нет действия, работает глагол состояния 'to be': the patient IS conscious (ед. ч.), vital signs ARE stable (мн. ч.).",
+                    kz: "Ағылшын сөйлемінде міндетті түрде етістік болуы керек! Қимыл жоқ кезде 'to be' қолданылады: the patient IS conscious (жекеше), vital signs ARE stable (көпше)."
                 }
             },
             {
+                num: 2,
                 lessonId: 1,
-                lessonLabel: "Lesson 01 • Present Simple & To Be",
                 context: {
-                    ru: "Исправьте частую ошибку врача при сборе анамнеза («Есть ли у вас хронические заболевания?»):",
-                    kz: "Анамнез жинау кезіндегі жиі кездесетін қатені түзетіңіз («Сізде созылмалы аурулар бар ма?»):"
+                    ru: "Урок 1 (To be vs To do): Сравните два вопроса врачу: в 1-м есть глагол действия (feel — чувствовать), а во 2-м действия нет (the pain sharp — боль острая).",
+                    kz: "1-сабақ (To be vs To do): Дәрігердің екі сұрағын салыстырыңыз: 1-ші сұрақта қимыл етістігі бар (feel — сезіну), ал 2-шісінде қимыл жоқ (the pain sharp — ауырсыну өткір)."
                 },
-                prompt: "❌ Ошибка: «Are you have any chronic medical conditions?» — Как спросить правильно?",
-                opts: [
-                    "A) Do you have any chronic medical conditions?",
-                    "B) Does you have any chronic medical conditions?",
-                    "C) Have you any chronic medical conditions now?"
-                ],
-                ans: 0, // A
-                exp: {
-                    ru: "Глагол 'have' (иметь) требует вспомогательного глагола Do в вопросе Present Simple: 'Do you have any chronic medical conditions?' (Глагол Are с глаголом have не ставится!).",
-                    kz: "'Have' етістігімен сұрақ қою үшін Present Simple-да Do көмекші етістігі қолданылады: 'Do you have any chronic medical conditions?'"
-                }
-            },
-            {
-                lessonId: 1,
-                lessonLabel: "Lesson 01 • Present Simple & To Be",
-                context: {
-                    ru: "Описание объективного статуса пациента (состояние без глагола действия):",
-                    kz: "Науқастың объективті статусын сипаттау (қимыл етістігі жоқ күй):"
+                prompt: "1) Where exactly ___ you feel the pain?   2) ___ the pain sharp or dull?",
+                opts: {
+                    ru: ["A) are ... Do", "B) do ... Does", "C) do ... Is"],
+                    kz: ["A) are ... Do", "B) do ... Does", "C) do ... Is"]
                 },
-                prompt: "On physical examination, vital signs ___ stable, and the patient ___ afebrile.",
-                opts: [
-                    "A) do ... does",
-                    "B) is ... are",
-                    "C) are ... is"
-                ],
                 ans: 2, // C
                 exp: {
-                    ru: "Когда в предложении нет действия, а описывается состояние (какой? — stable, afebrile), используется связка To Be: 'vital signs ARE stable' (мн. ч.) и 'the patient IS afebrile' (ед. ч.).",
-                    kz: "Қимыл жоқ кезде To Be етістігі қолданылады: 'vital signs ARE stable' (көпше) және 'the patient IS afebrile' (жекеше)."
+                    ru: "В первом вопросе есть действие (feel) → спрашиваем через DO ('Where do you feel...?'). Во втором вопросе действия нет (описание характера боли) → спрашиваем через IS ('Is the pain sharp?').",
+                    kz: "Бірінші сұрақта қимыл бар (feel) → DO көмекші етістігі ('Where do you feel...?'). Екіншісінде қимыл жоқ (сипаттама) → IS қолданылады ('Is the pain sharp?')."
+                }
+            },
+            {
+                num: 3,
+                lessonId: 1,
+                context: {
+                    ru: "Урок 1 (To be vs To do): В предложении есть глагол действия (complain — жаловаться). Как правильно сказать «Пациент не жалуется на тошноту»?",
+                    kz: "1-сабақ (To be vs To do): Сөйлемде қимыл етістігі бар (complain — шағымдану). «Науқас жүрек айнуына шағымданбайды» деп қалай дұрыс айтамыз?"
+                },
+                prompt: "The patient ___ complain of nausea or dizziness.",
+                opts: {
+                    ru: ["A) does not (doesn't)", "B) is not (isn't)", "C) do not (don't)"],
+                    kz: ["A) does not (doesn't)", "B) is not (isn't)", "C) do not (don't)"]
+                },
+                ans: 0, // A
+                exp: {
+                    ru: "Так как 'complain' — это действие, отрицание строится с помощью do/does. Для 'the patient' (he/she) используем 'does not complain' (глагол to be здесь ставить нельзя!).",
+                    kz: "'Complain' — қимыл етістігі, сондықтан болымсыз формада 'the patient' (he/she) үшін 'does not complain' қолданылады."
                 }
             },
 
-            // --- УРОК 2: PRESENT CONTINUOUS (3 вопроса) ---
+            // ================= УРОК 2: PRESENT SIMPLE & CONTINUOUS (Вопросы 4–6) =================
             {
+                num: 4,
                 lessonId: 2,
-                lessonLabel: "Lesson 02 • Present Continuous",
                 context: {
-                    ru: "Экстренная ситуация в отделении (процесс происходит прямо сейчас на глазах врача):",
-                    kz: "Бөлімшедегі жедел жағдай (процесс дәл қазір дәрігердің көз алдында болып жатыр):"
+                    ru: "Урок 2 (Present Simple vs Continuous): Экстренный осмотр — действие происходит прямо сейчас на глазах врача.",
+                    kz: "2-сабақ (Present Simple vs Continuous): Жедел тексеру — қимыл дәл қазір дәрігердің көз алдында болып жатыр."
                 },
-                prompt: "Look at the monitor! The patient's oxygen saturation ___ rapidly right now.",
-                opts: [
-                    "A) drops",
-                    "B) is dropping",
-                    "C) dropped"
-                ],
+                prompt: "Look at the patient! He ___ heavily and ___ his chest right now.",
+                opts: {
+                    ru: ["A) sweats ... holds", "B) is sweating ... is holding", "C) sweating ... holding"],
+                    kz: ["A) sweats ... holds", "B) is sweating ... is holding", "C) sweating ... holding"]
+                },
                 ans: 1, // B
                 exp: {
-                    ru: "Маркеры 'Look!' и 'right now' указывают на процесс, развивающийся в секунду речи — используем Present Continuous: 'is dropping'.",
-                    kz: "'Look!' және 'right now' дәл қазір болып жатқан процесті білдіреді — Present Continuous: 'is dropping'."
+                    ru: "Процесс, развивающийся прямо в момент речи ('Look!', 'right now'), передается через Present Continuous: am/is/are + V-ing ('is sweating', 'is holding').",
+                    kz: "Дәл қазір болып жатқан процесс ('Look!', 'right now') Present Continuous арқылы беріледі: is + V-ing ('is sweating', 'is holding')."
                 }
             },
             {
+                num: 5,
                 lessonId: 2,
-                lessonLabel: "Lesson 02 • Present Continuous",
                 context: {
-                    ru: "Вопрос пациенту о симптоме, который беспокоит его в данный период:",
-                    kz: "Науқасты дәл қазір мазалап тұрған симптом туралы сұрақ:"
+                    ru: "Урок 2 (Present Simple vs Continuous): Сравните постоянный прием препарата (каждое утро) и самочувствие пациентки в данный момент (сегодня на приеме).",
+                    kz: "2-сабақ (Present Simple vs Continuous): Дәріні тұрақты қабылдау мен науқастың дәл қазіргі (бүгінгі) күйін салыстырыңыз."
                 },
-                prompt: "___ any shortness of breath or chest discomfort at the moment?",
-                opts: [
-                    "A) Are you experiencing",
-                    "B) Do you experiencing",
-                    "C) Are you experience"
-                ],
+                prompt: "She ___ amlodipine every morning, but today she ___ very weak and dizzy.",
+                opts: {
+                    ru: ["A) takes ... is feeling", "B) is taking ... feels", "C) take ... is feel"],
+                    kz: ["A) takes ... is feeling", "B) is taking ... feels", "C) take ... is feel"]
+                },
                 ans: 0, // A
                 exp: {
-                    ru: "Формула вопроса в Present Continuous: Am/Is/Are + подлежащее + V-ing ('Are you experiencing any shortness of breath?').",
-                    kz: "Present Continuous сұрақ формуласы: Are + you + V-ing ('Are you experiencing any shortness of breath?')."
+                    ru: "'Every morning' (регулярная привычка) → Present Simple ('she takes'). 'Today' (временное состояние сейчас) → Present Continuous ('she is feeling').",
+                    kz: "'Every morning' (тұрақты әдет) → Present Simple ('she takes'). 'Today' (қазіргі уақытша күй) → Present Continuous ('she is feeling')."
                 }
             },
             {
+                num: 6,
                 lessonId: 2,
-                lessonLabel: "Lesson 02 • Present Continuous vs Simple",
                 context: {
-                    ru: "Сравнение постоянной терапии (обычно) и временной схемы (на этой неделе в стационаре):",
-                    kz: "Тұрақты ем мен уақытша емдеу схемасын салыстыру:"
+                    ru: "Урок 2 (Present Simple vs Continuous): Два вопроса врачу: 1) «Вы курите вообще (по жизни)?» и 2) «Вы испытываете одышку прямо сейчас?»",
+                    kz: "2-сабақ (Present Simple vs Continuous): Екі сұрақ: 1) «Жалпы темекі шегесіз бе (әдет)?» және 2) «Дәл қазір ентігу сезініп тұрсыз ба?»"
                 },
-                prompt: "The patient usually ___ oral metformin at home, but this week he ___ intravenous insulin in the hospital.",
-                opts: [
-                    "A) is taking ... receives",
-                    "B) take ... is receiving",
-                    "C) takes ... is receiving"
-                ],
+                prompt: "1) ___ you smoke?   2) ___ you experiencing any shortness of breath right now?",
+                opts: {
+                    ru: ["A) Are ... Do", "B) Do ... Do", "C) Do ... Are"],
+                    kz: ["A) Are ... Do", "B) Do ... Do", "C) Do ... Are"]
+                },
                 ans: 2, // C
                 exp: {
-                    ru: "'Usually' (регулярно) требует Present Simple ('he takes'), а временная ситуация 'this week' требует Present Continuous ('he is receiving').",
-                    kz: "'Usually' (әдетте) — Present Simple ('takes'), ал уақытша 'this week' — Present Continuous ('is receiving')."
+                    ru: "Вопрос о постоянной привычке → Present Simple ('Do you smoke?'). Вопрос о симптоме в данную минуту (с V-ing) → Present Continuous ('Are you experiencing...?').",
+                    kz: "Тұрақты әдет туралы сұрақ → Present Simple ('Do you smoke?'). Дәл қазіргі симптом туралы (V-ing-пен) → Present Continuous ('Are you experiencing...?')."
                 }
             },
 
-            // --- УРОК 3: PAST SIMPLE В АНАМНЕЗЕ (3 вопроса) ---
+            // ================= УРОК 3: PAST SIMPLE & PRESENT PERFECT (Вопросы 7–9) =================
             {
+                num: 7,
                 lessonId: 3,
-                lessonLabel: "Lesson 03 • Past Simple",
                 context: {
-                    ru: "Исправьте ошибку врача при вопросе о начале боли (Onset по SOCRATES):",
-                    kz: "Ауырсынудың қашан басталғанын сұрағандағы қатені түзетіңіз:"
+                    ru: "Урок 3 (Past Simple vs Present Perfect): 1) «Когда началась головная боль?» (точка в прошлом) и 2) «Как долго она у вас уже длится?» (началась в прошлом и болит до сих пор).",
+                    kz: "3-сабақ (Past Simple vs Present Perfect): 1) «Бас ауруы қашан басталды?» (өткендегі нүкте) және 2) «Ол қанша уақыттан бері мазалайды?» (бұрын басталып, әлі ауырып тұр)."
                 },
-                prompt: "❌ Ошибка: «When start the abdominal pain?» — Выберите грамматически верный вопрос:",
-                opts: [
-                    "A) When started the abdominal pain?",
-                    "B) When did the abdominal pain start?",
-                    "C) When did the abdominal pain started?"
-                ],
-                ans: 1, // B
-                exp: {
-                    ru: "В вопросе Past Simple вспомогательный глагол 'did' уже забирает прошедшее время на себя, поэтому основной глагол стоит в начальной форме: 'When did the pain start?'.",
-                    kz: "Past Simple сұрағында 'did' көмекші етістігі тұрғандықтан, негізгі етістік бастапқы формада қалады: 'When did the abdominal pain start?'."
-                }
-            },
-            {
-                lessonId: 3,
-                lessonLabel: "Lesson 03 • Past Simple",
-                context: {
-                    ru: "Доклад клинического случая на конференции (жалобы при поступлении 2 недели назад):",
-                    kz: "Конференцияда клиникалық жағдайды баяндау (2 апта бұрын түскендегі шағымдар):"
+                prompt: "1) When ___ the headache start?   2) How long ___ you had it?",
+                opts: {
+                    ru: ["A) did ... have", "B) have ... did", "C) did ... did"],
+                    kz: ["A) did ... have", "B) have ... did", "C) did ... did"]
                 },
-                prompt: "Two weeks ago, a 45-year-old male ___ to the emergency department with severe chest pain.",
-                opts: [
-                    "A) presented",
-                    "B) has presented",
-                    "C) was present"
-                ],
                 ans: 0, // A
                 exp: {
-                    ru: "Точное время в прошлом ('Two weeks ago') требует Past Simple. Золотой медицинский чанк поступления пациента: 'presented to the ED with...'.",
-                    kz: "Өткен шақтағы нақты уақыт ('Two weeks ago') Past Simple талап етеді: 'presented with...'."
+                    ru: "Вопрос 'When...?' всегда требует Past Simple ('When did it start?'). Вопрос 'How long...?' о симптоме, который еще не прошел, требует Present Perfect ('How long have you had it?').",
+                    kz: "'When...?' сұрағы Past Simple талап етеді ('When did it start?'). Ал әлі жалғасып тұрған симптом туралы 'How long...?' сұрағында Present Perfect ('How long have you had it?') қолданылады."
                 }
             },
             {
+                num: 8,
                 lessonId: 3,
-                lessonLabel: "Lesson 03 • Past Simple",
                 context: {
-                    ru: "Описание неэффективности предыдущего лечения в истории болезни:",
-                    kz: "Алдыңғы емнің көмектеспегенін сипаттау:"
+                    ru: "Урок 3 (Past Simple vs Present Perfect): Аппендэктомия была 10 лет назад (завершенный факт в прошлом), а сильный кашель длится уже 5 дней (и сохраняется сейчас).",
+                    kz: "3-сабақ (Past Simple vs Present Perfect): Аппендэктомия 10 жыл бұрын жасалған (өткенде аяқталған факт), ал қатты жөтел 5 күннен бері жалғасып тұр (қазір де бар)."
                 },
-                prompt: "The patient took over-the-counter painkillers yesterday, but they ___ the headache.",
-                opts: [
-                    "A) did not relieved",
-                    "B) were not relieve",
-                    "C) did not relieve"
-                ],
+                prompt: "The patient ___ an appendectomy 10 years ago, and now he ___ a bad cough for five days.",
+                opts: {
+                    ru: ["A) has had ... had", "B) had ... has had", "C) had ... had"],
+                    kz: ["A) has had ... had", "B) had ... has had", "C) had ... had"]
+                },
+                ans: 1, // B
+                exp: {
+                    ru: "'10 years ago' (точная дата в прошлом) → Past Simple ('had'). 'For five days' (симптом длится до настоящего момента) → Present Perfect ('has had').",
+                    kz: "'10 years ago' (өткендегі нақты уақыт) → Past Simple ('had'). 'For five days' (осы сәтке дейін созылуда) → Present Perfect ('has had')."
+                }
+            },
+            {
+                num: 9,
+                lessonId: 3,
+                context: {
+                    ru: "Урок 3 (Past Simple vs Present Perfect): 1) «Вы когда-нибудь в жизни лежали в больнице?» (опыт до сегодняшнего дня) и 2) «Вчера вечером я выпил ибупрофен» (точное время в прошлом).",
+                    kz: "3-сабақ (Past Simple vs Present Perfect): 1) «Сіз өміріңізде ауруханаға жаттыңыз ба?» (осы күнге дейінгі тәжірибе) және 2) «Кеше кешке мен ибупрофен іштім» (нақты өткен уақыт)."
+                },
+                prompt: "1) ___ you ever been hospitalized? — 2) No, I just ___ some ibuprofen last night.",
+                opts: {
+                    ru: ["A) Did ... have taken", "B) Were ... took", "C) Have ... took"],
+                    kz: ["A) Did ... have taken", "B) Were ... took", "C) Have ... took"]
+                },
                 ans: 2, // C
                 exp: {
-                    ru: "Отрицание в Past Simple строится по формуле: did not (didn't) + начальная форма глагола без окончания -ed ('did not relieve').",
-                    kz: "Past Simple болымсыз түрі: did not + етістіктің бастапқы формасы ('did not relieve')."
+                    ru: "Жизненный опыт с маркером 'ever' → Present Perfect ('Have you ever been...?'). Конкретное время в прошлом ('last night') → Past Simple ('I took').",
+                    kz: "'Ever' сөзімен өмірлік тәжірибені сұрау → Present Perfect ('Have you ever been...?'). Нақты өткен уақыт ('last night') → Past Simple ('I took')."
                 }
             },
 
-            // --- УРОК 4: PRESENT PERFECT (3 вопроса) ---
+            // ================= УРОК 4: FUTURE SIMPLE (WILL / BE GOING TO) (Вопросы 10–12) =================
             {
+                num: 10,
                 lessonId: 4,
-                lessonLabel: "Lesson 04 • Present Perfect",
                 context: {
-                    ru: "Пациент кашляет уже 5 дней (симптом начался в прошлом и продолжается прямо сейчас на приеме):",
-                    kz: "Науқас 5 күннен бері жөтеліп жүр (бұрын басталып, әлі де жалғасуда):"
+                    ru: "Урок 4 (Future: will vs be going to): Врач уже осмотрел пациента и сообщает свое готовое намерение/план: «Я собираюсь назначить препарат для снижения давления».",
+                    kz: "4-сабақ (Future: will vs be going to): Дәрігер науқасты қарап шықты және нақты жоспарын айтады: «Мен қан қысымын түсіретін дәрі тағайындағалы тұрмын»."
                 },
-                prompt: "Doctor: «How long ___ this cough?» — Patient: «For about five days now.»",
-                opts: [
-                    "A) did you have",
-                    "B) have you had",
-                    "C) do you have"
-                ],
-                ans: 1, // B
-                exp: {
-                    ru: "Когда симптом начался в прошлом и все еще сохраняется в настоящий момент, вопрос «Как долго у вас...?» всегда задается в Present Perfect: 'How long have you had...?'.",
-                    kz: "Симптом өткенде басталып, қазір де жалғасып тұрса, 'How long have you had...?' (Present Perfect) қолданылады."
-                }
-            },
-            {
-                lessonId: 4,
-                lessonLabel: "Lesson 04 • Present Perfect",
-                context: {
-                    ru: "Вопрос об опыте госпитализаций и операций за всю жизнь пациента (Past Medical History):",
-                    kz: "Науқастың өмір бойында ота немесе ауруханаға жату жағдайларын сұрау:"
+                prompt: "Based on your examination, I ___ prescribe a medication to lower your blood pressure.",
+                opts: {
+                    ru: ["A) am going to", "B) going to", "C) will to"],
+                    kz: ["A) am going to", "B) going to", "C) will to"]
                 },
-                prompt: "___ hospitalized or had any major surgeries in the past?",
-                opts: [
-                    "A) Have you ever been",
-                    "B) Did you ever been",
-                    "C) Were you ever be"
-                ],
                 ans: 0, // A
                 exp: {
-                    ru: "Для выяснения жизненного опыта до сегодняшнего дня ('когда-либо в жизни') используется Present Perfect: 'Have you ever been hospitalized?'.",
-                    kz: "Өмірлік тәжірибені ('бұрын-соңды') сұрағанда Present Perfect қолданылады: 'Have you ever been hospitalized?'."
+                    ru: "Конструкция 'be going to' («собираюсь сделать по плану») обязательно требует глагола to be (am/is/are): 'I am going to prescribe...'.",
+                    kz: "Жоспарланған іс-әрекет үшін 'be going to' құрылымы міндетті түрде to be (am/is/are) етістігімен қолданылады: 'I am going to prescribe...'."
                 }
             },
             {
+                num: 11,
                 lessonId: 4,
-                lessonLabel: "Lesson 04 • Present Perfect",
                 context: {
-                    ru: "Описание динамики лечения к текущему моменту (посевы мокроты уже стали отрицательными):",
-                    kz: "Қазіргі сәтке дейінгі ем динамикасы (қақырық нәтижесі теріс болды):"
+                    ru: "Урок 4 (Future: will vs be going to): Врач дает обещание и объясняет дальнейший прогноз: «Мы будем контролировать ваш сахар, и это лечение поможет снять симптомы».",
+                    kz: "4-сабақ (Future: will vs be going to): Дәрігер науқасқа уәде беріп, болжам жасайды: «Біз қант деңгейін бақылаймыз, және бұл ем симптомдарды басуға көмектеседі»."
                 },
-                prompt: "Since starting second-line therapy, the patient's symptoms ___ significantly.",
-                opts: [
-                    "A) improved yesterday",
-                    "B) has improved",
-                    "C) have improved"
-                ],
+                prompt: "We ___ monitor your blood sugar regularly, and this treatment ___ help relieve your symptoms.",
+                opts: {
+                    ru: ["A) are going ... is", "B) will ... will", "C) will to ... wills"],
+                    kz: ["A) are going ... is", "B) will ... will", "C) will to ... wills"]
+                },
+                ans: 1, // B
+                exp: {
+                    ru: "Для обещаний и прогнозов на будущее используется Future Simple: will + начальная форма глагола без частицы to ('we will monitor', 'it will help').",
+                    kz: "Болашаққа болжам мен уәде беру үшін Future Simple қолданылады: will + етістіктің бастапқы формасы ('we will monitor', 'it will help')."
+                }
+            },
+            {
+                num: 12,
+                lessonId: 4,
+                context: {
+                    ru: "Урок 4 (Future: will vs be going to): Вопрос пациента и отрицательный ответ в Future Simple: «Понадобятся ли мне антибиотики? — Нет, антибиотики вам не понадобятся».",
+                    kz: "4-сабақ (Future: will vs be going to): Future Simple-дегі сұрақ пен болымсыз жауап: «Маған антибиотиктер қажет бола ма? — Жоқ, сізге антибиотиктер қажет болмайды»."
+                },
+                prompt: "Patient: «___ I need antibiotics?» — Doctor: «No, you ___ need antibiotics because it is a viral infection.»",
+                opts: {
+                    ru: ["A) Do ... don't will", "B) Are ... aren't going", "C) Will ... won't (will not)"],
+                    kz: ["A) Do ... don't will", "B) Are ... aren't going", "C) Will ... won't (will not)"]
+                },
                 ans: 2, // C
                 exp: {
-                    ru: "Предлог 'Since' (с момента начала терапии и до сих пор) — главный маркер Present Perfect. Так как 'symptoms' во множественном числе (they), выбираем 'have improved'.",
-                    kz: "'Since' (бастап осы уақытқа дейін) — Present Perfect маркері. 'Symptoms' көпше түрде болғандықтан: 'have improved'."
+                    ru: "Вопрос в Future Simple начинается с Will ('Will I need...?'), а отрицание строится с помощью will not / won't ('you won't need').",
+                    kz: "Future Simple сұрағы Will сөзінен басталады ('Will I need...?'), ал болымсыз түрі — will not / won't ('you won't need')."
                 }
             }
         ];
 
         // =========================================================================
-        // 3. ЛОГИКА ПРОХОЖДЕНИЯ ДЗ И ПОДСЧЕТА СТАТИСТИКИ ПО УРОКАМ 1–4
+        // 3. ЛОГИКА ТЕСТА (ЗАЩИТА ОТ ДВОЙНОГО НАЖАТИЯ И ПЕРЕСЧЕТА >100%)
         // =========================================================================
         const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
         const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
@@ -1007,19 +1038,89 @@
 
         let currentLang = localStorage.getItem('selected_lang') || 'ru';
         let currentQIndex = 0;
-        let correctCount = 0;
-        let wrongCount = 0;
+        let userAnswers = new Array(QUESTIONS.length).fill(null); // Строго 1 ответ на каждый из 12 вопросов
         let startTimeMs = 0;
         let studentName = "";
-        let userMistakes = [];
-        let perLessonStats = {
-            1: { ok: 0, total: 3 },
-            2: { ok: 0, total: 3 },
-            3: { ok: 0, total: 3 },
-            4: { ok: 0, total: 3 }
+
+        const UI_TEXT = {
+            backBtn: { ru: "⬅️ К урокам", kz: "⬅️ Сабақтарға" },
+            headerTitle: { ru: "Домашнее задание: Уроки 1–4", kz: "Үй тапсырмасы: 1–4 сабақтар" },
+            headerSub: { ru: "Проверка базовой грамматики • 12 заданий", kz: "Базалық грамматиканы тексеру • 12 тапсырма" },
+            introTitle: { ru: "Домашняя работа по Урокам 1–4 (12 вопросов)", kz: "1–4 сабақтар бойынша үй жұмысы (12 сұрақ)" },
+            introDesc: {
+                ru: "В каждом уроке по 3 практических задания. После ответа на все 12 вопросов откроется итоговая таблица с вашими ответами по номерам — сделайте её скриншот и отправьте преподавателю.",
+                kz: "Әр сабақ бойынша 3 практикалық тапсырма берілген. Барлық 12 сұраққа жауап берген соң, сұрақ нөмірлері бойынша қорытынды кесте ашылады — оны скриншот жасап, оқытушыға жіберіңіз."
+            },
+            nameLabel: {
+                ru: "2. Ваше Имя (будет видно на скриншоте):",
+                kz: "2. Сіздің атыңыз (скриншотта көрінеді):"
+            },
+            namePlaceholder: {
+                ru: "Например: Айгерим / Аскар",
+                kz: "Мысалы: Әйгерім / Асқар"
+            },
+            startBtn: {
+                ru: "🚀 Начать выполнение ДЗ (12 вопросов)",
+                kz: "🚀 Үй тапсырмасын бастау (12 сұрақ)"
+            },
+            screenshotBanner: {
+                ru: "📸 Сделайте скриншот карточки ниже и покажите преподавателю",
+                kz: "📸 Төмендегі карточканы скриншот жасап, оқытушыға көрсетіңіз"
+            },
+            reportHeaderSub: {
+                ru: "ДЗ: Уроки 1–4 • @doctors.speak",
+                kz: "ҮЖ: 1–4 сабақтар • @doctors.speak"
+            },
+            correctLbl: {
+                ru: "✅ Правильных",
+                kz: "✅ Дұрыс жауап"
+            },
+            wrongLbl: {
+                ru: "❌ Неправильных",
+                kz: "❌ Қате жауап"
+            },
+            breakdownTitle: {
+                ru: "Ответы по темам и номерам вопросов (1–12):",
+                kz: "Тақырыптар мен сұрақ нөмірлері бойынша (1–12):"
+            },
+            mistakesTitle: {
+                ru: "🔍 Разбор допущенных ошибок:",
+                kz: "🔍 Жіберілген қателерді талдау:"
+            },
+            retryBtn: {
+                ru: "🔄 Пройти домашнее задание заново",
+                kz: "🔄 Үй тапсырмасын қайта орындау"
+            }
         };
 
-        // Подтягиваем имя ученика из Supabase, если он вошел в аккаунт
+        // Выбор языка на стартовом экране (до начала теста)
+        function selectStartLang(lang) {
+            currentLang = lang;
+            localStorage.setItem('selected_lang', lang);
+
+            document.getElementById('langCardKz').classList.toggle('selected', lang === 'kz');
+            document.getElementById('langCardRu').classList.toggle('selected', lang === 'ru');
+
+            document.getElementById('uiBackBtn').textContent = UI_TEXT.backBtn[lang];
+            document.getElementById('uiHeaderTitle').textContent = UI_TEXT.headerTitle[lang];
+            document.getElementById('uiHeaderSub').textContent = UI_TEXT.headerSub[lang];
+            document.getElementById('uiIntroTitle').textContent = UI_TEXT.introTitle[lang];
+            document.getElementById('uiIntroDesc').textContent = UI_TEXT.introDesc[lang];
+            document.getElementById('uiNameLabel').textContent = UI_TEXT.nameLabel[lang];
+            document.getElementById('studentNameInput').placeholder = UI_TEXT.namePlaceholder[lang];
+            document.getElementById('uiStartBtn').textContent = UI_TEXT.startBtn[lang];
+
+            // Отрисовка 4 плашек тем на выбранном языке
+            const grid = document.getElementById('uiTopicsGrid');
+            grid.innerHTML = '';
+            LESSONS_META.forEach(les => {
+                const div = document.createElement('div');
+                div.className = 'topic-pill';
+                div.innerHTML = `<span>${les.shortTag}</span>${les.title[lang]}`;
+                grid.appendChild(div);
+            });
+        }
+
         async function prefillStudentName() {
             const savedName = localStorage.getItem('ds_hw_student_name');
             if (savedName) {
@@ -1046,21 +1147,13 @@
 
         function startHomework() {
             const nameVal = document.getElementById('studentNameInput').value.trim();
-            studentName = nameVal || (currentLang === 'kz' ? "Дәрігер (Аты көрсетілмеген)" : "Врач (Без имени)");
+            studentName = nameVal || (currentLang === 'kz' ? "Дәрігер" : "Врач");
             if (nameVal) {
                 localStorage.setItem('ds_hw_student_name', nameVal);
             }
 
             currentQIndex = 0;
-            correctCount = 0;
-            wrongCount = 0;
-            userMistakes = [];
-            perLessonStats = {
-                1: { ok: 0, total: 3 },
-                2: { ok: 0, total: 3 },
-                3: { ok: 0, total: 3 },
-                4: { ok: 0, total: 3 }
-            };
+            userAnswers = new Array(QUESTIONS.length).fill(null);
             startTimeMs = Date.now();
 
             playSound(sfxStart);
@@ -1072,28 +1165,41 @@
             renderCurrentQuestion();
         }
 
+        function getTotals() {
+            let ok = 0;
+            let err = 0;
+            userAnswers.forEach((chosen, idx) => {
+                if (chosen === null) return;
+                if (chosen === QUESTIONS[idx].ans) ok++;
+                else err++;
+            });
+            return { ok, err };
+        }
+
         function renderCurrentQuestion() {
             const q = QUESTIONS[currentQIndex];
             const total = QUESTIONS.length;
             const isKz = (currentLang === 'kz');
+            const lessonObj = LESSONS_META.find(l => l.id === q.lessonId);
+            const totals = getTotals();
 
             document.getElementById('qCounterText').textContent = isKz
-                ? `Сұрақ ${currentQIndex + 1} / ${total}`
-                : `Вопрос ${currentQIndex + 1} из ${total}`;
-            document.getElementById('liveOkPill').textContent = `✅ ${correctCount}`;
-            document.getElementById('liveErrPill').textContent = `❌ ${wrongCount}`;
+                ? `Сұрақ №${q.num} / ${total}`
+                : `Вопрос №${q.num} из ${total}`;
+            document.getElementById('liveOkPill').textContent = `✅ ${totals.ok}`;
+            document.getElementById('liveErrPill').textContent = `❌ ${totals.err}`;
 
             const pct = Math.round((currentQIndex / total) * 100);
             document.getElementById('quizProgressFill').style.width = `${pct}%`;
 
-            document.getElementById('qLessonTag').textContent = q.lessonLabel;
+            document.getElementById('qLessonTag').textContent = lessonObj ? lessonObj.title[currentLang] : `Lesson ${q.lessonId}`;
             document.getElementById('qContextText').textContent = q.context[currentLang];
             document.getElementById('qPromptText').textContent = q.prompt;
 
             const optsContainer = document.getElementById('qOptionsList');
             optsContainer.innerHTML = '';
 
-            q.opts.forEach((optStr, idx) => {
+            q.opts[currentLang].forEach((optStr, idx) => {
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.className = 'opt-btn';
@@ -1107,43 +1213,40 @@
         }
 
         function handleAnswerClick(selectedBtn, chosenIdx) {
-            const q = QUESTIONS[currentQIndex];
-            const isCorrect = (chosenIdx === q.ans);
-            const allBtns = document.querySelectorAll('.opt-btn');
+            // Защита от повторного нажатия на тот же вопрос
+            if (userAnswers[currentQIndex] !== null) return;
 
+            const q = QUESTIONS[currentQIndex];
+            userAnswers[currentQIndex] = chosenIdx;
+            const isCorrect = (chosenIdx === q.ans);
+
+            const allBtns = document.querySelectorAll('.opt-btn');
             allBtns.forEach(b => b.disabled = true);
 
             if (isCorrect) {
                 selectedBtn.classList.add('correct');
-                correctCount++;
-                perLessonStats[q.lessonId].ok++;
                 playSound(sfxOk);
             } else {
                 selectedBtn.classList.add('wrong');
                 allBtns[q.ans].classList.add('correct');
-                wrongCount++;
                 playSound(sfxErr);
-
-                userMistakes.push({
-                    qNum: currentQIndex + 1,
-                    lessonId: q.lessonId,
-                    prompt: q.prompt,
-                    chosen: q.opts[chosenIdx],
-                    correct: q.opts[q.ans]
-                });
             }
 
-            document.getElementById('liveOkPill').textContent = `✅ ${correctCount}`;
-            document.getElementById('liveErrPill').textContent = `❌ ${wrongCount}`;
+            const totals = getTotals();
+            document.getElementById('liveOkPill').textContent = `✅ ${totals.ok}`;
+            document.getElementById('liveErrPill').textContent = `❌ ${totals.err}`;
 
             const expBox = document.getElementById('qExplanationBox');
-            expBox.innerHTML = `💡 <b>${isCorrect ? (currentLang === 'kz' ? 'Дұрыс!' : 'Верно!') : (currentLang === 'kz' ? 'Қате!' : 'Ошибка!')}</b> ${q.exp[currentLang]}`;
+            const statusWord = isCorrect
+                ? (currentLang === 'kz' ? 'Дұрыс!' : 'Верно!')
+                : (currentLang === 'kz' ? 'Қате!' : 'Ошибка!');
+            expBox.innerHTML = `💡 <b>${statusWord}</b> ${q.exp[currentLang]}`;
             expBox.style.display = 'block';
 
             const nextBtn = document.getElementById('nextQuestionBtn');
             const isLast = (currentQIndex === QUESTIONS.length - 1);
             nextBtn.textContent = isLast
-                ? (currentLang === 'kz' ? '📊 Нәтижені көру ➔' : '📊 Показать итоговый отчет ➔')
+                ? (currentLang === 'kz' ? '📊 Нәтижеге өту ➔' : '📊 Показать результат для скриншота ➔')
                 : (currentLang === 'kz' ? 'Келесі сұрақ ➔' : 'Следующий вопрос ➔');
             nextBtn.style.display = 'block';
         }
@@ -1158,91 +1261,96 @@
             }
         }
 
-        // Формирование экрана отчета для преподавателя
+        // Формирование экрана результатов (строго на выбранном языке и с сеткой по номерам вопросов 1–12)
         function showFinalReport() {
             document.getElementById('quizScreen').style.display = 'none';
             document.getElementById('resultScreen').style.display = 'flex';
+            document.getElementById('quizProgressFill').style.width = '100%';
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
+            const isKz = (currentLang === 'kz');
+            const totals = getTotals();
             const total = QUESTIONS.length;
-            const pct = Math.round((correctCount / total) * 100);
+            const pct = Math.min(100, Math.round((totals.ok / total) * 100));
+
             const elapsedSec = Math.max(1, Math.round((Date.now() - startTimeMs) / 1000));
             const mins = Math.floor(elapsedSec / 60);
             const secs = elapsedSec % 60;
-            const timeStr = `${mins} мин ${secs} сек`;
+            const timeStr = isKz ? `${mins} мин ${secs} сек` : `${mins} мин ${secs} сек`;
             const dateStr = new Date().toLocaleDateString('ru-RU');
 
+            document.getElementById('uiScreenshotBanner').textContent = UI_TEXT.screenshotBanner[currentLang];
+            document.getElementById('uiReportHeaderSub').textContent = UI_TEXT.reportHeaderSub[currentLang];
             document.getElementById('rcStudentName').textContent = `👨‍⚕️ ${studentName}`;
-            document.getElementById('rcMetaInfo').textContent = `Дата: ${dateStr} • Время выполнения: ${timeStr}`;
-            document.getElementById('rcPercentBadge').textContent = `${pct}%`;
-            document.getElementById('rcCorrectCount').textContent = correctCount;
-            document.getElementById('rcWrongCount').textContent = wrongCount;
+            document.getElementById('rcMetaInfo').textContent = isKz
+                ? `Күні: ${dateStr} • Уақыты: ${timeStr} • Тіл: KZ`
+                : `Дата: ${dateStr} • Время: ${timeStr} • Язык: RU`;
+            document.getElementById('rcPercentBadge').textContent = `${totals.ok}/${total} (${pct}%)`;
 
-            // Строки по каждому из 4 уроков
+            document.getElementById('rcCorrectCount').textContent = totals.ok;
+            document.getElementById('rcWrongCount').textContent = totals.err;
+            document.getElementById('uiCorrectLbl').textContent = UI_TEXT.correctLbl[currentLang];
+            document.getElementById('uiWrongLbl').textContent = UI_TEXT.wrongLbl[currentLang];
+            document.getElementById('uiBreakdownTitle').textContent = UI_TEXT.breakdownTitle[currentLang];
+            document.getElementById('uiMistakesTitle').textContent = UI_TEXT.mistakesTitle[currentLang];
+            document.getElementById('uiRetryBtn').textContent = UI_TEXT.retryBtn[currentLang];
+
+            // Отрисовка сетки по каждому уроку и каждому номеру вопроса (№1 – №12)
             const rowsContainer = document.getElementById('rcLessonsRows');
             rowsContainer.innerHTML = '';
 
-            let waBreakdownLines = [];
             LESSONS_META.forEach(les => {
-                const st = perLessonStats[les.id];
-                const errs = st.total - st.ok;
-                const icon = errs === 0 ? "✅" : (errs === 1 ? "⚠️" : "❌");
+                const lessonQuestions = QUESTIONS.map((q, idx) => ({ q, idx })).filter(item => item.q.lessonId === les.id);
+                let lessonOk = 0;
 
-                const row = document.createElement('div');
-                row.className = 'rc-lesson-row';
-                row.innerHTML = `
-                    <span>${icon} ${les.title}</span>
-                    <span style="color:${errs === 0 ? '#34D399' : '#FBBF24'};">${st.ok} из ${st.total} (ошибок: ${errs})</span>
+                let chipsHtml = '';
+                lessonQuestions.forEach(item => {
+                    const isRight = (userAnswers[item.idx] === item.q.ans);
+                    if (isRight) lessonOk++;
+                    const chipClass = isRight ? 'chip-ok' : 'chip-err';
+                    const chipIcon = isRight ? '✅' : '❌';
+                    chipsHtml += `<div class="q-num-chip ${chipClass}">№${item.q.num} ${chipIcon}</div>`;
+                });
+
+                const block = document.createElement('div');
+                block.className = 'rc-lesson-block';
+                block.innerHTML = `
+                    <div class="rc-lesson-top">
+                        <span>${les.title[currentLang]}</span>
+                        <span style="color:${lessonOk === 3 ? '#34D399' : '#FBBF24'};">${lessonOk} / 3</span>
+                    </div>
+                    <div class="q-badges-row">${chipsHtml}</div>
                 `;
-                rowsContainer.appendChild(row);
-                waBreakdownLines.push(`${icon} ${les.title}: ${st.ok}/${st.total} (ошибок: ${errs})`);
+                rowsContainer.appendChild(block);
             });
 
-            // Вывод списка ошибок (если были)
+            // Детальный разбор ошибок под карточкой скриншота
             const mistakesCard = document.getElementById('mistakesCard');
             const mistakesList = document.getElementById('mistakesListContainer');
             mistakesList.innerHTML = '';
 
-            let waMistakesLines = [];
-            if (userMistakes.length > 0) {
+            const wrongItems = QUESTIONS.map((q, idx) => ({ q, idx })).filter(item => userAnswers[item.idx] !== item.q.ans);
+
+            if (wrongItems.length > 0) {
                 mistakesCard.style.display = 'flex';
-                userMistakes.forEach(m => {
+                wrongItems.forEach(item => {
+                    const q = item.q;
+                    const chosenIdx = userAnswers[item.idx];
+                    const chosenText = chosenIdx !== null ? q.opts[currentLang][chosenIdx] : "—";
+                    const correctText = q.opts[currentLang][q.ans];
+
                     const div = document.createElement('div');
                     div.className = 'mr-item';
                     div.innerHTML = `
-                        <b>Вопрос №${m.qNum} (Урок ${m.lessonId}):</b> ${m.prompt}<br>
-                        <span style="color:#B91C1C;">❌ Ваш ответ: ${m.chosen}</span><br>
-                        <span style="color:#065F46; font-weight:700;">✅ Правильно: ${m.correct}</span>
+                        <b>${isKz ? 'Сұрақ' : 'Вопрос'} №${q.num}:</b> ${q.prompt}<br>
+                        <span style="color:#B91C1C;">❌ ${isKz ? 'Сіздің жауабыңыз' : 'Ваш ответ'}: ${chosenText}</span><br>
+                        <span style="color:#065F46; font-weight:700;">✅ ${isKz ? 'Дұрыс жауап' : 'Правильно'}: ${correctText}</span>
                     `;
                     mistakesList.appendChild(div);
-                    waMistakesLines.push(`• Вопрос ${m.qNum} (Урок ${m.lessonId}): выбрано «${m.chosen}» вместо «${m.correct}»`);
                 });
             } else {
                 mistakesCard.style.display = 'none';
             }
-
-            // Формируем готовый текстовый отчет для WhatsApp и буфера обмена
-            const reportText =
-                `📝 *Отчет по ДЗ (Уроки 1–4) — Doctors Speak*\n` +
-                `👤 Ученик: ${studentName}\n` +
-                `📅 Дата: ${dateStr} (${timeStr})\n` +
-                `📊 Итог: *${correctCount} из ${total} (${pct}%)*\n` +
-                `✅ Правильных: ${correctCount} | ❌ Неправильных: ${wrongCount}\n\n` +
-                `*По темам:*\n` +
-                waBreakdownLines.join('\n') +
-                (waMistakesLines.length > 0 ? `\n\n*Ошибки:*\n` + waMistakesLines.join('\n') : `\n\n🎉 Пройдено без единой ошибки!`);
-
-            window.latestHomeworkReportText = reportText;
-            document.getElementById('waReportLink').href = `https://wa.me/77081595038?text=${encodeURIComponent(reportText)}`;
-        }
-
-        function copyTextReport(btnEl) {
-            if (!window.latestHomeworkReportText) return;
-            navigator.clipboard.writeText(window.latestHomeworkReportText).then(() => {
-                const oldText = btnEl.textContent;
-                btnEl.textContent = "✅ Отчет скопирован в буфер обмена!";
-                setTimeout(() => { btnEl.textContent = oldText; }, 2000);
-            });
         }
 
         function restartHomework() {
@@ -1250,32 +1358,8 @@
             document.getElementById('startScreen').style.display = 'block';
         }
 
-        // Переключение языка RU / KZ
-        function setLang(lang) {
-            currentLang = lang;
-            localStorage.setItem('selected_lang', lang);
-            document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
-            document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
-
-            const isKz = (lang === 'kz');
-            document.getElementById('uiBackBtn').textContent = isKz ? "⬅️ Сабақтарға" : "⬅️ К урокам";
-            document.getElementById('uiHeaderTitle').textContent = isKz ? "Үй тапсырмасы: 1–4 сабақтар" : "Домашнее задание: Уроки 1–4";
-            document.getElementById('uiHeaderSub').textContent = isKz ? "Бақылау тексерісі • 12 клиникалық жағдай" : "Контрольная проверка • 12 клинических ситуаций";
-            document.getElementById('uiIntroTitle').textContent = isKz
-                ? "Алғашқы 4 медициналық грамматика сабағын тексеру"
-                : "Проверьте усвоение первых 4 уроков медицинской грамматики";
-            document.getElementById('uiIntroDesc').textContent = isKz
-                ? "Әр сабақ бойынша 3 сұрақтан (барлығы 12 клиникалық тапсырма) орындаңыз. Соңында оқытушыға жіберуге арналған дайын есеп шығады."
-                : "Вам предстоит решить 12 показательных клинических заданий (по 3 на каждый урок). В конце страница сформирует готовый отчет с количеством правильных и неправильных ответов для показа преподавателю.";
-            document.getElementById('uiNameLabel').textContent = isKz ? "Сіздің атыңыз (есеп үшін):" : "Ваше Имя (для отчета преподавателю):";
-            document.getElementById('uiStartBtn').textContent = isKz ? "🚀 Үй тапсырмасын бастау (12 сұрақ)" : "🚀 Начать выполнение ДЗ (12 вопросов)";
-
-            if (document.getElementById('quizScreen').style.display === 'flex') {
-                renderCurrentQuestion();
-            }
-        }
-
-        setLang(currentLang);
+        // Инициализация
+        selectStartLang(currentLang);
         prefillStudentName();
     </script>
 </body>
