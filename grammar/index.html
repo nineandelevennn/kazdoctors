@@ -1167,7 +1167,7 @@
                 <button type="button" class="sp-step-btn" onclick="openDemoLesson8()">
                     <span>2️⃣ Демо-тренажер: Урок №8</span>
                     <span>➔</span>
-                </button>
+                </a>
                 <a href="https://kazdoctors.com/tarifs" class="sp-step-btn gold-cta" id="spMainCta">
                     <span>💎 Открыть все 15 уроков</span>
                     <span>➔</span>
@@ -1936,6 +1936,95 @@
         </details>
 
         <!-- ==================================================================
+             КАТЕГОРИЯ 2.5: ДОМАШНИЕ ЗАДАНИЯ (УРОКИ 1–15)
+             ================================================================== -->
+        <details class="category-box">
+            <summary class="category-summary">
+                <div class="cat-header-left">
+                    <div class="cat-main-icon">📝</div>
+                    <div class="cat-header-text">
+                        <h2>
+                            <span lang-val="ru">Домашние задания</span>
+                            <span lang-val="kz">Үй тапсырмалары</span>
+                            <span class="cat-pill">4 БЛОКА</span>
+                        </h2>
+                        <p lang-val="ru">Контрольные задания по урокам с таблицей результатов для скриншота</p>
+                        <p lang-val="kz">Скриншотқа арналған нәтижелер кестесі бар бақылау тапсырмалары</p>
+                    </div>
+                </div>
+                <div class="cat-chevron">
+                    <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                </div>
+            </summary>
+
+            <div class="category-content">
+                <!-- 1. ДЗ по урокам 1-4 -->
+                <a href="https://kazdoctors.com/grammar/hw14/" class="trainer-card">
+                    <div class="card-content">
+                        <div class="card-icon">1️⃣</div>
+                        <div class="card-text">
+                            <h2>
+                                <span lang-val="ru">Домашнее задание: Уроки 1–4</span>
+                                <span lang-val="kz">Үй тапсырмасы: 1–4 сабақтар</span>
+                            </h2>
+                            <p lang-val="ru">To be & To do • Present Simple & Continuous • Past & Perfect • Future</p>
+                            <p lang-val="kz">To be & To do • Present Simple & Continuous • Past & Perfect • Future</p>
+                        </div>
+                    </div>
+                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                </a>
+
+                <!-- 2. ДЗ по урокам 5-8 -->
+                <a href="https://kazdoctors.com/grammar/hw58/" class="trainer-card">
+                    <div class="card-content">
+                        <div class="card-icon">2️⃣</div>
+                        <div class="card-text">
+                            <h2>
+                                <span lang-val="ru">Домашнее задание: Уроки 5–8</span>
+                                <span lang-val="kz">Үй тапсырмасы: 5–8 сабақтар</span>
+                            </h2>
+                            <p lang-val="ru">Passive Voice • Modal Verbs • Possessives • There is / There are</p>
+                            <p lang-val="kz">Passive Voice • Modal Verbs • Possessives • There is / There are</p>
+                        </div>
+                    </div>
+                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                </a>
+
+                <!-- 3. ДЗ по урокам 9-12 -->
+                <a href="https://kazdoctors.com/grammar/hw912/" class="trainer-card">
+                    <div class="card-content">
+                        <div class="card-icon">3️⃣</div>
+                        <div class="card-text">
+                            <h2>
+                                <span lang-val="ru">Домашнее задание: Уроки 9–12</span>
+                                <span lang-val="kz">Үй тапсырмасы: 9–12 сабақтар</span>
+                            </h2>
+                            <p lang-val="ru">Prepositions of Time • Place & Movement • Conditionals • Comparatives</p>
+                            <p lang-val="kz">Prepositions of Time • Place & Movement • Conditionals • Comparatives</p>
+                        </div>
+                    </div>
+                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                </a>
+
+                <!-- 4. ДЗ по урокам 13-15 -->
+                <a href="https://kazdoctors.com/grammar/hw1315/" class="trainer-card">
+                    <div class="card-content">
+                        <div class="card-icon">4️⃣</div>
+                        <div class="card-text">
+                            <h2>
+                                <span lang-val="ru">Домашнее задание: Уроки 13–15</span>
+                                <span lang-val="kz">Үй тапсырмасы: 13–15 сабақтар</span>
+                            </h2>
+                            <p lang-val="ru">Articles • Relative Clauses • Gerund, Past Participle, Infinitive</p>
+                            <p lang-val="kz">Articles • Relative Clauses • Gerund, Past Participle, Infinitive</p>
+                        </div>
+                    </div>
+                    <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                </a>
+            </div>
+        </details>
+
+        <!-- ==================================================================
              КАТЕГОРИЯ 3 (ВНИЗУ): ИТОГОВЫЙ ЭКЗАМЕН ПО ВИДЕОКУРСУ
              ================================================================== -->
         <details class="category-box cat-exam">
@@ -2231,7 +2320,7 @@
 
             if (tier === 'premium' || tier === 'vip') {
                 stickyBar.style.display = 'none';
-                badgeEl.textContent = isKz ? "✅ ТОЛЫҚ ДОСТУП БЕЛСЕНДІ" : "✅ ПОЛНЫЙ ДОСТУП АКТИВЕН";
+                badgeEl.textContent = isKz ? "✅ ТОЛЫҚ ДОСТУП" : "✅ ПОЛНЫЙ ДОСТУП";
                 titleEl.textContent = isKz
                     ? "Сізде барлық 15 видеосабақ, конспектілер және тренажерлер ашық!"
                     : "Вам открыты все 15 видеоуроков, интерактивные конспекты и тренажеры!";
