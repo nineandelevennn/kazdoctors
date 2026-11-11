@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctors Speak — Домашнее задание (Уроки 9–12)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Подключение Supabase SDK (для автоподстановки имени ученика) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root {
+            --kz-blue: #00A1DE;
+            --kz-blue-dark: #0077A3;
+            --kz-blue-light: #EBF8FC;
+            --kz-gold: #FFC72C;
+            --kz-gold-dark: #D9A000;
+            --kz-gold-light: #FFFBEB;
+            --bg-main: #F0F6FA;
+            --card-bg: #FFFFFF;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+            --border-color: #DBE5F0;
+            --green-accent: #10B981;
+            --green-light: #DCFCE7;
+            --green-dark: #065F46;
+            --red-accent: #EF4444;
+            --red-light: #FEE2E2;
+            --red-dark: #991B1B;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            background: radial-gradient(circle at top, #EBF8FC 0%, var(--bg-main) 65%);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding-bottom: 30px;
+        }
+
+        /* 1. Шапка страницы */
+        header {
+            background: linear-gradient(150deg, #0082B8 0%, var(--kz-blue) 55%, #22B8CF 90%, var(--kz-gold) 135%);
+            color: #FFFFFF;
+            text-align: center;
+            padding: 16px 16px 20px 16px;
+            box-shadow: 0 8px 24px rgba(0, 161, 222, 0.2);
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+        }
+
+        .header-top-bar {
+            width: 100%;
+            max-width: 540px;
+            margin: 0 auto 8px auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.75rem;
+            padding: 6px 13px;
+            border-radius: 18px;
+        }
+
+        .brand-pill {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            background: rgba(0, 0, 0, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            padding: 5px 12px;
+            border-radius: 18px;
+        }
+
+        h1 {
+            font-size: 1.22rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #FFFFFF;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .subtitle {
+            font-size: 0.74rem;
+            margin-top: 4px;
+            font-weight: 800;
+            color: var(--kz-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* 2. Основной контейнер */
+        main {
+            width: 100%;
+            max-width: 540px;
+            margin: 0 auto;
+            padding: 16px 14px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            padding: 20px 18px;
+            box-shadow: 0 6px 20px rgba(0, 119, 163, 0.06);
+        }
+
+        /* Выбор языка на стартовом экране */
+        .step-label {
+            font-size: 0.74rem;
+            font-weight: 800;
+            color: var(--kz-blue-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .lang-choice-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .lang-choice-card {
+            border: 2px solid var(--border-color);
+            background: #F8FAFC;
+            border-radius: 14px;
+            padding: 12px 10px;
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.18s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .lang-choice-card span {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .lang-choice-card.selected {
+            border-color: var(--kz-blue);
+            background: var(--kz-blue-light);
+            color: var(--kz-blue-dark);
+            box-shadow: 0 4px 12px rgba(0, 161, 222, 0.15);
+        }
+
+        .lang-choice-card.selected span {
+            color: var(--kz-blue-dark);
+        }
+
+        .intro-title {
+            font-size: 1.05rem;
+            font-weight: 900;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+
+        .intro-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+            font-weight: 500;
+            margin-bottom: 14px;
+        }
+
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .topic-pill {
+            background: #F8FAFC;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--kz-blue);
+            border-radius: 11px;
+            padding: 9px 10px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .topic-pill span {
+            display: block;
+            font-size: 0.64rem;
+            color: var(--kz-blue-dark);
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .name-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1.5px solid var(--border-color);
+            background: #F8FAFC;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            outline: none;
+        }
+
+        .name-input:focus {
+            border-color: var(--kz-blue);
+            background: #FFFFFF;
+        }
+
+        .primary-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--kz-gold) 0%, #FFD55A 100%);
+            color: var(--text-dark);
+            border: 1px solid var(--kz-gold-dark);
+            padding: 14px 18px;
+            border-radius: 16px;
+            font-size: 0.88rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(217, 160, 0, 0.24);
+            transition: transform 0.15s ease;
+        }
+
+        .primary-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Экран прохождения вопросов */
+        #quizScreen {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .quiz-top-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .q-counter {
+            font-size: 0.78rem;
+            font-weight: 900;
+            color: var(--kz-blue-dark);
+            background: var(--kz-blue-light);
+            padding: 4px 11px;
+            border-radius: 10px;
+        }
+
+        .live-score-pills {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .score-pill {
+            font-size: 0.74rem;
+            font-weight: 800;
+            padding: 4px 9px;
+            border-radius: 10px;
+        }
+
+        .score-pill.ok {
+            background: var(--green-light);
+            color: var(--green-dark);
+        }
+
+        .score-pill.err {
+            background: var(--red-light);
+            color: var(--red-dark);
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 8px;
+            background: #E2E8F0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--kz-blue) 0%, var(--green-accent) 100%);
+            transition: width 0.3s ease;
+        }
+
+        .lesson-tag {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: #B45309;
+            background: var(--kz-gold-light);
+            border: 1px solid rgba(217, 160, 0, 0.35);
+            padding: 3px 9px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .question-context {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        .question-prompt {
+            font-size: 0.96rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1.42;
+            margin-bottom: 14px;
+            background: #F8FAFC;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border-left: 4px solid var(--kz-blue);
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .opt-btn {
+            width: 100%;
+            background: #FFFFFF;
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.16s ease;
+            line-height: 1.35;
+        }
+
+        .opt-btn:hover:not(:disabled) {
+            background: var(--kz-blue-light);
+            border-color: var(--kz-blue);
+        }
+
+        .opt-btn.correct {
+            background: var(--green-light) !important;
+            border-color: var(--green-accent) !important;
+            color: var(--green-dark) !important;
+        }
+
+        .opt-btn.wrong {
+            background: var(--red-light) !important;
+            border-color: var(--red-accent) !important;
+            color: var(--red-dark) !important;
+        }
+
+        .explanation-box {
+            display: none;
+            margin-top: 12px;
+            padding: 11px 13px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            line-height: 1.45;
+            background: var(--kz-blue-light);
+            color: var(--kz-blue-dark);
+            border: 1px solid rgba(0, 161, 222, 0.25);
+        }
+
+        .next-q-btn {
+            display: none;
+            margin-top: 14px;
+            width: 100%;
+            background: var(--kz-blue);
+            color: #FFFFFF;
+            border: none;
+            padding: 13px;
+            border-radius: 14px;
+            font-size: 0.86rem;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        /* ==========================================================================
+           3. ЭКРАН РЕЗУЛЬТАТОВ ДЛЯ СКРИНШОТА (КОМПАКТНЫЙ И НАГЛЯДНЫЙ)
+           ========================================================================== */
+        #resultScreen {
+            display: none;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .screenshot-hint-banner {
+            background: var(--kz-gold-light);
+            border: 1.5px dashed var(--kz-gold-dark);
+            color: #92400E;
+            padding: 10px 12px;
+            border-radius: 14px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .report-card {
+            background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+            color: #FFFFFF;
+            border-radius: 22px;
+            padding: 18px 16px;
+            border: 2px solid var(--kz-gold);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.22);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .rc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+            padding-bottom: 10px;
+        }
+
+        .rc-student-name {
+            font-size: 1rem;
+            font-weight: 900;
+            color: var(--kz-gold);
+            line-height: 1.2;
+        }
+
+        .rc-meta {
+            font-size: 0.7rem;
+            color: #CBD5E1;
+            font-weight: 600;
+            margin-top: 3px;
+        }
+
+        .rc-percent-badge {
+            background: rgba(255, 199, 44, 0.2);
+            border: 1.5px solid var(--kz-gold);
+            color: var(--kz-gold);
+            font-size: 1.15rem;
+            font-weight: 900;
+            padding: 6px 12px;
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        /* Счетчики Правильных и Неправильных */
+        .rc-totals-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .rc-stat-box {
+            border-radius: 12px;
+            padding: 9px 10px;
+            text-align: center;
+        }
+
+        .rc-stat-box.correct-box {
+            background: rgba(16, 185, 129, 0.18);
+            border: 1px solid #34D399;
+        }
+
+        .rc-stat-box.wrong-box {
+            background: rgba(239, 68, 68, 0.18);
+            border: 1px solid #F87171;
+        }
+
+        .rc-stat-num {
+            font-size: 1.4rem;
+            font-weight: 900;
+            line-height: 1.1;
+        }
+
+        .correct-box .rc-stat-num { color: #34D399; }
+        .wrong-box .rc-stat-num { color: #F87171; }
+
+        .rc-stat-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #E2E8F0;
+            margin-top: 2px;
+        }
+
+        /* Таблица результатов по урокам и номерам вопросов (1–12) */
+        .rc-lessons-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 11px 12px;
+            border-radius: 14px;
+        }
+
+        .rc-lb-title {
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #94A3B8;
+            letter-spacing: 0.4px;
+            margin-bottom: 2px;
+        }
+
+        .rc-lesson-block {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 7px 9px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .rc-lesson-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #F8FAFC;
+        }
+
+        .q-badges-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+
+        .q-num-chip {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 4px 6px;
+            border-radius: 7px;
+            font-size: 0.72rem;
+            font-weight: 800;
+        }
+
+        .q-num-chip.chip-ok {
+            background: rgba(16, 185, 129, 0.25);
+            border: 1px solid #34D399;
+            color: #A7F3D0;
+        }
+
+        .q-num-chip.chip-err {
+            background: rgba(239, 68, 68, 0.28);
+            border: 1px solid #F87171;
+            color: #FECACA;
+        }
+
+        /* Детальный список ошибок под карточкой */
+        .mistakes-review-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .mr-item {
+            background: #FEF2F2;
+            border-left: 4px solid var(--red-accent);
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 0.78rem;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 480px) {
+            .topics-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 1.12rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-top-bar">
+            <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅️ К урокам</a>
+            <span class="brand-pill">@doctors.speak</span>
+        </div>
+        <h1 id="uiHeaderTitle">Домашнее задание: Уроки 9–12</h1>
+        <p class="subtitle" id="uiHeaderSub">Клиническая грамматика • 12 заданий</p>
+    </header>
+
+    <main>
+        <!-- ==================== ЭКРАН 1: ВЫБОР ЯЗЫКА И СТАРТ ДЗ ==================== -->
+        <section class="card" id="startScreen">
+            <span class="step-label" id="uiLangStepLabel">1. Выберите язык выполнения задания / Тапсырма тілін таңдаңыз:</span>
+            <div class="lang-choice-grid">
+                <button type="button" class="lang-choice-card" id="langCardKz" onclick="selectStartLang('kz')">
+                    <div>🇰🇿 Қазақша</div>
+                    <span>Сұрақтар мен нәтиже қазақ тілінде</span>
+                </button>
+                <button type="button" class="lang-choice-card selected" id="langCardRu" onclick="selectStartLang('ru')">
+                    <div>🇷🇺 Русский</div>
+                    <span>Вопросы и отчет на русском языке</span>
+                </button>
+            </div>
+
+            <h2 class="intro-title" id="uiIntroTitle">Домашняя работа по Урокам 9–12 (12 вопросов)</h2>
+            <p class="intro-desc" id="uiIntroDesc">
+                В каждом уроке по 3 практических задания. После ответа на все 12 вопросов откроется итоговая таблица с вашими ответами по номерам — сделайте её скриншот и покажите преподавателю.
+            </p>
+
+            <div class="topics-grid" id="uiTopicsGrid"></div>
+
+            <div class="name-input-group">
+                <label class="step-label" for="studentNameInput" id="uiNameLabel" style="margin-bottom:2px;">2. Ваше Имя (будет видно на скриншоте):</label>
+                <input type="text" id="studentNameInput" class="name-input" placeholder="your name...">
+            </div>
+
+            <button type="button" class="primary-btn" onclick="startHomework()" id="uiStartBtn">
+                🚀 Начать выполнение ДЗ (12 вопросов)
+            </button>
+        </section>
+
+        <!-- ==================== ЭКРАН 2: ПРОХОЖДЕНИЕ ВОПРОСОВ ==================== -->
+        <section class="card" id="quizScreen">
+            <div class="quiz-top-meta">
+                <span class="q-counter" id="qCounterText">Вопрос 1 из 12</span>
+                <div class="live-score-pills">
+                    <span class="score-pill ok" id="liveOkPill">✅ 0</span>
+                    <span class="score-pill err" id="liveErrPill">❌ 0</span>
+                </div>
+            </div>
+
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="quizProgressFill"></div>
+            </div>
+
+            <div>
+                <span class="lesson-tag" id="qLessonTag">Урок 9</span>
+                <div class="question-context" id="qContextText"></div>
+                <div class="question-prompt" id="qPromptText"></div>
+                <div class="options-list" id="qOptionsList"></div>
+                <div class="explanation-box" id="qExplanationBox"></div>
+                <button type="button" class="next-q-btn" id="nextQuestionBtn" onclick="goToNextQuestion()">
+                    Далее ➔
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== ЭКРАН 3: ИТОГОВЫЙ ОТЧЕТ ДЛЯ СКРИНШОТА ==================== -->
+        <section id="resultScreen">
+            <div class="screenshot-hint-banner" id="uiScreenshotBanner">
+                📸 Сделайте скриншот карточки ниже и покажите преподавателю
+            </div>
+
+            <div class="report-card" id="teacherReportCard">
+                <div class="rc-header">
+                    <div>
+                        <div style="font-size:0.66rem; text-transform:uppercase; color:#94A3B8; font-weight:800;" id="uiReportHeaderSub">ДЗ: Уроки 9–12 • @doctors.speak</div>
+                        <div class="rc-student-name" id="rcStudentName">Doctor</div>
+                        <div class="rc-meta" id="rcMetaInfo">Дата: -- • Время: --</div>
+                    </div>
+                    <div class="rc-percent-badge" id="rcPercentBadge">0%</div>
+                </div>
+
+                <!-- Блок Правильных / Неправильных ответов -->
+                <div class="rc-totals-grid">
+                    <div class="rc-stat-box correct-box">
+                        <div class="rc-stat-num" id="rcCorrectCount">0</div>
+                        <div class="rc-stat-label" id="uiCorrectLbl">✅ Правильных</div>
+                    </div>
+                    <div class="rc-stat-box wrong-box">
+                        <div class="rc-stat-num" id="rcWrongCount">0</div>
+                        <div class="rc-stat-label" id="uiWrongLbl">❌ Неправильных</div>
+                    </div>
+                </div>
+
+                <!-- Детализация по каждому уроку и каждому номеру вопроса (№1 – №12) -->
+                <div class="rc-lessons-breakdown">
+                    <div class="rc-lb-title" id="uiBreakdownTitle">Ответы по темам и номерам вопросов (1–12):</div>
+                    <div id="rcLessonsRows" style="display:flex; flex-direction:column; gap:7px;"></div>
+                </div>
+            </div>
+
+            <!-- Подробный разбор ошибок под карточкой скриншота (если есть ошибки) -->
+            <div class="mistakes-review-card" id="mistakesCard" style="display:none;">
+                <h3 style="font-size:0.88rem; font-weight:900;" id="uiMistakesTitle">🔍 Разбор допущенных ошибок:</h3>
+                <div id="mistakesListContainer" style="display:flex; flex-direction:column; gap:8px;"></div>
+            </div>
+
+            <button type="button" class="primary-btn" onclick="restartHomework()" id="uiRetryBtn">
+                🔄 Пройти домашнее задание заново
+            </button>
+        </section>
+    </main>
+
+    <script>
+        // =========================================================================
+        // 1. ЗВУКОВЫЕ ЭФФЕКТЫ САЙТА
+        // =========================================================================
+        const sfxStart = new Audio('/start.mp3');
+        const sfxOk = new Audio('/ok.mp3');
+        const sfxErr = new Audio('/error.mp3');
+
+        function playSound(audioObj) {
+            try {
+                audioObj.currentTime = 0;
+                audioObj.play().catch(() => {});
+            } catch (e) {}
+        }
+
+        // =========================================================================
+        // 2. ТЕМЫ УРОКОВ 9–12 И 12 КЛИНИЧЕСКИХ ЗАДАНИЙ (НА RU И KZ)
+        // =========================================================================
+        const LESSONS_META = [
+            {
+                id: 9,
+                shortTag: "Lesson 09",
+                title: {
+                    ru: "Урок 9: Prepositions of Time (Предлоги времени)",
+                    kz: "9-сабақ: Prepositions of Time (Уақыт предлогтары)"
+                }
+            },
+            {
+                id: 10,
+                shortTag: "Lesson 10",
+                title: {
+                    ru: "Урок 10: Prepositions of Place & Movement",
+                    kz: "10-сабақ: Prepositions of Place & Movement"
+                }
+            },
+            {
+                id: 11,
+                shortTag: "Lesson 11",
+                title: {
+                    ru: "Урок 11: Conditionals (Условные предложения)",
+                    kz: "11-сабақ: Conditionals (Шартты сөйлемдер)"
+                }
+            },
+            {
+                id: 12,
+                shortTag: "Lesson 12",
+                title: {
+                    ru: "Урок 12: Comparatives & Superlatives (Сравнения)",
+                    kz: "12-сабақ: Comparatives & Superlatives (Шырайлар)"
+                }
+            }
+        ];
+
+        const QUESTIONS = [
+            // ================= УРОК 9: PREPOSITIONS OF TIME (Вопросы 1–3) =================
+            {
+                num: 1,
+                lessonId: 9,
+                context: {
+                    ru: "Урок 9 (Prepositions of Time): «Головные боли обычно начинаются утром, а мочеиспускание учащается ночью».",
+                    kz: "9-сабақ (Prepositions of Time): «Бас ауруы әдетте таңертең басталады, ал кіші дәретке бару түнде жиілейді»."
+                },
+                prompt: "The headaches usually start ___ the morning, and urination is more frequent ___ night.",
+                opts: {
+                    ru: ["A) on ... in", "B) in ... at", "C) at ... on"],
+                    kz: ["A) on ... in", "B) in ... at", "C) at ... on"]
+                },
+                ans: 1, // B
+                exp: {
+                    ru: "С частями суток (утром, днем, вечером) всегда используется предлог IN ('in the morning / afternoon / evening'), но со словом 'ночь' — устойчивое сочетание AT night.",
+                    kz: "Тәулік бөліктерімен (таңертең, күндіз, кешке) IN предлогы ('in the morning') қолданылады, ал 'түнде' дегенде — AT night."
+                }
+            },
+            {
+                num: 2,
+                lessonId: 9,
+                context: {
+                    ru: "Урок 9 (Prepositions of Time): «У ребенка насморк уже в течение трех дней, но вирусная инфекция обычно проходит в пределах (в течение) одной недели».",
+                    kz: "9-сабақ (Prepositions of Time): «Балада үш күн бойы мұрын бітелуі бар, бірақ вирустық инфекция әдетте бір апта ішінде өздігінен өтеді»."
+                },
+                prompt: "The child has had a runny nose ___ three days, and this condition usually gets better ___ a week.",
+                opts: {
+                    ru: ["A) for ... within", "B) since ... during", "C) from ... by"],
+                    kz: ["A) for ... within", "B) since ... during", "C) from ... by"]
+                },
+                ans: 0, // A
+                exp: {
+                    ru: "Для указания длительности симптома (сколько времени? — 3 дня) используем 'for three days'. Для срока наступления улучшения («в пределах недели») — 'within a week'.",
+                    kz: "Симптомның созылу уақытын ('үш күн бойы') көрсету үшін 'for three days', ал жазылу мерзімін ('бір апта ішінде') айту үшін 'within a week' қолданылады."
+                }
+            },
+            {
+                num: 3,
+                lessonId: 9,
+                context: {
+                    ru: "Урок 9 (Prepositions of Time): «Изжога усиливается после еды, а у отца пациента случился инсульт, когда ему было за 60 (в его 60-е годы)».",
+                    kz: "9-сабақ (Prepositions of Time): «Қыжыл тамақ ішкеннен кейін күшейеді, ал науқастың әкесінде 60 жасында (60-тан асқан шағында) инсульт болған»."
+                },
+                prompt: "The burning sensation gets worse ___ eating, and the patient's father had a stroke ___ his 60s.",
+                opts: {
+                    ru: ["A) on ... at", "B) since ... on", "C) after ... in"],
+                    kz: ["A) on ... at", "B) since ... on", "C) after ... in"]
+                },
+                ans: 2, // C
+                exp: {
+                    ru: "«После еды» — 'after eating'. Десятилетия жизни человека («в его 50-е / 60-е годы») всегда передаются предлогом IN: 'in his 60s', 'in her 50s'.",
+                    kz: "«Тамақтан кейін» — 'after eating'. Адамның жас кезеңі («50 / 60 жас шамасында») әрқашан IN предлогымен айтылады: 'in his 60s'."
+                }
+            },
+
+            // ================= УРОК 10: PREPOSITIONS OF PLACE & MOVEMENT (Вопросы 4–6) =================
+            {
+                num: 4,
+                lessonId: 10,
+                context: {
+                    ru: "Урок 10 (Prepositions of Place): Локализация боли при аппендиците: «У меня сильная боль в животе — сейчас она больше с правой стороны (на правой стороне)».",
+                    kz: "10-сабақ (Prepositions of Place): Аппендицит кезіндегі ауырсыну орны: «Ішім қатты ауырып тұр — қазір ол көбінесе оң жақта (оң жақ бүйірде)»."
+                },
+                prompt: "I have a strong pain ___ my stomach, and now it is more ___ the right side.",
+                opts: {
+                    ru: ["A) in ... on", "B) on ... at", "C) at ... in"],
+                    kz: ["A) in ... on", "B) on ... at", "C) at ... in"]
+                },
+                ans: 0, // A
+                exp: {
+                    ru: "Внутри органа или полости (в животе, в груди) — предлог IN ('in my stomach / in my chest'). На стороне (справа / слева) — всегда предлог ON ('on the right / left side').",
+                    kz: "Ағзаның немесе қуыстың ішінде — IN ('in my stomach'). Ал оң немесе сол жақ беткейінде — әрқашан ON ('on the right side')."
+                }
+            },
+            {
+                num: 5,
+                lessonId: 10,
+                context: {
+                    ru: "Урок 10 (Prepositions of Movement): Движение и иррадиация: «Желудочная кислота забрасывается обратно внутрь пищевода, а боль не распространяется (не отдает) в руку или челюсть».",
+                    kz: "10-сабақ (Prepositions of Movement): Қозғалыс пен иррадиация: «Асқазан қышқылы өңештің ішіне кері ағады, ал ауырсыну қолға немесе жаққа таралмайды (берілмейді)»."
+                },
+                prompt: "Stomach acid flows back ___ the esophagus, and the chest pain does not spread (radiate) ___ your arm or jaw.",
+                opts: {
+                    ru: ["A) on ... in", "B) into ... to", "C) at ... from"],
+                    kz: ["A) on ... in", "B) into ... to", "C) at ... from"]
+                },
+                ans: 1, // B
+                exp: {
+                    ru: "Движение внутрь органа/трубки — INTO ('flows back into the esophagus'). Направление иррадиации боли к другой части тела — всегда предлог TO ('spreads / radiates to your arm').",
+                    kz: "Ағзаның ішіне қарай бағытталған қозғалыс — INTO ('into the esophagus'). Ауырсынудың басқа мүшеге берілу бағыты — TO ('spreads / radiates to...')."
+                }
+            },
+            {
+                num: 6,
+                lessonId: 10,
+                context: {
+                    ru: "Урок 10 (Prepositions of Place): «Боль ощущается как давление в затылке (в задней точке головы), либо начинается вокруг пупка».",
+                    kz: "10-сабақ (Prepositions of Place): «Ауырсыну желке тұсында (бастың артқы нүктесінде) қысым сияқты сезіледі, немесе кіндік айналасында басталады»."
+                },
+                prompt: "The headache feels like pressure ___ the back of my head, and appendicitis pain usually starts ___ the belly button.",
+                opts: {
+                    ru: ["A) on ... into", "B) to ... from", "C) at ... around"],
+                    kz: ["A) on ... into", "B) to ... from", "C) at ... around"]
+                },
+                ans: 2, // C
+                exp: {
+                    ru: "Для конкретной анатомической области-ориентира используется AT ('at the back of my head'). «Вокруг пупка» — 'around the belly button'.",
+                    kz: "Нақты анатомиялық нүкте үшін AT ('at the back of my head'), ал «кіндік айналасында» деу үшін 'around the belly button' қолданылады."
+                }
+            },
+
+            // ================= УРОК 11: CONDITIONALS (Вопросы 7–9) =================
+            {
+                num: 7,
+                lessonId: 11,
+                context: {
+                    ru: "Урок 11 (First Conditional — Реальное условие в будущем): «Если ваши симптомы не улучшатся, нам может потребоваться провести дополнительные анализы».",
+                    kz: "11-сабақ (First Conditional — Болашақтағы нақты шарт): «Егер симптомдарыңыз жақсармаса, бізге қосымша талдаулар жасау қажет болуы мүмкін»."
+                },
+                prompt: "If your symptoms ___ improve, we ___ need to do further tests.",
+                opts: {
+                    ru: ["A) don't (do not) ... may (will)", "B) won't ... will", "C) didn't ... would"],
+                    kz: ["A) don't (do not) ... may (will)", "B) won't ... will", "C) didn't ... would"]
+                },
+                ans: 0, // A
+                exp: {
+                    ru: "В придаточной части после 'If' (Если...) для будущего времени НЕ ставится will — используется Present Simple ('If your symptoms don't improve'), а во второй части — will или модальный глагол ('we may/will need').",
+                    kz: "'If' (Егер...) бөлімінде келер шақтың орнына Present Simple ('If your symptoms don't improve') қолданылады, ал негізгі бөлімде — will немесе may ('we may/will need')."
+                }
+            },
+            {
+                num: 8,
+                lessonId: 11,
+                context: {
+                    ru: "Урок 11 (Conditionals — Объяснение риска): «Аппендицит требует операции, потому что если аппендикс лопнет (разорвется), это может привести к серьезной инфекции».",
+                    kz: "11-сабақ (Conditionals — Қауіпті түсіндіру): «Аппендицит отаны қажет етеді, себебі егер соқырішек жарылып кетсе, бұл ауыр инфекцияға әкелуі мүмкін»."
+                },
+                prompt: "Appendicitis requires surgery, because if the appendix ___, it can lead to a serious infection in the abdomen.",
+                opts: {
+                    ru: ["A) will burst", "B) bursts", "C) burst yesterday"],
+                    kz: ["A) will burst", "B) bursts", "C) burst yesterday"]
+                },
+                ans: 1, // B
+                exp: {
+                    ru: "После союза 'if' используем Present Simple. Так как 'the appendix' — единственное число (it), к глаголу добавляется окончание -s: 'if the appendix bursts'.",
+                    kz: "'If' жалғаулығынан кейін Present Simple тұрады. 'The appendix' жекеше түрде (it) болғандықтан, етістікке -s жалғанады: 'if the appendix bursts'."
+                }
+            },
+            {
+                num: 9,
+                lessonId: 11,
+                context: {
+                    ru: "Урок 11 (Conditional + Повелительное наклонение): «Если у вашего ребенка поднимется высокая температура или появится затрудненное дыхание, пожалуйста, вернитесь к врачу».",
+                    kz: "11-сабақ (Conditional + Бұйрық рай): «Егер балаңызда жоғары қызба пайда болса немесе тыныс алуы қиындаса, өтінеміз, дәрігерге қайта келіңіз»."
+                },
+                prompt: "If your child ___ a high fever or has difficulty breathing, please ___ back or seek medical help.",
+                opts: {
+                    ru: ["A) will develop ... comes", "B) develop ... to come", "C) develops ... come"],
+                    kz: ["A) will develop ... comes", "B) develop ... to come", "C) develops ... come"]
+                },
+                ans: 2, // C
+                exp: {
+                    ru: "В условии после 'if' для 'your child' (he/she) ставим Present Simple с окончанием -s ('develops'), а во второй части даем прямую рекомендацию в повелительном наклонении ('please come back').",
+                    kz: "'If' бөлімінде 'your child' (he/she) үшін Present Simple ('develops'), ал екінші бөлімде тікелей нұсқау ('please come back') қолданылады."
+                }
+            },
+
+            // ================= УРОК 12: COMPARATIVES & SUPERLATIVES (Вопросы 10–12) =================
+            {
+                num: 10,
+                lessonId: 12,
+                context: {
+                    ru: "Урок 12 (Comparatives — Сравнительная степень): «Ваш уровень сахара в крови выше нормы, и вы ходите в туалет чаще, чем обычно».",
+                    kz: "12-сабақ (Comparatives — Салыстырмалы шырай): «Қандағы қант деңгейіңіз қалыптыдан жоғары, және сіз кіші дәретке әдеттегіден жиірек барасыз»."
+                },
+                prompt: "Your blood sugar levels are ___ than normal, and you are urinating ___ than usual.",
+                opts: {
+                    ru: ["A) higher ... more often", "B) more high ... oftener", "C) highest ... most often"],
+                    kz: ["A) higher ... more often", "B) more high ... oftener", "C) highest ... most often"]
+                },
+                ans: 0, // A
+                exp: {
+                    ru: "Короткое прилагательное 'high' образует сравнительную степень суффиксом -er ('higher than normal'), а наречие 'often' сравнивается с помощью слова more ('more often than usual').",
+                    kz: "Қысқа сын есім 'high' -er жұрнағы арқылы ('higher than normal'), ал 'often' үстеуі more сөзі арқылы ('more often than usual') салыстырылады."
+                }
+            },
+            {
+                num: 11,
+                lessonId: 12,
+                context: {
+                    ru: "Урок 12 (Исключения в степенях сравнения — bad / little): «Движение делает боль в животе хуже (сильнее), а ребенок ест и пьет меньше, чем обычно».",
+                    kz: "12-сабақ (Салыстырмалы шырайдағы ерекше сөздер — bad / little): «Қозғалыс іштегі ауырсынуды нашарлатады (күшейтеді), ал бала әдеттегіден аз тамақ жеп, су ішіп жүр»."
+                },
+                prompt: "Moving makes the abdominal pain ___, and the child is eating and drinking ___ than usual.",
+                opts: {
+                    ru: ["A) badder ... littler", "B) worse ... less", "C) worst ... least"],
+                    kz: ["A) badder ... littler", "B) worse ... less", "C) worst ... least"]
+                },
+                ans: 1, // B
+                exp: {
+                    ru: "Исключения, которые важно знать врачу наизусть: bad → worse (хуже), good → better (лучше), little → less (меньше).",
+                    kz: "Дәрігер білуі тиіс ерекше формалар: bad → worse (нашарлау), good → better (жақсырақ), little → less (азырақ)."
+                }
+            },
+            {
+                num: 12,
+                lessonId: 12,
+                context: {
+                    ru: "Урок 12 (Superlatives — Превосходная степень): 1) «Какая была самая высокая температура?» и 2) «Вирусная инфекция — самая частая причина острого бронхита».",
+                    kz: "12-сабақ (Superlatives — Күшейтпелі шырай): 1) «Ең жоғары температура қанша болды?» және 2) «Вирустық инфекция — жедел бронхиттің ең жиі кездесетін себебі»."
+                },
+                prompt: "1) What was ___ temperature?   2) A viral infection is ___ cause of acute bronchitis.",
+                opts: {
+                    ru: ["A) higher ... more common", "B) the most high ... the commonest", "C) the highest ... the most common"],
+                    kz: ["A) higher ... more common", "B) the most high ... the commonest", "C) the highest ... the most common"]
+                },
+                ans: 2, // C
+                exp: {
+                    ru: "Превосходная степень всегда идет с артиклем THE: для короткого слова 'high' — 'the highest temperature', для двусложного 'common' — 'the most common cause'.",
+                    kz: "Күшейтпелі шырай THE артиклімен жасалады: қысқа сөз үшін — 'the highest temperature', ал 'common' сөзі үшін — 'the most common cause'."
+                }
+            }
+        ];
+
+        // =========================================================================
+        // 3. ЛОГИКА ТЕСТА (ФИКСИРОВАННЫЙ ЯЗЫК ПОПЫТКИ И ТАБЛИЦА ОТВЕТОВ №1–№12)
+        // =========================================================================
+        const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+        const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+        let currentLang = localStorage.getItem('selected_lang') || 'ru';
+        let currentQIndex = 0;
+        let userAnswers = new Array(QUESTIONS.length).fill(null);
+        let startTimeMs = 0;
+        let studentName = "";
+
+        const UI_TEXT = {
+            backBtn: { ru: "⬅️ К урокам", kz: "⬅️ Сабақтарға" },
+            headerTitle: { ru: "Домашнее задание: Уроки 9–12", kz: "Үй тапсырмасы: 9–12 сабақтар" },
+            headerSub: { ru: "Клиническая грамматика • 12 заданий", kz: "Клиникалық грамматика • 12 тапсырма" },
+            introTitle: { ru: "Домашняя работа по Урокам 9–12 (12 вопросов)", kz: "9–12 сабақтар бойынша үй жұмысы (12 сұрақ)" },
+            introDesc: {
+                ru: "В каждом уроке по 3 практических задания. После ответа на все 12 вопросов откроется итоговая таблица с вашими ответами по номерам — сделайте её скриншот и покажите преподавателю.",
+                kz: "Әр сабақ бойынша 3 практикалық тапсырма берілген. Барлық 12 сұраққа жауап берген соң, сұрақ нөмірлері бойынша қорытынды кесте ашылады — оны скриншот жасап, оқытушыға көрсетіңіз."
+            },
+            nameLabel: {
+                ru: "2. Ваше Имя (будет видно на скриншоте):",
+                kz: "2. Сіздің атыңыз (скриншотта көрінеді):"
+            },
+            namePlaceholder: {
+                ru: "ваше имя...",
+                kz: "есіміңіз..."
+            },
+            startBtn: {
+                ru: "🚀 Начать выполнение ДЗ (12 вопросов)",
+                kz: "🚀 Үй тапсырмасын бастау (12 сұрақ)"
+            },
+            screenshotBanner: {
+                ru: "📸 Сделайте скриншот карточки ниже и покажите преподавателю",
+                kz: "📸 Төмендегі карточканы скриншот жасап, оқытушыға көрсетіңіз"
+            },
+            reportHeaderSub: {
+                ru: "ДЗ: Уроки 9–12 • @doctors.speak",
+                kz: "ҮЖ: 9–12 сабақтар • @doctors.speak"
+            },
+            correctLbl: {
+                ru: "✅ Правильных",
+                kz: "✅ Дұрыс жауап"
+            },
+            wrongLbl: {
+                ru: "❌ Неправильных",
+                kz: "❌ Қате жауап"
+            },
+            breakdownTitle: {
+                ru: "Ответы по темам и номерам вопросов (1–12):",
+                kz: "Тақырыптар мен сұрақ нөмірлері бойынша (1–12):"
+            },
+            mistakesTitle: {
+                ru: "🔍 Разбор допущенных ошибок:",
+                kz: "🔍 Жіберілген қателерді талдау:"
+            },
+            retryBtn: {
+                ru: "🔄 Пройти домашнее задание заново",
+                kz: "🔄 Үй тапсырмасын қайта орындау"
+            }
+        };
+
+        // Выбор языка на стартовом экране (до начала теста)
+        function selectStartLang(lang) {
+            currentLang = lang;
+            localStorage.setItem('selected_lang', lang);
+
+            document.getElementById('langCardKz').classList.toggle('selected', lang === 'kz');
+            document.getElementById('langCardRu').classList.toggle('selected', lang === 'ru');
+
+            document.getElementById('uiBackBtn').textContent = UI_TEXT.backBtn[lang];
+            document.getElementById('uiHeaderTitle').textContent = UI_TEXT.headerTitle[lang];
+            document.getElementById('uiHeaderSub').textContent = UI_TEXT.headerSub[lang];
+            document.getElementById('uiIntroTitle').textContent = UI_TEXT.introTitle[lang];
+            document.getElementById('uiIntroDesc').textContent = UI_TEXT.introDesc[lang];
+            document.getElementById('uiNameLabel').textContent = UI_TEXT.nameLabel[lang];
+            document.getElementById('studentNameInput').placeholder = UI_TEXT.namePlaceholder[lang];
+            document.getElementById('uiStartBtn').textContent = UI_TEXT.startBtn[lang];
+
+            const grid = document.getElementById('uiTopicsGrid');
+            grid.innerHTML = '';
+            LESSONS_META.forEach(les => {
+                const div = document.createElement('div');
+                div.className = 'topic-pill';
+                div.innerHTML = `<span>${les.shortTag}</span>${les.title[lang]}`;
+                grid.appendChild(div);
+            });
+        }
+
+        async function prefillStudentName() {
+            const savedName = localStorage.getItem('ds_hw_student_name');
+            if (savedName) {
+                document.getElementById('studentNameInput').value = savedName;
+            }
+            if (!supabaseClient) return;
+            try {
+                const { data } = await supabaseClient.auth.getSession();
+                if (data && data.session && data.session.user) {
+                    const user = data.session.user;
+                    const { data: profile } = await supabaseClient
+                        .from('profiles')
+                        .select('name')
+                        .eq('id', user.id)
+                        .maybeSingle();
+
+                    const foundName = (profile && profile.name) || user.user_metadata?.name || (user.email ? user.email.split('@')[0] : "");
+                    if (foundName) {
+                        document.getElementById('studentNameInput').value = foundName;
+                    }
+                }
+            } catch (e) {}
+        }
+
+        function startHomework() {
+            const nameVal = document.getElementById('studentNameInput').value.trim();
+            studentName = nameVal || (currentLang === 'kz' ? "Дәрігер" : "Врач");
+            if (nameVal) {
+                localStorage.setItem('ds_hw_student_name', nameVal);
+            }
+
+            currentQIndex = 0;
+            userAnswers = new Array(QUESTIONS.length).fill(null);
+            startTimeMs = Date.now();
+
+            playSound(sfxStart);
+
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'none';
+            document.getElementById('quizScreen').style.display = 'flex';
+
+            renderCurrentQuestion();
+        }
+
+        function getTotals() {
+            let ok = 0;
+            let err = 0;
+            userAnswers.forEach((chosen, idx) => {
+                if (chosen === null) return;
+                if (chosen === QUESTIONS[idx].ans) ok++;
+                else err++;
+            });
+            return { ok, err };
+        }
+
+        function renderCurrentQuestion() {
+            const q = QUESTIONS[currentQIndex];
+            const total = QUESTIONS.length;
+            const isKz = (currentLang === 'kz');
+            const lessonObj = LESSONS_META.find(l => l.id === q.lessonId);
+            const totals = getTotals();
+
+            document.getElementById('qCounterText').textContent = isKz
+                ? `Сұрақ №${q.num} / ${total}`
+                : `Вопрос №${q.num} из ${total}`;
+            document.getElementById('liveOkPill').textContent = `✅ ${totals.ok}`;
+            document.getElementById('liveErrPill').textContent = `❌ ${totals.err}`;
+
+            const pct = Math.round((currentQIndex / total) * 100);
+            document.getElementById('quizProgressFill').style.width = `${pct}%`;
+
+            document.getElementById('qLessonTag').textContent = lessonObj ? lessonObj.title[currentLang] : `Lesson ${q.lessonId}`;
+            document.getElementById('qContextText').textContent = q.context[currentLang];
+            document.getElementById('qPromptText').textContent = q.prompt;
+
+            const optsContainer = document.getElementById('qOptionsList');
+            optsContainer.innerHTML = '';
+
+            q.opts[currentLang].forEach((optStr, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'opt-btn';
+                btn.textContent = optStr;
+                btn.onclick = () => handleAnswerClick(btn, idx);
+                optsContainer.appendChild(btn);
+            });
+
+            document.getElementById('qExplanationBox').style.display = 'none';
+            document.getElementById('nextQuestionBtn').style.display = 'none';
+        }
+
+        function handleAnswerClick(selectedBtn, chosenIdx) {
+            if (userAnswers[currentQIndex] !== null) return;
+
+            const q = QUESTIONS[currentQIndex];
+            userAnswers[currentQIndex] = chosenIdx;
+            const isCorrect = (chosenIdx === q.ans);
+
+            const allBtns = document.querySelectorAll('.opt-btn');
+            allBtns.forEach(b => b.disabled = true);
+
+            if (isCorrect) {
+                selectedBtn.classList.add('correct');
+                playSound(sfxOk);
+            } else {
+                selectedBtn.classList.add('wrong');
+                allBtns[q.ans].classList.add('correct');
+                playSound(sfxErr);
+            }
+
+            const totals = getTotals();
+            document.getElementById('liveOkPill').textContent = `✅ ${totals.ok}`;
+            document.getElementById('liveErrPill').textContent = `❌ ${totals.err}`;
+
+            const expBox = document.getElementById('qExplanationBox');
+            const statusWord = isCorrect
+                ? (currentLang === 'kz' ? 'Дұрыс!' : 'Верно!')
+                : (currentLang === 'kz' ? 'Қате!' : 'Ошибка!');
+            expBox.innerHTML = `💡 <b>${statusWord}</b> ${q.exp[currentLang]}`;
+            expBox.style.display = 'block';
+
+            const nextBtn = document.getElementById('nextQuestionBtn');
+            const isLast = (currentQIndex === QUESTIONS.length - 1);
+            nextBtn.textContent = isLast
+                ? (currentLang === 'kz' ? '📊 Нәтижеге өту ➔' : '📊 Показать результат для скриншота ➔')
+                : (currentLang === 'kz' ? 'Келесі сұрақ ➔' : 'Следующий вопрос ➔');
+            nextBtn.style.display = 'block';
+        }
+
+        function goToNextQuestion() {
+            if (currentQIndex < QUESTIONS.length - 1) {
+                currentQIndex++;
+                renderCurrentQuestion();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                showFinalReport();
+            }
+        }
+
+        function showFinalReport() {
+            document.getElementById('quizScreen').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'flex';
+            document.getElementById('quizProgressFill').style.width = '100%';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            const isKz = (currentLang === 'kz');
+            const totals = getTotals();
+            const total = QUESTIONS.length;
+            const pct = Math.min(100, Math.round((totals.ok / total) * 100));
+
+            const elapsedSec = Math.max(1, Math.round((Date.now() - startTimeMs) / 1000));
+            const mins = Math.floor(elapsedSec / 60);
+            const secs = elapsedSec % 60;
+            const timeStr = `${mins} мин ${secs} сек`;
+            const dateStr = new Date().toLocaleDateString('ru-RU');
+
+            document.getElementById('uiScreenshotBanner').textContent = UI_TEXT.screenshotBanner[currentLang];
+            document.getElementById('uiReportHeaderSub').textContent = UI_TEXT.reportHeaderSub[currentLang];
+            document.getElementById('rcStudentName').textContent = `👨‍⚕️ ${studentName}`;
+            document.getElementById('rcMetaInfo').textContent = isKz
+                ? `Күні: ${dateStr} • Уақыты: ${timeStr} • Тіл: KZ`
+                : `Дата: ${dateStr} • Время: ${timeStr} • Язык: RU`;
+            document.getElementById('rcPercentBadge').textContent = `${totals.ok}/${total} (${pct}%)`;
+
+            document.getElementById('rcCorrectCount').textContent = totals.ok;
+            document.getElementById('rcWrongCount').textContent = totals.err;
+            document.getElementById('uiCorrectLbl').textContent = UI_TEXT.correctLbl[currentLang];
+            document.getElementById('uiWrongLbl').textContent = UI_TEXT.wrongLbl[currentLang];
+            document.getElementById('uiBreakdownTitle').textContent = UI_TEXT.breakdownTitle[currentLang];
+            document.getElementById('uiMistakesTitle').textContent = UI_TEXT.mistakesTitle[currentLang];
+            document.getElementById('uiRetryBtn').textContent = UI_TEXT.retryBtn[currentLang];
+
+            // Отрисовка сетки по каждому уроку (9–12) и каждому номеру вопроса (№1 – №12)
+            const rowsContainer = document.getElementById('rcLessonsRows');
+            rowsContainer.innerHTML = '';
+
+            LESSONS_META.forEach(les => {
+                const lessonQuestions = QUESTIONS.map((q, idx) => ({ q, idx })).filter(item => item.q.lessonId === les.id);
+                let lessonOk = 0;
+
+                let chipsHtml = '';
+                lessonQuestions.forEach(item => {
+                    const isRight = (userAnswers[item.idx] === item.q.ans);
+                    if (isRight) lessonOk++;
+                    const chipClass = isRight ? 'chip-ok' : 'chip-err';
+                    const chipIcon = isRight ? '✅' : '❌';
+                    chipsHtml += `<div class="q-num-chip ${chipClass}">№${item.q.num} ${chipIcon}</div>`;
+                });
+
+                const block = document.createElement('div');
+                block.className = 'rc-lesson-block';
+                block.innerHTML = `
+                    <div class="rc-lesson-top">
+                        <span>${les.title[currentLang]}</span>
+                        <span style="color:${lessonOk === 3 ? '#34D399' : '#FBBF24'};">${lessonOk} / 3</span>
+                    </div>
+                    <div class="q-badges-row">${chipsHtml}</div>
+                `;
+                rowsContainer.appendChild(block);
+            });
+
+            // Детальный разбор ошибок под карточкой скриншота
+            const mistakesCard = document.getElementById('mistakesCard');
+            const mistakesList = document.getElementById('mistakesListContainer');
+            mistakesList.innerHTML = '';
+
+            const wrongItems = QUESTIONS.map((q, idx) => ({ q, idx })).filter(item => userAnswers[item.idx] !== item.q.ans);
+
+            if (wrongItems.length > 0) {
+                mistakesCard.style.display = 'flex';
+                wrongItems.forEach(item => {
+                    const q = item.q;
+                    const chosenIdx = userAnswers[item.idx];
+                    const chosenText = chosenIdx !== null ? q.opts[currentLang][chosenIdx] : "—";
+                    const correctText = q.opts[currentLang][q.ans];
+
+                    const div = document.createElement('div');
+                    div.className = 'mr-item';
+                    div.innerHTML = `
+                        <b>${isKz ? 'Сұрақ' : 'Вопрос'} №${q.num}:</b> ${q.prompt}<br>
+                        <span style="color:#B91C1C;">❌ ${isKz ? 'Сіздің жауабыңыз' : 'Ваш ответ'}: ${chosenText}</span><br>
+                        <span style="color:#065F46; font-weight:700;">✅ ${isKz ? 'Дұрыс жауап' : 'Правильно'}: ${correctText}</span>
+                    `;
+                    mistakesList.appendChild(div);
+                });
+            } else {
+                mistakesCard.style.display = 'none';
+            }
+        }
+
+        function restartHomework() {
+            document.getElementById('resultScreen').style.display = 'none';
+            document.getElementById('startScreen').style.display = 'block';
+        }
+
+        // Инициализация
+        selectStartLang(currentLang);
+        prefillStudentName();
+    </script>
+</body>
+</html>
