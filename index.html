@@ -20,7 +20,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#00A1DE">
+    <meta name="theme-color" content="#0B3555">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="DoctorsSpeak">
@@ -28,21 +28,31 @@
 
     <style>
         :root {
-            --kz-blue: #00A1DE;
-            --kz-blue-dark: #0077A3;
-            --kz-blue-light: #EBF8FC;
-            --kz-gold: #FFC72C;
-            --kz-gold-dark: #D9A000;
-            --kz-gold-light: #FFFBEB;
-            --bg-main: #F0F6FA;
+            /* Профессиональная медицинская палитра с казахстанскими акцентами */
+            --med-navy: #0B3555;
+            --kz-blue: #0077A8;
+            --kz-blue-dark: #005980;
+            --kz-blue-soft: #EDF6FA;
+            --kz-gold: #F5B700;
+            --kz-gold-dark: #C99300;
+            --kz-gold-soft: #FFFBEB;
+
+            /* Спокойный клинический фон (без визуального шума) */
+            --bg-main: #F4F7FA;
             --card-bg: #FFFFFF;
-            --text-dark: #1E293B;
+            --surface-subtle: #F8FAFC;
+
+            --text-dark: #0F172A;
+            --text-secondary: #334155;
             --text-muted: #64748B;
-            --border-color: #DBE5F0;
-            --green-accent: #10B981;
-            --green-light: #DCFCE7;
-            --green-dark: #065F46;
-            --red-accent: #EF4444;
+            --border-color: #E2E8F0;
+            --border-hover: #CBD5E1;
+
+            /* Спокойный медицинский бирюзово-изумрудный для открытых модулей */
+            --teal-accent: #0D9488;
+            --teal-soft: #F0FDFA;
+            --teal-border: #CCFBF1;
+            --red-accent: #DC2626;
         }
 
         * {
@@ -58,44 +68,32 @@
             min-height: 100vh;
             min-height: 100dvh;
             overflow-y: auto;
-            background: radial-gradient(circle at top, #EBF8FC 0%, var(--bg-main) 60%);
+            background-color: var(--bg-main);
             color: var(--text-dark);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             padding-bottom: 70px;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* 1. Шапка сайта в цветовой гамме INDEX FRIDAY (компактная и яркая) */
+        /* 1. Сдержанная клиническая шапка */
         header {
             position: relative;
             z-index: 10;
-            background: linear-gradient(150deg, #0082B8 0%, var(--kz-blue) 55%, #22B8CF 90%, var(--kz-gold) 135%);
+            background: linear-gradient(145deg, var(--med-navy) 0%, var(--kz-blue-dark) 55%, var(--kz-blue) 100%);
             color: #FFFFFF;
             text-align: center;
             padding: 18px 16px 24px 16px;
-            box-shadow: 0 8px 24px rgba(0, 161, 222, 0.22);
-            border-bottom-left-radius: 26px;
-            border-bottom-right-radius: 26px;
-            overflow: hidden;
-        }
-
-        header::after {
-            content: '';
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 160px;
-            height: 160px;
-            background: radial-gradient(circle, rgba(255, 199, 44, 0.35) 0%, rgba(255, 199, 44, 0) 70%);
-            border-radius: 50%;
-            pointer-events: none;
+            box-shadow: 0 4px 20px rgba(11, 53, 85, 0.14);
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
         }
 
         .header-top-bar {
             width: 100%;
-            max-width: 520px;
-            margin: 0 auto 10px auto;
+            max-width: 540px;
+            margin: 0 auto 12px auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -106,40 +104,36 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.45);
-            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            color: #F8FAFC;
             font-weight: 700;
-            font-size: 0.76rem;
-            letter-spacing: 0.4px;
-            padding: 5px 14px;
+            font-size: 0.74rem;
+            letter-spacing: 0.3px;
+            padding: 5px 13px;
             border-radius: 20px;
             text-decoration: none;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            transition: background 0.2s ease;
         }
 
-        .top-right-controls {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .brand-badge:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .lang-switch {
             display: inline-flex;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.22);
             border-radius: 20px;
             padding: 3px;
-            border: 1px solid rgba(255, 255, 255, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.22);
         }
 
         .lang-btn {
             border: none;
             background: transparent;
-            color: rgba(255, 255, 255, 0.85);
+            color: rgba(255, 255, 255, 0.8);
             font-weight: 800;
-            font-size: 0.72rem;
+            font-size: 0.71rem;
             padding: 4px 11px;
             border-radius: 16px;
             cursor: pointer;
@@ -148,36 +142,34 @@
 
         .lang-btn.active {
             background: var(--kz-gold);
-            color: var(--text-dark);
+            color: var(--med-navy);
         }
 
         h1 {
-            font-size: 1.45rem;
+            font-size: 1.38rem;
             font-weight: 900;
-            line-height: 1.18;
+            line-height: 1.2;
             text-transform: uppercase;
-            letter-spacing: 0.6px;
+            letter-spacing: 0.8px;
             color: #FFFFFF;
-            max-width: 400px;
+            max-width: 420px;
             margin: 0 auto;
-            text-shadow: 0 2px 10px rgba(0, 80, 120, 0.2);
         }
 
         .subtitle {
-            font-size: 0.8rem;
+            font-size: 0.76rem;
             margin-top: 4px;
-            font-weight: 800;
-            letter-spacing: 0.8px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
             text-transform: uppercase;
-            color: var(--kz-gold);
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+            color: #BAE6FD;
         }
 
         /* Панель входа / приветствия в шапке */
         #authArea {
             margin-top: 14px;
             text-align: center;
-            max-width: 520px;
+            max-width: 540px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -195,21 +187,25 @@
             justify-content: center;
             gap: 8px;
             width: 100%;
-            max-width: 380px;
-            background: linear-gradient(135deg, var(--kz-gold) 0%, #FFD55A 100%);
-            color: var(--text-dark);
-            border: 1px solid rgba(255, 255, 255, 0.65);
+            max-width: 370px;
+            background: var(--kz-gold);
+            color: var(--med-navy);
+            border: none;
             padding: 11px 18px;
-            border-radius: 22px;
-            font-size: 0.84rem;
+            border-radius: 14px;
+            font-size: 0.82rem;
             font-weight: 800;
             text-decoration: none;
-            box-shadow: 0 6px 16px rgba(0, 60, 90, 0.18);
-            transition: transform 0.15s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+
+        .hero-test-btn:hover {
+            background: #FFC414;
         }
 
         .hero-test-btn:active {
-            transform: scale(0.97);
+            transform: scale(0.98);
         }
 
         .guest-auth-links {
@@ -223,25 +219,22 @@
             align-items: center;
             justify-content: center;
             gap: 5px;
-            padding: 7px 16px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            background: var(--card-bg);
-            color: var(--kz-blue-dark);
-            font-size: 0.75rem;
+            padding: 6px 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--med-navy);
+            font-size: 0.74rem;
             font-weight: 800;
             text-decoration: none;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            transition: transform 0.15s ease;
+            transition: all 0.15s ease;
         }
 
         .auth-btn.register-btn {
-            background: rgba(255, 255, 255, 0.22);
+            background: rgba(255, 255, 255, 0.14);
             color: #FFFFFF;
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
         }
 
         #userArea { display: none; }
@@ -249,11 +242,10 @@
         #welcomeMessage {
             display: block;
             margin-bottom: 6px;
-            font-size: 0.95rem;
-            font-weight: 900;
+            font-size: 0.9rem;
+            font-weight: 800;
             letter-spacing: 0.4px;
             color: #FFFFFF;
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
         }
 
         .user-plan-row {
@@ -264,22 +256,20 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: rgba(0, 0, 0, 0.22);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            color: #FFFFFF;
-            font-size: 0.72rem;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #E2E8F0;
+            font-size: 0.7rem;
             font-weight: 800;
-            letter-spacing: 0.6px;
-            padding: 4px 14px;
-            border-radius: 20px;
+            letter-spacing: 0.5px;
+            padding: 4px 12px;
+            border-radius: 12px;
             text-transform: uppercase;
             text-decoration: none;
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
         }
 
         .plan-badge.active-plan {
-            background: rgba(255, 199, 44, 0.25);
+            background: rgba(245, 183, 0, 0.2);
             border-color: var(--kz-gold);
             color: var(--kz-gold);
         }
@@ -290,23 +280,21 @@
             z-index: 1;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             width: 100%;
-            max-width: 520px;
+            max-width: 540px;
             margin: 0 auto;
             padding: 16px 14px;
             flex-grow: 1;
         }
 
-        /* WORD OF THE HOUR */
+        /* WORD OF THE HOUR (Минималистичная клиническая карточка) */
         .woth-card {
             background: var(--card-bg);
-            border: 1px solid rgba(217, 160, 0, 0.28);
-            border-left: 6px solid var(--kz-gold);
-            border-radius: 18px;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
             padding: 14px 16px;
-            text-align: center;
-            box-shadow: 0 6px 18px rgba(0, 119, 163, 0.06);
+            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
         }
 
         .woth-header {
@@ -314,16 +302,16 @@
             align-items: center;
             justify-content: space-between;
             gap: 6px;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .woth-title {
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             font-weight: 800;
-            color: var(--kz-gold-dark);
-            background: var(--kz-gold-light);
+            color: var(--kz-blue-dark);
+            background: var(--kz-blue-soft);
             padding: 4px 10px;
-            border-radius: 12px;
+            border-radius: 8px;
             text-transform: uppercase;
             letter-spacing: 0.4px;
         }
@@ -335,88 +323,94 @@
         }
 
         .woth-streak {
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             font-weight: 800;
-            background: var(--green-light);
-            color: var(--green-dark);
-            padding: 4px 8px;
-            border-radius: 10px;
+            background: var(--surface-subtle);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 3px 8px;
+            border-radius: 8px;
         }
 
         .woth-timer {
-            font-size: 0.7rem;
-            color: var(--kz-blue-dark);
+            font-size: 0.68rem;
+            color: var(--text-muted);
             font-weight: 700;
-            background: var(--kz-blue-light);
-            padding: 4px 9px;
-            border-radius: 10px;
+            background: var(--surface-subtle);
+            border: 1px solid var(--border-color);
+            padding: 3px 8px;
+            border-radius: 8px;
         }
 
         .woth-term-row {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            margin: 6px 0 8px 0;
+            gap: 8px;
+            margin: 6px 0 10px 0;
         }
 
         .woth-term {
-            font-size: 1.3rem;
-            font-weight: 900;
-            color: var(--text-dark);
+            font-size: 1.22rem;
+            font-weight: 800;
+            color: var(--med-navy);
         }
 
         .speak-word-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 1px solid rgba(0, 161, 222, 0.3);
-            background: var(--kz-blue-light);
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--surface-subtle);
             color: var(--kz-blue-dark);
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+            transition: background 0.15s ease;
+        }
+
+        .speak-word-btn:hover {
+            background: var(--kz-blue-soft);
         }
 
         .quiz-options {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: 1fr;
             gap: 6px;
-            text-align: left;
         }
 
         .quiz-btn {
             width: 100%;
-            background: #F8FAFC;
+            background: var(--surface-subtle);
             color: var(--text-dark);
             border: 1px solid var(--border-color);
-            padding: 10px 14px;
-            border-radius: 11px;
+            padding: 9px 13px;
+            border-radius: 10px;
             font-weight: 600;
-            font-size: 0.88rem;
+            font-size: 0.84rem;
             cursor: pointer;
             transition: all 0.15s ease;
             text-align: left;
         }
 
         .quiz-btn:hover:not(:disabled) {
-            background: var(--kz-blue-light);
+            background: var(--kz-blue-soft);
             border-color: var(--kz-blue);
         }
 
         .quiz-btn.correct {
-            background: #DEF7EC !important;
-            color: #03543F !important;
-            border-color: var(--green-accent) !important;
+            background: var(--teal-soft) !important;
+            color: #0F766E !important;
+            border-color: var(--teal-accent) !important;
             font-weight: 700;
         }
 
         .quiz-btn.incorrect {
-            background: #FDE8E8 !important;
-            color: #9B1C1C !important;
-            border-color: var(--red-accent) !important;
+            background: #FEF2F2 !important;
+            color: #B91C1C !important;
+            border-color: #F87171 !important;
         }
 
         .quiz-footer-row {
@@ -424,51 +418,84 @@
             align-items: center;
             justify-content: space-between;
             gap: 8px;
-            margin-top: 8px;
-            min-height: 24px;
-            flex-wrap: wrap;
+            margin-top: 6px;
+            min-height: 22px;
         }
 
         .quiz-feedback {
-            font-size: 0.8rem;
-            font-weight: 800;
+            font-size: 0.78rem;
+            font-weight: 700;
         }
 
         .next-word-btn {
             display: none;
-            background: var(--kz-blue);
+            background: var(--med-navy);
             color: #FFFFFF;
             border: none;
-            padding: 6px 12px;
-            border-radius: 10px;
-            font-size: 0.74rem;
-            font-weight: 800;
+            padding: 5px 11px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            font-weight: 700;
             cursor: pointer;
             margin-left: auto;
         }
 
-        /* КАТЕГОРИИ И ВЛОЖЕННЫЕ МОДУЛИ */
-        .section-caption {
-            font-size: 0.74rem;
-            font-weight: 800;
+        /* Компактный спойлер для обзорного видео платформы (не перегружает экран) */
+        details.intro-video-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 10px 14px;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
+        }
+
+        details.intro-video-card summary {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            user-select: none;
+        }
+
+        details.intro-video-card summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .intro-pill {
+            font-size: 0.65rem;
+            font-weight: 700;
             color: var(--kz-blue-dark);
+            background: var(--kz-blue-soft);
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+
+        /* КАТЕГОРИИ ОБУЧЕНИЯ */
+        .section-caption {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.7px;
-            margin: 4px 0 -2px 4px;
+            letter-spacing: 0.6px;
+            margin: 6px 0 -2px 4px;
         }
 
         details.category-group {
             background: var(--card-bg);
-            border-radius: 18px;
+            border-radius: 16px;
             border: 1px solid var(--border-color);
-            box-shadow: 0 5px 15px rgba(0, 119, 163, 0.05);
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.025);
             overflow: hidden;
-            transition: all 0.22s ease;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         details.category-group[open] {
-            border-color: rgba(0, 161, 222, 0.45);
-            box-shadow: 0 8px 22px rgba(0, 119, 163, 0.1);
+            border-color: #BAE6FD;
+            box-shadow: 0 6px 20px rgba(11, 53, 85, 0.06);
         }
 
         summary.category-header {
@@ -478,88 +505,85 @@
             justify-content: space-between;
             padding: 14px 16px;
             cursor: pointer;
-            position: relative;
             user-select: none;
-            background: linear-gradient(90deg, #FFFFFF 0%, #F8FBFF 100%);
-            transition: background 0.2s ease;
+            background: var(--card-bg);
+            transition: background 0.15s ease;
+        }
+
+        summary.category-header:hover {
+            background: var(--surface-subtle);
         }
 
         summary.category-header::-webkit-details-marker {
             display: none;
         }
 
-        summary.category-header::before {
-            content: '';
-            position: absolute;
-            left: 0; top: 0; bottom: 0;
-            width: 6px;
-            background: linear-gradient(180deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
-        }
-
         details.category-group[open] > summary.category-header {
-            background: linear-gradient(90deg, var(--kz-blue-light) 0%, #FFFFFF 100%);
+            background: var(--surface-subtle);
             border-bottom: 1px solid var(--border-color);
         }
 
         .cat-head-left {
             display: flex;
             align-items: center;
-            gap: 13px;
+            gap: 12px;
         }
 
         .cat-icon-box {
-            width: 46px;
-            height: 46px;
-            background: linear-gradient(135deg, #EBF8FC 0%, #D6F1FA 100%);
-            border-radius: 14px;
+            width: 42px;
+            height: 42px;
+            background: var(--kz-blue-soft);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.35rem;
+            font-size: 1.2rem;
             flex-shrink: 0;
-            border: 1px solid rgba(0, 161, 222, 0.2);
+            border: 1px solid rgba(0, 119, 168, 0.12);
         }
 
         .cat-head-text h2 {
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             font-weight: 800;
             color: var(--text-dark);
             display: flex;
             align-items: center;
-            gap: 7px;
+            gap: 8px;
             flex-wrap: wrap;
-            margin-bottom: 2px;
         }
 
         .cat-head-text p {
-            font-size: 0.82rem;
+            font-size: 0.76rem;
             color: var(--text-muted);
             font-weight: 500;
             line-height: 1.3;
+            margin-top: 2px;
         }
 
         .chevron-box {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: var(--kz-blue-light);
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: var(--surface-subtle);
+            border: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
             margin-left: 8px;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
         }
 
         .chevron-icon {
-            width: 18px;
-            height: 18px;
-            fill: var(--kz-blue);
-            transition: transform 0.25s ease;
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+            transition: transform 0.2s ease;
         }
 
         details.category-group[open] .chevron-box {
-            background: var(--kz-blue);
+            background: var(--med-navy);
+            border-color: var(--med-navy);
         }
 
         details.category-group[open] .chevron-icon {
@@ -568,48 +592,36 @@
         }
 
         .category-body {
-            padding: 10px 12px 12px 18px;
-            background: #F4F8FB;
+            padding: 12px;
+            background: var(--surface-subtle);
             display: flex;
             flex-direction: column;
-            gap: 7px;
-            border-left: 3px solid rgba(0, 161, 222, 0.25);
-            margin-left: 14px;
-            margin-right: 10px;
-            margin-top: 8px;
-            margin-bottom: 10px;
-            border-radius: 0 12px 12px 0;
+            gap: 8px;
         }
 
         .module-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: #FFFFFF;
+            background: var(--card-bg);
             border-radius: 12px;
-            padding: 10px 12px;
+            padding: 11px 13px;
             text-decoration: none;
             color: var(--text-dark);
-            border: 1px solid #E2ECF5;
-            transition: all 0.16s ease;
+            border: 1px solid var(--border-color);
+            transition: all 0.15s ease;
             gap: 10px;
         }
 
         .module-row:hover {
             border-color: var(--kz-blue);
-            transform: translateX(2px);
-            box-shadow: 0 3px 10px rgba(0, 119, 163, 0.07);
-        }
-
-        .module-row.free-row {
-            background: linear-gradient(90deg, #FFFFFF 0%, #F2FDF7 100%);
-            border-color: #A7F3D0;
+            box-shadow: 0 2px 8px rgba(0, 119, 168, 0.06);
         }
 
         .mod-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 11px;
             min-width: 0;
         }
 
@@ -617,18 +629,18 @@
             width: 36px;
             height: 36px;
             border-radius: 10px;
-            background: var(--kz-blue-light);
+            background: var(--surface-subtle);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.05rem;
+            font-size: 1rem;
             flex-shrink: 0;
-            border: 1px solid rgba(0, 161, 222, 0.15);
+            border: 1px solid var(--border-color);
         }
 
         .free-row .mod-mini-icon {
-            background: var(--green-light);
-            border-color: rgba(16, 185, 129, 0.25);
+            background: var(--teal-soft);
+            border-color: var(--teal-border);
         }
 
         .mod-info {
@@ -636,14 +648,14 @@
         }
 
         .mod-title {
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             font-weight: 800;
             color: var(--text-dark);
             line-height: 1.25;
         }
 
         .mod-desc {
-            font-size: 0.82rem;
+            font-size: 0.76rem;
             color: var(--text-muted);
             font-weight: 500;
             line-height: 1.3;
@@ -658,58 +670,185 @@
         }
 
         .badge-pill {
-            font-size: 0.65rem;
-            font-weight: 800;
-            background: var(--kz-gold-light);
-            color: #B45309;
-            border: 1px solid rgba(217, 160, 0, 0.35);
+            font-size: 0.64rem;
+            font-weight: 700;
+            background: var(--surface-subtle);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
             padding: 3px 8px;
-            border-radius: 8px;
+            border-radius: 6px;
             white-space: nowrap;
         }
 
         .badge-pill.free-pill {
-            background: var(--green-light);
-            color: var(--green-dark);
-            border-color: #86EFAC;
+            background: var(--teal-soft);
+            color: var(--teal-accent);
+            border-color: var(--teal-border);
         }
 
         .badge-pill.blue-pill {
-            background: var(--kz-blue-light);
+            background: var(--kz-blue-soft);
             color: var(--kz-blue-dark);
-            border-color: rgba(0, 161, 222, 0.28);
+            border-color: #BAE6FD;
         }
 
-        details.video-spoiler {
-            background: #FFFFFF;
-            border: 1px dashed var(--kz-blue);
-            border-radius: 11px;
-            padding: 8px 11px;
+        /* ==========================================================================
+           КОМПАКТНЫЙ ХАБ БЕСПЛАТНОГО УРОКА №8 (ВСЕ В ОДНОМ БЛОКЕ БЕЗ ГРОМОЗДКОСТИ)
+           ========================================================================== */
+        .free-lesson-hub {
+            background: var(--card-bg);
+            border: 1px solid #BAE6FD;
+            border-radius: 14px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        details.video-spoiler summary {
-            list-style: none;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--kz-blue-dark);
-            cursor: pointer;
+        .flh-top {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 8px;
         }
 
-        details.video-spoiler summary::-webkit-details-marker {
+        .flh-title-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .flh-title {
+            font-size: 0.86rem;
+            font-weight: 800;
+            color: var(--med-navy);
+            line-height: 1.2;
+        }
+
+        .flh-sub {
+            font-size: 0.73rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        /* Переключатель медиа (Видеоурок / Listening RU / Listening KZ) */
+        .flh-media-tabs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            background: var(--surface-subtle);
+            padding: 4px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .flh-tab-btn {
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.71rem;
+            font-weight: 700;
+            padding: 7px 4px;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-align: center;
+        }
+
+        .flh-tab-btn:hover {
+            color: var(--kz-blue-dark);
+            background: rgba(0, 119, 168, 0.06);
+        }
+
+        .flh-tab-btn.active {
+            background: var(--med-navy);
+            color: #FFFFFF;
+            box-shadow: 0 2px 6px rgba(11, 53, 85, 0.15);
+        }
+
+        /* Единый плеер Урока 8 (открывается только при выборе вкладки) */
+        .flh-player-wrap {
             display: none;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .flh-player-wrap.open {
+            display: flex;
+        }
+
+        .flh-player-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.71rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            padding: 0 2px;
+        }
+
+        .flh-close-video {
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.71rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* Две кнопки в ряд: Конспект и Тренажер */
+        .flh-actions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .flh-action-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 9px 10px;
+            border-radius: 10px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.15s ease;
+            text-align: center;
+        }
+
+        .flh-action-link.notes {
+            background: var(--surface-subtle);
+            color: var(--text-dark);
+            border: 1px solid var(--border-color);
+        }
+
+        .flh-action-link.notes:hover {
+            border-color: var(--kz-blue);
+            background: var(--kz-blue-soft);
+        }
+
+        .flh-action-link.trainer {
+            background: var(--kz-blue-soft);
+            color: var(--kz-blue-dark);
+            border: 1px solid #BAE6FD;
+        }
+
+        .flh-action-link.trainer:hover {
+            background: var(--kz-blue);
+            color: #FFFFFF;
         }
 
         .video-container {
             position: relative;
             width: 100%;
             padding-top: 56.25%;
-            border-radius: 12px;
+            border-radius: 10px;
             overflow: hidden;
-            background: #000;
-            margin-top: 4px;
+            background: #0F172A;
+            margin-top: 6px;
         }
 
         .video-container iframe {
@@ -719,41 +858,34 @@
             border: 0;
         }
 
+        /* Спокойная профессиональная карточка Тарифов */
         .tarifs-banner-card {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: linear-gradient(135deg, #FFFFFF 0%, #FFFBEB 55%, #FEF3C7 100%);
-            border: 1.5px solid var(--kz-gold-dark);
-            border-radius: 18px;
-            padding: 15px 16px;
+            background: var(--card-bg);
+            border: 1px solid #FDE68A;
+            border-radius: 16px;
+            padding: 14px 16px;
             text-decoration: none;
             color: var(--text-dark);
-            box-shadow: 0 6px 18px rgba(217, 160, 0, 0.12);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.2s ease;
-        }
-
-        .tarifs-banner-card::before {
-            content: '';
-            position: absolute;
-            left: 0; top: 0; bottom: 0;
-            width: 6px;
-            background: linear-gradient(180deg, var(--kz-gold) 0%, var(--kz-gold-dark) 100%);
+            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
+            transition: all 0.15s ease;
         }
 
         .tarifs-banner-card:hover {
-            transform: translateY(-2px);
+            border-color: var(--kz-gold-dark);
+            transform: translateY(-1px);
         }
 
         .arrow-icon {
             width: 18px;
             height: 18px;
-            fill: var(--kz-blue-dark);
+            fill: var(--text-muted);
             flex-shrink: 0;
         }
 
+        /* Плавающая нижняя плашка */
         .sticky-bottom-cta {
             position: fixed;
             bottom: 10px;
@@ -761,15 +893,13 @@
             transform: translateX(-50%) translateY(130%);
             width: calc(100% - 24px);
             max-width: 500px;
-            height: 54px;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            height: 50px;
+            background: var(--med-navy);
             color: #FFFFFF;
             padding: 0 12px 0 16px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 199, 44, 0.45);
-            box-shadow: 0 10px 26px rgba(15, 23, 42, 0.3);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 24px rgba(11, 53, 85, 0.25);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -789,7 +919,7 @@
         .sbc-link {
             color: #FFFFFF;
             text-decoration: none;
-            font-size: 0.82rem;
+            font-size: 0.79rem;
             font-weight: 700;
             display: flex;
             align-items: center;
@@ -806,13 +936,13 @@
         }
 
         .sbc-close-btn {
-            width: 30px;
-            height: 30px;
+            width: 28px;
+            height: 28px;
             border-radius: 8px;
             border: none;
             background: rgba(255, 255, 255, 0.12);
             color: #CBD5E1;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -824,10 +954,10 @@
             position: relative;
             z-index: 1;
             text-align: center;
-            padding: 10px 16px 26px 16px;
+            padding: 8px 16px 24px 16px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
         }
 
@@ -836,23 +966,22 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            color: var(--kz-blue-dark);
+            color: var(--text-secondary);
             text-decoration: none;
             font-weight: 700;
-            font-size: 0.84rem;
-            padding: 11px 22px;
-            border-radius: 22px;
+            font-size: 0.8rem;
+            padding: 10px 20px;
+            border-radius: 14px;
             background: var(--card-bg);
-            border: 1px solid rgba(0, 161, 222, 0.25);
-            box-shadow: 0 4px 12px rgba(0, 119, 163, 0.05);
+            border: 1px solid var(--border-color);
+            transition: all 0.15s ease;
         }
 
         .instagram-link.cta-primary {
-            background: linear-gradient(135deg, var(--kz-gold) 0%, #FFD55A 100%);
-            color: var(--text-dark);
-            border-color: var(--kz-gold-dark);
-            font-weight: 800;
-            box-shadow: 0 4px 14px rgba(217, 160, 0, 0.22);
+            background: var(--med-navy);
+            color: #FFFFFF;
+            border-color: var(--med-navy);
+            font-weight: 700;
         }
 
         [lang-val] { display: none !important; }
@@ -884,7 +1013,7 @@
     <!-- 1. ШАПКА САЙТА -->
     <header>
         <div class="header-top-bar">
-            <a href="https://instagram.com/doctors.speak" target="_blank" rel="noopener noreferrer" class="brand-badge">✨ @doctors.speak</a>
+            <a href="https://instagram.com/doctors.speak" target="_blank" rel="noopener noreferrer" class="brand-badge">@doctors.speak</a>
 
             <div class="top-right-controls">
                 <div class="lang-switch">
@@ -895,23 +1024,23 @@
         </div>
 
         <h1>MEDICAL ENGLISH</h1>
-        <p class="subtitle" lang-val="ru">Платформа для врачей и студентов</p>
-        <p class="subtitle" lang-val="kz">Дәрігерлер мен студенттерге арналған платформа</p>
+        <p class="subtitle" lang-val="ru">Английский для врачей и резидентов</p>
+        <p class="subtitle" lang-val="kz">Дәрігерлер мен резиденттерге арналған ағылшын сабақтары</p>
 
         <div id="authArea">
             <div id="guestActions">
                 <a href="./test/" class="hero-test-btn">
-                    <span lang-val="ru">🎯 Проверьте свой уровень за 10 минут!</span>
-                    <span lang-val="kz">🎯 Деңгейіңізді 10 минутта тексеріңіз!</span>
+                    <span lang-val="ru">🎯 Проверить свой уровень за 10 минут</span>
+                    <span lang-val="kz">🎯 Деңгейіңізді 10 минутта тексеру</span>
                 </a>
                 <div class="guest-auth-links">
                     <a href="login.html" id="loginButton" class="auth-btn">
-                        <span lang-val="ru">🔐 Войти</span>
-                        <span lang-val="kz">🔐 Кіру</span>
+                        <span lang-val="ru">Войти</span>
+                        <span lang-val="kz">Кіру</span>
                     </a>
                     <a href="register.html" id="registerButton" class="auth-btn register-btn">
-                        <span lang-val="ru">✍️ Регистрация</span>
-                        <span lang-val="kz">✍️ Тіркелу</span>
+                        <span lang-val="ru">Регистрация</span>
+                        <span lang-val="kz">Тіркелу</span>
                     </a>
                 </div>
             </div>
@@ -921,7 +1050,7 @@
                 <div class="user-plan-row">
                     <a href="./tarifs/" id="userPlanBadge" class="plan-badge">YOUR PLAN: FREE</a>
                 </div>
-                <button type="button" id="logoutButton" onclick="logout()">🚪 LOG OUT</button>
+                <button type="button" id="logoutButton" onclick="logout()">LOG OUT</button>
             </div>
         </div>
     </header>
@@ -933,7 +1062,7 @@
                 <span class="woth-title">⚡ Word of the hour</span>
                 <div class="woth-meta-right">
                     <span class="woth-streak" id="wothStreakBadge">🔥 0</span>
-                    <span class="woth-timer" id="wothTimer">Next in --:--</span>
+                    <span class="woth-timer" id="wothTimer">--:--</span>
                 </div>
             </div>
             <div class="woth-term-row">
@@ -944,26 +1073,33 @@
             <div class="quiz-footer-row">
                 <div class="quiz-feedback" id="quizFeedback"></div>
                 <button type="button" class="next-word-btn" id="practiceMoreBtn" onclick="loadBonusWord()">
-                    <span lang-val="ru">⚡ Ещё слово (+1) ↻</span>
-                    <span lang-val="kz">⚡ Тағы сөз (+1) ↻</span>
+                    <span lang-val="ru">Ещё слово (+1) ↻</span>
+                    <span lang-val="kz">Тағы сөз (+1) ↻</span>
                 </button>
             </div>
         </div>
 
-        <!-- Приветственное видео YouTube -->
-        <div class="video-container">
-            <iframe 
-                src="https://www.youtube.com/embed/_rQEPiwss0M" 
-                title="YouTube video player" 
-                loading="lazy" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                allowfullscreen>
-            </iframe>
-        </div>
+        <!-- Компактный видеообзор платформы (не занимает пол-экрана без спроса) -->
+        <details class="intro-video-card" id="introVideoDetails">
+            <summary>
+                <span lang-val="ru">▶️ Здравствуйте! </span>
+                <span lang-val="kz">▶️ Сәлеметсіз бе! </span>
+                <span class="intro-pill">YouTube ⌄</span>
+            </summary>
+            <div class="video-container">
+                <iframe 
+                    data-src="https://www.youtube.com/embed/_rQEPiwss0M" 
+                    title="YouTube video player" 
+                    loading="lazy" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </details>
 
         <div class="section-caption">
-            <span lang-val="ru">Выберите категорию обучения (нажмите для раскрытия):</span>
-            <span lang-val="kz">Оқу санатын таңдаңыз (ашу үшін басыңыз):</span>
+            <span lang-val="ru">Разделы платформы</span>
+            <span lang-val="kz">Платформа бөлімдері</span>
         </div>
 
         <!-- ==================== 1. КАТЕГОРИЯ: VOCABULARY ==================== -->
@@ -974,9 +1110,9 @@
                     <div class="cat-head-text">
                         <h2>
                             <span>Vocabulary</span>
-                            <span class="badge-pill free-pill" id="vocabCatBadge">2 Free · 2 Standard+</span>
                         </h2>
-
+                        <p lang-val="ru">Анатомическая, клиническая и академическая лексика</p>
+                        <p lang-val="kz">Анатомиялық, клиникалық және академиялық сөздік</p>
                     </div>
                 </div>
                 <div class="chevron-box">
@@ -985,18 +1121,18 @@
             </summary>
 
             <div class="category-body">
-                <!-- 1. Listening (стоит в том же списке первым) -->
+                <!-- 1. Listening -->
                 <a href="./listening/" class="module-row free-row">
                     <div class="mod-left">
                         <div class="mod-mini-icon">🎧</div>
                         <div class="mod-info">
                             <div class="mod-title">Listening</div>
-                            <div class="mod-desc" lang-val="ru">Услышьте термины в диалогах!</div>
-                            <div class="mod-desc" lang-val="kz">Терминдерді диалогтарда естіп көріңіз!</div>
+                            <div class="mod-desc" lang-val="ru">Услышьте медицинские термины в диалогах</div>
+                            <div class="mod-desc" lang-val="kz">Терминдерді диалогтарда естіп жаттығыңыз</div>
                         </div>
                     </div>
                     <div class="mod-right">
-                        <span class="badge-pill free-pill">🔓 Free</span>
+                        <span class="badge-pill free-pill">Free</span>
                     </div>
                 </a>
 
@@ -1005,13 +1141,13 @@
                     <div class="mod-left">
                         <div class="mod-mini-icon">🫀</div>
                         <div class="mod-info">
-                            <div class="mod-title">ТРЕНАЖЕР Anatomy</div>
+                            <div class="mod-title">Тренажер Anatomy</div>
                             <div class="mod-desc" lang-val="ru">Органы, кости и структуры тела</div>
                             <div class="mod-desc" lang-val="kz">Ағзалар, сүйектер және дене құрылымдары</div>
                         </div>
                     </div>
                     <div class="mod-right">
-                        <span class="badge-pill free-pill">🔓 Free</span>
+                        <span class="badge-pill free-pill">Free</span>
                     </div>
                 </a>
 
@@ -1020,7 +1156,7 @@
                     <div class="mod-left">
                         <div class="mod-mini-icon" id="clinicalIcon">🔒</div>
                         <div class="mod-info">
-                            <div class="mod-title">ТРЕНАЖЕР Clinical</div>
+                            <div class="mod-title">Тренажер Clinical</div>
                             <div class="mod-desc" lang-val="ru">Симптомы, жалобы и осмотр пациентов</div>
                             <div class="mod-desc" lang-val="kz">Симптомдар, шағымдар және науқасты қарау</div>
                         </div>
@@ -1035,7 +1171,7 @@
                     <div class="mod-left">
                         <div class="mod-mini-icon" id="academicIcon">🔒</div>
                         <div class="mod-info">
-                            <div class="mod-title">ТРЕНАЖЕР Academic</div>
+                            <div class="mod-title">Тренажер Academic</div>
                             <div class="mod-desc" lang-val="ru">Термины для статей PubMed, гайдлайнов и IELTS</div>
                             <div class="mod-desc" lang-val="kz">PubMed мақалалары, гайдлайндар және IELTS терминдері</div>
                         </div>
@@ -1047,17 +1183,18 @@
             </div>
         </details>
 
-        <!-- ==================== 2. КАТЕГОРИЯ: GRAMMAR & VIDEOCOURSE ==================== -->
+        <!-- ==================== 2. КАТЕГОРИЯ: ENGLISH LESSONS (ВЕСЬ УРОК 8 БЕСПЛАТНО) ==================== -->
         <details class="category-group">
             <summary class="category-header">
                 <div class="cat-head-left">
-                    <div class="cat-icon-box">🚀</div>
+                    <div class="cat-icon-box">📚</div>
                     <div class="cat-head-text">
                         <h2>
                             <span>English Lessons</span>
-                            <span class="badge-pill blue-pill">15 уроков + Чанки</span>
+                            <span class="badge-pill free-pill">Бесплатно Урок 8 и Метод чанков</span>
                         </h2>
-
+                        <p lang-val="ru">Видеокурс медицинской грамматики (15 модулей), конспекты, упражнения и аудио</p>
+                        <p lang-val="kz">Медициналық грамматика курсы (15 модуль), конспектілер, жаттығулар және аудио</p>
                     </div>
                 </div>
                 <div class="chevron-box">
@@ -1078,56 +1215,87 @@
                         </div>
                     </div>
                     <div class="mod-right">
-                        <span class="badge-pill free-pill">🔓 Free</span>
+                        <span class="badge-pill free-pill">Free</span>
                     </div>
                 </a>
 
-                <!-- 2. Демо-тренажер Урока 8 (FREE) -->
-                <a href="./grammar/thereis/" class="module-row free-row">
-                    <div class="mod-left">
-                        <div class="mod-mini-icon">🏥</div>
-                        <div class="mod-info">
-                            <div class="mod-title">Lesson 08: There is / There are</div>
-                            <div class="mod-desc" lang-val="ru">Открытый демо-тренажер по медицинской грамматике</div>
-                            <div class="mod-desc" lang-val="kz">Медициналық грамматика бойынша ашық демо-тренажер</div>
+                <!-- 2. КОМПАКТНЫЙ ХАБ БЕСПЛАТНОГО УРОКА 8 (Видео + Аудио RU/KZ + Конспект + Тренажер) -->
+                <div class="free-lesson-hub">
+                    <div class="flh-top">
+                        <div class="flh-title-group">
+                            <div class="mod-mini-icon" style="background: var(--teal-soft); border-color: var(--teal-border);">🏥</div>
+                            <div>
+                                <div class="flh-title">Lesson 08: There is / There are</div>
+                                <div class="flh-sub" lang-val="ru">Полный бесплатный урок: видео, аудио-практика, конспект и тренажер</div>
+                                <div class="flh-sub" lang-val="kz">Толық тегін сабақ: видео, аудио-практика, конспект және тренажер</div>
+                            </div>
+                        </div>
+                        <span class="badge-pill free-pill">Full Free</span>
+                    </div>
+
+                    <!-- Переключатель 3 видео/аудио дорожек без нагромождения -->
+                    <div class="flh-media-tabs">
+                        <button type="button" class="flh-tab-btn" id="l8TabVideo" onclick="switchLesson8Media('video')">
+                            🎬 <span lang-val="ru">Видеоурок</span><span lang-val="kz">Видеосабақ</span>
+                        </button>
+                        <button type="button" class="flh-tab-btn" id="l8TabRu" onclick="switchLesson8Media('ru')">
+                            🎧 Listening RU
+                        </button>
+                        <button type="button" class="flh-tab-btn" id="l8TabKz" onclick="switchLesson8Media('kz')">
+                            🎧 Listening KZ
+                        </button>
+                    </div>
+
+                    <!-- Единый выдвижной контейнер плеера -->
+                    <div class="flh-player-wrap" id="l8PlayerWrap">
+                        <div class="flh-player-bar">
+                            <span id="l8NowPlayingLabel">Видеоурок 8</span>
+                            <button type="button" class="flh-close-video" onclick="closeLesson8Media()">
+                                <span lang-val="ru">Свернуть плеер ✕</span>
+                                <span lang-val="kz">Плеерді жабу ✕</span>
+                            </button>
+                        </div>
+                        <div class="video-container" style="margin-top: 0;">
+                            <iframe
+                                id="l8VimeoIframe"
+                                title="Lesson 8 Media Player"
+                                loading="lazy"
+                                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen>
+                            </iframe>
                         </div>
                     </div>
-                    <div class="mod-right">
-                        <span class="badge-pill free-pill">🔓 Free</span>
-                    </div>
-                </a>
 
-                <!-- 3. Полный курс грамматики (15 уроков + Экзамен) -->
+                    <!-- 2 компактные кнопки: Конспект и Тренажер -->
+                    <div class="flh-actions-grid">
+                        <a href="https://kazdoctors.com/grammar/lesson8" class="flh-action-link notes">
+                            <span>📖</span>
+                            <span lang-val="ru">Конспект (RU/KZ)</span>
+                            <span lang-val="kz">Конспект (RU/KZ)</span>
+                        </a>
+                        <a href="./grammar/thereis/" class="flh-action-link trainer">
+                            <span>🎯</span>
+                            <span lang-val="ru">Тренажер урока</span>
+                            <span lang-val="kz">Сабақ тренажері</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 3. Полный курс грамматики (15 уроков + ДЗ + Экзамен) -->
                 <a href="./grammar/" class="module-row">
                     <div class="mod-left">
-                        <div class="mod-mini-icon" id="grammarIcon">🔒</div>
+                        <div class="mod-mini-icon" id="grammarIcon">📖</div>
                         <div class="mod-info">
                             <div class="mod-title">Grammar Full Course (Lessons 1–15)</div>
-                            <div class="mod-desc" lang-val="ru">Все тренажеры (Standard), конспекты (Pro) и видеоуроки (Premium)</div>
-                            <div class="mod-desc" lang-val="kz">Барлық тренажерлер (Standard), конспектілер (Pro) және видеолар (Premium)</div>
+                            <div class="mod-desc" lang-val="ru">Все 15 уроков, видеоразборы, Listening, домашние задания и экзамен</div>
+                            <div class="mod-desc" lang-val="kz">Барлық 15 сабақ, видео-талдаулар, Listening, үй тапсырмалары мен емтихан</div>
                         </div>
                     </div>
                     <div class="mod-right">
-                        <span class="badge-pill" id="grammarBadge">15 уроков</span>
+                        <span class="badge-pill blue-pill" id="grammarBadge">15 уроков ➔</span>
                     </div>
                 </a>
-
-                <details class="video-spoiler">
-                    <summary>
-                        <span lang-val="ru">🎬 Посмотреть демо-фрагмент видеоурока</span>
-                        <span lang-val="kz">🎬 Видеосабақтың демо-үзіндісін көру</span>
-                        <span>⌄</span>
-                    </summary>
-                    <div class="video-container">
-                        <iframe 
-                            src="https://www.youtube.com/embed/j8azjjNha1w" 
-                            title="Демо видеокурса медицинской грамматики"
-                            loading="lazy"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                </details>
             </div>
         </details>
 
@@ -1135,14 +1303,13 @@
         <details class="category-group">
             <summary class="category-header">
                 <div class="cat-head-left">
-                    <div class="cat-icon-box">🗣️</div>
+                    <div class="cat-icon-box">🩺</div>
                     <div class="cat-head-text">
                         <h2>
                             <span>Medical Skills & USMLE</span>
-                            <span class="badge-pill free-pill">Тизер Free</span>
                         </h2>
-                        <p lang-val="ru">Навыки для современного врача и USMLE</p>
-                        <p lang-val="kz">Заманауи дәрігердің қабілеттері және USMLE</p>
+                        <p lang-val="ru">Все для современного врача</p>
+                        <p lang-val="kz">Заманауи дәрігер үшін бүкіл қабілеттер</p>
                     </div>
                 </div>
                 <div class="chevron-box">
@@ -1156,8 +1323,8 @@
                         <div class="mod-mini-icon" id="interviewIcon">🗣️</div>
                         <div class="mod-info">
                             <div class="mod-title">Patient Interview (Тренажер)</div>
-                            <div class="mod-desc" lang-val="ru">Практика сбора анамнеза (демо-тизер открыт бесплатно)</div>
-                            <div class="mod-desc" lang-val="kz">Анамнез жинау практикасы (демо-тизер тегін ашық)</div>
+                            <div class="mod-desc" lang-val="ru">Практика сбора анамнеза (демо открыт бесплатно)</div>
+                            <div class="mod-desc" lang-val="kz">Анамнез жинау практикасы (демо тегін ашық)</div>
                         </div>
                     </div>
                     <div class="mod-right">
@@ -1176,7 +1343,7 @@
                         </div>
                     </div>
                     <div class="mod-right">
-                        <span class="badge-pill" id="proBadge1">Pro / Premium</span>
+                        <span class="badge-pill" id="proBadge1">Pro+</span>
                     </div>
                 </a>
 
@@ -1191,7 +1358,7 @@
                         </div>
                     </div>
                     <div class="mod-right">
-                        <span class="badge-pill" id="proBadge2">Pro / Premium</span>
+                        <span class="badge-pill" id="proBadge2">Pro+</span>
                     </div>
                 </a>
 
@@ -1206,7 +1373,7 @@
                         </div>
                     </div>
                     <div class="mod-right">
-                        <span class="badge-pill" id="proBadge3">Pro / Premium</span>
+                        <span class="badge-pill" id="proBadge3">Pro+</span>
                     </div>
                 </a>
 
@@ -1220,7 +1387,7 @@
                         </div>
                     </div>
                     <div class="mod-right">
-                        <span class="badge-pill" id="proBadge4">Pro / Premium</span>
+                        <span class="badge-pill" id="proBadge4">Pro+</span>
                     </div>
                 </a>
 
@@ -1248,9 +1415,10 @@
                     <div class="cat-head-text">
                         <h2>
                             <span>Vocabulary Games</span>
-                            <span class="badge-pill free-pill">🔓 2 игры Free</span>
+                            <span class="badge-pill free-pill">Бесплатно</span>
                         </h2>
-
+                        <p lang-val="ru">Сколько слов знаете?</p>
+                        <p lang-val="kz">Қанша сөз білесіз?</p>
                     </div>
                 </div>
                 <div class="chevron-box">
@@ -1269,7 +1437,7 @@
                         </div>
                     </div>
                     <div class="mod-right">
-                        <span class="badge-pill free-pill">🔓 Free</span>
+                        <span class="badge-pill free-pill">Free</span>
                     </div>
                 </a>
 
@@ -1283,23 +1451,24 @@
                         </div>
                     </div>
                     <div class="mod-right">
-                        <span class="badge-pill free-pill">🔓 Free</span>
+                        <span class="badge-pill free-pill">Free</span>
                     </div>
                 </a>
             </div>
         </details>
 
-        <!-- Яркая карточка перехода к Тарифам -->
+        <!-- Сдержанная карточка перехода к Тарифам -->
         <a href="./tarifs/" class="tarifs-banner-card">
             <div class="cat-head-left">
-                <div class="cat-icon-box" style="background: linear-gradient(135deg, #FFFFFF 0%, #FEF08A 100%); border-color: rgba(217,160,0,0.4);">💎</div>
+                <div class="cat-icon-box" style="background: var(--kz-gold-soft); border-color: #FDE68A;">💎</div>
                 <div class="cat-head-text">
                     <h2>
                         <span lang-val="ru">Тарифы и программы обучения</span>
                         <span lang-val="kz">Тарифтер мен оқу бағдарламалары</span>
-                        <span class="badge-pill">от 7 990 ₸</span>
+                        <span class="badge-pill" style="background: var(--kz-gold-soft); color: #92400E; border-color: #FDE68A;">от 7 990 ₸</span>
                     </h2>
-
+                    <p lang-val="ru">Выучите английский с нашим сайтом!</p>
+                    <p lang-val="kz">Ағылшынша біздің сайтымызбен үйреніп алыңыз!</p>
                 </div>
             </div>
             <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -1307,24 +1476,24 @@
 
     </main>
 
-    <!-- Компактная плавающая строка 54 px -->
+    <!-- Компактная плавающая строка -->
     <div class="sticky-bottom-cta" id="stickyBottomCta">
         <a href="./tarifs/" class="sbc-link">
-            <span lang-val="ru">🔥 Полный доступ от 7 990 ₸/мес · <strong>Тарифы ➔</strong></span>
-            <span lang-val="kz">🔥 Толық доступ 7 990 ₸/айдан · <strong>Тарифтер ➔</strong></span>
+            <span lang-val="ru">Полный доступ от 7 990 ₸/мес · <strong>Тарифы ➔</strong></span>
+            <span lang-val="kz">Толық доступ 7 990 ₸/айдан · <strong>Тарифтер ➔</strong></span>
         </a>
         <button type="button" class="sbc-close-btn" onclick="dismissStickyBar()" aria-label="Закрыть">✕</button>
     </div>
 
     <footer>
         <a href="https://wa.me/77081595038?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BF%D0%BE%D0%BB%D1%83%D1%87%D0%B8%D1%82%D1%8C%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%20%D0%BD%D0%B0%20kazdoctors.com" target="_blank" rel="noopener noreferrer" class="instagram-link cta-primary" lang-val="ru">
-            🔥 Записаться и получить доступ (WhatsApp)
+            Записаться и получить доступ (WhatsApp)
         </a>
         <a href="https://wa.me/77081595038?text=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%D0%B5%D1%82%D1%81%D1%96%D0%B7%20%D0%B1%D0%B5!%20kazdoctors.com%20%D1%81%D0%B0%D0%B9%D1%82%D1%8B%D0%BD%D0%B0%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%20%D0%B0%D0%BB%D2%93%D1%8B%D0%BC%20%D0%BA%D0%B5%D0%BB%D0%B5%D0%B4%D1%96" target="_blank" rel="noopener noreferrer" class="instagram-link cta-primary" lang-val="kz">
-            🔥 Жазылу және доступ алу (WhatsApp)
+            Жазылу және доступ алу (WhatsApp)
         </a>
         <a href="https://instagram.com/doctors.speak" target="_blank" rel="noopener noreferrer" class="instagram-link">
-            <span>📸 Instagram @doctors.speak</span>
+            <span>Instagram @doctors.speak</span>
         </a>
     </footer>
 
@@ -1336,6 +1505,90 @@
     const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
 
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // =========================================================================
+    // ССЫЛКИ НА МЕДИА БЕСПЛАТНОГО УРОКА №8 (ВСТАВЬТЕ ВАШИ ССЫЛКИ VIMEO НИЖЕ)
+    // =========================================================================
+    const LESSON8_MEDIA = {
+        video: {
+            url: "https://player.vimeo.com/video/1240396124?badge=0&autopause=0&player_id=0&app_id=58479",
+            labelRu: "🎬 Видеоурок 8: There is / There are",
+            labelKz: "🎬 8-видеосабақ: There is / There are"
+        },
+        ru: {
+            // ВСТАВЬТЕ ССЫЛКУ НА VIMEO УРОКА 8 (ОРЫСША) НИЖЕ:
+            url: "https://player.vimeo.com/video/VIMEO_ID_LESSON_8_RU",
+            labelRu: "🎧 Listening (орысша) — Урок 8",
+            labelKz: "🎧 Listening (орысша) — 8-сабақ"
+        },
+        kz: {
+            // ВСТАВЬТЕ ССЫЛКУ НА VIMEO УРОКА 8 (ҚАЗАҚША) НИЖЕ:
+            url: "https://player.vimeo.com/video/VIMEO_ID_LESSON_8_KZ",
+            labelRu: "🎧 Listening (қазақша) — Урок 8",
+            labelKz: "🎧 Listening (қазақша) — 8-сабақ"
+        }
+    };
+
+    let activeLesson8MediaKey = null;
+
+    function switchLesson8Media(key) {
+        const wrap = document.getElementById('l8PlayerWrap');
+        const iframe = document.getElementById('l8VimeoIframe');
+        const label = document.getElementById('l8NowPlayingLabel');
+        const btnMap = {
+            video: document.getElementById('l8TabVideo'),
+            ru: document.getElementById('l8TabRu'),
+            kz: document.getElementById('l8TabKz')
+        };
+
+        // Повторный клик по активной вкладке сворачивает плеер
+        if (activeLesson8MediaKey === key && wrap.classList.contains('open')) {
+            closeLesson8Media();
+            return;
+        }
+
+        activeLesson8MediaKey = key;
+        Object.keys(btnMap).forEach(k => {
+            if (btnMap[k]) btnMap[k].classList.toggle('active', k === key);
+        });
+
+        const item = LESSON8_MEDIA[key];
+        if (item) {
+            label.textContent = currentLang === 'kz' ? item.labelKz : item.labelRu;
+            iframe.setAttribute('src', item.url);
+            wrap.classList.add('open');
+        }
+    }
+
+    function closeLesson8Media() {
+        const wrap = document.getElementById('l8PlayerWrap');
+        const iframe = document.getElementById('l8VimeoIframe');
+        wrap.classList.remove('open');
+        if (iframe) iframe.removeAttribute('src');
+        activeLesson8MediaKey = null;
+        ['l8TabVideo', 'l8TabRu', 'l8TabKz'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('active');
+        });
+    }
+
+    // Ленивая подгрузка обзорного YouTube-видео при открытии спойлера
+    const introDetails = document.getElementById('introVideoDetails');
+    if (introDetails) {
+        introDetails.addEventListener('toggle', () => {
+            const iframe = introDetails.querySelector('iframe');
+            if (!iframe) return;
+            if (introDetails.open) {
+                if (iframe.dataset.src && !iframe.getAttribute('src')) {
+                    iframe.setAttribute('src', iframe.dataset.src);
+                }
+            } else {
+                if (iframe.getAttribute('src')) {
+                    iframe.removeAttribute('src');
+                }
+            }
+        });
+    }
 
     const PLAN_DISPLAY_NAMES = {
         free: "FREE",
@@ -1365,6 +1618,11 @@
         localStorage.setItem('selected_lang', lang);
         localStorage.setItem('doctors_speak_lang', lang);
 
+        if (activeLesson8MediaKey && LESSON8_MEDIA[activeLesson8MediaKey]) {
+            const item = LESSON8_MEDIA[activeLesson8MediaKey];
+            document.getElementById('l8NowPlayingLabel').textContent = lang === 'kz' ? item.labelKz : item.labelRu;
+        }
+
         if (typeof renderWordCardByIndex === 'function' && currentWordIndex >= 0) {
             renderWordCardByIndex(currentWordIndex);
         }
@@ -1378,6 +1636,11 @@
                         otherGroup.removeAttribute('open');
                     }
                 });
+            } else {
+                // Если закрыли категорию English Lessons — останавливаем плеер Урока 8
+                if (targetGroup.contains(document.getElementById('l8PlayerWrap'))) {
+                    closeLesson8Media();
+                }
             }
         });
     });
@@ -1511,19 +1774,19 @@
 
         if (tierLevel >= 1) {
             document.getElementById("clinicalIcon").textContent = "🩺";
-            document.getElementById("clinicalBadge").textContent = "✅ Открыто";
+            document.getElementById("clinicalBadge").textContent = "Открыто";
             document.getElementById("clinicalBadge").className = "badge-pill free-pill";
 
             document.getElementById("academicIcon").textContent = "📚";
-            document.getElementById("academicBadge").textContent = "✅ Открыто";
+            document.getElementById("academicBadge").textContent = "Открыто";
             document.getElementById("academicBadge").className = "badge-pill free-pill";
 
             document.getElementById("grammarIcon").textContent = "📖";
-            document.getElementById("grammarBadge").textContent = "✅ Тренажеры";
+            document.getElementById("grammarBadge").textContent = "Тренажеры";
             document.getElementById("grammarBadge").className = "badge-pill free-pill";
 
-            document.getElementById("vocabCatBadge").textContent = "✅ Все открыто";
-            document.getElementById("interviewBadge").textContent = "✅ Открыто";
+            document.getElementById("vocabCatBadge").textContent = "Все открыто";
+            document.getElementById("interviewBadge").textContent = "Открыто";
         }
 
         if (tierLevel >= 2) {
@@ -1535,7 +1798,7 @@
             document.getElementById("readingPracIcon").textContent = "🔬";
             document.getElementById("presIcon").textContent = "🎤";
 
-            const proStatus = tierLevel >= 3 ? "✅ Видео + Конспект" : "✅ Конспект открыт";
+            const proStatus = tierLevel >= 3 ? "Видео + Конспект" : "Конспект открыт";
             ["proBadge1", "proBadge2", "proBadge3", "proBadge4"].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) {
@@ -1545,7 +1808,7 @@
             });
 
             if (tierLevel >= 3) {
-                document.getElementById("grammarBadge").textContent = "✅ Полный курс";
+                document.getElementById("grammarBadge").textContent = "Полный курс";
             }
         }
 
@@ -1554,7 +1817,7 @@
             adminBtn.id = "adminBtn";
             adminBtn.href = "admin.html";
             adminBtn.textContent = "⚙️ ADMIN";
-            adminBtn.style.cssText = "display: inline-block; margin-right: 8px; padding: 7px 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.5); background: var(--card-bg); color: var(--kz-blue-dark); font-size: 0.75rem; font-weight: 800; text-decoration: none;";
+            adminBtn.style.cssText = "display: inline-block; margin-right: 8px; padding: 6px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.95); color: var(--med-navy); font-size: 0.74rem; font-weight: 800; text-decoration: none;";
             document.getElementById("userArea").insertBefore(adminBtn, document.getElementById("logoutButton"));
         }
     }
@@ -1710,7 +1973,7 @@ const words = [
         const secs = Math.floor((diffMs % 60000) / 1000);
 
         const pad = n => n.toString().padStart(2, '0');
-        document.getElementById('wothTimer').textContent = `Next in ${pad(mins)}:${pad(secs)}`;
+        document.getElementById('wothTimer').textContent = `${pad(mins)}:${pad(secs)}`;
     }
 
     function checkAnswer(selectedBtn, isCorrect) {
@@ -1733,7 +1996,7 @@ const words = [
             localStorage.setItem('ds_daily_words_solved', dailySolvedCount.toString());
             updateStreakBadge();
             feedback.textContent = currentLang === 'kz' ? "✅ Дұрыс! Жарайсыз!" : "✅ Верно! Отличная работа!";
-            feedback.style.color = "var(--green-accent)";
+            feedback.style.color = "var(--teal-accent)";
         } else {
             feedback.textContent = currentLang === 'kz' ? "❌ Қате. Тағы байқап көріңіз!" : "❌ Ошибка. Попробуйте ещё слово!";
             feedback.style.color = "var(--red-accent)";
