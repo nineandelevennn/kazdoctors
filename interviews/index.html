@@ -57,15 +57,15 @@
     }
 
     .header {
-      background: var(--kz-blue);
+      background: linear-gradient(135deg, #0077A3 0%, var(--kz-blue) 100%);
       color: #FFFFFF;
-      padding: 14px 16px;
+      padding: 12px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
       flex-shrink: 0;
-      gap: 8px;
+      gap: 6px;
     }
 
     .home-btn {
@@ -76,8 +76,8 @@
       color: #FFFFFF;
       text-decoration: none;
       font-weight: 700;
-      font-size: 0.75rem;
-      padding: 6px 12px;
+      font-size: 0.74rem;
+      padding: 6px 11px;
       border-radius: 20px;
       display: inline-flex;
       align-items: center;
@@ -94,24 +94,26 @@
     .header-right {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
-    .brand {
+    .tier-pill {
       font-weight: 800;
-      font-size: 0.75rem;
+      font-size: 0.68rem;
       letter-spacing: 0.3px;
-      color: #FFFFFF;
-      background: rgba(255, 255, 255, 0.18);
-      padding: 5px 10px;
+      color: var(--kz-gold);
+      background: rgba(255, 199, 44, 0.22);
+      padding: 4px 9px;
       border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.35);
+      border: 1px solid var(--kz-gold);
       white-space: nowrap;
+      text-decoration: none;
+      text-transform: uppercase;
     }
 
     .lang-switch {
       display: flex;
-      background: rgba(0, 0, 0, 0.15);
+      background: rgba(0, 0, 0, 0.18);
       border-radius: 20px;
       padding: 2px;
       border: 1px solid rgba(255, 255, 255, 0.35);
@@ -120,7 +122,7 @@
     .lang-btn {
       background: transparent;
       border: none;
-      color: rgba(255, 255, 255, 0.8);
+      color: rgba(255, 255, 255, 0.85);
       font-weight: 800;
       font-size: 0.7rem;
       padding: 4px 8px;
@@ -130,8 +132,8 @@
     }
 
     .lang-btn.active {
-      background: #FFFFFF;
-      color: var(--kz-blue-dark);
+      background: var(--kz-gold);
+      color: var(--text-dark);
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
     }
 
@@ -146,7 +148,7 @@
       border-radius: 10px;
       text-align: center;
       margin-bottom: 8px;
-      display: none;
+      display: block;
     }
 
     .game-container {
@@ -355,40 +357,42 @@
       transform: scale(0.98);
     }
 
-    /* Экран окончания демо-версии (Paywall) */
+    /* Экран окончания демо-версии (Paywall под новые тарифы) */
     .paywall-container {
       display: none;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 28px 20px;
+      padding: 24px 18px;
       flex-grow: 1;
-      gap: 14px;
+      gap: 12px;
+      overflow-y: auto;
     }
 
     .paywall-icon {
-      font-size: 3rem;
+      font-size: 2.6rem;
       background: var(--kz-blue-light);
-      width: 80px;
-      height: 80px;
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       border: 2px solid rgba(0, 161, 222, 0.25);
+      flex-shrink: 0;
     }
 
     .paywall-title {
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       font-weight: 900;
       color: var(--text-dark);
     }
 
     .paywall-desc {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--text-muted);
-      line-height: 1.5;
+      line-height: 1.45;
       font-weight: 500;
     }
 
@@ -396,14 +400,15 @@
       background: var(--bg-main);
       border: 1px solid var(--border-color);
       border-radius: 14px;
-      padding: 12px 16px;
+      padding: 12px 14px;
       width: 100%;
       text-align: left;
-      font-size: 0.8rem;
+      font-size: 0.77rem;
       font-weight: 600;
       display: flex;
       flex-direction: column;
       gap: 8px;
+      line-height: 1.35;
     }
 
     .cta-btn {
@@ -411,13 +416,24 @@
       background: var(--kz-gold);
       color: var(--text-dark);
       font-weight: 800;
-      padding: 14px;
-      border-radius: 16px;
-      font-size: 0.92rem;
+      padding: 13px;
+      border-radius: 14px;
+      font-size: 0.88rem;
       text-decoration: none;
       border: 1px solid var(--kz-gold-dark);
       box-shadow: 0 4px 14px rgba(217, 160, 0, 0.25);
       transition: transform 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .cta-btn.whatsapp {
+      background: #10B981;
+      color: #FFFFFF;
+      border-color: #059669;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
     }
 
     .cta-btn.secondary {
@@ -443,7 +459,7 @@
     <header class="header">
       <a href="https://kazdoctors.com/" class="home-btn" id="backBtn">⬅ Назад</a>
       <div class="header-right">
-        <div class="brand">@doctors.speak</div>
+        <a href="https://kazdoctors.com/tarifs/" class="tier-pill" id="tierBadge">Тариф: FREE</a>
         <div class="lang-switch">
           <button id="langRu" class="lang-btn active" onclick="setLanguage('ru')">RU</button>
           <button id="langKz" class="lang-btn" onclick="setLanguage('kz')">KZ</button>
@@ -455,10 +471,10 @@
     <div id="gameScreen" class="game-container">
       
       <div>
-        <!-- Показывается ТОЛЬКО если пользователь НЕ вошел в аккаунт -->
+        <!-- Показывается в демо-режиме (для гостей и тарифа FREE) -->
         <div id="demoBanner" class="demo-banner">🔓 Демо-режим: 3 показательных вопроса (A1 ➔ A2 ➔ B1+)</div>
 
-        <!-- Показывается ТОЛЬКО если пользователь ВОШЕЛ в аккаунт Supabase -->
+        <!-- Показывается на тарифах STANDARD, PRO, PREMIUM и VIP -->
         <select id="levelSelect" class="mode-select" onchange="changeLevel()">
           <option value="A1" id="optA1">Level A1 — Базовые фразы и симптомы</option>
           <option value="A2" id="optA2">Level A2 — Грамматика и ход опроса</option>
@@ -495,57 +511,148 @@
     <div id="paywallScreen" class="paywall-container">
       <div class="paywall-icon">🔒</div>
       <div class="paywall-title" id="pwTitle">Демо-режим завершен!</div>
-      <div class="paywall-desc" id="pwDesc">Вы прошли 3 показательных вопроса. Откройте полный доступ ко всем тренажерам, чтобы отработать опрос пациентов до автоматизма!</div>
+      <div class="paywall-desc" id="pwDesc">Вы прошли 3 показательных вопроса. Подключите подходящий тариф, чтобы открыть все 36 клинических сценариев опроса пациента!</div>
       
       <div class="paywall-features" id="pwFeatures">
-        <div>✅ Полная база вопросов (уровни A1, A2, B1+)</div>
-        <div>✅ Разбор реальных клинических кейсов</div>
-        <div>✅ Доступ к разделам Clinical, Academic & Grammar</div>
+        <div>🔹 <b>STANDARD:</b> полный доступ ко всем тренажерам (Patient Interview, Clinical, Academic и 15 тренажеров Grammar)</div>
+        <div>📘 <b>PRO:</b> все тренажеры + учебник SOCRATES, интерактивные конспекты, Listening и разбор статей PubMed</div>
+        <div>🌟 <b>PREMIUM / VIP:</b> полный доступ ко всей платформе + все видеоуроки курса</div>
       </div>
 
-      <a href="https://kazdoctors.com/tarifs/" class="cta-btn" id="pwBuyBtn">🔥 Получить полный доступ (Тарифы)</a>
-      <a href="/login.html" class="cta-btn secondary" id="pwLoginBtn">🔐 Уже есть аккаунт? Войти</a>
+      <a href="https://kazdoctors.com/tarifs/" class="cta-btn" id="pwBuyBtn">💎 Выбрать тариф (Standard / Pro / Premium)</a>
+      <a href="https://wa.me/77081595038?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BF%D0%BE%D0%BB%D1%83%D1%87%D0%B8%D1%82%D1%8C%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%20%D0%BA%20%D1%82%D1%80%D0%B5%D0%BD%D0%B0%D0%B6%D0%B5%D1%80%D1%83%20Patient%20Interview" target="_blank" class="cta-btn whatsapp" id="pwWaBtn">💬 Подключить через WhatsApp</a>
+      <a href="/login.html" class="cta-btn secondary" id="pwLoginBtn">🔐 Уже есть подписка? Войти в аккаунт</a>
     </div>
 
   </div>
 
 <script>
-  // ================= SUPABASE & DEMO MODE CHECK =================
+  // ================= SUPABASE & TARIFF PLANS CHECK =================
   const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
   const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
 
-  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const supabaseClient = window.supabase
+    ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+    : null;
 
+  const TIER_LEVELS = {
+    none: 0,
+    free: 0,
+    standard: 1,
+    pro: 2,
+    premium: 3,
+    vip: 4
+  };
+
+  const TIER_NAMES_RU = {
+    none: "FREE",
+    free: "FREE",
+    standard: "СТАНДАРТ",
+    pro: "ПРО",
+    premium: "ПРЕМИУМ",
+    vip: "ВИП 👑"
+  };
+
+  let currentUserTier = "none";
   let isDemoMode = true;
   const DEMO_LIMIT = 3;
   // Индексы 3 лучших показательных вопросов для демо (0 = A1 Начало приема, 12 = A2 Ошибка с кашлем, 30 = B1+ ГЭРБ vs Инфаркт)
   const DEMO_QUESTION_INDICES = [0, 12, 30];
 
-  async function checkAuth() {
+  async function detectUserTier(session) {
+    if (!session || !session.user || !supabaseClient) return "none";
+
+    const user = session.user;
+    const userEmail = (user.email || "").toLowerCase().trim();
+
     try {
-      const { data, error } = await supabaseClient.auth.getSession();
-      if (!error && data && data.session) {
-        // Пользователь АВТОРИЗОВАН в Supabase -> включаем полную версию (все 36 вопросов)
-        isDemoMode = false;
-        document.getElementById('demoBanner').style.display = 'none';
-        document.getElementById('levelSelect').style.display = 'block';
-      } else {
-        // Пользователь НЕ авторизован -> включаем демо на 3 фиксированных вопроса
-        isDemoMode = true;
-        document.getElementById('demoBanner').style.display = 'block';
-        document.getElementById('levelSelect').style.display = 'none';
+      let { data: profile } = await supabaseClient
+        .from('profiles')
+        .select('tier, subscription_expires_at')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      if (!profile && userEmail) {
+        const resByEmail = await supabaseClient
+          .from('profiles')
+          .select('tier, subscription_expires_at')
+          .ilike('email', userEmail)
+          .maybeSingle();
+        profile = resByEmail.data;
       }
-    } catch (e) {
+
+      if (!profile || !profile.subscription_expires_at) {
+        return "free";
+      }
+
+      const expiresAt = new Date(profile.subscription_expires_at);
+      if (isNaN(expiresAt.getTime()) || new Date() > expiresAt) {
+        return "free";
+      }
+
+      const dbTier = (profile.tier || "standard").toLowerCase().trim();
+      if (TIER_LEVELS[dbTier] !== undefined) {
+        return dbTier;
+      }
+    } catch (err) {
+      console.warn("Ошибка проверки профиля:", err);
+    }
+
+    return "free";
+  }
+
+  function applyTierAccess(tier, isLoggedIn) {
+    currentUserTier = tier;
+    const tierLevel = TIER_LEVELS[tier] || 0;
+
+    const badgeEl = document.getElementById('tierBadge');
+    if (badgeEl) {
+      badgeEl.textContent = `Тариф: ${TIER_NAMES_RU[tier] || "FREE"}`;
+    }
+
+    const loginBtn = document.getElementById('pwLoginBtn');
+    if (loginBtn) {
+      loginBtn.style.display = isLoggedIn ? 'none' : 'inline-flex';
+    }
+
+    // Полный доступ к тренажеру открыт на тарифах STANDARD (1), PRO (2), PREMIUM (3) и VIP (4)
+    if (tierLevel >= TIER_LEVELS.standard) {
+      isDemoMode = false;
+      document.getElementById('demoBanner').style.display = 'none';
+      document.getElementById('levelSelect').style.display = 'block';
+
+      if (document.getElementById('paywallScreen').style.display === 'flex') {
+        document.getElementById('paywallScreen').style.display = 'none';
+        document.getElementById('gameScreen').style.display = 'flex';
+        nextQuestion();
+      }
+    } else {
       isDemoMode = true;
       document.getElementById('demoBanner').style.display = 'block';
       document.getElementById('levelSelect').style.display = 'none';
     }
+
     updateStatsUI();
-    nextQuestion();
+  }
+
+  async function checkAuthAndTier() {
+    if (!supabaseClient) return;
+
+    try {
+      const { data, error } = await supabaseClient.auth.getSession();
+      if (!error && data && data.session) {
+        const tier = await detectUserTier(data.session);
+        applyTierAccess(tier, true);
+      } else {
+        applyTierAccess("none", false);
+      }
+    } catch (e) {
+      applyTierAccess("none", false);
+    }
   }
 
   // ================= UI TRANSLATIONS =================
-  let currentLang = 'ru';
+  let currentLang = localStorage.getItem('selected_lang') || 'ru';
 
   const uiTranslations = {
     ru: {
@@ -563,14 +670,15 @@
       nextBtn: "Далее ➔",
       finishBtn: "Завершить демо ➔",
       pwTitle: "Демо-режим завершен!",
-      pwDesc: "Вы прошли 3 показательных вопроса. Откройте полный доступ ко всем тренажерам, чтобы отработать опрос пациентов до автоматизма!",
+      pwDesc: "Вы прошли 3 показательных вопроса. Подключите подходящий тариф, чтобы открыть все 36 клинических сценариев опроса пациента!",
       pwFeatures: `
-        <div>✅ Полная база вопросов (уровни A1, A2, B1+)</div>
-        <div>✅ Разбор реальных клинических кейсов</div>
-        <div>✅ Доступ к разделам Clinical, Academic & Grammar</div>
+        <div>🔹 <b>STANDARD:</b> полный доступ ко всем тренажерам (Patient Interview, Clinical, Academic и 15 тренажеров Grammar)</div>
+        <div>📘 <b>PRO:</b> все тренажеры + учебник SOCRATES, интерактивные конспекты, Listening и разбор статей PubMed</div>
+        <div>🌟 <b>PREMIUM / VIP:</b> полный доступ ко всей платформе + все видеоуроки курса</div>
       `,
-      pwBuyBtn: "🔥 Получить полный доступ (Тарифы)",
-      pwLoginBtn: "🔐 Уже есть аккаунт? Войти"
+      pwBuyBtn: "💎 Выбрать тариф (Standard / Pro / Premium)",
+      pwWaBtn: "💬 Подключить через WhatsApp",
+      pwLoginBtn: "🔐 Уже есть подписка? Войти в аккаунт"
     },
     kz: {
       back: "⬅ Артқа",
@@ -587,14 +695,15 @@
       nextBtn: "Келесі ➔",
       finishBtn: "Демоны аяқтау ➔",
       pwTitle: "Демо-режим аяқталды!",
-      pwDesc: "Сіз 3 үлгілік сұрақтан өттіңіз. Пациенттерден анамнез жинауды толық меңгеру үшін барлық тренажерлерге толық қолжетімділік алыңыз!",
+      pwDesc: "Сіз 3 үлгілік сұрақтан өттіңіз. Пациенттерден анамнез жинаудың барлық 36 клиникалық сценарийін ашу үшін өз тарифіңізді таңдаңыз!",
       pwFeatures: `
-        <div>✅ Толық сұрақтар базасы (A1, A2, B1+ деңгейлері)</div>
-        <div>✅ Нақты клиникалық кейстерді талдау</div>
-        <div>✅ Clinical, Academic & Grammar бөлімдеріне кіру</div>
+        <div>🔹 <b>STANDARD:</b> барлық тренажерлерге толық доступ (Patient Interview, Clinical, Academic және 15 Grammar тренажері)</div>
+        <div>📘 <b>PRO:</b> барлық тренажерлер + SOCRATES оқулығы, интерактивті конспектілер, Listening және PubMed мақалалары</div>
+        <div>🌟 <b>PREMIUM / VIP:</b> платформаға толық доступ + курстың барлық видеосабақтары</div>
       `,
-      pwBuyBtn: "🔥 Толық қолжетімділік алу (Бағалар)",
-      pwLoginBtn: "🔐 Аккаунтыңыз бар ма? Кіру"
+      pwBuyBtn: "💎 Тарифті таңдау (Standard / Pro / Premium)",
+      pwWaBtn: "💬 WhatsApp арқылы қосу",
+      pwLoginBtn: "🔐 Жазылымыңыз бар ма? Аккаунтқа кіру"
     }
   };
 
@@ -615,7 +724,7 @@
       correct: 0,
       explanation: {
         ru: "Фраза «What brings you in today?» — золотой стандарт начала медицинского интервью в англоязычной практике. Вопрос «What is the problem?» звучит грубо.",
-        kz: "«What brings you in today?» фразасы — алтын стандарты. «What is the problem?» деген сұрақ дөрекі естіледі."
+        kz: "«What brings you in today?» фразасы — алтын стандарт. «What is the problem?» деген сұрақ дөрекі естіледі."
       }
     },
     {
@@ -1366,8 +1475,8 @@
       level: "B1+",
       tag: { ru: "B1+ • Case 6: ГЭРБ (Acid Reflux)", kz: "B1+ • Case 6: ГЭРБ (Acid Reflux)" },
       question: {
-        ru: "Пациент жалуется на жжение в груди после еды и кислый привкус ночью. Какой вопрос исключит кардиологической патологии?",
-        kz: "Пациент тамақтан кейін кеудесінің ашуына және түнде қышқыл дәм пайда болуына шағымданады. Кардиологиялық патологияны қай сұрақ  жоққа шығарады?"
+        ru: "Пациент жалуется на жжение в груди после еды и кислый привкус ночью. Какой вопрос исключит кардиологическую патологию?",
+        kz: "Пациент тамақтан кейін кеудесінің ашуына және түнде қышқыл дәм пайда болуына шағымданады. Кардиологиялық патологияны қай сұрақ жоққа шығарады?"
       },
       options: {
         ru: [
@@ -1543,6 +1652,7 @@
 
   function setLanguage(lang) {
     currentLang = lang;
+    localStorage.setItem('selected_lang', lang);
     document.documentElement.lang = lang;
 
     document.getElementById('langRu').classList.toggle('active', lang === 'ru');
@@ -1564,6 +1674,7 @@
     document.getElementById('pwDesc').textContent = t.pwDesc;
     document.getElementById('pwFeatures').innerHTML = t.pwFeatures;
     document.getElementById('pwBuyBtn').textContent = t.pwBuyBtn;
+    document.getElementById('pwWaBtn').textContent = t.pwWaBtn;
     document.getElementById('pwLoginBtn').textContent = t.pwLoginBtn;
 
     if (currentQuestion) {
@@ -1590,7 +1701,7 @@
 
   function nextQuestion() {
     if (isDemoMode) {
-      // В ДЕМО-РЕЖИМЕ: если 3 вопроса уже пройдены, показываем экран оплаты
+      // В ДЕМО-РЕЖИМЕ: если 3 вопроса уже пройдены, показываем экран тарифов
       if (demoStep >= DEMO_LIMIT) {
         showPaywall();
         return;
@@ -1599,7 +1710,7 @@
       currentQuestion = questions[DEMO_QUESTION_INDICES[demoStep]];
       demoStep++;
     } else {
-      // В ПОЛНОЙ ВЕРСИИ (когда пользователь авторизован в Supabase): все 36 вопросов без ограничений
+      // В ПОЛНОЙ ВЕРСИИ (тарифы Standard, Pro, Premium, VIP): все 36 вопросов без ограничений
       const pool = getFilteredQuestions();
       let nextQ = pool[Math.floor(Math.random() * pool.length)];
       if (pool.length > 1 && nextQ === currentQuestion) {
@@ -1701,9 +1812,12 @@
     document.getElementById('nextBtn').classList.add('visible');
   }
 
-  // Запуск проверки авторизации Supabase при открытии страницы
-  checkAuth();
+  // 1. Мгновенно запускаем первый вопрос демо-режима без ожидания сети
+  setLanguage(currentLang);
+  nextQuestion();
+
+  // 2. В фоне проверяем подписку пользователя в Supabase (Standard / Pro / Premium / VIP)
+  checkAuthAndTier();
 </script>
-  <script src="/session-guard.js"></script>
 </body>
 </html>
