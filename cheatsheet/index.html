@@ -3,167 +3,185 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>@doctors.speak — Экстренная шпаргалка приема иностранного пациента</title>
+  <title>Doctors Speak — Клинический протокол опроса (EN / RU / KZ)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --med-navy: #0B3555;
-      --kz-blue: #0077A8;
-      --kz-blue-soft: #EDF6FA;
-      --kz-gold: #F5B700;
-      --kz-gold-soft: #FFFBEB;
-      --bg-main: #F4F7FA;
-      --card-bg: #FFFFFF;
-      --text-dark: #0F172A;
-      --text-secondary: #334155;
+      --bg-page: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --bg-chip: #F1F5F9;
+      --text-primary: #0F172A;
+      --text-secondary: #475569;
       --text-muted: #64748B;
-      --border-color: #E2E8F0;
-      --teal-accent: #0D9488;
-      --teal-soft: #F0FDFA;
+      --accent-blue: #0284C7;
+      --accent-navy: #0F2942;
+      --border-light: #E2E8F0;
+      --border-focus: #94A3B8;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background: var(--bg-main);
-      color: var(--text-dark);
-      min-height: 100vh;
-      padding-bottom: 40px;
+      background: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.4;
+      padding-bottom: 48px;
+      -webkit-font-smoothing: antialiased;
     }
 
+    /* Компактная фиксированная верхняя панель (без градиентов и шума) */
     header {
-      background: linear-gradient(145deg, var(--med-navy) 0%, var(--kz-blue) 100%);
-      color: #FFFFFF;
-      padding: 14px 16px 18px 16px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-light);
       position: sticky;
       top: 0;
-      z-index: 40;
-      box-shadow: 0 4px 16px rgba(11, 53, 85, 0.14);
+      z-index: 50;
+      padding: 10px 14px;
     }
 
-    .header-top {
-      max-width: 540px;
-      margin: 0 auto 10px auto;
+    .header-inner {
+      max-width: 640px;
+      margin: 0 auto;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      flex-direction: column;
       gap: 8px;
     }
 
-    .back-btn {
-      color: #FFFFFF;
-      background: rgba(255, 255, 255, 0.14);
-      border: 1px solid rgba(255, 255, 255, 0.28);
-      text-decoration: none;
-      font-size: 0.74rem;
-      font-weight: 700;
-      padding: 6px 12px;
-      border-radius: 16px;
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
     }
 
-    .top-controls {
+    .back-link {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border-light);
+      background: var(--bg-page);
+    }
+
+    .header-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--accent-navy);
+      letter-spacing: -0.2px;
+    }
+
+    .controls-right {
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
-    .screenshot-btn {
-      background: rgba(245, 183, 0, 0.22);
-      border: 1px solid var(--kz-gold);
-      color: var(--kz-gold);
-      font-size: 0.7rem;
-      font-weight: 800;
-      padding: 5px 10px;
-      border-radius: 14px;
+    .tr-toggle {
+      border: 1px solid var(--border-light);
+      background: var(--bg-page);
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 5px 8px;
+      border-radius: 6px;
       cursor: pointer;
+    }
+
+    .tr-toggle.active {
+      background: var(--accent-navy);
+      color: #FFFFFF;
+      border-color: var(--accent-navy);
     }
 
     .lang-switch {
       display: inline-flex;
-      background: rgba(0, 0, 0, 0.25);
-      border-radius: 16px;
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
       padding: 2px;
-      border: 1px solid rgba(255, 255, 255, 0.25);
     }
 
     .lang-btn {
       border: none;
       background: transparent;
-      color: rgba(255, 255, 255, 0.8);
-      font-weight: 800;
-      font-size: 0.7rem;
-      padding: 4px 10px;
-      border-radius: 14px;
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
       cursor: pointer;
     }
 
     .lang-btn.active {
-      background: var(--kz-gold);
-      color: var(--med-navy);
+      background: var(--accent-blue);
+      color: #FFFFFF;
     }
 
-    .header-title-wrap {
-      max-width: 540px;
-      margin: 0 auto;
+    /* Строка мгновенного поиска + быстрые вкладки этапов */
+    .search-row {
+      position: relative;
+      width: 100%;
     }
 
-    header h1 {
-      font-size: 1.05rem;
-      font-weight: 900;
-      line-height: 1.25;
+    .search-input {
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 0.82rem;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      background: var(--bg-page);
+      color: var(--text-primary);
+      outline: none;
     }
 
-    header p {
-      font-size: 0.74rem;
-      color: #BAE6FD;
-      font-weight: 600;
-      margin-top: 3px;
+    .search-input:focus {
+      border-color: var(--accent-blue);
+      background: #FFFFFF;
     }
 
-    /* Навигация по слайдам карусели */
-    .carousel-nav {
-      max-width: 540px;
-      margin: 12px auto 0 auto;
-      padding: 0 12px;
+    .stage-tabs {
       display: flex;
-      gap: 6px;
+      gap: 5px;
       overflow-x: auto;
       scrollbar-width: none;
+      padding-bottom: 2px;
     }
 
-    .carousel-nav::-webkit-scrollbar {
+    .stage-tabs::-webkit-scrollbar {
       display: none;
     }
 
-    .slide-pill {
-      border: 1px solid var(--border-color);
-      background: var(--card-bg);
+    .stage-tab {
+      border: 1px solid var(--border-light);
+      background: var(--bg-card);
       color: var(--text-secondary);
-      font-size: 0.72rem;
-      font-weight: 800;
-      padding: 7px 12px;
-      border-radius: 10px;
+      font-size: 0.73rem;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 6px;
       white-space: nowrap;
       cursor: pointer;
-      transition: all 0.15s ease;
     }
 
-    .slide-pill.active {
-      background: var(--med-navy);
+    .stage-tab.active {
+      background: var(--accent-navy);
       color: #FFFFFF;
-      border-color: var(--med-navy);
+      border-color: var(--accent-navy);
     }
 
+    /* Основной список карточек */
     main {
-      max-width: 540px;
+      max-width: 640px;
       margin: 12px auto 0 auto;
       padding: 0 12px;
       display: flex;
@@ -171,670 +189,647 @@
       gap: 14px;
     }
 
-    /* Карточка-слайд (идеальна для скриншота и карусели) */
-    .cheat-slide {
-      display: none;
-      background: var(--card-bg);
-      border-radius: 18px;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 4px 16px rgba(11, 53, 85, 0.05);
+    .stage-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
       overflow: hidden;
-      flex-direction: column;
     }
 
-    .cheat-slide.active, body.all-slides-mode .cheat-slide {
-      display: flex;
+    .stage-block.hidden {
+      display: none;
     }
 
-    .slide-banner {
-      background: var(--med-navy);
-      color: #FFFFFF;
-      padding: 12px 16px;
+    .stage-header {
+      background: var(--bg-page);
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--border-light);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .slide-step-tag {
-      font-size: 0.68rem;
+    .stage-name {
+      font-size: 0.74rem;
       font-weight: 800;
-      color: var(--kz-gold);
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      color: var(--accent-navy);
     }
 
-    .slide-brand-watermark {
-      font-size: 0.68rem;
-      font-weight: 700;
-      color: #BAE6FD;
-    }
-
-    .slide-heading {
-      font-size: 0.95rem;
-      font-weight: 900;
-      margin-top: 2px;
-    }
-
-    .slide-content {
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .qa-item {
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 11px 12px;
-      background: #F8FAFC;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .qa-intent {
-      font-size: 0.75rem;
-      font-weight: 800;
-      color: var(--kz-blue);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .doctor-say-row {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .en-phrase {
-      font-size: 0.9rem;
-      font-weight: 900;
-      color: var(--text-dark);
-      line-height: 1.3;
-    }
-
-    .phonetic-hint {
-      font-size: 0.74rem;
+    .stage-num {
+      font-size: 0.7rem;
       font-weight: 600;
       color: var(--text-muted);
-      background: #FFFFFF;
-      padding: 4px 8px;
-      border-radius: 6px;
-      border: 1px dashed #CBD5E1;
+    }
+
+    .phrase-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .phrase-row {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .phrase-row:last-child {
+      border-bottom: none;
+    }
+
+    .phrase-row.hidden {
+      display: none;
+    }
+
+    /* 1. Что хочет спросить врач (перевод) */
+    .intent-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    /* 2. Английская фраза (кликабельна для озвучки) */
+    .en-question {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: baseline;
+      gap: 6px;
       line-height: 1.3;
     }
 
-    .patient-expect {
-      background: var(--teal-soft);
-      border-left: 3px solid var(--teal-accent);
-      padding: 6px 9px;
-      border-radius: 6px;
-      font-size: 0.74rem;
-      color: #0F766E;
+    .en-question:active {
+      color: var(--accent-blue);
+    }
+
+    .tap-audio-hint {
+      font-size: 0.65rem;
       font-weight: 600;
-      line-height: 1.35;
-    }
-
-    .patient-expect strong {
-      font-weight: 800;
-    }
-
-    .audio-btn {
-      width: 30px;
-      height: 30px;
-      border-radius: 8px;
+      color: var(--accent-blue);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
       border: 1px solid #BAE6FD;
-      background: var(--kz-blue-soft);
-      color: var(--med-navy);
-      cursor: pointer;
+      background: #F0F9FF;
+      padding: 1px 5px;
+      border-radius: 4px;
       flex-shrink: 0;
-      font-size: 0.8rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
     }
 
-    .slide-footer-bar {
-      padding: 10px 14px;
-      background: #F8FAFC;
-      border-top: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    /* 3. Спокойная транскрипция (можно отключить одной кнопкой в шапке) */
+    .phonetic-line {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-muted);
     }
 
-    .nav-arrow-btn {
-      background: var(--med-navy);
-      color: #FFFFFF;
-      border: none;
-      padding: 7px 14px;
-      border-radius: 10px;
-      font-size: 0.74rem;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    .nav-arrow-btn:disabled {
-      opacity: 0.35;
-      cursor: default;
-    }
-
-    /* Режим для чистого скриншота */
-    body.screenshot-mode header,
-    body.screenshot-mode .carousel-nav,
-    body.screenshot-mode .slide-footer-bar,
-    body.screenshot-mode .audio-btn {
+    body.hide-phonetics .phonetic-line {
       display: none !important;
     }
 
-    body.screenshot-mode .exit-screenshot-bar {
-      display: flex !important;
+    /* 4. Ожидаемые ответы пациента в виде чипов (мгновенное считывание глазами) */
+    .answers-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 3px;
     }
 
-    .exit-screenshot-bar {
-      display: none;
-      position: fixed;
-      bottom: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(11, 53, 85, 0.92);
-      color: #FFFFFF;
-      padding: 8px 16px;
-      border-radius: 20px;
+    .ans-chip {
+      background: var(--bg-chip);
+      border: 1px solid var(--border-light);
+      border-radius: 5px;
+      padding: 3px 7px;
+      font-size: 0.73rem;
+      color: var(--text-primary);
+      line-height: 1.25;
+    }
+
+    .ans-chip b {
+      font-weight: 700;
+      color: var(--accent-navy);
+    }
+
+    .ans-chip span {
+      color: var(--text-secondary);
+    }
+
+    /* Подсказка внизу */
+    .footer-note {
+      max-width: 640px;
+      margin: 16px auto 0 auto;
+      padding: 0 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       font-size: 0.75rem;
-      font-weight: 800;
-      z-index: 99;
-      cursor: pointer;
-      border: 1px solid var(--kz-gold);
+      color: var(--text-muted);
     }
 
+    .trainer-link {
+      color: var(--accent-blue);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    /* Переключение языков */
     [lang-val] { display: none !important; }
-    body.lang-ru [lang-val="ru"] { display: block !important; }
-    body.lang-kz [lang-val="kz"] { display: block !important; }
-    body.lang-ru span[lang-val="ru"] { display: inline !important; }
-    body.lang-kz span[lang-val="kz"] { display: inline !important; }
+    body.lang-ru [lang-val="ru"] { display: inline !important; }
+    body.lang-kz [lang-val="kz"] { display: inline !important; }
   </style>
 </head>
 <body class="lang-ru">
 
   <header>
-    <div class="header-top">
-      <a href="https://kazdoctors.com/" class="back-btn">
-        <span lang-val="ru">⬅ На главную</span>
-        <span lang-val="kz">⬅ Басты бетке</span>
-      </a>
-      <div class="top-controls">
-        <button type="button" class="screenshot-btn" onclick="toggleScreenshotMode()">
-          📸 <span lang-val="ru">Под скриншот</span><span lang-val="kz">Скриншот режимі</span>
-        </button>
-        <div class="lang-switch">
-          <button type="button" class="lang-btn active" id="btnRu" onclick="setCheatLang('ru')">RU</button>
-          <button type="button" class="lang-btn" id="btnKz" onclick="setCheatLang('kz')">KZ</button>
+    <div class="header-inner">
+      <div class="top-bar">
+        <a href="https://kazdoctors.com/" class="back-link">
+          <span lang-val="ru">Назад</span>
+          <span lang-val="kz">Артқа</span>
+        </a>
+
+        <div class="header-title">
+          <span lang-val="ru">Опрос пациента (Шпаргалка)</span>
+          <span lang-val="kz">Науқастан анамнез алу</span>
+        </div>
+
+        <div class="controls-right">
+          <button type="button" class="tr-toggle active" id="phoneticBtn" onclick="togglePhonetics()" title="Показать/скрыть русскую транскрипцию">
+            [Транскр.]
+          </button>
+          <div class="lang-switch">
+            <button type="button" class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
+            <button type="button" class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="header-title-wrap">
-      <h1 lang-val="ru">Шпаргалка врача: Прием иностранного пациента</h1>
-      <h1 lang-val="kz">Дәрігер шпаргалкасы: Шетелдік науқасты қабылдау</h1>
-      <p lang-val="ru">Нажмите 🔊 для озвучки вопроса или сделайте скриншот нужной карточки</p>
-      <p lang-val="kz">Сұрақты тыңдау үшін 🔊 басыңыз немесе карточканы скриншот жасап сақтап алыңыз</p>
+
+      <div class="search-row">
+        <input type="search" id="searchInput" class="search-input" oninput="filterBySearch()" placeholder="Быстрый поиск (например: боль, температура, аллергия, вдох)...">
+      </div>
+
+      <div class="stage-tabs">
+        <button class="stage-tab active" onclick="filterStage('all', this)">
+          <span lang-val="ru">Все этапы</span><span lang-val="kz">Барлығы</span>
+        </button>
+        <button class="stage-tab" onclick="filterStage('1', this)">
+          <span lang-val="ru">1. Жалоба</span><span lang-val="kz">1. Шағым</span>
+        </button>
+        <button class="stage-tab" onclick="filterStage('2', this)">
+          <span lang-val="ru">2. Боль</span><span lang-val="kz">2. Ауырсыну</span>
+        </button>
+        <button class="stage-tab" onclick="filterStage('3', this)">
+          <span lang-val="ru">3. Симптомы</span><span lang-val="kz">3. Симптомдар</span>
+        </button>
+        <button class="stage-tab" onclick="filterStage('4', this)">
+          <span lang-val="ru">4. Аллергии</span><span lang-val="kz">4. Аллергия</span>
+        </button>
+        <button class="stage-tab" onclick="filterStage('5', this)">
+          <span lang-val="ru">5. Осмотр</span><span lang-val="kz">5. Тексеру</span>
+        </button>
+        <button class="stage-tab" onclick="filterStage('6', this)">
+          <span lang-val="ru">6. План</span><span lang-val="kz">6. Жоспар</span>
+        </button>
+      </div>
     </div>
   </header>
 
-  <!-- Навигация по 6 карточкам -->
-  <div class="carousel-nav">
-    <button class="slide-pill active" onclick="goSlide(0)">1. Жалоба и Место</button>
-    <button class="slide-pill" onclick="goSlide(1)">2. Начало и Боль (0–10)</button>
-    <button class="slide-pill" onclick="goSlide(2)">3. Симптомы</button>
-    <button class="slide-pill" onclick="goSlide(3)">4. Аллергии и Хроника</button>
-    <button class="slide-pill" onclick="goSlide(4)">5. Осмотр пациента</button>
-    <button class="slide-pill" onclick="goSlide(5)">6. Диагноз и Назначения</button>
-    <button class="slide-pill" id="showAllBtn" onclick="toggleAllSlides()">📋 Все сразу</button>
-  </div>
+  <main id="protocolContainer">
 
-  <main>
-
-    <!-- ==================== КАРТОЧКА 1: ЖАЛОБА И ЛОКАЛИЗАЦИЯ ==================== -->
-    <section class="cheat-slide active" data-slide="0">
-      <div class="slide-banner">
-        <div>
-          <div class="slide-step-tag">ШАГ 1 / 6 • НАЧАЛО ПРИЕМА (CHIEF COMPLAINT)</div>
-          <div class="slide-heading" lang-val="ru">Что беспокоит и где болит?</div>
-          <div class="slide-heading" lang-val="kz">Не мазалайды және қай жері ауырады?</div>
-        </div>
-        <span class="slide-brand-watermark">kazdoctors.com</span>
+    <!-- ==================== 1. ЖАЛОБА И ЛОКАЛИЗАЦИЯ ==================== -->
+    <section class="stage-block" data-stage="1">
+      <div class="stage-header">
+        <span class="stage-name">
+          <span lang-val="ru">1. Жалоба и локализация</span>
+          <span lang-val="kz">1. Негізгі шағым мен орналасуы</span>
+        </span>
+        <span class="stage-num">Chief Complaint & Site</span>
       </div>
 
-      <div class="slide-content">
-        <div class="qa-item">
-          <div class="qa-intent">
-            <span lang-val="ru">1. Что вас привело сегодня?</span>
-            <span lang-val="kz">1. Бүгін сізді не мазалап келді?</span>
+      <div class="phrase-list">
+        <div class="phrase-row">
+          <div class="intent-label">
+            <span lang-val="ru">Что вас беспокоит? (С чем обратились?)</span>
+            <span lang-val="kz">Бүгін сізді не мазалап келді?</span>
           </div>
-          <div class="doctor-say-row">
-            <div class="en-phrase">"What brings you in today?"</div>
-            <button class="audio-btn" onclick="speakPhrase('What brings you in today?')">🔊</button>
+          <div class="en-question" onclick="speak('What brings you in today?')">
+            What brings you in today?
+            <span class="tap-audio-hint">Audio</span>
           </div>
-          <div class="phonetic-hint">🗣 [Уот брингз ю ин тудэй?]</div>
-          <div class="patient-expect">
-            <span lang-val="ru">👂 <strong>Ответ пациента:</strong> "I have a headache (голова) / stomach pain (живот) / cough (кашель) / fever (жар) / I feel dizzy (головокружение)"</span>
-            <span lang-val="kz">👂 <strong>Науқас жауабы:</strong> "I have a headache (бас) / stomach pain (іш) / cough (жөтел) / fever (қызба) / I feel dizzy (бас айналу)"</span>
-          </div>
-        </div>
-
-        <div class="qa-item">
-          <div class="qa-intent">
-            <span lang-val="ru">2. Где именно болит? Покажите рукой</span>
-            <span lang-val="kz">2. Дәл қай жеріңіз ауырады? Қолмен көрсетіңізші</span>
-          </div>
-          <div class="doctor-say-row">
-            <div class="en-phrase">"Where exactly do you feel it? Can you point to the area?"</div>
-            <button class="audio-btn" onclick="speakPhrase('Where exactly do you feel it? Can you point to the area?')">🔊</button>
-          </div>
-          <div class="phonetic-hint">🗣 [Уэа экзэктли ду ю фил ит? Кэн ю пойнт ту зэ эриа?]</div>
-          <div class="patient-expect">
-            <span lang-val="ru">👂 <strong>Ответ пациента:</strong> "Right here (вот тут) / On the right side (справа) / In my chest (в груди) / Lower back (в пояснице)"</span>
-            <span lang-val="kz">👂 <strong>Науқас жауабы:</strong> "Right here (осы жерде) / On the right side (оң жақта) / In my chest (кеудеде) / Lower back (белде)"</span>
+          <div class="phonetic-line">[Уот брингз ю ин тудэй?]</div>
+          <div class="answers-wrap">
+            <div class="ans-chip"><b>Headache</b> <span>— головная боль</span></div>
+            <div class="ans-chip"><b>Stomach pain</b> <span>— боль в животе</span></div>
+            <div class="ans-chip"><b>Cough</b> <span>— кашель</span></div>
+            <div class="ans-chip"><b>Fever</b> <span>— температура</span></div>
+            <div class="ans-chip"><b>Dizzy</b> <span>— кружится голова</span></div>
           </div>
         </div>
 
-        <div class="qa-item">
-          <div class="qa-intent">
-            <span lang-val="ru">3. Боль куда-нибудь отдает (распространяется)?</span>
-            <span lang-val="kz">3. Ауырсыну басқа жаққа тарай ма (беріле ме)?</span>
+        <div class="phrase-row">
+          <div class="intent-label">
+            <span lang-val="ru">Где именно болит? Покажите рукой</span>
+            <span lang-val="kz">Дәл қай жеріңіз ауырады? Көрсетіңізші</span>
           </div>
-          <div class="doctor-say-row">
-            <div class="en-phrase">"Does the pain spread anywhere?"</div>
-            <button class="audio-btn" onclick="speakPhrase('Does the pain spread anywhere?')">🔊</button>
+          <div class="en-question" onclick="speak('Where exactly do you feel it? Can you point to the area?')">
+            Where exactly do you feel it? Can you point to the area?
+            <span class="tap-audio-hint">Audio</span>
           </div>
-          <div class="phonetic-hint">🗣 [Даз зэ пэйн спрэд эниуэа?]</div>
-          <div class="patient-expect">
-            <span lang-val="ru">👂 <strong>Ответ пациента:</strong> "No, it stays in one place (нет) / Yes, to my back, arm, or jaw (да, в спину, руку или челюсть)"</span>
-            <span lang-val="kz">👂 <strong>Науқас жауабы:</strong> "No, it stays in one place (жоқ) / Yes, to my back, arm, or jaw (иә, арқаға, қолға немесе жаққа)"</span>
+          <div class="phonetic-line">[Уэа экзэктли ду ю фил ит? Кэн ю пойнт ту зэ эриа?]</div>
+          <div class="answers-wrap">
+            <div class="ans-chip"><b>Right side</b> <span>— справа</span></div>
+            <div class="ans-chip"><b>Left side</b> <span>— слева</span></div>
+            <div class="ans-chip"><b>In my chest</b> <span>— в груди</span></div>
+            <div class="ans-chip"><b>Lower back</b> <span>— в пояснице</span></div>
           </div>
         </div>
-      </div>
 
-      <div class="slide-footer-bar">
-        <button class="nav-arrow-btn" disabled>⬅</button>
-        <span style="font-size:0.72rem; font-weight:800; color:var(--text-muted);">Карточка 1 из 6</span>
-        <button class="nav-arrow-btn" onclick="goSlide(1)">Далее ➔</button>
+        <div class="phrase-row">
+          <div class="intent-label">
+            <span lang-val="ru">Боль куда-нибудь отдает?</span>
+            <span lang-val="kz">Ауырсыну басқа жаққа тарай ма (беріле ме)?</span>
+          </div>
+          <div class="en-question" onclick="speak('Does the pain spread anywhere?')">
+            Does the pain spread anywhere?
+            <span class="tap-audio-hint">Audio</span>
+          </div>
+          <div class="phonetic-line">[Даз зэ пэйн спрэд эниуэа?]</div>
+          <div class="answers-wrap">
+            <div class="ans-chip"><b>Stays in one place</b> <span>— на одном месте</span></div>
+            <div class="ans-chip"><b>To my back</b> <span>— в спину</span></div>
+            <div class="ans-chip"><b>To my arm / jaw</b> <span>— в руку / челюсть</span></div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- ==================== КАРТОЧКА 2: ВРЕМЯ И ХАРАКТЕР БОЛИ ==================== -->
-    <section class="cheat-slide" data-slide="1">
-      <div class="slide-banner">
-        <div>
-          <div class="slide-step-tag">ШАГ 2 / 6 • ДЛИТЕЛЬНОСТЬ И СИЛА (ONSET & SEVERITY)</div>
-          <div class="slide-heading" lang-val="ru">Когда началось и как сильно болит?</div>
-          <div class="slide-heading" lang-val="kz">Қашан басталды және қаншалықты күшті?</div>
-        </div>
-        <span class="slide-brand-watermark">kazdoctors.com</span>
+    <!-- ==================== 2. НАЧАЛО И ХАРАКТЕР БОЛИ ==================== -->
+    <section class="stage-block" data-stage="2">
+      <div class="stage-header">
+        <span class="stage-name">
+          <span lang-val="ru">2. Начало, характер и сила боли</span>
+          <span lang-val="kz">2. Басталуы, сипаты және күші</span>
+        </span>
+        <span class="stage-num">Onset, Character & Severity</span>
       </div>
 
-      <div class="slide-content">
-        <div class="qa-item">
-          <div class="qa-intent">
-            <span lang-val="ru">1. Когда началось? Внезапно или постепенно?</span>
-            <span lang-val="kz">1. Қашан басталды? Кенеттен бе, әлде біртіндеп пе?</span>
+      <div class="phrase-list">
+        <div class="phrase-row">
+          <div class="intent-label">
+            <span lang-val="ru">Когда началось? Внезапно или постепенно?</span>
+            <span lang-val="kz">Қашан басталды? Кенеттен бе, әлде біртіндеп пе?</span>
           </div>
-          <div class="doctor-say-row">
-            <div class="en-phrase">"When did it start? Did it start suddenly or gradually?"</div>
-            <button class="audio-btn" onclick="speakPhrase('When did it start? Did it start suddenly or gradually?')">🔊</button>
+          <div class="en-question" onclick="speak('When did it start? Suddenly or gradually?')">
+            When did it start? Suddenly or gradually?
+            <span class="tap-audio-hint">Audio</span>
           </div>
-          <div class="phonetic-hint">🗣 [Уэн дид ит старт? Дид ит старт садэнли ор грэджуали?]</div>
-          <div class="patient-expect">
-            <span lang-val="ru">👂 <strong>Ответ пациента:</strong> "Two days ago (2 дня назад) / Since yesterday (со вчера) / Suddenly (внезапно) / Gradually (постепенно)"</span>
-            <span lang-val="kz">👂 <strong>Науқас жауабы:</strong> "Two days ago (2 күн бұрын) / Since yesterday (кешеден бері) / Suddenly (кенеттен) / Gradually (біртіндеп)"</span>
-          </div>
-        </div>
-
-        <div class="qa-item">
-          <div class="qa-intent">
-            <span lang-val="ru">2. Боль постоянная или приступами?</span>
-            <span lang-val="kz">2. Ауырсыну тұрақты ма, әлде ұстамалы ма?</span>
-          </div>
-          <div class="doctor-say-row">
-            <div class="en-phrase">"Is it constant or does it come and go?"</div>
-            <button class="audio-btn" onclick="speakPhrase('Is it constant or does it come and go?')">🔊</button>
-          </div>
-          <div class="phonetic-hint">🗣 [Из ит констант ор даз ит кам энд гоу?]</div>
-          <div class="patient-expect">
-            <span lang-val="ru">👂 <strong>Ответ пациента:</strong> "It's constant (постоянная) / It comes and goes (приходит и уходит) / Worse at night (хуже ночью)"</span>
-            <span lang-val="kz">👂 <strong>Науқас жауабы:</strong> "It's constant (тұрақты) / It comes and goes (келіп-кетеді) / Worse at night (түнде күшейеді)"</span>
+          <div class="phonetic-line">[Уэн дид ит старт? Садэнли ор грэджуали?]</div>
+          <div class="answers-wrap">
+            <div class="ans-chip"><b>Yesterday</b> <span>— вчера</span></div>
+            <div class="ans-chip"><b>2 days ago</b> <span>— 2 дня назад</span></div>
+            <div class="ans-chip"><b>Suddenly</b> <span>— внезапно</span></div>
+            <div class="ans-chip"><b>Gradually</b> <span>— постепенно</span></div>
           </div>
         </div>
 
-        <div class="qa-item">
-          <div class="qa-intent">
-            <span lang-val="ru">3. Характер боли и шкала от 0 до 10</span>
-            <span lang-val="kz">3. Ауырсыну сипаты және 0-ден 10-ға дейінгі шкала</span>
+        <div class="phrase-row">
+          <div class="intent-label">
+            <span lang-val="ru">Боль постоянная или приступами?</span>
+            <span lang-val="kz">Ауырсыну тұрақты ма, әлде ұстамалы ма?</span>
           </div>
-          <div class="doctor-say-row">
-            <div class="en-phrase">"Is it sharp, dull, or burning? On a scale from 0 to 10, how bad is it?"</div>
-            <button class="audio-btn" onclick="speakPhrase('Is it sharp, dull, or burning? On a scale from 0 to 10, how bad is it?')">🔊</button>
+          <div class="en-question" onclick="speak('Is it constant or does it come and go?')">
+            Is it constant or does it come and go?
+            <span class="tap-audio-hint">Audio</span>
           </div>
-          <div class="phonetic-hint">🗣 [Из ит шарп, дал, ор бёрнинг? Он э скейл фром 0 ту 10, хау бэд из ит?]</div>
-          <div class="patient-expect">
-            <span lang-val="ru">👂 <strong>Ответ пациента:</strong> "Sharp (острая) / Dull (тупая) / Burning (жгучая) / Around 8 out of 10"</span>
-            <span lang-val="kz">👂 <strong>Науқас жауабы:</strong> "Sharp (өткір) / Dull (сыздаған) / Burning (ашыған) / Around 8 out of 10"</span>
+          <div class="phonetic-line">[Из ит констант ор даз ит кам энд гоу?]</div>
+          <div class="answers-wrap">
+            <div class="ans-chip"><b>Constant</b> <span>— постоянная</span></div>
+            <div class="ans-chip"><b>Comes and goes</b> <span>— приступами</span></div>
+            <div class="ans-chip"><b>Getting worse</b> <span>— ухудшается</span></div>
           </div>
         </div>
-      </div>
 
-      <div class="slide-footer-bar">
-        <button class="nav-arrow-btn" onclick="goSlide(0)">⬅ Назад</button>
-        <span style="font-size:0.72rem; font-weight:800; color:var(--text-muted);">Карточка 2 из 6</span>
-        <button class="nav-arrow-btn" onclick="goSlide(2)">Далее ➔</button>
+        <div class="phrase-row">
+          <div class="intent-label">
+            <span lang-val="ru">Какая боль по характеру и по шкале от 0 до 10?</span>
+            <span lang-val="kz">Ауырсыну қандай және 0–10 шкаласы бойынша қанша?</span>
+          </div>
+          <div class="en-question" onclick="speak('Is the pain sharp, dull, or burning? On a scale from 0 to 10, how bad is it?')">
+            Is the pain sharp, dull, or burning? On a scale from 0 to 10, how bad is it?
+            <span class="tap-audio-hint">Audio</span>
+          </div>
+          <div class="phonetic-line">[Из зэ пэйн шарп, дал, ор бёрнинг? Он э скейл фром 0 ту 10, хау бэд из ит?]</div>
+          <div class="answers-wrap">
+            <div class="ans-chip"><b>Sharp</b> <span>— острая</span></div>
+            <div class="ans-chip"><b>Dull</b> <span>— тупая / ноющая</span></div>
+            <div class="ans-chip"><b>Burning</b> <span>— жгучая</span></div>
+            <div class="ans-chip"><b>Throbbing</b> <span>— пульсирующая</span></div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- ==================== КАРТОЧКА 3: ТРИГГЕРЫ И СОПУТСТВУЮЩИЕ СИМПТОМЫ ==================== -->
-    <section class="cheat-slide" data-slide="2">
-      <div class="slide-banner">
-        <div>
-          <div class="slide-step-tag">ШАГ 3 / 6 • ТРИГГЕРЫ И СИМПТОМЫ (ASSOCIATED SYMPTOMS)</div>
-          <div class="slide-heading" lang-val="ru">Что усиливает боль и есть ли другие жалобы?</div>
-          <div class="slide-heading" lang-val="kz">Не күшейтеді және басқа қандай шағым бар?</div>
-        </div>
-        <span class="slide-brand-watermark">kazdoctors.com</span>
+    <!-- ==================== 3. ТРИГГЕРЫ И СОПУТСТВУЮЩИЕ СИМПТОМЫ ==================== -->
+    <section class="stage-block" data-stage="3">
+      <div class="stage-header">
+        <span class="stage-name">
+          <span lang-val="ru">3. Триггеры и сопутствующие симптомы</span>
+          <span lang-val="kz">3. Триггерлер мен қосалқы симптомдар</span>
+        </span>
+        <span class="stage-num">Triggers & Associated Symptoms</span>
       </div>
 
-      <div class="slide-content">
-        <div class="qa-item">
-          <div class="qa-intent">
-            <span lang-val="ru">1. Что-то облегчает или усиливает состояние?</span>
-            <span lang-val="kz">1. Бірдеңе оны жеңілдете ме немесе күшейте ме?</span>
+      <div class="phrase-list">
+        <div class="phrase-row">
+          <div class="intent-label">
+            <span lang-val="ru">Что усиливает или облегчает боль?</span>
+            <span lang-val="kz">Бірдеңе оны күшейте ме немесе жеңілдете ме?</span>
           </div>
-          <div class="doctor-say-row">
-            <div class="en-phrase">"Does anything make it better or worse?"</div>
-            <button class="audio-btn" onclick="speakPhrase('Does anything make it better or worse?')">🔊</button>
+          <div class="en-question" onclick="speak('Does anything make it better or worse?')">
+            Does anything make it better or worse?
+            <span class="tap-audio-hint">Audio</span>
           </div>
-          <div class="phonetic-hint">🗣 [Даз энисинг мэйк ит бэттэр ор уёрс?]</div>
-          <div class="patient-expect">
-            <span lang-val="ru">👂 <strong>Ответ пациента:</strong> "Moving / eating / lying down makes it worse (движение / еда / положение лежа ухудшает). Rest helps (покой помогает)"</span>
-            <span lang-val="kz">👂 <strong>Науқас жауабы:</strong> "Moving / eating / lying down makes it worse (қозғалыс / тамақ / жату күшейтеді). Rest helps (тыныштық көмектеседі)"</span>
-          </div>
-        </div>
-
-        <div class="qa-item">
-          <div class="qa-intent">
-            <span lang-val="ru">2. Есть ли температура, тошнота, рвота или одышка?</span>
-            <span lang-val="kz">2. Температура, жүрек айну, құсу немесе ентігу бар ма?</span>
-          </div>
-          <div class="doctor-say-row">
-            <div class="en-phrase">"Do you have a fever, nausea, vomiting, or shortness of breath?"</div>
-            <button class="audio-btn" onclick="speakPhrase('Do you have a fever, nausea, vomiting, or shortness of breath?')">🔊</button>
-          </div>
-          <div class="phonetic-hint">🗣 [Ду ю хэв э фивэр, нозиа, вомитинг, ор шортнэс оф брэс?]</div>
-          <div class="patient-expect">
-            <span lang-val="ru">👂 <strong>Ответ пациента:</strong> "Yes, I felt nauseous and vomited once / I have chills (озноб) / diarrhea (жидкий стул)"</span>
-            <span lang-val="kz">👂 <strong>Науқас жауабы:</strong> "Yes, I felt nauseous and vomited once / I have chills (қалтырау) / diarrhea (іш өту)"</span>
+          <div class="phonetic-line">[Даз энисинг мэйк ит бэттэр ор уёрс?]</div>
+          <div class="answers-wrap">
+            <div class="ans-chip"><b>Moving</b> <span>— движение</span></div>
+            <div class="ans-chip"><b>After eating</b> <span>— после еды</span></div>
+            <div class="ans-chip"><b>Lying down</b> <span>— лежа</span></div>
+            <div class="ans-chip"><b>Rest helps</b> <span>— покой помогает</span></div>
           </div>
         </div>
 
-        <div class="qa-item">
-          <div class="qa-intent">
-            <span lang-val="ru">3. При кашле: Кашель сухой или с мокротой?</span>
-            <span lang-val="kz">3. Жөтел кезінде: Жөтел құрғақ па, әлде қақырықты ма?</span>
+        <div class="phrase-row">
+          <div class="intent-label">
+            <span lang-val="ru">Есть ли жар, тошнота, рвота или одышка?</span>
+            <span lang-val="kz">Қызба, жүрек айну, құсу немесе ентігу бар ма?</span>
           </div>
-          <div class="doctor-say-row">
-            <div class="en-phrase">"Is the cough dry or are you coughing up mucus?"</div>
-            <button class="audio-btn" onclick="speakPhrase('Is the cough dry or are you coughing up mucus?')">🔊</button>
+          <div class="en-question" onclick="speak('Do you have a fever, nausea, vomiting, or shortness of breath?')">
+            Do you have a fever, nausea, vomiting, or shortness of breath?
+            <span class="tap-audio-hint">Audio</span>
           </div>
-          <div class="phonetic-hint">🗣 [Из зэ коф драй ор ар ю кофинг ап мьюкас?]</div>
-          <div class="patient-expect">
-            <span lang-val="ru">👂 <strong>Ответ пациента:</strong> "Mostly dry (сухой) / With yellowish or green sputum (с желтоватой/зеленой мокротой)"</span>
-            <span lang-val="kz">👂 <strong>Науқас жауабы:</strong> "Mostly dry (құрғақ) / With yellowish or green sputum (сарғыш/жасыл қақырықпен)"</span>
+          <div class="phonetic-line">[Ду ю хэв э фивэр, нозиа, вомитинг, ор шортнэс оф брэс?]</div>
+          <div class="answers-wrap">
+            <div class="ans-chip"><b>Chills</b> <span>— озноб</span></div>
+            <div class="ans-chip"><b>Vomited once</b> <span>— вырвало 1 раз</span></div>
+            <div class="ans-chip"><b>Diarrhea</b> <span>— диарея</span></div>
+            <div class="ans-chip"><b>Loss of appetite</b> <span>— нет аппетита</span></div>
           </div>
         </div>
-      </div>
 
-      <div class="slide-footer-bar">
-        <button class="nav-arrow-btn" onclick="goSlide(1)">⬅ Назад</button>
-        <span style="font-size:0.72rem; font-weight:800; color:var(--text-muted);">Карточка 3 из 6</span>
-        <button class="nav-arrow-btn" onclick="goSlide(3)">Далее ➔</button>
+        <div class="phrase-row">
+          <div class="intent-label">
+            <span lang-val="ru">Кашель сухой или с мокротой?</span>
+            <span lang-val="kz">Жөтел құрғақ па, әлде қақырықты ма?</span>
+          </div>
+          <div class="en-question" onclick="speak('Is the cough dry or with mucus?')">
+            Is the cough dry or with mucus?
+            <span class="tap-audio-hint">Audio</span>
+          </div>
+          <div class="phonetic-line">[Из зэ коф драй ор уиз мьюкас?]</div>
+          <div class="answers-wrap">
+            <div class="ans-chip"><b>Dry</b> <span>— сухой</span></div>
+            <div class="ans-chip"><b>Yellow / green sputum</b> <span>— желтая / зеленая мокрота</span></div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- ==================== КАРТОЧКА 4: АЛЛЕРГИИ, ХРОНИКА И ЛЕКАРСТВА ==================== -->
-    <section class="cheat-slide" data-slide="3">
-      <div class="slide-banner">
-        <div>
-          <div class="slide-step-tag">ШАГ 4 / 6 • БЕЗОПАСНОСТЬ (ALLERGIES, PMH & MEDS)</div>
-          <div class="slide-heading" lang-val="ru">Аллергии, хроника и принятые препараты</div>
-          <div class="slide-heading" lang-val="kz">Аллергия, созылмалы аурулар және дәрілер</div>
-        </div>
-        <span class="slide-brand-watermark">kazdoctors.com</span>
+    <!-- ==================== 4. АЛЛЕРГИИ, ХРОНИКА И ЛЕКАРСТВА ==================== -->
+    <section class="stage-block" data-stage="4">
+      <div class="stage-header">
+        <span class="stage-name">
+          <span lang-val="ru">4. Аллергии, хроника и лекарства</span>
+          <span lang-val="kz">4. Аллергия, созылмалы аурулар және дәрілер</span>
+        </span>
+        <span class="stage-num">Allergies, PMH & Medications</span>
       </div>
 
-      <div class="slide-content">
-        <div class="qa-item">
-          <div class="qa-intent">
-            <span lang-val="ru">1. Есть ли у вас аллергия на лекарства?</span>
-            <span lang-val="kz">1. Қандай да бір дәріге аллергияңыз бар ма?</span>
+      <div class="phrase-list">
+        <div class="phrase-row">
+          <div class="intent-label">
+            <span lang-val="ru">Есть ли аллергия на лекарства?</span>
+            <span lang-val="kz">Қандай да бір дәріге аллергияңыз бар ма?</span>
           </div>
-          <div class="doctor-say-row">
-            <div class="en-phrase">"Are you allergic to any medications?"</div>
-            <button class="audio-btn" onclick="speakPhrase('Are you allergic to any medications?')">🔊</button>
+          <div class="en-question" onclick="speak('Are you allergic to any medications?')">
+            Are you allergic to any medications?
+            <span class="tap-audio-hint">Audio</span>
           </div>
-          <div class="phonetic-hint">🗣 [Ар ю алёрджик ту эни медикэйшнз?]</div>
-          <div class="patient-expect">
-            <span lang-val="ru">👂 <strong>Ответ пациента:</strong> "No known allergies (нет) / Yes, I'm allergic to penicillin — I get a rash (сыпь) or swelling (отек)"</span>
-            <span lang-val="kz">👂 <strong>Науқас жауабы:</strong> "No known allergies (жоқ) / Yes, I'm allergic to penicillin — I get a rash (бөртпе) or swelling (ісіну)"</span>
-          </div>
-        </div>
-
-        <div class="qa-item">
-          <div class="qa-intent">
-            <span lang-val="ru">2. Вы уже принимали что-то от боли/симптомов?</span>
-            <span lang-val="kz">2. Осы шағымға қарсы бірдеңе іштіңіз бе?</span>
-          </div>
-          <div class="doctor-say-row">
-            <div class="en-phrase">"Have you taken anything for it? Did it help?"</div>
-            <button class="audio-btn" onclick="speakPhrase('Have you taken anything for it? Did it help?')">🔊</button>
-          </div>
-          <div class="phonetic-hint">🗣 [Хэв ю тэйкэн энисинг фор ит? Дид ит хэлп?]</div>
-          <div class="patient-expect">
-            <span lang-val="ru">👂 <strong>Ответ пациента:</strong> "Just painkillers / ibuprofen / paracetamol. It helped a little / Not really"</span>
-            <span lang-val="kz">👂 <strong>Науқас жауабы:</strong> "Just painkillers / ibuprofen / paracetamol. It helped a little / Not really (көмектеспеді)"</span>
+          <div class="phonetic-line">[Ар ю алёрджик ту эни медикэйшнз?]</div>
+          <div class="answers-wrap">
+            <div class="ans-chip"><b>No allergies</b> <span>— нет аллергии</span></div>
+            <div class="ans-chip"><b>Penicillin / Rash</b> <span>— пенициллин / сыпь</span></div>
+            <div class="ans-chip"><b>Swelling</b> <span>— отек</span></div>
           </div>
         </div>
 
-        <div class="qa-item">
-          <div class="qa-intent">
-            <span lang-val="ru">3. Есть ли хронические болезни или операции в прошлом?</span>
-            <span lang-val="kz">3. Созылмалы ауруларыңыз немесе ота болды ма?</span>
+        <div class="phrase-row">
+          <div class="intent-label">
+            <span lang-val="ru">Вы уже принимали какие-то препараты?</span>
+            <span lang-val="kz">Осыған қарсы бірдеңе іштіңіз бе? Көмектесті ме?</span>
           </div>
-          <div class="doctor-say-row">
-            <div class="en-phrase">"Do you have any chronic medical conditions or previous surgeries?"</div>
-            <button class="audio-btn" onclick="speakPhrase('Do you have any chronic medical conditions or previous surgeries?')">🔊</button>
+          <div class="en-question" onclick="speak('Have you taken anything for it? Did it help?')">
+            Have you taken anything for it? Did it help?
+            <span class="tap-audio-hint">Audio</span>
           </div>
-          <div class="phonetic-hint">🗣 [Ду ю хэв эни кроник медикал кондишнз ор привиас сёрджериз?]</div>
-          <div class="patient-expect">
-            <span lang-val="ru">👂 <strong>Ответ пациента:</strong> "High blood pressure (гипертония) / Diabetes (диабет) / Appendix removed (удален аппендикс)"</span>
-            <span lang-val="kz">👂 <strong>Науқас жауабы:</strong> "High blood pressure (гипертония) / Diabetes (диабет) / Appendix removed (аппендикс алынған)"</span>
+          <div class="phonetic-line">[Хэв ю тэйкэн энисинг фор ит? Дид ит хэлп?]</div>
+          <div class="answers-wrap">
+            <div class="ans-chip"><b>Painkillers</b> <span>— обезболивающее</span></div>
+            <div class="ans-chip"><b>Not much</b> <span>— не особо помогло</span></div>
           </div>
         </div>
-      </div>
 
-      <div class="slide-footer-bar">
-        <button class="nav-arrow-btn" onclick="goSlide(2)">⬅ Назад</button>
-        <span style="font-size:0.72rem; font-weight:800; color:var(--text-muted);">Карточка 4 из 6</span>
-        <button class="nav-arrow-btn" onclick="goSlide(4)">Далее ➔</button>
+        <div class="phrase-row">
+          <div class="intent-label">
+            <span lang-val="ru">Есть ли хронические заболевания или операции?</span>
+            <span lang-val="kz">Созылмалы ауруларыңыз немесе ота болды ма?</span>
+          </div>
+          <div class="en-question" onclick="speak('Do you have any chronic conditions or previous surgeries?')">
+            Do you have any chronic conditions or previous surgeries?
+            <span class="tap-audio-hint">Audio</span>
+          </div>
+          <div class="phonetic-line">[Ду ю хэв эни кроник кондишнз ор привиас сёрджериз?]</div>
+          <div class="answers-wrap">
+            <div class="ans-chip"><b>High blood pressure</b> <span>— гипертония</span></div>
+            <div class="ans-chip"><b>Diabetes</b> <span>— диабет</span></div>
+            <div class="ans-chip"><b>Asthma</b> <span>— астма</span></div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- ==================== КАРТОЧКА 5: ФРАЗЫ-СПАСАТЕЛИ И КОМАНДЫ ОСМОТРА ==================== -->
-    <section class="cheat-slide" data-slide="4">
-      <div class="slide-banner">
-        <div>
-          <div class="slide-step-tag">ШАГ 5 / 6 • ФИЗИКАЛЬНЫЙ ОСМОТР (PHYSICAL EXAM)</div>
-          <div class="slide-heading" lang-val="ru">Фразы-спасатели и инструкции при осмотре</div>
-          <div class="slide-heading" lang-val="kz">Құтқарушы фразалар мен тексеру командалары</div>
-        </div>
-        <span class="slide-brand-watermark">kazdoctors.com</span>
+    <!-- ==================== 5. КОМАНДЫ ПРИ ОСМОТРЕ ==================== -->
+    <section class="stage-block" data-stage="5">
+      <div class="stage-header">
+        <span class="stage-name">
+          <span lang-val="ru">5. Инструкции при осмотре</span>
+          <span lang-val="kz">5. Қарап-тексеру нұсқаулары</span>
+        </span>
+        <span class="stage-num">Physical Exam Commands</span>
       </div>
 
-      <div class="slide-content">
-        <div class="qa-item">
-          <div class="qa-intent">
-            <span lang-val="ru">1. Если пациент говорит слишком быстро или непонятно:</span>
-            <span lang-val="kz">1. Егер науқас тым тез немесе түсініксіз сөйлесе:</span>
+      <div class="phrase-list">
+        <div class="phrase-row">
+          <div class="intent-label">
+            <span lang-val="ru">Говорите чуть медленнее, пожалуйста</span>
+            <span lang-val="kz">Сәл баяуырақ сөйлеп, қайталап жібересіз бе</span>
           </div>
-          <div class="doctor-say-row">
-            <div class="en-phrase">"Could you please speak a bit slower and repeat that?"</div>
-            <button class="audio-btn" onclick="speakPhrase('Could you please speak a bit slower and repeat that?')">🔊</button>
+          <div class="en-question" onclick="speak('Could you please speak a bit slower and repeat that?')">
+            Could you please speak a bit slower and repeat that?
+            <span class="tap-audio-hint">Audio</span>
           </div>
-          <div class="phonetic-hint">🗣 [Куд ю плиз спик э бит слоуэр энд рипит зэт?]</div>
+          <div class="phonetic-line">[Куд ю плиз спик э бит слоуэр энд рипит зэт?]</div>
         </div>
 
-        <div class="qa-item">
-          <div class="qa-intent">
-            <span lang-val="ru">2. Приглашение к осмотру и аускультации:</span>
-            <span lang-val="kz">2. Қарап-тексеру және тыңдау кезіндегі нұсқаулар:</span>
+        <div class="phrase-row">
+          <div class="intent-label">
+            <span lang-val="ru">Сделайте глубокий вдох... и выдох</span>
+            <span lang-val="kz">Терең дем алыңыз... және дем шығарыңыз</span>
           </div>
-          <div class="doctor-say-row">
-            <div class="en-phrase">"Let me examine you. Take a deep breath in... and breathe out."</div>
-            <button class="audio-btn" onclick="speakPhrase('Let me examine you. Take a deep breath in, and breathe out.')">🔊</button>
+          <div class="en-question" onclick="speak('Let me examine you. Take a deep breath in, and breathe out.')">
+            Let me examine you. Take a deep breath in... and breathe out.
+            <span class="tap-audio-hint">Audio</span>
           </div>
-          <div class="phonetic-hint">🗣 [Лэт ми экзэмин ю. Тэйк э дип брэс ин... энд бриз аут] (Глубокий вдох и выдох)</div>
+          <div class="phonetic-line">[Лэт ми экзэмин ю. Тэйк э дип брэс ин... энд бриз аут]</div>
         </div>
 
-        <div class="qa-item">
-          <div class="qa-intent">
-            <span lang-val="ru">3. Пальпация на кушетке:</span>
-            <span lang-val="kz">3. Кушеткада пальпация жасау:</span>
+        <div class="phrase-row">
+          <div class="intent-label">
+            <span lang-val="ru">Прилягте. Больно, когда я нажимаю здесь?</span>
+            <span lang-val="kz">Жатыңыз. Осы жерді басқанда ауыра ма?</span>
           </div>
-          <div class="doctor-say-row">
-            <div class="en-phrase">"Please lie down. Does it hurt when I press here?"</div>
-            <button class="audio-btn" onclick="speakPhrase('Please lie down. Does it hurt when I press here?')">🔊</button>
+          <div class="en-question" onclick="speak('Please lie down. Does it hurt when I press here?')">
+            Please lie down. Does it hurt when I press here?
+            <span class="tap-audio-hint">Audio</span>
           </div>
-          <div class="phonetic-hint">🗣 [Плиз лай даун. Даз ит хёрт уэн ай прэс хиа?] (Прилягте. Больно, когда нажимаю здесь?)</div>
+          <div class="phonetic-line">[Плиз лай даун. Даз ит хёрт уэн ай прэс хиа?]</div>
         </div>
-      </div>
-
-      <div class="slide-footer-bar">
-        <button class="nav-arrow-btn" onclick="goSlide(3)">⬅ Назад</button>
-        <span style="font-size:0.72rem; font-weight:800; color:var(--text-muted);">Карточка 5 из 6</span>
-        <button class="nav-arrow-btn" onclick="goSlide(5)">Далее ➔</button>
       </div>
     </section>
 
-    <!-- ==================== КАРТОЧКА 6: ДИАГНОЗ, ЛЕЧЕНИЕ И ЗАВЕРШЕНИЕ ==================== -->
-    <section class="cheat-slide" data-slide="5">
-      <div class="slide-banner">
-        <div>
-          <div class="slide-step-tag">ШАГ 6 / 6 • ДИАГНОЗ И НАЗНАЧЕНИЯ (EXPLAINING & PLAN)</div>
-          <div class="slide-heading" lang-val="ru">Как озвучить предварительный диагноз и план</div>
-          <div class="slide-heading" lang-val="kz">Алдын ала диагноз бен ем жоспарын айту</div>
-        </div>
-        <span class="slide-brand-watermark">kazdoctors.com</span>
+    <!-- ==================== 6. ДИАГНОЗ И НАЗНАЧЕНИЯ ==================== -->
+    <section class="stage-block" data-stage="6">
+      <div class="stage-header">
+        <span class="stage-name">
+          <span lang-val="ru">6. Диагноз, анализы и назначения</span>
+          <span lang-val="kz">6. Диагноз, талдаулар және ем</span>
+        </span>
+        <span class="stage-num">Diagnosis & Plan</span>
       </div>
 
-      <div class="slide-content">
-        <div class="qa-item">
-          <div class="qa-intent">
-            <span lang-val="ru">1. Успокоить пациента и назвать предварительный диагноз:</span>
-            <span lang-val="kz">1. Науқасты тыныштандыру және болжамды диагнозды айту:</span>
+      <div class="phrase-list">
+        <div class="phrase-row">
+          <div class="intent-label">
+            <span lang-val="ru">Судя по симптомам, похоже, у вас...</span>
+            <span lang-val="kz">Симптомдарға қарағанда, сізде ... сияқты</span>
           </div>
-          <div class="doctor-say-row">
-            <div class="en-phrase">"You're in good hands. Based on your symptoms, it looks like you may have..."</div>
-            <button class="audio-btn" onclick="speakPhrase('You are in good hands. Based on your symptoms, it looks like you may have')">🔊</button>
+          <div class="en-question" onclick="speak('Based on your symptoms, it looks like you may have')">
+            Based on your symptoms, it looks like you may have...
+            <span class="tap-audio-hint">Audio</span>
           </div>
-          <div class="phonetic-hint">🗣 [Ю ар ин гуд хэндз. Бэйзд он ёр симптомз, ит лукс лайк ю мэй хэв...]</div>
+          <div class="phonetic-line">[Бэйзд он ёр симптомз, ит лукс лайк ю мэй хэв...]</div>
         </div>
 
-        <div class="qa-item">
-          <div class="qa-intent">
-            <span lang-val="ru">2. Направить на анализы и выписать лечение:</span>
-            <span lang-val="kz">2. Талдауларға жіберу және дәрі тағайындау:</span>
+        <div class="phrase-row">
+          <div class="intent-label">
+            <span lang-val="ru">Сдадим анализы. Я выпишу вам препарат</span>
+            <span lang-val="kz">Талдаулар тапсырамыз. Мен сізге дәрі тағайындаймын</span>
           </div>
-          <div class="doctor-say-row">
-            <div class="en-phrase">"We need to run some tests. I'm going to prescribe medication for you."</div>
-            <button class="audio-btn" onclick="speakPhrase('We need to run some tests. I am going to prescribe medication for you.')">🔊</button>
+          <div class="en-question" onclick="speak('We need to run some tests. I am going to prescribe medication.')">
+            We need to run some tests. I'm going to prescribe medication.
+            <span class="tap-audio-hint">Audio</span>
           </div>
-          <div class="phonetic-hint">🗣 [Уи нид ту ран сам тэстс. Айм гоуинг ту прискайб медикэйшн фор ю]</div>
+          <div class="phonetic-line">[Уи нид ту ран сам тэстс. Айм гоуинг ту прискайб медикэйшн]</div>
         </div>
 
-        <div class="qa-item">
-          <div class="qa-intent">
-            <span lang-val="ru">3. Красные флаги и проверка понимания в конце приема:</span>
-            <span lang-val="kz">3. Қауіпті белгілер және түсінгенін тексеру:</span>
+        <div class="phrase-row">
+          <div class="intent-label">
+            <span lang-val="ru">Если станет хуже — вернитесь на прием. Есть вопросы?</span>
+            <span lang-val="kz">Жағдайыңыз нашарласа, қайта келіңіз. Сұрақтарыңыз бар ма?</span>
           </div>
-          <div class="doctor-say-row">
-            <div class="en-phrase">"If your symptoms get worse, please come back. Do you have any questions?"</div>
-            <button class="audio-btn" onclick="speakPhrase('If your symptoms get worse, please come back. Do you have any questions?')">🔊</button>
+          <div class="en-question" onclick="speak('If your symptoms get worse, please come back. Do you have any questions?')">
+            If your symptoms get worse, please come back. Do you have any questions?
+            <span class="tap-audio-hint">Audio</span>
           </div>
-          <div class="phonetic-hint">🗣 [Иф ёр симптомз гет уёрс, плиз кам бэк. Ду ю хэв эни куэсченз?]</div>
+          <div class="phonetic-line">[Иф ёр симптомз гет уёрс, плиз кам бэк. Ду ю хэв эни куэсченз?]</div>
         </div>
-      </div>
-
-      <div class="slide-footer-bar">
-        <button class="nav-arrow-btn" onclick="goSlide(4)">⬅ Назад</button>
-        <span style="font-size:0.72rem; font-weight:800; color:var(--text-muted);">Карточка 6 из 6</span>
-        <button class="nav-arrow-btn" onclick="toggleAllSlides()">📋 Все карточки</button>
       </div>
     </section>
 
   </main>
 
-  <div class="exit-screenshot-bar" onclick="toggleScreenshotMode()">
-    ✕ Выйти из режима скриншота
+  <div class="footer-note">
+    <span>@doctors.speak · kazdoctors.com</span>
+    <a href="https://kazdoctors.com/interviews/" class="trainer-link">
+      <span lang-val="ru">Тренажер опроса ➔</span>
+      <span lang-val="kz">Сұхбат тренажері ➔</span>
+    </a>
   </div>
 
   <script>
-    let currentSlideIdx = 0;
-
-    function setCheatLang(lang) {
+    function setLang(lang) {
       document.body.classList.remove('lang-ru', 'lang-kz');
       document.body.classList.add('lang-' + lang);
       document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
       document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
+
+      const searchInput = document.getElementById('searchInput');
+      searchInput.placeholder = lang === 'kz'
+        ? 'Жылдам іздеу (мысалы: ауырсыну, аллергия, жөтел)...'
+        : 'Быстрый поиск (например: боль, температура, аллергия, вдох)...';
+
       localStorage.setItem('selected_lang', lang);
     }
 
-    function goSlide(idx) {
-      document.body.classList.remove('all-slides-mode');
-      currentSlideIdx = idx;
-      document.querySelectorAll('.cheat-slide').forEach((s, i) => {
-        s.classList.toggle('active', i === idx);
-      });
-      document.querySelectorAll('.slide-pill').forEach((p, i) => {
-        p.classList.toggle('active', i === idx);
+    function togglePhonetics() {
+      const hidden = document.body.classList.toggle('hide-phonetics');
+      document.getElementById('phoneticBtn').classList.toggle('active', !hidden);
+    }
+
+    function filterStage(stageId, btn) {
+      document.querySelectorAll('.stage-tab').forEach(t => t.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      document.getElementById('searchInput').value = '';
+      document.querySelectorAll('.phrase-row').forEach(r => r.classList.remove('hidden'));
+
+      document.querySelectorAll('.stage-block').forEach(block => {
+        if (stageId === 'all' || block.getAttribute('data-stage') === stageId) {
+          block.classList.remove('hidden');
+        } else {
+          block.classList.add('hidden');
+        }
       });
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function toggleAllSlides() {
-      const isAll = document.body.classList.toggle('all-slides-mode');
-      document.querySelectorAll('.slide-pill').forEach(p => p.classList.remove('active'));
-      if (isAll) {
-        document.getElementById('showAllBtn').classList.add('active');
-      } else {
-        goSlide(currentSlideIdx);
-      }
+    function filterBySearch() {
+      const q = document.getElementById('searchInput').value.trim().toLowerCase();
+      document.querySelectorAll('.stage-block').forEach(block => {
+        let visibleCount = 0;
+        block.querySelectorAll('.phrase-row').forEach(row => {
+          const match = !q || row.textContent.toLowerCase().includes(q);
+          row.classList.toggle('hidden', !match);
+          if (match) visibleCount++;
+        });
+        block.classList.toggle('hidden', visibleCount === 0);
+      });
     }
 
-    function toggleScreenshotMode() {
-      document.body.classList.toggle('screenshot-mode');
-    }
-
-    function speakPhrase(text) {
+    function speak(text) {
       if (!('speechSynthesis' in window)) return;
       window.speechSynthesis.cancel();
       const u = new SpeechSynthesisUtterance(text);
       u.lang = 'en-US';
-      u.rate = 0.88;
+      u.rate = 0.9;
       window.speechSynthesis.speak(u);
     }
 
     const savedLang = localStorage.getItem('selected_lang') || 'ru';
-    setCheatLang(savedLang);
+    setLang(savedLang);
   </script>
 </body>
 </html>
