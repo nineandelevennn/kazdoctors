@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Doctors Speak — Аудиотренажер и диалоги по опросу пациента</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --bg-page: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --bg-subtle: #F1F5F9;
+      --text-primary: #0F172A;
+      --text-secondary: #334155;
+      --text-muted: #64748B;
+      --med-navy: #0B3555;
+      --kz-blue: #0284C7;
+      --kz-blue-soft: #E0F2FE;
+      --kz-gold: #F5B700;
+      --kz-gold-soft: #FEF9C3;
+      --teal-accent: #0D9488;
+      --teal-soft: #F0FDFA;
+      --teal-border: #CCFBF1;
+      --border-light: #E2E8F0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.45;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-bottom: 40px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Компактная клиническая шапка */
+    header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-light);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 12px 14px;
+    }
+
+    .header-inner {
+      max-width: 660px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .back-link {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 6px 11px;
+      border-radius: 8px;
+      border: 1px solid var(--border-light);
+      background: var(--bg-page);
+      transition: border-color 0.15s ease;
+    }
+
+    .back-link:hover {
+      border-color: var(--kz-blue);
+      color: var(--med-navy);
+    }
+
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tier-badge {
+      text-decoration: none;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-light);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .tier-badge.pro-active {
+      background: var(--teal-soft);
+      color: var(--teal-accent);
+      border-color: var(--teal-border);
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      padding: 2px;
+    }
+
+    .lang-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .lang-btn.active {
+      background: var(--med-navy);
+      color: #FFFFFF;
+    }
+
+    .title-block h1 {
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: var(--med-navy);
+      letter-spacing: -0.2px;
+    }
+
+    .title-block p {
+      font-size: 0.79rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Основной контейнер */
+    main {
+      width: 100%;
+      max-width: 660px;
+      margin: 14px auto 0 auto;
+      padding: 0 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex-grow: 1;
+    }
+
+    /* Панель быстрого перехода к тренажеру опроса */
+    .quick-action-bar {
+      background: var(--bg-card);
+      border: 1px solid #BAE6FD;
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .qab-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .qab-title {
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: var(--med-navy);
+    }
+
+    .qab-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .qab-btn {
+      background: var(--med-navy);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 9px 14px;
+      border-radius: 8px;
+      white-space: nowrap;
+      transition: background 0.15s ease;
+    }
+
+    .qab-btn:hover {
+      background: var(--kz-blue);
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin: 6px 0 -4px 2px;
+    }
+
+    /* Схлопывающаяся карточка видеоурока */
+    details.audio-lesson-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.15s ease;
+    }
+
+    details.audio-lesson-card[open] {
+      border-color: var(--kz-blue);
+      box-shadow: 0 4px 16px rgba(11, 53, 85, 0.05);
+    }
+
+    summary.alc-summary {
+      list-style: none;
+      padding: 13px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+      background: var(--bg-card);
+    }
+
+    summary.alc-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    details.audio-lesson-card[open] > summary.alc-summary {
+      background: var(--bg-page);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .alc-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .alc-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      color: var(--med-navy);
+      font-size: 0.78rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    details.audio-lesson-card.free-module .alc-num {
+      background: var(--teal-soft);
+      border-color: var(--teal-border);
+      color: var(--teal-accent);
+    }
+
+    .alc-info {
+      min-width: 0;
+    }
+
+    .alc-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.25;
+    }
+
+    .alc-desc {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      line-height: 1.3;
+    }
+
+    .alc-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .status-pill {
+      font-size: 0.66rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-light);
+      white-space: nowrap;
+    }
+
+    .status-pill.free {
+      background: var(--teal-soft);
+      color: var(--teal-accent);
+      border-color: var(--teal-border);
+    }
+
+    .status-pill.locked {
+      background: var(--kz-gold-soft);
+      color: #854D0E;
+      border-color: #FDE047;
+    }
+
+    .chevron {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      transition: transform 0.2s ease;
+    }
+
+    details.audio-lesson-card[open] .chevron {
+      transform: rotate(180deg);
+      color: var(--med-navy);
+    }
+
+    .alc-body {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: var(--bg-card);
+    }
+
+    /* Переключатель аудиодорожки внутри открытого урока (Орысша / Қазақша) */
+    .track-lang-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .track-lang-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .track-tabs {
+      display: inline-flex;
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 3px;
+      gap: 4px;
+    }
+
+    .track-tab-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 0.73rem;
+      font-weight: 700;
+      padding: 5px 11px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .track-tab-btn.active {
+      background: var(--med-navy);
+      color: #FFFFFF;
+    }
+
+    .video-box {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #0F172A;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+    }
+
+    .video-box iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+
+    /* Заглушка для закрытых уроков (2–6) на тарифах Free / Standard */
+    .paywall-box {
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+      padding: 18px 16px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pw-tag {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #854D0E;
+      background: var(--kz-gold-soft);
+      border: 1px solid #FDE047;
+      padding: 3px 9px;
+      border-radius: 6px;
+    }
+
+    .pw-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .pw-desc {
+      font-size: 0.77rem;
+      color: var(--text-secondary);
+      max-width: 440px;
+    }
+
+    .pw-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    .pw-btn {
+      text-decoration: none;
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 9px 14px;
+      border-radius: 8px;
+      flex: 1 1 180px;
+      max-width: 240px;
+      text-align: center;
+    }
+
+    .pw-btn.primary {
+      background: var(--med-navy);
+      color: #FFFFFF;
+    }
+
+    .pw-btn.secondary {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border-light);
+    }
+
+    .lesson-bottom-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 4px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .practice-link {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--kz-blue);
+      text-decoration: none;
+    }
+
+    .practice-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Нижний блок перехода к тренажеру */
+    .bottom-cta-card {
+      background: var(--med-navy);
+      color: #FFFFFF;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .bcc-text h3 {
+      font-size: 0.9rem;
+      font-weight: 800;
+    }
+
+    .bcc-text p {
+      font-size: 0.76rem;
+      color: #BAE6FD;
+      margin-top: 2px;
+    }
+
+    .bcc-btn {
+      background: var(--kz-gold);
+      color: var(--med-navy);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 800;
+      padding: 10px 16px;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+
+    [lang-val] { display: none !important; }
+    body.lang-ru [lang-val="ru"] { display: inline !important; }
+    body.lang-kz [lang-val="kz"] { display: inline !important; }
+  </style>
+</head>
+<body class="lang-ru">
+
+  <header>
+    <div class="header-inner">
+      <div class="top-bar">
+        <a href="https://kazdoctors.com/" class="back-link">
+          <span lang-val="ru">⬅ На главную</span>
+          <span lang-val="kz">⬅ Басты бетке</span>
+        </a>
+
+        <div class="top-right">
+          <a href="https://kazdoctors.com/tarifs/" id="tierBadge" class="tier-badge">Тариф: FREE</a>
+          <div class="lang-switch">
+            <button type="button" class="lang-btn active" id="btnRu" onclick="setPageLang('ru')">RU</button>
+            <button type="button" class="lang-btn" id="btnKz" onclick="setPageLang('kz')">KZ</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="title-block">
+        <h1>
+          <span lang-val="ru">Аудиотренажер и диалоги: Опрос пациента</span>
+          <span lang-val="kz">Аудиотренажер және диалогтар: Анамнез жинау</span>
+        </h1>
+        <p>
+          <span lang-val="ru">Слушайте в дороге, повторяйте вопросы за диктором и закрепляйте в тренажере</span>
+          <span lang-val="kz">Жолда тыңдап, сұрақтарды дауыстап қайталаңыз және тренажерде бекітіңіз</span>
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Верхняя панель быстрого перехода к тренажеру упражнений по опросу -->
+    <div class="quick-action-bar">
+      <div class="qab-text">
+        <div class="qab-title">
+          <span lang-val="ru">Интерактивный тренажер по опросу (A1–B1+)</span>
+          <span lang-val="kz">Анамнез жинау бойынша интерактивті тренажер (A1–B1+)</span>
+        </div>
+        <div class="qab-sub">
+          <span lang-val="ru">36 клинических вопросов на отработку SOCRATES, грамматики и кейсов</span>
+          <span lang-val="kz">SOCRATES, грамматика және кейстерді пысықтауға арналған 36 сұрақ</span>
+        </div>
+      </div>
+      <a href="https://kazdoctors.com/interviews/" class="qab-btn">
+        <span lang-val="ru">Перейти к упражнениям ➔</span>
+        <span lang-val="kz">Жаттығуларға өту ➔</span>
+      </a>
+    </div>
+
+    <div class="section-label">
+      <span lang-val="ru">Часть 1. Универсальные аудиоупражнения (Для всех специальностей)</span>
+      <span lang-val="kz">1-бөлім. Әмбебап аудио-жаттығулар (Барлық мамандықтар үшін)</span>
+    </div>
+
+    <!-- ==================== ВИДЕО 1 (ОТКРЫТО С ТАРИФА FREE) ==================== -->
+    <details class="audio-lesson-card free-module" data-index="0">
+      <summary class="alc-summary">
+        <div class="alc-left">
+          <div class="alc-num">01</div>
+          <div class="alc-info">
+            <div class="alc-title">
+              <span lang-val="ru">Упражнение 1: Начало приема и алгоритм SOCRATES</span>
+              <span lang-val="kz">1-жаттығу: Қабылдауды бастау және SOCRATES алгоритмі</span>
+            </div>
+            <div class="alc-desc">
+
+            </div>
+          </div>
+        </div>
+        <div class="alc-right">
+          <span class="status-pill free" id="statusPill0">Free</span>
+          <span class="chevron">⌄</span>
+        </div>
+      </summary>
+      <div class="alc-body" id="moduleBody0"></div>
+    </details>
+
+    <!-- ==================== ВИДЕО 2 (PRO / PREMIUM / VIP) ==================== -->
+    <details class="audio-lesson-card" data-index="1">
+      <summary class="alc-summary">
+        <div class="alc-left">
+          <div class="alc-num">02</div>
+          <div class="alc-info">
+            <div class="alc-title">
+              <span lang-val="ru">Упражнение 2: Анамнез жизни, лекарства и аллергии</span>
+              <span lang-val="kz">2-жаттығу: Өмір анамнезі, дәрі-дәрмектер және аллергия</span>
+            </div>
+            <div class="alc-desc">
+
+            </div>
+          </div>
+        </div>
+        <div class="alc-right">
+
+          <span class="chevron">⌄</span>
+        </div>
+      </summary>
+      <div class="alc-body" id="moduleBody1"></div>
+    </details>
+
+    <!-- ==================== ВИДЕО 3 (PRO / PREMIUM / VIP) ==================== -->
+    <details class="audio-lesson-card" data-index="2">
+      <summary class="alc-summary">
+        <div class="alc-left">
+          <div class="alc-num">03</div>
+          <div class="alc-info">
+            <div class="alc-title">
+              <span lang-val="ru">Упражнение 3: Эмпатия, объяснение диагноза и план лечения</span>
+              <span lang-val="kz">3-жаттығу: Эмпатия, диагнозды түсіндіру және ем жоспары</span>
+            </div>
+            <div class="alc-desc">
+
+            </div>
+          </div>
+        </div>
+        <div class="alc-right">
+
+          <span class="chevron">⌄</span>
+        </div>
+      </summary>
+      <div class="alc-body" id="moduleBody2"></div>
+    </details>
+
+    <div class="section-label">
+      <span lang-val="ru">Часть 2. Клинические диалоги-симуляторы (3 раунда в каждом)</span>
+      <span lang-val="kz">2-бөлім. Клиникалық диалог-симуляторлар (Әрқайсысы 3 раундтан)</span>
+    </div>
+
+    <!-- ==================== ВИДЕО 4 (PRO / PREMIUM / VIP) ==================== -->
+    <details class="audio-lesson-card" data-index="3">
+      <summary class="alc-summary">
+        <div class="alc-left">
+          <div class="alc-num">04</div>
+          <div class="alc-info">
+            <div class="alc-title">
+              <span lang-val="ru">Диалог 1: Острая боль в животе и направление на операцию</span>
+              <span lang-val="kz">1-диалог: Іштегі жедел ауырсыну және отаға жіберу</span>
+            </div>
+            <div class="alc-desc">
+
+            </div>
+          </div>
+        </div>
+        <div class="alc-right">
+
+          <span class="chevron">⌄</span>
+        </div>
+      </summary>
+      <div class="alc-body" id="moduleBody3"></div>
+    </details>
+
+    <!-- ==================== ВИДЕО 5 (PRO / PREMIUM / VIP) ==================== -->
+    <details class="audio-lesson-card" data-index="4">
+      <summary class="alc-summary">
+        <div class="alc-left">
+          <div class="alc-num">05</div>
+          <div class="alc-info">
+            <div class="alc-title">
+              <span lang-val="ru">Диалог 2: Кашель, аллергия на пенициллин и отказ от антибиотиков</span>
+              <span lang-val="kz">2-диалог: Жөтел, пенициллинге аллергия және антибиотиксіз ем</span>
+            </div>
+            <div class="alc-desc">
+
+            </div>
+          </div>
+        </div>
+        <div class="alc-right">
+
+          <span class="chevron">⌄</span>
+        </div>
+      </summary>
+      <div class="alc-body" id="moduleBody4"></div>
+    </details>
+
+    <!-- ==================== ВИДЕО 6 (PRO / PREMIUM / VIP) ==================== -->
+    <details class="audio-lesson-card" data-index="5">
+      <summary class="alc-summary">
+        <div class="alc-left">
+          <div class="alc-num">06</div>
+          <div class="alc-info">
+            <div class="alc-title">
+              <span lang-val="ru">Диалог 3: Хронический пациент, семейный анамнез и анализы</span>
+              <span lang-val="kz">3-диалог: Созылмалы науқас, отбасылық анамнез және талдаулар</span>
+            </div>
+            <div class="alc-desc">
+
+            </div>
+          </div>
+        </div>
+        <div class="alc-right">
+
+          <span class="chevron">⌄</span>
+        </div>
+      </summary>
+      <div class="alc-body" id="moduleBody5"></div>
+    </details>
+
+    <!-- Нижний блок перехода к практике -->
+    <div class="bottom-cta-card">
+      <div class="bcc-text">
+        <h3>
+          <span lang-val="ru">Прослушали аудиоразбор? Проверьте себя на практике!</span>
+          <span lang-val="kz">Аудио-талдауды тыңдадыңыз ба? Өзіңізді практикада тексеріңіз!</span>
+        </h3>
+        <p>
+          <span lang-val="ru">Запустите тренажер по опросу пациента (уровни A1, A2, B1+)</span>
+          <span lang-val="kz">Науқастан анамнез алу тренажерін іске қосыңыз (A1, A2, B1+ деңгейлері)</span>
+        </p>
+      </div>
+      <a href="https://kazdoctors.com/interviews/" class="bcc-btn">
+        <span lang-val="ru">Запустить тренажер ➔</span>
+        <span lang-val="kz">Тренажерді бастау ➔</span>
+      </a>
+    </div>
+
+  </main>
+
+  <script>
+    // =========================================================================
+    // 1. ВСТАВЬТЕ ВАШИ ССЫЛКИ НА VIMEO ДЛЯ 6 МОДУЛЕЙ (РУССКАЯ И КАЗАХСКАЯ ВЕРСИИ)
+    // =========================================================================
+    const INTERVIEW_VIDEOS = [
+      {
+        // Модуль 1 — ОТКРЫТ БЕСПЛАТНО (начиная с FREE)
+        freeForAll: true,
+        ruUrl: "https://player.vimeo.com/video/VIMEO_ID_INTERVIEW_1_RU",
+        kzUrl: "https://player.vimeo.com/video/VIMEO_ID_INTERVIEW_1_KZ"
+      },
+      {
+        // Модуль 2 — PRO / PREMIUM / VIP
+        freeForAll: false,
+        ruUrl: "https://player.vimeo.com/video/VIMEO_ID_INTERVIEW_2_RU",
+        kzUrl: "https://player.vimeo.com/video/VIMEO_ID_INTERVIEW_2_KZ"
+      },
+      {
+        // Модуль 3 — PRO / PREMIUM / VIP
+        freeForAll: false,
+        ruUrl: "https://player.vimeo.com/video/VIMEO_ID_INTERVIEW_3_RU",
+        kzUrl: "https://player.vimeo.com/video/VIMEO_ID_INTERVIEW_3_KZ"
+      },
+      {
+        // Модуль 4 (Диалог 1) — PRO / PREMIUM / VIP
+        freeForAll: false,
+        ruUrl: "https://player.vimeo.com/video/VIMEO_ID_INTERVIEW_4_RU",
+        kzUrl: "https://player.vimeo.com/video/VIMEO_ID_INTERVIEW_4_KZ"
+      },
+      {
+        // Модуль 5 (Диалог 2) — PRO / PREMIUM / VIP
+        freeForAll: false,
+        ruUrl: "https://player.vimeo.com/video/VIMEO_ID_INTERVIEW_5_RU",
+        kzUrl: "https://player.vimeo.com/video/VIMEO_ID_INTERVIEW_5_KZ"
+      },
+      {
+        // Модуль 6 (Диалог 3) — PRO / PREMIUM / VIP
+        freeForAll: false,
+        ruUrl: "https://player.vimeo.com/video/VIMEO_ID_INTERVIEW_6_RU",
+        kzUrl: "https://player.vimeo.com/video/VIMEO_ID_INTERVIEW_6_KZ"
+      }
+    ];
+
+    // =========================================================================
+    // 2. ПРОВЕРКА ПОДПИСКИ SUPABASE (FREE vs PRO / PREMIUM / VIP)
+    // =========================================================================
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+
+    const supabaseClient = window.supabase
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+      : null;
+
+    const TIER_LEVELS = {
+      none: 0,
+      free: 0,
+      standard: 1,
+      pro: 2,
+      premium: 3,
+      vip: 4
+    };
+
+    const TIER_NAMES = {
+      none: "FREE",
+      free: "FREE",
+      standard: "STANDARD",
+      pro: "PRO",
+      premium: "PREMIUM",
+      vip: "VIP"
+    };
+
+    let currentLang = localStorage.getItem('selected_lang') || 'ru';
+    let currentUserTier = "free";
+    // Для каждого из 6 уроков храним выбранную аудиодорожку ('ru' или 'kz')
+    const selectedTrackLang = ['ru', 'ru', 'ru', 'ru', 'ru', 'ru'];
+
+    function setPageLang(lang) {
+      currentLang = lang;
+      document.body.className = 'lang-' + lang;
+      document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
+      document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
+      localStorage.setItem('selected_lang', lang);
+
+      // По умолчанию переключаем дорожки на выбранный язык интерфейса
+      for (let i = 0; i < 6; i++) {
+        selectedTrackLang[i] = lang;
+      }
+      renderAllModules();
+    }
+
+    function canAccessModule(idx) {
+      if (INTERVIEW_VIDEOS[idx].freeForAll) return true;
+      const tierLevel = TIER_LEVELS[currentUserTier] || 0;
+      return tierLevel >= TIER_LEVELS.pro;
+    }
+
+    function renderAllModules() {
+      const tierLevel = TIER_LEVELS[currentUserTier] || 0;
+      const isKz = (currentLang === 'kz');
+
+      const badgeEl = document.getElementById('tierBadge');
+      if (badgeEl) {
+        badgeEl.textContent = `Тариф: ${TIER_NAMES[currentUserTier] || "FREE"}`;
+        badgeEl.classList.toggle('pro-active', tierLevel >= TIER_LEVELS.pro);
+      }
+
+      INTERVIEW_VIDEOS.forEach((mod, idx) => {
+        const pill = document.getElementById(`statusPill${idx}`);
+        const body = document.getElementById(`moduleBody${idx}`);
+        const detailsEl = document.querySelector(`details.audio-lesson-card[data-index="${idx}"]`);
+        const unlocked = canAccessModule(idx);
+
+        if (pill) {
+          if (mod.freeForAll) {
+            pill.textContent = "Free";
+            pill.className = "status-pill free";
+          } else if (unlocked) {
+            pill.textContent = isKz ? "Ашық" : "Открыто";
+            pill.className = "status-pill free";
+          } else {
+            pill.textContent = "Pro+";
+            pill.className = "status-pill locked";
+          }
+        }
+
+        if (!body) return;
+
+        if (unlocked) {
+          const trackLang = selectedTrackLang[idx] || currentLang;
+          const activeUrl = (trackLang === 'kz') ? mod.kzUrl : mod.ruUrl;
+          const isOpen = detailsEl && detailsEl.open;
+
+          body.innerHTML = `
+            <div class="track-lang-bar">
+              <span class="track-lang-label">
+                ${isKz ? "Аудио-түсіндірме тілі:" : "Язык аудио-объяснений:"}
+              </span>
+              <div class="track-tabs">
+                <button type="button" class="track-tab-btn ${trackLang === 'ru' ? 'active' : ''}" onclick="switchTrackLang(${idx}, 'ru')">
+                  Орысша (RU)
+                </button>
+                <button type="button" class="track-tab-btn ${trackLang === 'kz' ? 'active' : ''}" onclick="switchTrackLang(${idx}, 'kz')">
+                  Қазақша (KZ)
+                </button>
+              </div>
+            </div>
+            <div class="video-box">
+              <iframe
+                id="vimeoIframe${idx}"
+                data-src="${activeUrl}"
+                ${isOpen ? `src="${activeUrl}"` : ''}
+                title="Interview Audio Lesson ${idx + 1}"
+                loading="lazy"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <div class="lesson-bottom-row">
+              <a href="https://kazdoctors.com/interviews/" class="practice-link">
+                ${isKz ? "🎯 Осы тақырыпты тренажерде пысықтау ➔" : "🎯 Отработать вопросы в тренажере опроса ➔"}
+              </a>
+            </div>
+          `;
+        } else {
+          body.innerHTML = `
+            <div class="paywall-box">
+              <span class="pw-tag">
+                ${isKz ? "PRO / PREMIUM / VIP тарифтерінде ашық" : "Доступно на тарифах PRO / PREMIUM / VIP"}
+              </span>
+              <div class="pw-title">
+                ${isKz ? "Бұл аудио-модуль жазылым бойынша ашылады" : "Этот аудио-модуль входит в подписку Pro и выше"}
+              </div>
+              <p class="pw-desc">
+                ${isKz
+                  ? "Бірінші модуль барлық қолданушыларға тегін ашық. Қалған 5 аудио-жаттығу мен клиникалық диалогтарды тыңдау үшін Pro, Premium немесе VIP тарифін қосыңыз."
+                  : "Первый модуль открыт бесплатно. Чтобы получить доступ ко всем 6 аудиотренажерам, ролевым диалогам и конспектам, подключите тариф Pro, Premium или VIP."}
+              </p>
+              <div class="pw-actions">
+                <a href="https://kazdoctors.com/tarifs/" class="pw-btn primary">
+                  ${isKz ? "Тарифтерді көру ➔" : "Перейти к тарифам ➔"}
+                </a>
+                <a href="https://wa.me/77081595038?text=Здравствуйте!%20Хочу%20подключить%20доступ%20PRO%20к%20аудиотренажерам%20по%20опросу%20пациента" target="_blank" class="pw-btn secondary">
+                  WhatsApp
+                </a>
+              </div>
+            </div>
+          `;
+        }
+      });
+    }
+
+    function switchTrackLang(idx, lang) {
+      selectedTrackLang[idx] = lang;
+      renderAllModules();
+    }
+
+    // Автоматическая подгрузка видео при открытии спойлера и остановка при закрытии
+    document.querySelectorAll('details.audio-lesson-card').forEach((card) => {
+      card.addEventListener('toggle', () => {
+        const idx = parseInt(card.getAttribute('data-index'), 10);
+        const iframe = document.getElementById(`vimeoIframe${idx}`);
+
+        if (card.open) {
+          // Закрываем остальные открытые спойлеры, чтобы не играло 2 видео одновременно
+          document.querySelectorAll('details.audio-lesson-card').forEach((other) => {
+            if (other !== card && other.open) {
+              other.removeAttribute('open');
+            }
+          });
+          if (iframe && iframe.dataset.src && !iframe.getAttribute('src')) {
+            iframe.setAttribute('src', iframe.dataset.src);
+          }
+        } else {
+          if (iframe && iframe.getAttribute('src')) {
+            iframe.removeAttribute('src');
+          }
+        }
+      });
+    });
+
+    async function detectUserTier(session) {
+      if (!session || !session.user || !supabaseClient) return "free";
+
+      const user = session.user;
+      const userEmail = (user.email || "").toLowerCase().trim();
+
+      try {
+        let { data: profile } = await supabaseClient
+          .from('profiles')
+          .select('tier, subscription_expires_at')
+          .eq('id', user.id)
+          .maybeSingle();
+
+        if (!profile && userEmail) {
+          const resByEmail = await supabaseClient
+            .from('profiles')
+            .select('tier, subscription_expires_at')
+            .ilike('email', userEmail)
+            .maybeSingle();
+          profile = resByEmail.data;
+        }
+
+        if (!profile || !profile.subscription_expires_at) {
+          return "free";
+        }
+
+        const expiresAt = new Date(profile.subscription_expires_at);
+        if (isNaN(expiresAt.getTime()) || new Date() > expiresAt) {
+          return "free";
+        }
+
+        const dbTier = (profile.tier || "standard").toLowerCase().trim();
+        if (TIER_LEVELS[dbTier] !== undefined) {
+          return dbTier;
+        }
+      } catch (err) {
+        console.warn("Ошибка проверки тарифа:", err);
+      }
+
+      return "free";
+    }
+
+    async function initAuthAndRender() {
+      setPageLang(currentLang);
+
+      if (!supabaseClient) return;
+
+      try {
+        const { data, error } = await supabaseClient.auth.getSession();
+        if (!error && data && data.session) {
+          currentUserTier = await detectUserTier(data.session);
+          renderAllModules();
+        }
+      } catch (e) {
+        console.warn("Гостевой режим:", e);
+      }
+    }
+
+    initAuthAndRender();
+  </script>
+</body>
+</html>
