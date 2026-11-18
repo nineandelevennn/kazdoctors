@@ -1,0 +1,2019 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Doctors Speak — Clinical English Practice (TBLT)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-page: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --bg-subtle: #F1F5F9;
+      --text-primary: #0F172A;
+      --text-secondary: #334155;
+      --text-muted: #64748B;
+      --med-navy: #0B3555;
+      --kz-blue: #0284C7;
+      --kz-blue-soft: #E0F2FE;
+      --kz-gold: #F5B700;
+      --kz-gold-soft: #FEF9C3;
+      --teal-accent: #0D9488;
+      --teal-soft: #F0FDFA;
+      --teal-border: #99F6E4;
+      --red-soft: #FEF2F2;
+      --red-border: #FECACA;
+      --red-text: #B91C1C;
+      --border-light: #E2E8F0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.48;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 48px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Шапка */
+    header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-light);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      padding: 12px 14px;
+    }
+
+    .header-inner {
+      max-width: 640px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .back-link {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 7px;
+      border: 1px solid var(--border-light);
+      background: var(--bg-page);
+      cursor: pointer;
+    }
+
+    .back-link:hover {
+      border-color: var(--kz-blue);
+      color: var(--med-navy);
+    }
+
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .free-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 6px;
+      background: var(--teal-soft);
+      color: var(--teal-accent);
+      border: 1px solid var(--teal-border);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      padding: 2px;
+    }
+
+    .lang-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .lang-btn.active {
+      background: var(--med-navy);
+      color: #FFFFFF;
+    }
+
+    /* Прогресс кейса */
+    .progress-row {
+      display: none;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .progress-row.visible {
+      display: flex;
+    }
+
+    .prog-step {
+      flex: 1;
+      height: 5px;
+      border-radius: 4px;
+      background: var(--border-light);
+      transition: background 0.25s ease;
+    }
+
+    .prog-step.done {
+      background: var(--teal-accent);
+    }
+
+    .prog-step.current {
+      background: var(--kz-blue);
+    }
+
+    /* Основной контейнер */
+    main {
+      width: 100%;
+      max-width: 640px;
+      margin: 16px auto 0 auto;
+      padding: 0 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.025);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .mission-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--kz-blue);
+      background: var(--kz-blue-soft);
+      padding: 4px 9px;
+      border-radius: 6px;
+      align-self: flex-start;
+    }
+
+    .mission-kicker.reading {
+      color: #854D0E;
+      background: var(--kz-gold-soft);
+    }
+
+    .mission-kicker.closing {
+      color: var(--teal-accent);
+      background: var(--teal-soft);
+    }
+
+    h1 {
+      font-size: 1.16rem;
+      font-weight: 800;
+      color: var(--med-navy);
+      line-height: 1.3;
+    }
+
+    h2 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--med-navy);
+      line-height: 1.3;
+    }
+
+    .lead-text {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    /* Список 3 задач на выбор */
+    .cases-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .case-card {
+      width: 100%;
+      text-align: left;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 15px 16px;
+      cursor: pointer;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .case-card:hover {
+      border-color: var(--kz-blue);
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.08);
+    }
+
+    .case-card:active {
+      transform: scale(0.995);
+    }
+
+    .case-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .case-tag {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--kz-blue);
+      background: var(--kz-blue-soft);
+      padding: 3px 8px;
+      border-radius: 5px;
+    }
+
+    .case-meta {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .case-done-pill {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--teal-accent);
+      background: var(--teal-soft);
+      border: 1px solid var(--teal-border);
+      padding: 2px 8px;
+      border-radius: 5px;
+    }
+
+    .case-title {
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: var(--med-navy);
+      line-height: 1.3;
+    }
+
+    .case-desc {
+      font-size: 0.81rem;
+      color: var(--text-secondary);
+      line-height: 1.42;
+    }
+
+    .case-skills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 2px;
+    }
+
+    .skill-chip {
+      font-size: 0.69rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: var(--bg-subtle);
+      padding: 2px 7px;
+      border-radius: 5px;
+    }
+
+    .case-start-line {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--kz-blue);
+      margin-top: 2px;
+    }
+
+    /* Бриф пациента перед шагом 1 */
+    .patient-brief {
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-left: 4px solid var(--med-navy);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .brief-label {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+    }
+
+    .brief-content {
+      font-size: 0.83rem;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    /* Реплика пациента */
+    .patient-bubble {
+      background: #F0F9FF;
+      border: 1px solid #BAE6FD;
+      border-radius: 12px;
+      padding: 13px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .pb-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .pb-role {
+      font-size: 0.71rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--kz-blue);
+    }
+
+    .audio-btn {
+      border: 1px solid #7DD3FC;
+      background: #FFFFFF;
+      color: var(--med-navy);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .audio-btn:hover {
+      background: var(--kz-blue-soft);
+    }
+
+    .pb-quote {
+      font-size: 0.94rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.4;
+    }
+
+    .pb-hint-toggle {
+      align-self: flex-start;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.73rem;
+      font-weight: 600;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .pb-translation {
+      display: none;
+      font-size: 0.79rem;
+      color: var(--text-secondary);
+      border-top: 1px dashed #BAE6FD;
+      padding-top: 6px;
+    }
+
+    .pb-translation.visible {
+      display: block;
+    }
+
+    /* Блок клинического текста (Reading task) */
+    .clinical-doc {
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .doc-header {
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .doc-text {
+      font-size: 0.88rem;
+      color: var(--text-primary);
+      line-height: 1.55;
+    }
+
+    .doc-text mark {
+      background: var(--kz-gold-soft);
+      color: var(--text-primary);
+      padding: 1px 4px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    /* Задача врача */
+    .task-prompt {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* Варианты ответа */
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .opt-btn {
+      width: 100%;
+      text-align: left;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.87rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      line-height: 1.38;
+    }
+
+    .opt-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background: var(--bg-page);
+    }
+
+    .opt-btn.correct {
+      background: var(--teal-soft);
+      border-color: var(--teal-accent);
+      color: #0F766E;
+      font-weight: 700;
+    }
+
+    .opt-btn.wrong {
+      background: var(--red-soft);
+      border-color: var(--red-border);
+      color: var(--red-text);
+    }
+
+    /* Обратная связь (Task Feedback + Что подучить) */
+    .feedback-box {
+      display: flex;
+      border-radius: 10px;
+      padding: 13px 14px;
+      font-size: 0.83rem;
+      line-height: 1.48;
+      border: 1px solid var(--border-light);
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .feedback-box.ok {
+      background: var(--teal-soft);
+      border-color: var(--teal-border);
+      color: #115E59;
+    }
+
+    .feedback-box.wrong-fb {
+      background: #FFFBEB;
+      border-color: #FDE68A;
+      color: #78350F;
+    }
+
+    .fb-title {
+      font-weight: 800;
+      font-size: 0.84rem;
+    }
+
+    .fb-mistake-note {
+      background: rgba(255, 255, 255, 0.72);
+      border-left: 3px solid #D97706;
+      padding: 8px 10px;
+      border-radius: 6px;
+      color: var(--text-primary);
+      font-size: 0.81rem;
+    }
+
+    .study-tip-box {
+      background: var(--bg-card);
+      border: 1px solid #BAE6FD;
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      color: var(--text-primary);
+    }
+
+    .study-tip-label {
+      font-size: 0.69rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--kz-blue);
+    }
+
+    .study-tip-topic {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--med-navy);
+    }
+
+    .study-tip-desc {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+
+    .study-tip-link {
+      align-self: flex-start;
+      margin-top: 2px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--kz-blue);
+      text-decoration: none;
+    }
+
+    .study-tip-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Кнопки действий */
+    .primary-btn {
+      width: 100%;
+      background: var(--med-navy);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.15s ease;
+    }
+
+    .primary-btn:hover {
+      background: var(--kz-blue);
+    }
+
+    .primary-btn.gold {
+      background: var(--kz-gold);
+      color: var(--med-navy);
+      font-weight: 800;
+    }
+
+    .primary-btn.gold:hover {
+      background: #EAB308;
+    }
+
+    .secondary-btn {
+      width: 100%;
+      background: var(--bg-card);
+      color: var(--med-navy);
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+      padding: 11px 16px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .secondary-btn:hover {
+      border-color: var(--kz-blue);
+      background: var(--bg-page);
+    }
+
+    /* Финальный экран TBLT Language Focus */
+    .score-banner {
+      background: var(--med-navy);
+      color: #FFFFFF;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .score-num {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--kz-gold);
+    }
+
+    .chunk-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .chunk-item {
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: 9px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .chunk-en {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--med-navy);
+      cursor: pointer;
+    }
+
+    .chunk-en:hover {
+      color: var(--kz-blue);
+    }
+
+    .chunk-meta {
+      font-size: 0.76rem;
+      color: var(--text-secondary);
+    }
+
+    .gap-card {
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 0.82rem;
+      color: #78350F;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .gap-plan-item {
+      background: #FFFFFF;
+      border: 1px solid #FDE68A;
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      color: var(--text-primary);
+    }
+
+    .actions-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="top-bar">
+        <button type="button" class="back-link" id="uiBackBtn" onclick="handleBackClick()">На главную</button>
+        <div class="top-right">
+          <span class="free-badge">Free Practice</span>
+          <div class="lang-switch">
+            <button type="button" class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
+            <button type="button" class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
+          </div>
+        </div>
+      </div>
+      <div class="progress-row" id="progressRow"></div>
+    </div>
+  </header>
+
+  <main id="appRoot"></main>
+
+  <script>
+    // =========================================================================
+    // 1. ТЕКСТЫ ИНТЕРФЕЙСА (RU / KZ)
+    // =========================================================================
+    const UI_TEXT = {
+      ru: {
+        backHome: "На главную",
+        backCases: "К выбору задачи",
+        menuKicker: "Task-Based Clinical English • Бесплатно",
+        menuTitle: "Выберите клиническую задачу и попробуйте английский сразу в деле",
+        menuLead: "Без предварительной зубрежки таблиц и правил. Выберите любой из 3 коротких сценариев — проведите опрос, прочтите фрагмент протокола и примите решение. Если ошибетесь, тренажер покажет, какую именно тему стоит подтянуть.",
+        startCase: "Начать задачу →",
+        retryCase: "Пройти еще раз →",
+        doneLabel: "Пройдено",
+        briefLabel: "Вводная кейса",
+        listenBtn: "Прослушать",
+        showTransBtn: "Показать перевод реплики",
+        hideTransBtn: "Скрыть перевод",
+        nextStepBtn: "Следующий шаг",
+        finishBtn: "Посмотреть итоги и разбор",
+        okTitle: "Верно — точное клиническое решение",
+        wrongTitle: "Разберем ошибку:",
+        studyLabel: "Что нужно учить, чтобы закрыть этот пробел",
+        studyLinkText: "Открыть раздел на платформе →",
+        summaryTitle: "Клиническая задача выполнена!",
+        summarySub: "Вы отработали реальный прием без сухой грамматики — сразу в контексте врачебной практики.",
+        chunksTitle: "Речевые конструкции, которые вы применили",
+        chunksSub: "Нажмите на любую фразу, чтобы прослушать произношение:",
+        gapsTitle: "Ваш персональный план: что стоит подтянуть",
+        gapsPerfect: "Вы без ошибок прошли весь кейс! Английский в этом сценарии вам уже по силам. Попробуйте остальные 2 задачи или переходите к аудиотренажерам для тренировки на слух без подсказок.",
+        gapsMixed: "У вас уже получается понимать клинический контекст. Вот конкретные темы, которые помогут убрать оставшиеся запинки:",
+        ctaOtherCases: "Выбрать другую клиническую задачу",
+        ctaAllGrammar: "Перейти к курсу и бесплатному Уроку №8",
+        ctaRestart: "Пройти этот кейс заново"
+      },
+      kz: {
+        backHome: "Басты бетке",
+        backCases: "Тапсырма таңдауға",
+        menuKicker: "Task-Based Clinical English • Тегін",
+        menuTitle: "Клиникалық тапсырманы таңдап, ағылшын тілін бірден іс жүзінде байқап көріңіз",
+        menuLead: "Ережелерді алдын ала жаттаудың қажеті жоқ. 3 қысқа сценарийдің бірін таңдаңыз: анамнез жинап, хаттама үзіндісін оқып, шешім қабылдаңыз. Қате кетсе, тренажер дәл қай тақырыпты қайталау керегін көрсетеді.",
+        startCase: "Тапсырманы бастау →",
+        retryCase: "Қайта өту →",
+        doneLabel: "Өтілді",
+        briefLabel: "Кейс сипаттамасы",
+        listenBtn: "Тыңдау",
+        showTransBtn: "Аудармасын көру",
+        hideTransBtn: "Аудармасын жасыру",
+        nextStepBtn: "Келесі қадам",
+        finishBtn: "Нәтиже мен талдауды көру",
+        okTitle: "Дұрыс — дәл клиникалық шешім",
+        wrongTitle: "Қатені талдайық:",
+        studyLabel: "Бұл тұсты жақсарту үшін нені оқу керек",
+        studyLinkText: "Платформадағы бөлімді ашу →",
+        summaryTitle: "Клиникалық тапсырма орындалды!",
+        summarySub: "Сіз құрғақ грамматика жаттамай-ақ, нақты дәрігерлік жағдайда ағылшынша жұмыс істедіңіз.",
+        chunksTitle: "Сіз қолданған негізгі тіркестер",
+        chunksSub: "Айтылуын тыңдау үшін кез келген фразаны басыңыз:",
+        gapsTitle: "Сіздің жеке жоспарыңыз: нені пысықтау керек",
+        gapsPerfect: "Сіз бүкіл кейсті қатесіз өттіңіз! Енді қалған 2 тапсырманы байқап көріңіз немесе кеңессіз есту арқылы жаттығу үшін аудиотренажерлерге өтіңіз.",
+        gapsMixed: "Сізде клиникалық контексті түсіну жақсы шығып жатыр. Толық еркін сөйлеу үшін мына нақты тақырыптарды қайталап алған пайдалы:",
+        ctaOtherCases: "Басқа клиникалық тапсырманы таңдау",
+        ctaAllGrammar: "Курс пен тегін 8-сабаққа өту",
+        ctaRestart: "Бұл кейсті қайта өту"
+      }
+    };
+
+    // =========================================================================
+    // 2. БАЗА ИЗ 3 КЛИНИЧЕСКИХ ЗАДАЧ (КАЖДАЯ = 5 ШАГОВ: SPEAKING + READING + PLAN)
+    // =========================================================================
+    const CLINICAL_CASES = [
+      // ==================== КЕЙС 1: ТЕРАПИЯ / КАШЕЛЬ И АНТИБИОТИКИ ====================
+      {
+        id: "bronchitis",
+        tag: { ru: "Задача 1 • Терапия", kz: "1-тапсырма • Терапия" },
+        duration: { ru: "5 шагов • ~2 мин", kz: "5 қадам • ~2 мин" },
+        title: {
+          ru: "Пациент с кашлем просит антибиотики",
+          kz: "Жөтелі бар науқас антибиотик сұрайды"
+        },
+        desc: {
+          ru: "Джон (38 лет) кашляет 5 дней. Проведите короткий опрос, проверьте аллергию, прочтите выдержку из протокола и вежливо объясните план без антибиотиков.",
+          kz: "Джон (38 жас) 5 күннен бері жөтеледі. Қысқаша анамнез жинап, аллергияны тексеріңіз, хаттаманы оқып, антибиотиксіз емді түсіндіріңіз."
+        },
+        skills: ["Speaking: Symptoms", "Reading: Passive & Modals", "Safety Netting"],
+        patientRole: "Patient (John, 38)",
+        brief: {
+          ru: "На амбулаторный прием пришел Джон, 38 лет. Жалуется на кашель и вечерний субфебрилитет. Хочет получить рецепт на антибиотики «на всякий случай».",
+          kz: "Амбулаториялық қабылдауға 38 жастағы Джон келді. Жөтел мен кешкі субфебрилитетке шағымданады, «сақтық үшін» антибиотик сұрайды."
+        },
+        steps: [
+          {
+            type: "speaking",
+            kicker: { ru: "Шаг 1 / 5 • Speaking (Начало приема)", kz: "1 / 5 қадам • Speaking (Қабылдауды бастау)" },
+            patientLine: "Good morning, doctor. Thank you for seeing me.",
+            patientTrans: {
+              ru: "Доброе утро, доктор. Спасибо, что приняли меня.",
+              kz: "Қайырлы таң, дәрігер. Мені қабылдағаныңызға рахмет."
+            },
+            prompt: {
+              ru: "Как естественно и вежливо спросить пациента, что его привело сегодня?",
+              kz: "Науқастан бүгін оны не мазалап келгенін қалай сыпайы сұрайсыз?"
+            },
+            options: [
+              { text: "What brings you in today?", correct: true },
+              {
+                text: "What is your problem?",
+                correct: false,
+                whyWrong: {
+                  ru: "Фраза «What is your problem?» звучит резко и конфликтно — носители языка воспринимают её как «В чем твоя проблема?».",
+                  kz: "«What is your problem?» тіркесі ағылшын тілінде дөрекі («Сенің проблемаң не?») естіледі."
+                }
+              },
+              {
+                text: "Why did you come here? Tell me your disease.",
+                correct: false,
+                whyWrong: {
+                  ru: "Звучит как допрос, а пациент обычно приходит с симптомами, а не с готовым диагнозом («disease»).",
+                  kz: "Тергеу сияқты естіледі, әрі науқас дайын диагнозбен емес, шағыммен келеді."
+                }
+              }
+            ],
+            feedback: {
+              ru: "«What brings you in today?» — золотой стандарт начала врачебного приема в любой специальности. Простой и доброжелательный «чанк».",
+              kz: "«What brings you in today?» — кез келген мамандықта қабылдауды бастаудың халықаралық стандарты."
+            },
+            study: {
+              topic: { ru: "Стартовые фразы опроса и метод Чанков", kz: "Қабылдауды бастау фразалары және Чанк әдісі" },
+              desc: {
+                ru: "Разберите 10 вежливых готовых конструкций (chunks), чтобы не переводить русские вопросы дословно.",
+                kz: "Сұрақтарды сөзбе-сөз аудармай айту үшін 10 дайын сыпайы құрылымды (chunks) меңгеріңіз."
+              },
+              url: "https://kazdoctors.com/grammar/chunks/"
+            },
+            chunk: {
+              en: "What brings you in today?",
+              note: { ru: "Универсальный старт приема.", kz: "Қабылдауды бастаудың әмбебап сұрағы." }
+            }
+          },
+          {
+            type: "speaking",
+            kicker: { ru: "Шаг 2 / 5 • Speaking (Уточнение симптома)", kz: "2 / 5 қадам • Speaking (Симптомды нақтылау)" },
+            patientLine: "I've had a bad cough for five days, and a mild fever in the evenings.",
+            patientTrans: {
+              ru: "У меня сильный кашель уже пять дней и небольшая температура по вечерам.",
+              kz: "Бес күннен бері қатты жөтеліп жүрмін, кешке қарай аздап қызуым бар."
+            },
+            prompt: {
+              ru: "Уточните характер кашля: он сухой или с мокротой?",
+              kz: "Жөтелдің сипатын нақтылаңыз: ол құрғақ па, әлде қақырықты ма?"
+            },
+            options: [
+              { text: "Is the cough dry or are you coughing up mucus?", correct: true },
+              {
+                text: "Do you coughing mucus every day?",
+                correct: false,
+                whyWrong: {
+                  ru: "Грамматический конфликт: вспомогательный глагол «Do» не сочетается с окончанием «-ing» (нужно либо «Are you coughing», либо «Do you cough»).",
+                  kz: "Грамматикалық қате: «Do» көмекші етістігі «-ing» жалғауымен бірге қолданылмайды («Are you coughing» немесе «Do you cough» болуы тиіс)."
+                }
+              },
+              {
+                text: "Cough dry or mucus?",
+                correct: false,
+                whyWrong: {
+                  ru: "Слова понятны, но пропущен глагол-связка «Is». В английском вопросе без глагола речь звучит обрывочно.",
+                  kz: "Мағынасы түсінікті болғанымен, «Is» етістігі түсіп қалған, сондықтан сөйлем үзік-үзік естіледі."
+                }
+              }
+            ],
+            feedback: {
+              ru: "В первом вопросе описываем признак («Is the cough dry?» — глагол to be), во втором — текущий процесс («are you coughing up mucus?» — Present Continuous).",
+              kz: "Бірінші бөлікте белгіні сипаттаймыз («Is the cough dry?» — to be), екінші бөлікте қазіргі процесті сұраймыз («are you coughing up mucus?»)."
+            },
+            study: {
+              topic: { ru: "Урок 1 (To be & To do) и Урок 2 (Present Simple / Continuous)", kz: "1-сабақ (To be & To do) және 2-сабақ (Present Simple / Continuous)" },
+              desc: {
+                ru: "Научитесь на автомате отличать вопросы о состоянии (Is / Are) от вопросов о действии (Do / Does).",
+                kz: "Жағдай туралы сұрақтарды (Is / Are) әрекет туралы сұрақтардан (Do / Does) автоматты түрде ажыратуды үйреніңіз."
+              },
+              url: "https://kazdoctors.com/grammar/"
+            },
+            chunk: {
+              en: "Is the cough dry or are you coughing up mucus?",
+              note: { ru: "Вопрос о характере кашля и мокроте.", kz: "Жөтел мен қақырық сипаты туралы сұрақ." }
+            }
+          },
+          {
+            type: "speaking",
+            kicker: { ru: "Шаг 3 / 5 • Speaking (Аллергоанамнез)", kz: "3 / 5 қадам • Speaking (Аллергиялық анамнез)" },
+            patientLine: "I'm coughing up some yellowish mucus. I haven't taken any antibiotics yet.",
+            patientTrans: {
+              ru: "Откашливается немного желтоватой мокроты. Антибиотики я еще не пил.",
+              kz: "Аздап сарғыш қақырық түседі. Әлі антибиотик ішкен жоқпын."
+            },
+            prompt: {
+              ru: "Проверьте, есть ли у пациента аллергия на какие-либо лекарства:",
+              kz: "Науқаста қандай да бір дәріге аллергия бар-жоғын тексеріңіз:"
+            },
+            options: [
+              { text: "Are you allergic to any medications?", correct: true },
+              {
+                text: "Do you have allergy on drugs?",
+                correct: false,
+                whyWrong: {
+                  ru: "Это дословная калька с русского «аллергия НА». В английском после allergy/allergic всегда идет предлог «to», а не «on».",
+                  kz: "Бұл тікелей аударма. Ағылшын тілінде allergy/allergic сөздерінен кейін «on» емес, әрқашан «to» предлогы қойылады."
+                }
+              },
+              {
+                text: "Are you allergy for medicine?",
+                correct: false,
+                whyWrong: {
+                  ru: "«Allergy» — существительное (аллергия), а после «Are you» нужно прилагательное «allergic» (аллергичны) + предлог «to».",
+                  kz: "«Allergy» — зат есім, ал «Are you» сөзінен кейін «allergic» сын есімі + «to» предлогы келеді."
+                }
+              }
+            ],
+            feedback: {
+              ru: "Запомните готовую связку «Are you allergic TO...» (или «Do you have any allergies TO...»). Это базовый вопрос безопасности перед любым рецептом.",
+              kz: "«Are you allergic TO...» дайын тіркесін есте сақтаңыз. Бұл кез келген рецепт алдындағы басты қауіпсіздік сұрағы."
+            },
+            study: {
+              topic: { ru: "Тренажер Patient Interview (Блок Allergies & Medications)", kz: "Patient Interview тренажері (Allergies & Medications бөлімі)" },
+              desc: {
+                ru: "Отработайте устойчивые врачебные вопросы по аллергиям, дозировкам и принимаемым препаратам.",
+                kz: "Аллергия, дәрі мөлшері және қабылдап жүрген препараттар бойынша тұрақты сұрақтарды пысықтаңыз."
+              },
+              url: "https://kazdoctors.com/interviews/"
+            },
+            chunk: {
+              en: "Are you allergic to any medications?",
+              note: { ru: "Связка: be allergic TO + препарат.", kz: "Тіркес: be allergic TO + препарат." }
+            }
+          },
+          {
+            type: "reading",
+            kicker: { ru: "Шаг 4 / 5 • Reading (Клинический протокол)", kz: "4 / 5 қадам • Reading (Клиникалық хаттама)" },
+            docHeaderLeft: "CLINICAL GUIDELINE",
+            docHeaderRight: "Acute Bronchitis",
+            docHtml: `
+              <strong>Patient Alert:</strong> Allergic to penicillin (rash). Lungs clear.<br><br>
+              <strong>Protocol:</strong> Acute bronchitis <mark>is most often caused by a virus</mark>; therefore, antibiotics are not usually needed. Penicillin-based drugs <mark>must not be prescribed</mark> due to documented allergy.
+            `,
+            prompt: {
+              ru: "Опираясь на выделенные фразы протокола, какое клиническое решение верно?",
+              kz: "Хаттамадағы белгіленген тіркестерге сүйеніп, қай клиникалық шешім дұрыс?"
+            },
+            options: [
+              {
+                text: {
+                  ru: "Причина чаще всего вирусная (антибиотики не нужны), а пенициллины строго запрещены",
+                  kz: "Себебі көбіне вирус (антибиотик қажет емес), ал пенициллиндерге қатаң тыйым салынған"
+                },
+                correct: true
+              },
+              {
+                text: {
+                  ru: "Пенициллины назначать необязательно, но можно выписать по просьбе пациента",
+                  kz: "Пенициллиндерді тағайындау міндетті емес, бірақ науқас сұраса жазып беруге болады"
+                },
+                correct: false,
+                whyWrong: {
+                  ru: "Частая ловушка! «must not» — это НЕ «необязательно» (для «необязательно» используется «don't have to»), а строгий врачебный запрет (противопоказание).",
+                  kz: "Жиі кездесетін қате! «must not» — «міндетті емес» емес («don't have to»), ол — қатаң тыйым (қарсы көрсетілім)."
+                }
+              },
+              {
+                text: {
+                  ru: "Бронхит всегда вызывает бактерия, поэтому нужно срочно назначить антибиотик",
+                  kz: "Бронхитті әрқашан бактерия тудырады, сондықтан шұғыл антибиотик керек"
+                },
+                correct: false,
+                whyWrong: {
+                  ru: "В тексте указано «is most often caused by a virus» (чаще всего вызывается вирусом) и «antibiotics are not usually needed» (обычно не требуются).",
+                  kz: "Мәтінде «is most often caused by a virus» (көбіне вирустан туындайды) және «antibiotics are not usually needed» деп жазылған."
+                }
+              }
+            ],
+            feedback: {
+              ru: "Вы считали сразу две главные грамматические конструкции всех англоязычных гайдлайнов: Passive Voice («is caused by» — вызывается кем-то/чем-то) и строгий запрет «must not be prescribed».",
+              kz: "Сіз ағылшынша гайдлайндардың екі негізгі құрылымын дәл оқыдыңыз: Passive Voice («is caused by») және қатаң тыйым («must not be prescribed»)."
+            },
+            study: {
+              topic: { ru: "Урок 5 (Passive Voice) и Урок 6 (Modal Verbs в медицине)", kz: "5-сабақ (Passive Voice) және 6-сабақ (Медицинадағы модальді етістіктер)" },
+              desc: {
+                ru: "Именно страдательный залог и модальные глаголы (must not / should / may) составляют 60% текста протоколов UpToDate.",
+                kz: "UpToDate хаттамалары мәтінінің 60%-ы ырықсыз етіс пен модальді етістіктерден (must not / should / may) тұрады."
+              },
+              url: "https://kazdoctors.com/grammar/"
+            },
+            chunk: {
+              en: "is most often caused by a virus / must not be prescribed",
+              note: { ru: "Страдательный залог + строгий запрет в протоколах.", kz: "Хаттамалардағы ырықсыз етіс пен қатаң тыйым." }
+            }
+          },
+          {
+            type: "closing",
+            kicker: { ru: "Шаг 5 / 5 • Communication (Отказ от антибиотиков и Safety Netting)", kz: "5 / 5 қадам • Communication (Антибиотиксіз ем және Safety Netting)" },
+            patientLine: "Doctor, can you prescribe antibiotics just in case? And what if I get worse?",
+            patientTrans: {
+              ru: "Доктор, может, выпишете антибиотики на всякий случай? И что делать, если мне станет хуже?",
+              kz: "Дәрігер, сақтық үшін антибиотик жазып бересіз бе? Егер жағдайым нашарласа не істеймін?"
+            },
+            prompt: {
+              ru: "Спокойно объясните отказ от антибиотиков и дайте «красные флаги» (когда вернуться):",
+              kz: "Антибиотиктердің қажет еместігін түсіндіріп, қайта келу шарттарын («қауіпті белгілерді») айтыңыз:"
+            },
+            options: [
+              { text: "Because it's caused by a virus, antibiotics are not needed. If you develop a high fever, please come back for a reassessment.", correct: true },
+              {
+                text: "No antibiotics. If you will have high fever tomorrow, come back.",
+                correct: false,
+                whyWrong: {
+                  ru: "Сразу два момента: «No antibiotics» звучит слишком резко без объяснения причины, а после «If» в английском нельзя ставить «will» (правильно: «If you develop / have»).",
+                  kz: "Екі нюанс бар: «No antibiotics» түсіндірмесіз тым дөрекі естіледі, ал «If» сөзінен кейін ешқашан «will» қойылмайды (дұрысы: «If you develop / have»)."
+                }
+              },
+              {
+                text: "You don't have to worry, nothing bad will happen.",
+                correct: false,
+                whyWrong: {
+                  ru: "Врач не может гарантировать «ничего плохого не случится» — по стандарту безопасности нужно четко назвать симптомы, при которых пациент обязан вернуться.",
+                  kz: "Дәрігер «ештеңе болмайды» деп кепілдік бере алмайды — қауіпсіздік стандарты бойынша қайта қаралу белгілерін нақты атау керек."
+                }
+              }
+            ],
+            feedback: {
+              ru: "Идеальная формула завершения приема: аргументированное объяснение + условное предложение первого типа («If you develop..., please come back») без «will» после If.",
+              kz: "Қабылдауды аяқтаудың тамаша формуласы: негізделген түсіндірме + If-тен кейін «will» қойылмайтын шартты сөйлем."
+            },
+            study: {
+              topic: { ru: "Урок 11 (Conditionals: Если..., то...) и Аудиотренажер опроса", kz: "11-сабақ (Conditionals: Егер..., онда...) және Аудиотренажер" },
+              desc: {
+                ru: "Разберите 5 типов условных предложений для клинических алгоритмов и инструктажа пациентов.",
+                kz: "Клиникалық алгоритмдер мен науқасқа нұсқау беруге арналған шартты сөйлемдерді меңгеріңіз."
+              },
+              url: "https://kazdoctors.com/grammar/"
+            },
+            chunk: {
+              en: "If you develop a high fever, please come back for a reassessment.",
+              note: { ru: "First Conditional + инструктаж по красным флагам.", kz: "First Conditional + қауіпті белгілер бойынша нұсқаулық." }
+            }
+          }
+        ]
+      },
+
+      // ==================== КЕЙС 2: ХИРУРГИЯ / ОСТРЫЙ ЖИВОТ ====================
+      {
+        id: "appendicitis",
+        tag: { ru: "Задача 2 • Дежурство / Хирургия", kz: "2-тапсырма • Кезекшілік / Хирургия" },
+        duration: { ru: "5 шагов • ~2 мин", kz: "5 қадам • ~2 мин" },
+        title: {
+          ru: "Острая боль в животе на дежурстве",
+          kz: "Кезекшіліктегі іштің жедел ауырсынуы"
+        },
+        desc: {
+          ru: "Студент Марк (22 года) поступил с сильной болью в животе. Уточните локализацию и начало боли по SOCRATES, прочтите заключение УЗИ и объясните необходимость операции.",
+          kz: "22 жастағы студент Марк ішінің қатты ауырсынуымен түсті. SOCRATES бойынша сұрап, УДЗ қорытындысын оқып, ота қажеттілігін түсіндіріңіз."
+        },
+        skills: ["SOCRATES", "Past Simple", "There is / There are"],
+        patientRole: "Patient (Mark, 22)",
+        brief: {
+          ru: "Ночное дежурство. Поступил Марк, 22 года, с жалобой на сильную боль в животе. Вам нужно быстро собрать ключевой анамнез, оценить УЗИ и объяснить риски.",
+          kz: "Түнгі кезекшілік. 22 жастағы Марк ішінің қатты ауырсынуымен келді. Жылдам анамнез жинап, УДЗ нәтижесін бағалап, қауіптерді түсіндіру керек."
+        },
+        steps: [
+          {
+            type: "speaking",
+            kicker: { ru: "Шаг 1 / 5 • Speaking (Локализация — Site)", kz: "1 / 5 қадам • Speaking (Орналасуы — Site)" },
+            patientLine: "Doctor, I have a really strong pain in my stomach.",
+            patientTrans: {
+              ru: "Доктор, у меня очень сильная боль в животе.",
+              kz: "Дәрігер, ішім өте қатты ауырып тұр."
+            },
+            prompt: {
+              ru: "Попросите пациента точно показать место, где болит (шаг Site в SOCRATES):",
+              kz: "Науқастан дәл қай жері ауыратынын қолымен көрсетуін сұраңыз (SOCRATES: Site):"
+            },
+            options: [
+              { text: "Can you point to the area where it hurts?", correct: true },
+              {
+                text: "Where pain is located now?",
+                correct: false,
+                whyWrong: {
+                  ru: "В английском вопросе нарушен порядок слов: глагол «is» должен стоять перед подлежащим («Where IS the pain located?»).",
+                  kz: "Ағылшынша сұрақта сөз тәртібі бұзылған: «is» етістігі бастауыштың алдында тұруы керек («Where IS the pain located?»)."
+                }
+              },
+              {
+                text: "Show me your stomach right now.",
+                correct: false,
+                whyWrong: {
+                  ru: "Звучит как приказ без смягчения. Вежливые просьбы на приеме всегда строятся через «Can you... / Could you please...».",
+                  kz: "Бұйрық сияқты дөрекі естіледі. Қабылдауда сыпайы өтініштер «Can you... / Could you please...» арқылы жасалады."
+                }
+              }
+            ],
+            feedback: {
+              ru: "«Can you point to the area?» — незаменимая фраза, особенно если пациент не знает анатомических названий на английском.",
+              kz: "«Can you point to the area?» — науқас анатомиялық атауларды білмесе де дәл орынды анықтауға көмектесетін тамаша фраза."
+            },
+            study: {
+              topic: { ru: "Шпаргалка опроса (SOCRATES) и Урок 1 (Порядок слов в вопросе)", kz: "Анамнез шпаргалкасы (SOCRATES) және 1-сабақ (Сұрақтағы сөз тәртібі)" },
+              desc: {
+                ru: "Закрепите прямой порядок вспомогательного глагола в вопросах и 8 шагов алгоритма SOCRATES.",
+                kz: "Сұраулы сөйлемдегі көмекші етістіктің орнын және SOCRATES алгоритмінің 8 қадамын бекітіңіз."
+              },
+              url: "https://kazdoctors.com/interviews/"
+            },
+            chunk: {
+              en: "Can you point to the area where it hurts?",
+              note: { ru: "Уточнение точной локализации боли.", kz: "Ауырсынудың нақты орнын сұрау." }
+            }
+          },
+          {
+            type: "speaking",
+            kicker: { ru: "Шаг 2 / 5 • Speaking (Начало боли — Onset)", kz: "2 / 5 қадам • Speaking (Басталуы — Onset)" },
+            patientLine: "It started around my belly button, but now it's sharp on the lower right side.",
+            patientTrans: {
+              ru: "Началось около пупка, но сейчас острая боль внизу справа.",
+              kz: "Кіндік маңынан басталды, ал қазір оң жақ төменгі бөлікте өткір ауырып тұр."
+            },
+            prompt: {
+              ru: "Узнайте, когда началась боль — внезапно или постепенно:",
+              kz: "Ауырсынудың қашан және қалай басталғанын сұраңыз (кенеттен бе, әлде біртіндеп пе):"
+            },
+            options: [
+              { text: "When did the pain start? Did it start suddenly or gradually?", correct: true },
+              {
+                text: "When did the pain started? Was it sudden?",
+                correct: false,
+                whyWrong: {
+                  ru: "Классическая ошибка Past Simple: «did» уже забрал на себя прошедшее время, поэтому основной глагол должен быть чистым — «start», а не «started».",
+                  kz: "Past Simple-дағы классикалық қате: «did» өткен шақты өзіне алады, сондықтан негізгі етістік «started» емес, «start» болуы тиіс."
+                }
+              },
+              {
+                text: "When start pain? Suddenly or slowly?",
+                correct: false,
+                whyWrong: {
+                  ru: "Пропущен вспомогательный глагол прошедшего времени «did» и артикль «the» перед конкретной болью пациента.",
+                  kz: "Өткен шақтың «did» көмекші етістігі мен науқастың нақты ауырсынуы алдындағы «the» артиклі түсіп қалған."
+                }
+              }
+            ],
+            feedback: {
+              ru: "Начало симптома — это точка в прошлом (Past Simple). Правило простое: «Did + начальная форма глагола без -ed» → «When did it start?».",
+              kz: "Симптомның басталуы — өткен шақтағы сәт (Past Simple). Ережесі қарапайым: «Did + етістіктің бастапқы түрі» → «When did it start?»."
+            },
+            study: {
+              topic: { ru: "Урок 3: Past Simple & Present Perfect в анамнезе", kz: "3-сабақ: Анамнездегі Past Simple & Present Perfect" },
+              desc: {
+                ru: "Разберите разницу между точкой начала болезни (When did it start?) и длительностью (How long have you had it?).",
+                kz: "Аурудың басталған сәті (When did it start?) мен ұзақтығы (How long have you had it?) арасындағы айырмашылықты меңгеріңіз."
+              },
+              url: "https://kazdoctors.com/grammar/"
+            },
+            chunk: {
+              en: "When did it start? Did it start suddenly or gradually?",
+              note: { ru: "Past Simple для дебюта любых симптомов.", kz: "Кез келген симптомның басталуына арналған Past Simple." }
+            }
+          },
+          {
+            type: "speaking",
+            kicker: { ru: "Шаг 3 / 5 • Speaking (Сила и триггеры)", kz: "3 / 5 қадам • Speaking (Күші мен триггерлер)" },
+            patientLine: "About 12 hours ago. It started gradually, and I vomited once this morning.",
+            patientTrans: {
+              ru: "Около 12 часов назад. Началось постепенно, а сегодня утром меня один раз вырвало.",
+              kz: "Шамамен 12 сағат бұрын. Біртіндеп басталды, бүгін таңертең бір рет құстым."
+            },
+            prompt: {
+              ru: "Оцените силу боли от 0 до 10 и спросите, что её усиливает:",
+              kz: "0-ден 10-ға дейінгі шкала бойынша ауырсыну күшін және оны не күшейтетінін сұраңыз:"
+            },
+            options: [
+              { text: "On a scale from 0 to 10, how bad is it? Does anything make it worse?", correct: true },
+              {
+                text: "How many pain from 0 to 10? What does it more bad?",
+                correct: false,
+                whyWrong: {
+                  ru: "Слово «pain» неисчисляемое («how bad/severe», не «how many»), а сравнительная степень от «bad» — это исключение «worse», а не «more bad».",
+                  kz: "«Pain» саналмайды («how many» деуге болмайды), ал «bad» сөзінің салыстырмалы шырайы — «more bad» емес, «worse»."
+                }
+              },
+              {
+                text: "Is pain 8 or 10? Anything making it worst?",
+                correct: false,
+                whyWrong: {
+                  ru: "«Worst» — превосходная степень («самый худший»), а для сравнения («хуже») нужно «worse». Также лучше задавать открытый вопрос по шкале.",
+                  kz: "«Worst» — «ең нашар» (күшейтпелі шырай), ал «нашарлата ма» деу үшін «worse» қолданылады."
+                }
+              }
+            ],
+            feedback: {
+              ru: "Отличная связка! Исключение «bad → worse» (хуже) встречается на каждом приеме в вопросе «Does anything make it better or worse?».",
+              kz: "Тамаша тіркес! «bad → worse» ерекше сөзі әр қабылдауда кездеседі: «Does anything make it better or worse?»."
+            },
+            study: {
+              topic: { ru: "Урок 12: Comparatives & Superlatives (динамика симптомов)", kz: "12-сабақ: Comparatives & Superlatives (симптомдар динамикасы)" },
+              desc: {
+                ru: "Выучите главные врачебные исключения (worse / better / less severe) для оценки состояния в динамике.",
+                kz: "Динамиканы бағалауға арналған басты ерекше сөздерді (worse / better / less severe) меңгеріңіз."
+              },
+              url: "https://kazdoctors.com/grammar/"
+            },
+            chunk: {
+              en: "On a scale from 0 to 10, how bad is it? Does anything make it worse?",
+              note: { ru: "Шкала боли + вопрос о триггерах.", kz: "Ауырсыну шкаласы + триггерлер туралы сұрақ." }
+            }
+          },
+          {
+            type: "reading",
+            kicker: { ru: "Шаг 4 / 5 • Reading (Заключение УЗИ)", kz: "4 / 5 қадам • Reading (УДЗ қорытындысы)" },
+            docHeaderLeft: "ABDOMINAL ULTRASOUND",
+            docHeaderRight: "ER Report",
+            docHtml: `
+              <strong>Findings:</strong> <mark>There is</mark> a swollen, non-compressible appendix (9 mm) and free fluid in the right lower quadrant. <mark>There are</mark> no signs of perforation yet, but early surgical removal <mark>is recommended</mark>.
+            `,
+            prompt: {
+              ru: "Что конкретно показывает заключение УЗИ на данный момент?",
+              kz: "Дәл қазір УДЗ қорытындысы нақты нені көрсетіп тұр?"
+            },
+            options: [
+              {
+                text: {
+                  ru: "Аппендикс воспален, есть свободная жидкость, но признаков перфорации пока нет",
+                  kz: "Соқырішек қабынған, бос сұйықтық бар, бірақ перфорация белгілері әзірге жоқ"
+                },
+                correct: true
+              },
+              {
+                text: {
+                  ru: "Уже произошел разрыв (перфорация) аппендикса, операция не требуется",
+                  kz: "Соқырішектің жарылуы (перфорация) болып қойған, ота қажет емес"
+                },
+                correct: false,
+                whyWrong: {
+                  ru: "Обратите внимание на отрицание «There are NO signs of perforation yet» (признаков перфорации ПОКА НЕТ) и «surgical removal is recommended» (рекомендовано удаление).",
+                  kz: "«There are NO signs of perforation yet» (перфорация белгілері ӘЗІРГЕ ЖОҚ) және «surgical removal is recommended» тіркестеріне назар аударыңыз."
+                }
+              },
+              {
+                text: {
+                  ru: "Аппендикс в норме, свободная жидкость отсутствует",
+                  kz: "Соқырішек қалыпты, бос сұйықтық жоқ"
+                },
+                correct: false,
+                whyWrong: {
+                  ru: "Конструкция «There is a swollen appendix and free fluid» прямо указывает на наличие воспаленного аппендикса и свободной жидкости.",
+                  kz: "«There is a swollen appendix and free fluid» құрылымы қабынған аппендикс пен бос сұйықтықтың БАР екенін білдіреді."
+                }
+              }
+            ],
+            feedback: {
+              ru: "В описаниях УЗИ, КТ и МРТ почти каждое предложение строится на конструкции «There is / There are» (имеется / отсутствуют признаки).",
+              kz: "УДЗ, КТ және МРТ сипаттамаларында сөйлемдердің көбі «There is / There are» (белгілері бар / жоқ) құрылымымен жазылады."
+            },
+            study: {
+              topic: { ru: "Урок 8: There is / There are (Открыт полностью бесплатно!)", kz: "8-сабақ: There is / There are (Толықтай тегін ашық!)" },
+              desc: {
+                ru: "Пройдите бесплатный видеоурок, конспект и тренажер по описанию находок и симптомов.",
+                kz: "Симптомдар мен тексеру нәтижелерін сипаттау бойынша тегін видеосабақ, конспект және тренажерді өтіңіз."
+              },
+              url: "https://kazdoctors.com/grammar/lesson8"
+            },
+            chunk: {
+              en: "There are no signs of perforation yet",
+              note: { ru: "Описание наличия/отсутствия признаков на визуализации.", kz: "Тексерудегі белгілердің бар-жоғын сипаттау." }
+            }
+          },
+          {
+            type: "closing",
+            kicker: { ru: "Шаг 5 / 5 • Communication (Объяснение рисков и операции)", kz: "5 / 5 қадам • Communication (Қауіп пен отаны түсіндіру)" },
+            patientLine: "Do I really need surgery? Can't I just take painkillers at home?",
+            patientTrans: {
+              ru: "Мне действительно нужна операция? Разве я не могу просто попить обезболивающие дома?",
+              kz: "Маған шынымен ота керек пе? Үйде жай ғана ауырсынуды басатын дәрі іше алмаймын ба?"
+            },
+            prompt: {
+              ru: "Спокойно и убедительно объясните пациенту риск отказа от операции:",
+              kz: "Науқасқа отадан бас тартудың қаупін сабырлы әрі нанымды түсіндіріңіз:"
+            },
+            options: [
+              { text: "Appendicitis usually requires surgery, because if the appendix bursts, it can lead to a serious infection in the abdomen.", correct: true },
+              {
+                text: "If you don't do surgery today, you will die tonight.",
+                correct: false,
+                whyWrong: {
+                  ru: "Запугивание пациента нарушает медицинскую этику и вызывает панику. Важно спокойно объяснять механизм риска («can lead to a serious infection»).",
+                  kz: "Науқасты қорқыту медициналық этикаға қайшы. Қауіп механизмін сабырлы түрде түсіндіру маңызды («can lead to a serious infection»)."
+                }
+              },
+              {
+                text: "Because appendix is burst, painkillers cannot working.",
+                correct: false,
+                whyWrong: {
+                  ru: "Две ошибки: во-первых, по УЗИ перфорации еще нет (мы говорим о риске — «if it bursts»), во-вторых, после модального «cannot» глагол идет без -ing («cannot work»).",
+                  kz: "Екі қате: біріншіден, УДЗ бойынша перфорация әлі болған жоқ («if it bursts»), екіншіден, «cannot»-тан кейін -ing қойылмайды («cannot work»)."
+                }
+              }
+            ],
+            feedback: {
+              ru: "Отличная работа! Конструкция «if [условие], it can lead to [осложнение]» — универсальный инструмент объяснения рисков в хирургии и терапии.",
+              kz: "Тамаша жұмыс! «if [шарт], it can lead to [асқыну]» құрылымы — қауіптерді түсіндірудің әмбебап құралы."
+            },
+            study: {
+              topic: { ru: "Урок 6 (Modals) и Урок 11 (Conditionals)", kz: "6-сабақ (Modals) және 11-сабақ (Conditionals)" },
+              desc: {
+                ru: "Научитесь уверенно объяснять вероятности (can / may / could) и причинно-следственные связи.",
+                kz: "Ықтималдықты (can / may / could) және себеп-салдар байланыстарын сенімді түсіндіруді үйреніңіз."
+              },
+              url: "https://kazdoctors.com/grammar/"
+            },
+            chunk: {
+              en: "If the appendix bursts, it can lead to a serious infection.",
+              note: { ru: "Спокойное объяснение клинического риска.", kz: "Клиникалық қауіпті сабырлы түсіндіру." }
+            }
+          }
+        ]
+      },
+
+      // ==================== КЕЙС 3: ХРОНИЧЕСКИЙ ПРИЕМ / ДИАБЕТ И ГИПЕРТОНИЯ ====================
+      {
+        id: "chronic",
+        tag: { ru: "Задача 3 • Кардиология / Эндокринология", kz: "3-тапсырма • Кардиология / Эндокринология" },
+        duration: { ru: "5 шагов • ~2 мин", kz: "5 қадам • ~2 мин" },
+        title: {
+          ru: "Хроническая усталость, жажда и разбор анализов",
+          kz: "Созылмалы шаршау, шөлдеу және талдауларды түсіндіру"
+        },
+        desc: {
+          ru: "Елена (52 года) жалуется на постоянную усталость и сильную жажду. Уточните длительность и наследственность, оцените анализы и проверьте, поняла ли она план лечения.",
+          kz: "Елена (52 жас) үнемі шаршау мен қатты шөлдеуге шағымданады. Ұзақтығы мен тұқым қуалаушылықты сұрап, талдауларды талдаңыз және ем жоспарын тексеріңіз."
+        },
+        skills: ["Present Perfect", "Family History", "Gerund & Teach-back"],
+        patientRole: "Patient (Elena, 52)",
+        brief: {
+          ru: "Плановый прием. Елена, 52 года, жалуется на постоянную усталость, даже после отдыха. Нужно выяснить длительность, семейный анамнез, прочитать анализы и объяснить план.",
+          kz: "Жоспарлы қабылдау. 52 жастағы Елена демалғаннан кейін де басылмайтын шаршауға шағымданады. Ұзақтығын, отбасылық анамнезін сұрап, талдауларын түсіндіру керек."
+        },
+        steps: [
+          {
+            type: "speaking",
+            kicker: { ru: "Шаг 1 / 5 • Speaking (Длительность симптома)", kz: "1 / 5 қадам • Speaking (Симптом ұзақтығы)" },
+            patientLine: "I've been feeling exhausted lately, even after a full night's sleep.",
+            patientTrans: {
+              ru: "В последнее время я чувствую себя измотанной, даже после полноценного сна.",
+              kz: "Соңғы кезде толық ұйықтасам да, өзімді қатты шаршаңқы сезінемін."
+            },
+            prompt: {
+              ru: "Спросите, как долго она себя так чувствует (симптом начался в прошлом и продолжается сейчас):",
+              kz: "Оның өзін осылай сезінгеніне қанша уақыт болғанын сұраңыз (бұрын басталып, қазір де жалғасып жатыр):"
+            },
+            options: [
+              { text: "How long have you been feeling this way?", correct: true },
+              {
+                text: "How long do you feel this way?",
+                correct: false,
+                whyWrong: {
+                  ru: "Present Simple («do you feel») описывает регулярную привычку, а не длительность от прошлого до текущего момента. С «How long» всегда нужен Present Perfect («have you been feeling» / «have you felt»).",
+                  kz: "Present Simple («do you feel») тұрақты әдетті білдіреді. «How long» сұрағымен бұрыннан бүгінге дейінгі уақыт үшін Present Perfect («have you been feeling») қажет."
+                }
+              },
+              {
+                text: "How long you feeling tired?",
+                correct: false,
+                whyWrong: {
+                  ru: "Пропущена обязательная связка «have ... been». Без неё вопрос звучит грамматически неполным.",
+                  kz: "Міндетті «have ... been» көмекші етістіктері түсіп қалған."
+                }
+              }
+            ],
+            feedback: {
+              ru: "Вопрос «How long have you been feeling this way?» (или «How long have you had this?») — главный врачебный вопрос для любого затяжного симптома.",
+              kz: "«How long have you been feeling this way?» — кез келген созылмалы симптомның ұзақтығын сұрайтын басты дәрігерлік сұрақ."
+            },
+            study: {
+              topic: { ru: "Урок 3: Past Simple & Present Perfect", kz: "3-сабақ: Past Simple & Present Perfect" },
+              desc: {
+                ru: "Освойте Present Perfect — время, которое связывает историю болезни с моментом осмотра в кабинете.",
+                kz: "Ауру тарихын қабылдау сәтімен байланыстыратын Present Perfect шағын меңгеріңіз."
+              },
+              url: "https://kazdoctors.com/grammar/"
+            },
+            chunk: {
+              en: "How long have you been feeling this way?",
+              note: { ru: "Длительность симптома до настоящего момента.", kz: "Симптомның осы сәтке дейінгі ұзақтығы." }
+            }
+          },
+          {
+            type: "speaking",
+            kicker: { ru: "Шаг 2 / 5 • Speaking (Динамика состояния)", kz: "2 / 5 қадам • Speaking (Жағдай динамикасы)" },
+            patientLine: "For about two months now. I'm also very thirsty and drink 3 to 4 liters a day.",
+            patientTrans: {
+              ru: "Около двух месяцев. Еще мне постоянно хочется пить — выпиваю 3–4 литра в день.",
+              kz: "Шамамен екі айдан бері. Сонымен қатар қатты шөлдеймін — күніне 3–4 литр су ішемін."
+            },
+            prompt: {
+              ru: "Уточните динамику: состояние становится лучше, хуже или остается прежним?",
+              kz: "Динамикасын нақтылаңыз: жағдайы жақсарып, нашарлап немесе өзгеріссіз қалып жатыр ма?"
+            },
+            options: [
+              { text: "Has it been getting better, worse, or staying the same?", correct: true },
+              {
+                text: "Did it got more good or more bad?",
+                correct: false,
+                whyWrong: {
+                  ru: "Три типичные ловушки: после «Did» нужен «get» (не «got»), а степени сравнения от good/bad — это исключения «better / worse».",
+                  kz: "Үш жиі қате: «Did»-тен кейін «get» қойылады («got» емес), ал good/bad сөздерінің салыстырмалы түрі — «better / worse»."
+                }
+              },
+              {
+                text: "Is it better or worst today?",
+                correct: false,
+                whyWrong: {
+                  ru: "«Worst» означает «самый худший» (Superlative), а при сравнении динамики «лучше или хуже» всегда используется «better or worse».",
+                  kz: "«Worst» — «ең нашар» (күшейтпелі шырай), ал динамиканы салыстырғанда «better or worse» қолданылады."
+                }
+              }
+            ],
+            feedback: {
+              ru: "Запомните этот плавный вопрос целиком: «Has it been getting better, worse, or staying the same?» — он мгновенно закрывает блок динамики.",
+              kz: "«Has it been getting better, worse, or staying the same?» сұрағын тұтастай есте сақтаңыз — ол динамика блогын толық жабады."
+            },
+            study: {
+              topic: { ru: "Урок 12: Comparatives & Superlatives", kz: "12-сабақ: Comparatives & Superlatives" },
+              desc: {
+                ru: "Закрепите степени сравнения (better, worse, more frequent, less severe) для оценки динамики лечения.",
+                kz: "Ем динамикасын бағалау үшін сын есім шырайларын (better, worse, more frequent) пысықтаңыз."
+              },
+              url: "https://kazdoctors.com/grammar/"
+            },
+            chunk: {
+              en: "Has it been getting better, worse, or staying the same?",
+              note: { ru: "Оценка динамики симптомов во времени.", kz: "Симптомдар динамикасын бағалау." }
+            }
+          },
+          {
+            type: "speaking",
+            kicker: { ru: "Шаг 3 / 5 • Speaking (Семейный анамнез)", kz: "3 / 5 қадам • Speaking (Отбасылық анамнез)" },
+            patientLine: "It's getting worse, and I've lost some weight without trying.",
+            patientTrans: {
+              ru: "Становится хуже, и я немного похудела, хотя не пыталась.",
+              kz: "Нашарлап барады, әрі тырыспасам да аздап салмақ тастадым."
+            },
+            prompt: {
+              ru: "Спросите про наследственность (встречаются ли в семье диабет или гипертония):",
+              kz: "Тұқым қуалаушылық туралы сұраңыз (отбасында диабет немесе гипертония бар ма):"
+            },
+            options: [
+              { text: "Do any medical conditions run in your family, like diabetes?", correct: true },
+              {
+                text: "Do any diseases walk in your family?",
+                correct: false,
+                whyWrong: {
+                  ru: "Устойчивая английская идиома для наследственности — строго «run in the family» (дословно «бегут в семье»), а не «walk» или «go».",
+                  kz: "Тұқым қуалаушылыққа арналған тұрақты тіркес — «walk» емес, дәл «run in the family»."
+                }
+              },
+              {
+                text: "Are your family having diabetes?",
+                correct: false,
+                whyWrong: {
+                  ru: "Глагол «have» в значении «иметь болезнь» не используется в Continuous («having»). Правильно: «Does anyone in your family have diabetes?».",
+                  kz: "«Ауруы болу» мағынасындағы «have» етістігі Continuous-та (-ing) қолданылмайды. Дұрысы: «Does anyone in your family have diabetes?»."
+                }
+              }
+            ],
+            feedback: {
+              ru: "Идиома «run in the family» сразу выдает высокий уровень медицинского английского и легко воспринимается любым англоговорящим пациентом.",
+              kz: "«Run in the family» идиомасы медициналық ағылшын тілінің жоғары деңгейін көрсетеді және науқасқа өте түсінікті."
+            },
+            study: {
+              topic: { ru: "Тренажер Patient Interview (Блок Family & Social History)", kz: "Patient Interview тренажері (Family & Social History бөлімі)" },
+              desc: {
+                ru: "Выучите живые идиомы сбора анамнеза: «run in the family», «for a living», «over-the-counter».",
+                kz: "Анамнез жинаудағы тірі идиомаларды («run in the family», «for a living», «over-the-counter») меңгеріңіз."
+              },
+              url: "https://kazdoctors.com/interviews/"
+            },
+            chunk: {
+              en: "Do any medical conditions run in your family?",
+              note: { ru: "Идиома для сбора семейного анамнеза.", kz: "Отбасылық анамнез жинау идиомасы." }
+            }
+          },
+          {
+            type: "reading",
+            kicker: { ru: "Шаг 4 / 5 • Reading (Результаты и рекомендации)", kz: "4 / 5 қадам • Reading (Нәтижелер мен ұсынымдар)" },
+            docHeaderLeft: "LAB REPORT & CARE PLAN",
+            docHeaderRight: "Type 2 Diabetes",
+            docHtml: `
+              <strong>Labs:</strong> Fasting glucose and HbA1c are significantly elevated (Type 2 Diabetes).<br><br>
+              <strong>Plan:</strong> First-line management focuses on <mark>reducing refined carbohydrates</mark>, <mark>monitoring blood sugar regularly</mark>, and <mark>starting metformin</mark> to improve insulin sensitivity.
+            `,
+            prompt: {
+              ru: "Что означает форма глаголов с окончанием -ing («reducing», «monitoring», «starting») в плане лечения?",
+              kz: "Ем жоспарындағы -ing жалғаулы сөздер («reducing», «monitoring», «starting») қандай мағына береді?"
+            },
+            options: [
+              {
+                text: {
+                  ru: "Это названия процессов (снижение углеводов, регулярный контроль сахара, начало приема метформина)",
+                  kz: "Бұл процестердің атауы (көмірсуды азайту, қантты бақылау, метформинді бастау)"
+                },
+                correct: true
+              },
+              {
+                text: {
+                  ru: "Это действия, которые пациентка прямо сейчас делает в кабинете",
+                  kz: "Бұл науқастың дәл қазір кабинетте істеп жатқан әрекеттері"
+                },
+                correct: false,
+                whyWrong: {
+                  ru: "Не каждое слово с «-ing» — это Present Continuous! После предлога «on» (focuses on...) стоит Герундий — глагол в роли существительного («снижение», «контроль»).",
+                  kz: "«-ing» жалғаулы әр сөз Present Continuous емес! «on» предлогынан кейін Герундий (қимыл атауы) тұр."
+                }
+              },
+              {
+                text: {
+                  ru: "Это прошлые попытки лечения, которые не сработали",
+                  kz: "Бұл көмектеспеген бұрынғы емдеу әрекеттері"
+                },
+                correct: false,
+                whyWrong: {
+                  ru: "Фраза «focuses on...» (фокусируется на...) задает текущий план ведения пациента, а «to improve» обозначает цель («чтобы улучшить»).",
+                  kz: "«Focuses on...» қазіргі ем жоспарын көрсетеді, ал «to improve» мақсатты («жақсарту үшін») білдіреді."
+                }
+              }
+            ],
+            feedback: {
+              ru: "Браво! В одном предложении протокола вы увидели и Герундий после предлога («focuses on reducing / monitoring»), и Инфинитив цели («to improve» — чтобы улучшить).",
+              kz: "Жарайсыз! Хаттаманың бір сөйлемінде предлогтан кейінгі Герундийді де («focuses on reducing»), мақсатты білдіретін Инфинитивті де («to improve») дұрыс ажыраттыңыз."
+            },
+            study: {
+              topic: { ru: "Урок 15: Gerund, Past Participle & Infinitive", kz: "15-сабақ: Gerund, Past Participle & Infinitive" },
+              desc: {
+                ru: "Разберите 3 неличные формы глагола (-ing, V3, to do), на которых строится академический язык статей и гайдлайнов.",
+                kz: "Ғылыми мақалалар мен гайдлайндар тілінің негізі болатын етістіктің 3 ерекше формасын (-ing, V3, to do) меңгеріңіз."
+              },
+              url: "https://kazdoctors.com/grammar/"
+            },
+            chunk: {
+              en: "focuses on monitoring blood sugar regularly to improve sensitivity",
+              note: { ru: "Герундий после предлога + Инфинитив цели (to do).", kz: "Предлогтан кейінгі Герундий + мақсат Инфинитиві." }
+            }
+          },
+          {
+            type: "closing",
+            kicker: { ru: "Шаг 5 / 5 • Communication (Проверка понимания — Teach-back)", kz: "5 / 5 қадам • Communication (Түсінгенін тексеру — Teach-back)" },
+            patientLine: "Okay, I think I got it — diet changes and taking this pill once a day with dinner.",
+            patientTrans: {
+              ru: "Хорошо, кажется, я поняла — изменить питание и пить эту таблетку раз в день во время ужина.",
+              kz: "Жақсы, түсінген сияқтымын — тамақтануды өзгерту және бұл дәріні күніне бір рет кешкі аспен ішу."
+            },
+            prompt: {
+              ru: "Как по стандарту Teach-back мягко убедиться, что пациентка точно поняла схему приема, без давления?",
+              kz: "Teach-back стандарты бойынша науқастың ем схемасын нақты түсінгеніне қысым жасамай қалай көз жеткізесіз?"
+            },
+            options: [
+              { text: "Just to make sure we're on the same page, can you tell me in your own words how you'll take the medication?", correct: true },
+              {
+                text: "Repeat after me word for word so I know you aren't forgetting.",
+                correct: false,
+                whyWrong: {
+                  ru: "Звучит как школьный экзамен и вызывает защитную реакцию. Метод Teach-back всегда перекладывает ответственность на ясность объяснения врача («to make sure we're on the same page»).",
+                  kz: "Мектептегі емтихан сияқты естіледі. Teach-back әдісі науқасты сынамай, «бір-бірімізді дұрыс түсінгенімізге көз жеткізу үшін» деп жұмсақ сұрайды."
+                }
+              },
+              {
+                text: "You understand everything, right? Good, see you next year.",
+                correct: false,
+                whyWrong: {
+                  ru: "На закрытый вопрос «Вы все поняли, верно?» пациенты почти всегда кивают «да» из вежливости, даже если забыли дозировку.",
+                  kz: "«Бәрін түсіндіңіз, иә?» деген жабық сұраққа науқастар сыпайылық үшін ғана «иә» деп жауап бере салады."
+                }
+              }
+            ],
+            feedback: {
+              ru: "Идеальная коммуникация! Связка «Just to make sure we're on the same page...» — один из самых ценимых приемов на международных экзаменах OSCE / USMLE.",
+              kz: "Тамаша коммуникация! «Just to make sure we're on the same page...» — OSCE / USMLE емтихандарында ең жоғары бағаланатын тәсілдердің бірі."
+            },
+            study: {
+              topic: { ru: "Раздел Medical Skills: Аудиотренажер и Учебник опроса", kz: "Medical Skills бөлімі: Аудиотренажер және Сұхбат оқулығы" },
+              desc: {
+                ru: "Отработайте эмпатию, смягчение диагноза и закрытие приема в живых аудио-диалогах.",
+                kz: "Эмпатияны, диагнозды жұмсақ жеткізуді және қабылдауды аяқтауды аудио-диалогтарда жаттықтырыңыз."
+              },
+              url: "https://kazdoctors.com/interviews/"
+            },
+            chunk: {
+              en: "Just to make sure we're on the same page, can you tell me in your own words?",
+              note: { ru: "Метод Teach-back для безопасного завершения приема.", kz: "Қабылдауды қауіпсіз аяқтауға арналған Teach-back әдісі." }
+            }
+          }
+        ]
+      }
+    ];
+
+    // =========================================================================
+    // 3. СОСТОЯНИЕ, СОХРАНЕНИЕ ПРОГРЕССА И ЛОГИКА
+    // =========================================================================
+    let currentLang = localStorage.getItem('selected_lang') || 'ru';
+    // screenState: 'menu' | 'step' | 'summary'
+    let screenState = 'menu';
+    let activeCase = null;
+    let shuffledSteps = [];
+    let stepIndex = 0;
+    let answeredCurrent = false;
+    let selectedOptIdx = null;
+    let score = 0;
+    let missedStudies = [];
+
+    function getSavedResults() {
+      try {
+        return JSON.parse(localStorage.getItem('ds_tblt_results') || '{}');
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveCaseResult(caseId, sc, total) {
+      const results = getSavedResults();
+      results[caseId] = { score: sc, total: total };
+      localStorage.setItem('ds_tblt_results', JSON.stringify(results));
+    }
+
+    function getOptionText(opt) {
+      if (typeof opt.text === 'string') return opt.text;
+      return opt.text[currentLang] || opt.text.ru;
+    }
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('selected_lang', lang);
+      document.documentElement.lang = lang;
+      document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
+      document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
+      render();
+    }
+
+    function handleBackClick() {
+      if (screenState === 'menu') {
+        window.location.href = 'https://kazdoctors.com/';
+      } else {
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        screenState = 'menu';
+        activeCase = null;
+        render();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function startCase(caseId) {
+      const found = CLINICAL_CASES.find(c => c.id === caseId);
+      if (!found) return;
+
+      activeCase = found;
+      score = 0;
+      missedStudies = [];
+      stepIndex = 0;
+      answeredCurrent = false;
+      selectedOptIdx = null;
+
+      shuffledSteps = found.steps.map(st => {
+        const optsCopy = st.options.map(o => ({ ...o }));
+        for (let i = optsCopy.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [optsCopy[i], optsCopy[j]] = [optsCopy[j], optsCopy[i]];
+        }
+        return { ...st, options: optsCopy };
+      });
+
+      screenState = 'step';
+      render();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function selectOption(optIdx) {
+      if (answeredCurrent) return;
+      answeredCurrent = true;
+      selectedOptIdx = optIdx;
+
+      const step = shuffledSteps[stepIndex];
+      const chosen = step.options[optIdx];
+      if (chosen.correct) {
+        score++;
+      } else {
+        missedStudies.push(step.study);
+      }
+      render();
+    }
+
+    function goNext() {
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+
+      if (stepIndex + 1 < shuffledSteps.length) {
+        stepIndex++;
+        answeredCurrent = false;
+        selectedOptIdx = null;
+        render();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        saveCaseResult(activeCase.id, score, shuffledSteps.length);
+        screenState = 'summary';
+        render();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function speakText(text) {
+      if (!('speechSynthesis' in window) || !text) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US';
+      u.rate = 0.9;
+      window.speechSynthesis.speak(u);
+    }
+
+    function speakCurrentPatientLine() {
+      if (!shuffledSteps[stepIndex] || !shuffledSteps[stepIndex].patientLine) return;
+      speakText(shuffledSteps[stepIndex].patientLine);
+    }
+
+    function speakChunkByIdx(idx) {
+      if (!activeCase || !activeCase.steps[idx]) return;
+      speakText(activeCase.steps[idx].chunk.en);
+    }
+
+    function togglePatientTranslation() {
+      const el = document.getElementById('patientTransBox');
+      const btn = document.getElementById('patientTransBtn');
+      if (!el || !btn) return;
+      const isVis = el.classList.toggle('visible');
+      btn.textContent = isVis ? UI_TEXT[currentLang].hideTransBtn : UI_TEXT[currentLang].showTransBtn;
+    }
+
+    function renderHeaderControls() {
+      const t = UI_TEXT[currentLang];
+      const backBtn = document.getElementById('uiBackBtn');
+      const progRow = document.getElementById('progressRow');
+
+      backBtn.textContent = (screenState === 'menu') ? t.backHome : t.backCases;
+
+      if (screenState === 'menu' || !activeCase) {
+        progRow.classList.remove('visible');
+        progRow.innerHTML = '';
+        return;
+      }
+
+      progRow.classList.add('visible');
+      progRow.innerHTML = '';
+      for (let i = 0; i < shuffledSteps.length; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'prog-step';
+        if (screenState === 'summary' || i < stepIndex) {
+          bar.classList.add('done');
+        } else if (i === stepIndex) {
+          bar.classList.add('current');
+        }
+        progRow.appendChild(bar);
+      }
+    }
+
+    function render() {
+      renderHeaderControls();
+      const root = document.getElementById('appRoot');
+      const t = UI_TEXT[currentLang];
+
+      // 1. ЭКРАН ВЫБОРА ИЗ 3 ЗАДАЧ
+      if (screenState === 'menu') {
+        const saved = getSavedResults();
+        const cardsHtml = CLINICAL_CASES.map(c => {
+          const res = saved[c.id];
+          const doneHtml = res
+            ? `<span class="case-done-pill">${t.doneLabel}: ${res.score}/${res.total}</span>`
+            : `<span class="case-meta">${c.duration[currentLang]}</span>`;
+          const skillsHtml = c.skills.map(s => `<span class="skill-chip">${s}</span>`).join('');
+
+          return `
+            <button type="button" class="case-card" onclick="startCase('${c.id}')">
+              <div class="case-card-top">
+                <span class="case-tag">${c.tag[currentLang]}</span>
+                ${doneHtml}
+              </div>
+              <div class="case-title">${c.title[currentLang]}</div>
+              <div class="case-desc">${c.desc[currentLang]}</div>
+              <div class="case-skills-row">${skillsHtml}</div>
+              <div class="case-start-line">${res ? t.retryCase : t.startCase}</div>
+            </button>
+          `;
+        }).join('');
+
+        root.innerHTML = `
+          <div class="card">
+            <span class="mission-kicker">${t.menuKicker}</span>
+            <h1>${t.menuTitle}</h1>
+            <p class="lead-text">${t.menuLead}</p>
+            <div class="cases-grid">${cardsHtml}</div>
+          </div>
+        `;
+        return;
+      }
+
+      // 2. ЭКРАН ПРОХОЖДЕНИЯ ШАГА
+      if (screenState === 'step') {
+        const step = shuffledSteps[stepIndex];
+        const kickerClass = step.type === 'reading' ? 'reading' : (step.type === 'closing' ? 'closing' : '');
+
+        const briefHtml = (stepIndex === 0) ? `
+          <div class="patient-brief">
+            <div class="brief-label">${t.briefLabel}</div>
+            <div class="brief-content">${activeCase.brief[currentLang]}</div>
+          </div>
+        ` : '';
+
+        let contextBlock = '';
+        if (step.type === 'reading') {
+          contextBlock = `
+            <div class="clinical-doc">
+              <div class="doc-header">
+                <span>${step.docHeaderLeft}</span>
+                <span>${step.docHeaderRight}</span>
+              </div>
+              <div class="doc-text">${step.docHtml}</div>
+            </div>
+          `;
+        } else {
+          contextBlock = `
+            <div class="patient-bubble">
+              <div class="pb-top">
+                <span class="pb-role">${activeCase.patientRole}</span>
+                <button type="button" class="audio-btn" onclick="speakCurrentPatientLine()">${t.listenBtn}</button>
+              </div>
+              <div class="pb-quote">"${step.patientLine}"</div>
+              <button type="button" class="pb-hint-toggle" id="patientTransBtn" onclick="togglePatientTranslation()">${t.showTransBtn}</button>
+              <div class="pb-translation" id="patientTransBox">${step.patientTrans[currentLang]}</div>
+            </div>
+          `;
+        }
+
+        const optionsHtml = step.options.map((opt, idx) => {
+          let cls = 'opt-btn';
+          if (answeredCurrent) {
+            if (opt.correct) cls += ' correct';
+            else if (idx === selectedOptIdx) cls += ' wrong';
+          }
+          return `
+            <button type="button" class="${cls}" ${answeredCurrent ? 'disabled' : ''} onclick="selectOption(${idx})">
+              ${getOptionText(opt)}
+            </button>
+          `;
+        }).join('');
+
+        let feedbackHtml = '';
+        if (answeredCurrent) {
+          const chosen = step.options[selectedOptIdx];
+          const isCorrect = chosen.correct;
+          const nextLabel = (stepIndex + 1 < shuffledSteps.length) ? t.nextStepBtn : t.finishBtn;
+
+          if (isCorrect) {
+            feedbackHtml = `
+              <div class="feedback-box ok">
+                <div class="fb-title">${t.okTitle}</div>
+                <div>${step.feedback[currentLang]}</div>
+              </div>
+              <button type="button" class="primary-btn" onclick="goNext()">${nextLabel} →</button>
+            `;
+          } else {
+            const specificReason = (chosen.whyWrong && chosen.whyWrong[currentLang])
+              ? `<div class="fb-mistake-note">${chosen.whyWrong[currentLang]}</div>`
+              : '';
+
+            feedbackHtml = `
+              <div class="feedback-box wrong-fb">
+                <div class="fb-title">${t.wrongTitle}</div>
+                ${specificReason}
+                <div>${step.feedback[currentLang]}</div>
+                <div class="study-tip-box">
+                  <div class="study-tip-label">${t.studyLabel}</div>
+                  <div class="study-tip-topic">${step.study.topic[currentLang]}</div>
+                  <div class="study-tip-desc">${step.study.desc[currentLang]}</div>
+                  <a href="${step.study.url}" class="study-tip-link" target="_blank">${t.studyLinkText}</a>
+                </div>
+              </div>
+              <button type="button" class="primary-btn" onclick="goNext()">${nextLabel} →</button>
+            `;
+          }
+        }
+
+        root.innerHTML = `
+          <div class="card">
+            <span class="mission-kicker ${kickerClass}">${step.kicker[currentLang]}</span>
+            ${briefHtml}
+            ${contextBlock}
+            <div class="task-prompt">${step.prompt[currentLang]}</div>
+            <div class="options-list">${optionsHtml}</div>
+            ${feedbackHtml}
+          </div>
+        `;
+        return;
+      }
+
+      // 3. ЭКРАН ИТОГОВ И ПЕРСОНАЛЬНОГО ПЛАНА ОБУЧЕНИЯ
+      if (screenState === 'summary') {
+        const chunksHtml = activeCase.steps.map((s, idx) => `
+          <div class="chunk-item">
+            <div class="chunk-en" onclick="speakChunkByIdx(${idx})">${s.chunk.en}</div>
+            <div class="chunk-meta">${s.chunk.note[currentLang]}</div>
+          </div>
+        `).join('');
+
+        let gapHtml = '';
+        if (missedStudies.length === 0) {
+          gapHtml = `
+            <div class="gap-card">
+              <strong>${t.gapsTitle}</strong>
+              <div>${t.gapsPerfect}</div>
+            </div>
+          `;
+        } else {
+          // Убираем дубликаты тем, если ошибки были в одном и том же разделе
+          const seenTopics = new Set();
+          const uniqueStudies = missedStudies.filter(st => {
+            const key = st.topic.ru;
+            if (seenTopics.has(key)) return false;
+            seenTopics.add(key);
+            return true;
+          });
+
+          const planItems = uniqueStudies.map(st => `
+            <div class="gap-plan-item">
+              <div class="study-tip-topic">${st.topic[currentLang]}</div>
+              <div class="study-tip-desc">${st.desc[currentLang]}</div>
+              <a href="${st.url}" class="study-tip-link">${t.studyLinkText}</a>
+            </div>
+          `).join('');
+
+          gapHtml = `
+            <div class="gap-card">
+              <strong>${t.gapsTitle}</strong>
+              <div>${t.gapsMixed}</div>
+              ${planItems}
+            </div>
+          `;
+        }
+
+        root.innerHTML = `
+          <div class="card">
+            <div class="score-banner">
+              <div class="score-num">${score} / ${shuffledSteps.length}</div>
+              <div style="font-weight:800; font-size:0.95rem;">${t.summaryTitle}</div>
+              <div style="font-size:0.79rem; color:#BAE6FD;">${t.summarySub}</div>
+            </div>
+
+            ${gapHtml}
+
+            <div>
+              <h2>${t.chunksTitle}</h2>
+              <p class="lead-text" style="margin-top:3px; margin-bottom:10px;">${t.chunksSub}</p>
+              <div class="chunk-list">${chunksHtml}</div>
+            </div>
+
+            <div class="actions-stack">
+              <button type="button" class="primary-btn gold" onclick="handleBackClick()">${t.ctaOtherCases} →</button>
+              <a href="https://kazdoctors.com/grammar/" class="secondary-btn">${t.ctaAllGrammar} →</a>
+              <button type="button" class="secondary-btn" onclick="startCase('${activeCase.id}')">${t.ctaRestart}</button>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    setLang(currentLang);
+  </script>
+</body>
+</html>
