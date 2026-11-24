@@ -1511,9 +1511,9 @@
                     <div class="mod-left">
                         <div class="mod-mini-icon" id="interviewIcon">🗣️</div>
                         <div class="mod-info">
-                            <div class="mod-title">Опрос на английском (ТРЕНАЖЕР)</div>
-                            <div class="mod-desc" lang-val="ru">Практика сбора анамнеза (демо открыт бесплатно)</div>
-                            <div class="mod-desc" lang-val="kz">Анамнез жинау практикасы (демо тегін ашық)</div>
+                            <div class="mod-title" lang-val="ru">Опрос на английском (ТРЕНАЖЕР)</div>
+                            <div class="mod-title" lang-val="kz">Ағылшынша анамнез жинау (ТРЕНАЖЕР)</div>
+
                         </div>
                     </div>
                     <div class="mod-right">
@@ -1523,12 +1523,11 @@
 
                 <a href="https://kazdoctors.com/cheatsheet/" class="module-row free-row">
                     <div class="mod-left">
-                        <div class="mod-mini-icon" id="cheatsheetIcon">📋</div>
+                        <div class="mod-mini-icon" id="cheatsheetIcon">🗣️</div>
                         <div class="mod-info">
                             <div class="mod-title" lang-val="ru">Опрос на английском (ШПАРГАЛКА)</div>
                             <div class="mod-title" lang-val="kz">Ағылшынша анамнез жинау (ШПАРГАЛКА)</div>
-                            <div class="mod-desc" lang-val="ru">Быстрые фразы для ПРИЕМА ПАЦИЕНТОВ</div>
-                            <div class="mod-desc" lang-val="kz">НАУҚАС ҚАБЫЛДАУ үшін қысқа фразалар</div>
+
                         </div>
                     </div>
                     <div class="mod-right">
@@ -1542,8 +1541,7 @@
                         <div class="mod-info">
                             <div class="mod-title" lang-val="ru">Опрос на английском (УЧЕБНИК)</div>
                             <div class="mod-title" lang-val="kz">Ағылшынша анамнез жинау (ОҚУЛЫҚ)</div>
-                            <div class="mod-desc" lang-val="ru">Озвученный разговорник SOCRATES и 6 клинических диалогов</div>
-                            <div class="mod-desc" lang-val="kz">SOCRATES дыбысталған сөздігі және 6 клиникалық диалог</div>
+
                         </div>
                     </div>
                     <div class="mod-right">
@@ -1557,8 +1555,7 @@
                         <div class="mod-info">
                             <div class="mod-title" lang-val="ru">Опрос на английском (АУДИОУРОКИ)</div>
                             <div class="mod-title" lang-val="kz">Ағылшынша анамнез жинау (АУДИОСАБАҚТАР)</div>
-                            <div class="mod-desc" lang-val="ru">6 аудио-тренажеров и ролевых диалогов (1-й урок Free)</div>
-                            <div class="mod-desc" lang-val="kz">6 аудио-тренажер және рөлдік диалогтар (1-сабақ Free)</div>
+
                         </div>
                     </div>
                     <div class="mod-right">
@@ -1572,8 +1569,7 @@
                         <div class="mod-info">
                             <div class="mod-title" lang-val="ru">Статьи и гайдлайны: Видеоуроки</div>
                             <div class="mod-title" lang-val="kz">Мақалалар мен гайдлайндар: Видеосабақтар</div>
-                            <div class="mod-desc" lang-val="ru">Как искать, отбирать и разбирать статьи в PubMed и Cochrane</div>
-                            <div class="mod-desc" lang-val="kz">PubMed пен Cochrane-де мақалаларды іздеу және талдау</div>
+
                         </div>
                     </div>
                     <div class="mod-right">
@@ -1587,8 +1583,7 @@
                         <div class="mod-info">
                             <div class="mod-title" lang-val="ru">Статьи и гайдлайны: Практика</div>
                             <div class="mod-title" lang-val="kz">Мақалалар мен гайдлайндар: Практика</div>
-                            <div class="mod-desc" lang-val="ru">Тренажер чтения и понимания научных абстрактов</div>
-                            <div class="mod-desc" lang-val="kz">Ғылыми абстрактілерді оқу және түсіну тренажері</div>
+
                         </div>
                     </div>
                     <div class="mod-right">
@@ -1600,9 +1595,21 @@
                     <div class="mod-left">
                         <div class="mod-mini-icon" id="presIcon">🔒</div>
                         <div class="mod-info">
-                            <div class="mod-title">Presentations & Posters</div>
-                            <div class="mod-desc" lang-val="ru">Как составлять и докладывать презентации на конференциях</div>
-                            <div class="mod-desc" lang-val="kz">Конференцияларға презентация мен постер дайындау</div>
+                            <div class="mod-title" lang-val="ru">Презентации и постеры (ВИДЕОУЧЕБНИК)</div>
+                            <div class="mod-title" lang-val="kz">Презентация мен постерлер (ВИДЕООҚУЛЫҚ)</div>
+                        </div>
+                    </div>
+                    <div class="mod-right">
+                        <span class="badge-pill" id="proBadge4">Pro+</span>
+                    </div>
+                </a>
+
+                                <a href="https://kazdoctors.com/presentaudio/" class="module-row" id="presRow">
+                    <div class="mod-left">
+                        <div class="mod-mini-icon" id="presIcon">🔒</div>
+                        <div class="mod-info">
+                            <div class="mod-title" lang-val="ru">Презентации и постеры (АУДИОУРОКИ)</div>
+                            <div class="mod-title" lang-val="kz">Презентация мен постерлер (АУДИОСАБАҚ)</div>
                         </div>
                     </div>
                     <div class="mod-right">
@@ -2034,10 +2041,10 @@
             const sticky = document.getElementById("stickyBottomCta");
             if (sticky) sticky.classList.remove("visible");
 
-            safeSet("interviewBookIcon", "📘");
-            safeSet("interviewAudioIcon", "🎧");
+            safeSet("interviewBookIcon", "🗣️");
+            safeSet("interviewAudioIcon", "🗣️");
             safeSet("readingVidIcon", "📖");
-            safeSet("readingPracIcon", "🔬");
+            safeSet("readingPracIcon", "📖");
             safeSet("presIcon", "🎤");
 
             ["interviewBookRow", "interviewAudioRow", "readingVidRow", "readingPracRow", "presRow"].forEach(id => {
