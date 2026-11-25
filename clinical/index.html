@@ -123,7 +123,7 @@
 
     /* Статистика */
     .stats-bar {
-      background: #F8FAFC;
+      background: var(--subtle);
       border: 1px solid var(--border-color);
       border-radius: 14px;
       padding: 8px 16px;
@@ -140,7 +140,7 @@
     }
 
     .stat-val.correct {
-      color: #22C55E;
+      color: var(--ok-mid);
     }
 
     .stat-val.streak {
@@ -150,7 +150,7 @@
     /* Блок вопроса с желтой полоской слева */
     .term-box {
       position: relative;
-      border: 1px solid #E2E8F0;
+      border: 1px solid var(--line);
       border-radius: 20px;
       padding: 24px 18px;
       text-align: center;
@@ -226,7 +226,7 @@
 
     .option-btn:active:not(:disabled) {
       transform: scale(0.99);
-      background: #F8FAFC;
+      background: var(--subtle);
     }
 
     .option-btn.correct {
@@ -286,6 +286,7 @@
       background: var(--kz-blue-dark);
     }
   </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
 </head>
 <body>
 
@@ -319,7 +320,7 @@
 
       <!-- Постоянный фиксированный блок, чтобы текст не подпрыгивал при выборе вариантов -->
       <div id="explanationBox" class="explanation-box">
-        <span id="explanationText">💡 Choose the correct answer!</span>
+        <span id="explanationText">Choose the correct answer!</span>
         <button id="nextBtn" class="next-action-btn" style="display: none;" onclick="nextQuestion()">Next ➔</button>
       </div>
     </div>
@@ -626,7 +627,7 @@
       
       const expBox = document.getElementById('explanationBox');
       expBox.className = 'explanation-box';
-      document.getElementById('explanationText').textContent = '💡 Choose the correct answer!';
+      document.getElementById('explanationText').textContent = 'Choose the correct answer!';
       document.getElementById('nextBtn').style.display = 'none';
 
       const mode = document.getElementById('modeSelect').value;
@@ -702,7 +703,7 @@
         streak++;
         selectedBtn.classList.add('correct');
         expBox.className = 'explanation-box correct-mode';
-        document.getElementById('explanationText').textContent = '🎉 Correct! Well done.';
+        document.getElementById('explanationText').textContent = 'Correct! Well done.';
       } else {
         streak = 0;
         selectedBtn.classList.add('wrong');

@@ -166,7 +166,7 @@
     /* Панель быстрого перехода к тренажеру опроса */
     .quick-action-bar {
       background: var(--bg-card);
-      border: 1px solid #BAE6FD;
+      border: 1px solid var(--sky-100);
       border-radius: 12px;
       padding: 12px 14px;
       display: flex;
@@ -325,8 +325,8 @@
 
     .status-pill.locked {
       background: var(--kz-gold-soft);
-      color: #854D0E;
-      border-color: #FDE047;
+      color: var(--sun-ink);
+      border-color: var(--sun-500);
     }
 
     .chevron {
@@ -393,7 +393,7 @@
       position: relative;
       width: 100%;
       aspect-ratio: 16 / 9;
-      background: #0F172A;
+      background: var(--sky-900);
       border-radius: 10px;
       overflow: hidden;
       border: 1px solid var(--border-light);
@@ -423,9 +423,9 @@
       font-size: 0.68rem;
       font-weight: 800;
       text-transform: uppercase;
-      color: #854D0E;
+      color: var(--sun-ink);
       background: var(--kz-gold-soft);
-      border: 1px solid #FDE047;
+      border: 1px solid var(--sun-500);
       padding: 3px 9px;
       border-radius: 6px;
     }
@@ -514,7 +514,7 @@
 
     .bcc-text p {
       font-size: 0.76rem;
-      color: #BAE6FD;
+      color: var(--sky-100);
       margin-top: 2px;
     }
 
@@ -533,6 +533,8 @@
     body.lang-ru [lang-val="ru"] { display: inline !important; }
     body.lang-kz [lang-val="kz"] { display: inline !important; }
   </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body class="lang-ru">
 
@@ -540,8 +542,8 @@
     <div class="header-inner">
       <div class="top-bar">
         <a href="https://kazdoctors.com/" class="back-link">
-          <span lang-val="ru">⬅ На главную</span>
-          <span lang-val="kz">⬅ Басты бетке</span>
+          <span lang-val="ru">← На главную</span>
+          <span lang-val="kz">← Басты бетке</span>
         </a>
 
         <div class="top-right">
@@ -914,7 +916,7 @@
             </div>
             <div class="lesson-bottom-row">
               <a href="https://kazdoctors.com/interviews/" class="practice-link">
-                ${isKz ? "🎯 Осы тақырыпты тренажерде пысықтау ➔" : "🎯 Отработать вопросы в тренажере опроса ➔"}
+                ${isKz ? "Осы тақырыпты тренажерде пысықтау ➔" : "Отработать вопросы в тренажере опроса ➔"}
               </a>
             </div>
           `;

@@ -184,7 +184,7 @@
     }
 
     .timer-badge {
-      background: #FEF2F2;
+      background: var(--err-bg);
       color: var(--red);
       border: 1px solid #FECACA;
       padding: 3px 8px;
@@ -240,7 +240,7 @@
 
     .topic-tag {
       display: inline-block;
-      background: #FFFBEB;
+      background: var(--sun-50);
       color: var(--kz-gold-dark);
       border: 1px solid rgba(217, 160, 0, 0.3);
       font-size: 0.68rem;
@@ -361,16 +361,16 @@
     }
 
     .option-btn.correct {
-      background-color: #DCFCE7 !important;
-      border-color: #22C55E !important;
-      color: #15803D !important;
+      background-color: var(--ok-bg) !important;
+      border-color: var(--ok-mid) !important;
+      color: var(--ok) !important;
       font-weight: 700;
     }
 
     .option-btn.wrong {
-      background-color: #FEE2E2 !important;
-      border-color: #EF4444 !important;
-      color: #B91C1C !important;
+      background-color: var(--err-bg) !important;
+      border-color: var(--err-mid) !important;
+      color: var(--err) !important;
       font-weight: 700;
     }
 
@@ -389,7 +389,7 @@
     }
 
     .explanation-box.answered {
-      background-color: #E0F2FE;
+      background-color: var(--sky-50);
       border-left-color: var(--kz-blue-dark);
     }
 
@@ -475,6 +475,7 @@
       line-height: 1.35;
     }
   </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
 </head>
 <body>
 
@@ -483,7 +484,7 @@
   <div class="card">
     <!-- Header -->
     <header class="header">
-      <a href="https://kazdoctors.com/grammar/" class="home-btn">⬅ Go back</a>
+      <a href="https://kazdoctors.com/grammar/" class="home-btn">← Go back</a>
       <div class="brand">@doctors.speak</div>
     </header>
 
@@ -493,21 +494,21 @@
       <div>
         <!-- Выбор режима: Без времени (для записи объяснений) или Штурм 1 мин (как на Chess.com) -->
         <div class="mode-tabs">
-          <button id="tabPractice" class="tab-btn active" onclick="setGameMode('practice')">🎓 Разбор (Без времени)</button>
-          <button id="tabRush" class="tab-btn" onclick="setGameMode('rush')">⚡ Штурм (1 мин)</button>
+          <button id="tabPractice" class="tab-btn active" onclick="setGameMode('practice')">Разбор (Без времени)</button>
+          <button id="tabRush" class="tab-btn" onclick="setGameMode('rush')">Штурм (1 мин)</button>
         </div>
 
         <!-- Фильтры: Раздел и Уровень CEFR -->
         <div class="filters-row">
           <select id="categorySelect" class="mode-select" onchange="resetDeckAndLoad()">
-            <option value="all">🎲 All Random (Все разделы)</option>
-            <option value="grammar">📐 Only Grammar</option>
-            <option value="clinical">🩺 Clinical Vocabulary</option>
-            <option value="academic">📚 Academic Vocabulary</option>
+            <option value="all">All Random (Все разделы)</option>
+            <option value="grammar">Only Grammar</option>
+            <option value="clinical">Clinical Vocabulary</option>
+            <option value="academic">Academic Vocabulary</option>
           </select>
 
           <select id="levelSelect" class="mode-select" onchange="resetDeckAndLoad()">
-            <option value="all">🔥 All Levels (A1–B2)</option>
+            <option value="all">All Levels (A1–B2)</option>
             <option value="A1">Level A1</option>
             <option value="A2">Level A2</option>
             <option value="B1">Level B1</option>
@@ -517,10 +518,10 @@
 
         <!-- Панель очков и таймера -->
         <div class="stats">
-          <span id="timerBadge" class="timer-badge">⏱️ <span id="timeLeft">60</span>s</span>
+          <span id="timerBadge" class="timer-badge"><span id="timeLeft">60</span>s</span>
           <span>Total: <strong id="totalCount">0</strong></span>
-          <span>Correct: <strong id="correctCount" style="color:#16A34A;">0</strong></span>
-          <span>Streak: <strong id="streakCount" style="color:#D9A000;">0 🔥</strong></span>
+          <span>Correct: <strong id="correctCount" style="color:var(--ok-mid);">0</strong></span>
+          <span>Streak: <strong id="streakCount" style="color:var(--sun-600);">0 🔥</strong></span>
         </div>
       </div>
 
@@ -545,7 +546,7 @@
         <div id="optionsGrid" class="options-grid"></div>
         
         <div id="explanationBox" class="explanation-box">
-          <div><strong>💡 Explanation:</strong> <span id="explanationText">Choose the correct answer!</span></div>
+          <div><strong>Explanation:</strong> <span id="explanationText">Choose the correct answer!</span></div>
         </div>
 
         <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next ➔</button>
@@ -584,8 +585,8 @@
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 8px;">
-        <button class="next-btn visible" onclick="startRushMode()">🔄 Новый штурм (1 мин)</button>
-        <button class="check-builder-btn" style="background: var(--kz-blue-light); color: var(--kz-blue-dark);" onclick="setGameMode('practice')">🎓 Вернуться в режим разбора</button>
+        <button class="next-btn visible" onclick="startRushMode()">Новый штурм (1 мин)</button>
+        <button class="check-builder-btn" style="background: var(--kz-blue-light); color: var(--kz-blue-dark);" onclick="setGameMode('practice')">Вернуться в режим разбора</button>
       </div>
     </div>
 
@@ -2528,7 +2529,7 @@
       list.innerHTML = '';
 
       if (rushMistakes.length === 0) {
-        list.innerHTML = `<div style="text-align:center; padding: 14px; color: var(--green); font-weight: 800;">🎉 Безупречно! Ни одной ошибки за минуту!</div>`;
+        list.innerHTML = `<div style="text-align:center; padding: 14px; color: var(--green); font-weight: 800;">Безупречно! Ни одной ошибки за минуту!</div>`;
       } else {
         rushMistakes.forEach(m => {
           const item = document.createElement('div');
@@ -2593,7 +2594,7 @@
       expBox.classList.remove('answered');
       document.getElementById('explanationText').textContent =
         gameMode === 'rush'
-          ? "⚡ Режим штурма: выбирайте ответ как можно быстрее!"
+          ? "Режим штурма: выбирайте ответ как можно быстрее!"
           : "Выберите ответ или соберите фразу для разбора.";
 
       document.getElementById('levelTag').textContent = `Level ${currentQuestion.level}`;

@@ -32,7 +32,7 @@
             min-height: 100vh;
             min-height: 100dvh;
             overflow-y: auto;
-            background: linear-gradient(145deg, #00A1DE 0%, #006890 100%);
+            background: var(--sky-900);
             color: var(--white);
             display: flex;
             flex-direction: column;
@@ -41,6 +41,7 @@
         }
 
         .sun-bg {
+            display: none;
             position: fixed;
             top: -10%;
             right: -15%;
@@ -179,7 +180,7 @@
         .submit-btn {
             width: 100%;
             background: var(--kz-gold);
-            color: #004d66;
+            color: var(--sky-900);
             border: none;
             padding: 12px;
             border-radius: 20px;
@@ -193,7 +194,7 @@
             margin-top: 10px;
         }
 
-        .submit-btn:hover { background: #ffe082; }
+        .submit-btn:hover { background: var(--sun-500); }
         .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
         .back-link {
@@ -229,12 +230,14 @@
             border: 1px solid rgba(255, 199, 44, 0.3);
         }
     </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body>
 
     <div class="sun-bg"></div>
 
-    <header>
+    <header class="ds-plain">
         <div class="brand-badge">kazdoctors.com</div>
         <h1>KazDoctors</h1>
         <p class="subtitle">Вход в личный кабинет</p>
@@ -268,11 +271,7 @@
         </div>
     </main>
 
-    <footer>
-        <a href="https://instagram.com/doctors.speak" target="_blank" class="instagram-link">
-            <span>Contact us in instagram!</span>
-        </a>
-    </footer>
+    <div id="ds-footer"></div>
 
     <!-- 2. ЛОГИКА JAVASCRIPT ДЛЯ SUPABASE -->
     <script>

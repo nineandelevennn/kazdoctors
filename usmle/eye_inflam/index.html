@@ -35,10 +35,10 @@
                height: 6px;
            }
            ::-webkit-scrollbar-track {
-               background: #f1f5f9;
+               background: var(--subtle);
            }
            ::-webkit-scrollbar-thumb {
-               background: #00A1DE;
+               background: var(--sky-700);
                border-radius: 4px;
            }
 
@@ -53,9 +53,9 @@
            }
 
            .item-card.selected {
-               border-color: #00A1DE !important;
-               background-color: #EBF8FC !important;
-               box-shadow: 0 0 0 2px #00A1DE;
+               border-color: var(--sky-700) !important;
+               background-color: var(--sky-50) !important;
+               box-shadow: 0 0 0 2px var(--sky-700);
            }
 
            .item-card.matched {
@@ -91,13 +91,15 @@
                font-weight: bold;
            }
        </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body class="min-h-screen flex flex-col justify-between text-[#1E293B] bg-[#F2F5F8]">
 
        <!-- Top Header Banner (Styled like index-58.html) -->
        <header class="slide-header-bg text-white text-center py-5 px-4 shadow-[0_4px_14px_rgba(0,161,222,0.2)] flex flex-col items-center relative z-20">
            <a href="https://kazdoctors.com/usmle/neurology/" class="inline-flex items-center gap-1.5 text-white bg-white/[0.18] backdrop-blur-md border border-white/35 no-underline font-bold text-[0.78rem] px-3.5 py-1.5 rounded-[20px] mb-2.5 transition-all active:scale-95 hover:bg-white/30">
-               <span>⬅️Go back</span>
+               <span>←Go back</span>
            </a>
            <div class="inline-block bg-white/15 backdrop-blur-md border border-white/30 text-white font-bold text-[0.75rem] tracking-[0.8px] px-3 py-1 rounded-[20px] mb-2">@doctors.speak</div>
            <h1 class="text-[1.35rem] font-black leading-[1.2] uppercase tracking-[0.5px] text-white">USMLE preparation</h1>
@@ -535,15 +537,7 @@
 
 
 
-       <footer class="text-center pt-2.5 pb-5 px-4 flex flex-col items-center gap-2.5">
-           <a href="https://instagram.com/doctors.speak" target="_blank" class="inline-flex items-center gap-1.5 text-[#0077A3] no-underline font-bold text-[0.82rem] px-[18px] py-2 rounded-[20px] bg-white border border-[#E2E8F0] shadow-[0_2px_6px_rgba(0,0,0,0.02)]">
-               <span>@doctors.speak</span>
-           </a>
-           <a href="https://kazdoctors.com/usmle/neurology/" class="inline-flex items-center gap-1.5 text-[#0077A3] bg-white border border-[#E2E8F0] no-underline font-bold text-[0.78rem] px-[18px] py-2 rounded-[20px] transition-all active:scale-95 shadow-[0_2px_6px_rgba(0,0,0,0.02)]">
-               <svg class="w-4 h-4 fill-[#00A1DE]" viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
-               <span>Go back</span>
-           </a>
-       </footer>
+       <div id="ds-footer"></div>
 
        <script>
 

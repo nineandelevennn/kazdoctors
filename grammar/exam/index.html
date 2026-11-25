@@ -52,7 +52,7 @@
     /* Верхняя шапка с таймером */
     header {
       width: 100%;
-      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      background: linear-gradient(135deg, var(--sky-900) 0%, var(--sky-900) 100%);
       color: #FFFFFF;
       padding: 12px 16px;
       box-shadow: 0 4px 16px rgba(15, 23, 42, 0.25);
@@ -113,7 +113,7 @@
 
     .timer-pill.danger {
       background: rgba(239, 68, 68, 0.25);
-      border-color: #EF4444;
+      border-color: var(--err-mid);
       color: #FCA5A5;
       animation: pulseTimer 1s infinite;
     }
@@ -126,7 +126,7 @@
     .progress-pill {
       background: rgba(0, 161, 222, 0.2);
       border: 1px solid rgba(0, 161, 222, 0.5);
-      color: #7DD3FC;
+      color: var(--sky-100);
       font-size: 0.75rem;
       font-weight: 800;
       padding: 5px 11px;
@@ -178,7 +178,7 @@
     }
 
     .paywall-card {
-      background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+      background: linear-gradient(145deg, var(--sky-900) 0%, var(--sky-900) 100%);
       color: #FFFFFF;
       border-radius: 22px;
       padding: 28px 22px;
@@ -206,7 +206,7 @@
     .pw-badge {
       background: rgba(0, 161, 222, 0.22);
       border: 1px solid rgba(0, 161, 222, 0.55);
-      color: #7DD3FC;
+      color: var(--sky-100);
       font-size: 0.7rem;
       font-weight: 800;
       padding: 4px 12px;
@@ -223,7 +223,7 @@
     .pw-desc {
       font-size: 0.82rem;
       line-height: 1.55;
-      color: #CBD5E1;
+      color: var(--line);
     }
 
     .pw-buttons {
@@ -304,7 +304,7 @@
     }
 
     .student-info-pill {
-      background: #F8FAFC;
+      background: var(--subtle);
       border: 1px solid var(--border-color);
       border-radius: 14px;
       padding: 12px 16px;
@@ -437,7 +437,7 @@
     }
 
     .map-toggle-btn {
-      background: #F8FAFC;
+      background: var(--subtle);
       border: 1px solid var(--border-color);
       color: var(--kz-blue-dark);
       font-size: 0.73rem;
@@ -464,7 +464,7 @@
       height: 32px;
       border-radius: 8px;
       border: 1px solid var(--border-color);
-      background: #F8FAFC;
+      background: var(--subtle);
       color: var(--text-muted);
       font-size: 0.72rem;
       font-weight: 800;
@@ -484,7 +484,7 @@
     .q-card {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
-      border-left: 5px solid #CBD5E1;
+      border-left: 5px solid var(--line);
       border-radius: 16px;
       padding: 15px 16px;
       transition: all 0.15s ease;
@@ -532,7 +532,7 @@
     }
 
     .opt-btn {
-      background: #F8FAFC;
+      background: var(--subtle);
       border: 1.5px solid var(--border-color);
       border-radius: 11px;
       padding: 9px 14px;
@@ -587,7 +587,7 @@
     .screenshot-frame {
       width: 100%;
       max-width: 480px;
-      background: linear-gradient(155deg, #0F172A 0%, #1E293B 60%, #0F2942 100%);
+      background: linear-gradient(155deg, var(--sky-900) 0%, var(--sky-900) 60%, var(--sky-900) 100%);
       color: #FFFFFF;
       border-radius: 24px;
       padding: 22px 20px;
@@ -630,7 +630,7 @@
     .cert-hash {
       font-size: 0.68rem;
       font-weight: 800;
-      color: #94A3B8;
+      color: var(--line-2);
       background: rgba(255, 255, 255, 0.08);
       padding: 3px 8px;
       border-radius: 8px;
@@ -645,7 +645,7 @@
     .cert-student-lbl {
       font-size: 0.66rem;
       font-weight: 800;
-      color: #94A3B8;
+      color: var(--line-2);
       text-transform: uppercase;
       letter-spacing: 0.8px;
     }
@@ -686,7 +686,7 @@
     .cert-percent-badge {
       display: inline-block;
       background: rgba(16, 185, 129, 0.22);
-      border: 1px solid #34D399;
+      border: 1px solid var(--ok-mid);
       color: #A7F3D0;
       font-size: 0.72rem;
       font-weight: 800;
@@ -718,14 +718,14 @@
     .cert-sub-title {
       font-size: 0.65rem;
       font-weight: 700;
-      color: #CBD5E1;
+      color: var(--line);
       text-transform: uppercase;
     }
 
     .cert-sub-val {
       font-size: 0.95rem;
       font-weight: 900;
-      color: #7DD3FC;
+      color: var(--sky-100);
       margin-top: 2px;
     }
 
@@ -748,7 +748,7 @@
     }
 
     .cert-int-row span.lbl {
-      color: #94A3B8;
+      color: var(--line-2);
       font-weight: 600;
     }
 
@@ -764,7 +764,7 @@
     .cert-footer-stamp {
       text-align: center;
       font-size: 0.66rem;
-      color: #94A3B8;
+      color: var(--line-2);
       font-weight: 600;
       padding-top: 4px;
     }
@@ -794,18 +794,18 @@
       border-radius: 10px;
       font-size: 0.78rem;
       line-height: 1.4;
-      border-left: 4px solid #CBD5E1;
-      background: #F8FAFC;
+      border-left: 4px solid var(--line);
+      background: var(--subtle);
     }
 
     .review-item.ok {
-      border-left-color: #22C55E;
+      border-left-color: var(--ok-mid);
       background: #F0FDF4;
     }
 
     .review-item.err {
-      border-left-color: #EF4444;
-      background: #FEF2F2;
+      border-left-color: var(--err-mid);
+      background: var(--err-bg);
     }
 
     @media (max-width: 520px) {
@@ -817,13 +817,15 @@
       }
     }
   </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body>
 
   <!-- ВЕРХНЯЯ ШАПКА -->
   <header>
     <div class="header-inner">
-      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅ К курсу</a>
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">← К курсу</a>
 
       <!-- Таймер и счетчик ответов (показываются во время экзамена) -->
       <div class="header-center-status" id="headerExamStatus">
@@ -839,7 +841,7 @@
   </header>
 
   <!-- ИНДИКАТОР ПРОВЕРКИ ПОДПИСКИ -->
-  <div id="authLoader">🔄 Проверка подписки и подготовка экзаменационного бланка...</div>
+  <div id="authLoader">Проверка подписки и подготовка экзаменационного бланка...</div>
 
   <!-- БЛОК PAYWALL (ЕСЛИ НЕТ ТАРИФА ПРО / ПРЕМИУМ / ВИП) -->
   <div id="paywallGate">
@@ -852,13 +854,13 @@
       </p>
       <div class="pw-buttons">
         <a href="https://kazdoctors.com/tarifs" class="pw-btn-primary" id="pwTarifsBtn">
-          🌟 Перейти к тарифам (kazdoctors.com/tarifs)
+          Перейти к тарифам (kazdoctors.com/tarifs)
         </a>
         <a href="https://instagram.com/doctors.speak" target="_blank" class="pw-btn-secondary" id="pwContactBtn">
-          💬 Написать нам (@doctors.speak)
+          Написать нам (@doctors.speak)
         </a>
         <a href="/login.html" class="pw-btn-secondary" id="pwLoginBtn" style="display:none;">
-          🔐 Войти в аккаунт
+          Войти в аккаунт
         </a>
       </div>
     </div>
@@ -883,7 +885,7 @@
         </div>
         <div class="student-info-row" id="startFirstScoreRow" style="display:none;">
           <span style="color:var(--text-muted); font-weight:700;" id="uiFirstScoreLbl">Результат 1-й попытки:</span>
-          <strong style="color:#B45309;" id="startFirstScoreVal">—</strong>
+          <strong style="color:var(--sun-ink);" id="startFirstScoreVal">—</strong>
         </div>
       </div>
 
@@ -903,14 +905,14 @@
       </div>
 
       <div class="rules-list" id="uiRulesBox">
-        ⚠️ <b>Правила экзамена и фиксации попыток:</b><br>
+        <b>Правила экзамена и фиксации попыток:</b><br>
         • Как только вы нажмете кнопку <b>«НАЧАТЬ ЭКЗАМЕН»</b>, запустится таймер на 60 минут и в системе зафиксируется номер вашей попытки.<br>
         • Экзамен состоит из <b>30 вопросов по грамматике</b> и <b>30 вопросов по клиническому словарю</b>.<br>
         • В конце вы получите именную карточку результата, которую удобно заскриншотить с телефона или ноутбука и отправить преподавателю.
       </div>
 
       <button type="button" class="start-exam-btn" onclick="startExamNow()" id="uiStartBtn">
-        🚀 НАЧАТЬ ЭКЗАМЕН (60 МИНУТ)
+        НАЧАТЬ ЭКЗАМЕН (60 МИНУТ)
       </button>
     </section>
 
@@ -924,7 +926,7 @@
             <button class="sec-tab-btn" id="filterVocabBtn" onclick="setQuestionFilter('vocab')">Vocabulary (31–60)</button>
             <button class="sec-tab-btn" id="filterUnansBtn" onclick="setQuestionFilter('unanswered')">Неотвеченные</button>
           </div>
-          <button class="map-toggle-btn" onclick="toggleQuestionMap()" id="uiMapBtn">🗺️ Карта вопросов ⌄</button>
+          <button class="map-toggle-btn" onclick="toggleQuestionMap()" id="uiMapBtn">Карта вопросов ⌄</button>
         </div>
         <div class="q-map-grid" id="questionMapGrid"></div>
       </div>
@@ -932,14 +934,14 @@
       <div id="questionsListContainer" style="display:flex; flex-direction:column; gap:12px;"></div>
 
       <button type="button" class="finish-exam-btn" onclick="confirmAndFinishExam()" id="uiFinishBtn">
-        🏁 ЗАКОНЧИТЬ ЭКЗАМЕН И ПОЛУЧИТЬ РЕЗУЛЬТАТ
+        ЗАКОНЧИТЬ ЭКЗАМЕН И ПОЛУЧИТЬ РЕЗУЛЬТАТ
       </button>
     </section>
 
     <!-- 3. ЭКРАН РЕЗУЛЬТАТА (КАРТОЧКА ПОД СКРИНШОТ) -->
     <section id="resultSection">
       <div style="font-size:0.78rem; font-weight:700; color:var(--text-muted); text-align:center;" id="uiScreenshotHint">
-        📸 Сделайте скриншот карточки ниже и отправьте преподавателю:
+        Сделайте скриншот карточки ниже и отправьте преподавателю:
       </div>
 
       <!-- КАРТОЧКА-СЕРТИФИКАТ ДЛЯ СКРИНШОТА -->
@@ -1001,11 +1003,11 @@
       <!-- Кнопки действий под скриншотом -->
       <div class="result-actions">
         <button type="button" class="map-toggle-btn" style="padding:12px; width:100%; font-size:0.82rem;" onclick="toggleReviewList()" id="uiToggleReviewBtn">
-          📋 Показать статус моих ответов по вопросам (без раскрытия ключей)
+          Показать статус моих ответов по вопросам (без раскрытия ключей)
         </button>
         <div class="review-card" id="reviewListCard"></div>
-        <button type="button" class="start-exam-btn" style="max-width:100%; background:#334155;" onclick="prepareNewRetake()" id="uiRetakeBtn">
-          🔄 Пройти экзамен еще раз (новая попытка)
+        <button type="button" class="start-exam-btn" style="max-width:100%; background:var(--ink-2);" onclick="prepareNewRetake()" id="uiRetakeBtn">
+          Пройти экзамен еще раз (новая попытка)
         </button>
       </div>
     </section>
@@ -1515,10 +1517,10 @@
 
       // Оценка уровня по результату
       let gradeText = "";
-      if (percent >= 90) gradeText = "🏆 Excellent (Upper-Intermediate B2)";
+      if (percent >= 90) gradeText = "Excellent (Upper-Intermediate B2)";
       else if (percent >= 75) gradeText = "✅ Confident Medical B1";
-      else if (percent >= 55) gradeText = "📈 Pre-Intermediate A2+";
-      else gradeText = "📘 Elementary Foundation (Needs Review)";
+      else if (percent >= 55) gradeText = "Pre-Intermediate A2+";
+      else gradeText = "Elementary Foundation (Needs Review)";
       document.getElementById("certGradeTitle").textContent = gradeText;
 
       // Данные о попытке и времени
@@ -1593,7 +1595,7 @@
       document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
 
       const isKz = (lang === 'kz');
-      document.getElementById('uiBackBtn').textContent = isKz ? "⬅ Курсқа оралу" : "⬅ К курсу";
+      document.getElementById('uiBackBtn').textContent = isKz ? "← Курсқа оралу" : "← К курсу";
       document.getElementById('uiStartTitle').textContent = isKz
         ? "Medical English видеокурсы бойынша қорытынды емтихан"
         : "Итоговый экзамен по видеокурсу Medical English";
@@ -1604,21 +1606,21 @@
       document.getElementById('uiSpecTime').textContent = isKz ? "Таймер" : "Таймер";
 
       document.getElementById('uiRulesBox').innerHTML = isKz
-        ? `⚠️ <b>Емтихан ережелері:</b><br>• <b>«ЕМТИХАНДЫ БАСТАУ»</b> батырмасын басқан сәтте 60 минуттық таймер іске қосылады және сіздің мүмкіндік (попытка) нөміріңіз тіркеледі.<br>• Емтихан <b>30 грамматикалық</b> және <b>30 клиникалық сөздік</b> сұрағынан тұрады.<br>• Соңында телефоннан немесе ноутбуктан скриншот жасауға ыңғайлы атаулы сертификат шығады.`
-        : `⚠️ <b>Правила экзамена и фиксации попыток:</b><br>• Как только вы нажмете кнопку <b>«НАЧАТЬ ЭКЗАМЕН»</b>, запустится таймер на 60 минут и в системе зафиксируется номер вашей попытки.<br>• Экзамен состоит из <b>30 вопросов по грамматике</b> и <b>30 вопросов по клиническому словарю</b>.<br>• В конце вы получите именную карточку результата, которую удобно заскриншотить с телефона или ноутбука и отправить преподавателю.`;
+        ? `<b>Емтихан ережелері:</b><br>• <b>«ЕМТИХАНДЫ БАСТАУ»</b> батырмасын басқан сәтте 60 минуттық таймер іске қосылады және сіздің мүмкіндік (попытка) нөміріңіз тіркеледі.<br>• Емтихан <b>30 грамматикалық</b> және <b>30 клиникалық сөздік</b> сұрағынан тұрады.<br>• Соңында телефоннан немесе ноутбуктан скриншот жасауға ыңғайлы атаулы сертификат шығады.`
+        : `<b>Правила экзамена и фиксации попыток:</b><br>• Как только вы нажмете кнопку <b>«НАЧАТЬ ЭКЗАМЕН»</b>, запустится таймер на 60 минут и в системе зафиксируется номер вашей попытки.<br>• Экзамен состоит из <b>30 вопросов по грамматике</b> и <b>30 вопросов по клиническому словарю</b>.<br>• В конце вы получите именную карточку результата, которую удобно заскриншотить с телефона или ноутбука и отправить преподавателю.`;
 
       document.getElementById('uiStartBtn').textContent = isKz
-        ? "🚀 ЕМТИХАНДЫ БАСТАУ (60 МИНУТ)"
-        : "🚀 НАЧАТЬ ЭКЗАМЕН (60 МИНУТ)";
+        ? "ЕМТИХАНДЫ БАСТАУ (60 МИНУТ)"
+        : "НАЧАТЬ ЭКЗАМЕН (60 МИНУТ)";
 
-      document.getElementById('uiMapBtn').textContent = isKz ? "🗺️ Сұрақтар картасы ⌄" : "🗺️ Карта вопросов ⌄";
+      document.getElementById('uiMapBtn').textContent = isKz ? "Сұрақтар картасы ⌄" : "Карта вопросов ⌄";
       document.getElementById('uiFinishBtn').textContent = isKz
-        ? "🏁 ЕМТИХАНДЫ АЯҚТАУ ЖӘНЕ НӘТИЖЕНІ АЛУ"
-        : "🏁 ЗАКОНЧИТЬ ЭКЗАМЕН И ПОЛУЧИТЬ РЕЗУЛЬТАТ";
+        ? "ЕМТИХАНДЫ АЯҚТАУ ЖӘНЕ НӘТИЖЕНІ АЛУ"
+        : "ЗАКОНЧИТЬ ЭКЗАМЕН И ПОЛУЧИТЬ РЕЗУЛЬТАТ";
 
       document.getElementById('uiScreenshotHint').textContent = isKz
-        ? "📸 Төмендегі сертификатты скриншот жасап, оқытушыға жіберіңіз:"
-        : "📸 Сделайте скриншот карточки ниже и отправьте преподавателю:";
+        ? "Төмендегі сертификатты скриншот жасап, оқытушыға жіберіңіз:"
+        : "Сделайте скриншот карточки ниже и отправьте преподавателю:";
 
       document.getElementById('uiCertAttemptLbl').textContent = isKz ? "Мүмкіндік нөмірі (Attempt):" : "Номер попытки (Attempt):";
       document.getElementById('uiCertFirstLbl').textContent = isKz ? "1-ші мүмкіндік балы (1st Attempt):" : "Балл 1-й попытки (1st Attempt):";
@@ -1626,11 +1628,11 @@
       document.getElementById('uiCertDateLbl').textContent = isKz ? "Тапсырылған күні:" : "Дата и время сдачи:";
 
       document.getElementById('uiToggleReviewBtn').textContent = isKz
-        ? "📋 Менің жауаптарымның тізімін көру"
-        : "📋 Показать статус моих ответов по вопросам (без раскрытия ключей)";
+        ? "Менің жауаптарымның тізімін көру"
+        : "Показать статус моих ответов по вопросам (без раскрытия ключей)";
       document.getElementById('uiRetakeBtn').textContent = isKz
-        ? "🔄 Емтиханды қайта тапсыру (жаңа мүмкіндік)"
-        : "🔄 Пройти экзамен еще раз (новая попытка)";
+        ? "Емтиханды қайта тапсыру (жаңа мүмкіндік)"
+        : "Пройти экзамен еще раз (новая попытка)";
     }
 
     setLang(currentLang);

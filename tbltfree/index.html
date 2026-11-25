@@ -197,7 +197,7 @@
     }
 
     .mission-kicker.reading {
-      color: #854D0E;
+      color: var(--sun-ink);
       background: var(--kz-gold-soft);
     }
 
@@ -354,8 +354,8 @@
 
     /* Реплика пациента */
     .patient-bubble {
-      background: #F0F9FF;
-      border: 1px solid #BAE6FD;
+      background: var(--sky-50);
+      border: 1px solid var(--sky-100);
       border-radius: 12px;
       padding: 13px 14px;
       display: flex;
@@ -379,7 +379,7 @@
     }
 
     .audio-btn {
-      border: 1px solid #7DD3FC;
+      border: 1px solid var(--sky-100);
       background: #FFFFFF;
       color: var(--med-navy);
       font-size: 0.72rem;
@@ -415,7 +415,7 @@
       display: none;
       font-size: 0.79rem;
       color: var(--text-secondary);
-      border-top: 1px dashed #BAE6FD;
+      border-top: 1px dashed var(--sky-100);
       padding-top: 6px;
     }
 
@@ -527,9 +527,9 @@
     }
 
     .feedback-box.wrong-fb {
-      background: #FFFBEB;
+      background: var(--sun-50);
       border-color: #FDE68A;
-      color: #78350F;
+      color: var(--sun-ink);
     }
 
     .fb-title {
@@ -539,7 +539,7 @@
 
     .fb-mistake-note {
       background: rgba(255, 255, 255, 0.72);
-      border-left: 3px solid #D97706;
+      border-left: 3px solid var(--sun-ink);
       padding: 8px 10px;
       border-radius: 6px;
       color: var(--text-primary);
@@ -548,7 +548,7 @@
 
     .study-tip-box {
       background: var(--bg-card);
-      border: 1px solid #BAE6FD;
+      border: 1px solid var(--sky-100);
       border-radius: 8px;
       padding: 10px 12px;
       display: flex;
@@ -690,12 +690,12 @@
     }
 
     .gap-card {
-      background: #FFFBEB;
+      background: var(--sun-50);
       border: 1px solid #FDE68A;
       border-radius: 10px;
       padding: 14px;
       font-size: 0.82rem;
-      color: #78350F;
+      color: var(--sun-ink);
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -719,6 +719,8 @@
       margin-top: 4px;
     }
   </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body>
 
@@ -1992,7 +1994,7 @@
             <div class="score-banner">
               <div class="score-num">${score} / ${shuffledSteps.length}</div>
               <div style="font-weight:800; font-size:0.95rem;">${t.summaryTitle}</div>
-              <div style="font-size:0.79rem; color:#BAE6FD;">${t.summarySub}</div>
+              <div style="font-size:0.79rem; color:var(--sky-100);">${t.summarySub}</div>
             </div>
 
             ${gapHtml}

@@ -188,7 +188,7 @@
     }
 
     .paywall-card {
-      background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+      background: linear-gradient(145deg, var(--sky-900) 0%, var(--sky-900) 100%);
       color: #FFFFFF;
       border-radius: 22px;
       padding: 28px 22px;
@@ -216,7 +216,7 @@
     .pw-badge {
       background: rgba(0, 161, 222, 0.22);
       border: 1px solid rgba(0, 161, 222, 0.55);
-      color: #7DD3FC;
+      color: var(--sky-100);
       font-size: 0.7rem;
       font-weight: 800;
       padding: 4px 12px;
@@ -235,7 +235,7 @@
     .pw-desc {
       font-size: 0.82rem;
       line-height: 1.55;
-      color: #CBD5E1;
+      color: var(--line);
       font-weight: 500;
     }
 
@@ -474,20 +474,20 @@
     }
 
     .grammar-table tr:nth-child(even) td {
-      background: #F8FAFC;
+      background: var(--subtle);
     }
 
     /* Интерактивный разбор статьи (Schizophrenia) */
     .abstract-box {
       background: #FFFFFF;
-      border: 2px solid #CBD5E1;
+      border: 2px solid var(--line);
       border-radius: 14px;
       overflow: hidden;
       margin-top: 10px;
     }
 
     .abstract-header {
-      background: #1E293B;
+      background: var(--sky-900);
       color: #FFFFFF;
       padding: 10px 14px;
       font-size: 0.78rem;
@@ -515,15 +515,15 @@
       transition: all 0.15s ease;
     }
 
-    .hl-btn.sup-type { background: #BAE6FD; color: #0369A1; }
-    .hl-btn.cmp-type { background: #FDE68A; color: #92400E; }
+    .hl-btn.sup-type { background: var(--sky-100); color: var(--sky-900); }
+    .hl-btn.cmp-type { background: #FDE68A; color: var(--sun-ink); }
     .hl-btn.reset { background: rgba(255,255,255,0.2); color: #FFFFFF; }
 
     .abstract-body {
       padding: 14px;
       font-size: 0.84rem;
       line-height: 1.68;
-      color: #334155;
+      color: var(--ink-2);
     }
 
     .s-sup, .s-cmp {
@@ -533,22 +533,22 @@
     }
 
     .abstract-body.show-sup .s-sup {
-      background: #BAE6FD;
-      color: #0369A1;
+      background: var(--sky-100);
+      color: var(--sky-900);
       font-weight: 800;
-      border-bottom: 2px solid #0284C7;
+      border-bottom: 2px solid var(--sky-700);
     }
 
     .abstract-body.show-cmp .s-cmp {
       background: #FDE68A;
-      color: #92400E;
+      color: var(--sun-ink);
       font-weight: 800;
-      border-bottom: 2px solid #D97706;
+      border-bottom: 2px solid var(--sun-ink);
     }
 
     /* Быстрые микро-упражнения внутри теории (Quick Check) */
     .quick-check {
-      background: #F8FAFC;
+      background: var(--subtle);
       border: 1px dashed var(--kz-blue);
       border-radius: 14px;
       padding: 14px;
@@ -711,13 +711,15 @@
       }
     }
   </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body>
 
   <!-- ШАПКА УРОКА -->
   <header>
     <div class="header-top">
-      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅ К списку уроков</a>
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">← К списку уроков</a>
       <div class="header-right-controls">
         <span id="userTierBadge" class="tier-badge"></span>
         <div class="lang-switch">
@@ -734,7 +736,7 @@
   </header>
 
   <!-- ИНДИКАТОР ПРОВЕРКИ ПОДПИСКИ -->
-  <div id="authLoader">🔄 Проверка подписки и доступа к конспекту...</div>
+  <div id="authLoader">Проверка подписки и доступа к конспекту...</div>
 
   <!-- БЛОК PAYWALL (ПОКАЗЫВАЕТСЯ, ЕСЛИ НЕТ ТАРИФА ПРО / ПРЕМИУМ / ВИП) -->
   <div id="paywallGate">
@@ -747,13 +749,13 @@
       </p>
       <div class="pw-buttons">
         <a href="https://kazdoctors.com/tarifs" class="pw-btn-primary" id="pwTarifsBtn">
-          🌟 Перейти к тарифам (kazdoctors.com/tarifs)
+          Перейти к тарифам (kazdoctors.com/tarifs)
         </a>
         <a href="https://instagram.com/doctors.speak" target="_blank" class="pw-btn-secondary" id="pwContactBtn">
-          💬 Написать нам (@doctors.speak)
+          Написать нам (@doctors.speak)
         </a>
         <a href="/login.html" class="pw-btn-secondary" id="pwLoginBtn" style="display:none;">
-          🔐 Войти в аккаунт
+          Войти в аккаунт
         </a>
       </div>
     </div>
@@ -780,7 +782,7 @@
       <!-- ВКЛАДКА 3: СЛОВАРЬ С ПРИМЕРАМИ -->
       <section class="tab-section" id="tab2">
         <div class="card-block">
-          <h2 id="uiVocabTitle">💊 Клинический словарь урока (14 терминов)</h2>
+          <h2 id="uiVocabTitle">Клинический словарь урока (14 терминов)</h2>
           <p id="uiVocabDesc">Нажмите 🔊, чтобы прослушать произношение. Обратите внимание на конструкции сравнения (Comparative и Superlative) в каждом клиническом примере.</p>
           <div class="vocab-grid" id="vocabGrid"></div>
         </div>
@@ -790,18 +792,18 @@
       <!-- ВКЛАДКА 4: ПРАКТИКУМ (EXERCISE 1 & 2 ИЗ PDF) -->
       <section class="tab-section" id="tab3">
         <div class="card-block gold">
-          <h2 id="uiEx1Title">✍️ Упражнение 1: Выберите правильную степень сравнения</h2>
+          <h2 id="uiEx1Title">Упражнение 1: Выберите правильную степень сравнения</h2>
           <p id="uiEx1Desc">Ищите в предложении слово-маркер THAN (Comparative) или артикль THE / фразу ONE OF THE (Superlative):</p>
           <div id="ex1Container" style="display:flex; flex-direction:column; gap:10px;"></div>
         </div>
 
         <div class="card-block">
-          <h2 id="uiEx2Title">🩺 Упражнение 2: Дополните клинические наблюдения</h2>
+          <h2 id="uiEx2Title">Упражнение 2: Дополните клинические наблюдения</h2>
           <p id="uiEx2Desc">Подберите подходящую сравнительную или превосходную форму по смыслу предложения:</p>
           <div id="ex2Container" style="display:flex; flex-direction:column; gap:10px;"></div>
         </div>
 
-        <a href="./comparatives/" class="action-btn" id="uiGoTrainerBtn">🎯 Запустить игровой тренажер по Уроку 12 ➔</a>
+        <a href="../comparatives/" class="action-btn" id="uiGoTrainerBtn">Запустить игровой тренажер по Уроку 12 ➔</a>
       </section>
     </main>
   </div>
@@ -828,7 +830,7 @@
       standard: { ru: "СТАНДАРТ", kz: "СТАНДАРТ" },
       pro: { ru: "ТАРИФ: ПРО", kz: "ТАРИФ: ПРО" },
       premium: { ru: "ТАРИФ: ПРЕМИУМ", kz: "ТАРИФ: ПРЕМИУМ" },
-      vip: { ru: "ТАРИФ: ВИП 👑", kz: "ТАРИФ: ВИП 👑" }
+      vip: { ru: "ТАРИФ: ВИП", kz: "ТАРИФ: ВИП" }
     };
 
     let currentViewerState = {
@@ -937,12 +939,12 @@
         : "ДОСТУПНО В ТАРИФАХ ПРО / ПРЕМИУМ / ВИП";
 
       tarifsBtn.textContent = isKz
-        ? "🌟 Тарифтер бетіне өту (kazdoctors.com/tarifs)"
-        : "🌟 Перейти к тарифам (kazdoctors.com/tarifs)";
+        ? "Тарифтер бетіне өту (kazdoctors.com/tarifs)"
+        : "Перейти к тарифам (kazdoctors.com/tarifs)";
 
       contactBtn.textContent = isKz
-        ? "💬 Бізге жазу (@doctors.speak)"
-        : "💬 Написать нам (@doctors.speak)";
+        ? "Бізге жазу (@doctors.speak)"
+        : "Написать нам (@doctors.speak)";
 
       if (!isLoggedIn) {
         titleEl.textContent = isKz
@@ -952,7 +954,7 @@
           ? "Бұл интерактивті конспект «Про», «Премиум» және «ВИП» жазылымдары бар дәрігерлерге арналған. Тарифтер бетінде өзіңізге ыңғайлы пакетті таңдай аласыз:"
           : "Этот интерактивный конспект открыт для врачей с подпиской «Про», «Премиум» или «ВИП». Ознакомьтесь с вариантами доступа на странице тарифов:";
         loginBtn.style.display = "inline-flex";
-        loginBtn.textContent = isKz ? "🔐 Аккаунтқа кіру" : "🔐 Уже есть подписка? Войти в аккаунт";
+        loginBtn.textContent = isKz ? "Аккаунтқа кіру" : "Уже есть подписка? Войти в аккаунт";
       } else if (reasonTier === "standard") {
         titleEl.textContent = isKz
           ? "Сізде «Стандарт» тарифі белсенді (тек тренажерлер)"
@@ -977,7 +979,7 @@
     // =========================================================================
     const LESSON12_DATA = {
       ui: {
-        backBtn: { ru: "⬅ К списку уроков", kz: "⬅ Сабақтар тізіміне" },
+        backBtn: { ru: "← К списку уроков", kz: "← Сабақтар тізіміне" },
         title: {
           ru: "Comparatives & Superlatives (Степени сравнения в медицине)",
           kz: "Comparatives & Superlatives (Салыстырмалы және күшейтпелі шырай)"
@@ -993,8 +995,8 @@
           { ru: "4. Упражнения", kz: "4. Жаттығулар" }
         ],
         vocabTitle: {
-          ru: "💊 Клинический словарь урока (14 терминов)",
-          kz: "💊 Сабақтың клиникалық сөздігі (14 термин)"
+          ru: "Клинический словарь урока (14 терминов)",
+          kz: "Сабақтың клиникалық сөздігі (14 термин)"
         },
         vocabDesc: {
           ru: "Нажмите 🔊 для прослушивания произношения. Все примеры показывают реальное сравнение симптомов, язв, опухолей и инфекций.",
@@ -1005,7 +1007,7 @@
           kz: "4-қадамға өту: Жылдам жаттығулар ➔"
         },
         ex1Title: {
-          ru: "✍️ Упражнение 1: Выберите правильную форму (Comparative или Superlative)",
+          ru: "Упражнение 1: Выберите правильную форму (Comparative или Superlative)",
           kz: "✍️ 1-жаттығу: Дұрыс форманы таңдаңыз (Comparative немесе Superlative)"
         },
         ex1Desc: {
@@ -1013,7 +1015,7 @@
           kz: "Салыстыру маркері THAN («қарағанда») немесе күшейтпелі ONE OF THE тіркесіне назар аударыңыз:"
         },
         ex2Title: {
-          ru: "🩺 Упражнение 2: Дополните клинические предложения по смыслу",
+          ru: "Упражнение 2: Дополните клинические предложения по смыслу",
           kz: "🩺 2-жаттығу: Клиникалық сөйлемдерді мағынасына қарай толықтырыңыз"
         },
         ex2Desc: {
@@ -1021,7 +1023,7 @@
           kz: "Дұрыс салыстырмалы немесе күшейтпелі құрылымды таңдаңыз:"
         },
         goTrainerBtn: {
-          ru: "🎯 Перейти к основному тренажеру Урока 12 ➔",
+          ru: "Перейти к основному тренажеру Урока 12 ➔",
           kz: "🎯 12-сабақтың негізгі тренажеріне өту ➔"
         }
       },
@@ -1030,13 +1032,13 @@
       tab0Html: {
         ru: `
           <div class="card-block">
-            <h2>⚖️ Comparative vs Superlative: когда мы сравниваем два объекта, а когда выбираем «самый»?</h2>
+            <h2>Comparative vs Superlative: когда мы сравниваем два объекта, а когда выбираем «самый»?</h2>
             <p>В клинической практике мы постоянно сравниваем показатели в динамике: <i>«сегодня тремор сильнее, чем вчера», «правое запястье отечнее левого», «это самый эффективный метод введения»</i>. В английском языке все степени сравнения делятся на две группы:</p>
 
             <div class="comp-grid">
               <div class="comp-card c-er">
                 <div class="comp-title">
-                  <span>1️⃣ COMPARATIVE (Сравнительная)</span>
+                  <span>1. COMPARATIVE (Сравнительная)</span>
                   <span style="font-size:0.72rem; color:var(--kz-blue-dark);">МАРКЕР: THAN (ЧЕМ)</span>
                 </div>
                 <span class="comp-formula">short + -ER than • MORE / LESS + long than</span>
@@ -1050,7 +1052,7 @@
 
               <div class="comp-card c-est">
                 <div class="comp-title">
-                  <span>🏆 SUPERLATIVE (Превосходная)</span>
+                  <span>SUPERLATIVE (Превосходная)</span>
                   <span style="font-size:0.72rem; color:var(--kz-gold-dark);">МАРКЕР: THE ... IN / OF</span>
                 </div>
                 <span class="comp-formula">THE + short + -EST • THE MOST / LEAST + long</span>
@@ -1065,7 +1067,7 @@
           </div>
 
           <div class="card-block gold">
-            <h2>📐 Как выбрать между суффиксом (-er / -est) и словами (more / the most)?</h2>
+            <h2>Как выбрать между суффиксом (-er / -est) и словами (more / the most)?</h2>
             <p>Вся механика зависит от <b>длины слова</b> (количества слогов). Сверьте правила по таблице на медицинских примерах из урока:</p>
 
             <table class="grammar-table">
@@ -1112,7 +1114,7 @@
             </table>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Быстрая проверка</span>
+              <span class="qc-badge">Быстрая проверка</span>
               <div class="qc-question">После сотрясения мозга пациент стал МЕНЕЕ контактным/бодрым, чем раньше (почти не реагировал): "After the concussion, he was ___ than before, almost unresponsive."</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'More alert означает «более бодрый/контактный», но в конце сказано almost unresponsive (почти без сознания)!')">more alert</button>
@@ -1127,13 +1129,13 @@
         `,
         kz: `
           <div class="card-block">
-            <h2>⚖️ Comparative және Superlative: екі жағдайды қалай салыстырамыз және «ең» дегенді қалай айтамыз?</h2>
+            <h2>Comparative және Superlative: екі жағдайды қалай салыстырамыз және «ең» дегенді қалай айтамыз?</h2>
             <p>Клиникалық тәжірибеде біз көрсеткіштерді үнемі салыстырамыз: <i>«бүгінгі тремор кешегіге қарағанда күштірек», «оң білезіктің ісінуі сол жақтан үлкенірек», «бұл енгізудің ең тиімді әдісі»</i>. Ағылшын тілінде шырайлар екі топқа бөлінеді:</p>
 
             <div class="comp-grid">
               <div class="comp-card c-er">
                 <div class="comp-title">
-                  <span>1️⃣ COMPARATIVE (Салыстырмалы)</span>
+                  <span>1. COMPARATIVE (Салыстырмалы)</span>
                   <span style="font-size:0.72rem; color:var(--kz-blue-dark);">МАРКЕР: THAN (ҚАРАҒАНДА)</span>
                 </div>
                 <span class="comp-formula">short + -ER than • MORE / LESS + long than</span>
@@ -1147,7 +1149,7 @@
 
               <div class="comp-card c-est">
                 <div class="comp-title">
-                  <span>🏆 SUPERLATIVE (Күшейтпелі)</span>
+                  <span>SUPERLATIVE (Күшейтпелі)</span>
                   <span style="font-size:0.72rem; color:var(--kz-gold-dark);">МАРКЕР: THE ... IN / OF</span>
                 </div>
                 <span class="comp-formula">THE + short + -EST • THE MOST / LEAST + long</span>
@@ -1162,7 +1164,7 @@
           </div>
 
           <div class="card-block gold">
-            <h2>📐 Жұрнақ (-er / -est) пен сөздерді (more / the most) қалай таңдаймыз?</h2>
+            <h2>Жұрнақ (-er / -est) пен сөздерді (more / the most) қалай таңдаймыз?</h2>
             <p>Барлығы <b>сөздің ұзындығына</b> (буын санына) байланысты. Кестедегі медициналық мысалдармен танысыңыз:</p>
 
             <table class="grammar-table">
@@ -1209,7 +1211,7 @@
             </table>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Жылдам тексеру</span>
+              <span class="qc-badge">Жылдам тексеру</span>
               <div class="qc-question">Ми шайқалуынан кейін науқастың сергектігі бұрынғыдан ТӨМЕНДЕДІ (дерлік жауап бермейді): "After the concussion, he was ___ than before, almost unresponsive."</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'More alert «сергектеу» дегенді білдіреді, ал сөйлем соңында almost unresponsive (дерлік ес-түссіз) деп тұр!')">more alert</button>
@@ -1228,7 +1230,7 @@
       tab1Html: {
         ru: `
           <div class="card-block gold">
-            <h2>🚨 Главные медицинские исключения и конструкции динамики</h2>
+            <h2>Главные медицинские исключения и конструкции динамики</h2>
             <p>В медицине мы каждый день оцениваем, стало ли пациенту <b>лучше (better)</b> или <b>хуже (worse)</b>. Эти слова меняются полностью — к ним <b>нельзя</b> добавлять <i>-er</i> или <i>more</i>:</p>
 
             <table class="grammar-table">
@@ -1269,7 +1271,7 @@
             </table>
 
             <div class="clinical-quote" style="border-left-color: var(--kz-blue); margin-top: 12px;">
-              📈 <b>3 важные конструкции из врачебной практики (Уровень A2–B1):</b><br>
+              <b>3 важные конструкции из врачебной практики (Уровень A2–B1):</b><br>
               1. <b>Усиление сравнения через MUCH (намного / значительно):</b> перед сравнительной степенью нельзя ставить <i>very</i>, вместо этого ставим <b>much</b>:<br>
               • <i>"The patient's response after drug administration was <b><u>much worse</u> than</b> expected."</i> (намного хуже, чем ожидалось).<br>
               2. <b>Нарастающая динамика «всё более и более» (more and more / -er and -er):</b><br>
@@ -1281,12 +1283,12 @@
           </div>
 
           <div class="card-block">
-            <h2>🧠 Практика чтения статьи: Schizophrenia — Overview and Treatment Options</h2>
+            <h2>Практика чтения статьи: Schizophrenia — Overview and Treatment Options</h2>
             <p>Прочитайте отрывок из клинического обзора по диагностике шизофрении (позитивные, негативные и когнитивные симптомы по критериям DSM-5). Нажимайте на кнопки подсветки, чтобы увидеть, как авторы используют <b>Superlative (превосходную степень)</b> и <b>Comparative (сравнительную степень)</b>:</p>
 
             <div class="abstract-box">
               <div class="abstract-header">
-                <span>📄 Clinical Review: Schizophrenia — Overview and Treatment Options</span>
+                <span>Clinical Review: Schizophrenia — Overview and Treatment Options</span>
                 <div class="abstract-controls">
                   <button class="hl-btn sup-type" onclick="toggleAbstractHighlight('sup')">Превосходная степень (Superlative)</button>
                   <button class="hl-btn cmp-type" onclick="toggleAbstractHighlight('cmp')">Сравнительная степень (Comparative)</button>
@@ -1301,7 +1303,7 @@
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Вопрос по клиническому обзору</span>
+              <span class="qc-badge">Вопрос по клиническому обзору</span>
               <div class="qc-question">Согласно тексту статьи, какие симптомы шизофрении являются «самыми новыми» (the newest classification) в классификации и какие «труднее диагностировать» (more difficult to diagnose)?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Верно! Cognitive symptoms are the newest classification (самая новая классификация), а Negative symptoms are more difficult to diagnose (труднее диагностировать).')">Когнитивные — самые новые (the newest), негативные — труднее диагностировать (more difficult)</button>
@@ -1315,7 +1317,7 @@
         `,
         kz: `
           <div class="card-block gold">
-            <h2>🚨 Медицинадағы басты ерекше сөздер және динамика құрылымдары</h2>
+            <h2>Медицинадағы басты ерекше сөздер және динамика құрылымдары</h2>
             <p>Медицинада біз күн сайын науқастың жағдайы <b>жақсарды ма (better)</b>, әлде <b>нашарлады ма (worse)</b> деп бағалаймыз. Бұл сөздер түбірімен өзгереді — оларға <i>-er</i> немесе <i>more</i> қосуға <b>болмайды</b>:</p>
 
             <table class="grammar-table">
@@ -1356,7 +1358,7 @@
             </table>
 
             <div class="clinical-quote" style="border-left-color: var(--kz-blue); margin-top: 12px;">
-              📈 <b>Дәрігерлік тәжірибедегі 3 маңызды құрылым (A2–B1 деңгейі):</b><br>
+              <b>Дәрігерлік тәжірибедегі 3 маңызды құрылым (A2–B1 деңгейі):</b><br>
               1. <b>Салыстыруды MUCH арқылы күшейту (әлдеқайда / анағұрлым):</b> салыстырмалы шырай алдында <i>very</i> қойылмайды, оның орнына <b>much</b> қолданылады:<br>
               • <i>"The patient's response after drug administration was <b><u>much worse</u> than</b> expected."</i> (күтілгеннен әлдеқайда нашар болды).<br>
               2. <b>Динамиканың үдеуі «барған сайын...» (more and more / -er and -er):</b><br>
@@ -1368,12 +1370,12 @@
           </div>
 
           <div class="card-block">
-            <h2>🧠 Ғылыми мақаланы талдау: Schizophrenia — Overview and Treatment Options</h2>
+            <h2>Ғылыми мақаланы талдау: Schizophrenia — Overview and Treatment Options</h2>
             <p>Шизофрения диагностикасы (DSM-5 бойынша позитивті, негативті және когнитивті симптомдар) туралы клиникалық шолудан үзінді оқыңыз. Авторлардың <b>Superlative (күшейтпелі шырай)</b> мен <b>Comparative (салыстырмалы шырай)</b> формаларын қалай қолданғанын көру үшін батырмаларды басыңыз:</p>
 
             <div class="abstract-box">
               <div class="abstract-header">
-                <span>📄 Clinical Review: Schizophrenia — Overview and Treatment Options</span>
+                <span>Clinical Review: Schizophrenia — Overview and Treatment Options</span>
                 <div class="abstract-controls">
                   <button class="hl-btn sup-type" onclick="toggleAbstractHighlight('sup')">Күшейтпелі шырай (Superlative)</button>
                   <button class="hl-btn cmp-type" onclick="toggleAbstractHighlight('cmp')">Салыстырмалы шырай (Comparative)</button>
@@ -1388,7 +1390,7 @@
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Клиникалық шолу бойынша сұрақ</span>
+              <span class="qc-badge">Клиникалық шолу бойынша сұрақ</span>
               <div class="qc-question">Мақала мәтініне сәйкес, шизофренияның қай симптомдары «ең жаңа жіктеме» (the newest classification) және қайсысын «анықтау қиынырақ» (more difficult to diagnose)?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Дұрыс! Cognitive symptoms are the newest classification (ең жаңа жіктеме), ал Negative symptoms are more difficult to diagnose (диагностикалау қиынырақ).')">Когнитивті — ең жаңасы (the newest), негативті — анықтау қиынырақ (more difficult)</button>

@@ -1,925 +1,1073 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Doctors Speak — Medical English</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --kz-blue: #00A1DE;
-            --kz-blue-dark: #0077A3;
-            --kz-blue-light: #EBF8FC;
-            --kz-gold: #FFC72C;
-            --bg-main: #F2F5F8;
-            --card-bg: #FFFFFF;
-            --text-dark: #1E293B;
-            --text-muted: #64748B;
-            --border-color: #E2E8F0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>@doctors.speak — Lesson 5: Passive Voice in Medicine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Подключение Supabase SDK для проверки подписки -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Montserrat', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+  <style>
+    :root {
+      --kz-blue: #00A1DE;
+      --kz-blue-dark: #0077A3;
+      --kz-blue-light: #EBF8FC;
+      --kz-gold: #FFC72C;
+      --kz-gold-dark: #D9A000;
+      --kz-gold-light: #FFFBEB;
+      --bg-main: #F2F5F8;
+      --card-bg: #FFFFFF;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --success-bg: #DCFCE7;
+      --success-border: #22C55E;
+      --success-text: #15803D;
+      --error-bg: #FEE2E2;
+      --error-border: #EF4444;
+      --error-text: #B91C1C;
+    }
 
-        html, body {
-            width: 100%;
-            min-height: 100vh;
-            min-height: 100dvh;
-            overflow-y: auto;
-            background: var(--bg-main);
-            color: var(--text-dark);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-        /* 1. Верхняя шапка во всю ширину */
-        header {
-            position: relative;
-            z-index: 1;
-            background: var(--kz-blue);
-            color: #FFFFFF;
-            text-align: center;
-            padding: 20px 16px 24px 16px;
-            box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    body {
+      background: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 40px;
+    }
 
-        /* Кнопка "Назад" в шапке */
-        header .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: #FFFFFF;
-            background: rgba(255, 255, 255, 0.18);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.78rem;
-            padding: 6px 14px;
-            border-radius: 20px;
-            margin-bottom: 10px;
-            transition: all 0.2s ease;
-        }
+    /* Верхняя шапка с кнопкой назад и переключателем RU/KZ */
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
+      color: #FFFFFF;
+      padding: 16px 20px 22px 20px;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
 
-        header .back-btn:active {
-            transform: scale(0.96);
-            background: rgba(255, 255, 255, 0.3);
-        }
+    .header-top {
+      max-width: 820px;
+      margin: 0 auto 12px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
 
-        header .back-btn svg {
-            width: 16px;
-            height: 16px;
-            fill: var(--kz-gold);
-        }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: all 0.2s ease;
+    }
 
-        .brand-badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: #FFFFFF;
-            font-weight: 700;
-            font-size: 0.75rem;
-            letter-spacing: 0.8px;
-            padding: 4px 12px;
-            border-radius: 20px;
-            margin-bottom: 8px;
-        }
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
 
-        h1 {
-            font-size: 1.35rem;
-            font-weight: 900;
-            line-height: 1.2;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #FFFFFF;
-        }
+    .lang-switch {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 20px;
+      padding: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
 
-        .subtitle {
-            font-size: 0.78rem;
-            margin-top: 4px;
-            font-weight: 800;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            color: var(--kz-gold);
-        }
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 800;
+      font-size: 0.74rem;
+      padding: 5px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
 
-        /* 2. Основная зона с карточками уроков */
-        main {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            width: 100%;
-            max-width: 440px;
-            margin: 0 auto;
-            padding: 20px 16px;
-            flex-grow: 1;
-            justify-content: flex-start;
-        }
+    .lang-btn.active {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+    }
 
-        .trainer-card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 14px 16px;
-            text-decoration: none;
-            color: var(--text-dark);
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            width: 100%;
-            text-align: left;
-            cursor: pointer;
-        }
+    .header-title-box {
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: left;
+    }
 
-        /* Акцентная синяя полоса слева (стиль референса) */
-        .trainer-card::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 5px;
-            background: var(--kz-blue);
-        }
+    .lesson-badge {
+      display: inline-block;
+      background: rgba(255, 199, 44, 0.2);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
 
-        .trainer-card:active {
-            transform: translateY(1px);
-            background: #FAFAFA;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-        }
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      line-height: 1.25;
+    }
 
-        .card-content {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
+    header p {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 4px;
+      font-weight: 600;
+    }
 
-        .card-icon {
-            width: 46px;
-            height: 46px;
-            background: var(--kz-blue-light);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            flex-shrink: 0;
-            border: 1px solid rgba(0, 161, 222, 0.15);
-        }
+    /* Навигация по разделам урока */
+    .section-nav {
+      width: 100%;
+      max-width: 820px;
+      margin: 14px auto 0 auto;
+      padding: 0 14px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
 
-        .card-text h2 {
-            font-size: 0.95rem;
-            font-weight: 800;
-            margin-bottom: 2px;
-            color: var(--text-dark);
-            line-height: 1.25;
-        }
+    .nav-pill {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 9px 6px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
 
-        .card-text p {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            line-height: 1.3;
-            font-weight: 600;
-        }
+    .nav-pill.active {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      border-color: var(--kz-blue-dark);
+      box-shadow: 0 4px 12px rgba(0, 161, 222, 0.25);
+    }
 
-        .arrow-icon {
-            width: 18px;
-            height: 18px;
-            fill: var(--kz-blue);
-            flex-shrink: 0;
-            margin-left: 8px;
-            transition: transform 0.25s ease;
-        }
+    /* Основной контейнер */
+    main {
+      width: 100%;
+      max-width: 820px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-        /* ==========================================================================
-           СТИЛИ ДЛЯ РАСКРЫВАЮЩИХСЯ УРОКОВ (EXPAND / COLLAPSE) И ВИДЕО
-           ========================================================================== */
-        .lesson-group {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
+    .tab-section {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadeIn 0.25s ease;
+    }
 
-        /* Поворот стрелки при открытии урока */
-        .lesson-group.open .trainer-card {
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-            border-bottom-color: transparent;
-            background: #F8FAFC;
-        }
+    .tab-section.active {
+      display: flex;
+    }
 
-        .lesson-group.open .arrow-icon {
-            transform: rotate(90deg);
-        }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        /* Выпадающая панель с видео, конспектом и тренажером */
-        .lesson-dropdown {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s ease;
-            opacity: 0;
-            background: var(--card-bg);
-            border-left: 1px solid var(--border-color);
-            border-right: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-            border-bottom-left-radius: 16px;
-            border-bottom-right-radius: 16px;
-            position: relative;
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.03);
-        }
+    /* Карточки теории */
+    .card-block {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      position: relative;
+      overflow: hidden;
+    }
 
-        /* Сохраняем синюю полоску слева и для раскрытого списка */
-        .lesson-dropdown::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 5px;
-            background: var(--kz-blue);
-        }
+    .card-block::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: var(--kz-blue);
+    }
 
-        /* Увеличена максимальная высота, чтобы помещалось и видео 16:9, и кнопки ниже */
-        .lesson-group.open .lesson-dropdown {
-            max-height: 520px;
-            opacity: 1;
-        }
+    .card-block.gold::before {
+      background: var(--kz-gold-dark);
+    }
 
-        .dropdown-links {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            padding: 12px 14px 14px 20px;
-            border-top: 1px dashed var(--border-color);
-        }
+    .card-block h2 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-        /* Контейнер для встроенного видео (16:9) */
-        .video-embed-box {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            background: #0F172A;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-        }
+    .card-block p {
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
 
-        .video-embed-box iframe {
-            width: 100%;
-            height: 100%;
-            border: 0;
-            display: block;
-        }
+    /* Шкала уверенности в будущем (4 карточки) */
+    .scale-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
 
-        /* Невидимые защитные накладки поверх ссылок "Перейти на YouTube" */
-        .yt-shield-top {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 58px; /* Блокирует клик по названию видео и кнопке "Поделиться" */
-            z-index: 3;
-            background: transparent;
-        }
+    .scale-card {
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-main);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
 
-        .yt-shield-bottom-right {
-            position: absolute;
-            bottom: 0;
-            right: 38px; /* Оставляет кнопку полного экрана справа, но закрывает логотип YouTube */
-            width: 95px;
-            height: 42px;
-            z-index: 3;
-            background: transparent;
-        }
+    .scale-card.lvl1 { border-top: 4px solid var(--sky-500); background: var(--sky-50); }
+    .scale-card.lvl2 { border-top: 4px solid var(--kz-blue); background: var(--kz-blue-light); }
+    .scale-card.lvl3 { border-top: 4px solid #F59E0B; background: var(--kz-gold-light); }
+    .scale-card.lvl4 { border-top: 4px solid var(--ok-mid); background: var(--ok-bg); }
 
-        .sub-link {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 9px 12px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            background: var(--bg-main);
-            border: 1px solid var(--border-color);
-            transition: all 0.15s ease;
-        }
+    .scale-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
 
-        .sub-link:hover, .sub-link:active {
-            background: var(--kz-blue-light);
-            border-color: var(--kz-blue);
-            color: var(--kz-blue-dark);
-        }
+    .scale-name {
+      font-size: 0.86rem;
+      font-weight: 900;
+      color: var(--text-dark);
+    }
 
-        /* Акцентная кнопка для перехода к самому тренажеру */
-        .sub-link.primary-trainer {
-            background: var(--kz-blue-light);
-            color: var(--kz-blue-dark);
-            border-color: rgba(0, 161, 222, 0.25);
-        }
+    .scale-percent {
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+    }
 
-        .sub-link-left {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+    .comp-formula {
+      display: inline-block;
+      background: #FFFFFF;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      border: 1px dashed var(--text-muted);
+      margin-bottom: 8px;
+    }
 
-        .sub-badge {
-            font-size: 0.68rem;
-            font-weight: 800;
-            padding: 2px 8px;
-            border-radius: 8px;
-            background: #FFFFFF;
-            color: var(--text-muted);
-            border: 1px solid var(--border-color);
-        }
+    .clinical-quote {
+      background: #FFFFFF;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 0.8rem;
+      border-left: 3px solid var(--text-dark);
+      margin-top: 8px;
+      line-height: 1.45;
+    }
 
-        /* 3. Подвал и кнопки внизу */
-        footer {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            padding: 10px 16px 20px 16px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
+    /* Таблица формул */
+    .grammar-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 0.78rem;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
 
-        .instagram-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--kz-blue-dark);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.82rem;
-            padding: 8px 18px;
-            border-radius: 20px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-        }
+    .grammar-table th {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: 800;
+    }
 
-        /* Кнопка "Назад" в футере */
-        footer .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--kz-blue-dark);
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.78rem;
-            padding: 8px 18px;
-            border-radius: 20px;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-        }
+    .grammar-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border-color);
+      background: #FFFFFF;
+      line-height: 1.45;
+    }
 
-        footer .back-btn:active {
-            transform: scale(0.96);
-            background: var(--bg-main);
-        }
+    .grammar-table tr:nth-child(even) td {
+      background: var(--subtle);
+    }
 
-        footer .back-btn svg {
-            width: 16px;
-            height: 16px;
-            fill: var(--kz-blue);
-        }
+    /* Спойлер для Future Continuous */
+    details.tenses-spoiler {
+      margin-top: 12px;
+      background: var(--subtle);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 10px 14px;
+    }
 
-        @media (max-height: 640px) {
-            header { padding: 16px; }
-            h1 { font-size: 1.15rem; }
-            .subtitle { font-size: 0.72rem; }
-            .trainer-card { padding: 12px 14px; }
-            .card-icon { width: 40px; height: 40px; font-size: 1.15rem; }
-            .card-text h2 { font-size: 0.88rem; }
-            .card-text p { font-size: 0.7rem; }
-        }
-    </style>
+    details.tenses-spoiler summary {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      cursor: pointer;
+      list-style: none;
+    }
+
+    /* Быстрые микро-упражнения внутри теории (Quick Check) */
+    .quick-check {
+      background: var(--subtle);
+      border: 1px dashed var(--kz-blue);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .qc-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .qc-question {
+      font-size: 0.86rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+    }
+
+    .qc-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .qc-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .qc-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background: var(--kz-blue-light);
+    }
+
+    .qc-btn.correct {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    .qc-btn.wrong {
+      background: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    .qc-feedback {
+      display: none;
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      line-height: 1.35;
+    }
+
+    /* Теги слов-маркеров */
+    .markers-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .marker-chip {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 5px 11px;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .marker-chip b {
+      color: var(--kz-blue-dark);
+    }
+
+    /* Карточки словаря */
+    .vocab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+      gap: 10px;
+    }
+
+    .vocab-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .vocab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .vocab-word {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+    }
+
+    .speak-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 161, 222, 0.3);
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+    }
+
+    .vocab-trans {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .vocab-example {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--bg-main);
+      padding: 7px 9px;
+      border-radius: 8px;
+      line-height: 1.35;
+    }
+
+    /* Кнопка перехода к следующему разделу или тренажеру */
+    .action-btn {
+      width: 100%;
+      background: var(--kz-gold);
+      color: var(--text-dark);
+      border: 1px solid var(--kz-gold-dark);
+      border-radius: 16px;
+      padding: 13px 18px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: var(--kz-gold-dark);
+      color: #FFFFFF;
+    }
+
+    @media (max-width: 560px) {
+      .section-nav {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      header h1 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body>
 
-    <header>
-        <!-- Верхняя кнопка "Назад" -->
-        <a href="https://kazdoctors.com" class="back-btn">
-            <span>⬅️Go back</span>
-        </a>
+  <!-- ШАПКА УРОКА -->
+  <header>
+    <div class="header-top">
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">← К списку уроков</a>
+      <div class="lang-switch">
+        <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
+        <button class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
+      </div>
+    </div>
+    <div class="header-title-box">
+      <span class="lesson-badge">Lesson 5 • A1–B1 Medical English</span>
+      <h1 id="uiTitle">Passive Voice (Пассивный залог)</h1>
+      <p id="uiSubtitle">Когда действие происходит над пациентом или препаратом: is given, was prescribed, has been identified</p>
+    </div>
+  </header>
 
-        <div class="brand-badge">@doctors.speak</div>
-        <h1>Medical English</h1>
-        <p class="subtitle">Study Medical English with us!</p>
-    </header>
+  <!-- НАВИГАЦИЯ ПО ЭТАПАМ УРОКА -->
+  <nav class="section-nav">
+    <button class="nav-pill active" onclick="showTab(0)" id="nav0">1. Смысл и формула</button>
+    <button class="nav-pill" onclick="showTab(1)" id="nav1">2. Формы и чтение</button>
+    <button class="nav-pill" onclick="showTab(2)" id="nav2">3. Словарь (14 слов)</button>
+    <button class="nav-pill" onclick="showTab(3)" id="nav3">4. Упражнения</button>
+  </nav>
 
-    <main>
+  <!-- ОСНОВНОЙ КОНТЕНТ -->
+  <main>
+    <!-- ВКЛАДКА 1: 4 СТЕПЕНИ УВЕРЕННОСТИ В БУДУЩЕМ -->
+    <section class="tab-section active" id="tab0"></section>
 
-        <!-- all random (прямая ссылка) -->
-        <a href="./random/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🤯</div>
-                <div class="card-text">
-                    <h2>ALL RANDOM</h2>
-                    <p>all topics in grammar & vocabulary</p>
-                </div>
-            </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+    <!-- ВКЛАДКА 2: ФОРМУЛЫ, FUTURE CONTINUOUS И ПРАВИЛО WHEN/AFTER/IF -->
+    <section class="tab-section" id="tab1"></section>
 
-        <!-- reading practice (прямая ссылка) -->
-        <a href="./reading/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🤓</div>
-                <div class="card-text">
-                    <h2>READING PRACTICE</h2>
-                    <p>практика чтения статей</p>
-                </div>
-            </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
+    <!-- ВКЛАДКА 3: СЛОВАРЬ С ПРИМЕРАМИ -->
+    <section class="tab-section" id="tab2">
+      <div class="card-block">
+        <h2 id="uiVocabTitle">Клинический словарь урока (14 терминов)</h2>
+        <p id="uiVocabDesc">Нажмите 🔊, чтобы прослушать произношение. В каждом примере выделен пассив.</p>
+        <div class="vocab-grid" id="vocabGrid"></div>
+      </div>
+      <button class="action-btn" onclick="showTab(3)" id="uiToExBtn">Перейти к шагу 4: Упражнения ➔</button>
+    </section>
 
-        <!-- ================= УРОК 1 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🦦</div>
-                    <div class="card-text">
-                        <h2>To be & To do</h2>
-                        <p>Lesson 1</p>
-                    </div>
-                </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <a href="https://kazdoctors.com/grammar/lesson1" class="sub-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./tobetodo/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
+    <!-- ВКЛАДКА 4: ПРАКТИКУМ (EXERCISE 1 & 2 ИЗ PDF) -->
+    <section class="tab-section" id="tab3">
+      <div class="card-block gold">
+        <h2 id="uiEx1Title">Упражнение 1: Выберите правильную форму пассива</h2>
+        <p id="uiEx1Desc">Present или Past Passive? Выберите верный вариант:</p>
+        <div id="ex1Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+      </div>
 
-        <!-- ================= УРОК 2 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🐅</div>
-                    <div class="card-text">
-                        <h2>Present simple & continuous</h2>
-                        <p>Lesson 2</p>
-                    </div>
-                </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <a href="https://kazdoctors.com/grammar/lesson2" class="sub-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./present/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
+      <div class="card-block">
+        <h2 id="uiEx2Title">Упражнение 2: Поставьте глагол в пассив</h2>
+        <p id="uiEx2Desc">Выберите правильную форму пассива (present или past) для глагола в скобках:</p>
+        <div id="ex2Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+      </div>
 
-        <!-- ================= УРОК 3 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🐘</div>
-                    <div class="card-text">
-                        <h2>Past Simple & Present Perfect</h2>
-                        <p>Lesson 3</p>
-                    </div>
-                </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <a href="https://kazdoctors.com/grammar/lesson3" class="sub-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./past/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
+      <a href="../passive/" class="action-btn" id="uiGoTrainerBtn">Запустить игровой тренажёр по Уроку 5 ➔</a>
+    </section>
+  </main>
 
-        <!-- ================= УРОК 4 (С ВСТРОЕННЫМ ВИДЕО) ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🐶</div>
-                    <div class="card-text">
-                        <h2>Future Simple</h2>
-                        <p>Lesson 4</p>
-                    </div>
-                </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <!-- 1. Встроенное видео (ID: hsGNlJ_u8Kg) -->
-                    <div class="video-embed-box" oncontextmenu="return false;">
-                        <div class="yt-shield-top"></div>
-                        <div class="yt-shield-bottom-right"></div>
-                        <iframe
-                            data-src="https://www.youtube-nocookie.com/embed/hsGNlJ_u8Kg?rel=0&modestbranding=1&playsinline=1"
-                            title="Lesson 4 — Future Simple"
-                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
+  <script>
+    // =========================================================================
+    // 1. ПРОВЕРКА ДОСТУПА ПО ПОДПИСКЕ ЧЕРЕЗ SUPABASE (по образцу index-86)
+    // =========================================================================
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
-                    <!-- 2. Ниже — Конспект -->
-                    <a href="https://kazdoctors.com/grammar/lesson4" class="sub-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-
-                    <!-- 3. Ниже — Тренажер -->
-                    <a href="./future/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= УРОК 5 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🐱</div>
-                    <div class="card-text">
-                        <h2>Passive</h2>
-                        <p>Lesson 5</p>
-                    </div>
-                </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <a href="https://kazdoctors.com/grammar/lesson5" class="sub-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./passive/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= УРОК 6 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🐯</div>
-                    <div class="card-text">
-                        <h2>Modals</h2>
-                        <p>Lesson 6</p>
-                    </div>
-                </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <a href="https://kazdoctors.com/grammar/lesson6" class="sub-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./modals/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= УРОК 7 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🦈</div>
-                    <div class="card-text">
-                        <h2>Possessives</h2>
-                        <p>Lesson 7</p>
-                    </div>
-                </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <a href="https://kazdoctors.com/grammar/lesson7" class="sub-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./possessives/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= УРОК 8 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🦁</div>
-                    <div class="card-text">
-                        <h2>There is / there are</h2>
-                        <p>Lesson 8</p>
-                    </div>
-                </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <a href="https://kazdoctors.com/grammar/lesson8" class="sub-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./thereis/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= УРОК 9 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🐴</div>
-                    <div class="card-text">
-                        <h2>Prepositions of time</h2>
-                        <p>Lesson 9</p>
-                    </div>
-                </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <a href="https://kazdoctors.com/grammar/lesson9" class="sub-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./prepositionsoftime/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= УРОК 10 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🦅</div>
-                    <div class="card-text">
-                        <h2>Prepositions of place and motion</h2>
-                        <p>Lesson 10</p>
-                    </div>
-                </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <a href="https://kazdoctors.com/grammar/lesson10" class="sub-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./prepositionsofplace/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= УРОК 11 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🐺</div>
-                    <div class="card-text">
-                        <h2>Conditionals</h2>
-                        <p>Lesson 11</p>
-                    </div>
-                </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <a href="https://kazdoctors.com/grammar/lesson11" class="sub-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./conditionals/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= УРОК 12 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🦉</div>
-                    <div class="card-text">
-                        <h2>Comparatives & Superlatives</h2>
-                        <p>Lesson 12</p>
-                    </div>
-                </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <a href="https://kazdoctors.com/grammar/lesson12" class="sub-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./comparatives/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= УРОК 13 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🦆</div>
-                    <div class="card-text">
-                        <h2>Articles</h2>
-                        <p>Lesson 13</p>
-                    </div>
-                </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <a href="https://kazdoctors.com/grammar/lesson13" class="sub-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./articles/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= УРОК 14 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🐳</div>
-                    <div class="card-text">
-                        <h2>Relative Clause</h2>
-                        <p>Lesson 14</p>
-                    </div>
-                </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <a href="https://kazdoctors.com/grammar/lesson14" class="sub-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./relativeclause/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= УРОК 15 ================= -->
-        <div class="lesson-group">
-            <button type="button" class="trainer-card" onclick="toggleLesson(this)">
-                <div class="card-content">
-                    <div class="card-icon">🦜</div>
-                    <div class="card-text">
-                        <h2>Gerund, Infinitive, Past Participle</h2>
-                        <p>Lesson 15</p>
-                    </div>
-                </div>
-                <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-            <div class="lesson-dropdown">
-                <div class="dropdown-links">
-                    <a href="https://kazdoctors.com/grammar/lesson15" class="sub-link">
-                        <span class="sub-link-left">📖 Теория и конспект</span>
-                        <span class="sub-badge">PDF / Статья</span>
-                    </a>
-                    <a href="./gerund/" class="sub-link primary-trainer">
-                        <span class="sub-link-left">🎯 Перейти к тренажеру</span>
-                        <span>➔</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- all random 2 (прямая ссылка) -->
-        <a href="./random2/" class="trainer-card">
-            <div class="card-content">
-                <div class="card-icon">🤯</div>
-                <div class="card-text">
-                    <h2>ALL RANDOM B1/B2</h2>
-                    <p>all topics in B1/B2 levels</p>
-                </div>
-            </div>
-            <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
-      
-    </main>
-
-    <footer>
-        <a href="https://instagram.com/doctors.speak" target="_blank" class="instagram-link">
-            <span>@doctors.speak</span>
-        </a>
-
-        <!-- Нижняя кнопка "Назад" -->
-        <a href="https://kazdoctors.com" class="back-btn">
-            <svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
-            <span>Go back</span>
-        </a>
-    </footer>
-
-    <script>
-        /**
-         * Функция раскрытия/скрытия урока (Accordion) с ленивой подгрузкой и авто-остановкой видео.
-         */
-        function toggleLesson(buttonElement) {
-            const currentGroup = buttonElement.parentElement;
-            const isOpen = currentGroup.classList.contains('open');
-
-            // Закрываем все открытые уроки и останавливаем в них видео, если оно играло
-            document.querySelectorAll('.lesson-group.open').forEach(group => {
-                group.classList.remove('open');
-                const iframe = group.querySelector('iframe');
-                if (iframe && iframe.getAttribute('src')) {
-                    iframe.removeAttribute('src');
-                }
-            });
-
-            // Если нажатый урок был закрыт — открываем его и подгружаем видео
-            if (!isOpen) {
-                currentGroup.classList.add('open');
-                const iframe = currentGroup.querySelector('iframe');
-                if (iframe && iframe.dataset.src && !iframe.getAttribute('src')) {
-                    iframe.setAttribute('src', iframe.dataset.src);
-                }
-            }
+    async function checkAuth() {
+      if (!supabaseClient || window.location.protocol === 'file:') return;
+      try {
+        const { data, error } = await supabaseClient.auth.getSession();
+        if (error || !data.session) {
+          window.location.href = "/login.html";
         }
-    </script>
+      } catch (e) {
+        console.warn("Auth check error:", e);
+      }
+    }
+    checkAuth();
 
+    // =========================================================================
+    // 2. БАЗА ДАННЫХ УРОКА 4 (НА РУССКОМ И КАЗАХСКОМ ЯЗЫКАХ)
+    // =========================================================================
+    const LESSON_DATA = {
+  "ui": {
+    "backBtn": {
+      "ru": "← К списку уроков",
+      "kz": "← Сабақтар тізіміне"
+    },
+    "title": {
+      "ru": "Passive Voice (Пассивный залог)",
+      "kz": "Passive Voice (Ырықсыз етіс)"
+    },
+    "subtitle": {
+      "ru": "Когда действие происходит над пациентом или препаратом: is given, was prescribed, has been identified",
+      "kz": "Әрекет науқастың немесе дәрінің үстінен жасалғанда: is given, was prescribed, has been identified"
+    },
+    "nav": [
+      {
+        "ru": "1. Смысл и формула",
+        "kz": "1. Мағынасы мен формуласы"
+      },
+      {
+        "ru": "2. Формы и чтение",
+        "kz": "2. Формалар және оқу"
+      },
+      {
+        "ru": "3. Словарь (14 слов)",
+        "kz": "3. Сөздік (14 сөз)"
+      },
+      {
+        "ru": "4. Упражнения",
+        "kz": "4. Жаттығулар"
+      }
+    ],
+    "vocabTitle": {
+      "ru": "Клинический словарь урока (14 терминов)",
+      "kz": "Сабақтың клиникалық сөздігі (14 термин)"
+    },
+    "vocabDesc": {
+      "ru": "Нажмите 🔊, чтобы прослушать произношение. В каждом примере выделен пассив.",
+      "kz": "Дұрыс айтылуын тыңдау үшін 🔊 басыңыз. Әр мысалда пассив белгіленген."
+    },
+    "toExBtn": {
+      "ru": "Перейти к шагу 4: Упражнения ➔",
+      "kz": "4-қадамға өту: Жаттығулар ➔"
+    },
+    "ex1Title": {
+      "ru": "Упражнение 1: Выберите правильную форму пассива",
+      "kz": "1-жаттығу: Пассивтің дұрыс формасын таңдаңыз"
+    },
+    "ex1Desc": {
+      "ru": "Present или Past Passive? Выберите верный вариант:",
+      "kz": "Present пе, әлде Past Passive пе? Дұрыс нұсқаны таңдаңыз:"
+    },
+    "ex2Title": {
+      "ru": "Упражнение 2: Поставьте глагол в пассив",
+      "kz": "2-жаттығу: Етістікті пассивке қойыңыз"
+    },
+    "ex2Desc": {
+      "ru": "Выберите правильную форму пассива (present или past) для глагола в скобках:",
+      "kz": "Жақшадағы етістікке пассивтің дұрыс формасын (present немесе past) таңдаңыз:"
+    },
+    "goTrainerBtn": {
+      "ru": "Запустить игровой тренажёр по Уроку 5 ➔",
+      "kz": "5-сабақтың ойын тренажеріне өту ➔"
+    }
+  },
+  "tab0Html": {
+    "ru": "\n<div class=\"card-block gold\">\n  <h2>Passive Voice: когда действие происходит НАД объектом</h2>\n  <p><b>Смысл:</b> объект не сам совершает действие, а это действие происходит над ним.</p>\n  <div class=\"clinical-quote\" style=\"border-left-color: var(--kz-blue);\">\n    <b>Формула:</b> A <b>IS DONE</b> &nbsp;=&nbsp; <b>TO BE + V3</b><br><br>\n    <b>\"Saline solution <span style=\"color:var(--kz-blue-dark);\">is given</span> intravenously.\"</b><br>\n    <i>(Физраствор вводится внутривенно.)</i>\n  </div>\n  <p><b>Важно:</b> пассив работает, только если есть <b>и to be, и глагол в третьей форме (V3)</b>. Нет одного из них — это уже не пассив.</p>\n  <p>Помните разницу между <b>Present Simple</b> и <b>Past Simple</b> по смыслу: <b>is given</b> (вводится всегда, по правилу) ↔ <b>was given</b> (был введён, факт в прошлом).</p>\n</div>\n\n<div class=\"card-block\">\n  <h2>Активное и пассивное действие</h2>\n  <p>Пассив нужен, когда мы <b>переносим внимание на само действие</b> или, наоборот, хотим <b>подчеркнуть, кто его сделал</b>.</p>\n  <p><b>Prescribe</b> — назначать.</p>\n  <table class=\"grammar-table\">\n    <thead><tr><th>Как сказано</th><th>Что подчёркиваем</th></tr></thead>\n    <tbody>\n      <tr><td><i>Я назначил метотрексат.</i><br><b>I prescribed methotrexate.</b></td><td>Активное действие: важно, кто действует (я).</td></tr>\n      <tr><td><i>Метотрексат был назначен.</i><br><b>Methotrexate was prescribed.</b></td><td>Не важно или мы не знаем, кто это сделал.</td></tr>\n      <tr><td><i>Метотрексат назначен мной.</i><br><b>Methotrexate was prescribed by me.</b></td><td>Подчёркиваем, кто это сделал (<b>by</b> + кто).</td></tr>\n    </tbody>\n  </table>\n  <p><b>Как пассив выглядит в родных языках:</b></p>\n  <div class=\"clinical-quote\">\n    <b>Орысша:</b> «было сделано», окончание <b>«-ся»</b> (назначается, вводится).<br>\n    <b>Қазақша:</b> ырықсыз етістің жұрнағы (<b>-ыл/-іл, -л</b>): тағайындалды, енгізіледі.\n  </div>\n  <div class=\"quick-check\"><span class=\"qc-badge\">Быстрая проверка</span><div class=\"qc-question\">Где пассив? «Физраствор вводится внутривенно»</div><div class=\"qc-options\"><button class=\"qc-btn\" onclick=\"checkInlineQuiz(this, true, 'Верно! Есть и to be (is), и V3 (given) — это пассив.')\">Saline solution is given intravenously.</button><button class=\"qc-btn\" onclick=\"checkInlineQuiz(this, false, 'Здесь нет to be: получилось «физраствор сам вводит». Нужно is given.')\">Saline solution gives intravenously.</button></div><div class=\"qc-feedback\"></div></div>\n</div>\n\n<button class=\"action-btn\" onclick=\"showTab(1)\">Перейти к шагу 2: Формы и практика чтения ➔</button>\n",
+    "kz": "\n<div class=\"card-block gold\">\n  <h2>Passive Voice: әрекет объектінің ӨЗІНЕ жасалғанда</h2>\n  <p><b>Мағынасы:</b> объект әрекетті өзі жасамайды, әрекет оның үстінен жасалады.</p>\n  <div class=\"clinical-quote\" style=\"border-left-color: var(--kz-blue);\">\n    <b>Формула:</b> A <b>IS DONE</b> &nbsp;=&nbsp; <b>TO BE + V3</b><br><br>\n    <b>\"Saline solution <span style=\"color:var(--kz-blue-dark);\">is given</span> intravenously.\"</b><br>\n    <i>(Физиологиялық ерітінді көктамырға енгізіледі.)</i>\n  </div>\n  <p><b>Маңызды:</b> пассив <b>to be да, етістіктің үшінші формасы (V3) да</b> болғанда ғана жұмыс істейді. Біреуі болмаса, бұл енді пассив емес.</p>\n  <p><b>Present Simple</b> мен <b>Past Simple</b> мағынасындағы айырмашылықты есте сақтаңыз: <b>is given</b> (әрдайым, ереже бойынша енгізіледі) ↔ <b>was given</b> (енгізілді, өткендегі факт).</p>\n</div>\n\n<div class=\"card-block\">\n  <h2>Белсенді және ырықсыз әрекет</h2>\n  <p>Пассив <b>назарды әрекеттің өзіне аударғымыз</b> келгенде немесе, керісінше, <b>оны кім жасағанын ерекше атап өткіміз</b> келгенде қолданылады.</p>\n  <p><b>Prescribe</b> — тағайындау.</p>\n  <table class=\"grammar-table\">\n    <thead><tr><th>Қалай айтылды</th><th>Нені ерекшелейміз</th></tr></thead>\n    <tbody>\n      <tr><td><i>Мен метотрексат тағайындадым.</i><br><b>I prescribed methotrexate.</b></td><td>Белсенді әрекет: кім істегені маңызды (мен).</td></tr>\n      <tr><td><i>Метотрексат тағайындалды.</i><br><b>Methotrexate was prescribed.</b></td><td>Кім істегені маңызды емес немесе белгісіз.</td></tr>\n      <tr><td><i>Метотрексатты мен тағайындадым (менімен тағайындалды).</i><br><b>Methotrexate was prescribed by me.</b></td><td>Кім істегенін ерекшелейміз (<b>by</b> + кім).</td></tr>\n    </tbody>\n  </table>\n  <p><b>Ана тілдерімізде пассив қалай көрінеді:</b></p>\n  <div class=\"clinical-quote\">\n    <b>Қазақша:</b> ырықсыз етістің жұрнағы (<b>-ыл/-іл, -л</b>): тағайындалды, енгізіледі.<br>\n    <b>Орысша:</b> «было сделано», <b>«-ся»</b> жалғауы (назначается, вводится).\n  </div>\n  <div class=\"quick-check\"><span class=\"qc-badge\">Жылдам тексеру</span><div class=\"qc-question\">Қайсысы пассив? «Физиологиялық ерітінді көктамырға енгізіледі»</div><div class=\"qc-options\"><button class=\"qc-btn\" onclick=\"checkInlineQuiz(this, true, 'Дұрыс! Мұнда to be (is) те, V3 (given) те бар — бұл пассив.')\">Saline solution is given intravenously.</button><button class=\"qc-btn\" onclick=\"checkInlineQuiz(this, false, 'Мұнда to be жоқ: «ерітінді өзі енгізеді» болып шықты. is given керек.')\">Saline solution gives intravenously.</button></div><div class=\"qc-feedback\"></div></div>\n</div>\n\n<button class=\"action-btn\" onclick=\"showTab(1)\">2-қадамға өту: Формалар және оқу практикасы ➔</button>\n"
+  },
+  "tab1Html": {
+    "ru": "\n<div class=\"card-block gold\">\n  <h2>Passive Voice: грамматика</h2>\n  <p><b>To be (am / is / are) + V3</b> — базовая форма пассива в настоящем времени. Чтобы перенести пассив в другое время, меняем <b>только to be</b>, а V3 остаётся прежним:</p>\n\n  <table class=\"grammar-table\">\n    <thead><tr><th>Форма to be</th><th>Когда</th><th>Пример</th></tr></thead>\n    <tbody>\n      <tr><td><b>am / is / are</b> + V3</td><td>сейчас / всегда (Present)</td><td><i>Furosemide <b>is prescribed</b>.</i></td></tr>\n      <tr><td><b>was / were</b> + V3</td><td>в прошлом (Past)</td><td><i>He <b>was operated on</b>.</i></td></tr>\n      <tr><td><b>will be</b> + V3</td><td>в будущем (Future)</td><td><i>The patient <b>will be discharged</b> tomorrow.</i></td></tr>\n      <tr><td><b>have / has been</b> + V3</td><td>уже / к этому моменту (Present Perfect)</td><td><i>The cause <b>has not been identified</b> yet.</i></td></tr>\n      <tr><td><b>can / could / should / must be</b> + V3<br><b>has to be</b> + V3</td><td>с модальными глаголами</td><td><i>Doctor M <b>was fired</b>. Doctor T <b>must be promoted</b>.<br>Patient <b>has to be taken care of</b>.</i></td></tr>\n    </tbody>\n  </table>\n\n  <details class=\"tenses-spoiler\">\n    <summary>Прямой и непрямой объект: два способа сказать одно и то же</summary>\n    <div style=\"margin-top:8px; font-size:0.85rem; line-height:1.6;\">\n      В активе: <b>The doctor prescribed furosemide to the patient.</b> Объектов два: <i>furosemide</i> (что назначили) и <i>the patient</i> (кому). Любой из них может стать подлежащим в пассиве:<br>\n      • <b>Furosemide was prescribed to the patient.</b> — <i>Фуросемид был назначен пациенту.</i><br>\n      • <b>The patient was prescribed furosemide.</b> — <i>Пациенту назначили фуросемид.</i>\n    </div>\n  </details>\n</div>\n\n<div class=\"card-block\">\n  <h2>Практика чтения: найдите пассив в тексте</h2>\n  <p>Пассив очень часто встречается в статьях и гайдлайнах. Прочитайте короткий отрывок о IgA-васкулите и найдите все конструкции <b>to be + V3</b>. Потом откройте ответы.</p>\n  <details class=\"tenses-spoiler\">\n    <summary>Показать текст с подсказками</summary>\n\n  <div class=\"clinical-quote\" style=\"line-height:1.7;\">\n    IgA vasculitis <b class=\"pv\">is not fully understood</b>, but IgA <b>plays</b> a key role. IgA1 <b class=\"pv\">is implicated</b> in the disease and <b class=\"pv\">is associated</b> with low galactose levels. Immune complexes <b class=\"pv\">are formed</b> after an infection or a new medication. They <b class=\"pv\">are then deposited</b> in small vessels of the skin, joints and kidneys. The complement system <b class=\"pv\">can also be activated</b>. If the complexes <b class=\"pv\">are deposited</b> in the intestinal wall, bleeding may follow.\n  </div>\n\n    <p style=\"font-size:0.85rem;\">Выделены 7 пассивных конструкций. <b>plays</b> — активный глагол (IgA сам играет роль).</p>\n  </details>\n  <p style=\"font-size:0.85rem;\">Потренируйтесь на оригинале: раздел «Pathophysiology» статьи StatPearls об IgA-васкулите на <a href=\"https://www.ncbi.nlm.nih.gov/books/NBK537252/\" target=\"_blank\" rel=\"noopener\">ncbi.nlm.nih.gov</a>.</p>\n  <div class=\"quick-check\"><span class=\"qc-badge\">Быстрая проверка</span><div class=\"qc-question\">Какое предложение в пассиве?</div><div class=\"qc-options\"><button class=\"qc-btn\" onclick=\"checkInlineQuiz(this, false, 'Здесь слизистые сами производят IgA — это актив. Пассив: are formed.')\">Mucous membranes produce IgA.</button><button class=\"qc-btn\" onclick=\"checkInlineQuiz(this, true, 'Верно! are formed = to be + V3: комплексы образуются, а не образуют сами.')\">Immune complexes are formed in response to infection.</button></div><div class=\"qc-feedback\"></div></div>\n</div>\n\n<button class=\"action-btn\" onclick=\"showTab(2)\">Перейти к шагу 3: Словарь урока (14 слов) ➔</button>\n",
+    "kz": "\n<div class=\"card-block gold\">\n  <h2>Passive Voice: грамматика</h2>\n  <p><b>To be (am / is / are) + V3</b> — осы шақтағы пассивтің негізгі формасы. Пассивті басқа шаққа ауыстыру үшін <b>тек to be өзгереді</b>, ал V3 сол күйі қалады:</p>\n\n  <table class=\"grammar-table\">\n    <thead><tr><th>to be формасы</th><th>Қашан</th><th>Мысал</th></tr></thead>\n    <tbody>\n      <tr><td><b>am / is / are</b> + V3</td><td>қазір / әрдайым (Present)</td><td><i>Furosemide <b>is prescribed</b>.</i></td></tr>\n      <tr><td><b>was / were</b> + V3</td><td>өткенде (Past)</td><td><i>He <b>was operated on</b>.</i></td></tr>\n      <tr><td><b>will be</b> + V3</td><td>болашақта (Future)</td><td><i>The patient <b>will be discharged</b> tomorrow.</i></td></tr>\n      <tr><td><b>have / has been</b> + V3</td><td>әлдеқашан / осы сәтке дейін (Present Perfect)</td><td><i>The cause <b>has not been identified</b> yet.</i></td></tr>\n      <tr><td><b>can / could / should / must be</b> + V3<br><b>has to be</b> + V3</td><td>модаль етістіктермен</td><td><i>Doctor M <b>was fired</b>. Doctor T <b>must be promoted</b>.<br>Patient <b>has to be taken care of</b>.</i></td></tr>\n    </tbody>\n  </table>\n\n  <details class=\"tenses-spoiler\">\n    <summary>Тура және жанама толықтауыш: бір ойды айтудың екі жолы</summary>\n    <div style=\"margin-top:8px; font-size:0.85rem; line-height:1.6;\">\n      Белсенді түрде: <b>The doctor prescribed furosemide to the patient.</b> Мұнда екі объект бар: <i>furosemide</i> (не тағайындалды) және <i>the patient</i> (кімге). Пассивте олардың кез келгені бастауыш бола алады:<br>\n      • <b>Furosemide was prescribed to the patient.</b> — <i>Науқасқа фуросемид тағайындалды.</i><br>\n      • <b>The patient was prescribed furosemide.</b> — <i>Науқасқа фуросемид тағайындалды (назар науқаста).</i>\n    </div>\n  </details>\n</div>\n\n<div class=\"card-block\">\n  <h2>Оқу практикасы: мәтіннен пассивті табыңыз</h2>\n  <p>Пассив мақалалар мен гайдлайндарда өте жиі кездеседі. IgA-васкулит туралы қысқа үзіндіні оқып, барлық <b>to be + V3</b> құрылымдарын табыңыз. Содан кейін жауаптарды ашыңыз.</p>\n  <details class=\"tenses-spoiler\">\n    <summary>Мәтінді көмекпен көрсету</summary>\n\n  <div class=\"clinical-quote\" style=\"line-height:1.7;\">\n    IgA vasculitis <b class=\"pv\">is not fully understood</b>, but IgA <b>plays</b> a key role. IgA1 <b class=\"pv\">is implicated</b> in the disease and <b class=\"pv\">is associated</b> with low galactose levels. Immune complexes <b class=\"pv\">are formed</b> after an infection or a new medication. They <b class=\"pv\">are then deposited</b> in small vessels of the skin, joints and kidneys. The complement system <b class=\"pv\">can also be activated</b>. If the complexes <b class=\"pv\">are deposited</b> in the intestinal wall, bleeding may follow.\n  </div>\n\n    <p style=\"font-size:0.85rem;\">7 пассив құрылымы белгіленген. <b>plays</b> — белсенді етістік (IgA рөлді өзі атқарады).</p>\n  </details>\n  <p style=\"font-size:0.85rem;\">Түпнұсқамен жаттығыңыз: <a href=\"https://www.ncbi.nlm.nih.gov/books/NBK537252/\" target=\"_blank\" rel=\"noopener\">ncbi.nlm.nih.gov</a> сайтындағы IgA-васкулит туралы StatPearls мақаласының «Pathophysiology» бөлімі.</p>\n  <div class=\"quick-check\"><span class=\"qc-badge\">Жылдам тексеру</span><div class=\"qc-question\">Қай сөйлем пассивте тұр?</div><div class=\"qc-options\"><button class=\"qc-btn\" onclick=\"checkInlineQuiz(this, false, 'Мұнда кілегей қабықтар IgA-ны өздері түзеді — бұл белсенді етіс. Пассив: are formed.')\">Mucous membranes produce IgA.</button><button class=\"qc-btn\" onclick=\"checkInlineQuiz(this, true, 'Дұрыс! are formed = to be + V3: кешендер өздері түзбейді, олар түзіледі.')\">Immune complexes are formed in response to infection.</button></div><div class=\"qc-feedback\"></div></div>\n</div>\n\n<button class=\"action-btn\" onclick=\"showTab(2)\">3-қадамға өту: Сабақ сөздігі (14 сөз) ➔</button>\n"
+  },
+  "vocabulary": [
+    {
+      "en": "Belly",
+      "ru": "Живот",
+      "kz": "Іш, құрсақ",
+      "ex": "The patient’s belly <b>was examined</b> for swelling and pain."
+    },
+    {
+      "en": "Benign",
+      "ru": "Доброкачественный",
+      "kz": "Қатерсіз",
+      "ex": "The tumor <b>was confirmed</b> to be benign after the biopsy."
+    },
+    {
+      "en": "Bleeding",
+      "ru": "Кровотечение",
+      "kz": "Қан кету",
+      "ex": "Internal bleeding <b>was detected</b> during the surgery."
+    },
+    {
+      "en": "Blindness",
+      "ru": "Слепота",
+      "kz": "Соқырлық",
+      "ex": "Blindness <b>can be caused</b> by untreated diabetes."
+    },
+    {
+      "en": "Blurry vision",
+      "ru": "Размытое зрение",
+      "kz": "Көздің бұлдырлауы",
+      "ex": "Blurry vision <b>is often reported</b> by patients with high blood sugar."
+    },
+    {
+      "en": "Bone marrow",
+      "ru": "Костный мозг",
+      "kz": "Сүйек кемігі",
+      "ex": "A sample of bone marrow <b>was taken</b> for further testing."
+    },
+    {
+      "en": "Bruising",
+      "ru": "Синяк",
+      "kz": "Көгеру, көгерген дақ",
+      "ex": "Bruising <b>was noticed</b> on the patient’s arms and legs."
+    },
+    {
+      "en": "Burning",
+      "ru": "Жжение",
+      "kz": "Ашып-күйдіру сезімі",
+      "ex": "A burning sensation <b>is often described</b> by patients with nerve pain."
+    },
+    {
+      "en": "Cancel",
+      "ru": "Отменить",
+      "kz": "Болдырмау, тоқтату",
+      "ex": "The procedure <b>was canceled</b> due to the patient’s fever."
+    },
+    {
+      "en": "Cartilage",
+      "ru": "Хрящ",
+      "kz": "Шеміршек",
+      "ex": "The damaged cartilage <b>was removed</b> during knee surgery."
+    },
+    {
+      "en": "Cause",
+      "ru": "Причина / причинить",
+      "kz": "Себеп / туғызу",
+      "ex": "The rash <b>was caused</b> by an allergic reaction."
+    },
+    {
+      "en": "Cerebral cortex",
+      "ru": "Кора головного мозга",
+      "kz": "Ми қыртысы",
+      "ex": "The cerebral cortex <b>is affected</b> in many neurological disorders."
+    },
+    {
+      "en": "Chills",
+      "ru": "Озноб",
+      "kz": "Қалтырау, тоңу",
+      "ex": "Chills <b>are often experienced</b> during the early stages of infection."
+    },
+    {
+      "en": "Compliance",
+      "ru": "Комплаенс / приверженность",
+      "kz": "Комплаенс / емді ұстану",
+      "ex": "The hyperglycemia <b>was caused</b> by the poor compliance."
+    }
+  ],
+  "ex1": [
+    {
+      "q": "1. The surgery ___ because the patient had chills.",
+      "options": [
+        "was canceled",
+        "canceled"
+      ],
+      "correct": 0,
+      "exp": {
+        "ru": "Операцию отменили (её отменил кто-то) → нужен пассив: was + V3 = was canceled.",
+        "kz": "Операцияны біреу болдырмады → пассив керек: was + V3 = was canceled."
+      }
+    },
+    {
+      "q": "2. Cartilage ___ during the accident.",
+      "options": [
+        "is damaged",
+        "did damaged"
+      ],
+      "correct": 0,
+      "exp": {
+        "ru": "Хрящ повреждается (действие над ним) → to be + V3 = is damaged. «did damaged» — так не бывает: did не сочетается с V3.",
+        "kz": "Шеміршек зақымданады (әрекет оның үстінен) → to be + V3 = is damaged. «did damaged» деген форма жоқ: did V3-пен қолданылмайды."
+      }
+    },
+    {
+      "q": "3. Bone marrow samples ___ from the patient this morning.",
+      "options": [
+        "have taken",
+        "were taken"
+      ],
+      "correct": 1,
+      "exp": {
+        "ru": "Образцы взяли сегодня утром (конкретное время в прошлом) → were taken. «have taken» — актив: «образцы сами взяли».",
+        "kz": "Үлгілер бүгін таңертең алынды (өткендегі нақты уақыт) → were taken. «have taken» — белсенді етіс: «үлгілер өздері алды»."
+      }
+    },
+    {
+      "q": "4. That medication ___ to reduce burning and bruising.",
+      "options": [
+        "was prescribed",
+        "is prescribing"
+      ],
+      "correct": 0,
+      "exp": {
+        "ru": "Лекарство назначили (над ним совершили действие) → was prescribed. «is prescribing» — лекарство само назначает.",
+        "kz": "Дәріні тағайындады (оның үстінен әрекет жасалды) → was prescribed. «is prescribing» — дәрі өзі тағайындап жатыр."
+      }
+    },
+    {
+      "q": "5. Compliance with the treatment ___ daily.",
+      "options": [
+        "is monitored",
+        "was monitored"
+      ],
+      "correct": [
+        0,
+        1
+      ],
+      "exp": {
+        "ru": "Оба варианта возможны: is monitored — контролируется каждый день (сейчас, регулярно); was monitored — контролировался (в прошлом).",
+        "kz": "Екі нұсқа да мүмкін: is monitored — күн сайын бақыланады (қазір, тұрақты); was monitored — бақыланды (өткенде)."
+      }
+    }
+  ],
+  "ex2": [
+    {
+      "q": "1. The cerebral cortex ___ (affect) by the disease.",
+      "options": [
+        "is affected",
+        "affects",
+        "is affecting"
+      ],
+      "correct": 0,
+      "exp": {
+        "ru": "Пассив: is affected. Также подходят was affected и has been affected.",
+        "kz": "Пассив: is affected. Сондай-ақ was affected және has been affected те дұрыс."
+      }
+    },
+    {
+      "q": "2. Blurry vision ___ (report) by several patients using this drug.",
+      "options": [
+        "has been reported",
+        "reported",
+        "has reported"
+      ],
+      "correct": 0,
+      "exp": {
+        "ru": "Пассив: has been reported (или was reported). Без to be — это уже актив.",
+        "kz": "Пассив: has been reported (немесе was reported). to be болмаса, бұл белсенді етіс."
+      }
+    },
+    {
+      "q": "3. The cause of the bleeding ___ (not identify) yet.",
+      "options": [
+        "has not been identified",
+        "did not identify",
+        "is not identifying"
+      ],
+      "correct": 0,
+      "exp": {
+        "ru": "Слово yet подсказывает Present Perfect → has not been identified.",
+        "kz": "yet сөзі Present Perfect-ті меңзейді → has not been identified."
+      }
+    },
+    {
+      "q": "4. A benign tumor ___ (find) in the patient’s belly during the scan.",
+      "options": [
+        "was found",
+        "found",
+        "was finding"
+      ],
+      "correct": 0,
+      "exp": {
+        "ru": "Опухоль нашли во время исследования (факт в прошлом) → was found.",
+        "kz": "Ісік зерттеу кезінде табылды (өткендегі факт) → was found."
+      }
+    },
+    {
+      "q": "5. Blindness ___ (cause) by damage to the optic nerve.",
+      "options": [
+        "is caused",
+        "causes",
+        "is causing"
+      ],
+      "correct": 0,
+      "exp": {
+        "ru": "Пассив: is caused. Также подходят was caused и has been caused.",
+        "kz": "Пассив: is caused. Сондай-ақ was caused және has been caused те дұрыс."
+      }
+    }
+  ]
+};
+
+    // =========================================================================
+    // 3. ЛОГИКА ОТОБРАЖЕНИЯ, ОЗВУЧКИ И ПЕРЕКЛЮЧЕНИЯ ЯЗЫКОВ (RU / KZ)
+    // =========================================================================
+    let currentLang = localStorage.getItem('doctors_speak_lang') || 'ru';
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('doctors_speak_lang', lang);
+
+      document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
+      document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
+
+      const ui = LESSON_DATA.ui;
+      document.getElementById('uiBackBtn').textContent = ui.backBtn[lang];
+      document.getElementById('uiTitle').textContent = ui.title[lang];
+      document.getElementById('uiSubtitle').textContent = ui.subtitle[lang];
+
+      ui.nav.forEach((item, index) => {
+        document.getElementById(`nav${index}`).textContent = item[lang];
+      });
+
+      document.getElementById('uiVocabTitle').textContent = ui.vocabTitle[lang];
+      document.getElementById('uiVocabDesc').textContent = ui.vocabDesc[lang];
+      document.getElementById('uiToExBtn').textContent = ui.toExBtn[lang];
+      document.getElementById('uiEx1Title').textContent = ui.ex1Title[lang];
+      document.getElementById('uiEx1Desc').textContent = ui.ex1Desc[lang];
+      document.getElementById('uiEx2Title').textContent = ui.ex2Title[lang];
+      document.getElementById('uiEx2Desc').textContent = ui.ex2Desc[lang];
+      document.getElementById('uiGoTrainerBtn').textContent = ui.goTrainerBtn[lang];
+
+      // Рендерим вкладки теории, словаря и упражнений
+      document.getElementById('tab0').innerHTML = LESSON_DATA.tab0Html[lang];
+      document.getElementById('tab1').innerHTML = LESSON_DATA.tab1Html[lang];
+      renderVocab();
+      renderExercises('ex1Container', LESSON_DATA.ex1);
+      renderExercises('ex2Container', LESSON_DATA.ex2);
+    }
+
+    function showTab(idx) {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`nav${i}`).classList.toggle('active', i === idx);
+        document.getElementById(`tab${i}`).classList.toggle('active', i === idx);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Проверка встроенных микро-вопросов в теории
+    function checkInlineQuiz(btn, isCorrect, feedbackText) {
+      const parent = btn.closest('.quick-check');
+      const allBtns = parent.querySelectorAll('.qc-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+      }
+
+      const fb = parent.querySelector('.qc-feedback');
+      fb.textContent = `💡 ${feedbackText}`;
+      fb.style.display = 'block';
+    }
+
+    // Рендер словаря с озвучкой Web Speech API
+    function renderVocab() {
+      const grid = document.getElementById('vocabGrid');
+      grid.innerHTML = '';
+      LESSON_DATA.vocabulary.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'vocab-card';
+        div.innerHTML = `
+          <div class="vocab-header">
+            <span class="vocab-word">${item.en}</span>
+            <button class="speak-btn" onclick="speakEn('${item.en}')" title="Прослушать">🔊</button>
+          </div>
+          <div class="vocab-trans">${item[currentLang]}</div>
+          <div class="vocab-example">${item.ex}</div>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    function speakEn(word) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(word);
+      u.lang = 'en-US';
+      u.rate = 0.9;
+      window.speechSynthesis.speak(u);
+    }
+
+    // Рендер упражнений 1 и 2 из PDF
+    function renderExercises(containerId, list) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+      list.forEach(item => {
+        const box = document.createElement('div');
+        box.className = 'quick-check';
+        box.style.marginTop = '0';
+
+        const qEl = document.createElement('div');
+        qEl.className = 'qc-question';
+        qEl.textContent = item.q;
+
+        const optsEl = document.createElement('div');
+        optsEl.className = 'qc-options';
+
+        const fbEl = document.createElement('div');
+        fbEl.className = 'qc-feedback';
+        fbEl.textContent = `💡 ${item.exp[currentLang]}`;
+
+        item.options.forEach((optText, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'qc-btn';
+          btn.textContent = optText;
+          btn.onclick = () => {
+            const buttons = optsEl.querySelectorAll('.qc-btn');
+            buttons.forEach(b => b.disabled = true);
+            const okList = Array.isArray(item.correct) ? item.correct : [item.correct];
+            if (okList.includes(idx)) {
+              btn.classList.add('correct');
+            } else {
+              btn.classList.add('wrong');
+              okList.forEach(k => buttons[k].classList.add('correct'));
+            }
+            fbEl.style.display = 'block';
+          };
+          optsEl.appendChild(btn);
+        });
+
+        box.appendChild(qEl);
+        box.appendChild(optsEl);
+        box.appendChild(fbEl);
+        container.appendChild(box);
+      });
+    }
+
+    // Запуск при загрузке
+    setLang(currentLang);
+  </script>
+  <script src="/session-guard.js"></script>
 </body>
 </html>

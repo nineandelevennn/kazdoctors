@@ -1,0 +1,330 @@
+/* ==========================================================================
+   Doctors Speak — единый стиль (design system)
+   Подключается на всех страницах последним: <link rel="stylesheet" href="/assets/ds.css">
+   1) новые токены в тонах флага Казахстана
+   2) старые переменные страниц перенаправлены на новые токены
+   3) единые шрифты, шапка, фокус и мелкие общие правила
+   Описание: DESIGN.md
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700&display=swap");
+
+/* html:root сильнее, чем :root внутри страниц, поэтому побеждает их палитру */
+html:root {
+  /* Лазурь — яркий голубой (палитра выбрана 25.11.2026) */
+  --sky-50:  #EAF4FD;   /* фон плашек, выделение строки */
+  --sky-100: #CFE6FA;   /* рамки активных элементов */
+  --sky-500: #2BA8F0;   /* яркий акцент: иконки, линии, фокус (не для текста) */
+  --sky-700: #0070BF;   /* шапка, кнопки, ссылки: белый текст 5.2:1, на --sky-50 4.6:1 */
+  --sky-900: #0B4F8A;   /* заголовки, тёмные блоки: белый текст 8.4:1 */
+  --flag-sky: #00AFCA;  /* точный голубой флага — для декоративных деталей */
+
+  /* Күн — золото флага */
+  --sun-50:  #FFF8E1;
+  --sun-500: #FEC50C;   /* один акцент на экран, текст на нём — --ink */
+  --sun-600: #E0AC00;
+  --sun-ink: #8A6A00;   /* золотой текст на белом */
+
+  /* Нейтральные */
+  --bg:      #F5F9FE;
+  --surface: #FFFFFF;
+  --subtle:  #EDF3FB;
+  --line:    #DCE7F3;
+  --line-2:  #B4C6DA;
+  --ink:     #13243A;
+  --ink-2:   #33475E;
+  --ink-3:   #5A6B80;
+
+  /* Состояния */
+  --ok:      #1A7F5A;  --ok-mid:  #23845B;  --ok-bg:  #E8F5EF;
+  --err:     #B42318;  --err-mid: #D64535;  --err-bg: #FDECEA;
+
+  --font-ui:      "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-heading: "Montserrat", "Inter", system-ui, sans-serif;
+
+  /* ---- Старые имена → новые токены ---- */
+  /* синие */
+  --kz-blue:        var(--sky-700);
+  --kz-blue-dark:   var(--sky-900);
+  --kz-blue-deep:   #0B2F3A;
+  --kz-blue-light:  var(--sky-50);
+  --kz-blue-soft:   var(--sky-50);
+  --med-navy:       var(--sky-900);
+  --accent-blue:    var(--sky-700);
+  --accent-navy:    var(--sky-900);
+  --acsom-red:      var(--sky-700);
+  --acsom-red-dark: var(--sky-900);
+  --acsom-red-light:var(--sky-50);
+  --teal-accent:    var(--sky-700);
+  --teal-soft:      var(--sky-50);
+  --teal-border:    var(--sky-100);
+
+  /* золото */
+  --kz-gold:        var(--sun-500);
+  --kz-gold-dark:   var(--sun-600);
+  --kz-gold-light:  var(--sun-50);
+  --kz-gold-soft:   var(--sun-50);
+
+  /* фон и поверхности */
+  --bg-main:        var(--bg);
+  --bg-page:        var(--bg);
+  --card-bg:        var(--surface);
+  --bg-card:        var(--surface);
+  --bg-white:       var(--surface);
+  --white:          #FFFFFF;
+  --bg-subtle:      var(--subtle);
+  --surface-subtle: var(--subtle);
+  --bg-chip:        var(--subtle);
+
+  /* текст */
+  --text-dark:      var(--ink);
+  --text-primary:   var(--ink);
+  --text-main:      var(--ink);
+  --text-secondary: var(--ink-2);
+  --text-muted:     var(--ink-3);
+
+  /* рамки */
+  --border-color:   var(--line);
+  --border-light:   var(--line);
+  --border-strong:  var(--line-2);
+  --border-focus:   var(--line-2);
+
+  /* верно */
+  --success-bg:     var(--ok-bg);
+  --success-border: var(--ok-mid);
+  --success-text:   var(--ok);
+  --success-color:  var(--ok-mid);
+  --correct-bg:     var(--ok-bg);
+  --correct-border: var(--ok-mid);
+  --correct-text:   var(--ok);
+  --green:          var(--ok-mid);
+  --green-accent:   var(--ok-mid);
+  --green-light:    var(--ok-bg);
+  --green-bg:       var(--ok-bg);
+  --green-dark:     var(--ok);
+
+  /* ошибка */
+  --error-bg:       var(--err-bg);
+  --error-border:   var(--err-mid);
+  --error-text:     var(--err);
+  --wrong-bg:       var(--err-bg);
+  --wrong-border:   var(--err-mid);
+  --wrong-text:     var(--err);
+  --red:            var(--err-mid);
+  --red-accent:     var(--err-mid);
+  --red-light:      var(--err-bg);
+  --red-bg:         var(--err-bg);
+  --red-soft:       var(--err-bg);
+  --red-border:     var(--err-mid);
+  --red-dark:       var(--err);
+  --red-text:       var(--err);
+  --danger-color:   var(--err-mid);
+}
+
+/* ---- Шрифты ---- */
+html body,
+html body *:not(code):not(pre):not(kbd):not(samp):not(i):not([class*="fa-"]) {
+  font-family: var(--font-ui);
+}
+html body h1,
+html body h2,
+html body h3 {
+  font-family: var(--font-heading);
+  letter-spacing: 0;
+}
+html body h1 { font-weight: 700; }
+
+html body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---- Шапка: одна для всех страниц ----
+   тёмный голубой флага, без градиента и скруглений, золотая линия снизу */
+html body > header,
+html body > div > header,
+html body header.header {
+  background: var(--sky-700) !important;
+  border-bottom: 3px solid var(--sun-500) !important;
+  box-shadow: none !important;
+}
+html body > header {
+  border-radius: 0 !important;
+}
+/* Страницы, где вся страница уже тёмная (вход): шапка без своей плашки */
+html body > header.ds-plain {
+  background: transparent !important;
+  border-bottom: 0 !important;
+}
+
+/* Белые шапки (шпаргалка, аудиоуроки, Quick Practice) делаем тёмными:
+   переменные текста внутри шапки становятся светлыми */
+html body > header {
+  --text-primary:   #FFFFFF;
+  --text-secondary: #EAF4FD;
+  --text-muted:     #CFE6FA;
+  --bg-card:        transparent;
+  --bg-subtle:      rgba(255, 255, 255, 0.10);
+  --bg-chip:        rgba(255, 255, 255, 0.10);
+  --border-light:   rgba(255, 255, 255, 0.22);
+  --border-focus:   rgba(255, 255, 255, 0.40);
+  --accent-navy:    #FFFFFF;
+  --accent-blue:    var(--sky-100);
+}
+
+/* Кнопки и чипы внутри тёмной шапки: полупрозрачные, активные — золотые */
+html body > header :is(.back-link, .back-btn, .stage-tab, .tr-toggle, .tier-badge, .nav-btn, .free-badge) {
+  background: rgba(255, 255, 255, 0.10) !important;
+  border-color: rgba(255, 255, 255, 0.24) !important;
+  color: #FFFFFF !important;
+}
+html body > header :is(.stage-tab, .tr-toggle, .nav-btn, .lang-btn).active,
+html body > header .lang-btn.active {
+  background: var(--sun-500) !important;
+  border-color: var(--sun-500) !important;
+  color: var(--ink) !important;
+}
+html body > header .lang-btn:not(.active) {
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.80) !important;
+}
+html body > header .lang-switch {
+  background: rgba(0, 0, 0, 0.22) !important;
+  border: 1px solid rgba(255, 255, 255, 0.24) !important;
+}
+html body > header h1,
+html body > header .header-title {
+  color: #FFFFFF !important;
+}
+html body > header .search-input {
+  background: #FFFFFF !important;
+  color: #13243A !important;
+  border-color: transparent !important;
+}
+html body > header .search-input::placeholder { color: #5A6B80; }
+
+/* ---- Общий подвал (рисует /assets/site.js) ---- */
+html body footer.ds-footer {
+  display: block;
+  width: 100%;
+  align-self: stretch;
+  flex-shrink: 0;
+  margin: 32px 0 0 0;
+  padding: 28px 20px 20px;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  color: var(--ink-2);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+  position: relative;
+  z-index: 1;
+}
+html body .ds-footer__inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+}
+@media (min-width: 720px) {
+  html body .ds-footer__inner { grid-template-columns: 2fr 1fr 1fr; gap: 32px; }
+}
+html body .ds-footer__logo {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--sky-900);
+  text-decoration: none;
+}
+html body .ds-footer__brand p {
+  margin: 4px 0 0;
+  color: var(--ink-3);
+  max-width: 320px;
+}
+html body .ds-footer__col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+html body .ds-footer__title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+html body .ds-footer a {
+  color: var(--ink-2);
+  text-decoration: none;
+}
+html body .ds-footer a:hover,
+html body .ds-footer a[aria-current="page"] {
+  color: var(--sky-700);
+}
+html body .ds-footer a.ds-footer__wa {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 10px;
+  background: var(--sky-700);
+  color: #FFFFFF;
+  font-weight: 600;
+}
+html body .ds-footer a.ds-footer__wa:hover { background: var(--sky-900); color: #FFFFFF; }
+html body .ds-footer__bottom {
+  max-width: 960px;
+  margin: 22px auto 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+/* Тёмный вариант подвала (страница входа) */
+html body footer.ds-footer.ds-footer--dark {
+  background: transparent;
+  border-top-color: rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.85);
+}
+html body .ds-footer--dark :is(.ds-footer__logo, a) { color: #FFFFFF; }
+html body .ds-footer--dark :is(.ds-footer__brand p, .ds-footer__title, .ds-footer__bottom) { color: rgba(255, 255, 255, 0.65); }
+html body .ds-footer--dark .ds-footer__bottom { border-top-color: rgba(255, 255, 255, 0.16); }
+html body .ds-footer--dark a.ds-footer__wa { background: var(--sun-500); color: var(--ink); }
+html body .ds-footer--dark a.ds-footer__wa:hover { background: var(--sun-600); color: var(--ink); }
+
+/* ---- Линейные иконки вместо эмодзи ---- */
+html body .ds-ico {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+html body :is(.cat-icon-box, .mod-mini-icon) {
+  color: var(--sky-700);
+}
+
+/* ---- Фокус с клавиатуры ---- */
+html body :focus-visible {
+  outline: 2px solid var(--sky-500);
+  outline-offset: 2px;
+}
+
+/* ---- Ссылки внутри текста ---- */
+html body p a:not([class]),
+html body li a:not([class]) {
+  color: var(--sky-700);
+  text-underline-offset: 2px;
+}
+
+/* ---- Выделение текста ---- */
+html body ::selection {
+  background: var(--sky-100);
+  color: var(--ink);
+}

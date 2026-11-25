@@ -155,6 +155,17 @@
             // требуем тариф не ниже 'pro' (уровень 2 и выше)
             const isTheoryPage = currentPath.includes('/grammar/lesson') || currentPath.includes('theory');
 
+            // Домашние задания (/grammar/hw...) тоже только для 'pro' и выше
+            const isHomeworkPage = currentPath.includes('/grammar/hw');
+
+            if (isHomeworkPage && userLevel < TIER_LEVELS.pro) {
+                blockAccess(
+                    "У вас активен тариф «Стандарт». Домашние задания доступны на тарифах «Про», «Премиум» и «ВИП»!",
+                    "/tarifs/"
+                );
+                return;
+            }
+
             if (isTheoryPage && userLevel < TIER_LEVELS.pro) {
                 blockAccess(
                     "У вас активен тариф «Стандарт» (доступ только к тренажерам). Конспекты и теория доступны на тарифах «Про», «Премиум» и «ВИП»!",

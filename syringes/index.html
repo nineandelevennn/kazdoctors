@@ -34,7 +34,7 @@
     }
 
     body {
-      background: radial-gradient(circle at top, #EBF8FC 0%, var(--bg-main) 70%);
+      background: radial-gradient(circle at top, var(--sky-50) 0%, var(--bg-main) 70%);
       color: var(--text-dark);
       min-height: 100vh;
       min-height: 100dvh;
@@ -65,7 +65,7 @@
 
     /* Шапка */
     .header {
-      background: linear-gradient(135deg, var(--kz-blue) 0%, #0088bb 100%);
+      background: linear-gradient(135deg, var(--kz-blue) 0%, var(--sky-700) 100%);
       color: #FFFFFF;
       padding: 12px 14px;
       display: flex;
@@ -217,7 +217,7 @@
 
     .primary-btn {
       width: 100%;
-      background: linear-gradient(135deg, var(--kz-gold) 0%, #FFD55A 100%);
+      background: linear-gradient(135deg, var(--kz-gold) 0%, var(--sun-500) 100%);
       color: var(--text-dark);
       font-weight: 900;
       padding: 14px;
@@ -267,7 +267,7 @@
     .timer-track {
       width: 100%;
       height: 8px;
-      background: #E2E8F0;
+      background: var(--line);
       border-radius: 99px;
       overflow: hidden;
     }
@@ -373,7 +373,7 @@
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: #CBD5E1;
+      background: var(--line);
       transition: all 0.2s ease;
     }
 
@@ -623,7 +623,7 @@
 
     .review-item.wrong {
       border-left-color: var(--red);
-      background: #FEF2F2;
+      background: var(--err-bg);
     }
 
     .review-word {
@@ -637,6 +637,7 @@
       text-align: right;
     }
   </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
 </head>
 <body>
 

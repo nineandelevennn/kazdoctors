@@ -41,7 +41,7 @@
             min-height: 100vh;
             min-height: 100dvh;
             overflow-y: auto;
-            background: radial-gradient(circle at top, #EBF8FC 0%, var(--bg-main) 65%);
+            background: radial-gradient(circle at top, var(--sky-50) 0%, var(--bg-main) 65%);
             color: var(--text-dark);
             display: flex;
             flex-direction: column;
@@ -53,7 +53,7 @@
         header {
             position: relative;
             z-index: 20;
-            background: linear-gradient(145deg, #0077A3 0%, var(--kz-blue) 58%, #15B2E8 100%);
+            background: linear-gradient(145deg, var(--sky-900) 0%, var(--kz-blue) 58%, var(--sky-500) 100%);
             color: #FFFFFF;
             text-align: center;
             padding: 18px 16px 24px 16px;
@@ -209,7 +209,7 @@
         .pw-bar-fill {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, var(--kz-gold) 0%, #34D399 100%);
+            background: linear-gradient(90deg, var(--kz-gold) 0%, var(--ok-mid) 100%);
             border-radius: 10px;
             transition: width 0.35s ease;
         }
@@ -250,7 +250,7 @@
            БЛОК 1 (СВЕРХУ): ОБЩИЙ ИНТЕРАКТИВНЫЙ КОНСПЕКТ ВЕБИНАРА (PRO / PREMIUM / VIP)
            ========================================================================== */
         .master-guide-card {
-            background: linear-gradient(135deg, #FFFFFF 0%, #FFFBEB 65%, #FEF3C7 100%);
+            background: linear-gradient(135deg, #FFFFFF 0%, var(--sun-50) 65%, #FEF3C7 100%);
             border: 2px solid var(--kz-gold-dark);
             border-radius: 20px;
             padding: 18px;
@@ -310,7 +310,7 @@
 
         .mg-info p {
             font-size: 0.78rem;
-            color: #475569;
+            color: var(--ink-2);
             font-weight: 600;
             margin-top: 3px;
             line-height: 1.4;
@@ -323,7 +323,7 @@
             border-radius: 10px;
             text-transform: uppercase;
             letter-spacing: 0.4px;
-            background: #1E293B;
+            background: var(--sky-900);
             color: var(--kz-gold);
         }
 
@@ -346,12 +346,12 @@
             border-radius: 10px;
             font-size: 0.71rem;
             font-weight: 700;
-            color: #78350F;
+            color: var(--sun-ink);
         }
 
         .open-guide-btn {
             width: 100%;
-            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            background: linear-gradient(135deg, var(--sky-900) 0%, var(--sky-900) 100%);
             color: var(--kz-gold);
             border: 1px solid var(--kz-gold-dark);
             border-radius: 14px;
@@ -398,7 +398,7 @@
         }
 
         .g-tab-btn {
-            background: #F1F5F9;
+            background: var(--subtle);
             border: 1px solid var(--border-color);
             border-radius: 11px;
             padding: 9px 6px;
@@ -427,7 +427,7 @@
         }
 
         .guide-box {
-            background: #F8FAFC;
+            background: var(--subtle);
             border: 1px solid var(--border-color);
             border-left: 4px solid var(--kz-blue);
             border-radius: 14px;
@@ -441,7 +441,7 @@
 
         .guide-box.red {
             border-left-color: var(--red-accent);
-            background: #FEF2F2;
+            background: var(--err-bg);
         }
 
         .guide-box.green {
@@ -486,7 +486,7 @@
         }
 
         .db-table th {
-            background: #1E293B;
+            background: var(--sky-900);
             color: #FFFFFF;
             padding: 9px 8px;
             text-align: left;
@@ -501,7 +501,7 @@
         }
 
         .db-table tr:nth-child(even) td {
-            background: #F8FAFC;
+            background: var(--subtle);
         }
 
         /* Карточки AI-промптов с кнопкой копирования */
@@ -546,7 +546,7 @@
         .prompt-text {
             font-size: 0.78rem;
             color: var(--text-dark);
-            background: #F8FAFC;
+            background: var(--subtle);
             padding: 9px 11px;
             border-radius: 8px;
             border-left: 3px solid var(--kz-gold-dark);
@@ -582,7 +582,7 @@
             box-shadow: 0 3px 10px rgba(0, 119, 163, 0.05);
             position: relative;
             overflow: hidden;
-            border: 1px solid #CBE7F9;
+            border: 1px solid var(--sky-100);
             width: 100%;
             text-align: left;
             cursor: pointer;
@@ -591,7 +591,7 @@
         .trainer-card:hover {
             transform: translateY(-1px);
             box-shadow: 0 6px 16px rgba(0, 161, 222, 0.12);
-            border-color: #7DD3FC;
+            border-color: var(--sky-100);
         }
 
         .trainer-card::before {
@@ -603,12 +603,12 @@
         }
 
         .lesson-group.completed-clip .trainer-card {
-            background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 70%, #DCFCE7 100%);
+            background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 70%, var(--ok-bg) 100%);
             border-color: #86EFAC;
         }
 
         .lesson-group.completed-clip .trainer-card::before {
-            background: linear-gradient(180deg, #10B981 0%, #059669 100%);
+            background: linear-gradient(180deg, var(--ok-mid) 0%, #059669 100%);
         }
 
         .card-content {
@@ -620,7 +620,7 @@
         .card-icon {
             width: 46px;
             height: 46px;
-            background: linear-gradient(135deg, #FFFFFF 0%, #E0F2FE 100%);
+            background: linear-gradient(135deg, #FFFFFF 0%, var(--sky-50) 100%);
             border-radius: 14px;
             display: flex;
             align-items: center;
@@ -688,7 +688,7 @@
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
             border-bottom-color: transparent;
-            background: linear-gradient(135deg, #EBF8FC 0%, #D6F1FA 100%);
+            background: linear-gradient(135deg, var(--sky-50) 0%, #D6F1FA 100%);
         }
 
         .lesson-group.open .arrow-icon {
@@ -701,9 +701,9 @@
             transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s ease;
             opacity: 0;
             background: var(--card-bg);
-            border-left: 1px solid #CBE7F9;
-            border-right: 1px solid #CBE7F9;
-            border-bottom: 1px solid #CBE7F9;
+            border-left: 1px solid var(--sky-100);
+            border-right: 1px solid var(--sky-100);
+            border-bottom: 1px solid var(--sky-100);
             border-bottom-left-radius: 16px;
             border-bottom-right-radius: 16px;
             position: relative;
@@ -736,7 +736,7 @@
             position: relative;
             width: 100%;
             aspect-ratio: 16 / 9;
-            background: #0F172A;
+            background: var(--sky-900);
             border-radius: 12px;
             overflow: hidden;
             border: 1px solid var(--border-color);
@@ -753,7 +753,7 @@
         .video-embed-box.locked {
             aspect-ratio: auto;
             min-height: 200px;
-            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            background: linear-gradient(135deg, var(--sky-900) 0%, var(--sky-900) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -794,7 +794,7 @@
         .paywall-desc {
             font-size: 0.75rem;
             font-weight: 600;
-            color: #CBD5E1;
+            color: var(--line);
             line-height: 1.45;
         }
 
@@ -845,7 +845,7 @@
         }
 
         .clip-quiz-box {
-            background: #F8FAFC;
+            background: var(--subtle);
             border: 1px dashed var(--kz-blue);
             border-radius: 14px;
             padding: 12px 14px;
@@ -884,7 +884,7 @@
         }
 
         .cq-btn {
-            background: #F8FAFC;
+            background: var(--subtle);
             border: 1px solid var(--border-color);
             border-radius: 9px;
             padding: 8px 11px;
@@ -908,9 +908,9 @@
         }
 
         .cq-btn.wrong {
-            background: #FEE2E2;
+            background: var(--err-bg);
             border-color: var(--red-accent);
-            color: #991B1B;
+            color: var(--err);
         }
 
         .cq-fb {
@@ -959,7 +959,7 @@
         }
 
         .modal-card {
-            background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+            background: linear-gradient(145deg, var(--sky-900) 0%, var(--sky-900) 100%);
             color: #FFFFFF;
             max-width: 460px;
             width: 100%;
@@ -1005,12 +1005,14 @@
             h1 { font-size: 1.15rem; }
         }
     </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body>
 
     <header>
         <div class="header-top-bar">
-            <a href="https://kazdoctors.com" class="back-btn" id="uiBackBtn">⬅️ На главную</a>
+            <a href="https://kazdoctors.com" class="back-btn" id="uiBackBtn">← На главную</a>
 
             <div class="lang-switch">
                 <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
@@ -1028,7 +1030,7 @@
         <!-- Трекер прохождения 7 видеонарезок вебинара -->
         <div class="progress-widget">
             <div class="pw-top-row">
-                <span id="uiProgLabel">📈 Прогресс разбора вебинара:</span>
+                <span id="uiProgLabel">Прогресс разбора вебинара:</span>
                 <span id="progressCountText" style="color:var(--kz-gold);">0 / 7 тем (0%)</span>
             </div>
             <div class="pw-bar-bg">
@@ -1042,7 +1044,7 @@
         <!-- ==================================================================
              1. ВЕРХНИЙ БЛОК: ОБЩИЙ ИНТЕРАКТИВНЫЙ КОНСПЕКТ И ПРОМПТЫ (PRO / PREMIUM / VIP)
              ================================================================== -->
-        <div class="section-label" id="uiSec1Label">📖 База знаний, Таблица баз и AI-промпты</div>
+        <div class="section-label" id="uiSec1Label">База знаний, Таблица баз и AI-промпты</div>
 
         <div class="master-guide-card">
             <div class="mg-top-row">
@@ -1069,7 +1071,7 @@
             </div>
 
             <button type="button" class="open-guide-btn" onclick="handleMasterGuideClick()" id="uiOpenGuideBtn">
-                📖 ОТКРЫТЬ ИНТЕРАКТИВНЫЙ КОНСПЕКТ ВЕБИНАРА ⌄
+                ОТКРЫТЬ ИНТЕРАКТИВНЫЙ КОНСПЕКТ ВЕБИНАРА ⌄
             </button>
         </div>
 
@@ -1091,7 +1093,7 @@
         <!-- ==================================================================
              2. НИЖНИЙ БЛОК: ПЛЕЙЛИСТ ВИДЕОНАРЕЗОК ВЕБИНАРА С ВОПРОСАМИ
              ================================================================== -->
-        <div class="section-label" id="uiSec2Label">🎬 Плейлист видеонарезок вебинара (с практикой)</div>
+        <div class="section-label" id="uiSec2Label">Плейлист видеонарезок вебинара (с практикой)</div>
 
         <div class="playlist-container" id="playlistContainer"></div>
 
@@ -1107,21 +1109,14 @@
                 Полный конспект со сравнительной таблицей баз данных, алгоритмом нелинейного чтения и готовыми AI-промптами доступен подписчикам тарифов «Про», «Премиум» и «ВИП».
             </p>
             <div class="paywall-actions" style="width:100%;">
-                <a href="https://kazdoctors.com/tarifs" class="paywall-btn tarifs">🌟 Перейти к тарифам</a>
-                <a href="https://wa.me/77081595038?text=Здравствуйте!%20Хочу%20открыть%20доступ%20к%20модулю%20Чтения%20статей" target="_blank" class="paywall-btn contact">💬 WhatsApp</a>
+                <a href="https://kazdoctors.com/tarifs" class="paywall-btn tarifs">Перейти к тарифам</a>
+                <a href="https://wa.me/77081595038?text=Здравствуйте!%20Хочу%20открыть%20доступ%20к%20модулю%20Чтения%20статей" target="_blank" class="paywall-btn contact">WhatsApp</a>
             </div>
-            <button type="button" onclick="closeGuidePaywall()" style="background:none; border:none; color:#94A3B8; font-size:0.76rem; font-weight:700; margin-top:4px; cursor:pointer;">Закрыть окно ✕</button>
+            <button type="button" onclick="closeGuidePaywall()" style="background:none; border:none; color:var(--line-2); font-size:0.76rem; font-weight:700; margin-top:4px; cursor:pointer;">Закрыть окно ✕</button>
         </div>
     </div>
 
-    <footer>
-        <a href="https://instagram.com/doctors.speak" target="_blank" class="instagram-link">
-            <span>📸 Instagram @doctors.speak</span>
-        </a>
-        <a href="https://kazdoctors.com" class="back-btn">
-            <span>⬅️ Go back</span>
-        </a>
-    </footer>
+    <div id="ds-footer"></div>
 
     <script>
         // =========================================================================
@@ -1183,7 +1178,7 @@
             standard: "STANDARD",
             pro: "PRO",
             premium: "PREMIUM",
-            vip: "VIP 👑"
+            vip: "VIP"
         };
 
         let currentUserTier = "none";
@@ -1268,7 +1263,7 @@
         // =========================================================================
         const MODULE_DATA = {
             ui: {
-                backBtn: { ru: "⬅️ На главную", kz: "⬅️ Басты бетке" },
+                backBtn: { ru: "← На главную", kz: "← Басты бетке" },
                 mainTitle: {
                     ru: "Как искать и читать медицинские статьи на английском",
                     kz: "Ағылшын тіліндегі медициналық мақалаларды қалай іздеу және оқу керек?"
@@ -1278,12 +1273,12 @@
                     kz: "PubMed • Cochrane • UpToDate • Сыни бағалау • Сызықтық емес оқу және ЖИ"
                 },
                 progLabel: {
-                    ru: "📈 Прогресс разбора вебинара:",
-                    kz: "📈 Вебинарды меңгеру прогресі:"
+                    ru: "Прогресс разбора вебинара:",
+                    kz: "Вебинарды меңгеру прогресі:"
                 },
                 sec1Label: {
-                    ru: "📖 База знаний, Таблица баз и AI-промпты (PRO / PREMIUM / VIP)",
-                    kz: "📖 Білім базасы, Дерекқорлар кестесі және AI-промпттар (PRO / PREMIUM / VIP)"
+                    ru: "База знаний, Таблица баз и AI-промпты (PRO / PREMIUM / VIP)",
+                    kz: "Білім базасы, Дерекқорлар кестесі және AI-промпттар (PRO / PREMIUM / VIP)"
                 },
                 guideTitle: {
                     ru: "Полный интерактивный конспект: Поиск, Оценка и Чтение статей",
@@ -1294,12 +1289,12 @@
                     kz: "Вебинардың толық конспектісі: 9 медициналық базаның салыстырмалы кестесі, сенімділік чек-парағы, 5 қадамдық оқу стратегиясы және ChatGPT-ге арналған 6 дайын промпт."
                 },
                 openGuideBtn: {
-                    ru: "📖 ОТКРЫТЬ ИНТЕРАКТИВНЫЙ КОНСПЕКТ ВЕБИНАРА ⌄",
-                    kz: "📖 ВЕБИНАРДЫҢ ИНТЕРАКТИВТІ КОНСПЕКТІСІН АШУ ⌄"
+                    ru: "ОТКРЫТЬ ИНТЕРАКТИВНЫЙ КОНСПЕКТ ВЕБИНАРА ⌄",
+                    kz: "ВЕБИНАРДЫҢ ИНТЕРАКТИВТІ КОНСПЕКТІСІН АШУ ⌄"
                 },
                 closeGuideBtn: {
-                    ru: "🔼 СВЕРНУТЬ ИНТЕРАКТИВНЫЙ КОНСПЕКТ",
-                    kz: "🔼 ИНТЕРАКТИВТІ КОНСПЕКТІНІ ЖАБУ"
+                    ru: "СВЕРНУТЬ ИНТЕРАКТИВНЫЙ КОНСПЕКТ",
+                    kz: "ИНТЕРАКТИВТІ КОНСПЕКТІНІ ЖАБУ"
                 },
                 guideTabs: [
                     { ru: "1. Где искать (9 баз)", kz: "1. Қайдан іздеу (9 база)" },
@@ -1308,8 +1303,8 @@
                     { ru: "4. Бонус: ИИ и 6 Промптов", kz: "4. Бонус: ЖИ және 6 Промпт" }
                 ],
                 sec2Label: {
-                    ru: "🎬 Плейлист видеонарезок вебинара (с вопросами для закрепления)",
-                    kz: "🎬 Вебинардың видео-үзінділер плейлисті (бекіту сұрақтарымен)"
+                    ru: "Плейлист видеонарезок вебинара (с вопросами для закрепления)",
+                    kz: "Вебинардың видео-үзінділер плейлисті (бекіту сұрақтарымен)"
                 }
             },
 
@@ -1317,7 +1312,7 @@
             guideTab0Html: {
                 ru: `
                     <div class="guide-box">
-                        <h3>🎯 Главная цель чтения научных статей для врача</h3>
+                        <h3>Главная цель чтения научных статей для врача</h3>
                         <p><b>Цель — решить конкретный клинический или научный вопрос, а не просто «прочитать статью»!</b> Статьи позволяют:</p>
                         <ul>
                             <li>Иметь актуальные и достоверные знания и находить современные схемы лечения по вашей специальности;</li>
@@ -1327,12 +1322,12 @@
                     </div>
 
                     <div class="guide-box gold">
-                        <h3>🧭 Готовые маршруты поиска под вашу задачу</h3>
+                        <h3>Готовые маршруты поиска под вашу задачу</h3>
                         <ul>
-                            <li>📝 <b>Если пишете научную статью:</b> PubMed ➔ Google Scholar ➔ ScienceDirect ➔ Cochrane</li>
-                            <li>🩺 <b>Если нужен быстрый клинический ответ у постели пациента:</b> UpToDate ➔ Cochrane ➔ ClinicalKey</li>
+                            <li><b>Если пишете научную статью:</b> PubMed ➔ Google Scholar ➔ ScienceDirect ➔ Cochrane</li>
+                            <li><b>Если нужен быстрый клинический ответ у постели пациента:</b> UpToDate ➔ Cochrane ➔ ClinicalKey</li>
                             <li>🔓 <b>Если статья закрыта (нет Full Text):</b> ResearchGate (написать авторам напрямую) / PubMed Central</li>
-                            <li>📋 <b>Если нужен клинический протокол (Guideline):</b> NHS / национальные и международные рекомендации</li>
+                            <li><b>Если нужен клинический протокол (Guideline):</b> NHS / национальные и международные рекомендации</li>
                         </ul>
                     </div>
 
@@ -1363,7 +1358,7 @@
                 `,
                 kz: `
                     <div class="guide-box">
-                        <h3>🎯 Дәрігер үшін ғылыми мақалаларды оқудың басты мақсаты</h3>
+                        <h3>Дәрігер үшін ғылыми мақалаларды оқудың басты мақсаты</h3>
                         <p><b>Мақсат — жай ғана «мақаланы оқып шығу» емес, нақты клиникалық немесе ғылыми сұрақты шешу!</b> Мақалалар мүмкіндік береді:</p>
                         <ul>
                             <li>Өз мамандығыңыз бойынша ең заманауи әрі дәлелді емдеу әдістерін табуға;</li>
@@ -1373,12 +1368,12 @@
                     </div>
 
                     <div class="guide-box gold">
-                        <h3>🧭 Мақсатыңызға сай дайын іздеу маршруттары</h3>
+                        <h3>Мақсатыңызға сай дайын іздеу маршруттары</h3>
                         <ul>
-                            <li>📝 <b>Егер ғылыми мақала жазсаңыз:</b> PubMed ➔ Google Scholar ➔ ScienceDirect ➔ Cochrane</li>
-                            <li>🩺 <b>Науқас жанында жедел клиникалық жауап қажет болса:</b> UpToDate ➔ Cochrane ➔ ClinicalKey</li>
+                            <li><b>Егер ғылыми мақала жазсаңыз:</b> PubMed ➔ Google Scholar ➔ ScienceDirect ➔ Cochrane</li>
+                            <li><b>Науқас жанында жедел клиникалық жауап қажет болса:</b> UpToDate ➔ Cochrane ➔ ClinicalKey</li>
                             <li>🔓 <b>Егер толық мәтін (Full Text) жабық болса:</b> ResearchGate (авторлардан тікелей сұрау) / PubMed Central</li>
-                            <li>📋 <b>Клиникалық хаттама (Guideline) қажет болса:</b> NHS / халықаралық ұсынымдар</li>
+                            <li><b>Клиникалық хаттама (Guideline) қажет болса:</b> NHS / халықаралық ұсынымдар</li>
                         </ul>
                     </div>
 
@@ -1426,7 +1421,7 @@
                             <li><b>4. Смотрим на цель исследования:</b> ищем фразу-маркер <i>«This study aimed to... / The aim is to clarify...»</i>.</li>
                             <li><b>5. Оцениваем результаты и метод сбора данных в Abstract.</b></li>
                         </ul>
-                        <p style="margin-top:8px;">💡 <b>С чего начинать?</b> Если вы еще не погрузились в тему — начинайте с <b>Literature Review & Meta-analysis</b>. Если ищете конкретные цифры и узкие данные — переходите к <b>оригинальным исследованиям (Original Research)</b>.</p>
+                        <p style="margin-top:8px;"><b>С чего начинать?</b> Если вы еще не погрузились в тему — начинайте с <b>Literature Review & Meta-analysis</b>. Если ищете конкретные цифры и узкие данные — переходите к <b>оригинальным исследованиям (Original Research)</b>.</p>
                     </div>
 
                     <div class="guide-box green">
@@ -1441,7 +1436,7 @@
                     </div>
 
                     <div class="guide-box red">
-                        <h3>🚩 Что должно насторожить врача («Красные флаги» плохих статей)</h3>
+                        <h3>Что должно насторожить врача («Красные флаги» плохих статей)</h3>
                         <ul>
                             <li>Много громких выводов при минимуме реальных данных;</li>
                             <li>Нет статистической значимости или статистический анализ проведен некорректно;</li>
@@ -1453,7 +1448,7 @@
                 `,
                 kz: `
                     <div class="guide-box">
-                        <h3>🔍 Мақаланы бастапқы іріктеудің 5 қадамы (2 минуттық скрининг)</h3>
+                        <h3>Мақаланы бастапқы іріктеудің 5 қадамы (2 минуттық скрининг)</h3>
                         <ul>
                             <li><b>1. Title (Тақырыпты) оқимыз:</b> сіздің сұранысыңызға сәйкес келе ме?</li>
                             <li><b>2. Дереккөздің сенімділігін тексереміз:</b>
@@ -1466,7 +1461,7 @@
                             <li><b>4. Зерттеу мақсатына қараймыз:</b> <i>«This study aimed to... / The aim is to clarify...»</i> маркерін іздейміз.</li>
                             <li><b>5. Abstract ішіндегі нәтижелер мен дерек жинау әдісін бағалаймыз.</b></li>
                         </ul>
-                        <p style="margin-top:8px;">💡 <b>Неден бастау керек?</b> Тақырыппен жаңа танысып жатсаңыз — <b>Literature Review & Meta-analysis</b>-тен бастаңыз. Нақты деректер іздесеңіз — <b>түпнұсқалық зерттеулерді (Original Research)</b> ашыңыз.</p>
+                        <p style="margin-top:8px;"><b>Неден бастау керек?</b> Тақырыппен жаңа танысып жатсаңыз — <b>Literature Review & Meta-analysis</b>-тен бастаңыз. Нақты деректер іздесеңіз — <b>түпнұсқалық зерттеулерді (Original Research)</b> ашыңыз.</p>
                     </div>
 
                     <div class="guide-box green">
@@ -1481,7 +1476,7 @@
                     </div>
 
                     <div class="guide-box red">
-                        <h3>🚩 Дәрігерді не секемдендіруі керек («Қызыл жалаушалар»)</h3>
+                        <h3>Дәрігерді не секемдендіруі керек («Қызыл жалаушалар»)</h3>
                         <ul>
                             <li>Деректер аз, бірақ тым «қатты» әрі көп қорытынды жасалған;</li>
                             <li>Статистикалық маңыздылығы жоқ немесе статистикасы күмәнді;</li>
@@ -1496,7 +1491,7 @@
             guideTab2Html: {
                 ru: `
                     <div class="guide-box">
-                        <h3>⚡ Пошаговая стратегия нелинейного чтения статьи (5 шагов)</h3>
+                        <h3>Пошаговая стратегия нелинейного чтения статьи (5 шагов)</h3>
                         <p>Опытные клиницисты и ученые <b>никогда не читают статью линейно</b> от первого до последнего слова. Читайте в таком порядке:</p>
                         <ul>
                             <li><b>Шаг 1. Abstract:</b> понять, нужна ли статья и достоверна ли она. Внутри самого абстракта читаем в порядке: <b>сначала Вывод (последние строки) ➔ потом Цель (Aim) ➔ потом Результаты (Findings) ➔ потом Методы (Methods)</b>.</li>
@@ -1508,7 +1503,7 @@
                     </div>
 
                     <div class="guide-box gold">
-                        <h3>🌱 Что делать, если у вас начинающий уровень английского (Beginner)?</h3>
+                        <h3>Что делать, если у вас начинающий уровень английского (Beginner)?</h3>
                         <ul>
                             <li><b>Не учите «английский вообще» — учите научный минимум!</b> Понимание науки важнее идеального знания языка, а навык чтения статей развивается гораздо быстрее разговорной речи.</li>
                             <li><b>Сконцентрируйтесь на 3 вещах:</b>
@@ -1523,7 +1518,7 @@
                 `,
                 kz: `
                     <div class="guide-box">
-                        <h3>⚡ Мақаланы сызықтық емес оқудың 5 қадамдық стратегиясы</h3>
+                        <h3>Мақаланы сызықтық емес оқудың 5 қадамдық стратегиясы</h3>
                         <p>Тәжірибелі дәрігерлер мақаланы басынан аяғына дейін <b>сызықтық түрде оқымайды</b>. Оқу реті мынадай болуы керек:</p>
                         <ul>
                             <li><b>1-қадам. Abstract:</b> мақаланың қажеттілігі мен сенімділігін түсіну. Абстракт ішіндегі реттілік: <b>алдымен Қорытынды (соңғы сөйлемдер) ➔ сосын Мақсат (Aim) ➔ сосын Нәтижелер (Findings) ➔ соңында Әдістер (Methods)</b>.</li>
@@ -1535,7 +1530,7 @@
                     </div>
 
                     <div class="guide-box gold">
-                        <h3>🌱 Ағылшын тілі деңгейіңіз бастапқы (Beginner) болса не істеу керек?</h3>
+                        <h3>Ағылшын тілі деңгейіңіз бастапқы (Beginner) болса не істеу керек?</h3>
                         <ul>
                             <li><b>«Жалпы ағылшынды» емес — ғылыми минимумды үйреніңіз!</b> Ғылым логикасын түсіну тілді мінсіз білуден маңыздырақ, ал оқу дағдысы сөйлеуден әлдеқайда тез дамиды.</li>
                             <li><b>Назарды 3 нәрсеге шоғырландырыңыз:</b>
@@ -1593,8 +1588,8 @@
                         kz: "Заманауи емдеу әдістері, сыни ойлау және гайдлайндарды тексеру (3-слайд)"
                     },
                     summary: {
-                        ru: "💡 Главная цель врача — решить конкретный клинический или научный вопрос, а не просто «прочитать статью» ради галочки.",
-                        kz: "💡 Дәрігердің басты мақсаты — жай ғана «мақала оқу» емес, нақты клиникалық немесе ғылыми сұрақты шешу."
+                        ru: "Главная цель врача — решить конкретный клинический или научный вопрос, а не просто «прочитать статью» ради галочки.",
+                        kz: "Дәрігердің басты мақсаты — жай ғана «мақала оқу» емес, нақты клиникалық немесе ғылыми сұрақты шешу."
                     },
                     quiz: [
                         {
@@ -1658,8 +1653,8 @@
                         kz: "PubMed, Cochrane, UpToDate, Google Scholar, ScienceDirect, ResearchGate (4–7 слайдтар)"
                     },
                     summary: {
-                        ru: "💡 Для быстрых решений у постели пациента: UpToDate -> Cochrane -> ClinicalKey. Для написания своей статьи: PubMed -> Google Scholar -> ScienceDirect -> Cochrane.",
-                        kz: "💡 Науқас жанында жедел шешім үшін: UpToDate -> Cochrane -> ClinicalKey. Ал мақала жазу үшін: PubMed -> Google Scholar -> ScienceDirect -> Cochrane."
+                        ru: "Для быстрых решений у постели пациента: UpToDate -> Cochrane -> ClinicalKey. Для написания своей статьи: PubMed -> Google Scholar -> ScienceDirect -> Cochrane.",
+                        kz: "Науқас жанында жедел шешім үшін: UpToDate -> Cochrane -> ClinicalKey. Ал мақала жазу үшін: PubMed -> Google Scholar -> ScienceDirect -> Cochrane."
                     },
                     quiz: [
                         {
@@ -1723,8 +1718,8 @@
                         kz: "Impact Factor, Peer-review, авторлардың H-index көрсеткіші (8–10 слайдтар)"
                     },
                     summary: {
-                        ru: "💡 Сначала проверяем заголовок, качество журнала (Impact Factor, peer-reviewed), год, цитирования и H-index авторов, а затем читаем последние предложения Abstract.",
-                        kz: "💡 Алдымен тақырыпты, журнал сапасын (Impact Factor, peer-reviewed), жылын, цитата санын және авторлардың H-index-ін тексеріп, сосын Abstract-тың соңғы сөйлемдерін оқимыз."
+                        ru: "Сначала проверяем заголовок, качество журнала (Impact Factor, peer-reviewed), год, цитирования и H-index авторов, а затем читаем последние предложения Abstract.",
+                        kz: "Алдымен тақырыпты, журнал сапасын (Impact Factor, peer-reviewed), жылын, цитата санын және авторлардың H-index-ін тексеріп, сосын Abstract-тың соңғы сөйлемдерін оқимыз."
                     },
                     quiz: [
                         {
@@ -1788,8 +1783,8 @@
                         kz: "Тексерудің 6 міндетті пункті және сапасыз мақалалардың белгілері (11–12 слайдтар)"
                     },
                     summary: {
-                        ru: "💡 Всегда проверяйте: Aim, Population, Intervention vs Control, Primary Outcome, p-value и Limitations. Остерегайтесь статей с громкими заявлениями без статистической значимости!",
-                        kz: "💡 Әрқашан тексеріңіз: Aim, Population, Intervention vs Control, Primary Outcome, p-value және Limitations."
+                        ru: "Всегда проверяйте: Aim, Population, Intervention vs Control, Primary Outcome, p-value и Limitations. Остерегайтесь статей с громкими заявлениями без статистической значимости!",
+                        kz: "Әрқашан тексеріңіз: Aim, Population, Intervention vs Control, Primary Outcome, p-value және Limitations."
                     },
                     quiz: [
                         {
@@ -1853,8 +1848,8 @@
                         kz: "Неліктен мақаланы сызықтық оқуға болмайды және кестелерді мәтіннен бұрын қарау керек (13–14 слайдтар)"
                     },
                     summary: {
-                        ru: "💡 Порядок чтения: 1) Abstract -> 2) Conclusion -> 3) Figures & Tables (цифры раньше текста!) -> 4) Results -> 5) Discussion (что авторы думают, а не что доказали).",
-                        kz: "💡 Оқу реті: 1) Abstract -> 2) Conclusion -> 3) Figures & Tables (сандар мәтіннен бұрын!) -> 4) Results -> 5) Discussion."
+                        ru: "Порядок чтения: 1) Abstract -> 2) Conclusion -> 3) Figures & Tables (цифры раньше текста!) -> 4) Results -> 5) Discussion (что авторы думают, а не что доказали).",
+                        kz: "Оқу реті: 1) Abstract -> 2) Conclusion -> 3) Figures & Tables (сандар мәтіннен бұрын!) -> 4) Results -> 5) Discussion."
                     },
                     quiz: [
                         {
@@ -1918,8 +1913,8 @@
                         kz: "Бастаушыларға неге көңіл бөлу керек, аудармашыны қолдану және 2 рет оқу ережесі (15–18 слайдтар)"
                     },
                     summary: {
-                        ru: "💡 Понимание науки важнее знания языка! Фокусируйтесь на глаголах и логических связках (however, therefore), переводите целые предложения (а не отдельные слова) и читайте статью дважды.",
-                        kz: "💡 Ғылымды түсіну тілді білуден маңыздырақ! Етістіктер мен логикалық байланыстарға (however, therefore) мән беріңіз, тұтас сөйлемдерді аударыңыз және мақаланы 2 рет оқыңыз."
+                        ru: "Понимание науки важнее знания языка! Фокусируйтесь на глаголах и логических связках (however, therefore), переводите целые предложения (а не отдельные слова) и читайте статью дважды.",
+                        kz: "Ғылымды түсіну тілді білуден маңыздырақ! Етістіктер мен логикалық байланыстарға (however, therefore) мән беріңіз, тұтас сөйлемдерді аударыңыз және мақаланы 2 рет оқыңыз."
                     },
                     quiz: [
                         {
@@ -1983,8 +1978,8 @@
                         kz: "Ғылымдағы ЖИ галлюцинацияларының қаупі және ағылшын тілін оқуға арналған 6 дайын промпт (20–21 слайдтар)"
                     },
                     summary: {
-                        ru: "💡 ИИ отлично помогает разбирать грамматику и тренировать диалоги «Врач-Пациент», но при чтении научных статей может галлюцинировать и выдумывать несуществующие источники!",
-                        kz: "💡 ЖИ ағылшын тілін үйренуге тамаша көмектеседі, бірақ ғылыми мақалаларды талдағанда галлюцинация беріп, жоқ дереккөздерді ойдан шығаруы мүмкін!"
+                        ru: "ИИ отлично помогает разбирать грамматику и тренировать диалоги «Врач-Пациент», но при чтении научных статей может галлюцинировать и выдумывать несуществующие источники!",
+                        kz: "ЖИ ағылшын тілін үйренуге тамаша көмектеседі, бірақ ғылыми мақалаларды талдағанда галлюцинация беріп, жоқ дереккөздерді ойдан шығаруы мүмкін!"
                     },
                     quiz: [
                         {
@@ -2084,7 +2079,7 @@
             `;
 
             MODULE_DATA.aiPrompts.forEach((p, idx) => {
-                const copyLabel = isKz ? "📋 Промптты көшіру" : "📋 Скопировать промпт";
+                const copyLabel = isKz ? "Промптты көшіру" : "Скопировать промпт";
                 html += `
                     <div class="prompt-card">
                         <div class="prompt-top">
@@ -2163,7 +2158,7 @@
                                 <p class="paywall-desc">${lockDesc}</p>
                                 <div class="paywall-actions">
                                     <a href="https://kazdoctors.com/tarifs" class="paywall-btn tarifs">🌟 ${isKz ? "Тарифтер (Премиум / ВИП)" : "Тарифы (Премиум / ВИП)"}</a>
-                                    <a href="https://wa.me/77081595038?text=Здравствуйте!%20Хочу%20подключить%20тариф%20Премиум%20для%20просмотра%20видео" target="_blank" class="paywall-btn contact">💬 WhatsApp</a>
+                                    <a href="https://wa.me/77081595038?text=Здравствуйте!%20Хочу%20подключить%20тариф%20Премиум%20для%20просмотра%20видео" target="_blank" class="paywall-btn contact">WhatsApp</a>
                                 </div>
                             </div>
                         </div>

@@ -40,7 +40,7 @@
             min-height: 100vh;
             min-height: 100dvh;
             overflow-y: auto;
-            background: radial-gradient(circle at top, #EBF8FC 0%, var(--bg-main) 65%);
+            background: radial-gradient(circle at top, var(--sky-50) 0%, var(--bg-main) 65%);
             color: var(--text-dark);
             display: flex;
             flex-direction: column;
@@ -52,7 +52,7 @@
         header {
             position: relative;
             z-index: 10;
-            background: linear-gradient(145deg, #0077A3 0%, var(--kz-blue) 58%, #15B2E8 100%);
+            background: linear-gradient(145deg, var(--sky-900) 0%, var(--kz-blue) 58%, var(--sky-500) 100%);
             color: #FFFFFF;
             text-align: center;
             padding: 18px 16px 22px 16px;
@@ -199,7 +199,7 @@
         .pw-bar-fill {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, var(--kz-gold) 0%, #34D399 100%);
+            background: linear-gradient(90deg, var(--kz-gold) 0%, var(--ok-mid) 100%);
             border-radius: 10px;
             transition: width 0.35s ease;
         }
@@ -222,7 +222,7 @@
            УМНЫЙ МАРКЕТИНГОВЫЙ БЛОК (СКРЫВАЕТСЯ ДЛЯ PRO, PREMIUM И VIP)
            ========================================================================== */
         .smart-promo-card {
-            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            background: linear-gradient(135deg, var(--sky-900) 0%, var(--sky-900) 100%);
             color: #FFFFFF;
             border-radius: 20px;
             padding: 16px 18px;
@@ -262,7 +262,7 @@
 
         .sp-desc {
             font-size: 0.77rem;
-            color: #CBD5E1;
+            color: var(--line);
             line-height: 1.45;
             font-weight: 500;
         }
@@ -294,11 +294,11 @@
 
         .sp-step-btn:hover {
             background: rgba(0, 161, 222, 0.25);
-            border-color: #7DD3FC;
+            border-color: var(--sky-100);
         }
 
         .sp-step-btn.gold-cta {
-            background: linear-gradient(135deg, var(--kz-gold) 0%, #FFD55A 100%);
+            background: linear-gradient(135deg, var(--kz-gold) 0%, var(--sun-500) 100%);
             color: var(--text-dark);
             border-color: var(--kz-gold-dark);
             font-weight: 900;
@@ -330,7 +330,7 @@
             font-size: 0.68rem;
             font-weight: 800;
             background: var(--kz-gold-light);
-            color: #B45309;
+            color: var(--sun-ink);
             padding: 3px 9px;
             border-radius: 10px;
             text-transform: uppercase;
@@ -362,7 +362,7 @@
 
         .mq-opt-btn {
             flex: 1 1 130px;
-            background: #F8FAFC;
+            background: var(--subtle);
             border: 1px solid var(--border-color);
             border-radius: 10px;
             padding: 8px 10px;
@@ -385,9 +385,9 @@
         }
 
         .mq-opt-btn.wrong {
-            background: #FEE2E2;
-            border-color: #EF4444;
-            color: #991B1B;
+            background: var(--err-bg);
+            border-color: var(--err-mid);
+            color: var(--err);
         }
 
         .mq-feedback {
@@ -440,7 +440,7 @@
         }
 
         details.category-box.cat-free summary.category-summary::before {
-            background: linear-gradient(180deg, #10B981 0%, #059669 100%);
+            background: linear-gradient(180deg, var(--ok-mid) 0%, #059669 100%);
         }
 
         details.category-box.cat-exam summary.category-summary::before {
@@ -462,7 +462,7 @@
             width: 44px;
             height: 44px;
             border-radius: 13px;
-            background: linear-gradient(135deg, #EBF8FC 0%, #D6F1FA 100%);
+            background: linear-gradient(135deg, var(--sky-50) 0%, #D6F1FA 100%);
             border: 1px solid rgba(0, 161, 222, 0.2);
             display: flex;
             align-items: center;
@@ -501,14 +501,14 @@
         }
 
         .cat-pill.green {
-            background: #DCFCE7;
-            color: #15803D;
+            background: var(--ok-bg);
+            color: var(--ok);
             border-color: #86EFAC;
         }
 
         .cat-pill.gold {
             background: var(--kz-gold-light);
-            color: #B45309;
+            color: var(--sun-ink);
             border-color: rgba(217, 160, 0, 0.35);
         }
 
@@ -542,7 +542,7 @@
 
         .category-content {
             padding: 14px;
-            background: #F8FAFC;
+            background: var(--subtle);
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -562,7 +562,7 @@
 
         .range-btn {
             border: 1px solid transparent;
-            background: #F1F5F9;
+            background: var(--subtle);
             color: var(--text-muted);
             font-weight: 800;
             font-size: 0.72rem;
@@ -602,7 +602,7 @@
             box-shadow: 0 3px 10px rgba(0, 119, 163, 0.05);
             position: relative;
             overflow: hidden;
-            border: 1px solid #CBE7F9;
+            border: 1px solid var(--sky-100);
             width: 100%;
             text-align: left;
             cursor: pointer;
@@ -611,7 +611,7 @@
         .trainer-card:hover {
             transform: translateY(-1px);
             box-shadow: 0 6px 16px rgba(0, 161, 222, 0.12);
-            border-color: #7DD3FC;
+            border-color: var(--sky-100);
         }
 
         .trainer-card::before {
@@ -626,25 +626,25 @@
 
         /* Отмеченный пройденным урок */
         .lesson-group.completed-lesson .trainer-card {
-            background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 70%, #DCFCE7 100%);
+            background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 70%, var(--ok-bg) 100%);
             border-color: #86EFAC;
         }
 
         .lesson-group.completed-lesson .trainer-card::before {
-            background: linear-gradient(180deg, #10B981 0%, #059669 100%);
+            background: linear-gradient(180deg, var(--ok-mid) 0%, #059669 100%);
         }
 
         .trainer-card.chunks-card {
-            background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 60%, #DCFCE7 100%);
+            background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 60%, var(--ok-bg) 100%);
             border-color: #86EFAC;
         }
 
         .trainer-card.chunks-card::before {
-            background: linear-gradient(180deg, #10B981 0%, #059669 100%);
+            background: linear-gradient(180deg, var(--ok-mid) 0%, #059669 100%);
         }
 
         .trainer-card.exam-card {
-            background: linear-gradient(135deg, #FFFFFF 0%, #FFFBEB 60%, #FEF3C7 100%);
+            background: linear-gradient(135deg, #FFFFFF 0%, var(--sun-50) 60%, #FEF3C7 100%);
             border-color: #FCD34D;
         }
 
@@ -661,7 +661,7 @@
         .card-icon {
             width: 46px;
             height: 46px;
-            background: linear-gradient(135deg, #FFFFFF 0%, #E0F2FE 100%);
+            background: linear-gradient(135deg, #FFFFFF 0%, var(--sky-50) 100%);
             border-radius: 14px;
             display: flex;
             align-items: center;
@@ -673,7 +673,7 @@
         }
 
         .chunks-card .card-icon, .lesson-group.completed-lesson .card-icon {
-            background: linear-gradient(135deg, #FFFFFF 0%, #D1FAE5 100%);
+            background: linear-gradient(135deg, #FFFFFF 0%, var(--ok-bg) 100%);
             border-color: rgba(16, 185, 129, 0.3);
         }
 
@@ -714,7 +714,7 @@
 
         .free-pill-tag {
             display: inline-block;
-            background: #10B981;
+            background: var(--ok-mid);
             color: #FFFFFF;
             font-size: 0.62rem;
             font-weight: 800;
@@ -726,8 +726,8 @@
 
         .done-pill-tag {
             display: none;
-            background: #DCFCE7;
-            color: #15803D;
+            background: var(--ok-bg);
+            color: var(--ok);
             border: 1px solid #86EFAC;
             font-size: 0.62rem;
             font-weight: 800;
@@ -759,7 +759,7 @@
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
             border-bottom-color: transparent;
-            background: linear-gradient(135deg, #EBF8FC 0%, #D6F1FA 100%);
+            background: linear-gradient(135deg, var(--sky-50) 0%, #D6F1FA 100%);
         }
 
         .lesson-group.open .arrow-icon {
@@ -772,9 +772,9 @@
             transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s ease;
             opacity: 0;
             background: var(--card-bg);
-            border-left: 1px solid #CBE7F9;
-            border-right: 1px solid #CBE7F9;
-            border-bottom: 1px solid #CBE7F9;
+            border-left: 1px solid var(--sky-100);
+            border-right: 1px solid var(--sky-100);
+            border-bottom: 1px solid var(--sky-100);
             border-bottom-left-radius: 16px;
             border-bottom-right-radius: 16px;
             position: relative;
@@ -808,7 +808,7 @@
             position: relative;
             width: 100%;
             aspect-ratio: 16 / 9;
-            background: #0F172A;
+            background: var(--sky-900);
             border-radius: 12px;
             overflow: hidden;
             border: 1px solid var(--border-color);
@@ -826,7 +826,7 @@
         .video-embed-box.locked, .listening-video-box.locked {
             aspect-ratio: auto;
             min-height: 195px;
-            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            background: linear-gradient(135deg, var(--sky-900) 0%, var(--sky-900) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -868,7 +868,7 @@
         .paywall-desc {
             font-size: 0.75rem;
             font-weight: 600;
-            color: #CBD5E1;
+            color: var(--line);
             line-height: 1.45;
         }
 
@@ -911,7 +911,7 @@
         .paywall-login-link {
             font-size: 0.72rem;
             font-weight: 700;
-            color: #94A3B8;
+            color: var(--line-2);
             text-decoration: underline;
             margin-top: 2px;
         }
@@ -926,7 +926,7 @@
             font-size: 0.8rem;
             font-weight: 700;
             color: var(--text-dark);
-            background: #F8FAFC;
+            background: var(--subtle);
             border: 1px solid var(--border-color);
             transition: all 0.15s ease;
             cursor: pointer;
@@ -940,17 +940,17 @@
 
         .sub-link.locked-resource {
             opacity: 0.82;
-            background: #F8FAFC;
+            background: var(--subtle);
         }
 
         .sub-link.locked-resource .sub-badge {
             background: #FEF3C7;
-            color: #B45309;
+            color: var(--sun-ink);
             border-color: #FCD34D;
         }
 
         .sub-link.primary-trainer {
-            background: linear-gradient(90deg, var(--kz-blue-light) 0%, #E0F2FE 100%);
+            background: linear-gradient(90deg, var(--kz-blue-light) 0%, var(--sky-50) 100%);
             color: var(--kz-blue-dark);
             border-color: rgba(0, 161, 222, 0.3);
         }
@@ -959,7 +959,7 @@
         details.listening-dropdown {
             border-radius: 10px;
             border: 1px solid var(--border-color);
-            background: #F8FAFC;
+            background: var(--subtle);
             overflow: hidden;
             transition: all 0.2s ease;
         }
@@ -1000,7 +1000,7 @@
 
         details.listening-dropdown.locked-listening .listening-badge {
             background: #FEF3C7;
-            color: #B45309;
+            color: var(--sun-ink);
             border-color: #FCD34D;
         }
 
@@ -1145,14 +1145,16 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body class="lang-ru">
 
     <header>
         <div class="header-top-bar">
             <a href="https://kazdoctors.com" class="back-btn">
-                <span lang-val="ru">⬅️ На главную</span>
-                <span lang-val="kz">⬅️ Басты бетке</span>
+                <span lang-val="ru">← На главную</span>
+                <span lang-val="kz">← Басты бетке</span>
             </a>
 
             <div class="lang-switch">
@@ -1170,7 +1172,7 @@
         <!-- Трекер прогресса врача по 15 модулям -->
         <div class="progress-widget">
             <div class="pw-top-row">
-                <span id="uiProgTitle">📈 Ваш личный прогресс курса:</span>
+                <span id="uiProgTitle">Ваш личный прогресс курса:</span>
                 <span id="progressCountText" style="color:var(--kz-gold);">0 / 15 уроков (0%)</span>
             </div>
             <div class="pw-bar-bg">
@@ -1186,7 +1188,7 @@
              ================================================================== -->
         <div class="smart-promo-card" id="smartPromoCard">
             <div class="sp-top">
-                <span class="sp-badge" id="spBadge">🚀 КАК ЗАГОВОРИТЬ НА МЕДИЦИНСКОМ АНГЛИЙСКОМ</span>
+                <span class="sp-badge" id="spBadge">КАК ЗАГОВОРИТЬ НА МЕДИЦИНСКОМ АНГЛИЙСКОМ</span>
             </div>
             <div class="sp-title" id="spTitle">Попробуйте 2 бесплатных модуля прямо сейчас или откройте все 15 уроков курса!</div>
             <div class="sp-desc" id="spDesc">
@@ -1194,15 +1196,15 @@
             </div>
             <div class="sp-steps">
                 <a href="./chunks/" class="sp-step-btn">
-                    <span>1️⃣ Бесплатно: Метод Чанков</span>
+                    <span>1. Бесплатно: Метод Чанков</span>
                     <span>➔</span>
                 </a>
                 <button type="button" class="sp-step-btn" onclick="openDemoLesson8()">
-                    <span>2️⃣ Бесплатный Урок №8</span>
+                    <span>2. Бесплатный Урок №8</span>
                     <span>➔</span>
                 </a>
                 <a href="https://kazdoctors.com/tarifs" class="sp-step-btn gold-cta" id="spMainCta">
-                    <span>💎 Открыть все 15 уроков</span>
+                    <span>Открыть все 15 уроков</span>
                     <span>➔</span>
                 </a>
             </div>
@@ -1213,7 +1215,7 @@
              ================================================================== -->
         <div class="micro-quiz-card">
             <div class="mq-header">
-                <span class="mq-badge" id="mqBadge">⚡ Клинический блиц-тест (30 сек)</span>
+                <span class="mq-badge" id="mqBadge">Клинический блиц-тест (30 сек)</span>
                 <button type="button" class="mq-next-btn" onclick="nextMicroQuiz()" id="mqNextBtn">Следующий вопрос ↻</button>
             </div>
             <div class="mq-question" id="mqQuestion">Loading...</div>
@@ -1347,13 +1349,13 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson1" class="sub-link theory-link" data-lesson="1">
-                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-link-left">Интерактивный конспект (RU / KZ)</span>
                                 <span class="sub-badge">Теория + Кейс</span>
                             </a>
                             <!-- Listening орысша (Урок 1) -->
                             <details class="listening-dropdown" data-lesson="1">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (орысша)</span>
+                                    <span class="sub-link-left">Listening (орысша)</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -1373,7 +1375,7 @@
                             <!-- Listening қазақша (Урок 1) -->
                             <details class="listening-dropdown" data-lesson="1">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (қазақша) ӘЗіРЛЕНУДЕ </span>
+                                    <span class="sub-link-left">Listening (қазақша) ӘЗіРЛЕНУДЕ </span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -1391,7 +1393,7 @@
                                 </div>
                             </details>
                             <a href="./tobetodo/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Запустить тренажер Урока 1</span>
+                                <span class="sub-link-left">Запустить тренажер Урока 1</span>
                                 <span>➔</span>
                             </a>
                             <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(1)">✓ Отметить урок пройденным</button>
@@ -1429,13 +1431,13 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson2" class="sub-link theory-link" data-lesson="2">
-                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-link-left">Интерактивный конспект (RU / KZ)</span>
                                 <span class="sub-badge">Теория + Кейс</span>
                             </a>
                             <!-- Listening орысша (Урок 2) -->
                             <details class="listening-dropdown" data-lesson="2">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (орысша)</span>
+                                    <span class="sub-link-left">Listening (орысша)</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -1455,7 +1457,7 @@
                             <!-- Listening қазақша (Урок 2) -->
                             <details class="listening-dropdown" data-lesson="2">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
+                                    <span class="sub-link-left">Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -1473,7 +1475,7 @@
                                 </div>
                             </details>
                             <a href="./present/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Запустить тренажер Урока 2</span>
+                                <span class="sub-link-left">Запустить тренажер Урока 2</span>
                                 <span>➔</span>
                             </a>
                             <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(2)">✓ Отметить урок пройденным</button>
@@ -1511,13 +1513,13 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson3" class="sub-link theory-link" data-lesson="3">
-                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-link-left">Интерактивный конспект (RU / KZ)</span>
                                 <span class="sub-badge">Теория + Кейс</span>
                             </a>
                             <!-- Listening орысша (Урок 3) -->
                             <details class="listening-dropdown" data-lesson="3">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (орысша)</span>
+                                    <span class="sub-link-left">Listening (орысша)</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -1537,7 +1539,7 @@
                             <!-- Listening қазақша (Урок 3) -->
                             <details class="listening-dropdown" data-lesson="3">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
+                                    <span class="sub-link-left">Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -1555,7 +1557,7 @@
                                 </div>
                             </details>
                             <a href="./past/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Запустить тренажер Урока 3</span>
+                                <span class="sub-link-left">Запустить тренажер Урока 3</span>
                                 <span>➔</span>
                             </a>
                             <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(3)">✓ Отметить урок пройденным</button>
@@ -1593,13 +1595,13 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson4" class="sub-link theory-link" data-lesson="4">
-                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-link-left">Интерактивный конспект (RU / KZ)</span>
                                 <span class="sub-badge">Теория + Кейс</span>
                             </a>
                             <!-- Listening орысша (Урок 4) -->
                             <details class="listening-dropdown" data-lesson="4">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (орысша)</span>
+                                    <span class="sub-link-left">Listening (орысша)</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -1619,7 +1621,7 @@
                             <!-- Listening қазақша (Урок 4) -->
                             <details class="listening-dropdown" data-lesson="4">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
+                                    <span class="sub-link-left">Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -1637,7 +1639,7 @@
                                 </div>
                             </details>
                             <a href="./future/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Запустить тренажер Урока 4</span>
+                                <span class="sub-link-left">Запустить тренажер Урока 4</span>
                                 <span>➔</span>
                             </a>
                             <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(4)">✓ Отметить урок пройденным</button>
@@ -1675,13 +1677,13 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson5" class="sub-link theory-link" data-lesson="5">
-                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-link-left">Интерактивный конспект (RU / KZ)</span>
                                 <span class="sub-badge">Теория + NCBI</span>
                             </a>
                             <!-- Listening орысша (Урок 5) -->
                             <details class="listening-dropdown" data-lesson="5">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (орысша)</span>
+                                    <span class="sub-link-left">Listening (орысша)</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -1701,7 +1703,7 @@
                             <!-- Listening қазақша (Урок 5) -->
                             <details class="listening-dropdown" data-lesson="5">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
+                                    <span class="sub-link-left">Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -1719,7 +1721,7 @@
                                 </div>
                             </details>
                             <a href="./passive/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Запустить тренажер Урока 5</span>
+                                <span class="sub-link-left">Запустить тренажер Урока 5</span>
                                 <span>➔</span>
                             </a>
                             <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(5)">✓ Отметить урок пройденным</button>
@@ -1757,13 +1759,13 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson6" class="sub-link theory-link" data-lesson="6">
-                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-link-left">Интерактивный конспект (RU / KZ)</span>
                                 <span class="sub-badge">Теория + CKD</span>
                             </a>
                             <!-- Listening орысша (Урок 6) -->
                             <details class="listening-dropdown" data-lesson="6">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (орысша)</span>
+                                    <span class="sub-link-left">Listening (орысша)</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -1783,7 +1785,7 @@
                             <!-- Listening қазақша (Урок 6) -->
                             <details class="listening-dropdown" data-lesson="6">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
+                                    <span class="sub-link-left">Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -1801,7 +1803,7 @@
                                 </div>
                             </details>
                             <a href="./modals/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Запустить тренажер Урока 6</span>
+                                <span class="sub-link-left">Запустить тренажер Урока 6</span>
                                 <span>➔</span>
                             </a>
                             <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(6)">✓ Отметить урок пройденным</button>
@@ -1839,13 +1841,13 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson7" class="sub-link theory-link" data-lesson="7">
-                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-link-left">Интерактивный конспект (RU / KZ)</span>
                                 <span class="sub-badge">UpToDate</span>
                             </a>
                             <!-- Listening орысша (Урок 7) -->
                             <details class="listening-dropdown" data-lesson="7">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (орысша)</span>
+                                    <span class="sub-link-left">Listening (орысша)</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -1865,7 +1867,7 @@
                             <!-- Listening қазақша (Урок 7) -->
                             <details class="listening-dropdown" data-lesson="7">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
+                                    <span class="sub-link-left">Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -1883,7 +1885,7 @@
                                 </div>
                             </details>
                             <a href="./possessives/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Запустить тренажер Урока 7</span>
+                                <span class="sub-link-left">Запустить тренажер Урока 7</span>
                                 <span>➔</span>
                             </a>
                             <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(7)">✓ Отметить урок пройденным</button>
@@ -1922,13 +1924,13 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson8" class="sub-link theory-link" data-lesson="8">
-                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-link-left">Интерактивный конспект (RU / KZ)</span>
                                 <span class="sub-badge">🔓 Бесплатно</span>
                             </a>
                             <!-- Listening орысша (Урок 8 — БЕСПЛАТНО) -->
                             <details class="listening-dropdown" data-lesson="8">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (орысша)</span>
+                                    <span class="sub-link-left">Listening (орысша)</span>
                                     <span class="sub-badge listening-badge">🔓 Бесплатно ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -1948,7 +1950,7 @@
                             <!-- Listening қазақша (Урок 8 — БЕСПЛАТНО) -->
                             <details class="listening-dropdown" data-lesson="8">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
+                                    <span class="sub-link-left">Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
                                     <span class="sub-badge listening-badge">🔓 Бесплатно ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -1966,7 +1968,7 @@
                                 </div>
                             </details>
                             <a href="./thereis/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Запустить демо-тренажер Урока 8 (Бесплатно)</span>
+                                <span class="sub-link-left">Запустить демо-тренажер Урока 8 (Бесплатно)</span>
                                 <span>➔</span>
                             </a>
                             <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(8)">✓ Отметить урок пройденным</button>
@@ -2004,13 +2006,13 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson9" class="sub-link theory-link" data-lesson="9">
-                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-link-left">Интерактивный конспект (RU / KZ)</span>
                                 <span class="sub-badge">Неврология</span>
                             </a>
                             <!-- Listening орысша (Урок 9) -->
                             <details class="listening-dropdown" data-lesson="9">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (орысша)</span>
+                                    <span class="sub-link-left">Listening (орысша)</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -2030,7 +2032,7 @@
                             <!-- Listening қазақша (Урок 9) -->
                             <details class="listening-dropdown" data-lesson="9">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
+                                    <span class="sub-link-left">Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -2048,7 +2050,7 @@
                                 </div>
                             </details>
                             <a href="./prepositionsoftime/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Запустить тренажер Урока 9</span>
+                                <span class="sub-link-left">Запустить тренажер Урока 9</span>
                                 <span>➔</span>
                             </a>
                             <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(9)">✓ Отметить урок пройденным</button>
@@ -2086,13 +2088,13 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson10" class="sub-link theory-link" data-lesson="10">
-                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-link-left">Интерактивный конспект (RU / KZ)</span>
                                 <span class="sub-badge">Офтальмология</span>
                             </a>
                             <!-- Listening орысша (Урок 10) -->
                             <details class="listening-dropdown" data-lesson="10">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (орысша)</span>
+                                    <span class="sub-link-left">Listening (орысша)</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -2112,7 +2114,7 @@
                             <!-- Listening қазақша (Урок 10) -->
                             <details class="listening-dropdown" data-lesson="10">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
+                                    <span class="sub-link-left">Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -2130,7 +2132,7 @@
                                 </div>
                             </details>
                             <a href="./prepositionsofplace/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Запустить тренажер Урока 10</span>
+                                <span class="sub-link-left">Запустить тренажер Урока 10</span>
                                 <span>➔</span>
                             </a>
                             <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(10)">✓ Отметить урок пройденным</button>
@@ -2168,13 +2170,13 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson11" class="sub-link theory-link" data-lesson="11">
-                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-link-left">Интерактивный конспект (RU / KZ)</span>
                                 <span class="sub-badge">StatPearls</span>
                             </a>
                             <!-- Listening орысша (Урок 11) -->
                             <details class="listening-dropdown" data-lesson="11">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (орысша)</span>
+                                    <span class="sub-link-left">Listening (орысша)</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -2194,7 +2196,7 @@
                             <!-- Listening қазақша (Урок 11) -->
                             <details class="listening-dropdown" data-lesson="11">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
+                                    <span class="sub-link-left">Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -2212,7 +2214,7 @@
                                 </div>
                             </details>
                             <a href="./conditionals/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Запустить тренажер Урока 11</span>
+                                <span class="sub-link-left">Запустить тренажер Урока 11</span>
                                 <span>➔</span>
                             </a>
                             <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(11)">✓ Отметить урок пройденным</button>
@@ -2250,13 +2252,13 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson12" class="sub-link theory-link" data-lesson="12">
-                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-link-left">Интерактивный конспект (RU / KZ)</span>
                                 <span class="sub-badge">Психиатрия</span>
                             </a>
                             <!-- Listening орысша (Урок 12) -->
                             <details class="listening-dropdown" data-lesson="12">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (орысша)</span>
+                                    <span class="sub-link-left">Listening (орысша)</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -2276,7 +2278,7 @@
                             <!-- Listening қазақша (Урок 12) -->
                             <details class="listening-dropdown" data-lesson="12">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
+                                    <span class="sub-link-left">Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -2294,7 +2296,7 @@
                                 </div>
                             </details>
                             <a href="./comparatives/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Запустить тренажер Урока 12</span>
+                                <span class="sub-link-left">Запустить тренажер Урока 12</span>
                                 <span>➔</span>
                             </a>
                             <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(12)">✓ Отметить урок пройденным</button>
@@ -2332,13 +2334,13 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson13" class="sub-link theory-link" data-lesson="13">
-                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-link-left">Интерактивный конспект (RU / KZ)</span>
                                 <span class="sub-badge">Wiley Review</span>
                             </a>
                             <!-- Listening орысша (Урок 13) -->
                             <details class="listening-dropdown" data-lesson="13">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (орысша)</span>
+                                    <span class="sub-link-left">Listening (орысша)</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -2358,7 +2360,7 @@
                             <!-- Listening қазақша (Урок 13) -->
                             <details class="listening-dropdown" data-lesson="13">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
+                                    <span class="sub-link-left">Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -2376,7 +2378,7 @@
                                 </div>
                             </details>
                             <a href="./articles/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Запустить тренажер Урока 13</span>
+                                <span class="sub-link-left">Запустить тренажер Урока 13</span>
                                 <span>➔</span>
                             </a>
                             <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(13)">✓ Отметить урок пройденным</button>
@@ -2414,13 +2416,13 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson14" class="sub-link theory-link" data-lesson="14">
-                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-link-left">Интерактивный конспект (RU / KZ)</span>
                                 <span class="sub-badge">ЛОР / Biofilms</span>
                             </a>
                             <!-- Listening орысша (Урок 14) -->
                             <details class="listening-dropdown" data-lesson="14">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (орысша)</span>
+                                    <span class="sub-link-left">Listening (орысша)</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -2440,7 +2442,7 @@
                             <!-- Listening қазақша (Урок 14) -->
                             <details class="listening-dropdown" data-lesson="14">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
+                                    <span class="sub-link-left">Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -2458,7 +2460,7 @@
                                 </div>
                             </details>
                             <a href="./relativeclause/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Запустить тренажер Урока 14</span>
+                                <span class="sub-link-left">Запустить тренажер Урока 14</span>
                                 <span>➔</span>
                             </a>
                             <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(14)">✓ Отметить урок пройденным</button>
@@ -2496,13 +2498,13 @@
                                 </iframe>
                             </div>
                             <a href="https://kazdoctors.com/grammar/lesson15" class="sub-link theory-link" data-lesson="15">
-                                <span class="sub-link-left">📖 Интерактивный конспект (RU / KZ)</span>
+                                <span class="sub-link-left">Интерактивный конспект (RU / KZ)</span>
                                 <span class="sub-badge">Урология</span>
                             </a>
                             <!-- Listening орысша (Урок 15) -->
                             <details class="listening-dropdown" data-lesson="15">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (орысша)</span>
+                                    <span class="sub-link-left">Listening (орысша)</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -2522,7 +2524,7 @@
                             <!-- Listening қазақша (Урок 15) -->
                             <details class="listening-dropdown" data-lesson="15">
                                 <summary class="listening-summary">
-                                    <span class="sub-link-left">🎧 Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
+                                    <span class="sub-link-left">Listening (қазақша) ӘЗіРЛЕНУДЕ</span>
                                     <span class="sub-badge listening-badge">Аудио-практика ⌄</span>
                                 </summary>
                                 <div class="listening-body">
@@ -2540,7 +2542,7 @@
                                 </div>
                             </details>
                             <a href="./gerund/" class="sub-link primary-trainer">
-                                <span class="sub-link-left">🎯 Запустить тренажер Урока 15</span>
+                                <span class="sub-link-left">Запустить тренажер Урока 15</span>
                                 <span>➔</span>
                             </a>
                             <button type="button" class="mark-done-btn" onclick="toggleLessonCompleted(15)">✓ Отметить урок пройденным</button>
@@ -2562,7 +2564,7 @@
                         <h2>
                             <span lang-val="ru">Домашние задания</span>
                             <span lang-val="kz">Үй тапсырмалары</span>
-                            <span class="cat-pill">4 БЛОКА</span>
+                            <span class="cat-pill">4 БЛОКА • PRO+</span>
                         </h2>
                     </div>
                 </div>
@@ -2575,7 +2577,7 @@
                 <!-- 1. ДЗ по урокам 1-4 -->
                 <a href="https://kazdoctors.com/grammar/hw14/" class="trainer-card">
                     <div class="card-content">
-                        <div class="card-icon">1️⃣</div>
+                        <div class="card-icon">1</div>
                         <div class="card-text">
                             <h2>
                                 <span lang-val="ru">Домашнее задание: Уроки 1–4</span>
@@ -2591,7 +2593,7 @@
                 <!-- 2. ДЗ по урокам 5-8 -->
                 <a href="https://kazdoctors.com/grammar/hw58/" class="trainer-card">
                     <div class="card-content">
-                        <div class="card-icon">2️⃣</div>
+                        <div class="card-icon">2</div>
                         <div class="card-text">
                             <h2>
                                 <span lang-val="ru">Домашнее задание: Уроки 5–8</span>
@@ -2607,7 +2609,7 @@
                 <!-- 3. ДЗ по урокам 9-12 -->
                 <a href="https://kazdoctors.com/grammar/hw912/" class="trainer-card">
                     <div class="card-content">
-                        <div class="card-icon">3️⃣</div>
+                        <div class="card-icon">3</div>
                         <div class="card-text">
                             <h2>
                                 <span lang-val="ru">Домашнее задание: Уроки 9–12</span>
@@ -2623,7 +2625,7 @@
                 <!-- 4. ДЗ по урокам 13-15 -->
                 <a href="https://kazdoctors.com/grammar/hw1315/" class="trainer-card">
                     <div class="card-content">
-                        <div class="card-icon">4️⃣</div>
+                        <div class="card-icon">4</div>
                         <div class="card-text">
                             <h2>
                                 <span lang-val="ru">Домашнее задание: Уроки 13–15</span>
@@ -2678,22 +2680,13 @@
     <!-- Плавающая нижняя плашка перехода к тарифам -->
     <div class="sticky-upsell-bar" id="stickyUpsellBar">
         <div class="sub-bar-text">
-            <strong id="stickyBarTitle">🔥 Хотите открыть все 15 уроков, конспекты и видео?</strong>
+            <strong id="stickyBarTitle">Хотите открыть все 15 уроков, конспекты и видео?</strong>
             <span id="stickyBarSub">Доступ от 7,990 ₸/мес • Выход на уверенный медицинский B1</span>
         </div>
-        <a href="https://kazdoctors.com/tarifs" class="sub-bar-btn" id="stickyBarBtn">💎 Тарифы ➔</a>
+        <a href="https://kazdoctors.com/tarifs" class="sub-bar-btn" id="stickyBarBtn">Тарифы ➔</a>
     </div>
 
-    <footer>
-        <a href="https://instagram.com/doctors.speak" target="_blank" class="instagram-link">
-            <span>📸 Instagram @doctors.speak</span>
-        </a>
-
-        <a href="https://kazdoctors.com" class="back-btn">
-            <svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
-            <span>Go back</span>
-        </a>
-    </footer>
+    <div id="ds-footer"></div>
 
     <script>
         // =========================================================================
@@ -2739,8 +2732,8 @@
             const isKz = (currentLang === 'kz');
 
             document.getElementById('uiProgTitle').textContent = isKz
-                ? "📈 Сіздің жеке курс прогресіңіз:"
-                : "📈 Ваш личный прогресс курса:";
+                ? "Сіздің жеке курс прогресіңіз:"
+                : "Ваш личный прогресс курса:";
             document.getElementById('progressCountText').textContent = isKz
                 ? `${count} / 15 сабақ (${pct}%)`
                 : `${count} / 15 уроков (${pct}%)`;
@@ -2832,8 +2825,8 @@
             const isKz = (currentLang === 'kz');
 
             document.getElementById('mqBadge').textContent = isKz
-                ? `⚡ Клиникалық блиц-тест (${currentMqIdx + 1}/5)`
-                : `⚡ Клинический блиц-тест (${currentMqIdx + 1}/5)`;
+                ? `Клиникалық блиц-тест (${currentMqIdx + 1}/5)`
+                : `Клинический блиц-тест (${currentMqIdx + 1}/5)`;
             document.getElementById('mqNextBtn').textContent = isKz
                 ? "Келесі сұрақ ↻"
                 : "Следующий вопрос ↻";
@@ -2892,7 +2885,7 @@
             standard: "СТАНДАРТ",
             pro: "ПРО",
             premium: "ПРЕМИУМ",
-            vip: "ВИП 👑"
+            vip: "ВИП"
         };
 
         let currentUserTier = "none";
@@ -2964,26 +2957,26 @@
                 stickyBar.style.display = 'none';
             } else if (tier === 'pro') {
                 stickyBar.style.display = 'flex';
-                stickyTitle.textContent = isKz ? "🎬 Видеосабақтарды қосқыңыз келе ме?" : "🎬 Хотите смотреть видеоразборы всех 15 уроков?";
+                stickyTitle.textContent = isKz ? "Видеосабақтарды қосқыңыз келе ме?" : "Хотите смотреть видеоразборы всех 15 уроков?";
                 stickySub.textContent = isKz ? "PRO-дан PREMIUM-ға өту — айына +5,000 ₸" : "Доплата с тарифа ПРО до ПРЕМИУМ — всего 5,000 ₸";
-                stickyBtn.textContent = isKz ? "🌟 PREMIUM ➔" : "🌟 Включить видео ➔";
+                stickyBtn.textContent = isKz ? "PREMIUM ➔" : "Включить видео ➔";
             } else if (tier === 'standard') {
                 stickyBar.style.display = 'flex';
-                stickyTitle.textContent = isKz ? "📖 Конспектілер, Listening және Видео керек пе?" : "📖 Нужны конспекты, Listening и видеоуроки?";
+                stickyTitle.textContent = isKz ? "Конспектілер, Listening және Видео керек пе?" : "Нужны конспекты, Listening и видеоуроки?";
                 stickySub.textContent = isKz ? "Тарифіңізді PRO немесе PREMIUM-ға жаңартыңыз" : "Перейдите на тариф ПРО или ПРЕМИУМ со скидкой";
-                stickyBtn.textContent = isKz ? "💎 Тарифтер ➔" : "💎 Улучшить тариф ➔";
+                stickyBtn.textContent = isKz ? "Тарифтер ➔" : "Улучшить тариф ➔";
 
-                badgeEl.textContent = isKz ? "🔹 ТАРИФ: СТАНДАРТ (БАРЛЫҚ ТРЕНАЖЕРЛЕР АШЫҚ)" : "🔹 ТАРИФ: СТАНДАРТ (ВСЕ ТРЕНАЖЕРЫ ОТКРЫТЫ)";
+                badgeEl.textContent = isKz ? "ТАРИФ: СТАНДАРТ (БАРЛЫҚ ТРЕНАЖЕРЛЕР АШЫҚ)" : "ТАРИФ: СТАНДАРТ (ВСЕ ТРЕНАЖЕРЫ ОТКРЫТЫ)";
                 titleEl.textContent = isKz
                     ? "Барлық 15 тренажер мен 8-сабақ толық ашық! Конспектілер мен Listening үшін тарифті жаңартыңыз"
                     : "Вам открыты все 15 тренажеров и весь Урок №8! Для конспектов и Listening повысьте тариф до ПРО+";
             } else {
                 stickyBar.style.display = 'flex';
-                stickyTitle.textContent = isKz ? "🔥 Барлық 15 сабақ, конспект және видеоны ашыңыз!" : "🔥 Откройте все 15 уроков, конспекты и видеоразборы!";
+                stickyTitle.textContent = isKz ? "Барлық 15 сабақ, конспект және видеоны ашыңыз!" : "Откройте все 15 уроков, конспекты и видеоразборы!";
                 stickySub.textContent = isKz ? "Айына 7,990 ₸ бастап • Сенімді медициналық B1 деңгейі" : "От 7,990 ₸/мес • Выход на уверенный медицинский B1";
-                stickyBtn.textContent = isKz ? "💎 Тарифтер ➔" : "💎 Выбрать тариф ➔";
+                stickyBtn.textContent = isKz ? "Тарифтер ➔" : "Выбрать тариф ➔";
 
-                badgeEl.textContent = isKz ? "🚀 МЕДИЦИНАЛЫҚ АҒЫЛШЫН ТІЛІН ЖҮЙЕЛІ МЕҢГЕРУ" : "🚀 СИСТЕМНЫЙ МЕДИЦИНСКИЙ АНГЛИЙСКОЙ ДЛЯ ВРАЧЕЙ";
+                badgeEl.textContent = isKz ? "МЕДИЦИНАЛЫҚ АҒЫЛШЫН ТІЛІН ЖҮЙЕЛІ МЕҢГЕРУ" : "СИСТЕМНЫЙ МЕДИЦИНСКИЙ АНГЛИЙСКОЙ ДЛЯ ВРАЧЕЙ";
                 titleEl.textContent = isKz
                     ? "Дәл қазір тегін модульдерді (Чанктар мен 8-сабақ) байқап көріңіз немесе барлық 15 сабақты ашыңыз!"
                     : "Попробуйте бесплатные модули (Чанки и весь Урок №8) прямо сейчас или откройте все 15 уроков курса!";
@@ -3031,10 +3024,10 @@
                             <p class="paywall-desc">${subtitleText}</p>
                             <div class="paywall-actions">
                                 <a href="https://kazdoctors.com/tarifs" class="paywall-btn tarifs">
-                                    🌟 Тарифы (Премиум / ВИП)
+                                    Тарифы (Премиум / ВИП)
                                 </a>
                                 <a href="https://wa.me/77081595038?text=Здравствуйте!%20Хочу%20подключить%20доступ%20к%20видеокурсу%20Medical%20English" target="_blank" class="paywall-btn contact">
-                                    💬 Подключить через WhatsApp
+                                    Подключить через WhatsApp
                                 </a>
                             </div>
                             ${loginLinkHtml}
@@ -3129,10 +3122,10 @@
                             <p class="paywall-desc">${subtitleText}</p>
                             <div class="paywall-actions">
                                 <a href="https://kazdoctors.com/tarifs" class="paywall-btn tarifs">
-                                    💎 Тарифы (Про / Премиум / ВИП)
+                                    Тарифы (Про / Премиум / ВИП)
                                 </a>
                                 <a href="https://wa.me/77081595038?text=Здравствуйте!%20Хочу%20подключить%20доступ%20к%20курсу%20Medical%20English" target="_blank" class="paywall-btn contact">
-                                    💬 Подключить через WhatsApp
+                                    Подключить через WhatsApp
                                 </a>
                             </div>
                             ${loginLinkHtml}

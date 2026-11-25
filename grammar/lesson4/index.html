@@ -264,10 +264,10 @@
       justify-content: space-between;
     }
 
-    .scale-card.lvl1 { border-top: 4px solid #38BDF8; background: #F0F9FF; }
+    .scale-card.lvl1 { border-top: 4px solid var(--sky-500); background: var(--sky-50); }
     .scale-card.lvl2 { border-top: 4px solid var(--kz-blue); background: var(--kz-blue-light); }
     .scale-card.lvl3 { border-top: 4px solid #F59E0B; background: var(--kz-gold-light); }
-    .scale-card.lvl4 { border-top: 4px solid #10B981; background: #ECFDF5; }
+    .scale-card.lvl4 { border-top: 4px solid var(--ok-mid); background: var(--ok-bg); }
 
     .scale-head {
       display: flex;
@@ -339,13 +339,13 @@
     }
 
     .grammar-table tr:nth-child(even) td {
-      background: #F8FAFC;
+      background: var(--subtle);
     }
 
     /* Спойлер для Future Continuous */
     details.tenses-spoiler {
       margin-top: 12px;
-      background: #F8FAFC;
+      background: var(--subtle);
       border: 1px solid var(--border-color);
       border-radius: 12px;
       padding: 10px 14px;
@@ -361,7 +361,7 @@
 
     /* Быстрые микро-упражнения внутри теории (Quick Check) */
     .quick-check {
-      background: #F8FAFC;
+      background: var(--subtle);
       border: 1px dashed var(--kz-blue);
       border-radius: 14px;
       padding: 14px;
@@ -545,13 +545,15 @@
       }
     }
   </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body>
 
   <!-- ШАПКА УРОКА -->
   <header>
     <div class="header-top">
-      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅ К списку уроков</a>
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">← К списку уроков</a>
       <div class="lang-switch">
         <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
         <button class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
@@ -583,7 +585,7 @@
     <!-- ВКЛАДКА 3: СЛОВАРЬ С ПРИМЕРАМИ -->
     <section class="tab-section" id="tab2">
       <div class="card-block">
-        <h2 id="uiVocabTitle">💊 Клинический словарь урока (14 терминов)</h2>
+        <h2 id="uiVocabTitle">Клинический словарь урока (14 терминов)</h2>
         <p id="uiVocabDesc">Нажмите 🔊, чтобы прослушать произношение. Все примеры показывают, как будущие формы работают в медицине.</p>
         <div class="vocab-grid" id="vocabGrid"></div>
       </div>
@@ -593,18 +595,18 @@
     <!-- ВКЛАДКА 4: ПРАКТИКУМ (EXERCISE 1 & 2 ИЗ PDF) -->
     <section class="tab-section" id="tab3">
       <div class="card-block gold">
-        <h2 id="uiEx1Title">✍️ Упражнение 1: Выберите правильную форму будущего времени</h2>
+        <h2 id="uiEx1Title">Упражнение 1: Выберите правильную форму будущего времени</h2>
         <p id="uiEx1Desc">Определите: это спонтанное обещание/прогноз (will), четкое намерение/план (be going to) или расписание:</p>
         <div id="ex1Container" style="display:flex; flex-direction:column; gap:10px;"></div>
       </div>
 
       <div class="card-block">
-        <h2 id="uiEx2Title">🩺 Упражнение 2: Раскройте скобки в клинических ситуациях</h2>
+        <h2 id="uiEx2Title">Упражнение 2: Раскройте скобки в клинических ситуациях</h2>
         <p id="uiEx2Desc">Выберите подходящую форму будущего времени (will, be going to или Present Continuous):</p>
         <div id="ex2Container" style="display:flex; flex-direction:column; gap:10px;"></div>
       </div>
 
-      <a href="./future/" class="action-btn" id="uiGoTrainerBtn">🎯 Запустить игровой тренажер по Уроку 4 ➔</a>
+      <a href="../future/" class="action-btn" id="uiGoTrainerBtn">Запустить игровой тренажер по Уроку 4 ➔</a>
     </section>
   </main>
 
@@ -634,7 +636,7 @@
     // =========================================================================
     const LESSON4_DATA = {
       ui: {
-        backBtn: { ru: "⬅ К списку уроков", kz: "⬅ Сабақтар тізіміне" },
+        backBtn: { ru: "← К списку уроков", kz: "← Сабақтар тізіміне" },
         title: {
           ru: "Future Simple & Способы выразить будущее",
           kz: "Future Simple және Келер шақты білдіру жолдары"
@@ -650,8 +652,8 @@
           { ru: "4. Упражнения", kz: "4. Жаттығулар" }
         ],
         vocabTitle: {
-          ru: "💊 Клинический словарь урока (14 терминов)",
-          kz: "💊 Сабақтың клиникалық сөздігі (14 термин)"
+          ru: "Клинический словарь урока (14 терминов)",
+          kz: "Сабақтың клиникалық сөздігі (14 термин)"
         },
         vocabDesc: {
           ru: "Нажмите 🔊 для прослушивания произношения. Изучите клинические примеры со всеми формами будущего времени.",
@@ -662,7 +664,7 @@
           kz: "4-қадамға өту: Жылдам жаттығулар ➔"
         },
         ex1Title: {
-          ru: "✍️ Упражнение 1: Выберите правильную форму будущего времени",
+          ru: "Упражнение 1: Выберите правильную форму будущего времени",
           kz: "✍️ 1-жаттығу: Келер шақтың дұрыс формасын таңдаңыз"
         },
         ex1Desc: {
@@ -670,7 +672,7 @@
           kz: "Назар аударыңыз: бұл болжам/уәде ме (will), әлде алдын ала жоспарланған іс-әрекет пе (be going to):"
         },
         ex2Title: {
-          ru: "🩺 Упражнение 2: Раскройте скобки в клинических ситуациях",
+          ru: "Упражнение 2: Раскройте скобки в клинических ситуациях",
           kz: "🩺 2-жаттығу: Клиникалық жағдайларда жақшаны ашыңыз"
         },
         ex2Desc: {
@@ -678,7 +680,7 @@
           kz: "Әр бос орынға сәйкес келетін келер шақ құрылымын таңдаңыз:"
         },
         goTrainerBtn: {
-          ru: "🎯 Перейти к основному тренажеру Урока 4 ➔",
+          ru: "Перейти к основному тренажеру Урока 4 ➔",
           kz: "🎯 4-сабақтың негізгі тренажеріне өту ➔"
         }
       },
@@ -752,7 +754,7 @@
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Быстрая проверка понимания</span>
+              <span class="qc-badge">Быстрая проверка понимания</span>
               <div class="qc-question">Вы говорите коллеге о будущем научном проекте, который ваша кафедра уже запланировала: «В следующем проекте мы собираемся изучить, как жировая ткань влияет на надпочечники». Что лучше выбрать?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Верно! Для заранее обдуманных планов и намерений («собираемся изучить») идеально подходит конструкция be going to -> We are going to study.')">We are going to study (запланированное намерение)</button>
@@ -766,7 +768,7 @@
         `,
         kz: `
           <div class="card-block">
-            <h2>🌡️ Болашаққа қатысты 4 сенімділік деңгейі: дәрігер қай форманы таңдайды?</h2>
+            <h2>Болашаққа қатысты 4 сенімділік деңгейі: дәрігер қай форманы таңдайды?</h2>
             <p>Медицинада болашақтағы іс-әрекеттер тізбегі туралы айтқанда («УДЗ жасаймыз, ем тағайындаймыз, науқасты шығарамыз»), ағылшын тілінде оқиғаның қаншалықты нақты жоспарланғанына қарай <b>4 құрылым</b> қолданылады:</p>
 
             <div class="scale-grid">
@@ -831,7 +833,7 @@
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Түсінікті жылдам тексеру</span>
+              <span class="qc-badge">Түсінікті жылдам тексеру</span>
               <div class="qc-question">Сіз әріптесіңізге кафедра алдын ала жоспарлап қойған ғылыми жоба туралы: «Келесі жобада біз май тінінің бүйрек үсті безіне қалай әсер ететінін зерттемекпіз (зерттеуді жоспарлап отырмыз)» дейсіз. Қай нұсқа дұрыс?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Дұрыс! Алдын ала ойластырылған жоспар мен ниет үшін be going to құрылымы қолданылады -> We are going to study.')">We are going to study (жоспарланған ниет)</button>
@@ -849,7 +851,7 @@
       tab1Html: {
         ru: `
           <div class="card-block gold">
-            <h2>📐 Как строить (+), (?) и (-) в Future Simple и Be going to</h2>
+            <h2>Как строить (+), (?) и (-) в Future Simple и Be going to</h2>
             <p>Глагол <b>will</b> — идеальный помощник: он не меняется по лицам (одинаковый для <i>I, you, he, she, they</i>), а после него глагол всегда стоит в чистой первой форме <b>V1 (без to и без -s!)</b>:</p>
 
             <table class="grammar-table">
@@ -880,7 +882,7 @@
             </table>
 
             <details class="tenses-spoiler">
-              <summary>🎬 Дополнительно: Future Continuous (I will be doing) — «Момент в будущем»</summary>
+              <summary>Дополнительно: Future Continuous (I will be doing) — «Момент в будущем»</summary>
               <div style="margin-top:8px; font-size:0.8rem; line-height:1.5;">
                 Если <b>Future Simple</b> перечисляет хронологию фактов в будущем («сделаю А, затем сделаю Б»), то <b>Future Continuous (will be + V-ing)</b> передает «картинку» или процесс в конкретный момент в будущем:<br>
                 • <b>"At 10 a.m. tomorrow, I will be operating on a patient."</b> — <i>Завтра в 10 утра я буду в процессе проведения операции.</i><br>
@@ -890,21 +892,21 @@
           </div>
 
           <div class="card-block">
-            <h2>⚠️ Главная ловушка в медицинских тестах: предложения с WHEN, AFTER, IF</h2>
+            <h2>Главная ловушка в медицинских тестах: предложения с WHEN, AFTER, IF</h2>
             <p>В сложных предложениях про будущее со словами <b>when</b> (когда), <b>after</b> (после того как), <b>if</b> (если) и <b>in case of</b> (в случае) работает железное правило английского языка:</p>
             <div class="clinical-quote" style="border-left-color: var(--kz-blue);">
-              🔹 <b>Главная часть (что сделает врач/пациент):</b> ставим <b>WILL + V1</b><br>
-              🔹 <b>Условие времени (после when / after / if):</b> уже стоит в <b>Present Simple</b>!<br><br>
-              1. <b>"I <span style="color:var(--kz-blue-dark);">will explain</span> the treatment plan <u>after</u> the test results <span style="color:#D97706;">arrive</span>."</b><br>
+              <b>Главная часть (что сделает врач/пациент):</b> ставим <b>WILL + V1</b><br>
+              <b>Условие времени (после when / after / if):</b> уже стоит в <b>Present Simple</b>!<br><br>
+              1. <b>"I <span style="color:var(--kz-blue-dark);">will explain</span> the treatment plan <u>after</u> the test results <span style="color:var(--sun-ink);">arrive</span>."</b><br>
               <i>(Я объясню план лечения после того, как придут результаты анализов).</i><br>
-              2. <b>"We <span style="color:var(--kz-blue-dark);">will check</span> the patient's ankle <u>when</u> he <span style="color:#D97706;">arrives</span>."</b><br>
+              2. <b>"We <span style="color:var(--kz-blue-dark);">will check</span> the patient's ankle <u>when</u> he <span style="color:var(--sun-ink);">arrives</span>."</b><br>
               <i>(Мы проверим лодыжку пациента, когда он приедет).</i><br>
-              3. <b>"You <span style="color:var(--kz-blue-dark);">will vomit</span> <u>if</u> you <span style="color:#D97706;">take</span> the drug without food."</b><br>
+              3. <b>"You <span style="color:var(--kz-blue-dark);">will vomit</span> <u>if</u> you <span style="color:var(--sun-ink);">take</span> the drug without food."</b><br>
               <i>(Вас вырвет, если вы примете препарат без еды).</i>
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Быстрая проверка правила</span>
+              <span class="qc-badge">Быстрая проверка правила</span>
               <div class="qc-question">Выберите правильный вариант: «Я объясню план лечения после того, как придут результаты» — "I ___ the treatment plan after the test results arrive."</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Отлично! В главной части перед after мы даем обещание/решение на будущее -> I will explain.')">will explain</button>
@@ -918,7 +920,7 @@
         `,
         kz: `
           <div class="card-block gold">
-            <h2>📐 Future Simple және Be going to құрылымдарында (+), (?) және (-) қалай жасалады</h2>
+            <h2>Future Simple және Be going to құрылымдарында (+), (?) және (-) қалай жасалады</h2>
             <p><b>Will</b> көмекші етістігі барлық жақтарда (<i>I, you, he, she, they</i>) өзгеріссіз қалады, ал одан кейін негізгі етістік әрқашан бастапқы <b>V1 формасында (to-сыз және -s жалғауынсыз!)</b> тұрады:</p>
 
             <table class="grammar-table">
@@ -949,7 +951,7 @@
             </table>
 
             <details class="tenses-spoiler">
-              <summary>🎬 Қосымша: Future Continuous (I will be doing) — «Болашақтағы сәт»</summary>
+              <summary>Қосымша: Future Continuous (I will be doing) — «Болашақтағы сәт»</summary>
               <div style="margin-top:8px; font-size:0.8rem; line-height:1.5;">
                 Егер <b>Future Simple</b> болашақтағы оқиғалар тізбегін («мынаны істеймін, сосын ананы істеймін») білдірсе, <b>Future Continuous (will be + V-ing)</b> болашақтағы белгілі бір сәттегі процесті («көріністі») сипаттайды:<br>
                 • <b>"At 10 a.m. tomorrow, I will be operating on a patient."</b> — <i>Ертең таңғы 10-да мен науқасқа операция жасап жатамын.</i><br>
@@ -959,21 +961,21 @@
           </div>
 
           <div class="card-block">
-            <h2>⚠️ Медициналық тесттердегі басты тұзақ: WHEN, AFTER, IF сөйлемдері</h2>
+            <h2>Медициналық тесттердегі басты тұзақ: WHEN, AFTER, IF сөйлемдері</h2>
             <p>Болашақ туралы <b>when</b> (қашан), <b>after</b> (кейін), <b>if</b> (егер) жалғаулықтары бар құрмалас сөйлемдерде ағылшын тілінің темірдей ережесі жұмыс істейді:</p>
             <div class="clinical-quote" style="border-left-color: var(--kz-blue);">
-              🔹 <b>Басыңқы бөлік (дәрігер/науқас не істейді):</b> <b>WILL + V1</b> қойылады<br>
-              🔹 <b>Шартты бөлік (when / after / if сөздерінен кейін):</b> <b>Present Simple</b> тұрады!<br><br>
-              1. <b>"I <span style="color:var(--kz-blue-dark);">will explain</span> the treatment plan <u>after</u> the test results <span style="color:#D97706;">arrive</span>."</b><br>
+              <b>Басыңқы бөлік (дәрігер/науқас не істейді):</b> <b>WILL + V1</b> қойылады<br>
+              <b>Шартты бөлік (when / after / if сөздерінен кейін):</b> <b>Present Simple</b> тұрады!<br><br>
+              1. <b>"I <span style="color:var(--kz-blue-dark);">will explain</span> the treatment plan <u>after</u> the test results <span style="color:var(--sun-ink);">arrive</span>."</b><br>
               <i>(Талдау нәтижелері келгеннен кейін мен емдеу жоспарын түсіндіріп беремін).</i><br>
-              2. <b>"We <span style="color:var(--kz-blue-dark);">will check</span> the patient's ankle <u>when</u> he <span style="color:#D97706;">arrives</span>."</b><br>
+              2. <b>"We <span style="color:var(--kz-blue-dark);">will check</span> the patient's ankle <u>when</u> he <span style="color:var(--sun-ink);">arrives</span>."</b><br>
               <i>(Науқас келген кезде біз оның тобығын тексереміз).</i><br>
-              3. <b>"You <span style="color:var(--kz-blue-dark);">will vomit</span> <u>if</u> you <span style="color:#D97706;">take</span> the drug without food."</b><br>
+              3. <b>"You <span style="color:var(--kz-blue-dark);">will vomit</span> <u>if</u> you <span style="color:var(--sun-ink);">take</span> the drug without food."</b><br>
               <i>(Егер дәріні тамақсыз ішсеңіз, құсасыз).</i>
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Ережені жылдам тексеру</span>
+              <span class="qc-badge">Ережені жылдам тексеру</span>
               <div class="qc-question">Дұрыс нұсқаны таңдаңыз: «Талдау нәтижелері келген соң мен емдеу жоспарын түсіндіремін» — "I ___ the treatment plan after the test results arrive."</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Тамаша! Басыңқы бөлікте болашаққа уәде/шешім айтылғандықтан -> I will explain қолданылады.')">will explain</button>

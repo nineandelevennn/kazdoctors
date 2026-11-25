@@ -36,8 +36,8 @@
 
     <style>
         body {
-            background-color: #F4F8FA;
-            color: #0F172A;
+            background-color: var(--bg);
+            color: var(--ink);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
         }
@@ -45,9 +45,9 @@
         /* Subtle Kazakh Geometric / Ornamental Border Pattern */
         .kz-ornament-bar {
             height: 8px;
-            background-color: #00AFCA;
-            background-image: radial-gradient(#FEC50C 25%, transparent 26%),
-                              radial-gradient(#FEC50C 25%, transparent 26%);
+            background-color: var(--sky-700);
+            background-image: radial-gradient(var(--sun-500) 25%, transparent 26%),
+                              radial-gradient(var(--sun-500) 25%, transparent 26%);
             background-size: 20px 20px;
             background-position: 0 0, 10px 10px;
         }
@@ -58,10 +58,10 @@
             height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #F4F8FA;
+            background: var(--bg);
         }
         ::-webkit-scrollbar-thumb {
-            background: #00AFCA;
+            background: var(--sky-700);
             border-radius: 4px;
         }
 
@@ -99,6 +99,7 @@
             box-shadow: 0 10px 15px -3px rgba(0, 175, 202, 0.15);
         }
     </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
 </head>
 <body class="min-h-screen flex flex-col">
 

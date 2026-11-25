@@ -175,7 +175,7 @@
             font-weight: 600;
             padding: 8px 12px;
             border-radius: 8px;
-            background: #F8FAFC;
+            background: var(--subtle);
             border: 1px dashed var(--border-color);
             color: var(--text-muted);
             display: none;
@@ -191,9 +191,9 @@
 
         .user-lookup-box.new-user {
             display: block;
-            background: #FFFBEB;
+            background: var(--sun-50);
             border-color: #FCD34D;
-            color: #92400E;
+            color: var(--sun-ink);
         }
 
         .password-wrapper {
@@ -282,13 +282,13 @@
         }
 
         .alert-error {
-            background: #FEE2E2;
+            background: var(--err-bg);
             color: var(--danger-color);
             border: 1px solid #FCA5A5;
         }
 
         .alert-success {
-            background: #D1FAE5;
+            background: var(--ok-bg);
             color: var(--success-color);
             border: 1px solid #6EE7B7;
         }
@@ -310,6 +310,7 @@
             color: var(--text-muted);
         }
     </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
 </head>
 <body>
 
@@ -323,7 +324,7 @@
     <main>
         <!-- Блок запрета доступа -->
         <div id="accessDenied" class="admin-card">
-            <h2>⛔ Доступ запрещен</h2>
+            <h2>Доступ запрещен</h2>
             <p>У вас нет прав для просмотра этой страницы. Войдите под аккаунтом администратора.</p>
         </div>
 
@@ -353,10 +354,10 @@
                 <div class="form-group">
                     <label for="subTier">Вид подписки (Тариф)</label>
                     <select id="subTier" class="tier-select" required>
-                        <option value="standard">🔹 Стандарт (Только тренажеры)</option>
-                        <option value="pro">📘 Про (Тренажеры + Конспекты)</option>
-                        <option value="premium">🎬 Премиум (Тренажеры + Конспекты + Видео)</option>
-                        <option value="vip">👑 ВИП (Все включено + Личное ведение)</option>
+                        <option value="standard">Стандарт (Только тренажеры)</option>
+                        <option value="pro">Про (Тренажеры + Конспекты)</option>
+                        <option value="premium">Премиум (Тренажеры + Конспекты + Видео)</option>
+                        <option value="vip">ВИП (Все включено + Личное ведение)</option>
                     </select>
                 </div>
 
@@ -413,7 +414,7 @@
             standard: "Стандарт",
             pro: "Про",
             premium: "Премиум",
-            vip: "ВИП 👑"
+            vip: "ВИП"
         };
 
         let cachedExistingProfile = null;
@@ -476,7 +477,7 @@
             }
 
             if (p1 && p1.length < 6) {
-                hint.textContent = '⚠️ Пароль должен содержать минимум 6 символов';
+                hint.textContent = 'Пароль должен содержать минимум 6 символов';
                 hint.style.color = 'var(--danger-color)';
                 return false;
             }

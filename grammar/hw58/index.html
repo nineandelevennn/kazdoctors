@@ -43,7 +43,7 @@
             width: 100%;
             min-height: 100vh;
             min-height: 100dvh;
-            background: radial-gradient(circle at top, #EBF8FC 0%, var(--bg-main) 65%);
+            background: radial-gradient(circle at top, var(--sky-50) 0%, var(--bg-main) 65%);
             color: var(--text-dark);
             display: flex;
             flex-direction: column;
@@ -53,7 +53,7 @@
 
         /* 1. Шапка страницы */
         header {
-            background: linear-gradient(150deg, #0082B8 0%, var(--kz-blue) 55%, #22B8CF 90%, var(--kz-gold) 135%);
+            background: linear-gradient(150deg, var(--sky-700) 0%, var(--kz-blue) 55%, var(--sky-500) 90%, var(--kz-gold) 135%);
             color: #FFFFFF;
             text-align: center;
             padding: 16px 16px 20px 16px;
@@ -157,7 +157,7 @@
 
         .lang-choice-card {
             border: 2px solid var(--border-color);
-            background: #F8FAFC;
+            background: var(--subtle);
             border-radius: 14px;
             padding: 12px 10px;
             font-size: 0.88rem;
@@ -212,7 +212,7 @@
         }
 
         .topic-pill {
-            background: #F8FAFC;
+            background: var(--subtle);
             border: 1px solid var(--border-color);
             border-left: 4px solid var(--kz-blue);
             border-radius: 11px;
@@ -243,7 +243,7 @@
             padding: 12px 14px;
             border-radius: 12px;
             border: 1.5px solid var(--border-color);
-            background: #F8FAFC;
+            background: var(--subtle);
             font-size: 0.9rem;
             font-weight: 700;
             color: var(--text-dark);
@@ -257,7 +257,7 @@
 
         .primary-btn {
             width: 100%;
-            background: linear-gradient(135deg, var(--kz-gold) 0%, #FFD55A 100%);
+            background: linear-gradient(135deg, var(--kz-gold) 0%, var(--sun-500) 100%);
             color: var(--text-dark);
             border: 1px solid var(--kz-gold-dark);
             padding: 14px 18px;
@@ -325,7 +325,7 @@
         .progress-bar-bg {
             width: 100%;
             height: 8px;
-            background: #E2E8F0;
+            background: var(--line);
             border-radius: 10px;
             overflow: hidden;
             margin-bottom: 12px;
@@ -342,7 +342,7 @@
             display: inline-block;
             font-size: 0.68rem;
             font-weight: 800;
-            color: #B45309;
+            color: var(--sun-ink);
             background: var(--kz-gold-light);
             border: 1px solid rgba(217, 160, 0, 0.35);
             padding: 3px 9px;
@@ -365,7 +365,7 @@
             color: var(--text-dark);
             line-height: 1.42;
             margin-bottom: 14px;
-            background: #F8FAFC;
+            background: var(--subtle);
             padding: 12px 14px;
             border-radius: 12px;
             border-left: 4px solid var(--kz-blue);
@@ -449,7 +449,7 @@
         .screenshot-hint-banner {
             background: var(--kz-gold-light);
             border: 1.5px dashed var(--kz-gold-dark);
-            color: #92400E;
+            color: var(--sun-ink);
             padding: 10px 12px;
             border-radius: 14px;
             font-size: 0.78rem;
@@ -458,7 +458,7 @@
         }
 
         .report-card {
-            background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+            background: linear-gradient(145deg, var(--sky-900) 0%, var(--sky-900) 100%);
             color: #FFFFFF;
             border-radius: 22px;
             padding: 18px 16px;
@@ -487,7 +487,7 @@
 
         .rc-meta {
             font-size: 0.7rem;
-            color: #CBD5E1;
+            color: var(--line);
             font-weight: 600;
             margin-top: 3px;
         }
@@ -518,12 +518,12 @@
 
         .rc-stat-box.correct-box {
             background: rgba(16, 185, 129, 0.18);
-            border: 1px solid #34D399;
+            border: 1px solid var(--ok-mid);
         }
 
         .rc-stat-box.wrong-box {
             background: rgba(239, 68, 68, 0.18);
-            border: 1px solid #F87171;
+            border: 1px solid var(--err-mid);
         }
 
         .rc-stat-num {
@@ -532,13 +532,13 @@
             line-height: 1.1;
         }
 
-        .correct-box .rc-stat-num { color: #34D399; }
-        .wrong-box .rc-stat-num { color: #F87171; }
+        .correct-box .rc-stat-num { color: var(--ok-mid); }
+        .wrong-box .rc-stat-num { color: var(--err-mid); }
 
         .rc-stat-label {
             font-size: 0.7rem;
             font-weight: 700;
-            color: #E2E8F0;
+            color: var(--line);
             margin-top: 2px;
         }
 
@@ -556,7 +556,7 @@
             font-size: 0.7rem;
             font-weight: 800;
             text-transform: uppercase;
-            color: #94A3B8;
+            color: var(--line-2);
             letter-spacing: 0.4px;
             margin-bottom: 2px;
         }
@@ -576,7 +576,7 @@
             align-items: center;
             font-size: 0.75rem;
             font-weight: 800;
-            color: #F8FAFC;
+            color: var(--subtle);
         }
 
         .q-badges-row {
@@ -598,13 +598,13 @@
 
         .q-num-chip.chip-ok {
             background: rgba(16, 185, 129, 0.25);
-            border: 1px solid #34D399;
+            border: 1px solid var(--ok-mid);
             color: #A7F3D0;
         }
 
         .q-num-chip.chip-err {
             background: rgba(239, 68, 68, 0.28);
-            border: 1px solid #F87171;
+            border: 1px solid var(--err-mid);
             color: #FECACA;
         }
 
@@ -620,7 +620,7 @@
         }
 
         .mr-item {
-            background: #FEF2F2;
+            background: var(--err-bg);
             border-left: 4px solid var(--red-accent);
             border-radius: 10px;
             padding: 10px 12px;
@@ -633,12 +633,14 @@
             h1 { font-size: 1.12rem; }
         }
     </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body>
 
     <header>
         <div class="header-top-bar">
-            <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅️ К урокам</a>
+            <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">← К урокам</a>
             <span class="brand-pill">@doctors.speak</span>
         </div>
         <h1 id="uiHeaderTitle">Домашнее задание: Уроки 5–8</h1>
@@ -673,7 +675,7 @@
             </div>
 
             <button type="button" class="primary-btn" onclick="startHomework()" id="uiStartBtn">
-                🚀 Начать выполнение ДЗ (12 вопросов)
+                Начать выполнение ДЗ (12 вопросов)
             </button>
         </section>
 
@@ -706,13 +708,13 @@
         <!-- ==================== ЭКРАН 3: ИТОГОВЫЙ ОТЧЕТ ДЛЯ СКРИНШОТА ==================== -->
         <section id="resultScreen">
             <div class="screenshot-hint-banner" id="uiScreenshotBanner">
-                📸 Сделайте скриншот карточки ниже и покажите преподавателю
+                Сделайте скриншот карточки ниже и покажите преподавателю
             </div>
 
             <div class="report-card" id="teacherReportCard">
                 <div class="rc-header">
                     <div>
-                        <div style="font-size:0.66rem; text-transform:uppercase; color:#94A3B8; font-weight:800;" id="uiReportHeaderSub">ДЗ: Уроки 5–8 • @doctors.speak</div>
+                        <div style="font-size:0.66rem; text-transform:uppercase; color:var(--line-2); font-weight:800;" id="uiReportHeaderSub">ДЗ: Уроки 5–8 • @doctors.speak</div>
                         <div class="rc-student-name" id="rcStudentName">Doctor</div>
                         <div class="rc-meta" id="rcMetaInfo">Дата: -- • Время: --</div>
                     </div>
@@ -740,12 +742,12 @@
 
             <!-- Подробный разбор ошибок под карточкой скриншота (если есть ошибки) -->
             <div class="mistakes-review-card" id="mistakesCard" style="display:none;">
-                <h3 style="font-size:0.88rem; font-weight:900;" id="uiMistakesTitle">🔍 Разбор допущенных ошибок:</h3>
+                <h3 style="font-size:0.88rem; font-weight:900;" id="uiMistakesTitle">Разбор допущенных ошибок:</h3>
                 <div id="mistakesListContainer" style="display:flex; flex-direction:column; gap:8px;"></div>
             </div>
 
             <button type="button" class="primary-btn" onclick="restartHomework()" id="uiRetryBtn">
-                🔄 Пройти домашнее задание заново
+                Пройти домашнее задание заново
             </button>
         </section>
     </main>
@@ -1051,7 +1053,7 @@
         let studentName = "";
 
         const UI_TEXT = {
-            backBtn: { ru: "⬅️ К урокам", kz: "⬅️ Сабақтарға" },
+            backBtn: { ru: "← К урокам", kz: "← Сабақтарға" },
             headerTitle: { ru: "Домашнее задание: Уроки 5–8", kz: "Үй тапсырмасы: 5–8 сабақтар" },
             headerSub: { ru: "Клиническая грамматика • 12 заданий", kz: "Клиникалық грамматика • 12 тапсырма" },
             introTitle: { ru: "Домашняя работа по Урокам 5–8 (12 вопросов)", kz: "5–8 сабақтар бойынша үй жұмысы (12 сұрақ)" },
@@ -1068,12 +1070,12 @@
                 kz: "Мысалы: Әйгерім / Асқар"
             },
             startBtn: {
-                ru: "🚀 Начать выполнение ДЗ (12 вопросов)",
-                kz: "🚀 Үй тапсырмасын бастау (12 сұрақ)"
+                ru: "Начать выполнение ДЗ (12 вопросов)",
+                kz: "Үй тапсырмасын бастау (12 сұрақ)"
             },
             screenshotBanner: {
-                ru: "📸 Сделайте скриншот карточки ниже и покажите преподавателю",
-                kz: "📸 Төмендегі карточканы скриншот жасап, оқытушыға көрсетіңіз"
+                ru: "Сделайте скриншот карточки ниже и покажите преподавателю",
+                kz: "Төмендегі карточканы скриншот жасап, оқытушыға көрсетіңіз"
             },
             reportHeaderSub: {
                 ru: "ДЗ: Уроки 5–8 • @doctors.speak",
@@ -1092,12 +1094,12 @@
                 kz: "Тақырыптар мен сұрақ нөмірлері бойынша (1–12):"
             },
             mistakesTitle: {
-                ru: "🔍 Разбор допущенных ошибок:",
-                kz: "🔍 Жіберілген қателерді талдау:"
+                ru: "Разбор допущенных ошибок:",
+                kz: "Жіберілген қателерді талдау:"
             },
             retryBtn: {
-                ru: "🔄 Пройти домашнее задание заново",
-                kz: "🔄 Үй тапсырмасын қайта орындау"
+                ru: "Пройти домашнее задание заново",
+                kz: "Үй тапсырмасын қайта орындау"
             }
         };
 
@@ -1246,13 +1248,13 @@
             const statusWord = isCorrect
                 ? (currentLang === 'kz' ? 'Дұрыс!' : 'Верно!')
                 : (currentLang === 'kz' ? 'Қате!' : 'Ошибка!');
-            expBox.innerHTML = `💡 <b>${statusWord}</b> ${q.exp[currentLang]}`;
+            expBox.innerHTML = `<b>${statusWord}</b> ${q.exp[currentLang]}`;
             expBox.style.display = 'block';
 
             const nextBtn = document.getElementById('nextQuestionBtn');
             const isLast = (currentQIndex === QUESTIONS.length - 1);
             nextBtn.textContent = isLast
-                ? (currentLang === 'kz' ? '📊 Нәтижеге өту ➔' : '📊 Показать результат для скриншота ➔')
+                ? (currentLang === 'kz' ? 'Нәтижеге өту ➔' : 'Показать результат для скриншота ➔')
                 : (currentLang === 'kz' ? 'Келесі сұрақ ➔' : 'Следующий вопрос ➔');
             nextBtn.style.display = 'block';
         }
@@ -1348,8 +1350,8 @@
                     div.className = 'mr-item';
                     div.innerHTML = `
                         <b>${isKz ? 'Сұрақ' : 'Вопрос'} №${q.num}:</b> ${q.prompt}<br>
-                        <span style="color:#B91C1C;">❌ ${isKz ? 'Сіздің жауабыңыз' : 'Ваш ответ'}: ${chosenText}</span><br>
-                        <span style="color:#065F46; font-weight:700;">✅ ${isKz ? 'Дұрыс жауап' : 'Правильно'}: ${correctText}</span>
+                        <span style="color:var(--err);">❌ ${isKz ? 'Сіздің жауабыңыз' : 'Ваш ответ'}: ${chosenText}</span><br>
+                        <span style="color:var(--ok); font-weight:700;">✅ ${isKz ? 'Дұрыс жауап' : 'Правильно'}: ${correctText}</span>
                     `;
                     mistakesList.appendChild(div);
                 });
@@ -1367,5 +1369,6 @@
         selectStartLang(currentLang);
         prefillStudentName();
     </script>
+    <script src="/session-guard.js"></script>
 </body>
 </html>

@@ -57,7 +57,7 @@
     }
 
     .header {
-      background: linear-gradient(135deg, #0077A3 0%, var(--kz-blue) 100%);
+      background: linear-gradient(135deg, var(--sky-900) 0%, var(--kz-blue) 100%);
       color: #FFFFFF;
       padding: 12px 14px;
       display: flex;
@@ -139,7 +139,7 @@
 
     /* Плашка Демо-режима */
     .demo-banner {
-      background: #FFFBEB;
+      background: var(--sun-50);
       border: 1px solid rgba(217, 160, 0, 0.35);
       color: var(--kz-gold-dark);
       font-size: 0.74rem;
@@ -293,16 +293,16 @@
     }
 
     .option-btn.correct {
-      background-color: #DCFCE7 !important;
-      border-color: #22C55E !important;
-      color: #15803D !important;
+      background-color: var(--ok-bg) !important;
+      border-color: var(--ok-mid) !important;
+      color: var(--ok) !important;
       font-weight: 700;
     }
 
     .option-btn.wrong {
-      background-color: #FEE2E2 !important;
-      border-color: #EF4444 !important;
-      color: #B91C1C !important;
+      background-color: var(--err-bg) !important;
+      border-color: var(--err-mid) !important;
+      color: var(--err) !important;
       font-weight: 700;
     }
 
@@ -322,7 +322,7 @@
     }
 
     .explanation-box.answered {
-      background-color: #E0F2FE;
+      background-color: var(--sky-50);
       border-left-color: var(--kz-blue-dark);
     }
 
@@ -430,7 +430,7 @@
     }
 
     .cta-btn.whatsapp {
-      background: #10B981;
+      background: var(--ok-mid);
       color: #FFFFFF;
       border-color: #059669;
       box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
@@ -448,6 +448,7 @@
       transform: scale(0.98);
     }
   </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
 </head>
 <body>
 
@@ -457,7 +458,7 @@
   <div class="card">
     <!-- Header -->
     <header class="header">
-      <a href="https://kazdoctors.com/" class="home-btn" id="backBtn">⬅ Назад</a>
+      <a href="https://kazdoctors.com/" class="home-btn" id="backBtn">← Назад</a>
       <div class="header-right">
         <a href="https://kazdoctors.com/tarifs/" class="tier-pill" id="tierBadge">Тариф: FREE</a>
         <div class="lang-switch">
@@ -479,13 +480,13 @@
           <option value="A1" id="optA1">Level A1 — Базовые фразы и симптомы</option>
           <option value="A2" id="optA2">Level A2 — Грамматика и ход опроса</option>
           <option value="B1+" id="optB1">Level B1+ — Клинические кейсы и эмпатия</option>
-          <option value="mix" id="optMix">🔥 Все уровни (Mix)</option>
+          <option value="mix" id="optMix">Все уровни (Mix)</option>
         </select>
 
         <div class="stats">
           <span><span id="lblTotal">Всего:</span> <strong id="totalCount">0</strong></span>
-          <span><span id="lblCorrect">Верно:</span> <strong id="correctCount" style="color:#16A34A;">0</strong></span>
-          <span><span id="lblStreak">Серия:</span> <strong id="streakCount" style="color:#D9A000;">0 🔥</strong></span>
+          <span><span id="lblCorrect">Верно:</span> <strong id="correctCount" style="color:var(--ok-mid);">0</strong></span>
+          <span><span id="lblStreak">Серия:</span> <strong id="streakCount" style="color:var(--sun-600);">0 🔥</strong></span>
         </div>
       </div>
 
@@ -499,7 +500,7 @@
         <div id="optionsGrid" class="options-grid"></div>
         
         <div id="explanationBox" class="explanation-box">
-          <div><strong id="lblExpTitle">💡 Пояснение:</strong> <span id="explanationText">Выберите правильный ответ...</span></div>
+          <div><strong id="lblExpTitle">Пояснение:</strong> <span id="explanationText">Выберите правильный ответ...</span></div>
         </div>
 
         <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Далее ➔</button>
@@ -514,14 +515,14 @@
       <div class="paywall-desc" id="pwDesc">Вы прошли 3 показательных вопроса. Подключите подходящий тариф, чтобы открыть все 36 клинических сценариев опроса пациента!</div>
       
       <div class="paywall-features" id="pwFeatures">
-        <div>🔹 <b>STANDARD:</b> полный доступ ко всем тренажерам (Patient Interview, Clinical, Academic и 15 тренажеров Grammar)</div>
-        <div>📘 <b>PRO:</b> все тренажеры + учебник SOCRATES, интерактивные конспекты, Listening и разбор статей PubMed</div>
-        <div>🌟 <b>PREMIUM / VIP:</b> полный доступ ко всей платформе + все видеоуроки курса</div>
+        <div><b>STANDARD:</b> полный доступ ко всем тренажерам (Patient Interview, Clinical, Academic и 15 тренажеров Grammar)</div>
+        <div><b>PRO:</b> все тренажеры + учебник SOCRATES, интерактивные конспекты, Listening и разбор статей PubMed</div>
+        <div><b>PREMIUM / VIP:</b> полный доступ ко всей платформе + все видеоуроки курса</div>
       </div>
 
-      <a href="https://kazdoctors.com/tarifs/" class="cta-btn" id="pwBuyBtn">💎 Выбрать тариф (Standard / Pro / Premium)</a>
-      <a href="https://wa.me/77081595038?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BF%D0%BE%D0%BB%D1%83%D1%87%D0%B8%D1%82%D1%8C%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%20%D0%BA%20%D1%82%D1%80%D0%B5%D0%BD%D0%B0%D0%B6%D0%B5%D1%80%D1%83%20Patient%20Interview" target="_blank" class="cta-btn whatsapp" id="pwWaBtn">💬 Подключить через WhatsApp</a>
-      <a href="/login.html" class="cta-btn secondary" id="pwLoginBtn">🔐 Уже есть подписка? Войти в аккаунт</a>
+      <a href="https://kazdoctors.com/tarifs/" class="cta-btn" id="pwBuyBtn">Выбрать тариф (Standard / Pro / Premium)</a>
+      <a href="https://wa.me/77081595038?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BF%D0%BE%D0%BB%D1%83%D1%87%D0%B8%D1%82%D1%8C%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%20%D0%BA%20%D1%82%D1%80%D0%B5%D0%BD%D0%B0%D0%B6%D0%B5%D1%80%D1%83%20Patient%20Interview" target="_blank" class="cta-btn whatsapp" id="pwWaBtn">Подключить через WhatsApp</a>
+      <a href="/login.html" class="cta-btn secondary" id="pwLoginBtn">Уже есть подписка? Войти в аккаунт</a>
     </div>
 
   </div>
@@ -550,7 +551,7 @@
     standard: "СТАНДАРТ",
     pro: "ПРО",
     premium: "ПРЕМИУМ",
-    vip: "ВИП 👑"
+    vip: "ВИП"
   };
 
   let currentUserTier = "none";
@@ -656,54 +657,54 @@
 
   const uiTranslations = {
     ru: {
-      back: "⬅ Назад",
+      back: "← Назад",
       demoBanner: "🔓 Демо-режим: 3 показательных вопроса (A1 ➔ A2 ➔ B1+)",
       optA1: "Level A1 — Базовые фразы и симптомы",
       optA2: "Level A2 — Грамматика и ход опроса",
       optB1: "Level B1+ — Клинические кейсы и эмпатия",
-      optMix: "🔥 Все уровни (Mix)",
+      optMix: "Все уровни (Mix)",
       total: "Всего:",
       correct: "Верно:",
       streak: "Серия:",
-      expTitle: "💡 Пояснение:",
+      expTitle: "Пояснение:",
       expDefault: "Выберите правильный вариант ответа.",
       nextBtn: "Далее ➔",
       finishBtn: "Завершить демо ➔",
       pwTitle: "Демо-режим завершен!",
       pwDesc: "Вы прошли 3 показательных вопроса. Подключите подходящий тариф, чтобы открыть все 36 клинических сценариев опроса пациента!",
       pwFeatures: `
-        <div>🔹 <b>STANDARD:</b> полный доступ ко всем тренажерам (Patient Interview, Clinical, Academic и 15 тренажеров Grammar)</div>
-        <div>📘 <b>PRO:</b> все тренажеры + учебник SOCRATES, интерактивные конспекты, Listening и разбор статей PubMed</div>
-        <div>🌟 <b>PREMIUM / VIP:</b> полный доступ ко всей платформе + все видеоуроки курса</div>
+        <div><b>STANDARD:</b> полный доступ ко всем тренажерам (Patient Interview, Clinical, Academic и 15 тренажеров Grammar)</div>
+        <div><b>PRO:</b> все тренажеры + учебник SOCRATES, интерактивные конспекты, Listening и разбор статей PubMed</div>
+        <div><b>PREMIUM / VIP:</b> полный доступ ко всей платформе + все видеоуроки курса</div>
       `,
-      pwBuyBtn: "💎 Выбрать тариф (Standard / Pro / Premium)",
-      pwWaBtn: "💬 Подключить через WhatsApp",
-      pwLoginBtn: "🔐 Уже есть подписка? Войти в аккаунт"
+      pwBuyBtn: "Выбрать тариф (Standard / Pro / Premium)",
+      pwWaBtn: "Подключить через WhatsApp",
+      pwLoginBtn: "Уже есть подписка? Войти в аккаунт"
     },
     kz: {
-      back: "⬅ Артқа",
+      back: "← Артқа",
       demoBanner: "🔓 Демо-режим: 3 үлгілік сұрақ (A1 ➔ A2 ➔ B1+)",
       optA1: "Level A1 — Негізгі фразалар мен симптомдар",
       optA2: "Level A2 — Грамматика және сұхбат барысы",
       optB1: "Level B1+ — Клиникалық кейстер мен эмпатия",
-      optMix: "🔥 Барлық деңгейлер (Mix)",
+      optMix: "Барлық деңгейлер (Mix)",
       total: "Барлығы:",
       correct: "Дұрыс:",
       streak: "Серия:",
-      expTitle: "💡 Түсіндірме:",
+      expTitle: "Түсіндірме:",
       expDefault: "Дұрыс жауап нұсқасын таңдаңыз.",
       nextBtn: "Келесі ➔",
       finishBtn: "Демоны аяқтау ➔",
       pwTitle: "Демо-режим аяқталды!",
       pwDesc: "Сіз 3 үлгілік сұрақтан өттіңіз. Пациенттерден анамнез жинаудың барлық 36 клиникалық сценарийін ашу үшін өз тарифіңізді таңдаңыз!",
       pwFeatures: `
-        <div>🔹 <b>STANDARD:</b> барлық тренажерлерге толық доступ (Patient Interview, Clinical, Academic және 15 Grammar тренажері)</div>
-        <div>📘 <b>PRO:</b> барлық тренажерлер + SOCRATES оқулығы, интерактивті конспектілер, Listening және PubMed мақалалары</div>
-        <div>🌟 <b>PREMIUM / VIP:</b> платформаға толық доступ + курстың барлық видеосабақтары</div>
+        <div><b>STANDARD:</b> барлық тренажерлерге толық доступ (Patient Interview, Clinical, Academic және 15 Grammar тренажері)</div>
+        <div><b>PRO:</b> барлық тренажерлер + SOCRATES оқулығы, интерактивті конспектілер, Listening және PubMed мақалалары</div>
+        <div><b>PREMIUM / VIP:</b> платформаға толық доступ + курстың барлық видеосабақтары</div>
       `,
-      pwBuyBtn: "💎 Тарифті таңдау (Standard / Pro / Premium)",
-      pwWaBtn: "💬 WhatsApp арқылы қосу",
-      pwLoginBtn: "🔐 Жазылымыңыз бар ма? Аккаунтқа кіру"
+      pwBuyBtn: "Тарифті таңдау (Standard / Pro / Premium)",
+      pwWaBtn: "WhatsApp арқылы қосу",
+      pwLoginBtn: "Жазылымыңыз бар ма? Аккаунтқа кіру"
     }
   };
 

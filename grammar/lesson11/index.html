@@ -188,7 +188,7 @@
     }
 
     .paywall-card {
-      background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+      background: linear-gradient(145deg, var(--sky-900) 0%, var(--sky-900) 100%);
       color: #FFFFFF;
       border-radius: 22px;
       padding: 28px 22px;
@@ -216,7 +216,7 @@
     .pw-badge {
       background: rgba(0, 161, 222, 0.22);
       border: 1px solid rgba(0, 161, 222, 0.55);
-      color: #7DD3FC;
+      color: var(--sky-100);
       font-size: 0.7rem;
       font-weight: 800;
       padding: 4px 12px;
@@ -235,7 +235,7 @@
     .pw-desc {
       font-size: 0.82rem;
       line-height: 1.55;
-      color: #CBD5E1;
+      color: var(--line);
       font-weight: 500;
     }
 
@@ -414,9 +414,9 @@
       background: var(--bg-main);
     }
 
-    .cond-card.c0 { border-top: 4px solid #0284C7; background: #F0F9FF; }
-    .cond-card.c1 { border-top: 4px solid #16A34A; background: #F0FDF4; }
-    .cond-card.c2 { border-top: 4px solid #D97706; background: var(--kz-gold-light); }
+    .cond-card.c0 { border-top: 4px solid var(--sky-700); background: var(--sky-50); }
+    .cond-card.c1 { border-top: 4px solid var(--ok-mid); background: #F0FDF4; }
+    .cond-card.c2 { border-top: 4px solid var(--sun-ink); background: var(--kz-gold-light); }
     .cond-card.c3 { border-top: 4px solid #7C3AED; background: #F5F3FF; }
 
     .cond-title {
@@ -476,20 +476,20 @@
     }
 
     .grammar-table tr:nth-child(even) td {
-      background: #F8FAFC;
+      background: var(--subtle);
     }
 
     /* Интерактивный разбор статьи StatPearls (Thyrotoxicosis) */
     .abstract-box {
       background: #FFFFFF;
-      border: 2px solid #CBD5E1;
+      border: 2px solid var(--line);
       border-radius: 14px;
       overflow: hidden;
       margin-top: 10px;
     }
 
     .abstract-header {
-      background: #1E293B;
+      background: var(--sky-900);
       color: #FFFFFF;
       padding: 10px 14px;
       font-size: 0.78rem;
@@ -517,15 +517,15 @@
       transition: all 0.15s ease;
     }
 
-    .hl-btn.cond-type { background: #BAE6FD; color: #0369A1; }
-    .hl-btn.modal-type { background: #FDE68A; color: #92400E; }
+    .hl-btn.cond-type { background: var(--sky-100); color: var(--sky-900); }
+    .hl-btn.modal-type { background: #FDE68A; color: var(--sun-ink); }
     .hl-btn.reset { background: rgba(255,255,255,0.2); color: #FFFFFF; }
 
     .abstract-body {
       padding: 14px;
       font-size: 0.84rem;
       line-height: 1.68;
-      color: #334155;
+      color: var(--ink-2);
     }
 
     .c-if, .c-mod {
@@ -535,22 +535,22 @@
     }
 
     .abstract-body.show-if .c-if {
-      background: #BAE6FD;
-      color: #0369A1;
+      background: var(--sky-100);
+      color: var(--sky-900);
       font-weight: 800;
-      border-bottom: 2px solid #0284C7;
+      border-bottom: 2px solid var(--sky-700);
     }
 
     .abstract-body.show-mod .c-mod {
       background: #FDE68A;
-      color: #92400E;
+      color: var(--sun-ink);
       font-weight: 800;
-      border-bottom: 2px solid #D97706;
+      border-bottom: 2px solid var(--sun-ink);
     }
 
     /* Быстрые микро-упражнения внутри теории (Quick Check) */
     .quick-check {
-      background: #F8FAFC;
+      background: var(--subtle);
       border: 1px dashed var(--kz-blue);
       border-radius: 14px;
       padding: 14px;
@@ -713,13 +713,15 @@
       }
     }
   </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body>
 
   <!-- ШАПКА УРОКА -->
   <header>
     <div class="header-top">
-      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅ К списку уроков</a>
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">← К списку уроков</a>
       <div class="header-right-controls">
         <span id="userTierBadge" class="tier-badge"></span>
         <div class="lang-switch">
@@ -736,7 +738,7 @@
   </header>
 
   <!-- ИНДИКАТОР ПРОВЕРКИ ПОДПИСКИ -->
-  <div id="authLoader">🔄 Проверка подписки и доступа к конспекту...</div>
+  <div id="authLoader">Проверка подписки и доступа к конспекту...</div>
 
   <!-- БЛОК PAYWALL (ПОКАЗЫВАЕТСЯ, ЕСЛИ НЕТ ТАРИФА ПРО / ПРЕМИУМ / ВИП) -->
   <div id="paywallGate">
@@ -749,13 +751,13 @@
       </p>
       <div class="pw-buttons">
         <a href="https://kazdoctors.com/tarifs" class="pw-btn-primary" id="pwTarifsBtn">
-          🌟 Перейти к тарифам (kazdoctors.com/tarifs)
+          Перейти к тарифам (kazdoctors.com/tarifs)
         </a>
         <a href="https://instagram.com/doctors.speak" target="_blank" class="pw-btn-secondary" id="pwContactBtn">
-          💬 Написать нам (@doctors.speak)
+          Написать нам (@doctors.speak)
         </a>
         <a href="/login.html" class="pw-btn-secondary" id="pwLoginBtn" style="display:none;">
-          🔐 Войти в аккаунт
+          Войти в аккаунт
         </a>
       </div>
     </div>
@@ -782,7 +784,7 @@
       <!-- ВКЛАДКА 3: СЛОВАРЬ С ПРИМЕРАМИ -->
       <section class="tab-section" id="tab2">
         <div class="card-block">
-          <h2 id="uiVocabTitle">💊 Клинический словарь урока (14 терминов)</h2>
+          <h2 id="uiVocabTitle">Клинический словарь урока (14 терминов)</h2>
           <p id="uiVocabDesc">Нажмите 🔊, чтобы прослушать произношение. Все примеры построены в формате клинических условий «Если..., то...» (Zero, First, Second и Third Conditionals).</p>
           <div class="vocab-grid" id="vocabGrid"></div>
         </div>
@@ -792,18 +794,18 @@
       <!-- ВКЛАДКА 4: ПРАКТИКУМ (EXERCISE 1 & 2 ИЗ PDF) -->
       <section class="tab-section" id="tab3">
         <div class="card-block gold">
-          <h2 id="uiEx1Title">✍️ Упражнение 1: Выберите правильную форму Conditionals</h2>
+          <h2 id="uiEx1Title">Упражнение 1: Выберите правильную форму Conditionals</h2>
           <p id="uiEx1Desc">Смотрите на вторую часть предложения и подсказку в скобках (Zero / First / Second / Mixed):</p>
           <div id="ex1Container" style="display:flex; flex-direction:column; gap:10px;"></div>
         </div>
 
         <div class="card-block">
-          <h2 id="uiEx2Title">🩺 Упражнение 2: Раскройте скобки в условных предложениях</h2>
+          <h2 id="uiEx2Title">Упражнение 2: Раскройте скобки в условных предложениях</h2>
           <p id="uiEx2Desc">Определите тип условия (правило, реальный план, гипотеза сейчас или прошлое) и выберите верную форму:</p>
           <div id="ex2Container" style="display:flex; flex-direction:column; gap:10px;"></div>
         </div>
 
-        <a href="./conditionals/" class="action-btn" id="uiGoTrainerBtn">🎯 Запустить игровой тренажер по Уроку 11 ➔</a>
+        <a href="../conditionals/" class="action-btn" id="uiGoTrainerBtn">Запустить игровой тренажер по Уроку 11 ➔</a>
       </section>
     </main>
   </div>
@@ -830,7 +832,7 @@
       standard: { ru: "СТАНДАРТ", kz: "СТАНДАРТ" },
       pro: { ru: "ТАРИФ: ПРО", kz: "ТАРИФ: ПРО" },
       premium: { ru: "ТАРИФ: ПРЕМИУМ", kz: "ТАРИФ: ПРЕМИУМ" },
-      vip: { ru: "ТАРИФ: ВИП 👑", kz: "ТАРИФ: ВИП 👑" }
+      vip: { ru: "ТАРИФ: ВИП", kz: "ТАРИФ: ВИП" }
     };
 
     let currentViewerState = {
@@ -939,12 +941,12 @@
         : "ДОСТУПНО В ТАРИФАХ ПРО / ПРЕМИУМ / ВИП";
 
       tarifsBtn.textContent = isKz
-        ? "🌟 Тарифтер бетіне өту (kazdoctors.com/tarifs)"
-        : "🌟 Перейти к тарифам (kazdoctors.com/tarifs)";
+        ? "Тарифтер бетіне өту (kazdoctors.com/tarifs)"
+        : "Перейти к тарифам (kazdoctors.com/tarifs)";
 
       contactBtn.textContent = isKz
-        ? "💬 Бізге жазу (@doctors.speak)"
-        : "💬 Написать нам (@doctors.speak)";
+        ? "Бізге жазу (@doctors.speak)"
+        : "Написать нам (@doctors.speak)";
 
       if (!isLoggedIn) {
         titleEl.textContent = isKz
@@ -954,7 +956,7 @@
           ? "Бұл интерактивті конспект «Про», «Премиум» және «ВИП» жазылымдары бар дәрігерлерге арналған. Тарифтер бетінде өзіңізге ыңғайлы пакетті таңдай аласыз:"
           : "Этот интерактивный конспект открыт для врачей с подпиской «Про», «Премиум» или «ВИП». Ознакомьтесь с вариантами доступа на странице тарифов:";
         loginBtn.style.display = "inline-flex";
-        loginBtn.textContent = isKz ? "🔐 Аккаунтқа кіру" : "🔐 Уже есть подписка? Войти в аккаунт";
+        loginBtn.textContent = isKz ? "Аккаунтқа кіру" : "Уже есть подписка? Войти в аккаунт";
       } else if (reasonTier === "standard") {
         titleEl.textContent = isKz
           ? "Сізде «Стандарт» тарифі белсенді (тек тренажерлер)"
@@ -979,7 +981,7 @@
     // =========================================================================
     const LESSON11_DATA = {
       ui: {
-        backBtn: { ru: "⬅ К списку уроков", kz: "⬅ Сабақтар тізіміне" },
+        backBtn: { ru: "← К списку уроков", kz: "← Сабақтар тізіміне" },
         title: {
           ru: "Conditionals (Условные предложения в медицине)",
           kz: "Conditionals (Медицинадағы шартты сөйлемдер)"
@@ -995,8 +997,8 @@
           { ru: "4. Упражнения", kz: "4. Жаттығулар" }
         ],
         vocabTitle: {
-          ru: "💊 Клинический словарь урока (14 терминов)",
-          kz: "💊 Сабақтың клиникалық сөздігі (14 термин)"
+          ru: "Клинический словарь урока (14 терминов)",
+          kz: "Сабақтың клиникалық сөздігі (14 термин)"
         },
         vocabDesc: {
           ru: "Нажмите 🔊 для прослушивания произношения. Изучите, как каждый термин работает внутри условных предложений всех типов.",
@@ -1007,7 +1009,7 @@
           kz: "4-қадамға өту: Жылдам жаттығулар ➔"
         },
         ex1Title: {
-          ru: "✍️ Упражнение 1: Выберите правильную форму глагола в Conditionals",
+          ru: "Упражнение 1: Выберите правильную форму глагола в Conditionals",
           kz: "✍️ 1-жаттығу: Conditionals сөйлеміндегі дұрыс етістік формасын таңдаңыз"
         },
         ex1Desc: {
@@ -1015,7 +1017,7 @@
           kz: "Сөйлемнің екінші бөлігіне және жақшадағы шарт түріне назар аударыңыз:"
         },
         ex2Title: {
-          ru: "🩺 Упражнение 2: Раскройте скобки по формуле нужного Conditional",
+          ru: "Упражнение 2: Раскройте скобки по формуле нужного Conditional",
           kz: "🩺 2-жаттығу: Қажетті Conditional формуласы бойынша жақшаны ашыңыз"
         },
         ex2Desc: {
@@ -1023,7 +1025,7 @@
           kz: "Тексеріңіз: бұл тұрақты ереже ме (Zero), нақты жоспар ма (First), қазіргі болжам ба (Second) әлде өткен шақ па (Third/Mixed):"
         },
         goTrainerBtn: {
-          ru: "🎯 Перейти к основному тренажеру Урока 11 ➔",
+          ru: "Перейти к основному тренажеру Урока 11 ➔",
           kz: "🎯 11-сабақтың негізгі тренажеріне өту ➔"
         }
       },
@@ -1032,17 +1034,17 @@
       tab0Html: {
         ru: `
           <div class="card-block">
-            <h2>🧠 Клиническое мышление врача = Условные предложения (Conditionals)</h2>
+            <h2>Клиническое мышление врача = Условные предложения (Conditionals)</h2>
             <p>Вся медицина построена на логике <b>«ЕСЛИ..., ТО...» (IF..., THEN...)</b>: <i>«Если мокрота зеленая — это бактериальная инфекция», «Если отек не спадет — мы введем стероид», «Если бы пациент получил терапию раньше — осложнений бы не было»</i>. Чтобы мгновенно выбрать нужную формулу в английском, задайте себе всего <b>2 вопроса</b>:</p>
             <div class="clinical-quote" style="border-left-color: var(--kz-blue);">
-              1️⃣ <b>Условие РЕАЛИСТИЧНО или ГИПОТЕТИЧНО (воображаемо)?</b><br>
-              2️⃣ <b>Речь идет о НАСТОЯЩЕМ / БУДУЩЕМ или об уже ушедшем ПРОШЛОМ?</b>
+              1. <b>Условие РЕАЛИСТИЧНО или ГИПОТЕТИЧНО (воображаемо)?</b><br>
+              2. <b>Речь идет о НАСТОЯЩЕМ / БУДУЩЕМ или об уже ушедшем ПРОШЛОМ?</b>
             </div>
 
             <div class="cond-grid">
               <div class="cond-card c0">
                 <div class="cond-title">
-                  <span>0️⃣ ZERO CONDITIONAL («Правило»)</span>
+                  <span>0. ZERO CONDITIONAL («Правило»)</span>
                   <span>100% факт</span>
                 </div>
                 <span class="comp-formula">IF + Present Simple, Present Simple</span>
@@ -1056,7 +1058,7 @@
 
               <div class="cond-card c1">
                 <div class="cond-title">
-                  <span>1️⃣ FIRST CONDITIONAL (План)</span>
+                  <span>1. FIRST CONDITIONAL (План)</span>
                   <span>Реальное будущее</span>
                 </div>
                 <span class="comp-formula">IF + Present Simple, WILL / MAY / MIGHT / SHOULD + V1</span>
@@ -1071,7 +1073,7 @@
           </div>
 
           <div class="card-block gold">
-            <h2>⚠️ Главное правило для Zero и First Conditional</h2>
+            <h2>Главное правило для Zero и First Conditional</h2>
             <p>Запомните железный закон английского языка: <b>в части предложения сразу после слова IF (условие) НИКОГДА не ставится глагол WILL!</b> Даже если мы говорим о завтрашнем дне (<i>tomorrow</i>), после <b>if</b> ставится <b>Present Simple</b>, а <b>will</b> стоит только во второй (главной) части:</p>
             <div class="clinical-quote" style="border-left-color: var(--kz-gold-dark);">
               ✅ <b>"If he <u>has</u> sharp pain <i>tomorrow</i>, he <u>will need</u> further imaging."</b><br>
@@ -1079,7 +1081,7 @@
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Быстрая проверка: Zero vs First Conditional</span>
+              <span class="qc-badge">Быстрая проверка: Zero vs First Conditional</span>
               <div class="qc-question">Посмотрите на предложение со словом usually (обычное правило): "If the swelling is severe, the doctor usually ___ surgery." Какую форму выберем?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Верно! Маркер usually показывает, что это общее медицинское правило (Zero Conditional: If + Present Simple, Present Simple) -> recommends.')">recommends (Zero Conditional — правило)</button>
@@ -1093,17 +1095,17 @@
         `,
         kz: `
           <div class="card-block">
-            <h2>🧠 Дәрігердің клиникалық ойлауы = Шартты сөйлемдер (Conditionals)</h2>
+            <h2>Дәрігердің клиникалық ойлауы = Шартты сөйлемдер (Conditionals)</h2>
             <p>Бүкіл медицина <b>«ЕГЕР..., ОНДА...» (IF..., THEN...)</b> логикасына құрылған: <i>«Егер қақырық жасыл болса — бұл бактериялық инфекция», «Егер ісіну басылмаса — стероид енгіземіз», «Егер науқас емді ертерек алғанда — асқыну болмас еді»</i>. Ағылшын тілінде дұрыс формуланы таңдау үшін өзіңізге <b>2 сұрақ</b> қойыңыз:</p>
             <div class="clinical-quote" style="border-left-color: var(--kz-blue);">
-              1️⃣ <b>Шарт ШЫНАЙЫ ма, әлде БОЛЖАМДЫ (қиялдағы/гипотетикалық) ма?</b><br>
-              2️⃣ <b>Әңгіме ОСЫ / КЕЛЕР ШАҚ туралы ма, әлде өтіп кеткен ӨТКЕН ШАҚ туралы ма?</b>
+              1. <b>Шарт ШЫНАЙЫ ма, әлде БОЛЖАМДЫ (қиялдағы/гипотетикалық) ма?</b><br>
+              2. <b>Әңгіме ОСЫ / КЕЛЕР ШАҚ туралы ма, әлде өтіп кеткен ӨТКЕН ШАҚ туралы ма?</b>
             </div>
 
             <div class="cond-grid">
               <div class="cond-card c0">
                 <div class="cond-title">
-                  <span>0️⃣ ZERO CONDITIONAL («Ереже»)</span>
+                  <span>0. ZERO CONDITIONAL («Ереже»)</span>
                   <span>100% заңдылық</span>
                 </div>
                 <span class="comp-formula">IF + Present Simple, Present Simple</span>
@@ -1117,7 +1119,7 @@
 
               <div class="cond-card c1">
                 <div class="cond-title">
-                  <span>1️⃣ FIRST CONDITIONAL (Жоспар)</span>
+                  <span>1. FIRST CONDITIONAL (Жоспар)</span>
                   <span>Нақты болашақ</span>
                 </div>
                 <span class="comp-formula">IF + Present Simple, WILL / MAY / MIGHT / SHOULD + V1</span>
@@ -1132,7 +1134,7 @@
           </div>
 
           <div class="card-block gold">
-            <h2>⚠️ Zero және First Conditional-ға арналған басты ереже</h2>
+            <h2>Zero және First Conditional-ға арналған басты ереже</h2>
             <p>Ағылшын тілінің темірдей заңын есте сақтаңыз: <b>IF сөзінен кейінгі шартты бөлікте ЕШҚАШАН WILL қойылмайды!</b> Тіпті ертеңгі күн (<i>tomorrow</i>) туралы айтсақ та, <b>if</b>-тен кейін <b>Present Simple</b> тұрады, ал <b>will</b> тек екінші (негізгі) бөлікте қойылады:</p>
             <div class="clinical-quote" style="border-left-color: var(--kz-gold-dark);">
               ✅ <b>"If he <u>has</u> sharp pain <i>tomorrow</i>, he <u>will need</u> further imaging."</b><br>
@@ -1140,7 +1142,7 @@
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Жылдам тексеру: Zero vs First Conditional</span>
+              <span class="qc-badge">Жылдам тексеру: Zero vs First Conditional</span>
               <div class="qc-question">Usually (әдеттегі ереже) сөзі бар сөйлемге қараңыз: "If the swelling is severe, the doctor usually ___ surgery." Қай форманы таңдаймыз?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Дұрыс! Usually маркері бұл жалпы медициналық ереже екенін көрсетеді (Zero Conditional: If + Present Simple, Present Simple) -> recommends.')">recommends (Zero Conditional — ереже)</button>
@@ -1158,13 +1160,13 @@
       tab1Html: {
         ru: `
           <div class="card-block gold">
-            <h2>🔮 Нереальные и ретроспективные условия: Second, Third & Mixed Conditionals</h2>
+            <h2>Нереальные и ретроспективные условия: Second, Third & Mixed Conditionals</h2>
             <p>Когда условие <b>нереалистично (воображаемо)</b> или мы разбираем ситуацию, которая <b>уже случилась в прошлом</b>, в английском языке включается «сдвиг времени на шаг назад» и появляется частица <b>бы (would / could / might)</b>:</p>
 
             <div class="cond-grid">
               <div class="cond-card c2">
                 <div class="cond-title">
-                  <span>2️⃣ SECOND CONDITIONAL (Гипотеза сейчас)</span>
+                  <span>2. SECOND CONDITIONAL (Гипотеза сейчас)</span>
                 </div>
                 <span class="comp-formula">IF + Past Simple (V2 / were), WOULD / MIGHT + V1</span>
                 <p style="font-size:0.78rem;"><b>IF I DID, THEN YOU WOULD DO.</b> Воображаемая ситуация в настоящем или маловероятная гипотеза («Если бы сейчас было..., то...»):</p>
@@ -1177,7 +1179,7 @@
 
               <div class="cond-card c3">
                 <div class="cond-title">
-                  <span>3️⃣ THIRD & MIXED (Прошлое и его итог)</span>
+                  <span>3. THIRD & MIXED (Прошлое и его итог)</span>
                 </div>
                 <span class="comp-formula">IF + Past Perfect (had + V3), WOULD HAVE + V3 (или WOULD + V1)</span>
                 <p style="font-size:0.78rem;"><b>IF I HAD DONE, YOU WOULD HAVE DONE.</b> Условие в прошлом, которое уже нельзя изменить (разбор прошлых кейсов):</p>
@@ -1190,7 +1192,7 @@
             </div>
 
             <div class="clinical-quote" style="border-left-color: var(--kz-blue); margin-top: 12px;">
-              💡 <b>Два важных секрета для уровня B1:</b><br>
+              <b>Два важных секрета для уровня B1:</b><br>
               1. <b>Почему говорят "If I WERE..." и "If the tendon WERE torn"?</b> В академическом английском во 2-м типе условных предложений глагол <i>to be</i> после <i>if</i> ставится в форму <b>were</b> для ВСЕХ лиц (даже для <i>I, he, she, it</i>)!<br>
               2. <b>Как отличить 1-й тип от 2-го у глагола SPREAD (распространяться)?</b> Три формы глагола одинаковы: <i>spread – spread – spread</i>. Секрет в окончании <b>-s</b> для 3-го лица ед. числа:<br>
               • <i>"If the infection <b>spreads</b> (Present Simple с -s), the redness <b>will become</b> visible"</i> (1-й тип — реальность).<br>
@@ -1242,12 +1244,12 @@
           </div>
 
           <div class="card-block">
-            <h2>🔬 Практика чтения NCBI StatPearls: Thyrotoxicosis (Тиреотоксикоз)</h2>
+            <h2>Практика чтения NCBI StatPearls: Thyrotoxicosis (Тиреотоксикоз)</h2>
             <p>Прочитайте отрывок из клинического руководства <b>StatPearls: Thyrotoxicosis</b>. Обратите внимание на супер-популярную в медицинских статьях сокращенную форму <b>"If left untreated..."</b> (<i>Если оставить без лечения...</i> = <i>If it is left untreated</i>). Нажимайте на кнопки подсветки:</p>
 
             <div class="abstract-box">
               <div class="abstract-header">
-                <span>📖 NCBI StatPearls: Thyrotoxicosis — Introduction</span>
+                <span>NCBI StatPearls: Thyrotoxicosis — Introduction</span>
                 <div class="abstract-controls">
                   <button class="hl-btn cond-type" onclick="toggleAbstractHighlight('if')">Условные конструкции (If...)</button>
                   <button class="hl-btn modal-type" onclick="toggleAbstractHighlight('mod')">Модальные и Пассивные выводы</button>
@@ -1261,7 +1263,7 @@
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Вопрос по статье StatPearls</span>
+              <span class="qc-badge">Вопрос по статье StatPearls</span>
               <div class="qc-question">Посмотрите на финальное предложение статьи: "If patients continue to have anti-TSH receptor antibodies..., options such as radioiodine therapy or surgery should be considered." Какой это тип условного предложения?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Блестяще! В части с if стоит Present Simple (continue), а в главной части — модальная рекомендация в пассиве (should be considered). Это реальный клинический алгоритм (First / Zero Conditional)!')">First / Zero Conditional (реальный клинический алгоритм)</button>
@@ -1275,13 +1277,13 @@
         `,
         kz: `
           <div class="card-block gold">
-            <h2>🔮 Болжамды және ретроспективті шарттар: Second, Third & Mixed Conditionals</h2>
+            <h2>Болжамды және ретроспективті шарттар: Second, Third & Mixed Conditionals</h2>
             <p>Шарт <b>болжамды (қиялдағы/екіталай)</b> болғанда немесе біз <b>өткен шақта болып кеткен</b> клиникалық жағдайды талдағанда, ағылшын тілінде шақ бір қадам артқа шегінеді де, <b>«еді» (would / could / might)</b> көмекші сөзі қосылады:</p>
 
             <div class="cond-grid">
               <div class="cond-card c2">
                 <div class="cond-title">
-                  <span>2️⃣ SECOND CONDITIONAL (Қазіргі гипотеза)</span>
+                  <span>2. SECOND CONDITIONAL (Қазіргі гипотеза)</span>
                 </div>
                 <span class="comp-formula">IF + Past Simple (V2 / were), WOULD / MIGHT + V1</span>
                 <p style="font-size:0.78rem;"><b>IF I DID, THEN YOU WOULD DO.</b> Осы немесе келер шақтағы ойдан шығарылған, ықтималдығы аз болжам («Егер қазір осындай болса, онда бүйтер еді...»):</p>
@@ -1294,7 +1296,7 @@
 
               <div class="cond-card c3">
                 <div class="cond-title">
-                  <span>3️⃣ THIRD & MIXED (Өткен шақ талдауы)</span>
+                  <span>3. THIRD & MIXED (Өткен шақ талдауы)</span>
                 </div>
                 <span class="comp-formula">IF + Past Perfect (had + V3), WOULD HAVE + V3 (немесе WOULD + V1)</span>
                 <p style="font-size:0.78rem;"><b>IF I HAD DONE, YOU WOULD HAVE DONE.</b> Өткенде болып кеткен, енді өзгертуге келмейтін жағдай (клиникалық талдау):</p>
@@ -1307,7 +1309,7 @@
             </div>
 
             <div class="clinical-quote" style="border-left-color: var(--kz-blue); margin-top: 12px;">
-              💡 <b>B1 деңгейіне арналған 2 маңызды құпия:</b><br>
+              <b>B1 деңгейіне арналған 2 маңызды құпия:</b><br>
               1. <b>Неліктен "If I WERE..." және "If the tendon WERE torn" деп айтылады?</b> Академиялық ағылшын тілінде 2-типтегі шартты сөйлемдерде <i>if</i>-тен кейін барлық жақтарда (тіпті жекеше түрдегі <i>I, he, she, it</i> үшін де) <b>were</b> формасы қолданылады!<br>
               2. <b>SPREAD (таралу) етістігінде 1-тип пен 2-типті қалай ажыратамыз?</b> Бұл бұрыс етістіктің үш формасы да бірдей: <i>spread – spread – spread</i>. Айырмашылығы 3-жақтағы <b>-s</b> жалғауында:<br>
               • <i>"If the infection <b>spreads</b> (-s жалғауы бар Present Simple), the redness <b>will become</b> visible"</i> (1-тип — шынайы).<br>
@@ -1359,12 +1361,12 @@
           </div>
 
           <div class="card-block">
-            <h2>🔬 NCBI StatPearls мақаласын талдау: Thyrotoxicosis (Тиреотоксикоз)</h2>
+            <h2>NCBI StatPearls мақаласын талдау: Thyrotoxicosis (Тиреотоксикоз)</h2>
             <p><b>StatPearls: Thyrotoxicosis</b> клиникалық нұсқаулығынан үзінді оқыңыз. Медициналық мақалаларда өте жиі кездесетін қысқартылған <b>"If left untreated..."</b> (<i>Егер емделмесе / емсіз қалдырылса...</i> = <i>If it is left untreated</i>) құрылымына назар аударыңыз:</p>
 
             <div class="abstract-box">
               <div class="abstract-header">
-                <span>📖 NCBI StatPearls: Thyrotoxicosis — Introduction</span>
+                <span>NCBI StatPearls: Thyrotoxicosis — Introduction</span>
                 <div class="abstract-controls">
                   <button class="hl-btn cond-type" onclick="toggleAbstractHighlight('if')">Шартты құрылымдар (If...)</button>
                   <button class="hl-btn modal-type" onclick="toggleAbstractHighlight('mod')">Модальді және Пассив қорытындылар</button>
@@ -1378,7 +1380,7 @@
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ StatPearls мақаласы бойынша сұрақ</span>
+              <span class="qc-badge">StatPearls мақаласы бойынша сұрақ</span>
               <div class="qc-question">Мақаланың соңғы сөйлеміне қараңыз: "If patients continue to have anti-TSH receptor antibodies..., options such as radioiodine therapy or surgery should be considered." Бұл шартты сөйлемнің қай түрі?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Керемет! If бөлігінде Present Simple (continue), ал негізгі бөлікте модальді пассив ұсыныс (should be considered) тұр. Бұл нақты клиникалық алгоритм (First / Zero Conditional)!')">First / Zero Conditional (нақты клиникалық алгоритм)</button>

@@ -188,7 +188,7 @@
     }
 
     .paywall-card {
-      background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+      background: linear-gradient(145deg, var(--sky-900) 0%, var(--sky-900) 100%);
       color: #FFFFFF;
       border-radius: 22px;
       padding: 28px 22px;
@@ -216,7 +216,7 @@
     .pw-badge {
       background: rgba(0, 161, 222, 0.22);
       border: 1px solid rgba(0, 161, 222, 0.55);
-      color: #7DD3FC;
+      color: var(--sky-100);
       font-size: 0.7rem;
       font-weight: 800;
       padding: 4px 12px;
@@ -235,7 +235,7 @@
     .pw-desc {
       font-size: 0.82rem;
       line-height: 1.55;
-      color: #CBD5E1;
+      color: var(--line);
       font-weight: 500;
     }
 
@@ -414,9 +414,9 @@
       background: var(--bg-main);
     }
 
-    .prep-card.c1 { border-top: 4px solid #0284C7; background: #F0F9FF; }
-    .prep-card.c2 { border-top: 4px solid #D97706; background: var(--kz-gold-light); }
-    .prep-card.c3 { border-top: 4px solid #16A34A; background: #F0FDF4; }
+    .prep-card.c1 { border-top: 4px solid var(--sky-700); background: var(--sky-50); }
+    .prep-card.c2 { border-top: 4px solid var(--sun-ink); background: var(--kz-gold-light); }
+    .prep-card.c3 { border-top: 4px solid var(--ok-mid); background: #F0FDF4; }
     .prep-card.c4 { border-top: 4px solid #7C3AED; background: #F5F3FF; }
 
     .prep-title {
@@ -452,7 +452,7 @@
     /* Спойлер для полного справочника из 34 предлогов */
     details.tenses-spoiler {
       margin-top: 12px;
-      background: #F8FAFC;
+      background: var(--subtle);
       border: 1px solid var(--border-color);
       border-radius: 12px;
       padding: 10px 14px;
@@ -493,20 +493,20 @@
     }
 
     .grammar-table tr:nth-child(even) td {
-      background: #F8FAFC;
+      background: var(--subtle);
     }
 
     /* Интерактивный разбор офтальмологического абстракта */
     .abstract-box {
       background: #FFFFFF;
-      border: 2px solid #CBD5E1;
+      border: 2px solid var(--line);
       border-radius: 14px;
       overflow: hidden;
       margin-top: 10px;
     }
 
     .abstract-header {
-      background: #1E293B;
+      background: var(--sky-900);
       color: #FFFFFF;
       padding: 10px 14px;
       font-size: 0.78rem;
@@ -534,15 +534,15 @@
       transition: all 0.15s ease;
     }
 
-    .hl-btn.place-type { background: #BAE6FD; color: #0369A1; }
-    .hl-btn.move-type { background: #FDE68A; color: #92400E; }
+    .hl-btn.place-type { background: var(--sky-100); color: var(--sky-900); }
+    .hl-btn.move-type { background: #FDE68A; color: var(--sun-ink); }
     .hl-btn.reset { background: rgba(255,255,255,0.2); color: #FFFFFF; }
 
     .abstract-body {
       padding: 14px;
       font-size: 0.84rem;
       line-height: 1.68;
-      color: #334155;
+      color: var(--ink-2);
     }
 
     .p-loc, .p-mov {
@@ -552,22 +552,22 @@
     }
 
     .abstract-body.show-place .p-loc {
-      background: #BAE6FD;
-      color: #0369A1;
+      background: var(--sky-100);
+      color: var(--sky-900);
       font-weight: 800;
-      border-bottom: 2px solid #0284C7;
+      border-bottom: 2px solid var(--sky-700);
     }
 
     .abstract-body.show-move .p-mov {
       background: #FDE68A;
-      color: #92400E;
+      color: var(--sun-ink);
       font-weight: 800;
-      border-bottom: 2px solid #D97706;
+      border-bottom: 2px solid var(--sun-ink);
     }
 
     /* Быстрые микро-упражнения внутри теории (Quick Check) */
     .quick-check {
-      background: #F8FAFC;
+      background: var(--subtle);
       border: 1px dashed var(--kz-blue);
       border-radius: 14px;
       padding: 14px;
@@ -730,13 +730,15 @@
       }
     }
   </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body>
 
   <!-- ШАПКА УРОКА -->
   <header>
     <div class="header-top">
-      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅ К списку уроков</a>
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">← К списку уроков</a>
       <div class="header-right-controls">
         <span id="userTierBadge" class="tier-badge"></span>
         <div class="lang-switch">
@@ -753,7 +755,7 @@
   </header>
 
   <!-- ИНДИКАТОР ПРОВЕРКИ ПОДПИСКИ -->
-  <div id="authLoader">🔄 Проверка подписки и доступа к конспекту...</div>
+  <div id="authLoader">Проверка подписки и доступа к конспекту...</div>
 
   <!-- БЛОК PAYWALL (ПОКАЗЫВАЕТСЯ, ЕСЛИ НЕТ ТАРИФА ПРО / ПРЕМИУМ / ВИП) -->
   <div id="paywallGate">
@@ -766,13 +768,13 @@
       </p>
       <div class="pw-buttons">
         <a href="https://kazdoctors.com/tarifs" class="pw-btn-primary" id="pwTarifsBtn">
-          🌟 Перейти к тарифам (kazdoctors.com/tarifs)
+          Перейти к тарифам (kazdoctors.com/tarifs)
         </a>
         <a href="https://instagram.com/doctors.speak" target="_blank" class="pw-btn-secondary" id="pwContactBtn">
-          💬 Написать нам (@doctors.speak)
+          Написать нам (@doctors.speak)
         </a>
         <a href="/login.html" class="pw-btn-secondary" id="pwLoginBtn" style="display:none;">
-          🔐 Войти в аккаунт
+          Войти в аккаунт
         </a>
       </div>
     </div>
@@ -799,7 +801,7 @@
       <!-- ВКЛАДКА 3: СЛОВАРЬ С ПРИМЕРАМИ -->
       <section class="tab-section" id="tab2">
         <div class="card-block">
-          <h2 id="uiVocabTitle">💊 Клинический словарь урока (14 терминов)</h2>
+          <h2 id="uiVocabTitle">Клинический словарь урока (14 терминов)</h2>
           <p id="uiVocabDesc">Нажмите 🔊, чтобы прослушать произношение. Обратите внимание на предлоги места и движения в каждом примере.</p>
           <div class="vocab-grid" id="vocabGrid"></div>
         </div>
@@ -809,18 +811,18 @@
       <!-- ВКЛАДКА 4: ПРАКТИКУМ (EXERCISE 1 & 2 ИЗ PDF) -->
       <section class="tab-section" id="tab3">
         <div class="card-block gold">
-          <h2 id="uiEx1Title">✍️ Упражнение 1: Выберите правильный предлог места или движения</h2>
+          <h2 id="uiEx1Title">Упражнение 1: Выберите правильный предлог места или движения</h2>
           <p id="uiEx1Desc">Определите: речь идет о локализации боли/органа (in / on / behind) или о направлении движения (into / to):</p>
           <div id="ex1Container" style="display:flex; flex-direction:column; gap:10px;"></div>
         </div>
 
         <div class="card-block">
-          <h2 id="uiEx2Title">🩺 Упражнение 2: Заполните пропуски в клинических ситуациях</h2>
+          <h2 id="uiEx2Title">Упражнение 2: Заполните пропуски в клинических ситуациях</h2>
           <p id="uiEx2Desc">Вспомните предлоги поверхности (on), направления (to), снятия давления (from) и снижения симптомов (reduction in):</p>
           <div id="ex2Container" style="display:flex; flex-direction:column; gap:10px;"></div>
         </div>
 
-        <a href="./prepositionsofplace/" class="action-btn" id="uiGoTrainerBtn">🎯 Запустить игровой тренажер по Уроку 10 ➔</a>
+        <a href="../prepositionsofplace/" class="action-btn" id="uiGoTrainerBtn">Запустить игровой тренажер по Уроку 10 ➔</a>
       </section>
     </main>
   </div>
@@ -847,7 +849,7 @@
       standard: { ru: "СТАНДАРТ", kz: "СТАНДАРТ" },
       pro: { ru: "ТАРИФ: ПРО", kz: "ТАРИФ: ПРО" },
       premium: { ru: "ТАРИФ: ПРЕМИУМ", kz: "ТАРИФ: ПРЕМИУМ" },
-      vip: { ru: "ТАРИФ: ВИП 👑", kz: "ТАРИФ: ВИП 👑" }
+      vip: { ru: "ТАРИФ: ВИП", kz: "ТАРИФ: ВИП" }
     };
 
     let currentViewerState = {
@@ -956,12 +958,12 @@
         : "ДОСТУПНО В ТАРИФАХ ПРО / ПРЕМИУМ / ВИП";
 
       tarifsBtn.textContent = isKz
-        ? "🌟 Тарифтер бетіне өту (kazdoctors.com/tarifs)"
-        : "🌟 Перейти к тарифам (kazdoctors.com/tarifs)";
+        ? "Тарифтер бетіне өту (kazdoctors.com/tarifs)"
+        : "Перейти к тарифам (kazdoctors.com/tarifs)";
 
       contactBtn.textContent = isKz
-        ? "💬 Бізге жазу (@doctors.speak)"
-        : "💬 Написать нам (@doctors.speak)";
+        ? "Бізге жазу (@doctors.speak)"
+        : "Написать нам (@doctors.speak)";
 
       if (!isLoggedIn) {
         titleEl.textContent = isKz
@@ -971,7 +973,7 @@
           ? "Бұл интерактивті конспект «Про», «Премиум» және «ВИП» жазылымдары бар дәрігерлерге арналған. Тарифтер бетінде өзіңізге ыңғайлы пакетті таңдай аласыз:"
           : "Этот интерактивный конспект открыт для врачей с подпиской «Про», «Премиум» или «ВИП». Ознакомьтесь с вариантами доступа на странице тарифов:";
         loginBtn.style.display = "inline-flex";
-        loginBtn.textContent = isKz ? "🔐 Аккаунтқа кіру" : "🔐 Уже есть подписка? Войти в аккаунт";
+        loginBtn.textContent = isKz ? "Аккаунтқа кіру" : "Уже есть подписка? Войти в аккаунт";
       } else if (reasonTier === "standard") {
         titleEl.textContent = isKz
           ? "Сізде «Стандарт» тарифі белсенді (тек тренажерлер)"
@@ -996,7 +998,7 @@
     // =========================================================================
     const LESSON10_DATA = {
       ui: {
-        backBtn: { ru: "⬅ К списку уроков", kz: "⬅ Сабақтар тізіміне" },
+        backBtn: { ru: "← К списку уроков", kz: "← Сабақтар тізіміне" },
         title: {
           ru: "Prepositions of Place & Movement (Предлоги места и движения)",
           kz: "Prepositions of Place & Movement (Орын және бағыт предлогтары)"
@@ -1012,8 +1014,8 @@
           { ru: "4. Упражнения", kz: "4. Жаттығулар" }
         ],
         vocabTitle: {
-          ru: "💊 Клинический словарь урока (14 терминов)",
-          kz: "💊 Сабақтың клиникалық сөздігі (14 термин)"
+          ru: "Клинический словарь урока (14 терминов)",
+          kz: "Сабақтың клиникалық сөздігі (14 термин)"
         },
         vocabDesc: {
           ru: "Нажмите 🔊 для прослушивания произношения. Изучите, как каждый термин работает в связке с предлогами места и движения.",
@@ -1024,7 +1026,7 @@
           kz: "4-қадамға өту: Жылдам жаттығулар ➔"
         },
         ex1Title: {
-          ru: "✍️ Упражнение 1: Выберите правильный предлог места или движения",
+          ru: "Упражнение 1: Выберите правильный предлог места или движения",
           kz: "✍️ 1-жаттығу: Орын немесе бағыттың дұрыс предлогын таңдаңыз"
         },
         ex1Desc: {
@@ -1032,7 +1034,7 @@
           kz: "Етістікке қарап анықтаңыз: бұл ағзаның/симптомның орналасуы ма (in / on / behind), әлде қозғалыс па (into / to):"
         },
         ex2Title: {
-          ru: "🩺 Упражнение 2: Заполните пропуски подходящим предлогом",
+          ru: "Упражнение 2: Заполните пропуски подходящим предлогом",
           kz: "🩺 2-жаттығу: Бос орындарға сәйкес предлогты қойыңыз"
         },
         ex2Desc: {
@@ -1040,7 +1042,7 @@
           kz: "Сөйлемнің клиникалық мағынасына қарай предлогты таңдаңыз:"
         },
         goTrainerBtn: {
-          ru: "🎯 Перейти к основному тренажеру Урока 10 ➔",
+          ru: "Перейти к основному тренажеру Урока 10 ➔",
           kz: "🎯 10-сабақтың негізгі тренажеріне өту ➔"
         }
       },
@@ -1049,13 +1051,13 @@
       tab0Html: {
         ru: `
           <div class="card-block">
-            <h2>📍 Главное различие: «ГДЕ находится?» (Статика) vs «КУДА движется?» (Динамика)</h2>
+            <h2>Главное различие: «ГДЕ находится?» (Статика) vs «КУДА движется?» (Динамика)</h2>
             <p>В русском языке предлог <b>«В»</b> отвечает сразу на два вопроса: <i>«Где? В вене»</i> и <i>«Куда? В вену»</i>. Точно так же предлог <b>«НА»</b> используется и для <i>«Где? На лодыжке»</i>, и для <i>«Куда? На лодыжку»</i>. В английском языке для покоя и для движения внутрь/на поверхность используются <b>разные предлоги</b>:</p>
 
             <div class="prep-grid">
               <div class="prep-card c1">
                 <div class="prep-title">
-                  <span>📦 ВНУТРИ: IN / INSIDE / WITHIN</span>
+                  <span>ВНУТРИ: IN / INSIDE / WITHIN</span>
                   <span>Где?</span>
                 </div>
                 <span class="comp-formula">Покой внутри полости или границ</span>
@@ -1069,7 +1071,7 @@
 
               <div class="prep-card c2">
                 <div class="prep-title">
-                  <span>💉 ВНУТРЬ: INTO</span>
+                  <span>ВНУТРЬ: INTO</span>
                   <span>Куда?</span>
                 </div>
                 <span class="comp-formula">Движение снаружи -> внутрь</span>
@@ -1083,7 +1085,7 @@
 
               <div class="prep-card c3">
                 <div class="prep-title">
-                  <span>🖐️ НА ПОВЕРХНОСТИ: ON vs ONTO / OFF</span>
+                  <span>НА ПОВЕРХНОСТИ: ON vs ONTO / OFF</span>
                   <span>Где / Куда?</span>
                 </div>
                 <span class="comp-formula">on (лежит на) • onto (кладем на) • off (упал с)</span>
@@ -1097,7 +1099,7 @@
 
               <div class="prep-card c4">
                 <div class="prep-title">
-                  <span>🏥 УЧРЕЖДЕНИЕ И ТОЧКА: AT</span>
+                  <span>УЧРЕЖДЕНИЕ И ТОЧКА: AT</span>
                   <span>Где?</span>
                 </div>
                 <span class="comp-formula">at + клиника / центр / точка осмотра</span>
@@ -1111,7 +1113,7 @@
           </div>
 
           <div class="card-block gold">
-            <h2>🩻 Анатомическая топография: как описать расположение органов и боли</h2>
+            <h2>Анатомическая топография: как описать расположение органов и боли</h2>
             <p>На физикальном осмотре, УЗИ и КТ врач описывает положение патологии относительно соседних анатомических структур:</p>
 
             <div class="prep-grid">
@@ -1139,7 +1141,7 @@
 
               <div class="prep-card c3">
                 <div class="prep-title">
-                  <span>🔄 Спереди / Сзади / Вокруг</span>
+                  <span>Спереди / Сзади / Вокруг</span>
                 </div>
                 <p style="font-size:0.78rem;"><b>behind</b> (позади/за), <b>in front of</b> (перед), <b>around</b> (вокруг):</p>
                 <div class="clinical-quote">
@@ -1163,7 +1165,7 @@
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Быстрая проверка</span>
+              <span class="qc-badge">Быстрая проверка</span>
               <div class="qc-question">Анатомический вопрос: «Поджелудочная железа лежит ПОЗАДИ желудка и трудна для пальпации» — "The pancreas lies ___ the stomach and is difficult to palpate."</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Верно! Behind означает «позади / за» анатомической структурой.')">behind</button>
@@ -1178,13 +1180,13 @@
         `,
         kz: `
           <div class="card-block">
-            <h2>📍 Басты айырмашылық: «ҚАЙДА орналасқан?» (Статика) және «ҚАЙДА бағытталған?» (Динамика)</h2>
+            <h2>Басты айырмашылық: «ҚАЙДА орналасқан?» (Статика) және «ҚАЙДА бағытталған?» (Динамика)</h2>
             <p>Ағылшын тілінде заттың тыныштықта тұрған орнын (<i>Қайда?</i>) және қозғалыс бағытын (<i>Қайда қарай?</i>) білдіру үшін <b>әртүрлі предлогтар</b> қолданылады:</p>
 
             <div class="prep-grid">
               <div class="prep-card c1">
                 <div class="prep-title">
-                  <span>📦 ІШІНДЕ: IN / INSIDE / WITHIN</span>
+                  <span>ІШІНДЕ: IN / INSIDE / WITHIN</span>
                   <span>Қайда?</span>
                 </div>
                 <span class="comp-formula">Қуыс немесе шекара ішіндегі қалып</span>
@@ -1198,7 +1200,7 @@
 
               <div class="prep-card c2">
                 <div class="prep-title">
-                  <span>💉 ІШІНЕ ҚАРАЙ: INTO</span>
+                  <span>ІШІНЕ ҚАРАЙ: INTO</span>
                   <span>Қайда?</span>
                 </div>
                 <span class="comp-formula">Сырттан -> ішке қарай қозғалыс</span>
@@ -1212,7 +1214,7 @@
 
               <div class="prep-card c3">
                 <div class="prep-title">
-                  <span>🖐️ БЕТІНДЕ: ON vs ONTO / OFF</span>
+                  <span>БЕТІНДЕ: ON vs ONTO / OFF</span>
                   <span>Қайда?</span>
                 </div>
                 <span class="comp-formula">on (үстінде) • onto (үстіне қою) • off (құлау)</span>
@@ -1226,7 +1228,7 @@
 
               <div class="prep-card c4">
                 <div class="prep-title">
-                  <span>🏥 МЕКЕМЕ МЕН НҮКТЕ: AT</span>
+                  <span>МЕКЕМЕ МЕН НҮКТЕ: AT</span>
                   <span>Қайда?</span>
                 </div>
                 <span class="comp-formula">at + клиника / орталық / нүкте</span>
@@ -1240,7 +1242,7 @@
           </div>
 
           <div class="card-block gold">
-            <h2>🩻 Анатомиялық топография: ағзалар мен ауырсыну орнын сипаттау</h2>
+            <h2>Анатомиялық топография: ағзалар мен ауырсыну орнын сипаттау</h2>
             <p>Физикалық тексеру, УДЗ және КТ кезінде патологияның көршілес анатомиялық құрылымдарға қатысты орналасуын сипаттау:</p>
 
             <div class="prep-grid">
@@ -1268,7 +1270,7 @@
 
               <div class="prep-card c3">
                 <div class="prep-title">
-                  <span>🔄 Алдында / Артында / Айналасында</span>
+                  <span>Алдында / Артында / Айналасында</span>
                 </div>
                 <p style="font-size:0.78rem;"><b>behind</b> (артында), <b>in front of</b> (алдында), <b>around</b> (айналасында):</p>
                 <div class="clinical-quote">
@@ -1292,7 +1294,7 @@
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Жылдам тексеру</span>
+              <span class="qc-badge">Жылдам тексеру</span>
               <div class="qc-question">Анатомиялық сұрақ: «Ұйқы безі асқазанның АРТЫНДА орналасқан және пальпациялауға қиын» — "The pancreas lies ___ the stomach and is difficult to palpate."</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Дұрыс! Behind «артында» деген анатомиялық орналасуды білдіреді.')">behind</button>
@@ -1311,7 +1313,7 @@
       tab1Html: {
         ru: `
           <div class="card-block gold">
-            <h2>🧭 Векторы движения: как описать иррадиацию боли и проведение катетера</h2>
+            <h2>Векторы движения: как описать иррадиацию боли и проведение катетера</h2>
             <p>Четыре предлога движения — <b>through, across, along, past</b> — часто путают при описании операций и жалоб пациента. Посмотрите на их точную механику:</p>
 
             <div class="prep-grid">
@@ -1361,7 +1363,7 @@
             </div>
 
             <div class="clinical-quote" style="border-left-color: var(--kz-blue); margin-top: 12px;">
-              📌 <b>3 важные клинические связки для тестов + Нюанс Beside / Besides:</b><br>
+              <b>3 важные клинические связки для тестов + Нюанс Beside / Besides:</b><br>
               1. <b>refer TO</b> (направить к врачу): <i>The patient was referred <b>to</b> the cardiologist.</i><br>
               2. <b>reduction IN</b> (снижение в симптомах/отеке): <i>A reduction <b>in</b> symptoms was seen.</i><br>
               3. <b>relieve pressure FROM</b> (снять давление с/из): <i>Medication was given to relieve pressure <b>from</b> the chest.</i><br>
@@ -1369,7 +1371,7 @@
             </div>
 
             <details class="tenses-spoiler">
-              <summary>📚 Открыть полный справочник всех 34 предлогов урока с примерами</summary>
+              <summary>Открыть полный справочник всех 34 предлогов урока с примерами</summary>
               <table class="grammar-table" style="margin-top:8px;">
                 <thead>
                   <tr><th>№</th><th>Предлог</th><th>Перевод</th><th>Клинический пример</th></tr>
@@ -1415,12 +1417,12 @@
           </div>
 
           <div class="card-block">
-            <h2>👁️ Практика чтения статьи: Ophthalmology Abstract (Retinal Degeneration)</h2>
+            <h2>Практика чтения статьи: Ophthalmology Abstract (Retinal Degeneration)</h2>
             <p>Прочитайте научный абстракт по офтальмологии об интравитреальных инъекциях в стекловидное тело. Нажимайте на кнопки подсветки, чтобы увидеть, как авторы описывают <b>анатомическую локализацию</b> и <b>пути доставки/миграции препарата</b>:</p>
 
             <div class="abstract-box">
               <div class="abstract-header">
-                <span>📄 Sample Abstract: Intravitreal Injections & Retinal Degeneration</span>
+                <span>Sample Abstract: Intravitreal Injections & Retinal Degeneration</span>
                 <div class="abstract-controls">
                   <button class="hl-btn place-type" onclick="toggleAbstractHighlight('place')">Локализация (within / at / beneath / around / behind / near / among)</button>
                   <button class="hl-btn move-type" onclick="toggleAbstractHighlight('move')">Движение и Доставка (into / from / along / through / across / toward / to)</button>
@@ -1439,7 +1441,7 @@
         `,
         kz: `
           <div class="card-block gold">
-            <h2>🧭 Қозғалыс векторлары: ауырсынудың таралуын және катетер енгізуді сипаттау</h2>
+            <h2>Қозғалыс векторлары: ауырсынудың таралуын және катетер енгізуді сипаттау</h2>
             <p>Қозғалысты білдіретін 4 предлогты — <b>through, across, along, past</b> — ота барысын немесе науқас шағымын сипаттағанда шатастырмау үшін олардың механикасына қараңыз:</p>
 
             <div class="prep-grid">
@@ -1489,7 +1491,7 @@
             </div>
 
             <div class="clinical-quote" style="border-left-color: var(--kz-blue); margin-top: 12px;">
-              📌 <b>Тесттерге арналған 3 маңызды клиникалық тіркес + Beside / Besides айырмашылығы:</b><br>
+              <b>Тесттерге арналған 3 маңызды клиникалық тіркес + Beside / Besides айырмашылығы:</b><br>
               1. <b>refer TO</b> (маманға жіберу): <i>The patient was referred <b>to</b> the cardiologist.</i><br>
               2. <b>reduction IN</b> (симптомдардың/ісінудің азаюы): <i>A reduction <b>in</b> symptoms was seen.</i><br>
               3. <b>relieve pressure FROM</b> (қысымды басу/кетіру): <i>Medication was given to relieve pressure <b>from</b> the chest.</i><br>
@@ -1497,7 +1499,7 @@
             </div>
 
             <details class="tenses-spoiler">
-              <summary>📚 Сабақтағы барлық 34 предлогтың толық анықтамалығын ашу</summary>
+              <summary>Сабақтағы барлық 34 предлогтың толық анықтамалығын ашу</summary>
               <table class="grammar-table" style="margin-top:8px;">
                 <thead>
                   <tr><th>№</th><th>Предлог</th><th>Аудармасы</th><th>Клиникалық мысал</th></tr>
@@ -1543,12 +1545,12 @@
           </div>
 
           <div class="card-block">
-            <h2>👁️ Ғылыми мақаланы талдау: Ophthalmology Abstract (Retinal Degeneration)</h2>
+            <h2>Ғылыми мақаланы талдау: Ophthalmology Abstract (Retinal Degeneration)</h2>
             <p>Шыны тәрізді денеге жасалатын интравитреальды инъекциялар туралы офтальмологиялық абстрактіні оқыңыз. Авторлардың <b>анатомиялық орналасуды</b> және <b>препараттың енгізілу/таралу бағытын</b> қалай сипаттағанын көру үшін батырмаларды басыңыз:</p>
 
             <div class="abstract-box">
               <div class="abstract-header">
-                <span>📄 Sample Abstract: Intravitreal Injections & Retinal Degeneration</span>
+                <span>Sample Abstract: Intravitreal Injections & Retinal Degeneration</span>
                 <div class="abstract-controls">
                   <button class="hl-btn place-type" onclick="toggleAbstractHighlight('place')">Орналасуы (within / at / beneath / around / behind / near / among)</button>
                   <button class="hl-btn move-type" onclick="toggleAbstractHighlight('move')">Қозғалыс пен Енгізу (into / from / along / through / across / toward / to)</button>
