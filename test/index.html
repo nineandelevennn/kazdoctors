@@ -48,6 +48,7 @@
         .passage-scroll::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 8px; }
     </style>
     <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/track.js?v=1" defer></script>
     <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body class="text-slate-800 min-h-full flex flex-col antialiased selection:bg-kzblue selection:text-white">
@@ -1224,9 +1225,17 @@
                 if (this.questionTimerInterval) clearInterval(this.questionTimerInterval);
 
                 const currentQ = this.activeQuestions[this.currentIndex];
-                if (!isTimeout && this.selectedOptionIndex === currentQ.correctShuffledIndex) {
+                const isRight = !isTimeout && this.selectedOptionIndex === currentQ.correctShuffledIndex;
+                if (isRight) {
                     this.score++;
                 }
+                // журнал обучения
+                try {
+                    if (window.dsTrack) {
+                        const qText = currentQ.question || currentQ.q || currentQ.text || currentQ.prompt || (document.getElementById('questionText') || {}).textContent || '';
+                        window.dsTrack.answer((currentQ.id ? currentQ.id + ' · ' : '') + (typeof qText === 'object' ? (qText.ru || qText.en || '') : qText), isRight, isTimeout ? '(время вышло)' : '');
+                    }
+                } catch (e) {}
 
                 if (this.currentIndex < this.activeQuestions.length - 1) {
                     this.currentIndex++;
@@ -1248,6 +1257,7 @@
                 try {
                     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(payload));
                 } catch (e) {}
+                try { if (window.dsTrack) window.dsTrack.result(this.score, this.activeQuestions.length, 'Тест уровня'); } catch (e) {}
 
                 this.showResultScreen(completionTimestamp);
             }
