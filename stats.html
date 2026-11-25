@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Статистика обучения — Doctors Speak</title>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { margin: 0; background: var(--bg); color: var(--ink); font-size: 15px; line-height: 1.5; }
+        header { padding: 18px 20px; color: #fff; }
+        .hdr { max-width: 1040px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+        .hdr h1 { margin: 0; font-size: 20px; color: #fff; }
+        .hdr a { color: #fff; text-decoration: none; font-weight: 600; font-size: 14px; opacity: .9; }
+        main { max-width: 1040px; margin: 0 auto; padding: 20px 16px 40px; display: flex; flex-direction: column; gap: 16px; }
+        .bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        .seg { display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 3px; }
+        .seg button { border: 0; background: transparent; padding: 7px 14px; border-radius: 8px; font-weight: 600; color: var(--ink-2); cursor: pointer; font-size: 14px; }
+        .seg button.on { background: var(--sky-700); color: #fff; }
+        .muted { color: var(--ink-3); font-size: 13px; }
+        .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+        .card h2 { margin: 0 0 4px; font-size: 17px; color: var(--sky-900); }
+        .card > p.muted { margin: 0 0 12px; }
+        .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+        .kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+        .kpi .v { font-family: var(--font-heading); font-size: 28px; font-weight: 700; color: var(--sky-900); font-variant-numeric: tabular-nums; }
+        .kpi .l { font-size: 13px; color: var(--ink-3); }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th { text-align: left; font-weight: 600; color: var(--ink-3); font-size: 12px; text-transform: uppercase; letter-spacing: .03em; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+        td { padding: 9px 10px; border-bottom: 1px solid var(--subtle); vertical-align: top; }
+        td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+        .scroll { overflow-x: auto; }
+        .funnel { display: flex; flex-direction: column; gap: 8px; }
+        .frow { display: grid; grid-template-columns: 210px 1fr 70px; gap: 10px; align-items: center; font-size: 14px; }
+        .ftrack { background: var(--subtle); border-radius: 6px; height: 22px; overflow: hidden; }
+        .ffill { background: var(--sky-500); height: 100%; border-radius: 6px; min-width: 2px; }
+        .pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+        .good { background: var(--ok-bg); color: var(--ok); }
+        .mid { background: var(--sun-50); color: var(--sun-ink); }
+        .bad { background: var(--err-bg); color: var(--err); }
+        .msg { padding: 16px; border-radius: 12px; background: var(--sky-50); color: var(--sky-900); }
+        .msg.err { background: var(--err-bg); color: var(--err); }
+        .two { display: grid; grid-template-columns: 1fr; gap: 16px; }
+        @media (min-width: 900px) { .two { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 560px) { .frow { grid-template-columns: 1fr 60px; } .frow .ftrack { grid-column: 1 / -1; order: 3; } }
+    </style>
+</head>
+<body>
+<header>
+    <div class="hdr">
+        <h1>Статистика обучения</h1>
+        <div class="bar"><a href="/admin.html">Админка</a> · <a href="/">На сайт</a></div>
+    </div>
+</header>
+
+<main>
+    <div class="bar">
+        <div class="seg" id="periodSeg">
+            <button data-days="7" class="on">7 дней</button>
+            <button data-days="30">30 дней</button>
+            <button data-days="90">90 дней</button>
+        </div>
+        <span class="muted" id="updatedAt"></span>
+    </div>
+
+    <div id="status" class="msg">Загрузка…</div>
+
+    <div id="content" hidden>
+        <div class="kpis" id="kpis"></div>
+
+        <div class="card" style="margin-top:16px">
+            <h2>Путь ученика</h2>
+            <p class="muted">Сколько разных людей дошли до каждого шага за период (вошедшие — по аккаунту, гости — по устройству).</p>
+            <div class="funnel" id="funnel"></div>
+        </div>
+
+        <div class="two" style="margin-top:16px">
+            <div class="card">
+                <h2>Разделы</h2>
+                <p class="muted">Где больше всего занимаются и насколько успешно.</p>
+                <div class="scroll"><table id="pagesTbl"></table></div>
+            </div>
+            <div class="card">
+                <h2>Самые трудные вопросы</h2>
+                <p class="muted">Не меньше 5 ответов, отсортировано по доле верных.</p>
+                <div class="scroll"><table id="hardTbl"></table></div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+            <h2>Итоги тестов, ДЗ и экзамена</h2>
+            <p class="muted">Последние результаты.</p>
+            <div class="scroll"><table id="resultsTbl"></table></div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+            <h2>Ученики</h2>
+            <p class="muted">Только вошедшие в аккаунт. Гости в этот список не попадают.</p>
+            <div class="scroll"><table id="usersTbl"></table></div>
+        </div>
+    </div>
+</main>
+
+<script>
+(function () {
+    const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const pct = (a, b) => b ? Math.round(a * 100 / b) : 0;
+    const fmtDate = (d) => new Date(d).toLocaleString("ru-RU", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+
+    const TRAINERS = {
+        tobetodo: "To be / To do", present: "Present", past: "Past", future: "Future", passive: "Passive",
+        modals: "Modals", possessives: "Possessives", thereis: "There is / are", prepositionsoftime: "Предлоги времени",
+        prepositionsofplace: "Предлоги места", conditionals: "Conditionals", comparatives: "Comparatives",
+        articles: "Articles", relativeclause: "Relative clauses", gerund: "Gerund", random: "Микс", random2: "Микс B1–B2",
+        reading: "Практика чтения", chunks: "Чанки"
+    };
+    const NAMES = {
+        "/": "Главная", "/test/": "Тест уровня", "/tbltfree/": "Quick Practice", "/listening/": "Listening",
+        "/anatomic/": "Тренажёр Anatomy", "/clinical/": "Тренажёр Clinical", "/academic/": "Тренажёр Academic",
+        "/grammar/": "Хаб видеокурса", "/grammar/exam/": "Экзамен", "/interviews/": "Опрос: тренажёр",
+        "/cheatsheet/": "Опрос: шпаргалка", "/inter/": "Опрос: учебник", "/interaudio/": "Опрос: аудиоуроки",
+        "/reading/": "Статьи: видеоуроки", "/presentations/": "Презентации", "/presentaudio/": "Презентации: аудио",
+        "/tarifs/": "Тарифы", "/login.html": "Вход", "/register.html": "Регистрация", "/usmle/": "USMLE",
+        "/game/": "Игра Run Doctor", "/syringes/": "Игра Syringe Shots"
+    };
+    function pageName(p) {
+        if (NAMES[p]) return NAMES[p];
+        let m = p.match(/^\/grammar\/lesson(\d+)\/$/); if (m) return "Урок " + m[1] + " (конспект)";
+        m = p.match(/^\/grammar\/hw(\d+)\/$/); if (m) return "ДЗ " + ({ "14": "1–4", "58": "5–8", "912": "9–12", "1315": "13–15" }[m[1]] || m[1]);
+        m = p.match(/^\/grammar\/([a-z0-9]+)\/$/); if (m && TRAINERS[m[1]]) return "Тренажёр: " + TRAINERS[m[1]];
+        if (p.indexOf("/usmle/") === 0) return "USMLE: " + p.split("/")[2];
+        return p;
+    }
+    const actor = (e) => e.user_id || ("dev:" + (e.device_id || "?"));
+    const rateCls = (r) => r >= 75 ? "good" : r >= 50 ? "mid" : "bad";
+
+    let days = 7;
+
+    async function loadEvents(sinceIso) {
+        const all = [];
+        const step = 1000;
+        for (let from = 0; from < 60000; from += step) {
+            const { data, error } = await sb.from("learning_events")
+                .select("created_at,user_id,device_id,page,event,item,answer,correct,score,total,lang")
+                .gte("created_at", sinceIso).order("created_at", { ascending: false }).range(from, from + step - 1);
+            if (error) throw error;
+            all.push(...data);
+            if (data.length < step) break;
+        }
+        return all;
+    }
+
+    async function loadProfiles(ids) {
+        if (!ids.length) return {};
+        const map = {};
+        for (let i = 0; i < ids.length; i += 200) {
+            const { data, error } = await sb.from("profiles").select("id,email,name,tier,subscription_expires_at").in("id", ids.slice(i, i + 200));
+            if (error) return map;
+            data.forEach(p => map[p.id] = p);
+        }
+        return map;
+    }
+
+    function render(ev, profiles) {
+        const answers = ev.filter(e => e.event === "answer");
+        const results = ev.filter(e => e.event === "result");
+        const actors = new Set(ev.map(actor));
+        const loggedIn = new Set(ev.filter(e => e.user_id).map(e => e.user_id));
+        const right = answers.filter(e => e.correct).length;
+        const tests = results.filter(e => e.page === "/test/");
+        const avgTest = tests.length ? (tests.reduce((s, e) => s + (e.score || 0), 0) / tests.length).toFixed(1) : "—";
+
+        $("kpis").innerHTML = [
+            [actors.size, "человек открывали сайт"],
+            [loggedIn.size, "из них вошли в аккаунт"],
+            [answers.length, "ответов в упражнениях"],
+            [answers.length ? pct(right, answers.length) + "%" : "—", "верных ответов"],
+            [tests.length, "прохождений теста уровня"],
+            [avgTest === "—" ? "—" : avgTest + " / 12", "средний балл теста"]
+        ].map(([v, l]) => `<div class="kpi"><div class="v">${esc(v)}</div><div class="l">${esc(l)}</div></div>`).join("");
+
+        // путь ученика
+        const set = (fn) => new Set(ev.filter(fn).map(actor));
+        const steps = [
+            ["Открыли сайт", actors],
+            ["Прошли тест уровня", set(e => e.page === "/test/" && e.event === "result")],
+            ["Открыли урок (конспект)", set(e => /^\/grammar\/lesson\d+\/$/.test(e.page) && e.event === "view")],
+            ["Ответили в упражнениях", set(e => e.event === "answer" && e.page !== "/test/")],
+            ["Сдали домашнее задание", set(e => /^\/grammar\/hw/.test(e.page) && e.event === "result")],
+            ["Сдали экзамен", set(e => e.page === "/grammar/exam/" && e.event === "result")]
+        ];
+        const top = Math.max(1, steps[0][1].size);
+        $("funnel").innerHTML = steps.map(([l, s]) =>
+            `<div class="frow"><span>${esc(l)}</span><div class="ftrack"><div class="ffill" style="width:${pct(s.size, top)}%"></div></div><span class="n" style="text-align:right"><b>${s.size}</b></span></div>`
+        ).join("");
+
+        // разделы
+        const byPage = {};
+        ev.forEach(e => {
+            const p = byPage[e.page] || (byPage[e.page] = { views: 0, people: new Set(), ans: 0, ok: 0 });
+            p.people.add(actor(e));
+            if (e.event === "view") p.views++;
+            if (e.event === "answer") { p.ans++; if (e.correct) p.ok++; }
+        });
+        const pages = Object.entries(byPage).sort((a, b) => b[1].people.size - a[1].people.size).slice(0, 25);
+        $("pagesTbl").innerHTML = `<thead><tr><th>Раздел</th><th class="n">Людей</th><th class="n">Ответов</th><th class="n">Верно</th></tr></thead><tbody>` +
+            (pages.length ? pages.map(([p, s]) => {
+                const r = pct(s.ok, s.ans);
+                return `<tr><td>${esc(pageName(p))}</td><td class="n">${s.people.size}</td><td class="n">${s.ans}</td><td class="n">${s.ans ? `<span class="pill ${rateCls(r)}">${r}%</span>` : "—"}</td></tr>`;
+            }).join("") : `<tr><td colspan="4" class="muted">Пока нет данных</td></tr>`) + `</tbody>`;
+
+        // трудные вопросы
+        const byItem = {};
+        answers.forEach(e => {
+            if (!e.item) return;
+            const k = e.page + "|" + e.item;
+            const it = byItem[k] || (byItem[k] = { page: e.page, item: e.item, n: 0, ok: 0, wrong: {} });
+            it.n++; if (e.correct) it.ok++; else if (e.answer) it.wrong[e.answer] = (it.wrong[e.answer] || 0) + 1;
+        });
+        const hard = Object.values(byItem).filter(i => i.n >= 5).sort((a, b) => (a.ok / a.n) - (b.ok / b.n)).slice(0, 15);
+        $("hardTbl").innerHTML = `<thead><tr><th>Вопрос</th><th class="n">Ответов</th><th class="n">Верно</th></tr></thead><tbody>` +
+            (hard.length ? hard.map(i => {
+                const r = pct(i.ok, i.n);
+                const topWrong = Object.entries(i.wrong).sort((a, b) => b[1] - a[1])[0];
+                return `<tr><td>${esc(i.item)}<div class="muted">${esc(pageName(i.page))}${topWrong ? " · чаще всего ошибаются: «" + esc(topWrong[0]) + "»" : ""}</div></td><td class="n">${i.n}</td><td class="n"><span class="pill ${rateCls(r)}">${r}%</span></td></tr>`;
+            }).join("") : `<tr><td colspan="3" class="muted">Нужно больше ответов (от 5 на вопрос)</td></tr>`) + `</tbody>`;
+
+        // итоги
+        const who = (e) => {
+            if (!e.user_id) return "Гость";
+            const p = profiles[e.user_id];
+            return p ? (p.name || p.email) : e.user_id.slice(0, 8);
+        };
+        $("resultsTbl").innerHTML = `<thead><tr><th>Когда</th><th>Кто</th><th>Что</th><th class="n">Балл</th></tr></thead><tbody>` +
+            (results.length ? results.slice(0, 40).map(e => {
+                const r = pct(e.score, e.total);
+                return `<tr><td>${fmtDate(e.created_at)}</td><td>${esc(who(e))}</td><td>${esc(pageName(e.page))}${e.item && e.page === "/grammar/exam/" ? `<div class="muted">${esc(e.item)}</div>` : ""}</td><td class="n"><span class="pill ${rateCls(r)}">${e.score} / ${e.total}</span></td></tr>`;
+            }).join("") : `<tr><td colspan="4" class="muted">Пока нет результатов</td></tr>`) + `</tbody>`;
+
+        // ученики
+        const byUser = {};
+        ev.filter(e => e.user_id).forEach(e => {
+            const u = byUser[e.user_id] || (byUser[e.user_id] = { last: e.created_at, ans: 0, ok: 0, pages: new Set(), days: new Set() });
+            if (e.created_at > u.last) u.last = e.created_at;
+            u.pages.add(e.page); u.days.add(e.created_at.slice(0, 10));
+            if (e.event === "answer") { u.ans++; if (e.correct) u.ok++; }
+        });
+        const users = Object.entries(byUser).sort((a, b) => b[1].ans - a[1].ans).slice(0, 100);
+        $("usersTbl").innerHTML = `<thead><tr><th>Ученик</th><th>Тариф</th><th class="n">Дней с занятиями</th><th class="n">Ответов</th><th class="n">Верно</th><th>Последний раз</th></tr></thead><tbody>` +
+            (users.length ? users.map(([id, u]) => {
+                const p = profiles[id] || {};
+                const r = pct(u.ok, u.ans);
+                return `<tr><td>${esc(p.name || p.email || id.slice(0, 8))}${p.name && p.email ? `<div class="muted">${esc(p.email)}</div>` : ""}</td><td>${esc((p.tier || "—").toUpperCase())}</td><td class="n">${u.days.size}</td><td class="n">${u.ans}</td><td class="n">${u.ans ? `<span class="pill ${rateCls(r)}">${r}%</span>` : "—"}</td><td>${fmtDate(u.last)}</td></tr>`;
+            }).join("") : `<tr><td colspan="6" class="muted">Пока нет вошедших учеников с активностью</td></tr>`) + `</tbody>`;
+    }
+
+    async function refresh() {
+        $("status").hidden = false; $("status").className = "msg"; $("status").textContent = "Загрузка…";
+        try {
+            const { data } = await sb.auth.getSession();
+            if (!data || !data.session) {
+                $("status").innerHTML = 'Нужно войти под аккаунтом администратора. <a href="/login.html">Войти</a>';
+                $("content").hidden = true; return;
+            }
+            const since = new Date(Date.now() - days * 86400000).toISOString();
+            const ev = await loadEvents(since);
+            const ids = [...new Set(ev.filter(e => e.user_id).map(e => e.user_id))];
+            const profiles = await loadProfiles(ids);
+            render(ev, profiles);
+            $("status").hidden = true; $("content").hidden = false;
+            $("updatedAt").textContent = "Записей за период: " + ev.length + " · обновлено " + new Date().toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
+            if (!ev.length) { $("status").hidden = false; $("status").textContent = "За этот период записей нет. Журнал начинает копиться с момента подключения."; }
+        } catch (err) {
+            $("status").className = "msg err";
+            const m = (err && err.message) || String(err);
+            $("status").textContent = /relation .*learning_events.* does not exist|Could not find the table/i.test(m)
+                ? "Таблица журнала ещё не создана в Supabase. Выполните SQL из файла «1-журнал-ответов.sql»."
+                : "Не удалось загрузить данные: " + m;
+        }
+    }
+
+    $("periodSeg").addEventListener("click", (e) => {
+        const b = e.target.closest("button"); if (!b) return;
+        days = +b.dataset.days;
+        $("periodSeg").querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b));
+        refresh();
+    });
+
+    refresh();
+})();
+</script>
+</body>
+</html>

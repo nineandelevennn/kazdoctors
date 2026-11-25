@@ -818,6 +818,7 @@
     }
   </style>
     <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/track.js?v=1" defer></script>
     <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body>
@@ -1491,6 +1492,7 @@
 
       const totalScore = grammarScore + vocabScore;
       const percent = Math.round((totalScore / 60) * 100);
+      try { if (window.dsTrack) window.dsTrack.result(totalScore, 60, 'Экзамен: грамматика ' + grammarScore + '/30, словарь ' + vocabScore + '/30'); } catch (e) {}
 
       // Если это 1-я попытка (или балл первой попытки еще не был записан) — сохраняем его навсегда!
       if (examStats.firstAttemptScore === null || examStats.firstAttemptScore === undefined) {

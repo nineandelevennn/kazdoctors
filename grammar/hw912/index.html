@@ -634,6 +634,7 @@
         }
     </style>
     <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/track.js?v=1" defer></script>
     <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body>
@@ -1271,6 +1272,7 @@
             const totals = getTotals();
             const total = QUESTIONS.length;
             const pct = Math.min(100, Math.round((totals.ok / total) * 100));
+            try { if (window.dsTrack) window.dsTrack.result(totals.ok, total, document.title); } catch (e) {}
 
             const elapsedSec = Math.max(1, Math.round((Date.now() - startTimeMs) / 1000));
             const mins = Math.floor(elapsedSec / 60);
