@@ -2,11 +2,14 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>@doctors.speak — Medical Grammar Trainer (Prepositions of Time)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>[Просмотр] @doctors.speak — Lesson 6: Modal Verbs in Medicine</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Подключение Supabase SDK для проверки подписки -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     :root {
       --kz-blue: #00A1DE;
@@ -14,11 +17,18 @@
       --kz-blue-light: #EBF8FC;
       --kz-gold: #FFC72C;
       --kz-gold-dark: #D9A000;
+      --kz-gold-light: #FFFBEB;
       --bg-main: #F2F5F8;
       --card-bg: #FFFFFF;
       --text-dark: #1E293B;
       --text-muted: #64748B;
       --border-color: #E2E8F0;
+      --success-bg: #DCFCE7;
+      --success-border: #22C55E;
+      --success-text: #15803D;
+      --error-bg: #FEE2E2;
+      --error-border: #EF4444;
+      --error-text: #B91C1C;
     }
 
     * {
@@ -33,999 +43,1362 @@
       background: var(--bg-main);
       color: var(--text-dark);
       min-height: 100vh;
-      min-height: 100dvh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 12px 10px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border-radius: 20px;
-      width: 100%;
-      max-width: 440px;
-      min-height: 680px;
-      max-height: 95vh;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-      border: 1px solid var(--border-color);
-      position: relative;
-      overflow: hidden;
+      align-items: center;
+      padding-bottom: 40px;
     }
 
-    .header {
-      background: var(--kz-blue);
+    /* Верхняя шапка с кнопкой назад и переключателем RU/KZ */
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, var(--kz-blue) 0%, var(--kz-blue-dark) 100%);
       color: #FFFFFF;
-      padding: 16px 18px;
+      padding: 16px 20px 22px 20px;
+      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-top {
+      max-width: 820px;
+      margin: 0 auto 12px auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 14px rgba(0, 161, 222, 0.2);
-      flex-shrink: 0;
+      gap: 10px;
     }
 
-    .home-btn {
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.35);
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
       text-decoration: none;
       font-weight: 700;
       font-size: 0.78rem;
       padding: 6px 14px;
       border-radius: 20px;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
       transition: all 0.2s ease;
     }
 
-    .home-btn:active {
-      transform: scale(0.96);
-      background: rgba(255, 255, 255, 0.3);
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.28);
     }
 
-    .brand {
-      font-weight: 800;
-      font-size: 0.82rem;
-      letter-spacing: 0.5px;
-      color: #FFFFFF;
-      background: rgba(255, 255, 255, 0.18);
-      padding: 5px 12px;
+    .lang-switch {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.22);
       border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.35);
+      padding: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
-    .game-container {
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-      justify-content: space-between;
-      padding: 16px;
-      gap: 12px;
-      overflow-y: auto;
-    }
-
-    .mode-select {
-      width: 100%;
-      padding: 10px 14px;
-      border: 1px solid rgba(0, 161, 222, 0.25);
-      border-radius: 12px;
-      font-weight: 700;
-      font-family: 'Montserrat', sans-serif;
-      color: var(--kz-blue-dark);
-      background: var(--kz-blue-light);
-      outline: none;
-      font-size: 0.88rem;
-      cursor: pointer;
-    }
-
-    .stats {
-      display: flex;
-      justify-content: space-around;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-top: 8px;
-      background: var(--bg-main);
-      padding: 8px 12px;
-      border-radius: 12px;
-      border: 1px solid var(--border-color);
-    }
-
-    .stats span {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .term-box {
-      margin: 4px 0;
-      background: var(--card-bg);
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 800;
+      font-size: 0.74rem;
+      padding: 5px 12px;
       border-radius: 16px;
-      padding: 16px;
-      border: 1px solid var(--border-color);
-      border-left: 6px solid var(--kz-gold-dark);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
-      text-align: center;
-      min-height: 125px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
 
-    .level-tag {
+    .lang-btn.active {
+      background: var(--kz-gold);
+      color: var(--text-dark);
+    }
+
+    .header-title-box {
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .lesson-badge {
       display: inline-block;
-      background: var(--kz-blue-light);
-      color: var(--kz-blue-dark);
-      border: 1px solid rgba(0, 161, 222, 0.25);
+      background: rgba(255, 199, 44, 0.2);
+      border: 1px solid var(--kz-gold);
+      color: var(--kz-gold);
       font-size: 0.7rem;
       font-weight: 800;
       padding: 3px 10px;
       border-radius: 12px;
-      margin-bottom: 8px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      margin-bottom: 6px;
     }
 
-    .term-title {
-      font-size: 1.05rem;
-      font-weight: 800;
-      color: var(--text-dark);
-      margin-bottom: 4px;
-      line-height: 1.35;
-      min-height: 2.7em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      line-height: 1.25;
     }
 
-    .chunks-box {
-      background: var(--bg-main);
-      border: 1px dashed var(--kz-gold-dark);
-      padding: 6px 12px;
-      border-radius: 10px;
-      font-size: 0.82rem;
-      color: var(--kz-gold-dark);
-      font-weight: 700;
-      margin-top: 6px;
-      word-break: break-word;
-      min-height: 36px;
+    header p {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* Навигация по разделам урока */
+    .section-nav {
       width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.2s, visibility 0.2s;
+      max-width: 820px;
+      margin: 14px auto 0 auto;
+      padding: 0 14px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
     }
 
-    .chunks-box.invisible {
-      visibility: hidden;
-      border-color: transparent;
-      background: transparent;
-    }
-
-    .options-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .option-btn {
+    .nav-pill {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
-      padding: 10px 14px;
-      border-radius: 14px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-dark);
-      text-align: left;
+      border-radius: 12px;
+      padding: 9px 6px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--text-muted);
       cursor: pointer;
+      text-align: center;
       transition: all 0.2s ease;
-      line-height: 1.3;
-      min-height: 44px;
-      display: flex;
-      align-items: center;
-      width: 100%;
-      position: relative;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
     }
 
-    .option-btn:hover:not(:disabled) {
-      border-color: var(--kz-blue);
-      background-color: var(--kz-blue-light);
-      color: var(--kz-blue-dark);
+    .nav-pill.active {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      border-color: var(--kz-blue-dark);
+      box-shadow: 0 4px 12px rgba(0, 161, 222, 0.25);
     }
 
-    .option-btn.correct {
-      background-color: #DCFCE7 !important;
-      border-color: #22C55E !important;
-      color: #15803D !important;
-      font-weight: 700;
+    /* Основной контейнер */
+    main {
+      width: 100%;
+      max-width: 820px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
 
-    .option-btn.wrong {
-      background-color: #FEE2E2 !important;
-      border-color: #EF4444 !important;
-      color: #B91C1C !important;
-      font-weight: 700;
+    .tab-section {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadeIn 0.25s ease;
     }
 
-    .explanation-box {
-      background-color: var(--kz-blue-light);
-      border-left: 4px solid var(--kz-blue);
-      padding: 10px 12px;
-      border-radius: 10px;
-      font-size: 0.82rem;
-      color: var(--kz-blue-dark);
+    .tab-section.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Карточки теории */
+    .card-block {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-block::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: var(--kz-blue);
+    }
+
+    .card-block.gold::before {
+      background: var(--kz-gold-dark);
+    }
+
+    .card-block h2 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-dark);
       margin-bottom: 10px;
-      line-height: 1.4;
-      min-height: 58px;
       display: flex;
       align-items: center;
-      transition: background-color 0.3s ease, border-color 0.3s ease;
+      gap: 8px;
     }
 
-    .explanation-box.answered {
-      background-color: #E0F2FE;
-      border-left-color: var(--kz-blue-dark);
+    .card-block p {
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--text-dark);
+      margin-bottom: 10px;
     }
 
-    .next-btn {
+    /* Шкала уверенности в будущем (4 карточки) */
+    .scale-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .scale-card {
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-main);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .scale-card.lvl1 { border-top: 4px solid var(--sky-500); background: var(--sky-50); }
+    .scale-card.lvl2 { border-top: 4px solid var(--kz-blue); background: var(--kz-blue-light); }
+    .scale-card.lvl3 { border-top: 4px solid #F59E0B; background: var(--kz-gold-light); }
+    .scale-card.lvl4 { border-top: 4px solid var(--ok-mid); background: var(--ok-bg); }
+
+    .scale-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .scale-name {
+      font-size: 0.86rem;
+      font-weight: 900;
+      color: var(--text-dark);
+    }
+
+    .scale-percent {
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+    }
+
+    .comp-formula {
+      display: inline-block;
+      background: #FFFFFF;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      border: 1px dashed var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .clinical-quote {
+      background: #FFFFFF;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 0.8rem;
+      border-left: 3px solid var(--text-dark);
+      margin-top: 8px;
+      line-height: 1.45;
+    }
+
+    /* Таблица формул */
+    .grammar-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 0.78rem;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .grammar-table th {
+      background: var(--kz-blue);
+      color: #FFFFFF;
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: 800;
+    }
+
+    .grammar-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border-color);
+      background: #FFFFFF;
+      line-height: 1.45;
+    }
+
+    .grammar-table tr:nth-child(even) td {
+      background: var(--subtle);
+    }
+
+    /* Спойлер для Future Continuous */
+    details.tenses-spoiler {
+      margin-top: 12px;
+      background: var(--subtle);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 10px 14px;
+    }
+
+    details.tenses-spoiler summary {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      cursor: pointer;
+      list-style: none;
+    }
+
+    /* Быстрые микро-упражнения внутри теории (Quick Check) */
+    .quick-check {
+      background: var(--subtle);
+      border: 1px dashed var(--kz-blue);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .qc-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .qc-question {
+      font-size: 0.86rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+    }
+
+    .qc-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .qc-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .qc-btn:hover:not(:disabled) {
+      border-color: var(--kz-blue);
+      background: var(--kz-blue-light);
+    }
+
+    .qc-btn.correct {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    .qc-btn.wrong {
+      background: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    .qc-feedback {
+      display: none;
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      line-height: 1.35;
+    }
+
+    /* Теги слов-маркеров */
+    .markers-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .marker-chip {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 5px 11px;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .marker-chip b {
+      color: var(--kz-blue-dark);
+    }
+
+    /* Карточки словаря */
+    .vocab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+      gap: 10px;
+    }
+
+    .vocab-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .vocab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .vocab-word {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--kz-blue-dark);
+    }
+
+    .speak-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 161, 222, 0.3);
+      background: var(--kz-blue-light);
+      color: var(--kz-blue-dark);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+    }
+
+    .vocab-trans {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .vocab-example {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--bg-main);
+      padding: 7px 9px;
+      border-radius: 8px;
+      line-height: 1.35;
+    }
+
+    /* Кнопка перехода к следующему разделу или тренажеру */
+    .action-btn {
       width: 100%;
       background: var(--kz-gold);
       color: var(--text-dark);
-      font-weight: 800;
-      padding: 12px;
-      border-radius: 20px;
-      font-size: 0.95rem;
-      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
       border: 1px solid var(--kz-gold-dark);
+      border-radius: 16px;
+      padding: 13px 18px;
+      font-size: 0.9rem;
+      font-weight: 800;
       cursor: pointer;
-      visibility: hidden;
-      opacity: 0;
-      transition: opacity 0.2s ease, visibility 0.2s ease, background-color 0.2s ease, transform 0.1s ease;
-      min-height: 44px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(217, 160, 0, 0.25);
+      transition: all 0.2s ease;
     }
 
-    .next-btn.visible {
-      visibility: visible;
-      opacity: 1;
-    }
-
-    .next-btn:hover {
+    .action-btn:hover {
       background: var(--kz-gold-dark);
       color: #FFFFFF;
     }
 
-    .next-btn:active {
-      transform: scale(0.98);
+    @media (max-width: 560px) {
+      .section-nav {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      header h1 {
+        font-size: 1.1rem;
+      }
     }
   </style>
+    <style>
+/* ==========================================================================
+   Doctors Speak — единый стиль (design system)
+   Подключается на всех страницах последним: <link rel="stylesheet" href="/assets/ds.css">
+   1) новые токены в тонах флага Казахстана
+   2) старые переменные страниц перенаправлены на новые токены
+   3) единые шрифты, шапка, фокус и мелкие общие правила
+   Описание: DESIGN.md
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700&display=swap");
+
+/* html:root сильнее, чем :root внутри страниц, поэтому побеждает их палитру */
+html:root {
+  /* Аспан — голубой флага */
+  --sky-50:  #EEF9FB;
+  --sky-100: #D5F1F6;
+  --sky-500: #00AFCA;   /* цвет флага: иконки, линии, фокус (не для текста) */
+  --sky-700: #007C92;   /* кнопки и ссылки, белый текст 4.9:1 */
+  --sky-900: #0E4A5C;   /* шапки и заголовки, белый текст 9.8:1 */
+
+  /* Күн — золото флага */
+  --sun-50:  #FFF8E1;
+  --sun-500: #FEC50C;   /* один акцент на экран, текст на нём — --ink */
+  --sun-600: #E0AC00;
+  --sun-ink: #8A6A00;   /* золотой текст на белом */
+
+  /* Нейтральные */
+  --bg:      #F7FAFB;
+  --surface: #FFFFFF;
+  --subtle:  #F0F5F7;
+  --line:    #E3EAEE;
+  --line-2:  #B8C7CF;
+  --ink:     #0F2A3A;
+  --ink-2:   #344854;
+  --ink-3:   #5B6B78;
+
+  /* Состояния */
+  --ok:      #1A7F5A;  --ok-mid:  #23845B;  --ok-bg:  #E8F5EF;
+  --err:     #B42318;  --err-mid: #D64535;  --err-bg: #FDECEA;
+
+  --font-ui:      "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-heading: "Montserrat", "Inter", system-ui, sans-serif;
+
+  /* ---- Старые имена → новые токены ---- */
+  /* синие */
+  --kz-blue:        var(--sky-700);
+  --kz-blue-dark:   var(--sky-900);
+  --kz-blue-deep:   #0B2F3A;
+  --kz-blue-light:  var(--sky-50);
+  --kz-blue-soft:   var(--sky-50);
+  --med-navy:       var(--sky-900);
+  --accent-blue:    var(--sky-700);
+  --accent-navy:    var(--sky-900);
+  --acsom-red:      var(--sky-700);
+  --acsom-red-dark: var(--sky-900);
+  --acsom-red-light:var(--sky-50);
+  --teal-accent:    var(--sky-700);
+  --teal-soft:      var(--sky-50);
+  --teal-border:    var(--sky-100);
+
+  /* золото */
+  --kz-gold:        var(--sun-500);
+  --kz-gold-dark:   var(--sun-600);
+  --kz-gold-light:  var(--sun-50);
+  --kz-gold-soft:   var(--sun-50);
+
+  /* фон и поверхности */
+  --bg-main:        var(--bg);
+  --bg-page:        var(--bg);
+  --card-bg:        var(--surface);
+  --bg-card:        var(--surface);
+  --bg-white:       var(--surface);
+  --white:          #FFFFFF;
+  --bg-subtle:      var(--subtle);
+  --surface-subtle: var(--subtle);
+  --bg-chip:        var(--subtle);
+
+  /* текст */
+  --text-dark:      var(--ink);
+  --text-primary:   var(--ink);
+  --text-main:      var(--ink);
+  --text-secondary: var(--ink-2);
+  --text-muted:     var(--ink-3);
+
+  /* рамки */
+  --border-color:   var(--line);
+  --border-light:   var(--line);
+  --border-strong:  var(--line-2);
+  --border-focus:   var(--line-2);
+
+  /* верно */
+  --success-bg:     var(--ok-bg);
+  --success-border: var(--ok-mid);
+  --success-text:   var(--ok);
+  --success-color:  var(--ok-mid);
+  --correct-bg:     var(--ok-bg);
+  --correct-border: var(--ok-mid);
+  --correct-text:   var(--ok);
+  --green:          var(--ok-mid);
+  --green-accent:   var(--ok-mid);
+  --green-light:    var(--ok-bg);
+  --green-bg:       var(--ok-bg);
+  --green-dark:     var(--ok);
+
+  /* ошибка */
+  --error-bg:       var(--err-bg);
+  --error-border:   var(--err-mid);
+  --error-text:     var(--err);
+  --wrong-bg:       var(--err-bg);
+  --wrong-border:   var(--err-mid);
+  --wrong-text:     var(--err);
+  --red:            var(--err-mid);
+  --red-accent:     var(--err-mid);
+  --red-light:      var(--err-bg);
+  --red-bg:         var(--err-bg);
+  --red-soft:       var(--err-bg);
+  --red-border:     var(--err-mid);
+  --red-dark:       var(--err);
+  --red-text:       var(--err);
+  --danger-color:   var(--err-mid);
+}
+
+/* ---- Шрифты ---- */
+html body,
+html body *:not(code):not(pre):not(kbd):not(samp):not(i):not([class*="fa-"]) {
+  font-family: var(--font-ui);
+}
+html body h1,
+html body h2,
+html body h3 {
+  font-family: var(--font-heading);
+  letter-spacing: 0;
+}
+html body h1 { font-weight: 700; }
+
+html body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---- Шапка: одна для всех страниц ----
+   тёмный голубой флага, без градиента и скруглений, золотая линия снизу */
+html body > header,
+html body > div > header,
+html body header.header {
+  background: var(--sky-900) !important;
+  border-bottom: 3px solid var(--sun-500) !important;
+  box-shadow: none !important;
+}
+html body > header {
+  border-radius: 0 !important;
+}
+/* Страницы, где вся страница уже тёмная (вход): шапка без своей плашки */
+html body > header.ds-plain {
+  background: transparent !important;
+  border-bottom: 0 !important;
+}
+
+/* Белые шапки (шпаргалка, аудиоуроки, Quick Practice) делаем тёмными:
+   переменные текста внутри шапки становятся светлыми */
+html body > header {
+  --text-primary:   #FFFFFF;
+  --text-secondary: #D5F1F6;
+  --text-muted:     #A9CBD4;
+  --bg-card:        transparent;
+  --bg-subtle:      rgba(255, 255, 255, 0.10);
+  --bg-chip:        rgba(255, 255, 255, 0.10);
+  --border-light:   rgba(255, 255, 255, 0.22);
+  --border-focus:   rgba(255, 255, 255, 0.40);
+  --accent-navy:    #FFFFFF;
+  --accent-blue:    var(--sky-100);
+}
+
+/* Кнопки и чипы внутри тёмной шапки: полупрозрачные, активные — золотые */
+html body > header :is(.back-link, .back-btn, .stage-tab, .tr-toggle, .tier-badge, .nav-btn, .free-badge) {
+  background: rgba(255, 255, 255, 0.10) !important;
+  border-color: rgba(255, 255, 255, 0.24) !important;
+  color: #FFFFFF !important;
+}
+html body > header :is(.stage-tab, .tr-toggle, .nav-btn, .lang-btn).active,
+html body > header .lang-btn.active {
+  background: var(--sun-500) !important;
+  border-color: var(--sun-500) !important;
+  color: var(--ink) !important;
+}
+html body > header .lang-btn:not(.active) {
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.80) !important;
+}
+html body > header .lang-switch {
+  background: rgba(0, 0, 0, 0.22) !important;
+  border: 1px solid rgba(255, 255, 255, 0.24) !important;
+}
+html body > header h1,
+html body > header .header-title {
+  color: #FFFFFF !important;
+}
+html body > header .search-input {
+  background: #FFFFFF !important;
+  color: #0F2A3A !important;
+  border-color: transparent !important;
+}
+html body > header .search-input::placeholder { color: #5B6B78; }
+
+/* ---- Общий подвал (рисует /assets/site.js) ---- */
+html body footer.ds-footer {
+  display: block;
+  width: 100%;
+  align-self: stretch;
+  flex-shrink: 0;
+  margin: 32px 0 0 0;
+  padding: 28px 20px 20px;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  color: var(--ink-2);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+  position: relative;
+  z-index: 1;
+}
+html body .ds-footer__inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+}
+@media (min-width: 720px) {
+  html body .ds-footer__inner { grid-template-columns: 2fr 1fr 1fr; gap: 32px; }
+}
+html body .ds-footer__logo {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--sky-900);
+  text-decoration: none;
+}
+html body .ds-footer__brand p {
+  margin: 4px 0 0;
+  color: var(--ink-3);
+  max-width: 320px;
+}
+html body .ds-footer__col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+html body .ds-footer__title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+html body .ds-footer a {
+  color: var(--ink-2);
+  text-decoration: none;
+}
+html body .ds-footer a:hover,
+html body .ds-footer a[aria-current="page"] {
+  color: var(--sky-700);
+}
+html body .ds-footer a.ds-footer__wa {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 10px;
+  background: var(--sky-700);
+  color: #FFFFFF;
+  font-weight: 600;
+}
+html body .ds-footer a.ds-footer__wa:hover { background: var(--sky-900); color: #FFFFFF; }
+html body .ds-footer__bottom {
+  max-width: 960px;
+  margin: 22px auto 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+/* Тёмный вариант подвала (страница входа) */
+html body footer.ds-footer.ds-footer--dark {
+  background: transparent;
+  border-top-color: rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.85);
+}
+html body .ds-footer--dark :is(.ds-footer__logo, a) { color: #FFFFFF; }
+html body .ds-footer--dark :is(.ds-footer__brand p, .ds-footer__title, .ds-footer__bottom) { color: rgba(255, 255, 255, 0.65); }
+html body .ds-footer--dark .ds-footer__bottom { border-top-color: rgba(255, 255, 255, 0.16); }
+html body .ds-footer--dark a.ds-footer__wa { background: var(--sun-500); color: var(--ink); }
+html body .ds-footer--dark a.ds-footer__wa:hover { background: var(--sun-600); color: var(--ink); }
+
+/* ---- Линейные иконки вместо эмодзи ---- */
+html body .ds-ico {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+html body :is(.cat-icon-box, .mod-mini-icon) {
+  color: var(--sky-700);
+}
+
+/* ---- Фокус с клавиатуры ---- */
+html body :focus-visible {
+  outline: 2px solid var(--sky-500);
+  outline-offset: 2px;
+}
+
+/* ---- Ссылки внутри текста ---- */
+html body p a:not([class]),
+html body li a:not([class]) {
+  color: var(--sky-700);
+  text-underline-offset: 2px;
+}
+
+/* ---- Выделение текста ---- */
+html body ::selection {
+  background: var(--sky-100);
+  color: var(--ink);
+}
+
+</style>
+    
 </head>
 <body>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <div class="card">
-    <!-- Header -->
-    <header class="header">
-      <a href="https://kazdoctors.com/grammar/" class="home-btn">⬅ Go back</a>
-      <div class="brand">@doctors.speak</div>
-    </header>
-
-    <!-- Game Screen -->
-    <div id="gameScreen" class="game-container">
-      
-      <div>
-        <select id="levelSelect" class="mode-select" onchange="changeLevel()">
-          <option value="1">Level 1 — Recognize the meaning</option>
-          <option value="2">Level 2 — Fill in the preposition</option>
-          <option value="3">Level 3 — Put the sentence in order</option>
-          <option value="mix">🔥 Mix</option>
-        </select>
-
-        <div class="stats">
-          <span>Total: <strong id="totalCount">0</strong></span>
-          <span>Correct: <strong id="correctCount" style="color:#16A34A;">0</strong></span>
-          <span>Streak: <strong id="streakCount" style="color:#D9A000;">0 🔥</strong></span>
-        </div>
+  <!-- ШАПКА УРОКА -->
+  <header>
+    <div class="header-top">
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">← К списку уроков</a>
+      <div class="lang-switch">
+        <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
+        <button class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
       </div>
-
-      <div class="term-box">
-        <span id="levelTag" class="level-tag">Level 1</span>
-        <div id="questionText" class="term-title">Loading question...</div>
-        <div id="chunksBox" class="chunks-box invisible"></div>
-      </div>
-
-      <div>
-        <div id="optionsGrid" class="options-grid"></div>
-        
-        <div id="explanationBox" class="explanation-box">
-          <div><strong>💡 Explanation:</strong> <span id="explanationText">Choose the correct answer!</span></div>
-        </div>
-
-        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next ➔</button>
-      </div>
-
     </div>
-  </div>
+    <div class="header-title-box">
+      <span class="lesson-badge">Lesson 6 • A1–B1 Medical English</span>
+      <h1 id="uiTitle">Modal Verbs (Модальные глаголы)</h1>
+      <p id="uiSubtitle">Умение, возможность, обязанность и запрет: can, may, should, must, have to</p>
+    </div>
+  </header>
+
+  <!-- НАВИГАЦИЯ ПО ЭТАПАМ УРОКА -->
+  <nav class="section-nav">
+    <button class="nav-pill active" onclick="showTab(0)" id="nav0">1. Смысл и таблица</button>
+    <button class="nav-pill" onclick="showTab(1)" id="nav1">2. Модальные в статье</button>
+    <button class="nav-pill" onclick="showTab(2)" id="nav2">3. Словарь (13 слов)</button>
+    <button class="nav-pill" onclick="showTab(3)" id="nav3">4. Упражнения</button>
+  </nav>
+
+  <!-- ОСНОВНОЙ КОНТЕНТ -->
+  <main>
+    <!-- ВКЛАДКА 1: 4 СТЕПЕНИ УВЕРЕННОСТИ В БУДУЩЕМ -->
+    <section class="tab-section active" id="tab0"></section>
+
+    <!-- ВКЛАДКА 2: ФОРМУЛЫ, FUTURE CONTINUOUS И ПРАВИЛО WHEN/AFTER/IF -->
+    <section class="tab-section" id="tab1"></section>
+
+    <!-- ВКЛАДКА 3: СЛОВАРЬ С ПРИМЕРАМИ -->
+    <section class="tab-section" id="tab2">
+      <div class="card-block">
+        <h2 id="uiVocabTitle">Клинический словарь урока (13 терминов)</h2>
+        <p id="uiVocabDesc">Нажмите 🔊, чтобы прослушать произношение. В каждом примере выделен модальный глагол.</p>
+        <div class="vocab-grid" id="vocabGrid"></div>
+      </div>
+      <button class="action-btn" onclick="showTab(3)" id="uiToExBtn">Перейти к шагу 4: Упражнения ➔</button>
+    </section>
+
+    <!-- ВКЛАДКА 4: ПРАКТИКУМ (EXERCISE 1 & 2 ИЗ PDF) -->
+    <section class="tab-section" id="tab3">
+      <div class="card-block gold">
+        <h2 id="uiEx1Title">Упражнение 1: Выберите подходящий модальный глагол</h2>
+        <p id="uiEx1Desc">Выберите лучший модальный глагол для каждого предложения:</p>
+        <div id="ex1Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+      </div>
+
+      <div class="card-block">
+        <h2 id="uiEx2Title">Упражнение 2: Заполните пропуски</h2>
+        <p id="uiEx2Desc">can, could, may, might, must, should, mustn’t, have to — выберите верный:</p>
+        <div id="ex2Container" style="display:flex; flex-direction:column; gap:10px;"></div>
+      </div>
+
+      <a href="../modals/" class="action-btn" id="uiGoTrainerBtn">Запустить игровой тренажёр по Уроку 6 ➔</a>
+    </section>
+  </main>
 
   <script>
+    // =========================================================================
+    // 1. ПРОВЕРКА ДОСТУПА ПО ПОДПИСКЕ ЧЕРЕЗ SUPABASE (по образцу index-86)
+    // =========================================================================
     const SUPABASE_URL = "https://jjfkiqmqoscnodcvdktf.supabase.co";
     const SUPABASE_KEY = "sb_publishable_2Ygo9OvIMmtCfqt1C0glow_uDGaQ7nZ";
-
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
     async function checkAuth() {
-      const { data, error } = await supabaseClient.auth.getSession();
-      if (error || !data.session) {
-        window.location.href = "/login.html";
-        return;
+      if (!supabaseClient || window.location.protocol === 'file:') return;
+      try {
+        const { data, error } = await supabaseClient.auth.getSession();
+        if (error || !data.session) {
+          window.location.href = "/login.html";
+        }
+      } catch (e) {
+        console.warn("Auth check error:", e);
       }
-      nextQuestion();
     }
 
-    checkAuth();
-
-    // Helper to shuffle array (Fisher-Yates)
-    function shuffleArray(array) {
-      let arr = [...array];
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
+    // =========================================================================
+    // 2. БАЗА ДАННЫХ УРОКА 4 (НА РУССКОМ И КАЗАХСКОМ ЯЗЫКАХ)
+    // =========================================================================
+    const LESSON_DATA = {
+  "ui": {
+    "backBtn": {
+      "ru": "← К списку уроков",
+      "kz": "← Сабақтар тізіміне"
+    },
+    "title": {
+      "ru": "Modal Verbs (Модальные глаголы)",
+      "kz": "Modal Verbs (Модаль етістіктер)"
+    },
+    "subtitle": {
+      "ru": "Умение, возможность, обязанность и запрет: can, may, should, must, have to",
+      "kz": "Қабілет, мүмкіндік, міндет және тыйым: can, may, should, must, have to"
+    },
+    "nav": [
+      {
+        "ru": "1. Смысл и таблица",
+        "kz": "1. Мағынасы мен кесте"
+      },
+      {
+        "ru": "2. Модальные в статье",
+        "kz": "2. Мақаладағы модальдар"
+      },
+      {
+        "ru": "3. Словарь (13 слов)",
+        "kz": "3. Сөздік (13 сөз)"
+      },
+      {
+        "ru": "4. Упражнения",
+        "kz": "4. Жаттығулар"
       }
-      return arr;
+    ],
+    "vocabTitle": {
+      "ru": "Клинический словарь урока (13 терминов)",
+      "kz": "Сабақтың клиникалық сөздігі (13 термин)"
+    },
+    "vocabDesc": {
+      "ru": "Нажмите 🔊, чтобы прослушать произношение. В каждом примере выделен модальный глагол.",
+      "kz": "Дұрыс айтылуын тыңдау үшін 🔊 басыңыз. Әр мысалда модаль етістік белгіленген."
+    },
+    "toExBtn": {
+      "ru": "Перейти к шагу 4: Упражнения ➔",
+      "kz": "4-қадамға өту: Жаттығулар ➔"
+    },
+    "ex1Title": {
+      "ru": "Упражнение 1: Выберите подходящий модальный глагол",
+      "kz": "1-жаттығу: Қолайлы модаль етістікті таңдаңыз"
+    },
+    "ex1Desc": {
+      "ru": "Выберите лучший модальный глагол для каждого предложения:",
+      "kz": "Әр сөйлемге ең қолайлы модаль етістікті таңдаңыз:"
+    },
+    "ex2Title": {
+      "ru": "Упражнение 2: Заполните пропуски",
+      "kz": "2-жаттығу: Бос орындарды толтырыңыз"
+    },
+    "ex2Desc": {
+      "ru": "can, could, may, might, must, should, mustn’t, have to — выберите верный:",
+      "kz": "can, could, may, might, must, should, mustn’t, have to — дұрысын таңдаңыз:"
+    },
+    "goTrainerBtn": {
+      "ru": "Запустить игровой тренажёр по Уроку 6 ➔",
+      "kz": "6-сабақтың ойын тренажеріне өту ➔"
+    }
+  },
+  "tab0Html": {
+    "ru": "\n<div class=\"card-block gold\">\n  <h2>Modals: как оттенок меняет смысл глагола</h2>\n  <p><b>Смысл:</b> модальный глагол модифицирует подачу основного глагола: умею, можно, нужно, должен, возможно.</p>\n  <div class=\"clinical-quote\" style=\"border-left-color: var(--kz-blue);\">\n    <b>Формула:</b> A + <b>modal verb</b> + <b>DO / BE</b><br><br>\n    <b>\"Dehydration <span style=\"color:var(--kz-blue-dark);\">can cause</span> dizziness.\"</b> <i>(Обезвоживание может вызывать головокружение.)</i><br>\n    <b>\"You <span style=\"color:var(--kz-blue-dark);\">must not give</span> this drug with aspirin.\"</b> <i>(Этот препарат нельзя давать с аспирином.)</i>\n  </div>\n  <p><b>Важно:</b> модальных глаголов много, и у каждого бывает разный смысл в зависимости от ситуации. Они <b>не меняют форму по лицам</b> (he can, а не he cans) и у каждого своё определённое время.</p>\n\n  <table class=\"grammar-table\">\n    <thead><tr><th>Значение</th><th>Модальные глаголы</th></tr></thead>\n    <tbody>\n      <tr><td><b>Ability</b> — умение</td><td>can, could</td></tr>\n      <tr><td><b>Possibility</b> — возможность</td><td>may, could, can, might</td></tr>\n      <tr><td><b>Obligation / recommendation</b> — обязанность / рекомендация</td><td>should, must, have to, cannot, must not</td></tr>\n      <tr><td><b>Necessity</b> — необходимость</td><td>need, must</td></tr>\n    </tbody>\n  </table>\n\n</div>\n\n<div class=\"card-block\">\n  <h2>Все модальные глаголы</h2>\n<table class=\"grammar-table\"><thead><tr><th>Модальный глагол</th><th>Значение</th></tr></thead><tbody><tr><td><b>Can</b></td><td>Может (= имеет умение)</td></tr><tr><td><b>Could</b></td><td>Мог (= имел умение), мог бы</td></tr><tr><td><b>Will</b></td><td>Сделает</td></tr><tr><td><b>Would</b></td><td>Сделал бы (Future in the past)</td></tr><tr><td><b>Shall</b></td><td>Сделает / ожидается, что сделает</td></tr><tr><td><b>Should</b></td><td>Должен / должен бы. <i>You should fix your diet.</i></td></tr><tr><td><b>May</b></td><td>Может (= имеет разрешение)</td></tr><tr><td><b>Might</b></td><td>Мог бы — менее уверенная версия May</td></tr><tr><td><b>Must</b></td><td>Должен (= обязательно, по правилам)</td></tr><tr><td><b>Must not</b></td><td>Не должен (= обязательно не должен)</td></tr><tr><td><b>Have to</b></td><td>Должен (= ожидаемо)</td></tr><tr><td><b>Don’t have to</b></td><td>Не обязан</td></tr><tr><td><b>Could have</b></td><td>Мог (в прошлом). <i>The patient could have fallen from the roof.</i></td></tr><tr><td><b>Would have</b></td><td>Сделал бы (в прошлом)</td></tr><tr><td><b>Should have</b></td><td>Должен был бы сделать (в прошлом)</td></tr><tr><td><b>Might have</b></td><td>Мог (в прошлом / имел возможность)</td></tr><tr><td><b>Must have</b></td><td>Должно быть, было так</td></tr></tbody></table>\n  <div class=\"quick-check\"><span class=\"qc-badge\">Быстрая проверка</span><div class=\"qc-question\">«Препарат нельзя давать при этом противопоказании». You ___ give this drug.</div><div class=\"qc-options\"><button class=\"qc-btn\" onclick=\"checkInlineQuiz(this, true, 'Верно! must not — строгий запрет.')\">must not</button><button class=\"qc-btn\" onclick=\"checkInlineQuiz(this, false, 'don’t have to значит «не обязаны», а здесь нужен запрет — must not.')\">don’t have to</button></div><div class=\"qc-feedback\"></div></div>\n</div>\n\n<button class=\"action-btn\" onclick=\"showTab(1)\">Перейти к шагу 2: Модальные глаголы в статье ➔</button>\n",
+    "kz": "\n<div class=\"card-block gold\">\n  <h2>Modals: реңк етістіктің мағынасын қалай өзгертеді</h2>\n  <p><b>Мағынасы:</b> модаль етістік негізгі етістіктің берілуін өзгертеді: алады, болады, керек, тиіс, мүмкін.</p>\n  <div class=\"clinical-quote\" style=\"border-left-color: var(--kz-blue);\">\n    <b>Формула:</b> A + <b>modal verb</b> + <b>DO / BE</b><br><br>\n    <b>\"Dehydration <span style=\"color:var(--kz-blue-dark);\">can cause</span> dizziness.\"</b> <i>(Сусыздану бас айналуын туғызуы мүмкін.)</i><br>\n    <b>\"You <span style=\"color:var(--kz-blue-dark);\">must not give</span> this drug with aspirin.\"</b> <i>(Бұл дәріні аспиринмен бірге беруге болмайды.)</i>\n  </div>\n  <p><b>Маңызды:</b> модаль етістіктер көп, әрқайсысының мағынасы жағдайға қарай өзгереді. Олар <b>жаққа қарай өзгермейді</b> (he cans емес, he can) және әрқайсысының өз шағы бар.</p>\n\n  <table class=\"grammar-table\">\n    <thead><tr><th>Мағынасы</th><th>Модаль етістіктер</th></tr></thead>\n    <tbody>\n      <tr><td><b>Ability</b> — қабілет</td><td>can, could</td></tr>\n      <tr><td><b>Possibility</b> — мүмкіндік</td><td>may, could, can, might</td></tr>\n      <tr><td><b>Obligation / recommendation</b> — міндет / ұсыныс</td><td>should, must, have to, cannot, must not</td></tr>\n      <tr><td><b>Necessity</b> — қажеттілік</td><td>need, must</td></tr>\n    </tbody>\n  </table>\n\n</div>\n\n<div class=\"card-block\">\n  <h2>Барлық модаль етістіктер</h2>\n<table class=\"grammar-table\"><thead><tr><th>Модаль етістік</th><th>Мағынасы</th></tr></thead><tbody><tr><td><b>Can</b></td><td>Алады (= істей алады, қабілеті бар)</td></tr><tr><td><b>Could</b></td><td>Алды (= істей алатын еді), істей алар еді</td></tr><tr><td><b>Will</b></td><td>Істейді (болашақта)</td></tr><tr><td><b>Would</b></td><td>Істер еді (Future in the past)</td></tr><tr><td><b>Shall</b></td><td>Істейді / істеуі күтіледі</td></tr><tr><td><b>Should</b></td><td>Тиіс / керек еді. <i>You should fix your diet.</i></td></tr><tr><td><b>May</b></td><td>Болады (= рұқсат бар)</td></tr><tr><td><b>Might</b></td><td>Мүмкін — May-дің сенімсіздеу нұсқасы</td></tr><tr><td><b>Must</b></td><td>Міндетті (= ереже бойынша)</td></tr><tr><td><b>Must not</b></td><td>Болмайды (= қатаң тыйым)</td></tr><tr><td><b>Have to</b></td><td>Тиіс, керек (= жағдай талап етеді)</td></tr><tr><td><b>Don’t have to</b></td><td>Міндетті емес</td></tr><tr><td><b>Could have</b></td><td>Өткенде мүмкін болды. <i>The patient could have fallen from the roof.</i></td></tr><tr><td><b>Would have</b></td><td>Істер еді (өткенде)</td></tr><tr><td><b>Should have</b></td><td>Істеуі керек еді (өткенде)</td></tr><tr><td><b>Might have</b></td><td>Мүмкін болған шығар (өткенде)</td></tr><tr><td><b>Must have</b></td><td>Сөзсіз солай болған шығар</td></tr></tbody></table>\n  <div class=\"quick-check\"><span class=\"qc-badge\">Жылдам тексеру</span><div class=\"qc-question\">«Бұл қарсы көрсетілімде дәріні беруге болмайды». You ___ give this drug.</div><div class=\"qc-options\"><button class=\"qc-btn\" onclick=\"checkInlineQuiz(this, true, 'Дұрыс! must not — қатаң тыйым.')\">must not</button><button class=\"qc-btn\" onclick=\"checkInlineQuiz(this, false, 'don’t have to «міндетті емес» дегенді білдіреді, ал мұнда тыйым керек — must not.')\">don’t have to</button></div><div class=\"qc-feedback\"></div></div>\n</div>\n\n<button class=\"action-btn\" onclick=\"showTab(1)\">2-қадамға өту: Мақаладағы модаль етістіктер ➔</button>\n"
+  },
+  "tab1Html": {
+    "ru": "\n<div class=\"card-block gold\">\n  <h2>Модальные глаголы в научной статье</h2>\n  <p>Прочитайте абстракт и найдите все модальные глаголы. Обратите внимание: в статьях модальные глаголы смягчают выводы (<b>may, might, could</b>) или дают рекомендации (<b>should, must</b>).</p>\n\n  <div class=\"clinical-quote\" style=\"line-height:1.7;\">\n    <b>Early Identification and Management of Chronic Kidney Disease: A Preventive Approach</b><br><br>\n    Chronic kidney disease (CKD) is a progressive condition that can lead to kidney failure if not identified early. CKD may remain asymptomatic in its initial stages, which could delay diagnosis and treatment. Therefore, healthcare providers should screen at-risk populations regularly. Risk factors such as hypertension and diabetes must be carefully managed to slow disease progression. In some cases, lifestyle changes and medication might improve kidney function or delay deterioration. Additionally, patients should be educated on dietary modifications and fluid control. Early referral to a nephrologist can be beneficial and will likely improve long-term outcomes. Future studies should focus on interventions that could reduce the burden of CKD globally.\n  </div>\n\n  <details class=\"tenses-spoiler\">\n    <summary>Показать ответы (11 модальных глаголов)</summary>\n\n  <div class=\"clinical-quote\" style=\"line-height:1.7;\">\n    <b>Early Identification and Management of Chronic Kidney Disease: A Preventive Approach</b><br><br>\n    Chronic kidney disease (CKD) is a progressive condition that <b style=\"color:var(--kz-blue-dark);\">can</b> lead to kidney failure if not identified early. CKD <b style=\"color:var(--kz-blue-dark);\">may</b> remain asymptomatic in its initial stages, which <b style=\"color:var(--kz-blue-dark);\">could</b> delay diagnosis and treatment. Therefore, healthcare providers <b style=\"color:var(--kz-blue-dark);\">should</b> screen at-risk populations regularly. Risk factors such as hypertension and diabetes <b style=\"color:var(--kz-blue-dark);\">must</b> be carefully managed to slow disease progression. In some cases, lifestyle changes and medication <b style=\"color:var(--kz-blue-dark);\">might</b> improve kidney function or delay deterioration. Additionally, patients <b style=\"color:var(--kz-blue-dark);\">should</b> be educated on dietary modifications and fluid control. Early referral to a nephrologist <b style=\"color:var(--kz-blue-dark);\">can</b> be beneficial and <b style=\"color:var(--kz-blue-dark);\">will</b> likely improve long-term outcomes. Future studies <b style=\"color:var(--kz-blue-dark);\">should</b> focus on interventions that <b style=\"color:var(--kz-blue-dark);\">could</b> reduce the burden of CKD globally.\n  </div>\n\n    <p style=\"font-size:0.85rem;\"><b>can lead</b> — может привести; <b>may remain</b> — может оставаться; <b>should screen</b> — следует проводить скрининг; <b>must be managed</b> — обязательно нужно контролировать (модальный глагол + пассив из Урока 5); <b>will improve</b> — улучшит.</p>\n  </details>\n  <div class=\"quick-check\"><span class=\"qc-badge\">Быстрая проверка</span><div class=\"qc-question\">Risk factors ___ be carefully managed. Автор говорит, что это обязательно.</div><div class=\"qc-options\"><button class=\"qc-btn\" onclick=\"checkInlineQuiz(this, true, 'Верно! must — обязательно; must be managed = модальный глагол + пассив.')\">must</button><button class=\"qc-btn\" onclick=\"checkInlineQuiz(this, false, 'might — лишь возможно. Автор говорит об обязательном контроле — must.')\">might</button></div><div class=\"qc-feedback\"></div></div>\n</div>\n\n<div class=\"card-block\">\n  <h2>Модальный глагол + have done: о прошлом</h2>\n  <p>Чтобы предположить или оценить то, что уже случилось, после модального глагола ставим <b>have + V3</b>:</p>\n  <div class=\"clinical-quote\">\n    <b>\"The patient could not locate the pain, it <span style=\"color:var(--kz-blue-dark);\">must have been</span> dull.\"</b> — <i>Должно быть, боль была тупой.</i><br>\n    <b>\"Patients in the past <span style=\"color:var(--kz-blue-dark);\">could have had</span> double vision without knowing.\"</b> — <i>Пациенты в прошлом могли иметь двоение в глазах и не знать об этом.</i><br>\n    <b>\"The patient <span style=\"color:var(--kz-blue-dark);\">could have fallen</span> from the roof.\"</b> — <i>Пациент мог упасть с крыши.</i>\n  </div>\n</div>\n\n<button class=\"action-btn\" onclick=\"showTab(2)\">Перейти к шагу 3: Словарь урока (13 слов) ➔</button>\n",
+    "kz": "\n<div class=\"card-block gold\">\n  <h2>Ғылыми мақаладағы модаль етістіктер</h2>\n  <p>Абстрактіні оқып, барлық модаль етістіктерді табыңыз. Назар аударыңыз: мақалаларда модаль етістіктер қорытындыны жұмсартады (<b>may, might, could</b>) немесе ұсыныс береді (<b>should, must</b>).</p>\n\n  <div class=\"clinical-quote\" style=\"line-height:1.7;\">\n    <b>Early Identification and Management of Chronic Kidney Disease: A Preventive Approach</b><br><br>\n    Chronic kidney disease (CKD) is a progressive condition that can lead to kidney failure if not identified early. CKD may remain asymptomatic in its initial stages, which could delay diagnosis and treatment. Therefore, healthcare providers should screen at-risk populations regularly. Risk factors such as hypertension and diabetes must be carefully managed to slow disease progression. In some cases, lifestyle changes and medication might improve kidney function or delay deterioration. Additionally, patients should be educated on dietary modifications and fluid control. Early referral to a nephrologist can be beneficial and will likely improve long-term outcomes. Future studies should focus on interventions that could reduce the burden of CKD globally.\n  </div>\n\n  <details class=\"tenses-spoiler\">\n    <summary>Жауаптарды көрсету (11 модаль етістік)</summary>\n\n  <div class=\"clinical-quote\" style=\"line-height:1.7;\">\n    <b>Early Identification and Management of Chronic Kidney Disease: A Preventive Approach</b><br><br>\n    Chronic kidney disease (CKD) is a progressive condition that <b style=\"color:var(--kz-blue-dark);\">can</b> lead to kidney failure if not identified early. CKD <b style=\"color:var(--kz-blue-dark);\">may</b> remain asymptomatic in its initial stages, which <b style=\"color:var(--kz-blue-dark);\">could</b> delay diagnosis and treatment. Therefore, healthcare providers <b style=\"color:var(--kz-blue-dark);\">should</b> screen at-risk populations regularly. Risk factors such as hypertension and diabetes <b style=\"color:var(--kz-blue-dark);\">must</b> be carefully managed to slow disease progression. In some cases, lifestyle changes and medication <b style=\"color:var(--kz-blue-dark);\">might</b> improve kidney function or delay deterioration. Additionally, patients <b style=\"color:var(--kz-blue-dark);\">should</b> be educated on dietary modifications and fluid control. Early referral to a nephrologist <b style=\"color:var(--kz-blue-dark);\">can</b> be beneficial and <b style=\"color:var(--kz-blue-dark);\">will</b> likely improve long-term outcomes. Future studies <b style=\"color:var(--kz-blue-dark);\">should</b> focus on interventions that <b style=\"color:var(--kz-blue-dark);\">could</b> reduce the burden of CKD globally.\n  </div>\n\n    <p style=\"font-size:0.85rem;\"><b>can lead</b> — әкелуі мүмкін; <b>may remain</b> — қалуы мүмкін; <b>should screen</b> — скрининг жүргізу керек; <b>must be managed</b> — міндетті түрде бақылау керек (модаль етістік + 5-сабақтағы пассив); <b>will improve</b> — жақсартады.</p>\n  </details>\n  <div class=\"quick-check\"><span class=\"qc-badge\">Жылдам тексеру</span><div class=\"qc-question\">Risk factors ___ be carefully managed. Автор бұл міндетті дейді.</div><div class=\"qc-options\"><button class=\"qc-btn\" onclick=\"checkInlineQuiz(this, true, 'Дұрыс! must — міндетті; must be managed = модаль етістік + пассив.')\">must</button><button class=\"qc-btn\" onclick=\"checkInlineQuiz(this, false, 'might — тек мүмкіндік. Автор міндетті бақылау туралы айтып тұр — must.')\">might</button></div><div class=\"qc-feedback\"></div></div>\n</div>\n\n<div class=\"card-block\">\n  <h2>Модаль етістік + have done: өткен туралы</h2>\n  <p>Болып өткен нәрсе туралы болжам немесе баға айту үшін модаль етістіктен кейін <b>have + V3</b> қоямыз:</p>\n  <div class=\"clinical-quote\">\n    <b>\"The patient could not locate the pain, it <span style=\"color:var(--kz-blue-dark);\">must have been</span> dull.\"</b> — <i>Ауырсыну сыздап ауыру болған шығар.</i><br>\n    <b>\"Patients in the past <span style=\"color:var(--kz-blue-dark);\">could have had</span> double vision without knowing.\"</b> — <i>Бұрын науқастарда көздің қосарлануы болып, олар оны білмеуі мүмкін еді.</i><br>\n    <b>\"The patient <span style=\"color:var(--kz-blue-dark);\">could have fallen</span> from the roof.\"</b> — <i>Науқас шатырдан құлап кетуі мүмкін еді.</i>\n  </div>\n</div>\n\n<button class=\"action-btn\" onclick=\"showTab(2)\">3-қадамға өту: Сабақ сөздігі (13 сөз) ➔</button>\n"
+  },
+  "vocabulary": [
+    {
+      "en": "Complication",
+      "ru": "Осложнение",
+      "kz": "Асқыну",
+      "ex": "Excessive use of GCS <b>can cause</b> many complications."
+    },
+    {
+      "en": "Congenital",
+      "ru": "Врождённый",
+      "kz": "Туа біткен",
+      "ex": "Before the 18th century, congenital heart diseases <b>could not be treated</b>."
+    },
+    {
+      "en": "Consequence",
+      "ru": "Последствие",
+      "kz": "Салдар",
+      "ex": "Diaphoresis and nasal congestion <b>may be</b> consequences of high fever."
+    },
+    {
+      "en": "Contraindication",
+      "ru": "Противопоказание",
+      "kz": "Қарсы көрсетілім",
+      "ex": "If we had a smaller hospital, fewer patients <b>would be treated</b>."
+    },
+    {
+      "en": "Cutaneous",
+      "ru": "Кожный",
+      "kz": "Терілік, тері",
+      "ex": "Cutaneous forms of the purpura <b>should be seen</b> by the dermatologist."
+    },
+    {
+      "en": "Dehydration",
+      "ru": "Обезвоживание",
+      "kz": "Сусыздану",
+      "ex": "Dehydration, when chronic, <b>may cause</b> nephrolithiasis."
+    },
+    {
+      "en": "Depend on",
+      "ru": "Зависеть от",
+      "kz": "Тәуелді болу",
+      "ex": "Depending on the patient’s condition, the doctor <b>might send</b> him to ICU."
+    },
+    {
+      "en": "Diaphoresis",
+      "ru": "Потливость",
+      "kz": "Қатты терлеу",
+      "ex": "Diaphoresis at night <b>must warn</b> the doctors about possible oncology."
+    },
+    {
+      "en": "Discharge",
+      "ru": "Выделение; выписка (выписать пациента)",
+      "kz": "Бөлінді; ауруханадан шығару",
+      "ex": "In our clinic, you <b>don’t have to discharge</b> the patients before noon."
+    },
+    {
+      "en": "Double vision",
+      "ru": "Двойное зрение (двоение в глазах)",
+      "kz": "Көздің қосарлануы",
+      "ex": "Patients in the past <b>could have had</b> double vision without knowing."
+    },
+    {
+      "en": "Dull",
+      "ru": "Тупой (о боли)",
+      "kz": "Сыздап (ауыру)",
+      "ex": "The patient could not locate the pain, it <b>must have been</b> dull."
+    },
+    {
+      "en": "Duration",
+      "ru": "Длительность",
+      "kz": "Ұзақтығы",
+      "ex": "The duration of the treatment <b>must not exceed</b> 8 weeks."
+    },
+    {
+      "en": "Edema",
+      "ru": "Отёк",
+      "kz": "Ісіну",
+      "ex": "When seeing bilateral edema, patients <b>have to consult</b> nephrologists."
+    }
+  ],
+  "ex1": [
+    {
+      "q": "1. The doctor says the patient ___ have a congenital condition — he needs more tests.",
+      "options": [
+        "must",
+        "might",
+        "can’t"
+      ],
+      "correct": 1,
+      "exp": {
+        "ru": "Нужны ещё анализы — врач не уверен, это только возможность → might.",
+        "kz": "Қосымша талдаулар керек — дәрігер сенімді емес, бұл тек мүмкіндік → might."
+      }
+    },
+    {
+      "q": "2. You ___ ignore symptoms like double vision; they can be serious.",
+      "options": [
+        "should",
+        "can",
+        "mustn’t"
+      ],
+      "correct": 2,
+      "exp": {
+        "ru": "Симптомы могут быть серьёзными → игнорировать нельзя: mustn’t.",
+        "kz": "Симптомдар қауіпті болуы мүмкін → елемеуге болмайды: mustn’t."
+      }
+    },
+    {
+      "q": "3. Dehydration ___ cause dizziness, especially in elderly patients.",
+      "options": [
+        "can",
+        "must",
+        "should"
+      ],
+      "correct": 0,
+      "exp": {
+        "ru": "Обезвоживание может вызывать головокружение (возможность) → can.",
+        "kz": "Сусыздану бас айналуын туғыза алады (мүмкіндік) → can."
+      }
+    },
+    {
+      "q": "4. We ___ discharge the patient tomorrow if there are no complications.",
+      "options": [
+        "have to",
+        "could",
+        "may"
+      ],
+      "correct": [
+        0,
+        2
+      ],
+      "exp": {
+        "ru": "Зависит от контекста: may — возможно выпишем; have to — должны выписать (так положено).",
+        "kz": "Контекстке байланысты: may — шығаруымыз мүмкін; have to — шығаруымыз керек (тәртіп солай)."
+      }
+    },
+    {
+      "q": "5. The treatment ___ depend on the duration of the symptoms and level of edema.",
+      "options": [
+        "must",
+        "may"
+      ],
+      "correct": 1,
+      "exp": {
+        "ru": "Это предположение, а не обязанность → may.",
+        "kz": "Бұл міндет емес, болжам → may."
+      }
+    }
+  ],
+  "ex2": [
+    {
+      "q": "1. You ___ check for cutaneous reactions when giving this drug.",
+      "options": [
+        "must",
+        "might",
+        "can’t"
+      ],
+      "correct": 0,
+      "exp": {
+        "ru": "Обязанность врача → must (также подходят have to и should).",
+        "kz": "Дәрігердің міндеті → must (have to және should те дұрыс)."
+      }
+    },
+    {
+      "q": "2. The nurse said the dull pain ___ be a warning sign of a complication.",
+      "options": [
+        "might",
+        "must not",
+        "has to"
+      ],
+      "correct": 0,
+      "exp": {
+        "ru": "Медсестра не уверена, это возможность → might (также can, could, may).",
+        "kz": "Мейірбике сенімді емес, бұл мүмкіндік → might (can, could, may да дұрыс)."
+      }
+    },
+    {
+      "q": "3. Diaphoresis and nasal congestion ___ be consequences of high fever.",
+      "options": [
+        "may",
+        "mustn’t",
+        "should"
+      ],
+      "correct": 0,
+      "exp": {
+        "ru": "Возможные последствия → may (также can).",
+        "kz": "Мүмкін салдарлар → may (can да дұрыс)."
+      }
+    },
+    {
+      "q": "4. There is a contraindication — you ___ not give this medication with aspirin.",
+      "options": [
+        "must",
+        "can",
+        "might"
+      ],
+      "correct": [
+        0,
+        1
+      ],
+      "exp": {
+        "ru": "Противопоказание = запрет → must not или cannot.",
+        "kz": "Қарсы көрсетілім = тыйым → must not немесе cannot."
+      }
+    },
+    {
+      "q": "5. The exact cause of the edema ___ depend on the patient’s heart condition.",
+      "options": [
+        "may",
+        "must",
+        "has to"
+      ],
+      "correct": 0,
+      "exp": {
+        "ru": "Предположение о причине → may.",
+        "kz": "Себеп туралы болжам → may."
+      }
+    }
+  ]
+};
+
+    // =========================================================================
+    // 3. ЛОГИКА ОТОБРАЖЕНИЯ, ОЗВУЧКИ И ПЕРЕКЛЮЧЕНИЯ ЯЗЫКОВ (RU / KZ)
+    // =========================================================================
+    let currentLang = localStorage.getItem('doctors_speak_lang') || 'ru';
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('doctors_speak_lang', lang);
+
+      document.getElementById('btnRu').classList.toggle('active', lang === 'ru');
+      document.getElementById('btnKz').classList.toggle('active', lang === 'kz');
+
+      const ui = LESSON_DATA.ui;
+      document.getElementById('uiBackBtn').textContent = ui.backBtn[lang];
+      document.getElementById('uiTitle').textContent = ui.title[lang];
+      document.getElementById('uiSubtitle').textContent = ui.subtitle[lang];
+
+      ui.nav.forEach((item, index) => {
+        document.getElementById(`nav${index}`).textContent = item[lang];
+      });
+
+      document.getElementById('uiVocabTitle').textContent = ui.vocabTitle[lang];
+      document.getElementById('uiVocabDesc').textContent = ui.vocabDesc[lang];
+      document.getElementById('uiToExBtn').textContent = ui.toExBtn[lang];
+      document.getElementById('uiEx1Title').textContent = ui.ex1Title[lang];
+      document.getElementById('uiEx1Desc').textContent = ui.ex1Desc[lang];
+      document.getElementById('uiEx2Title').textContent = ui.ex2Title[lang];
+      document.getElementById('uiEx2Desc').textContent = ui.ex2Desc[lang];
+      document.getElementById('uiGoTrainerBtn').textContent = ui.goTrainerBtn[lang];
+
+      // Рендерим вкладки теории, словаря и упражнений
+      document.getElementById('tab0').innerHTML = LESSON_DATA.tab0Html[lang];
+      document.getElementById('tab1').innerHTML = LESSON_DATA.tab1Html[lang];
+      renderVocab();
+      renderExercises('ex1Container', LESSON_DATA.ex1);
+      renderExercises('ex2Container', LESSON_DATA.ex2);
     }
 
-    // Questions database based on Lesson 9 (Prepositions of Time)
-    const questions = [
-      // ================= LEVEL 1: RECOGNIZE MEANING =================
-      {
-        level: 1,
-        question: "We examined the nodular lesion AT 9 a.m. yesterday.",
-        options: ["Точное конкретное время", "Длительность периода", "Предел («к какому-то времени»)", "С какого-то момента"],
-        correct: 0,
-        explanation: "'At' is used for a specific point in time (at 9 a.m.)."
-      },
-      {
-        level: 1,
-        question: "He stayed in the medical ward FOR three days.",
-        options: ["Предел («к какому-то времени»)", "Продолжительность (период времени)", "Точное конкретное время", "Начало действия во прошлом"],
-        correct: 1,
-        explanation: "'For' specifies a total period or duration of time (for three days)."
-      },
-      {
-        level: 1,
-        question: "The patient must receive the lab test results BY Friday.",
-        options: ["Продолжительность периода", "Действие во время другого процесса", "Дедлайн / к определенному моменту", "Период с начала и до конца"],
-        correct: 2,
-        explanation: "'By' indicates a deadline or 'no later than' a certain time (by Friday)."
-      },
-      {
-        level: 1,
-        question: "The patient has had mucous membrane dryness SINCE last week.",
-        options: ["Завершение процесса", "Точное время события", "В течение периода", "С определенного момента в прошлом"],
-        correct: 3,
-        explanation: "'Since' indicates the starting point of an action continuing to the present."
-      },
-      {
-        level: 1,
-        question: "Pale skin tone was observed DURING the physical examination.",
-        options: ["Во время определенного процесса/события", "Конкретное время на часах", "Предел по времени", "С определенной даты"],
-        correct: 0,
-        explanation: "'During' refers to an event happening throughout or within a period/process."
-      },
-      {
-        level: 1,
-        question: "Cognitive function declined WITHIN 24 hours after stroke onset.",
-        options: ["С определенного момента", "В пределах / в течение определенного срока", "Только в дни и даты", "После окончания периода"],
-        correct: 1,
-        explanation: "'Within' means inside the limit of a time period (within 24 hours)."
-      },
-      {
-        level: 1,
-        question: "The doctor sees patients FROM 9 to 5 every day.",
-        options: ["Точное время на часах", "Ограничение по дедлайну", "Временной диапазон (от ... до)", "Событие во время операции"],
-        correct: 2,
-        explanation: "'From... to' defines the starting and ending boundaries of a period."
-      },
-      {
-        level: 1,
-        question: "Mild deficits remained UNTIL the end of the observation period.",
-        options: ["С какого-то момента", "За определенное время до", "На протяжении периода", "До определенного момента в времени"],
-        correct: 3,
-        explanation: "'Until / till' shows how long a situation continues up to a specific point."
-      },
-      {
-        level: 1,
-        question: "We observed improvements THROUGHOUT the first month of rehabilitation.",
-        options: ["На протяжении всего периода (без перерыва)", "Конкретный час дня", "К определенной дате", "После завершения процедуры"],
-        correct: 0,
-        explanation: "'Throughout' emphasizes the entire duration from beginning to end."
-      },
-      {
-        level: 1,
-        question: "Wash your hands BEFORE surgery to maintain sterility.",
-        options: ["После завершения действия", "До / перед определенным моментом", "В течение всего времени", "С момента начала операции"],
-        correct: 1,
-        explanation: "'Before' indicates prior to a specific event or point in time."
-      },
-      {
-        level: 1,
-        question: "Follow-up evaluations were conducted AFTER discharge.",
-        options: ["До проведения процедуры", "На протяжении всего срока", "После определенного события", "С определенного года"],
-        correct: 2,
-        explanation: "'After' means following in time or subsequent to an event."
-      },
-      {
-        level: 1,
-        question: "The surgery will begin AT AROUND 7 a.m. tomorrow.",
-        options: ["Точно в секунду", "С конкретного дня", "До наступления утра", "Приблизительно / около определенного времени"],
-        correct: 3,
-        explanation: "'Around' indicates approximate time."
-      },
-      {
-        level: 1,
-        question: "The patient was born ON the 7th of May.",
-        options: ["Дни недели и точные даты", "Часы и минуты", "Года и века", "Период продолжительности"],
-        correct: 0,
-        explanation: "'On' is used specifically for days of the week and precise dates."
-      },
-      {
-        level: 1,
-        question: "She began to feel severe malaise DURING the night shift.",
-        options: ["Во время работы/процесса", "До момента смены", "Точно в 12 часов", "За пределами периода"],
-        correct: 0,
-        explanation: "'During' is used before a noun/noun phrase describing a time period or event."
-      },
-      {
-        level: 1,
-        question: "The numbness appeared IN five minutes after the injection.",
-        options: ["К определенному времени", "Через какой-то промежуток времени", "С момента укола", "До укола"],
-        correct: 1,
-        explanation: "'In' can mean 'after a specific duration of time' (через 5 минут)."
-      },
-      {
-        level: 1,
-        question: "A heart murmur was first detected AT the time of the routine check-up.",
-        options: ["Точка во времени / конкретный момент", "Диапазон дат", "Период в прошлом", "Дедлайн назначения"],
-        correct: 0,
-        explanation: "'At the time of' points to a specific juncture or moment."
-      },
-      {
-        level: 1,
-        question: "The patient has been vomiting SINCE morning.",
-        options: ["На протяжении двух часов", "К вечеру", "С определенного момента в прошлом", "До захода солнца"],
-        correct: 2,
-        explanation: "'Since' denotes a starting point that continues until now."
-      },
-      {
-        level: 1,
-        question: "The treatment will finish WITHIN 8 weeks in total.",
-        options: ["Точно через 8 недель", "Спустя 8 недель", "Не позже чем через 8 недель (в пределах)", "С первой недели до восьмой"],
-        correct: 2,
-        explanation: "'Within' specifies the time limit inside which something happens."
-      },
-      {
-        level: 1,
-        question: "Don't take alcohol AFTER taking antibiotics.",
-        options: ["Во время приема", "До приема", "Вместо приема", "После приема"],
-        correct: 3,
-        explanation: "'After' refers to time following an event."
-      },
-      {
-        level: 1,
-        question: "The nurse made a note of the malformation AT his first visit.",
-        options: ["Конкретное событие/визит", "В течение всего года", "С момента первого визита", "К концу недели"],
-        correct: 0,
-        explanation: "'At' is used for a precise occasion or time point."
-      },
-
-      // ================= LEVEL 2: FILL IN THE BLANK =================
-      {
-        level: 2,
-        question: "We examined the nodular lesion ____ 9 a.m. yesterday.",
-        options: ["at", "on", "in", "during"],
-        correct: 0,
-        explanation: "Use 'at' for specific times on the clock."
-      },
-      {
-        level: 2,
-        question: "The pale skin tone was observed ____ the physical examination.",
-        options: ["since", "during", "by", "for"],
-        correct: 1,
-        explanation: "Use 'during' to state that something happens within an event or process."
-      },
-      {
-        level: 2,
-        question: "He has had mucous membrane dryness ____ two weeks.",
-        options: ["since", "by", "for", "at"],
-        correct: 2,
-        explanation: "Use 'for' followed by a length/duration of time (two weeks)."
-      },
-      {
-        level: 2,
-        question: "The patient must receive test results ____ Friday.",
-        options: ["in", "during", "for", "by"],
-        correct: 3,
-        explanation: "Use 'by' to express deadline or completion before a time limit."
-      },
-      {
-        level: 2,
-        question: "The doctor made a note of the malformation ____ his first visit.",
-        options: ["at", "for", "within", "throughout"],
-        correct: 0,
-        explanation: "Use 'at' for a specific time or event point (at his first visit)."
-      },
-      {
-        level: 2,
-        question: "The patient reported mild muscle ache starting ____ the weekend.",
-        options: ["by", "during", "for", "since"],
-        correct: 1,
-        explanation: "'During' describes an event happening throughout the duration of the weekend."
-      },
-      {
-        level: 2,
-        question: "She began to feel malaise ____ the night shift.",
-        options: ["for", "at", "during", "by"],
-        correct: 2,
-        explanation: "Use 'during' for actions occurring while a shift or process takes place."
-      },
-      {
-        level: 2,
-        question: "A heart murmur was first noticed ____ the routine check-up.",
-        options: ["since", "for", "by", "at"],
-        correct: 3,
-        explanation: "Use 'at' to specify a point in time or clinical event."
-      },
-      {
-        level: 2,
-        question: "Patients were assessed ____ 24 hours after stroke onset.",
-        options: ["within", "for", "since", "from"],
-        correct: 0,
-        explanation: "Use 'within' to denote inside a time constraint (within 24 hours)."
-      },
-      {
-        level: 2,
-        question: "The patient has been showing improvement ____ the surgery.",
-        options: ["for", "since", "by", "at"],
-        correct: 1,
-        explanation: "Use 'since' when referring to a past moment that marks the start of an ongoing state."
-      },
-      {
-        level: 2,
-        question: "The medical staff monitored osteogenesis imperfecta ____ the year.",
-        options: ["at", "by", "throughout", "since"],
-        correct: 2,
-        explanation: "Use 'throughout' to emphasize the whole extent of the period."
-      },
-      {
-        level: 2,
-        question: "The child looked pale ____ the blood test was conducted.",
-        options: ["since", "for", "during", "before"],
-        correct: 3,
-        explanation: "Use 'before' to indicate prior to the procedure."
-      },
-      {
-        level: 2,
-        question: "The patient stayed in the medical ward ____ three days.",
-        options: ["for", "at", "since", "by"],
-        correct: 0,
-        explanation: "Use 'for' to indicate the duration of stay."
-      },
-      {
-        level: 2,
-        question: "The tumor became malignant ____ several months of rapid growth.",
-        options: ["since", "after", "by", "at"],
-        correct: 1,
-        explanation: "Use 'after' to specify the sequence following a timeframe."
-      },
-      {
-        level: 2,
-        question: "Screening tools were applied every day ____ the hospital stay.",
-        options: ["since", "for", "during", "by"],
-        correct: 2,
-        explanation: "Use 'during' for events happening inside the timeline of the hospital stay."
-      },
-      {
-        level: 2,
-        question: "The doctor sees patients ____ 9 a.m. to 5 p.m.",
-        options: ["since", "by", "within", "from"],
-        correct: 3,
-        explanation: "Use 'from... to' for time intervals."
-      },
-      {
-        level: 2,
-        question: "The patient was instructed to rest ____ several days after the vaccine.",
-        options: ["for", "since", "at", "by"],
-        correct: 0,
-        explanation: "Use 'for' with time spans like 'several days'."
-      },
-      {
-        level: 2,
-        question: "Follow-up evaluations were conducted once a week ____ discharge.",
-        options: ["for", "after", "during", "by"],
-        correct: 1,
-        explanation: "Use 'after' to mean following the patient's discharge."
-      },
-      {
-        level: 2,
-        question: "The swelling decreased significantly ____ the third week.",
-        options: ["since", "for", "by", "at"],
-        correct: 2,
-        explanation: "Use 'by' to mean not later than / upon reaching the third week."
-      },
-      {
-        level: 2,
-        question: "Please sanitize your hands ____ performing any invasive procedure.",
-        options: ["during", "since", "for", "before"],
-        correct: 3,
-        explanation: "Use 'before' for preventive measures prior to an procedure."
-      },
-
-      // ================= LEVEL 3: SENTENCE UNSCRAMBLE =================
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["at 9 a.m.", "we examined", "yesterday", "the nodular lesion"],
-        options: [
-          "We examined the nodular lesion at 9 a.m. yesterday.",
-          "We examined at 9 a.m. the nodular lesion yesterday.",
-          "The nodular lesion at 9 a.m. we examined yesterday.",
-          "Yesterday at 9 a.m. the nodular lesion we examined."
-        ],
-        correct: 0,
-        explanation: "Subject (We) + Verb (examined) + Object (the nodular lesion) + Time (at 9 a.m. yesterday)."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["the physical examination", "was observed", "during", "the pale skin tone"],
-        options: [
-          "During the physical examination was observed the pale skin tone.",
-          "The pale skin tone was observed during the physical examination.",
-          "Was observed the pale skin tone during the physical examination.",
-          "The pale skin tone during the physical examination was observed."
-        ],
-        correct: 1,
-        explanation: "Subject (The pale skin tone) + Passive Verb (was observed) + Prepositional phrase (during the physical examination)."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["dryness", "he has had", "mucous membrane", "for two weeks"],
-        options: [
-          "He has had dryness mucous membrane for two weeks.",
-          "Mucous membrane dryness he has had for two weeks.",
-          "He has had mucous membrane dryness for two weeks.",
-          "For two weeks mucous membrane he has had dryness."
-        ],
-        correct: 2,
-        explanation: "Subject (He) + Verb (has had) + Object (mucous membrane dryness) + Duration (for two weeks)."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["receive test results", "by Friday", "the patient", "must"],
-        options: [
-          "The patient receive test results must by Friday.",
-          "By Friday must the patient receive test results.",
-          "Receive test results the patient must by Friday.",
-          "The patient must receive test results by Friday."
-        ],
-        correct: 3,
-        explanation: "Subject (The patient) + Modal (must) + Verb phrase (receive test results) + Deadline (by Friday)."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["mild muscle ache", "the patient reported", "the weekend", "starting during"],
-        options: [
-          "The patient reported mild muscle ache starting during the weekend.",
-          "Starting during the weekend mild muscle ache the patient reported.",
-          "The patient reported starting during the weekend mild muscle ache.",
-          "Mild muscle ache reported the patient starting during the weekend."
-        ],
-        correct: 0,
-        explanation: "Subject (The patient) + Verb (reported) + Object (mild muscle ache) + Time condition (starting during the weekend)."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["in the medical ward", "three days", "he stayed", "for"],
-        options: [
-          "He stayed for three days in the medical ward.",
-          "He stayed in the medical ward for three days.",
-          "In the medical ward he stayed three days for.",
-          "For three days in the medical ward he stayed."
-        ],
-        correct: 1,
-        explanation: "Subject (He) + Verb (stayed) + Place (in the medical ward) + Duration (for three days)."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["after stroke onset", "within 24 hours", "patients were assessed", "by the team"],
-        options: [
-          "Within 24 hours after stroke onset patients were assessed by the team.",
-          "Patients were assessed after stroke onset by the team within 24 hours.",
-          "Patients were assessed within 24 hours after stroke onset.",
-          "By the team patients were assessed within 24 hours after stroke onset."
-        ],
-        correct: 2,
-        explanation: "Subject (Patients) + Passive Verb (were assessed) + Time frame (within 24 hours after stroke onset)."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["the doctor", "at his first visit", "made a note of", "the malformation"],
-        options: [
-          "The doctor made a note of at his first visit the malformation.",
-          "At his first visit the doctor the malformation made a note of.",
-          "Made a note of the malformation the doctor at his first visit.",
-          "The doctor made a note of the malformation at his first visit."
-        ],
-        correct: 3,
-        explanation: "Subject (The doctor) + Verb phrase (made a note of) + Object (the malformation) + Time (at his first visit)."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["a heart murmur", "at the time of", "was first detected", "the routine check-up"],
-        options: [
-          "A heart murmur was first detected at the time of the routine check-up.",
-          "At the time of the routine check-up was first detected a heart murmur.",
-          "A heart murmur at the time of the routine check-up was first detected.",
-          "Was first detected a heart murmur at the time of the routine check-up."
-        ],
-        correct: 0,
-        explanation: "Subject (A heart murmur) + Verb (was first detected) + Time phrase (at the time of the routine check-up)."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["throughout the year", "we have been seeing", "imperfecta", "osteogenesis"],
-        options: [
-          "Osteogenesis imperfecta throughout the year we have been seeing.",
-          "We have been seeing osteogenesis imperfecta throughout the year.",
-          "We have been seeing throughout the year osteogenesis imperfecta.",
-          "Throughout the year osteogenesis imperfecta we have been seeing."
-        ],
-        correct: 1,
-        explanation: "Subject (We) + Verb (have been seeing) + Object (osteogenesis imperfecta) + Time phrase (throughout the year)."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["the child looked pale", "and during the procedure", "before the blood test", "in the clinic"],
-        options: [
-          "Before the blood test and during the procedure the child looked pale.",
-          "In the clinic before the blood test the child looked pale and during the procedure.",
-          "The child looked pale before the blood test and during the procedure.",
-          "And during the procedure the child looked pale before the blood test."
-        ],
-        correct: 2,
-        explanation: "Subject + Predicate (The child looked pale) + Prepositional time sequence (before... and during...)."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["until the end of", "mild deficits", "remained", "the observation period"],
-        options: [
-          "Until the end of the observation period remained mild deficits.",
-          "Mild deficits until the end of the observation period remained.",
-          "The observation period remained mild deficits until the end of.",
-          "Mild deficits remained until the end of the observation period."
-        ],
-        correct: 3,
-        explanation: "Subject (Mild deficits) + Verb (remained) + Time prepositional phrase (until the end of the observation period)."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["during the hospital stay", "were applied", "every day", "screening tools"],
-        options: [
-          "Screening tools were applied every day during the hospital stay.",
-          "Every day screening tools during the hospital stay were applied.",
-          "Were applied screening tools every day during the hospital stay.",
-          "During the hospital stay were applied screening tools every day."
-        ],
-        correct: 0,
-        explanation: "Subject (Screening tools) + Passive verb (were applied) + Frequency (every day) + Duration (during the hospital stay)."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["once a week", "follow-up evaluations", "after discharge", "were conducted"],
-        options: [
-          "Once a week after discharge follow-up evaluations were conducted.",
-          "Follow-up evaluations were conducted once a week after discharge.",
-          "After discharge were conducted follow-up evaluations once a week.",
-          "Were conducted follow-up evaluations once a week after discharge."
-        ],
-        correct: 1,
-        explanation: "Subject (Follow-up evaluations) + Verb (were conducted) + Frequency (once a week) + Time anchor (after discharge)."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["after several months", "the tumor", "became malignant", "of rapid growth"],
-        options: [
-          "became malignant the tumor after several months of rapid growth.",
-          "After several months the tumor became malignant of rapid growth.",
-          "The tumor became malignant after several months of rapid growth.",
-          "Of rapid growth after several months the tumor became malignant."
-        ],
-        correct: 2,
-        explanation: "Subject (The tumor) + Verb phrase (became malignant) + Time phrase (after several months of rapid growth)."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["from Monday to Friday", "she stayed", "in the medical ward", "for treatment"],
-        options: [
-          "She stayed in the medical ward from Monday to Friday.",
-          "In the medical ward from Monday to Friday she stayed.",
-          "From Monday to Friday in the medical ward she stayed.",
-          "She stayed from Monday to Friday in the medical ward."
-        ],
-        correct: 0,
-        explanation: "Subject (She) + Verb (stayed) + Location (in the medical ward) + Duration/Time range (from Monday to Friday)."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["the nurse noticed", "at birth", "the malformation", "during examination"],
-        options: [
-          "At birth the malformation the nurse noticed during examination.",
-          "The nurse noticed the malformation at birth.",
-          "The malformation at birth the nurse noticed.",
-          "Noticed the nurse the malformation at birth."
-        ],
-        correct: 1,
-        explanation: "Subject (The nurse) + Verb (noticed) + Object (the malformation) + Time point (at birth)."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["in the evening", "a general malaise", "the patient reported", "after chemotherapy"],
-        options: [
-          "In the evening after chemotherapy the patient reported a general malaise.",
-          "A general malaise the patient reported in the evening after chemotherapy.",
-          "The patient reported a general malaise in the evening after chemotherapy.",
-          "After chemotherapy reported the patient a general malaise in the evening."
-        ],
-        correct: 2,
-        explanation: "Subject (The patient) + Verb (reported) + Object (a general malaise) + Time expressions (in the evening after chemotherapy)."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["in her fingers", "after sleeping on her arm", "she complained of", "numbness"],
-        options: [
-          "She complained of numbness in her fingers after sleeping on her arm.",
-          "After sleeping on her arm in her fingers she complained of numbness.",
-          "Numbness in her fingers she complained of after sleeping on her arm.",
-          "She complained of after sleeping on her arm numbness in her fingers."
-        ],
-        correct: 0,
-        explanation: "Subject (She) + Verb (complained of) + Symptom (numbness in her fingers) + Cause/Time (after sleeping on her arm)."
-      },
-      {
-        level: 3,
-        question: "Put the sentence in correct order:",
-        rawChunks: ["the surgery will begin", "tomorrow", "at around 7 a.m.", "in room 3"],
-        options: [
-          "In room 3 tomorrow at around 7 a.m. the surgery will begin.",
-          "The surgery will begin at around 7 a.m. tomorrow.",
-          "At around 7 a.m. tomorrow will begin the surgery.",
-          "Tomorrow the surgery will begin at around 7 a.m."
-        ],
-        correct: 1,
-        explanation: "Subject (The surgery) + Verb (will begin) + Specific time (at around 7 a.m.) + Date/Day (tomorrow)."
+    function showTab(idx) {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`nav${i}`).classList.toggle('active', i === idx);
+        document.getElementById(`tab${i}`).classList.toggle('active', i === idx);
       }
-    ];
-
-    let total = 0;
-    let correct = 0;
-    let streak = 0;
-    let currentQuestion = null;
-    let answered = false;
-
-    function changeLevel() {
-      nextQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function getFilteredQuestions() {
-      const selectedLevel = document.getElementById('levelSelect').value;
-      if (selectedLevel === 'mix') {
-        return questions;
-      }
-      return questions.filter(q => q.level === parseInt(selectedLevel));
-    }
+    // Проверка встроенных микро-вопросов в теории
+    function checkInlineQuiz(btn, isCorrect, feedbackText) {
+      const parent = btn.closest('.quick-check');
+      const allBtns = parent.querySelectorAll('.qc-btn');
+      allBtns.forEach(b => b.disabled = true);
 
-    function nextQuestion() {
-      answered = false;
-      
-      const nextBtn = document.getElementById('nextBtn');
-      nextBtn.classList.remove('visible');
-
-      const expBox = document.getElementById('explanationBox');
-      expBox.classList.remove('answered');
-      document.getElementById('explanationText').textContent = "Choose the correct answer!";
-
-      const pool = getFilteredQuestions();
-      currentQuestion = pool[Math.floor(Math.random() * pool.length)];
-
-      const levelTag = document.getElementById('levelTag');
-      levelTag.textContent = `Level ${currentQuestion.level}`;
-
-      document.getElementById('questionText').textContent = currentQuestion.question;
-
-      // Handle Level 3 chunks shuffling dynamically
-      const chunksBox = document.getElementById('chunksBox');
-      if (currentQuestion.level === 3 && currentQuestion.rawChunks) {
-        const shuffled = shuffleArray(currentQuestion.rawChunks);
-        chunksBox.textContent = shuffled.join(" / ");
-        chunksBox.classList.remove('invisible');
+      if (isCorrect) {
+        btn.classList.add('correct');
       } else {
-        chunksBox.textContent = '';
-        chunksBox.classList.add('invisible');
+        btn.classList.add('wrong');
       }
 
-      // Render answer options
-      const grid = document.getElementById('optionsGrid');
-      grid.innerHTML = '';
+      const fb = parent.querySelector('.qc-feedback');
+      fb.textContent = `💡 ${feedbackText}`;
+      fb.style.display = 'block';
+    }
 
-      currentQuestion.options.forEach((optText, index) => {
-        const btn = document.createElement('button');
-        btn.className = 'option-btn';
-        btn.textContent = `${String.fromCharCode(65 + index)}) ${optText}`;
-        btn.onclick = () => selectOption(btn, index);
-        grid.appendChild(btn);
+    // Рендер словаря с озвучкой Web Speech API
+    function renderVocab() {
+      const grid = document.getElementById('vocabGrid');
+      grid.innerHTML = '';
+      LESSON_DATA.vocabulary.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'vocab-card';
+        div.innerHTML = `
+          <div class="vocab-header">
+            <span class="vocab-word">${item.en}</span>
+            <button class="speak-btn" onclick="speakEn('${item.en}')" title="Прослушать">🔊</button>
+          </div>
+          <div class="vocab-trans">${item[currentLang]}</div>
+          <div class="vocab-example">${item.ex}</div>
+        `;
+        grid.appendChild(div);
       });
     }
 
-    function selectOption(selectedBtn, selectedIndex) {
-      if (answered) return;
-      answered = true;
-
-      total++;
-      const isCorrect = (selectedIndex === currentQuestion.correct);
-
-      if (isCorrect) {
-        correct++;
-        streak++;
-        selectedBtn.classList.add('correct');
-      } else {
-        streak = 0;
-        selectedBtn.classList.add('wrong');
-        
-        const allBtns = document.querySelectorAll('.option-btn');
-        if (allBtns[currentQuestion.correct]) {
-          allBtns[currentQuestion.correct].classList.add('correct');
-        }
-      }
-
-      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
-
-      document.getElementById('totalCount').textContent = total;
-      document.getElementById('correctCount').textContent = correct;
-      document.getElementById('streakCount').textContent = `${streak} 🔥`;
-
-      const expBox = document.getElementById('explanationBox');
-      expBox.classList.add('answered');
-      document.getElementById('explanationText').textContent = currentQuestion.explanation;
-
-      document.getElementById('nextBtn').classList.add('visible');
+    function speakEn(word) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(word);
+      u.lang = 'en-US';
+      u.rate = 0.9;
+      window.speechSynthesis.speak(u);
     }
+
+    // Рендер упражнений 1 и 2 из PDF
+    function renderExercises(containerId, list) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+      list.forEach(item => {
+        const box = document.createElement('div');
+        box.className = 'quick-check';
+        box.style.marginTop = '0';
+
+        const qEl = document.createElement('div');
+        qEl.className = 'qc-question';
+        qEl.textContent = item.q;
+
+        const optsEl = document.createElement('div');
+        optsEl.className = 'qc-options';
+
+        const fbEl = document.createElement('div');
+        fbEl.className = 'qc-feedback';
+        fbEl.textContent = `💡 ${item.exp[currentLang]}`;
+
+        item.options.forEach((optText, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'qc-btn';
+          btn.textContent = optText;
+          btn.onclick = () => {
+            const buttons = optsEl.querySelectorAll('.qc-btn');
+            buttons.forEach(b => b.disabled = true);
+            const okList = Array.isArray(item.correct) ? item.correct : [item.correct];
+            if (okList.includes(idx)) {
+              btn.classList.add('correct');
+            } else {
+              btn.classList.add('wrong');
+              okList.forEach(k => buttons[k].classList.add('correct'));
+            }
+            fbEl.style.display = 'block';
+          };
+          optsEl.appendChild(btn);
+        });
+
+        box.appendChild(qEl);
+        box.appendChild(optsEl);
+        box.appendChild(fbEl);
+        container.appendChild(box);
+      });
+    }
+
+    // Запуск при загрузке
+    setLang(currentLang);
   </script>
-  <script src="/session-guard.js"></script>
+  
 </body>
 </html>
