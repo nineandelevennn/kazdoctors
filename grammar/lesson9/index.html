@@ -188,7 +188,7 @@
     }
 
     .paywall-card {
-      background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+      background: linear-gradient(145deg, var(--sky-900) 0%, var(--sky-900) 100%);
       color: #FFFFFF;
       border-radius: 22px;
       padding: 28px 22px;
@@ -216,7 +216,7 @@
     .pw-badge {
       background: rgba(0, 161, 222, 0.22);
       border: 1px solid rgba(0, 161, 222, 0.55);
-      color: #7DD3FC;
+      color: var(--sky-100);
       font-size: 0.7rem;
       font-weight: 800;
       padding: 4px 12px;
@@ -235,7 +235,7 @@
     .pw-desc {
       font-size: 0.82rem;
       line-height: 1.55;
-      color: #CBD5E1;
+      color: var(--line);
       font-weight: 500;
     }
 
@@ -414,9 +414,9 @@
       background: var(--bg-main);
     }
 
-    .prep-card.c1 { border-top: 4px solid #0284C7; background: #F0F9FF; }
-    .prep-card.c2 { border-top: 4px solid #D97706; background: var(--kz-gold-light); }
-    .prep-card.c3 { border-top: 4px solid #16A34A; background: #F0FDF4; }
+    .prep-card.c1 { border-top: 4px solid var(--sky-700); background: var(--sky-50); }
+    .prep-card.c2 { border-top: 4px solid var(--sun-ink); background: var(--kz-gold-light); }
+    .prep-card.c3 { border-top: 4px solid var(--ok-mid); background: #F0FDF4; }
     .prep-card.c4 { border-top: 4px solid #7C3AED; background: #F5F3FF; }
 
     .prep-title {
@@ -476,20 +476,20 @@
     }
 
     .grammar-table tr:nth-child(even) td {
-      background: #F8FAFC;
+      background: var(--subtle);
     }
 
     /* Интерактивный разбор неврологического абстракта (Stroke Recovery) */
     .abstract-box {
       background: #FFFFFF;
-      border: 2px solid #CBD5E1;
+      border: 2px solid var(--line);
       border-radius: 14px;
       overflow: hidden;
       margin-top: 10px;
     }
 
     .abstract-header {
-      background: #1E293B;
+      background: var(--sky-900);
       color: #FFFFFF;
       padding: 10px 14px;
       font-size: 0.78rem;
@@ -517,15 +517,15 @@
       transition: all 0.15s ease;
     }
 
-    .hl-btn.point-type { background: #BAE6FD; color: #0369A1; }
-    .hl-btn.dur-type { background: #FDE68A; color: #92400E; }
+    .hl-btn.point-type { background: var(--sky-100); color: var(--sky-900); }
+    .hl-btn.dur-type { background: #FDE68A; color: var(--sun-ink); }
     .hl-btn.reset { background: rgba(255,255,255,0.2); color: #FFFFFF; }
 
     .abstract-body {
       padding: 14px;
       font-size: 0.84rem;
       line-height: 1.68;
-      color: #334155;
+      color: var(--ink-2);
     }
 
     .p-point, .p-dur {
@@ -535,22 +535,22 @@
     }
 
     .abstract-body.show-point .p-point {
-      background: #BAE6FD;
-      color: #0369A1;
+      background: var(--sky-100);
+      color: var(--sky-900);
       font-weight: 800;
-      border-bottom: 2px solid #0284C7;
+      border-bottom: 2px solid var(--sky-700);
     }
 
     .abstract-body.show-dur .p-dur {
       background: #FDE68A;
-      color: #92400E;
+      color: var(--sun-ink);
       font-weight: 800;
-      border-bottom: 2px solid #D97706;
+      border-bottom: 2px solid var(--sun-ink);
     }
 
     /* Быстрые микро-упражнения внутри теории (Quick Check) */
     .quick-check {
-      background: #F8FAFC;
+      background: var(--subtle);
       border: 1px dashed var(--kz-blue);
       border-radius: 14px;
       padding: 14px;
@@ -713,13 +713,15 @@
       }
     }
   </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body>
 
   <!-- ШАПКА УРОКА -->
   <header>
     <div class="header-top">
-      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅ К списку уроков</a>
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">← К списку уроков</a>
       <div class="header-right-controls">
         <span id="userTierBadge" class="tier-badge"></span>
         <div class="lang-switch">
@@ -736,7 +738,7 @@
   </header>
 
   <!-- ИНДИКАТОР ПРОВЕРКИ ПОДПИСКИ -->
-  <div id="authLoader">🔄 Проверка подписки и доступа к конспекту...</div>
+  <div id="authLoader">Проверка подписки и доступа к конспекту...</div>
 
   <!-- БЛОК PAYWALL (ПОКАЗЫВАЕТСЯ, ЕСЛИ НЕТ ТАРИФА ПРО / ПРЕМИУМ / ВИП) -->
   <div id="paywallGate">
@@ -749,13 +751,13 @@
       </p>
       <div class="pw-buttons">
         <a href="https://kazdoctors.com/tarifs" class="pw-btn-primary" id="pwTarifsBtn">
-          🌟 Перейти к тарифам (kazdoctors.com/tarifs)
+          Перейти к тарифам (kazdoctors.com/tarifs)
         </a>
         <a href="https://instagram.com/doctors.speak" target="_blank" class="pw-btn-secondary" id="pwContactBtn">
-          💬 Написать нам (@doctors.speak)
+          Написать нам (@doctors.speak)
         </a>
         <a href="/login.html" class="pw-btn-secondary" id="pwLoginBtn" style="display:none;">
-          🔐 Войти в аккаунт
+          Войти в аккаунт
         </a>
       </div>
     </div>
@@ -782,7 +784,7 @@
       <!-- ВКЛАДКА 3: СЛОВАРЬ С ПРИМЕРАМИ -->
       <section class="tab-section" id="tab2">
         <div class="card-block">
-          <h2 id="uiVocabTitle">💊 Клинический словарь урока (14 терминов)</h2>
+          <h2 id="uiVocabTitle">Клинический словарь урока (14 терминов)</h2>
           <p id="uiVocabDesc">Нажмите 🔊, чтобы прослушать произношение. Обратите внимание на предлоги времени в каждом клиническом примере.</p>
           <div class="vocab-grid" id="vocabGrid"></div>
         </div>
@@ -792,18 +794,18 @@
       <!-- ВКЛАДКА 4: ПРАКТИКУМ (EXERCISE 1 & 2 ИЗ PDF) -->
       <section class="tab-section" id="tab3">
         <div class="card-block gold">
-          <h2 id="uiEx1Title">✍️ Упражнение 1: Выберите подходящий предлог времени</h2>
+          <h2 id="uiEx1Title">Упражнение 1: Выберите подходящий предлог времени</h2>
           <p id="uiEx1Desc">Определите: речь идет о моменте (at), процессе (during), длительности с цифрой (for) или предлог вообще не нужен:</p>
           <div id="ex1Container" style="display:flex; flex-direction:column; gap:10px;"></div>
         </div>
 
         <div class="card-block">
-          <h2 id="uiEx2Title">🩺 Упражнение 2: Вставьте предлог времени в клинических ситуациях</h2>
+          <h2 id="uiEx2Title">Упражнение 2: Вставьте предлог времени в клинических ситуациях</h2>
           <p id="uiEx2Desc">Обратите внимание на разницу между точным часом (at 9 a.m.), сроком болезни (for two weeks) и дедлайном (by Friday):</p>
           <div id="ex2Container" style="display:flex; flex-direction:column; gap:10px;"></div>
         </div>
 
-        <a href="./prepositionsoftime/" class="action-btn" id="uiGoTrainerBtn">🎯 Запустить игровой тренажер по Уроку 9 ➔</a>
+        <a href="../prepositionsoftime/" class="action-btn" id="uiGoTrainerBtn">Запустить игровой тренажер по Уроку 9 ➔</a>
       </section>
     </main>
   </div>
@@ -830,7 +832,7 @@
       standard: { ru: "СТАНДАРТ", kz: "СТАНДАРТ" },
       pro: { ru: "ТАРИФ: ПРО", kz: "ТАРИФ: ПРО" },
       premium: { ru: "ТАРИФ: ПРЕМИУМ", kz: "ТАРИФ: ПРЕМИУМ" },
-      vip: { ru: "ТАРИФ: ВИП 👑", kz: "ТАРИФ: ВИП 👑" }
+      vip: { ru: "ТАРИФ: ВИП", kz: "ТАРИФ: ВИП" }
     };
 
     let currentViewerState = {
@@ -939,12 +941,12 @@
         : "ДОСТУПНО В ТАРИФАХ ПРО / ПРЕМИУМ / ВИП";
 
       tarifsBtn.textContent = isKz
-        ? "🌟 Тарифтер бетіне өту (kazdoctors.com/tarifs)"
-        : "🌟 Перейти к тарифам (kazdoctors.com/tarifs)";
+        ? "Тарифтер бетіне өту (kazdoctors.com/tarifs)"
+        : "Перейти к тарифам (kazdoctors.com/tarifs)";
 
       contactBtn.textContent = isKz
-        ? "💬 Бізге жазу (@doctors.speak)"
-        : "💬 Написать нам (@doctors.speak)";
+        ? "Бізге жазу (@doctors.speak)"
+        : "Написать нам (@doctors.speak)";
 
       if (!isLoggedIn) {
         titleEl.textContent = isKz
@@ -954,7 +956,7 @@
           ? "Бұл интерактивті конспект «Про», «Премиум» және «ВИП» жазылымдары бар дәрігерлерге арналған. Тарифтер бетінде өзіңізге ыңғайлы пакетті таңдай аласыз:"
           : "Этот интерактивный конспект открыт для врачей с подпиской «Про», «Премиум» или «ВИП». Ознакомьтесь с вариантами доступа на странице тарифов:";
         loginBtn.style.display = "inline-flex";
-        loginBtn.textContent = isKz ? "🔐 Аккаунтқа кіру" : "🔐 Уже есть подписка? Войти в аккаунт";
+        loginBtn.textContent = isKz ? "Аккаунтқа кіру" : "Уже есть подписка? Войти в аккаунт";
       } else if (reasonTier === "standard") {
         titleEl.textContent = isKz
           ? "Сізде «Стандарт» тарифі белсенді (тек тренажерлер)"
@@ -979,7 +981,7 @@
     // =========================================================================
     const LESSON9_DATA = {
       ui: {
-        backBtn: { ru: "⬅ К списку уроков", kz: "⬅ Сабақтар тізіміне" },
+        backBtn: { ru: "← К списку уроков", kz: "← Сабақтар тізіміне" },
         title: {
           ru: "Prepositions of Time (Предлоги времени в медицине)",
           kz: "Prepositions of Time (Медицинадағы мезгіл предлогтары)"
@@ -995,8 +997,8 @@
           { ru: "4. Упражнения", kz: "4. Жаттығулар" }
         ],
         vocabTitle: {
-          ru: "💊 Клинический словарь урока (14 терминов)",
-          kz: "💊 Сабақтың клиникалық сөздігі (14 термин)"
+          ru: "Клинический словарь урока (14 терминов)",
+          kz: "Сабақтың клиникалық сөздігі (14 термин)"
         },
         vocabDesc: {
           ru: "Нажмите 🔊 для прослушивания произношения. Все примеры показывают, как предлоги времени связывают симптомы и этапы лечения.",
@@ -1007,7 +1009,7 @@
           kz: "4-қадамға өту: Жылдам жаттығулар ➔"
         },
         ex1Title: {
-          ru: "✍️ Упражнение 1: Выберите правильный предлог времени",
+          ru: "Упражнение 1: Выберите правильный предлог времени",
           kz: "✍️ 1-жаттығу: Дұрыс мезгіл предлогын таңдаңыз"
         },
         ex1Desc: {
@@ -1015,7 +1017,7 @@
           kz: "Бос орыннан кейінгі сөзге мұқият қараңыз (процесс, ұзақтық саны немесе after тіркесі):"
         },
         ex2Title: {
-          ru: "🩺 Упражнение 2: Заполните пропуски подходящим предлогом времени",
+          ru: "Упражнение 2: Заполните пропуски подходящим предлогом времени",
           kz: "🩺 2-жаттығу: Бос орындарға сәйкес мезгіл предлогын қойыңыз"
         },
         ex2Desc: {
@@ -1023,7 +1025,7 @@
           kz: "Сөйлемнің клиникалық мағынасына қарай предлогты таңдаңыз:"
         },
         goTrainerBtn: {
-          ru: "🎯 Перейти к основному тренажеру Урока 9 ➔",
+          ru: "Перейти к основному тренажеру Урока 9 ➔",
           kz: "🎯 9-сабақтың негізгі тренажеріне өту ➔"
         }
       },
@@ -1032,13 +1034,13 @@
       tab0Html: {
         ru: `
           <div class="card-block">
-            <h2>⏱️ Базовый треугольник времени: AT vs ON vs IN</h2>
+            <h2>Базовый треугольник времени: AT vs ON vs IN</h2>
             <p>При сборе анамнеза и записи дневников наблюдения врач постоянно отвечает на вопрос <b>«Когда?»</b>. В английском языке выбор между <b>AT, ON, IN</b> зависит от «масштаба» времени — от точной минуты на часах до месяцев и лет:</p>
 
             <div class="prep-grid">
               <div class="prep-card c1">
                 <div class="prep-title">
-                  <span>🎯 AT — Точка на часах и Момент</span>
+                  <span>AT — Точка на часах и Момент</span>
                   <span>08:15</span>
                 </div>
                 <span class="comp-formula">at + часы / момент осмотра</span>
@@ -1052,7 +1054,7 @@
 
               <div class="prep-card c2">
                 <div class="prep-title">
-                  <span>📅 ON — Дни недели и Даты</span>
+                  <span>ON — Дни недели и Даты</span>
                   <span>May 7</span>
                 </div>
                 <span class="comp-formula">on + день недели / календарная дата</span>
@@ -1065,7 +1067,7 @@
 
               <div class="prep-card c3">
                 <div class="prep-title">
-                  <span>📆 IN — Длинные периоды и «ЧЕРЕЗ»</span>
+                  <span>IN — Длинные периоды и «ЧЕРЕЗ»</span>
                   <span>+5 min</span>
                 </div>
                 <span class="comp-formula">in + утро/вечер/месяц/год ИЛИ «через»</span>
@@ -1079,7 +1081,7 @@
           </div>
 
           <div class="card-block gold">
-            <h2>⚠️ Главная ловушка перевода: 4 разных «В ТЕЧЕНИЕ» и 3 разных «ДО»</h2>
+            <h2>Главная ловушка перевода: 4 разных «В ТЕЧЕНИЕ» и 3 разных «ДО»</h2>
             <p>На русский язык предлоги <b>for, during, within, throughout</b> часто переводятся одинаково — <i>«в течение»</i>. Но в медицинском английском у каждого из них своя строгая формула:</p>
 
             <div class="prep-grid">
@@ -1133,14 +1135,14 @@
             </div>
 
             <div class="clinical-quote" style="border-left-color: var(--kz-blue); margin-top: 14px;">
-              🛑 <b>Как не перепутать 3 предлога со значением «ДО / К»:</b><br>
+              <b>Как не перепутать 3 предлога со значением «ДО / К»:</b><br>
               • <b>BEFORE</b> (<i>перед действием</i>): <b>"Wash your hands <u>before</u> surgery."</b> — Помойте руки перед операцией.<br>
               • <b>BY</b> (<i>к моменту / дедлайн — не позже чем</i>): <b>"She will be discharged <u>by</u> 5 pm."</b> — Её выпишут к 17:00 (не позже пятницы — <b>by Friday</b>).<br>
               • <b>UNTIL / TILL</b> (<i>вплоть до момента, пока не...</i>): <b>"Wait <u>until</u> the doctor comes."</b> — Ждите, пока не придет врач (процесс ожидания длится до его прихода).
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Быстрая проверка</span>
+              <span class="qc-badge">Быстрая проверка</span>
               <div class="qc-question">Врач говорит: «Пациент должен получить результаты анализов К пятнице (не позже пятницы)» — "The patient must receive test results ___ Friday." Какой предлог нужен?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Отлично! Когда задан крайний срок (дедлайн «к какому-то моменту»), всегда используется предлог BY -> by Friday.')">by Friday (к пятнице — дедлайн)</button>
@@ -1155,13 +1157,13 @@
         `,
         kz: `
           <div class="card-block">
-            <h2>⏱️ Уақыттың базалық үшбұрышы: AT, ON және IN</h2>
+            <h2>Уақыттың базалық үшбұрышы: AT, ON және IN</h2>
             <p>Анамнез жинағанда және күнделік толтырғанда дәрігер үнемі <b>«Қашан?»</b> деген сұраққа жауап береді. Ағылшын тілінде <b>AT, ON, IN</b> таңдауы уақыттың «көлеміне» байланысты — нақты сағаттан бастап айлар мен жылдарға дейін:</p>
 
             <div class="prep-grid">
               <div class="prep-card c1">
                 <div class="prep-title">
-                  <span>🎯 AT — Нақты сағат және Сәт</span>
+                  <span>AT — Нақты сағат және Сәт</span>
                   <span>08:15</span>
                 </div>
                 <span class="comp-formula">at + сағат / тексеру сәті</span>
@@ -1175,7 +1177,7 @@
 
               <div class="prep-card c2">
                 <div class="prep-title">
-                  <span>📅 ON — Апта күндері мен Күндер</span>
+                  <span>ON — Апта күндері мен Күндер</span>
                   <span>May 7</span>
                 </div>
                 <span class="comp-formula">on + апта күні / күнтізбелік күн</span>
@@ -1188,7 +1190,7 @@
 
               <div class="prep-card c3">
                 <div class="prep-title">
-                  <span>📆 IN — Ұзақ кезеңдер және «КЕЙІН»</span>
+                  <span>IN — Ұзақ кезеңдер және «КЕЙІН»</span>
                   <span>+5 min</span>
                 </div>
                 <span class="comp-formula">in + таңертең/кешке/ай/жыл НЕМЕСЕ «...кейін»</span>
@@ -1202,7 +1204,7 @@
           </div>
 
           <div class="card-block gold">
-            <h2>⚠️ Аудармадағы басты тұзақ: «ІШІНДЕ / БОЙЫ» (4 түрлі) және «ДЕЙІН» (3 түрлі)</h2>
+            <h2>Аудармадағы басты тұзақ: «ІШІНДЕ / БОЙЫ» (4 түрлі) және «ДЕЙІН» (3 түрлі)</h2>
             <p>Қазақ және орыс тілдерінде <b>for, during, within, throughout</b> предлогтары ұқсас аударылғанымен, медициналық ағылшын тілінде олардың әрқайсысының өз орны бар:</p>
 
             <div class="prep-grid">
@@ -1256,14 +1258,14 @@
             </div>
 
             <div class="clinical-quote" style="border-left-color: var(--kz-blue); margin-top: 14px;">
-              🛑 <b>«ДЕЙІН / АЛДЫНДА» мағынасындағы 3 предлогты қалай ажыратамыз:</b><br>
+              <b>«ДЕЙІН / АЛДЫНДА» мағынасындағы 3 предлогты қалай ажыратамыз:</b><br>
               • <b>BEFORE</b> (<i>алдында / бұрын</i>): <b>"Wash your hands <u>before</u> surgery."</b> — Ота алдында қолыңызды жуыңыз.<br>
               • <b>BY</b> (<i>белгілі бір уақытқа дейін / дедлайн — одан кешіктірмей</i>): <b>"She will be discharged <u>by</u> 5 pm."</b> — Ол сағат 17:00-ге дейін шығарылады (жұмаға дейін — <b>by Friday</b>).<br>
               • <b>UNTIL / TILL</b> (<i>белгілі бір сәтке дейін созылу</i>): <b>"Wait <u>until</u> the doctor comes."</b> — Дәрігер келгенге дейін күтіңіз.
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Жылдам тексеру</span>
+              <span class="qc-badge">Жылдам тексеру</span>
               <div class="qc-question">Дәрігер: «Науқас талдау нәтижелерін жұмаға ДЕЙІН (жұмадан кешіктірмей) алуы тиіс» — "The patient must receive test results ___ Friday." Қай предлог қажет?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Тамаша! Нақты соңғы мерзім (дедлайн) көрсетілгенде әрқашан BY предлогы қолданылады -> by Friday.')">by Friday (жұмаға дейін — дедлайн)</button>
@@ -1282,7 +1284,7 @@
       tab1Html: {
         ru: `
           <div class="card-block gold">
-            <h2>📋 Полная клиническая шпаргалка по всем 14 предлогам времени</h2>
+            <h2>Полная клиническая шпаргалка по всем 14 предлогам времени</h2>
             <p>Формула всегда едина: <b>Событие A + предлог времени + Событие/Момент B</b>. Сверьте все 14 предлогов из урока на медицинских примерах:</p>
 
             <table class="grammar-table">
@@ -1369,12 +1371,12 @@
           </div>
 
           <div class="card-block">
-            <h2>🧠 Практика чтения статьи: Neurology Study (Acute Stroke Recovery)</h2>
+            <h2>Практика чтения статьи: Neurology Study (Acute Stroke Recovery)</h2>
             <p>Прочитайте абстракт неврологического исследования <b>«Changes in Cognitive Function During and After Acute Stroke Recovery»</b>. Нажимайте на кнопки подсветки, чтобы увидеть, как авторы используют предлоги <b>точки/срока</b> и <b>длительности процесса</b>:</p>
 
             <div class="abstract-box">
               <div class="abstract-header">
-                <span>📄 Sample Abstract: Neurology Study (Acute Stroke Recovery)</span>
+                <span>Sample Abstract: Neurology Study (Acute Stroke Recovery)</span>
                 <div class="abstract-controls">
                   <button class="hl-btn point-type" onclick="toggleAbstractHighlight('point')">Точки, Сроки и Границы (before / after / at / within / by)</button>
                   <button class="hl-btn dur-type" onclick="toggleAbstractHighlight('dur')">Длительность и Периоды (during / throughout / until / from)</button>
@@ -1390,7 +1392,7 @@
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Вопрос на внимательность по статье (Уровень B1)</span>
+              <span class="qc-badge">Вопрос на внимательность по статье (Уровень B1)</span>
               <div class="qc-question">Посмотрите на начало второго абзаца статьи: "Since early detection is crucial, screening tools were applied every day..." Как здесь переводится слово SINCE?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Блестяще! В научных статьях слово Since имеет два значения: 1) предлог времени «с какого-то момента» (since 2018) и 2) союз причины «так как / поскольку» (Since early detection is crucial — Поскольку раннее выявление критически важно)!')">«Поскольку / Так как» (союз причины, а не времени!)</button>
@@ -1404,7 +1406,7 @@
         `,
         kz: `
           <div class="card-block gold">
-            <h2>📋 Барлық 14 мезгіл предлогы бойынша толық клиникалық кесте</h2>
+            <h2>Барлық 14 мезгіл предлогы бойынша толық клиникалық кесте</h2>
             <p>Негізгі формула: <b>Оқиға A + мезгіл предлогы + Оқиға/Уақыт B</b>. Сабақтағы барлық 14 предлогты медициналық мысалдармен салыстырыңыз:</p>
 
             <table class="grammar-table">
@@ -1491,12 +1493,12 @@
           </div>
 
           <div class="card-block">
-            <h2>🧠 Ғылыми мақаланы талдау: Neurology Study (Acute Stroke Recovery)</h2>
+            <h2>Ғылыми мақаланы талдау: Neurology Study (Acute Stroke Recovery)</h2>
             <p>Жедел инсульттан кейінгі когнитивті қызметтің қалпына келуі туралы <b>«Changes in Cognitive Function During and After Acute Stroke Recovery»</b> абстрактісін оқыңыз. Авторлардың <b>нақты уақыт/мерзім</b> мен <b>процесс ұзақтығы</b> предлогтарын қалай қолданғанын көру үшін батырмаларды басыңыз:</p>
 
             <div class="abstract-box">
               <div class="abstract-header">
-                <span>📄 Sample Abstract: Neurology Study (Acute Stroke Recovery)</span>
+                <span>Sample Abstract: Neurology Study (Acute Stroke Recovery)</span>
                 <div class="abstract-controls">
                   <button class="hl-btn point-type" onclick="toggleAbstractHighlight('point')">Уақыт нүктелері мен Мерзім (before / after / at / within / by)</button>
                   <button class="hl-btn dur-type" onclick="toggleAbstractHighlight('dur')">Ұзақтық пен Кезеңдер (during / throughout / until / from)</button>
@@ -1512,7 +1514,7 @@
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Мақала бойынша зейін сұрағы (B1 деңгейі)</span>
+              <span class="qc-badge">Мақала бойынша зейін сұрағы (B1 деңгейі)</span>
               <div class="qc-question">Екінші абзацтың басына қараңыз: "Since early detection is crucial, screening tools were applied every day..." Мұндағы SINCE сөзі қалай аударылады?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Керемет! Ғылыми мақалаларда Since сөзінің екі мағынасы бар: 1) уақыт предлогы «...бері» (since 2018) және 2) себеп жалғаулығы «себебі / өйткені / болғандықтан» (Ерте анықтау өте маңызды болғандықтан)!')">«Өйткені / Болғандықтан» (себеп жалғаулығы!)</button>

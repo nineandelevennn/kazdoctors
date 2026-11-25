@@ -35,7 +35,7 @@
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
-            background: radial-gradient(circle at top, #EBF8FC 0%, #F0F6FA 60%);
+            background: radial-gradient(circle at top, var(--sky-50) 0%, var(--bg) 60%);
             -webkit-tap-highlight-color: transparent;
         }
         .fade-in { animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -44,9 +44,11 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .passage-scroll::-webkit-scrollbar { width: 6px; }
-        .passage-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 8px; }
-        .passage-scroll::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 8px; }
+        .passage-scroll::-webkit-scrollbar-track { background: var(--subtle); border-radius: 8px; }
+        .passage-scroll::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 8px; }
     </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body class="text-slate-800 min-h-full flex flex-col antialiased selection:bg-kzblue selection:text-white">
 
@@ -62,7 +64,7 @@
             <!-- Бейдж бренда -->
             <div class="flex items-center gap-2">
                 <span class="font-extrabold tracking-tight text-sm sm:text-base bg-white/20 border border-white/35 px-3.5 py-1.5 rounded-full">
-                    ✨ @doctors.speak
+                    @doctors.speak
                 </span>
             </div>
 
@@ -296,7 +298,7 @@
                 <!-- Продающий блок с переходом на kazdoctors.com/tarifs -->
                 <div class="bg-gradient-to-br from-[#0077A3] via-[#0093CC] to-[#00A1DE] rounded-3xl p-6 sm:p-8 text-white flex flex-col items-center text-center shadow-xl relative overflow-hidden">
                     <span class="inline-block text-[11px] font-black uppercase tracking-wider px-3.5 py-1 rounded-full bg-kzgold text-slate-900 mb-3 shadow-sm" data-i18n="ctaBadge">
-                        🔥 Следующий шаг к росту
+                        Следующий шаг к росту
                     </span>
                     <h3 class="text-xl sm:text-2xl font-black text-white max-w-xl leading-tight mb-3" data-i18n="ctaTitle">
                         Не позволяйте языковому барьеру ограничивать Вашу медицинскую карьеру!
@@ -306,7 +308,7 @@
                     </p>
 
                     <a href="https://kazdoctors.com/tarifs" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-kzgold to-[#FFD55A] hover:brightness-105 text-slate-900 border-2 border-white/40 font-black text-sm sm:text-base uppercase tracking-wide shadow-lg transition flex items-center justify-center gap-2.5 active:scale-95">
-                        <span data-i18n="ctaBtn">🚀 Выбрать тариф и начать обучение</span>
+                        <span data-i18n="ctaBtn">Выбрать тариф и начать обучение</span>
                         <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                     </a>
                 </div>
@@ -317,12 +319,7 @@
     </main>
 
     <!-- Футер -->
-    <footer class="py-5 text-center text-xs font-semibold text-slate-400 border-t border-slate-200/60 bg-white/70">
-        <div class="max-w-3xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-            <span>&copy; <a href="https://kazdoctors.com" class="hover:text-kzblue underline">kazdoctors.com</a> • @doctors.speak</span>
-            <span data-i18n="footerNote">Medical English Assessment</span>
-        </div>
-    </footer>
+    <div id="ds-footer"></div>
 
     <!-- ==================== ЛОГИКА И БАЗА ВОПРОСОВ (RU / KZ) ==================== -->
     <script>
@@ -358,10 +355,10 @@
                 accuracySuffix: "% точность",
                 estimatedLevelLabel: "Ориентировочный уровень",
                 disclaimerText: "<strong>Обратите внимание:</strong> Данный тест проверяет приблизительное восприятие клинических текстов, лексики и жалоб пациентов и результат не является официальным уровнем английского языка. Для полной уверенности в разговорной речи на приеме и на международных стажировках, а также при чтении англоязычных источников важна системная практика.",
-                ctaBadge: "🔥 Следующий шаг к вашей цели",
+                ctaBadge: "Следующий шаг к вашей цели",
                 ctaTitle: "Не позволяйте языковому барьеру тормозить вашу карьеру врача!",
                 ctaDesc: "Читайте международные гайдлайны в оригинале, уверенно опрашивайте пациентов и откройте полный доступ ко всем тренажерам, видеоурокам и занятиям на платформе @doctors.speak.",
-                ctaBtn: "🚀 Посмотреть тарифы и прокачать Medical English",
+                ctaBtn: "Посмотреть тарифы и прокачать Medical English",
                 footerNote: "Система оценки знаний @doctors.speak",
                 enterNameError: "Пожалуйста, введите Ваше имя перед началом теста.",
                 categories: {
@@ -413,10 +410,10 @@
                 accuracySuffix: "% нақтылық",
                 estimatedLevelLabel: "Болжамды деңгейіңіз",
                 disclaimerText: "<strong>Назар аударыңыз:</strong> Бұл нәтиже медициналық лексика мен клиникалық мәтіндерді түсінуіңіздің деңгейін анықтағанмен, Сіздің ресми деңгейіңізді көрсетпейді. Науқастармен және шетелдік әріптестермен еркін сөйлесу үшін, мақалаларды тез түсіну үшін жүйелі тәжірибе қажет.",
-                ctaBadge: "🔥 Мақсатыңызға келесі қадам",
+                ctaBadge: "Мақсатыңызға келесі қадам",
                 ctaTitle: "Тіл білмеу дәрігерлік мансабыңызға бөгет болмасын!",
                 ctaDesc: "Халықаралық гайдлайндарды түпнұсқада оқып, науқастардан ағылшынша еркін анамнез жинаңыз. @doctors.speak платформасындағы барлық тренажерлерге, видеосабақтарға және жеке сабақтарға толық доступ алыңыз.",
-                ctaBtn: "🚀 Тарифтерді көру және оқуды бастау",
+                ctaBtn: "Тарифтерді көру және оқуды бастау",
                 footerNote: "@doctors.speak білімді бағалау жүйесі",
                 enterNameError: "Тестті бастамас бұрын есіміңізді енгізіңіз.",
                 categories: {

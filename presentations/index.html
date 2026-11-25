@@ -43,7 +43,7 @@
             min-height: 100vh;
             min-height: 100dvh;
             overflow-y: auto;
-            background: radial-gradient(circle at top, #EBF8FC 0%, var(--bg-main) 65%);
+            background: radial-gradient(circle at top, var(--sky-50) 0%, var(--bg-main) 65%);
             color: var(--text-dark);
             display: flex;
             flex-direction: column;
@@ -55,7 +55,7 @@
         header {
             position: relative;
             z-index: 20;
-            background: linear-gradient(145deg, #0077A3 0%, var(--kz-blue) 58%, #15B2E8 100%);
+            background: linear-gradient(145deg, var(--sky-900) 0%, var(--kz-blue) 58%, var(--sky-500) 100%);
             color: #FFFFFF;
             text-align: center;
             padding: 18px 16px 24px 16px;
@@ -211,7 +211,7 @@
         .pw-bar-fill {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, var(--kz-gold) 0%, #34D399 100%);
+            background: linear-gradient(90deg, var(--kz-gold) 0%, var(--ok-mid) 100%);
             border-radius: 10px;
             transition: width 0.35s ease;
         }
@@ -253,7 +253,7 @@
            БЛОК 1 (СВЕРХУ): ОБЩИЙ ИНТЕРАКТИВНЫЙ КОНСПЕКТ ВЕБИНАРА (PRO / PREMIUM / VIP)
            ========================================================================== */
         .master-guide-card {
-            background: linear-gradient(135deg, #FFFFFF 0%, #FFFBEB 65%, #FEF3C7 100%);
+            background: linear-gradient(135deg, #FFFFFF 0%, var(--sun-50) 65%, #FEF3C7 100%);
             border: 2px solid var(--kz-gold-dark);
             border-radius: 20px;
             padding: 18px;
@@ -313,7 +313,7 @@
 
         .mg-info p {
             font-size: 0.78rem;
-            color: #475569;
+            color: var(--ink-2);
             font-weight: 600;
             margin-top: 3px;
             line-height: 1.4;
@@ -326,7 +326,7 @@
             border-radius: 10px;
             text-transform: uppercase;
             letter-spacing: 0.4px;
-            background: #1E293B;
+            background: var(--sky-900);
             color: var(--kz-gold);
         }
 
@@ -349,12 +349,12 @@
             border-radius: 10px;
             font-size: 0.71rem;
             font-weight: 700;
-            color: #78350F;
+            color: var(--sun-ink);
         }
 
         .open-guide-btn {
             width: 100%;
-            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            background: linear-gradient(135deg, var(--sky-900) 0%, var(--sky-900) 100%);
             color: var(--kz-gold);
             border: 1px solid var(--kz-gold-dark);
             border-radius: 14px;
@@ -401,7 +401,7 @@
         }
 
         .g-tab-btn {
-            background: #F1F5F9;
+            background: var(--subtle);
             border: 1px solid var(--border-color);
             border-radius: 11px;
             padding: 9px 6px;
@@ -430,7 +430,7 @@
         }
 
         .guide-box {
-            background: #F8FAFC;
+            background: var(--subtle);
             border: 1px solid var(--border-color);
             border-left: 4px solid var(--kz-blue);
             border-radius: 14px;
@@ -444,7 +444,7 @@
 
         .guide-box.red {
             border-left-color: var(--red-accent);
-            background: #FEF2F2;
+            background: var(--err-bg);
         }
 
         .guide-box.green {
@@ -555,7 +555,7 @@
             box-shadow: 0 3px 10px rgba(0, 119, 163, 0.05);
             position: relative;
             overflow: hidden;
-            border: 1px solid #CBE7F9;
+            border: 1px solid var(--sky-100);
             width: 100%;
             text-align: left;
             cursor: pointer;
@@ -564,7 +564,7 @@
         .trainer-card:hover {
             transform: translateY(-1px);
             box-shadow: 0 6px 16px rgba(0, 161, 222, 0.12);
-            border-color: #7DD3FC;
+            border-color: var(--sky-100);
         }
 
         .trainer-card::before {
@@ -576,12 +576,12 @@
         }
 
         .lesson-group.completed-clip .trainer-card {
-            background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 70%, #DCFCE7 100%);
+            background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 70%, var(--ok-bg) 100%);
             border-color: #86EFAC;
         }
 
         .lesson-group.completed-clip .trainer-card::before {
-            background: linear-gradient(180deg, #10B981 0%, #059669 100%);
+            background: linear-gradient(180deg, var(--ok-mid) 0%, #059669 100%);
         }
 
         .card-content {
@@ -593,7 +593,7 @@
         .card-icon {
             width: 46px;
             height: 46px;
-            background: linear-gradient(135deg, #FFFFFF 0%, #E0F2FE 100%);
+            background: linear-gradient(135deg, #FFFFFF 0%, var(--sky-50) 100%);
             border-radius: 14px;
             display: flex;
             align-items: center;
@@ -661,7 +661,7 @@
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
             border-bottom-color: transparent;
-            background: linear-gradient(135deg, #EBF8FC 0%, #D6F1FA 100%);
+            background: linear-gradient(135deg, var(--sky-50) 0%, #D6F1FA 100%);
         }
 
         .lesson-group.open .arrow-icon {
@@ -674,9 +674,9 @@
             transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s ease;
             opacity: 0;
             background: var(--card-bg);
-            border-left: 1px solid #CBE7F9;
-            border-right: 1px solid #CBE7F9;
-            border-bottom: 1px solid #CBE7F9;
+            border-left: 1px solid var(--sky-100);
+            border-right: 1px solid var(--sky-100);
+            border-bottom: 1px solid var(--sky-100);
             border-bottom-left-radius: 16px;
             border-bottom-right-radius: 16px;
             position: relative;
@@ -709,7 +709,7 @@
             position: relative;
             width: 100%;
             aspect-ratio: 16 / 9;
-            background: #0F172A;
+            background: var(--sky-900);
             border-radius: 12px;
             overflow: hidden;
             border: 1px solid var(--border-color);
@@ -726,7 +726,7 @@
         .video-embed-box.locked {
             aspect-ratio: auto;
             min-height: 200px;
-            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            background: linear-gradient(135deg, var(--sky-900) 0%, var(--sky-900) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -767,7 +767,7 @@
         .paywall-desc {
             font-size: 0.75rem;
             font-weight: 600;
-            color: #CBD5E1;
+            color: var(--line);
             line-height: 1.45;
         }
 
@@ -818,7 +818,7 @@
         }
 
         .clip-quiz-box {
-            background: #F8FAFC;
+            background: var(--subtle);
             border: 1px dashed var(--kz-blue);
             border-radius: 14px;
             padding: 12px 14px;
@@ -857,7 +857,7 @@
         }
 
         .cq-btn {
-            background: #F8FAFC;
+            background: var(--subtle);
             border: 1px solid var(--border-color);
             border-radius: 9px;
             padding: 8px 11px;
@@ -881,9 +881,9 @@
         }
 
         .cq-btn.wrong {
-            background: #FEE2E2;
+            background: var(--err-bg);
             border-color: var(--red-accent);
-            color: #991B1B;
+            color: var(--err);
         }
 
         .cq-fb {
@@ -932,7 +932,7 @@
         }
 
         .modal-card {
-            background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+            background: linear-gradient(145deg, var(--sky-900) 0%, var(--sky-900) 100%);
             color: #FFFFFF;
             max-width: 460px;
             width: 100%;
@@ -979,12 +979,14 @@
             h1 { font-size: 1.15rem; }
         }
     </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body>
 
     <header>
         <div class="header-top-bar">
-            <a href="https://kazdoctors.com" class="back-btn" id="uiBackBtn">⬅️ На главную</a>
+            <a href="https://kazdoctors.com" class="back-btn" id="uiBackBtn">← На главную</a>
 
             <div class="lang-switch">
                 <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
@@ -1002,7 +1004,7 @@
         <!-- Трекер прохождения 8 видеонарезок вебинара -->
         <div class="progress-widget">
             <div class="pw-top-row">
-                <span id="uiProgLabel">📈 Прогресс разбора вебинара:</span>
+                <span id="uiProgLabel">Прогресс разбора вебинара:</span>
                 <span id="progressCountText" style="color:var(--kz-gold);">0 / 8 тем (0%)</span>
             </div>
             <div class="pw-bar-bg">
@@ -1016,7 +1018,7 @@
         <!-- ==================================================================
              1. ВЕРХНИЙ БЛОК: ОБЩИЙ ИНТЕРАКТИВНЫЙ КОНСПЕКТ И СЛОВАРИК (PRO / PREMIUM / VIP)
              ================================================================== -->
-        <div class="section-label" id="uiSec1Label">📖 База знаний и Словарик фраз</div>
+        <div class="section-label" id="uiSec1Label">База знаний и Словарик фраз</div>
 
         <div class="master-guide-card">
             <div class="mg-top-row">
@@ -1043,7 +1045,7 @@
             </div>
 
             <button type="button" class="open-guide-btn" onclick="handleMasterGuideClick()" id="uiOpenGuideBtn">
-                📖 ОТКРЫТЬ ИНТЕРАКТИВНЫЙ КОНСПЕКТ И СЛОВАРИК ⌄
+                ОТКРЫТЬ ИНТЕРАКТИВНЫЙ КОНСПЕКТ И СЛОВАРИК ⌄
             </button>
         </div>
 
@@ -1065,7 +1067,7 @@
         <!-- ==================================================================
              2. НИЖНИЙ БЛОК: ПЛЕЙЛИСТ ВИДЕОНАРЕЗОК ВЕБИНАРА С ВОПРОСАМИ
              ================================================================== -->
-        <div class="section-label" id="uiSec2Label">🎬 Плейлист видеонарезок вебинара (с практикой)</div>
+        <div class="section-label" id="uiSec2Label">Плейлист видеонарезок вебинара (с практикой)</div>
 
         <div class="playlist-container" id="playlistContainer"></div>
 
@@ -1081,21 +1083,14 @@
                 Полный конспект со схемами клинических докладов и озвученным словариком английских фраз доступен подписчикам тарифов «Про», «Премиум» и «ВИП».
             </p>
             <div class="paywall-actions" style="width:100%;">
-                <a href="https://kazdoctors.com/tarifs" class="paywall-btn tarifs" id="modalTarifsBtn">🌟 Перейти к тарифам</a>
-                <a href="https://wa.me/77081595038?text=Здравствуйте!%20Хочу%20открыть%20доступ%20к%20модулю%20Презентаций" target="_blank" class="paywall-btn contact" id="modalWaBtn">💬 WhatsApp</a>
+                <a href="https://kazdoctors.com/tarifs" class="paywall-btn tarifs" id="modalTarifsBtn">Перейти к тарифам</a>
+                <a href="https://wa.me/77081595038?text=Здравствуйте!%20Хочу%20открыть%20доступ%20к%20модулю%20Презентаций" target="_blank" class="paywall-btn contact" id="modalWaBtn">WhatsApp</a>
             </div>
-            <button type="button" onclick="closeGuidePaywall()" style="background:none; border:none; color:#94A3B8; font-size:0.76rem; font-weight:700; margin-top:4px; cursor:pointer;" id="modalCloseBtn">Закрыть окно ✕</button>
+            <button type="button" onclick="closeGuidePaywall()" style="background:none; border:none; color:var(--line-2); font-size:0.76rem; font-weight:700; margin-top:4px; cursor:pointer;" id="modalCloseBtn">Закрыть окно ✕</button>
         </div>
     </div>
 
-    <footer>
-        <a href="https://instagram.com/doctors.speak" target="_blank" class="instagram-link">
-            <span>📸 Instagram @doctors.speak</span>
-        </a>
-        <a href="https://kazdoctors.com" class="back-btn">
-            <span>⬅️ Go back</span>
-        </a>
-    </footer>
+    <div id="ds-footer"></div>
 
     <script>
         // =========================================================================
@@ -1126,7 +1121,7 @@
             standard: "STANDARD",
             pro: "PRO",
             premium: "PREMIUM",
-            vip: "VIP 👑"
+            vip: "VIP"
         };
 
         let currentUserTier = "none";
@@ -1211,7 +1206,7 @@
         // =========================================================================
         const MODULE_DATA = {
             ui: {
-                backBtn: { ru: "⬅️ На главную", kz: "⬅️ Басты бетке" },
+                backBtn: { ru: "← На главную", kz: "← Басты бетке" },
                 mainTitle: {
                     ru: "Как готовить презентации на медицинские конференции",
                     kz: "Медициналық конференцияларға презентацияны қалай дайындау керек?"
@@ -1221,12 +1216,12 @@
                     kz: "Слайдтар құрылымы • Ағылшынша фразалар • Шешендік өнер • Мысалдар мен Постерлер"
                 },
                 progLabel: {
-                    ru: "📈 Прогресс разбора вебинара:",
-                    kz: "📈 Вебинарды меңгеру прогресі:"
+                    ru: "Прогресс разбора вебинара:",
+                    kz: "Вебинарды меңгеру прогресі:"
                 },
                 sec1Label: {
-                    ru: "📖 База знаний и Словарик фраз (PRO / PREMIUM / VIP)",
-                    kz: "📖 Білім базасы және Фразалар сөздігі (PRO / PREMIUM / VIP)"
+                    ru: "База знаний и Словарик фраз (PRO / PREMIUM / VIP)",
+                    kz: "Білім базасы және Фразалар сөздігі (PRO / PREMIUM / VIP)"
                 },
                 guideTitle: {
                     ru: "Полный интерактивный конспект + Словарик докладчика",
@@ -1237,12 +1232,12 @@
                     kz: "Вебинардың толық конспектісі: слайд ережелері, клиникалық кейс пен зерттеу құрылымы, постерлер және дыбысталған ағылшын фразалары (🔊)."
                 },
                 openGuideBtn: {
-                    ru: "📖 ОТКРЫТЬ ИНТЕРАКТИВНЫЙ КОНСПЕКТ И СЛОВАРИК ⌄",
-                    kz: "📖 ИНТЕРАКТИВТІ КОНСПЕКТ ПЕН СӨЗДІКТІ АШУ ⌄"
+                    ru: "ОТКРЫТЬ ИНТЕРАКТИВНЫЙ КОНСПЕКТ И СЛОВАРИК ⌄",
+                    kz: "ИНТЕРАКТИВТІ КОНСПЕКТ ПЕН СӨЗДІКТІ АШУ ⌄"
                 },
                 closeGuideBtn: {
-                    ru: "🔼 СВЕРНУТЬ ИНТЕРАКТИВНЫЙ КОНСПЕКТ",
-                    kz: "🔼 ИНТЕРАКТИВТІ КОНСПЕКТІНІ ЖАБУ"
+                    ru: "СВЕРНУТЬ ИНТЕРАКТИВНЫЙ КОНСПЕКТ",
+                    kz: "ИНТЕРАКТИВТІ КОНСПЕКТІНІ ЖАБУ"
                 },
                 guideTabs: [
                     { ru: "1. Принципы и Постеры", kz: "1. Қағидалар мен Постер" },
@@ -1251,8 +1246,8 @@
                     { ru: "4. Словарик: Наука (🔊)", kz: "4. Сөздік: Зерттеу (🔊)" }
                 ],
                 sec2Label: {
-                    ru: "🎬 Плейлист видеонарезок вебинара (с вопросами для закрепления)",
-                    kz: "🎬 Вебинардың видео-үзінділер плейлисті (бекіту сұрақтарымен)"
+                    ru: "Плейлист видеонарезок вебинара (с вопросами для закрепления)",
+                    kz: "Вебинардың видео-үзінділер плейлисті (бекіту сұрақтарымен)"
                 }
             },
 
@@ -1260,7 +1255,7 @@
             guideTab0Html: {
                 ru: `
                     <div class="guide-box">
-                        <h3>🌟 Общие принципы — САМОЕ ВАЖНОЕ</h3>
+                        <h3>Общие принципы — САМОЕ ВАЖНОЕ</h3>
                         <ul>
                             <li><b>Говорите просто:</b> избегайте перегруженных слайдов. <b>Одна идея = один слайд.</b> Простой дизайн. Говорите легким английским, избегая сложных оборотов. <b>Приоритетнее понятность, а не имидж!</b></li>
                             <li><b>Визуализируйте:</b> схемы вместо сплошного текста, изображения вместо текстовых описаний, графики вместо сложных таблиц.</li>
@@ -1288,7 +1283,7 @@
                     </div>
 
                     <div class="guide-box gold">
-                        <h3>🖼️ Научные постеры (Scientific Posters) и Ораторское мастерство</h3>
+                        <h3>Научные постеры (Scientific Posters) и Ораторское мастерство</h3>
                         <ul>
                             <li><b>Постер — это НЕ «статья на стене»!</b> Это визуал, понятный за <b>30 секунд</b>: крупные заголовки, минимум текста, 1–2 главных графика в центре, много «воздуха» и <b>QR-код</b> на полную статью и контакты.</li>
                             <li><b>Ораторское мастерство — это навык, а не талант:</b> приветствуйте и улыбайтесь, говорите медленно и делайте паузы, смотрите в зал (не читайте!), меняйте интонацию, используйте лазерную указку осмысленно и репетируйте заранее по таймеру.</li>
@@ -1298,7 +1293,7 @@
                 `,
                 kz: `
                     <div class="guide-box">
-                        <h3>🌟 Жалпы қағидалар — ЕҢ МАҢЫЗДЫСЫ</h3>
+                        <h3>Жалпы қағидалар — ЕҢ МАҢЫЗДЫСЫ</h3>
                         <ul>
                             <li><b>Қарапайым сөйлеңіз:</b> тым көп мәтіні бар слайдтардан аулақ болыңыз. <b>Бір идея = бір слайд.</b> Қарапайым дизайн. Жеңіл ағылшын тілімен сөйлеңіз. <b>Имиджден гөрі түсініктілік маңыздырақ!</b></li>
                             <li><b>Визуализация жасаңыз:</b> мәтін орнына сызбалар (алгоритмдер), сипаттама орнына суреттер, кестелер орнына графиктер қолданыңыз.</li>
@@ -1308,7 +1303,7 @@
                     </div>
 
                     <div class="guide-box red">
-                        <h3>🚫 Нашар слайдтардың 5 басты қатесі ("We don't do that here")</h3>
+                        <h3>Нашар слайдтардың 5 басты қатесі ("We don't do that here")</h3>
                         <ul>
                             <li><b>1. Тым көп ақпарат пен мәтін</b> (науқастың бүкіл ауру тарихы мен баяндамашының әр сөзі слайдқа жазылған).</li>
                             <li><b>2. Ұсақ қаріп (шрифт)</b> және қалың/курсив/астын сызуды шектен тыс қолдану.</li>
@@ -1326,7 +1321,7 @@
                     </div>
 
                     <div class="guide-box gold">
-                        <h3>🖼️ Ғылыми постерлер (Scientific Posters) және Шешендік шеберлік</h3>
+                        <h3>Ғылыми постерлер (Scientific Posters) және Шешендік шеберлік</h3>
                         <ul>
                             <li><b>Постер — «қабырғадағы мақала» ЕМЕС!</b> Ол <b>30 секундта</b> түсінікті болатын визуал: ірі тақырыптар, аз мәтін, ортада 1–2 негізгі график, бос кеңістік («ауа») және <b>QR-код</b>.</li>
                             <li><b>Шешендік өнер — талант емес, жаттығатын машық:</b> амандасып күлімсіреңіз, баяу сөйлеп пауза жасаңыз, аудиторияға қараңыз (оқымаңыз!), указканы орынды қолданыңыз және тайминг бойынша алдын ала дайындалыңыз.</li>
@@ -1340,7 +1335,7 @@
             guideTab1Html: {
                 ru: `
                     <div class="guide-box">
-                        <h3>🩺 Структура презентации КЛИНИЧЕСКОГО СЛУЧАЯ (7 шагов)</h3>
+                        <h3>Структура презентации КЛИНИЧЕСКОГО СЛУЧАЯ (7 шагов)</h3>
                         <ul>
                             <li><b>1. TITLE:</b> коротко и по сути (<i>Bedaquiline in TB: a clinical case</i>).</li>
                             <li><b>2. BACKGROUND:</b> почему эта тема и этот случай важны? (<i>TB is a big problem -> new approach -> tried on our patient</i>).</li>
@@ -1353,7 +1348,7 @@
                     </div>
 
                     <div class="guide-box gold">
-                        <h3>🔬 Структура презентации НАУЧНОГО ИССЛЕДОВАНИЯ (6 шагов)</h3>
+                        <h3>Структура презентации НАУЧНОГО ИССЛЕДОВАНИЯ (6 шагов)</h3>
                         <ul>
                             <li><b>1. TITLE:</b> коротко и по сути (<i>Adherence to Treatment in TB</i>).</li>
                             <li><b>2. INTRODUCTION & AIM:</b> почему тема важна и что до сих пор неизвестно? Какова цель? (<i>People don't take drugs -> we wanted to know why</i>).</li>
@@ -1366,7 +1361,7 @@
                 `,
                 kz: `
                     <div class="guide-box">
-                        <h3>🩺 КЛИНИКАЛЫҚ ЖАҒДАЙ (Clinical Case) презентациясының құрылымы (7 қадам)</h3>
+                        <h3>КЛИНИКАЛЫҚ ЖАҒДАЙ (Clinical Case) презентациясының құрылымы (7 қадам)</h3>
                         <ul>
                             <li><b>1. TITLE:</b> қысқа әрі нақты (<i>Bedaquiline in TB: a clinical case</i>).</li>
                             <li><b>2. BACKGROUND:</b> бұл тақырып пен жағдай неліктен маңызды? (<i>TB is a big problem -> new approach -> tried on our patient</i>).</li>
@@ -1379,7 +1374,7 @@
                     </div>
 
                     <div class="guide-box gold">
-                        <h3>🔬 ҒЫЛЫМИ ЗЕРТТЕУ (Scientific Research) презентациясының құрылымы (6 қадам)</h3>
+                        <h3>ҒЫЛЫМИ ЗЕРТТЕУ (Scientific Research) презентациясының құрылымы (6 қадам)</h3>
                         <ul>
                             <li><b>1. TITLE:</b> қысқа әрі нақты (<i>Adherence to Treatment in TB</i>).</li>
                             <li><b>2. INTRODUCTION & AIM:</b> тақырыптың өзектілігі, не белгісіз және зерттеу мақсаты (<i>People don't take drugs -> we wanted to know why</i>).</li>
@@ -1489,8 +1484,8 @@
                         kz: "Қарапайымдылық, визуализация, құрылым және аудиторияны құрметтеу (3-слайд)"
                     },
                     summary: {
-                        ru: "💡 Главное правило: одна идея — один слайд. Говорите легким медицинским английским: для аудитории приоритетнее понятность, а не сложный имидж докладчика.",
-                        kz: "💡 Басты ереже: бір идея — бір слайд. Жеңіл медициналық ағылшын тілімен сөйлеңіз: имиджден гөрі тыңдаушының сізді түсінгені маңыздырақ."
+                        ru: "Главное правило: одна идея — один слайд. Говорите легким медицинским английским: для аудитории приоритетнее понятность, а не сложный имидж докладчика.",
+                        kz: "Басты ереже: бір идея — бір слайд. Жеңіл медициналық ағылшын тілімен сөйлеңіз: имиджден гөрі тыңдаушының сізді түсінгені маңыздырақ."
                     },
                     quiz: [
                         {
@@ -1538,8 +1533,8 @@
                         kz: "Неліктен адамдар бір уақытта оқып әрі тыңдай алмайды? 3 секунд ережесі (4–6 слайдтар)"
                     },
                     summary: {
-                        ru: "💡 Хороший слайд считывается за 3 секунды: минимум слов, крупный шрифт, алгоритм или наглядный график динамики вместо буллитов.",
-                        kz: "💡 Жақсы слайд 3 секундта оқылады: аз сөз, ірі шрифт, ұзын тізімдердің орнына алгоритм немесе динамика графигі."
+                        ru: "Хороший слайд считывается за 3 секунды: минимум слов, крупный шрифт, алгоритм или наглядный график динамики вместо буллитов.",
+                        kz: "Жақсы слайд 3 секундта оқылады: аз сөз, ірі шрифт, ұзын тізімдердің орнына алгоритм немесе динамика графигі."
                     },
                     quiz: [
                         {
@@ -1588,7 +1583,7 @@
                     },
                     summary: {
                         ru: "💡 7 шагов Case Report: 1) Title -> 2) Background -> 3) Quick Demographic -> 4) Clinical Info -> 5) Development -> 6) Discussion -> 7) Take Home Messages.",
-                        kz: "💡 Case Report-тың 7 қадамы: 1) Title -> 2) Background -> 3) Quick Demographic -> 4) Clinical Info -> 5) Development -> 6) Discussion -> 7) Take Home Messages."
+                        kz: "Case Report-тың 7 қадамы: 1) Title -> 2) Background -> 3) Quick Demographic -> 4) Clinical Info -> 5) Development -> 6) Discussion -> 7) Take Home Messages."
                     },
                     quiz: [
                         {
@@ -1637,7 +1632,7 @@
                     },
                     summary: {
                         ru: "💡 6 шагов научного доклада (IMRaD): 1) Title -> 2) Introduction & Aim -> 3) Methods -> 4) Results -> 5) Discussion -> 6) Conclusion & Lessons.",
-                        kz: "💡 Ғылыми баяндаманың 6 қадамы: 1) Title -> 2) Introduction & Aim -> 3) Methods -> 4) Results -> 5) Discussion -> 6) Conclusion & Lessons."
+                        kz: "Ғылыми баяндаманың 6 қадамы: 1) Title -> 2) Introduction & Aim -> 3) Methods -> 4) Results -> 5) Discussion -> 6) Conclusion & Lessons."
                     },
                     quiz: [
                         {
@@ -1685,8 +1680,8 @@
                         kz: "Неліктен постер «қабырғадағы мақала» емес және ұтымды дизайнды қалай жасауға болады (11-слайд)"
                     },
                     summary: {
-                        ru: "💡 Постер должен считываться с расстояния за 30 секунд: крупные заголовки, 1–2 главных графика в центре, много «воздуха» и QR-код.",
-                        kz: "💡 Постер 30 секунд ішінде алыстан оқылуы керек: ірі тақырыптар, ортада 1–2 негізгі график, бос кеңістік («ауа») және QR-код."
+                        ru: "Постер должен считываться с расстояния за 30 секунд: крупные заголовки, 1–2 главных графика в центре, много «воздуха» и QR-код.",
+                        kz: "Постер 30 секунд ішінде алыстан оқылуы керек: ірі тақырыптар, ортада 1–2 негізгі график, бос кеңістік («ауа») және QR-код."
                     },
                     quiz: [
                         {
@@ -1719,8 +1714,8 @@
                         kz: "Сахнада өзін ұстау, дауыс ырғағы, указка және тайминг (12–13 слайдтар)"
                     },
                     summary: {
-                        ru: "💡 Ораторское мастерство — это навык, а не врожденный талант. Ваша цель — не рассказать всё, а сделать так, чтобы вас поняли!",
-                        kz: "💡 Шешендік өнер — туа біткен талант емес, жаттығатын дағды. Мақсатыңыз — бәрін айтып шығу емес, тыңдаушыға түсінікті етіп жеткізу!"
+                        ru: "Ораторское мастерство — это навык, а не врожденный талант. Ваша цель — не рассказать всё, а сделать так, чтобы вас поняли!",
+                        kz: "Шешендік өнер — туа біткен талант емес, жаттығатын дағды. Мақсатыңыз — бәрін айтып шығу емес, тыңдаушыға түсінікті етіп жеткізу!"
                     },
                     quiz: [
                         {
@@ -1753,8 +1748,8 @@
                         kz: "Амандасудан бастап сұрақтарға жауап беруге дейінгі дайын ағылшынша чанктар (14–19 слайдтар)"
                     },
                     summary: {
-                        ru: "💡 Используйте готовые академические клише: 'He presented with...', 'Based on these findings, a diagnosis of ... was established', 'This finding is consistent with previous reports'.",
-                        kz: "💡 Дайын академиялық клишелерді қолданыңыз: 'He presented with...', 'Based on these findings, a diagnosis of ... was established', 'This finding is consistent with previous reports'."
+                        ru: "Используйте готовые академические клише: 'He presented with...', 'Based on these findings, a diagnosis of ... was established', 'This finding is consistent with previous reports'.",
+                        kz: "Дайын академиялық клишелерді қолданыңыз: 'He presented with...', 'Based on these findings, a diagnosis of ... was established', 'This finding is consistent with previous reports'."
                     },
                     quiz: [
                         {
@@ -1802,8 +1797,8 @@
                         kz: "Зерттеу мақсатын, іріктемені, нәтижелер мен шектеулерді ағылшынша баяндау (20–25 слайдтар)"
                     },
                     summary: {
-                        ru: "💡 Ключевые фразы для науки: 'The aim of this study was to evaluate...', 'A total of 100 patients were included', 'This study has several limitations. It is based on self-reported data, which may introduce bias'.",
-                        kz: "💡 Ғылыми баяндамаға арналған негізгі фразалар: 'The aim of this study was to evaluate...', 'A total of 100 patients were included', 'This study has several limitations'."
+                        ru: "Ключевые фразы для науки: 'The aim of this study was to evaluate...', 'A total of 100 patients were included', 'This study has several limitations. It is based on self-reported data, which may introduce bias'.",
+                        kz: "Ғылыми баяндамаға арналған негізгі фразалар: 'The aim of this study was to evaluate...', 'A total of 100 patients were included', 'This study has several limitations'."
                     },
                     quiz: [
                         {
@@ -1958,7 +1953,7 @@
                                 <p class="paywall-desc">${lockDesc}</p>
                                 <div class="paywall-actions">
                                     <a href="https://kazdoctors.com/tarifs" class="paywall-btn tarifs">🌟 ${isKz ? "Тарифтер (Премиум / ВИП)" : "Тарифы (Премиум / ВИП)"}</a>
-                                    <a href="https://wa.me/77081595038?text=Здравствуйте!%20Хочу%20подключить%20тариф%20Премиум%20для%20просмотра%20видео" target="_blank" class="paywall-btn contact">💬 WhatsApp</a>
+                                    <a href="https://wa.me/77081595038?text=Здравствуйте!%20Хочу%20подключить%20тариф%20Премиум%20для%20просмотра%20видео" target="_blank" class="paywall-btn contact">WhatsApp</a>
                                 </div>
                             </div>
                         </div>

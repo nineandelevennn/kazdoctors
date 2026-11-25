@@ -89,7 +89,7 @@
       padding: 6px 11px;
       border-radius: 8px;
       border: 1.5px solid var(--border-color);
-      background: #F8FAFC;
+      background: var(--subtle);
       transition: all 0.15s ease;
       white-space: nowrap;
     }
@@ -102,7 +102,7 @@
 
     .nav-btn.textbook-btn {
       background: var(--kz-blue-soft);
-      border-color: #7DD3FC;
+      border-color: var(--sky-100);
       color: var(--kz-blue-dark);
     }
 
@@ -124,7 +124,7 @@
       font-weight: 800;
       padding: 5px 9px;
       border-radius: 7px;
-      background: #F1F5F9;
+      background: var(--subtle);
       color: var(--text-secondary);
       border: 1px solid var(--border-color);
       text-transform: uppercase;
@@ -140,7 +140,7 @@
 
     .lang-switch {
       display: inline-flex;
-      background: #F1F5F9;
+      background: var(--subtle);
       border: 1.5px solid var(--border-color);
       border-radius: 8px;
       padding: 2px;
@@ -224,7 +224,7 @@
     }
 
     summary.alc-summary:hover {
-      background: #F8FAFC;
+      background: var(--subtle);
     }
 
     summary.alc-summary::-webkit-details-marker {
@@ -232,7 +232,7 @@
     }
 
     details.audio-lesson-card[open] > summary.alc-summary {
-      background: #F8FAFC;
+      background: var(--subtle);
       border-bottom: 1.5px solid var(--border-color);
     }
 
@@ -248,7 +248,7 @@
       height: 34px;
       border-radius: 9px;
       background: var(--kz-blue-soft);
-      border: 1.5px solid #BAE6FD;
+      border: 1.5px solid var(--sky-100);
       color: var(--med-navy);
       font-size: 0.78rem;
       font-weight: 800;
@@ -300,7 +300,7 @@
 
     .status-pill.locked {
       background: var(--kz-gold-soft);
-      color: #92400E;
+      color: var(--sun-ink);
       border-color: #FDE68A;
     }
 
@@ -308,7 +308,7 @@
       width: 26px;
       height: 26px;
       border-radius: 7px;
-      background: #F8FAFC;
+      background: var(--subtle);
       border: 1px solid var(--border-color);
       display: flex;
       align-items: center;
@@ -350,7 +350,7 @@
 
     .track-tabs {
       display: inline-flex;
-      background: #F1F5F9;
+      background: var(--subtle);
       border: 1.5px solid var(--border-color);
       border-radius: 9px;
       padding: 3px;
@@ -384,7 +384,7 @@
       padding: 1px 6px;
       border-radius: 4px;
       background: var(--kz-gold-soft);
-      color: #92400E;
+      color: var(--sun-ink);
       border: 1px solid #FDE68A;
     }
 
@@ -398,7 +398,7 @@
       position: relative;
       width: 100%;
       aspect-ratio: 16 / 9;
-      background: #0F172A;
+      background: var(--sky-900);
       border-radius: 10px;
       overflow: hidden;
       border: 1.5px solid var(--border-color);
@@ -413,7 +413,7 @@
 
     /* Заглушка для казахской дорожки «Әзірленуде» */
     .dev-placeholder-box {
-      background: #F8FAFC;
+      background: var(--subtle);
       border: 1.5px dashed var(--border-color);
       border-radius: 10px;
       padding: 22px 16px;
@@ -428,7 +428,7 @@
       font-size: 0.68rem;
       font-weight: 800;
       text-transform: uppercase;
-      color: #92400E;
+      color: var(--sun-ink);
       background: var(--kz-gold-soft);
       border: 1px solid #FDE68A;
       padding: 3px 10px;
@@ -461,7 +461,7 @@
 
     /* Заглушка Paywall для гостей и Free/Standard */
     .paywall-box {
-      background: #F8FAFC;
+      background: var(--subtle);
       border: 1.5px solid var(--border-color);
       border-radius: 10px;
       padding: 18px 16px;
@@ -476,7 +476,7 @@
       font-size: 0.68rem;
       font-weight: 800;
       text-transform: uppercase;
-      color: #92400E;
+      color: var(--sun-ink);
       background: var(--kz-gold-soft);
       border: 1px solid #FDE68A;
       padding: 3px 9px;
@@ -555,7 +555,7 @@
 
     .bcc-text p {
       font-size: 0.76rem;
-      color: #BAE6FD;
+      color: var(--sky-100);
       margin-top: 2px;
     }
 
@@ -574,6 +574,8 @@
     body.lang-ru [lang-val="ru"] { display: inline !important; }
     body.lang-kz [lang-val="kz"] { display: inline !important; }
   </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body class="lang-ru">
 
@@ -582,12 +584,12 @@
       <div class="top-bar">
         <div class="nav-actions">
           <a href="https://kazdoctors.com/" class="nav-btn">
-            <span lang-val="ru">⬅ На главную</span>
-            <span lang-val="kz">⬅ Басты бетке</span>
+            <span lang-val="ru">← На главную</span>
+            <span lang-val="kz">← Басты бетке</span>
           </a>
           <a href="https://kazdoctors.com/presentations/" class="nav-btn textbook-btn">
-            <span lang-val="ru">📘 К учебнику</span>
-            <span lang-val="kz">📘 Оқулыққа</span>
+            <span lang-val="ru">К учебнику</span>
+            <span lang-val="kz">Оқулыққа</span>
           </a>
         </div>
 
@@ -755,7 +757,7 @@
       standard: "STANDARD",
       pro: "PRO",
       premium: "PREMIUM",
-      vip: "VIP 👑"
+      vip: "VIP"
     };
 
     let currentLang = localStorage.getItem('selected_lang') || 'ru';
@@ -816,7 +818,7 @@
           if (trackLang === 'kz' && !hasKzVideo) {
             mediaContentHtml = `
               <div class="dev-placeholder-box">
-                <span class="dev-badge">⏳ Әзірленуде</span>
+                <span class="dev-badge">Әзірленуде</span>
                 <div class="dev-title">
                   ${isKz ? "Бұл сабақтың қазақша нұсқасы әзірленуде" : "Казахская версия этого аудиоурока — әзірленуде"}
                 </div>

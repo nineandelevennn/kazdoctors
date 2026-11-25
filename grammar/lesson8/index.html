@@ -340,20 +340,20 @@
     }
 
     .grammar-table tr:nth-child(even) td {
-      background: #F8FAFC;
+      background: var(--subtle);
     }
 
     /* Интерактивный разбор статьи UpToDate (Gastric Cancer — Diagnosis) */
     .uptodate-box {
       background: #FFFFFF;
-      border: 2px solid #CBD5E1;
+      border: 2px solid var(--line);
       border-radius: 14px;
       overflow: hidden;
       margin-top: 10px;
     }
 
     .uptodate-header {
-      background: #1E293B;
+      background: var(--sky-900);
       color: #FFFFFF;
       padding: 10px 14px;
       font-size: 0.78rem;
@@ -381,15 +381,15 @@
       transition: all 0.15s ease;
     }
 
-    .hl-btn.there-type { background: #BAE6FD; color: #0369A1; }
-    .hl-btn.passive-type { background: #FDE68A; color: #92400E; }
+    .hl-btn.there-type { background: var(--sky-100); color: var(--sky-900); }
+    .hl-btn.passive-type { background: #FDE68A; color: var(--sun-ink); }
     .hl-btn.reset { background: rgba(255,255,255,0.2); color: #FFFFFF; }
 
     .uptodate-body {
       padding: 14px;
       font-size: 0.84rem;
       line-height: 1.68;
-      color: #334155;
+      color: var(--ink-2);
     }
 
     .t-be, .t-pas {
@@ -399,22 +399,22 @@
     }
 
     .uptodate-body.show-there .t-be {
-      background: #BAE6FD;
-      color: #0369A1;
+      background: var(--sky-100);
+      color: var(--sky-900);
       font-weight: 800;
-      border-bottom: 2px solid #0284C7;
+      border-bottom: 2px solid var(--sky-700);
     }
 
     .uptodate-body.show-passive .t-pas {
       background: #FDE68A;
-      color: #92400E;
+      color: var(--sun-ink);
       font-weight: 800;
-      border-bottom: 2px solid #D97706;
+      border-bottom: 2px solid var(--sun-ink);
     }
 
     /* Быстрые микро-упражнения внутри теории (Quick Check) */
     .quick-check {
-      background: #F8FAFC;
+      background: var(--subtle);
       border: 1px dashed var(--kz-blue);
       border-radius: 14px;
       padding: 14px;
@@ -577,13 +577,15 @@
       }
     }
   </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body>
 
   <!-- ШАПКА УРОКА -->
   <header>
     <div class="header-top">
-      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅ К списку уроков</a>
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">← К списку уроков</a>
       <div class="header-right-controls">
         <div class="lang-switch">
           <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
@@ -619,7 +621,7 @@
       <!-- ВКЛАДКА 3: СЛОВАРЬ С ПРИМЕРАМИ -->
       <section class="tab-section" id="tab2">
         <div class="card-block">
-          <h2 id="uiVocabTitle">💊 Клинический словарь урока (14 терминов)</h2>
+          <h2 id="uiVocabTitle">Клинический словарь урока (14 терминов)</h2>
           <p id="uiVocabDesc">Нажмите 🔊, чтобы прослушать произношение. Все примеры показывают реальное использование конструкции There + BE в медицине.</p>
           <div class="vocab-grid" id="vocabGrid"></div>
         </div>
@@ -629,18 +631,18 @@
       <!-- ВКЛАДКА 4: ПРАКТИКУМ (EXERCISE 1 & 2 ИЗ PDF) -->
       <section class="tab-section" id="tab3">
         <div class="card-block gold">
-          <h2 id="uiEx1Title">✍️ Упражнение 1: Выберите правильную грамматическую форму</h2>
+          <h2 id="uiEx1Title">Упражнение 1: Выберите правильную грамматическую форму</h2>
           <p id="uiEx1Desc">Обращайте внимание на единственное/множественное число и форму глагола BE после модальных глаголов:</p>
           <div id="ex1Container" style="display:flex; flex-direction:column; gap:10px;"></div>
         </div>
 
         <div class="card-block">
-          <h2 id="uiEx2Title">🩺 Упражнение 2: Дополните предложения конструкцией There + BE</h2>
+          <h2 id="uiEx2Title">Упражнение 2: Дополните предложения конструкцией There + BE</h2>
           <p id="uiEx2Desc">Подберите нужное время или модальную вариацию (was / is / were / will be / could have been):</p>
           <div id="ex2Container" style="display:flex; flex-direction:column; gap:10px;"></div>
         </div>
 
-        <a href="https://kazdoctors.com/grammar/thereis/" class="action-btn" id="uiGoTrainerBtn">🎯 Запустить игровой тренажер по Уроку 8 ➔</a>
+        <a href="https://kazdoctors.com/grammar/thereis/" class="action-btn" id="uiGoTrainerBtn">Запустить игровой тренажер по Уроку 8 ➔</a>
       </section>
     </main>
   </div>
@@ -651,7 +653,7 @@
     // =========================================================================
     const LESSON8_DATA = {
       ui: {
-        backBtn: { ru: "⬅ К списку уроков", kz: "⬅ Сабақтар тізіміне" },
+        backBtn: { ru: "← К списку уроков", kz: "← Сабақтар тізіміне" },
         title: {
           ru: "There is / There are (Наличие симптомов и очагов)",
           kz: "There is / There are (Симптомдар мен ошақтардың болуы)"
@@ -667,8 +669,8 @@
           { ru: "4. Упражнения", kz: "4. Жаттығулар" }
         ],
         vocabTitle: {
-          ru: "💊 Клинический словарь урока (14 терминов)",
-          kz: "💊 Сабақтың клиникалық сөздігі (14 термин)"
+          ru: "Клинический словарь урока (14 терминов)",
+          kz: "Сабақтың клиникалық сөздігі (14 термин)"
         },
         vocabDesc: {
           ru: "Нажмите 🔊 для прослушивания произношения. Все примеры показывают работу конструкции There + BE в клинических ситуациях.",
@@ -679,7 +681,7 @@
           kz: "4-қадамға өту: Жылдам жаттығулар ➔"
         },
         ex1Title: {
-          ru: "✍️ Упражнение 1: Выберите правильную форму There + BE",
+          ru: "Упражнение 1: Выберите правильную форму There + BE",
           kz: "✍️ 1-жаттығу: There + BE дұрыс формасын таңдаңыз"
         },
         ex1Desc: {
@@ -687,7 +689,7 @@
           kz: "Зат есімнің жекеше/көпше түріне және модальді етістіктен кейінгі BE формасына мұқият болыңыз:"
         },
         ex2Title: {
-          ru: "🩺 Упражнение 2: Вставьте подходящую вариацию There is / There are",
+          ru: "Упражнение 2: Вставьте подходящую вариацию There is / There are",
           kz: "🩺 2-жаттығу: Тиісті There is / There are вариациясын қойыңыз"
         },
         ex2Desc: {
@@ -695,7 +697,7 @@
           kz: "Контекст бойынша шақты немесе модальділікті анықтаңыз (Yesterday / In the next visit / In rare cases):"
         },
         goTrainerBtn: {
-          ru: "🎯 Перейти к основному тренажеру Урока 8 ➔",
+          ru: "Перейти к основному тренажеру Урока 8 ➔",
           kz: "🎯 8-сабақтың негізгі тренажеріне өту ➔"
         }
       },
@@ -704,13 +706,13 @@
       tab0Html: {
         ru: `
           <div class="card-block">
-            <h2>🏥 Зачем врачу конструкция THERE IS / THERE ARE?</h2>
+            <h2>Зачем врачу конструкция THERE IS / THERE ARE?</h2>
             <p>Когда нам нужно сказать, что где-то <b>есть (имеется, присутствует)</b> или <b>отсутствует</b> симптом, отек, показание к пункции или пациенты в палате, в русском и казахском языках мы часто начинаем с места (<i>«В палате 20 пациентов», «Палатада 20 науқас бар»</i>). В английском языке такие предложения начинаются со связки <b>THERE + глагол BE</b>:</p>
 
             <div class="comparison-grid">
               <div class="comp-box singular">
                 <div class="comp-title">
-                  <span>1️⃣ THERE IS + Ед. ч. / Неисчисл.</span>
+                  <span>1. THERE IS + Ед. ч. / Неисчисл.</span>
                   <span style="font-size:0.72rem; color:var(--kz-blue-dark);">THERE IS A</span>
                 </div>
                 <span class="comp-formula">There is + 1 объект / симптом</span>
@@ -723,7 +725,7 @@
 
               <div class="comp-box plural">
                 <div class="comp-title">
-                  <span>🔢 THERE ARE + Множ. число</span>
+                  <span>THERE ARE + Множ. число</span>
                   <span style="font-size:0.72rem; color:var(--kz-gold-dark);">THERE ARE As, Bs</span>
                 </div>
                 <span class="comp-formula">There are + объекты во мн. ч.</span>
@@ -737,7 +739,7 @@
           </div>
 
           <div class="card-block gold">
-            <h2>💡 Два главных секрета, на которых ловят в медицинских тестах</h2>
+            <h2>Два главных секрета, на которых ловят в медицинских тестах</h2>
             
             <div class="clinical-quote" style="border-left-color: var(--kz-blue);">
               <b>Секрет 1. Правило «первого слова» при перечислении:</b><br>
@@ -754,7 +756,7 @@
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Быстрая проверка</span>
+              <span class="qc-badge">Быстрая проверка</span>
               <div class="qc-question">Выберите правильный вариант: «После инъекции наблюдается зуд и воспаление» — "___ itching and inflammation after the injection."</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Верно! Itching (зуд) и inflammation (воспаление) — неисчисляемые медицинские термины, поэтому согласуем через единственное число: There is.')">There is</button>
@@ -768,13 +770,13 @@
         `,
         kz: `
           <div class="card-block">
-            <h2>🏥 Дәрігерге THERE IS / THERE ARE құрылымы не үшін қажет?</h2>
+            <h2>Дәрігерге THERE IS / THERE ARE құрылымы не үшін қажет?</h2>
             <p>Бір жерде симптомның, ісінудің, пункцияға көрсеткіштің немесе палатада науқастардың <b>бар (немесе жоқ)</b> екенін айтқанда, қазақ тілінде біз сөйлемді орыннан бастап, соңына <b>«бар / жоқ»</b> сөзін қоямыз (<i>«Палатада 20 науқас бар», «Инфекция белгілері жоқ»</i>). Ал ағылшын тілінде мұндай сөйлемдер әрқашан <b>THERE + BE етістігімен</b> басталады:</p>
 
             <div class="comparison-grid">
               <div class="comp-box singular">
                 <div class="comp-title">
-                  <span>1️⃣ THERE IS + Жекеше / Саналмайтын</span>
+                  <span>1. THERE IS + Жекеше / Саналмайтын</span>
                   <span style="font-size:0.72rem; color:var(--kz-blue-dark);">THERE IS A</span>
                 </div>
                 <span class="comp-formula">There is + 1 нысан / симптом</span>
@@ -787,7 +789,7 @@
 
               <div class="comp-box plural">
                 <div class="comp-title">
-                  <span>🔢 THERE ARE + Көпше түр</span>
+                  <span>THERE ARE + Көпше түр</span>
                   <span style="font-size:0.72rem; color:var(--kz-gold-dark);">THERE ARE As, Bs</span>
                 </div>
                 <span class="comp-formula">There are + көпше түрдегі заттар</span>
@@ -801,7 +803,7 @@
           </div>
 
           <div class="card-block gold">
-            <h2>💡 Медициналық тесттерде жиі кездесетін 2 маңызды құпия</h2>
+            <h2>Медициналық тесттерде жиі кездесетін 2 маңызды құпия</h2>
             
             <div class="clinical-quote" style="border-left-color: var(--kz-blue);">
               <b>1-құпия. Тізбектелген сөздердегі «бірінші сөз» ережесі:</b><br>
@@ -818,7 +820,7 @@
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Жылдам тексеру</span>
+              <span class="qc-badge">Жылдам тексеру</span>
               <div class="qc-question">Дұрыс нұсқаны таңдаңыз: «Инъекциядан кейін қышу мен қабыну байқалады» — "___ itching and inflammation after the injection."</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Дұрыс! Itching (қышу) және inflammation (қабыну) — саналмайтын медициналық терминдер, сондықтан жекеше түрдегі There is қолданылады.')">There is</button>
@@ -836,7 +838,7 @@
       tab1Html: {
         ru: `
           <div class="card-block gold">
-            <h2>🔄 Глагол BE в любой форме: от Past Simple до Модальных глаголов</h2>
+            <h2>Глагол BE в любой форме: от Past Simple до Модальных глаголов</h2>
             <p>Главное правило этого урока: <b>необязательно, чтобы после There стоял именно "is" или "are"</b>! На месте глагола <b>BE</b> может стоять абсолютно любое время или модальная конструкция из прошлых уроков:</p>
 
             <table class="grammar-table">
@@ -877,7 +879,7 @@
             </table>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Ловушка с модальными глаголами</span>
+              <span class="qc-badge">Ловушка с модальными глаголами</span>
               <div class="qc-question">Как правильно сказать: «Во время приступа, возможно, была потеря зрения» (предположение о прошлом)?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Отлично! После любого модального глагола (might / could / must) для прошедшего времени всегда идет неизменяемая связка have been -> There might have been.')">There might have been a loss of vision.</button>
@@ -888,12 +890,12 @@
           </div>
 
           <div class="card-block">
-            <h2>🔬 Практика чтения UpToDate: Gastric Cancer — Diagnosis</h2>
+            <h2>Практика чтения UpToDate: Gastric Cancer — Diagnosis</h2>
             <p>Прочитайте реальный клинический фрагмент из <b>UpToDate</b> о диагностике рака желудка и пластического линита (<i>linitis plastica</i>). Нажимайте на кнопки подсветки, чтобы увидеть, как в одном тексте работают конструкции <b>There + Modal + BE</b> (Урок 8) и <b>Modal / Passive Voice</b> (Уроки 5–6):</p>
 
             <div class="uptodate-box">
               <div class="uptodate-header">
-                <span>📖 UpToDate: Gastric Cancer — When to suspect the diagnosis</span>
+                <span>UpToDate: Gastric Cancer — When to suspect the diagnosis</span>
                 <div class="uptodate-controls">
                   <button class="hl-btn there-type" onclick="toggleUptodateHighlight('there')">Конструкции THERE + BE (Урок 8)</button>
                   <button class="hl-btn passive-type" onclick="toggleUptodateHighlight('passive')">Passive & Modals (Уроки 5–6)</button>
@@ -913,7 +915,7 @@
         `,
         kz: `
           <div class="card-block gold">
-            <h2>🔄 BE етістігінің кез келген формасы: Past Simple-дан Модальді етістіктерге дейін</h2>
+            <h2>BE етістігінің кез келген формасы: Past Simple-дан Модальді етістіктерге дейін</h2>
             <p>Осы сабақтың басты ережесі: <b>There сөзінен кейін тек "is" немесе "are" тұруы міндетті емес</b>! <b>BE</b> етістігінің орнында өткен сабақтардағы кез келген шақ немесе модальді құрылым тұра алады:</p>
 
             <table class="grammar-table">
@@ -954,7 +956,7 @@
             </table>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Модальді етістіктер тұзағы</span>
+              <span class="qc-badge">Модальді етістіктер тұзағы</span>
               <div class="qc-question">«Ұстама кезінде көру қабілетінің жоғалуы болған болуы мүмкін» (өткен шаққа болжам) деп қалай дұрыс айтамыз?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Тамаша! Кез келген модальді етістіктен кейін (might / could / must) өткен шақты білдіру үшін өзгермейтін have been тіркесі келеді -> There might have been.')">There might have been a loss of vision.</button>
@@ -965,12 +967,12 @@
           </div>
 
           <div class="card-block">
-            <h2>🔬 UpToDate мақаласын талдау: Gastric Cancer — Diagnosis</h2>
+            <h2>UpToDate мақаласын талдау: Gastric Cancer — Diagnosis</h2>
             <p>Асқазан обыры мен пластикалық линиттің (<i>linitis plastica</i>) диагностикасы туралы <b>UpToDate</b> клиникалық үзіндісін оқыңыз. Мәтіндегі <b>There + Modal + BE</b> (8-сабақ) және <b>Modal / Passive Voice</b> (5–6 сабақтар) құрылымдарын көру үшін батырмаларды басыңыз:</p>
 
             <div class="uptodate-box">
               <div class="uptodate-header">
-                <span>📖 UpToDate: Gastric Cancer — When to suspect the diagnosis</span>
+                <span>UpToDate: Gastric Cancer — When to suspect the diagnosis</span>
                 <div class="uptodate-controls">
                   <button class="hl-btn there-type" onclick="toggleUptodateHighlight('there')">THERE + BE құрылымдары (8-сабақ)</button>
                   <button class="hl-btn passive-type" onclick="toggleUptodateHighlight('passive')">Passive & Modals (5–6 сабақтар)</button>

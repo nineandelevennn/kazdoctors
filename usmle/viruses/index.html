@@ -48,22 +48,24 @@
         
         /* Highlight styles for comparison table */
         .diff-row {
-            background-color: #EBF8FC; /* Light kz-blue tint for differences */
+            background-color: var(--sky-50); /* Light kz-blue tint for differences */
         }
 
         .target-asked-row {
             background-color: #FFF8E1 !important; /* Gold/yellow highlight for the asked question */
-            border-left: 4px solid #FFC72C;
+            border-left: 4px solid var(--sun-500);
             font-weight: 600;
         }
     </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body class="text-[#1E293B] min-h-screen flex flex-col justify-between bg-[#F2F5F8]">
 
     <!-- HEADER (INDEX-58 STYLE) -->
     <header class="bg-[#00A1DE] text-white text-center py-5 px-4 shadow-[0_4px_14px_rgba(0,161,222,0.2)] flex flex-col items-center relative z-50">
         <a href="https://kazdoctors.com/usmle/" class="inline-flex items-center gap-1.5 text-white bg-white/[0.18] backdrop-blur-md border border-white/35 no-underline font-bold text-[0.78rem] px-3.5 py-1.5 rounded-[20px] mb-2.5 transition-all active:scale-95 hover:bg-white/30">
-            <span>⬅️Go back</span>
+            <span>←Go back</span>
         </a>
         <div class="inline-block bg-white/15 backdrop-blur-md border border-white/30 text-white font-bold text-[0.75rem] tracking-[0.8px] px-3 py-1 rounded-[20px] mb-2">@doctors.speak</div>
         <h1 class="text-[1.35rem] font-black leading-[1.2] uppercase tracking-[0.5px] text-white">USMLE preparation</h1>
@@ -173,15 +175,7 @@
 
     </main>
 
-    <footer class="text-center pt-2.5 pb-5 px-4 flex flex-col items-center gap-2.5">
-        <a href="https://instagram.com/doctors.speak" target="_blank" class="inline-flex items-center gap-1.5 text-[#0077A3] no-underline font-bold text-[0.82rem] px-[18px] py-2 rounded-[20px] bg-white border border-[#E2E8F0] shadow-[0_2px_6px_rgba(0,0,0,0.02)]">
-            <span>@doctors.speak</span>
-        </a>
-        <a href="https://kazdoctors.com/usmle/" class="inline-flex items-center gap-1.5 text-[#0077A3] bg-white border border-[#E2E8F0] no-underline font-bold text-[0.78rem] px-[18px] py-2 rounded-[20px] transition-all active:scale-95 shadow-[0_2px_6px_rgba(0,0,0,0.02)]">
-            <svg class="w-4 h-4 fill-[#00A1DE]" viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
-            <span>Go back</span>
-        </a>
-    </footer>
+    <div id="ds-footer"></div>
 
     <script>
         /*

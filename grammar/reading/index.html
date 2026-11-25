@@ -184,7 +184,7 @@
     }
 
     .timer-badge {
-      background: #FEF2F2;
+      background: var(--err-bg);
       color: var(--red);
       border: 1px solid #FECACA;
       padding: 3px 8px;
@@ -236,7 +236,7 @@
 
     .task-tag {
       display: inline-block;
-      background: #FFFBEB;
+      background: var(--sun-50);
       color: var(--kz-gold-dark);
       border: 1px solid rgba(217, 160, 0, 0.35);
       font-size: 0.66rem;
@@ -255,13 +255,13 @@
     }
 
     .passage-box {
-      background: #F8FAFC;
-      border: 1px solid #E2E8F0;
+      background: var(--subtle);
+      border: 1px solid var(--line);
       border-radius: 12px;
       padding: 12px 14px;
       font-size: 0.84rem;
       font-weight: 500;
-      color: #1E293B;
+      color: var(--ink);
       line-height: 1.55;
       text-align: left;
       max-height: 210px;
@@ -326,16 +326,16 @@
     }
 
     .option-btn.correct {
-      background-color: #DCFCE7 !important;
-      border-color: #22C55E !important;
-      color: #15803D !important;
+      background-color: var(--ok-bg) !important;
+      border-color: var(--ok-mid) !important;
+      color: var(--ok) !important;
       font-weight: 700;
     }
 
     .option-btn.wrong {
-      background-color: #FEE2E2 !important;
-      border-color: #EF4444 !important;
-      color: #B91C1C !important;
+      background-color: var(--err-bg) !important;
+      border-color: var(--err-mid) !important;
+      color: var(--err) !important;
       font-weight: 700;
     }
 
@@ -354,7 +354,7 @@
     }
 
     .explanation-box.answered {
-      background-color: #E0F2FE;
+      background-color: var(--sky-50);
       border-left-color: var(--kz-blue-dark);
     }
 
@@ -451,6 +451,7 @@
       cursor: pointer;
     }
   </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
 </head>
 <body>
 
@@ -459,7 +460,7 @@
   <div class="card">
     <!-- Header -->
     <header class="header">
-      <a href="https://kazdoctors.com/" class="home-btn">⬅ Go back</a>
+      <a href="https://kazdoctors.com/" class="home-btn">← Go back</a>
       <div class="brand">@doctors.speak</div>
     </header>
 
@@ -469,34 +470,34 @@
       <div>
         <!-- Выбор режима: Без времени (для записи разборов) или Спринт 3 мин -->
         <div class="mode-tabs">
-          <button id="tabPractice" class="tab-btn active" onclick="setGameMode('practice')">🎓 Разбор (Без времени)</button>
-          <button id="tabRush" class="tab-btn" onclick="setGameMode('rush')">⚡ Спринт (3 мин)</button>
+          <button id="tabPractice" class="tab-btn active" onclick="setGameMode('practice')">Разбор (Без времени)</button>
+          <button id="tabRush" class="tab-btn" onclick="setGameMode('rush')">Спринт (3 мин)</button>
         </div>
 
         <!-- Фильтры: Уровень сложности и Тип вопроса IELTS -->
         <div class="filters-row">
           <select id="levelSelect" class="mode-select" onchange="resetDeckAndLoad()">
-            <option value="all">🔥 Все уровни (Levels 1–3)</option>
+            <option value="all">Все уровни (Levels 1–3)</option>
             <option value="1">Level 1 — Вопросы на русском</option>
             <option value="2">Level 2 — English Medium</option>
             <option value="3">Level 3 — Advanced PubMed</option>
           </select>
 
           <select id="typeSelect" class="mode-select" onchange="resetDeckAndLoad()">
-            <option value="all">🎲 Все типы заданий</option>
+            <option value="all">Все типы заданий</option>
             <option value="tfng">✅ True / False / Not Given</option>
-            <option value="heading">📌 Best Title / Heading</option>
-            <option value="gist">💡 Main Idea / Meaning</option>
-            <option value="match">🔍 Match Info / Detail</option>
+            <option value="heading">Best Title / Heading</option>
+            <option value="gist">Main Idea / Meaning</option>
+            <option value="match">Match Info / Detail</option>
           </select>
         </div>
 
         <!-- Панель очков и таймера -->
         <div class="stats">
-          <span id="timerBadge" class="timer-badge">⏱️ <span id="timeLeft">3:00</span></span>
+          <span id="timerBadge" class="timer-badge"><span id="timeLeft">3:00</span></span>
           <span>Total: <strong id="totalCount">0</strong></span>
-          <span>Correct: <strong id="correctCount" style="color:#16A34A;">0</strong></span>
-          <span>Streak: <strong id="streakCount" style="color:#D9A000;">0 🔥</strong></span>
+          <span>Correct: <strong id="correctCount" style="color:var(--ok-mid);">0</strong></span>
+          <span>Streak: <strong id="streakCount" style="color:var(--sun-600);">0 🔥</strong></span>
         </div>
       </div>
 
@@ -506,7 +507,7 @@
           <span id="levelTag" class="level-tag">Level 1</span>
           <span id="taskTag" class="task-tag">True / False / Not Given</span>
         </div>
-        <div id="sourceLabel" class="passage-source">📄 Clinical Guideline Excerpt</div>
+        <div id="sourceLabel" class="passage-source">Clinical Guideline Excerpt</div>
         <div id="passageText" class="passage-box">Loading passage...</div>
         <div id="questionText" class="question-prompt">Loading question...</div>
       </div>
@@ -516,7 +517,7 @@
         <div id="optionsGrid" class="options-grid"></div>
         
         <div id="explanationBox" class="explanation-box">
-          <div><strong>💡 Разбор / Explanation:</strong> <span id="explanationText">Внимательно прочитайте отрывок и выберите ответ.</span></div>
+          <div><strong>Разбор / Explanation:</strong> <span id="explanationText">Внимательно прочитайте отрывок и выберите ответ.</span></div>
         </div>
 
         <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Следующий текст / Next ➔</button>
@@ -555,8 +556,8 @@
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 8px;">
-        <button class="next-btn visible" onclick="startRushMode()">🔄 Новый спринт (3 мин)</button>
-        <button class="secondary-btn" onclick="setGameMode('practice')">🎓 Вернуться в режим без времени</button>
+        <button class="next-btn visible" onclick="startRushMode()">Новый спринт (3 мин)</button>
+        <button class="secondary-btn" onclick="setGameMode('practice')">Вернуться в режим без времени</button>
       </div>
     </div>
 
@@ -1155,7 +1156,7 @@
       list.innerHTML = '';
 
       if (rushMistakes.length === 0) {
-        list.innerHTML = `<div style="text-align:center; padding: 14px; color: var(--green); font-weight: 800;">🎉 Блестяще! Ни одной ошибки при чтении!</div>`;
+        list.innerHTML = `<div style="text-align:center; padding: 14px; color: var(--green); font-weight: 800;">Блестяще! Ни одной ошибки при чтении!</div>`;
       } else {
         rushMistakes.forEach(m => {
           const item = document.createElement('div');
@@ -1216,7 +1217,7 @@
       expBox.classList.remove('answered');
       document.getElementById('explanationText').textContent =
         gameMode === 'rush'
-          ? "⚡ Спринт-режим: найдите ключевую мысль в тексте как можно быстрее!"
+          ? "Спринт-режим: найдите ключевую мысль в тексте как можно быстрее!"
           : (currentItem.level === 1
               ? "Прочитайте английский отрывок и ответьте на вопрос на русском языке."
               : "Read the medical passage carefully and select the best answer.");

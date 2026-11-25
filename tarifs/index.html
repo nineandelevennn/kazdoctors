@@ -51,7 +51,7 @@
         header {
             position: relative;
             z-index: 10;
-            background: linear-gradient(165deg, var(--kz-blue) 0%, #0088bb 70%, var(--kz-gold) 100%);
+            background: linear-gradient(165deg, var(--kz-blue) 0%, var(--sky-700) 70%, var(--kz-gold) 100%);
             color: #FFFFFF;
             text-align: center;
             padding: 20px 16px 24px 16px;
@@ -246,7 +246,7 @@
         }
 
         .compare-table th {
-            background: #1E293B;
+            background: var(--sky-900);
             color: #FFFFFF;
             padding: 10px 6px;
             font-weight: 800;
@@ -259,7 +259,7 @@
             text-align: left;
             padding-left: 10px;
             width: 30%;
-            background: #0F172A;
+            background: var(--sky-900);
         }
 
         .compare-table th.col-prem {
@@ -285,7 +285,7 @@
             text-align: left;
             padding-left: 10px;
             font-weight: 700;
-            background: #F8FAFC;
+            background: var(--subtle);
         }
 
         .compare-table tr:nth-child(even) td:not(:first-child) {
@@ -305,7 +305,7 @@
         }
 
         .yes-mark { color: var(--green-accent); font-weight: 900; font-size: 0.9rem; }
-        .no-mark { color: #CBD5E1; font-weight: 800; }
+        .no-mark { color: var(--line); font-weight: 800; }
 
         /* ==========================================================================
            СХЛОПЫВАЮЩИЕСЯ КАРТОЧКИ ТАРИФОВ (ACCORDION)
@@ -365,12 +365,12 @@
             background: var(--kz-blue);
         }
 
-        details.plan-accordion.tier-free summary.plan-summary::before { background: #94A3B8; }
+        details.plan-accordion.tier-free summary.plan-summary::before { background: var(--line-2); }
         details.plan-accordion.tier-premium summary.plan-summary::before { background: var(--kz-gold-dark); }
         details.plan-accordion.tier-vip summary.plan-summary::before { background: var(--purple-accent); }
 
         details.plan-accordion[open] > summary.plan-summary {
-            background: #F8FAFC;
+            background: var(--subtle);
             border-bottom: 1px dashed var(--border-color);
         }
 
@@ -404,9 +404,9 @@
             letter-spacing: 0.4px;
         }
 
-        .mini-badge.gray { background: #F1F5F9; color: #475569; }
+        .mini-badge.gray { background: var(--subtle); color: var(--ink-2); }
         .mini-badge.blue { background: var(--kz-blue-light); color: var(--kz-blue-dark); }
-        .mini-badge.gold { background: var(--kz-gold-light); color: #B45309; border: 1px solid rgba(217, 160, 0, 0.35); }
+        .mini-badge.gold { background: var(--kz-gold-light); color: var(--sun-ink); border: 1px solid rgba(217, 160, 0, 0.35); }
         .mini-badge.purple { background: var(--purple-light); color: var(--purple-accent); border: 1px solid rgba(124, 58, 237, 0.25); }
 
         .plan-teaser {
@@ -434,7 +434,7 @@
             line-height: 1.1;
         }
 
-        details.plan-accordion.tier-premium .summary-price { color: #B45309; }
+        details.plan-accordion.tier-premium .summary-price { color: var(--sun-ink); }
         details.plan-accordion.tier-vip .summary-price { color: var(--purple-accent); }
 
         .summary-period {
@@ -532,7 +532,7 @@
 
         /* Пакеты на 1, 3, 6 месяцев с расчетом экономии */
         .packages-box {
-            background: #F8FAFC;
+            background: var(--subtle);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 10px 12px;
@@ -616,7 +616,7 @@
         }
 
         .price-btn.outline-btn {
-            background: #F1F5F9;
+            background: var(--subtle);
             color: var(--text-dark);
             box-shadow: none;
             border: 1px solid var(--border-color);
@@ -674,6 +674,8 @@
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
         }
     </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 
 <body class="lang-kz">
@@ -725,15 +727,15 @@
                             <th>FREE</th>
                             <th>STANDARD</th>
                             <th>PRO</th>
-                            <th class="col-prem">PREMIUM 🔥</th>
-                            <th class="col-vip">VIP 👑</th>
+                            <th class="col-prem">PREMIUM</th>
+                            <th class="col-vip">VIP</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>
-                                <span lang-val="kz">Анатомия тренажері, 8-сабақ, ойындар, сұрастыру тизері</span>
-                                <span lang-val="ru">Анатомия, 8-й урок, игры и тизер опроса пациента</span>
+                                <span lang-val="kz">Анатомия тренажері, 8-сабақ, ойындар, сұрастыру тизері, USMLE</span>
+                                <span lang-val="ru">Анатомия, 8-й урок, игры, тизер опроса пациента, USMLE</span>
                             </td>
                             <td><span class="yes-mark">✓</span></td>
                             <td><span class="yes-mark">✓</span></td>
@@ -743,8 +745,8 @@
                         </tr>
                         <tr>
                             <td>
-                                <span lang-val="kz">Барлық Vocabulary, Grammar және Науқасты сұрастыру тренажерлері</span>
-                                <span lang-val="ru">Все тренажеры Vocabulary, Grammar и Опроса пациентов</span>
+                                <span lang-val="kz">Барлық Vocabulary, Grammar, Науқасты сұрастыру тренажерлері және мақала оқу практикасы</span>
+                                <span lang-val="ru">Все тренажеры Vocabulary, Grammar, Опроса пациентов и практика чтения статей</span>
                             </td>
                             <td><span class="no-mark">—</span></td>
                             <td><span class="yes-mark">✓</span></td>
@@ -754,8 +756,8 @@
                         </tr>
                         <tr>
                             <td>
-                                <span lang-val="kz">Интерактивті конспектілер (Грамматика + Сұрастыру + Презентация + Мақала іздеу)</span>
-                                <span lang-val="ru">Все конспекты и теория (Грамматика + Опрос пациентов + Презентации + Поиск статей)</span>
+                                <span lang-val="kz">Интерактивті конспектілер және үй тапсырмалары (Грамматика + Сұрастыру + Презентация + Мақала іздеу)</span>
+                                <span lang-val="ru">Все конспекты, теория и домашние задания (Грамматика + Опрос пациентов + Презентации + Поиск статей)</span>
                             </td>
                             <td><span class="no-mark">—</span></td>
                             <td><span class="no-mark">—</span></td>
@@ -793,7 +795,7 @@
                             <td>0 ₸</td>
                             <td>7,990 ₸</td>
                             <td>17,990 ₸</td>
-                            <td class="highlight-col" style="color:#B45309;">22,990 ₸</td>
+                            <td class="highlight-col" style="color:var(--sun-ink);">22,990 ₸</td>
                             <td style="color:var(--purple-accent);">57,990 ₸</td>
                         </tr>
                     </tbody>
@@ -851,10 +853,13 @@
 
                         <li lang-val="kz"><span class="check">✓</span> Науқасты сұрастыру тренажерінің демо-нұсқасы («тизер»)</li>
                         <li lang-val="ru"><span class="check">✓</span> Демо-режим («тизер») тренажера по опросу пациентов</li>
+
+                        <li lang-val="kz"><span class="check">✓</span> USMLE дайындығы: тренажерлер мен кейстер</li>
+                        <li lang-val="ru"><span class="check">✓</span> Подготовка к USMLE: тренажеры и кейсы</li>
                     </ul>
                     <div class="result-box">
-                        <strong lang-val="kz">🎯 Сіздің нәтижеңіз:</strong>
-                        <strong lang-val="ru">🎯 Ваш результат:</strong>
+                        <strong lang-val="kz">Сіздің нәтижеңіз:</strong>
+                        <strong lang-val="ru">Ваш результат:</strong>
                         <span lang-val="kz">Анатомиялық базаны меңгересіз, интерактивті форматтың тиімділігін бағалайсыз және өзіңізге қажетті негізгі тарифті сенімді таңдайсыз.</span>
                         <span lang-val="ru">Освоите базовую анатомическую лексику, оцените удобство интерактивных тренажеров и поймете, как быстро растет ваш словарный запас.</span>
                     </div>
@@ -902,16 +907,19 @@
 
                         <li lang-val="kz"><span class="check">✓</span> <strong>Patient Interview:</strong> Науқасты сұрастыру (анамнез жинау) тренажері толық ашық</li>
                         <li lang-val="ru"><span class="check">✓</span> <strong>Тренажер Patient Interview:</strong> отработка фраз для сбора анамнеза и опроса пациентов</li>
+
+                        <li lang-val="kz"><span class="check">✓</span> <strong>Reading Practice:</strong> мақалалар мен гайдлайндарды оқу практикасы</li>
+                        <li lang-val="ru"><span class="check">✓</span> <strong>Практика чтения:</strong> статьи и гайдлайны с упражнениями</li>
                     </ul>
                     <div class="result-box">
-                        <strong lang-val="kz">🎯 Сіздің нақты нәтижеңіз:</strong>
-                        <strong lang-val="ru">🎯 Ваш ощутимый результат:</strong>
+                        <strong lang-val="kz">Сіздің нақты нәтижеңіз:</strong>
+                        <strong lang-val="ru">Ваш ощутимый результат:</strong>
                         <span lang-val="kz">Егер сіз барлық тренажерлерді өтіп, түсіндірмелерді меңгерсеңіз — репетиторсыз-ақ <strong>толық B1 деңгейіне</strong> өз бетіңізше жетесіз және жүздеген клиникалық терминді жатқа білесіз.</span>
                         <span lang-val="ru">Пройдя все тренажеры и разобрав встроенные пояснения, вы сможете <strong>самостоятельно дойти до крепкого уровня B1</strong>, перестанете путать времена и сформируете активный словарный запас практикующего врача.</span>
                     </div>
                     <div class="packages-box">
-                        <div class="pkg-title" lang-val="kz">💎 Тиімді жазылым нұсқалары:</div>
-                        <div class="pkg-title" lang-val="ru">💎 Варианты подписки и выгода:</div>
+                        <div class="pkg-title" lang-val="kz">Тиімді жазылым нұсқалары:</div>
+                        <div class="pkg-title" lang-val="ru">Варианты подписки и выгода:</div>
                         <div class="pkg-row">
                             <span lang-val="kz">1 айға доступ</span>
                             <span lang-val="ru">На 1 месяц</span>
@@ -968,18 +976,21 @@
                         <li lang-val="kz"><span class="check">✓</span> <strong>Барлық интерактивті конспектілер (RU/KZ):</strong> нақты клиникалық кейстермен және дыбысталған сөздікпен</li>
                         <li lang-val="ru"><span class="check">✓</span> <strong>Все интерактивные конспекты-учебники (RU/KZ):</strong> с разбором реальных статей и озвученным словарем</li>
 
+                        <li lang-val="kz"><span class="check">✓</span> <strong>Үй тапсырмалары:</strong> 1–15 сабақтар бойынша 4 ҮТ</li>
+                        <li lang-val="ru"><span class="check">✓</span> <strong>Домашние задания:</strong> 4 ДЗ по урокам 1–15</li>
+
                         <li lang-val="kz"><span class="check">✓</span> <strong>Арнайы теориялық гайдтар:</strong> науқасты сұрастыру алгоритмдері, ғылыми мақалаларды іздеу және конференцияға презентация дайындау</li>
                         <li lang-val="ru"><span class="check">✓</span> <strong>Практические руководства:</strong> теория по опросу пациентов, алгоритмы поиска научных статей и составления презентаций</li>
                     </ul>
                     <div class="result-box">
-                        <strong lang-val="kz">🎯 Сіздің нақты нәтижеңіз:</strong>
-                        <strong lang-val="ru">🎯 Ваш ощутимый результат:</strong>
+                        <strong lang-val="kz">Сіздің нақты нәтижеңіз:</strong>
+                        <strong lang-val="ru">Ваш ощутимый результат:</strong>
                         <span lang-val="kz">Сіз <strong>B1 деңгейін толық аяқтайсыз</strong>, шетелдік науқастардан анамнез жинауды жаттықтырасыз, PubMed пен UpToDate-тен ғылыми мақалаларды тауып оқуды және халықаралық конференцияларға презентация құрастыруды үйренесіз.</span>
                         <span lang-val="ru">Вы <strong>самостоятельно закончите уровень B1</strong>, натренируетесь грамотно опрашивать пациентов, научитесь быстро находить и читать статьи в оригинале (PubMed / UpToDate) и составлять медицинские презентации на английском.</span>
                     </div>
                     <div class="packages-box">
-                        <div class="pkg-title" lang-val="kz">💎 Тиімді жазылым нұсқалары:</div>
-                        <div class="pkg-title" lang-val="ru">💎 Варианты подписки и выгода:</div>
+                        <div class="pkg-title" lang-val="kz">Тиімді жазылым нұсқалары:</div>
+                        <div class="pkg-title" lang-val="ru">Варианты подписки и выгода:</div>
                         <div class="pkg-row">
                             <span lang-val="kz">1 айға доступ</span>
                             <span lang-val="ru">На 1 месяц</span>
@@ -1013,8 +1024,8 @@
                     <div class="summary-left">
                         <div class="plan-title-row">
                             <span class="plan-name">PREMIUM</span>
-                            <span class="mini-badge gold" lang-val="kz">🔥 ХИТ • БАРЛЫҚ ВИДЕОСАБАҚТАР</span>
-                            <span class="mini-badge gold" lang-val="ru">🔥 ХИТ • ВСЕ ВИДЕОУРОКИ</span>
+                            <span class="mini-badge gold" lang-val="kz">ХИТ • БАРЛЫҚ ВИДЕОСАБАҚТАР</span>
+                            <span class="mini-badge gold" lang-val="ru">ХИТ • ВСЕ ВИДЕОУРОКИ</span>
                         </div>
                         <span class="plan-teaser" lang-val="kz">Тренажерлер + Конспектілер + Барлық жабық видеосабақтар</span>
                         <span class="plan-teaser" lang-val="ru">Все тренажеры + Все конспекты + Полный курс видеоуроков</span>
@@ -1048,14 +1059,14 @@
                         <li lang-val="ru"><span class="check">✓</span> <strong>Видеоуроки по врачебным навыкам:</strong> как опрашивать пациентов, искать статьи в базах данных и готовить доклады</li>
                     </ul>
                     <div class="result-box">
-                        <strong lang-val="kz">🎯 Сіздің нақты нәтижеңіз:</strong>
-                        <strong lang-val="ru">🎯 Ваш ощутимый результат:</strong>
+                        <strong lang-val="kz">Сіздің нақты нәтижеңіз:</strong>
+                        <strong lang-val="ru">Ваш ощутимый результат:</strong>
                         <span lang-val="kz">Видеосабақтардың арқасында ең күрделі тақырыптарды тез меңгеріп, <strong>B1 деңгейін сенімді аяқтайсыз</strong>. Науқастармен сөйлесуге, шетелдік гайдлайндарды оқуға және конференцияда презентация жасауға толық дайын боласыз!</span>
                         <span lang-val="ru">Благодаря живым видеообъяснениям вы в 2 раза быстрее усвоите базу, <strong>уверенно закроете уровень B1</strong>, поставите правильное произношение и сможете самостоятельно работать с англоязычными пациентами, статьями и презентациями.</span>
                     </div>
                     <div class="packages-box">
-                        <div class="pkg-title" lang-val="kz">💎 Тиімді пакеттер (3 және 6 айға үлкен жеңілдік):</div>
-                        <div class="pkg-title" lang-val="ru">💎 Выгодные пакеты (максимальная экономия на 6 мес.):</div>
+                        <div class="pkg-title" lang-val="kz">Тиімді пакеттер (3 және 6 айға үлкен жеңілдік):</div>
+                        <div class="pkg-title" lang-val="ru">Выгодные пакеты (максимальная экономия на 6 мес.):</div>
                         <div class="pkg-row">
                             <span lang-val="kz">1 айға доступ</span>
                             <span lang-val="ru">На 1 месяц</span>
@@ -1078,8 +1089,8 @@
                             <span class="pkg-price"><span class="pkg-old-price">137,940 ₸</span>99,990 ₸</span>
                         </div>
                     </div>
-                    <a href="https://wa.me/77081595038?text=Сәлеметсіз бе! PREMIUM тарифін (22,990 ₸ / 3 айға 59,990 ₸ / 6 айға 99,990 ₸) қосқым келеді" target="_blank" class="price-btn gold-btn" lang-val="kz">🔥 PREMIUM тарифін қосу</a>
-                    <a href="https://wa.me/77081595038?text=Здравствуйте! Хочу подключить тариф PREMIUM (22,990 ₸ / 3 мес за 59,990 ₸ / 6 мес за 99,990 ₸)" target="_blank" class="price-btn gold-btn" lang-val="ru">🔥 Подключить тариф PREMIUM</a>
+                    <a href="https://wa.me/77081595038?text=Сәлеметсіз бе! PREMIUM тарифін (22,990 ₸ / 3 айға 59,990 ₸ / 6 айға 99,990 ₸) қосқым келеді" target="_blank" class="price-btn gold-btn" lang-val="kz">PREMIUM тарифін қосу</a>
+                    <a href="https://wa.me/77081595038?text=Здравствуйте! Хочу подключить тариф PREMIUM (22,990 ₸ / 3 мес за 59,990 ₸ / 6 мес за 99,990 ₸)" target="_blank" class="price-btn gold-btn" lang-val="ru">Подключить тариф PREMIUM</a>
                 </div>
             </details>
 
@@ -1088,7 +1099,7 @@
                 <summary class="plan-summary">
                     <div class="summary-left">
                         <div class="plan-title-row">
-                            <span class="plan-name">VIP 👑</span>
+                            <span class="plan-name">VIP</span>
                             <span class="mini-badge purple" lang-val="kz">PREMIUM + 4 ЖЕКЕ САБАҚ</span>
                             <span class="mini-badge purple" lang-val="ru">PREMIUM + 4 ЛИЧНЫХ УРОКА</span>
                         </div>
@@ -1127,13 +1138,13 @@
                         <li lang-val="ru"><span class="check">✓</span> <strong>Привилегия VIP:</strong> со 2-го месяца продление полного доступа PREMIUM по закрытой цене <strong>19,990 ₸/мес.</strong> (вместо 22,990 ₸)</li>
                     </ul>
                     <div class="result-box">
-                        <strong lang-val="kz">🎯 Сіздің нақты нәтижеңіз:</strong>
-                        <strong lang-val="ru">🎯 Ваш ощутимый результат:</strong>
+                        <strong lang-val="kz">Сіздің нақты нәтижеңіз:</strong>
+                        <strong lang-val="ru">Ваш ощутимый результат:</strong>
                         <span lang-val="kz">Ментордың бақылауымен оқуды тастап кетпейсіз, сөйлеу барьерін 1 ай ішінде бұзасыз және өз мамандығыңыз бойынша нақты клиникалық диалогтар мен презентацияны еркін айтып шығасыз.</span>
                         <span lang-val="ru">Вы гарантированно не забросите учебу благодаря контролю наставника, снимете страх говорения и за первый же месяц отработаете живой опрос пациента и самопрезентацию с преподавателем.</span>
                     </div>
-                    <a href="https://wa.me/77081595038?text=Сәлеметсіз бе! VIP тарифіне (57,990 ₸ — Premium + 4 жеке сабақ) жазылғым келеді" target="_blank" class="price-btn purple-btn" lang-val="kz">👑 VIP тарифіне жазылу</a>
-                    <a href="https://wa.me/77081595038?text=Здравствуйте! Хочу записаться на тариф VIP (57,990 ₸ — Premium + 4 личных занятия)" target="_blank" class="price-btn purple-btn" lang-val="ru">👑 Записаться на тариф VIP</a>
+                    <a href="https://wa.me/77081595038?text=Сәлеметсіз бе! VIP тарифіне (57,990 ₸ — Premium + 4 жеке сабақ) жазылғым келеді" target="_blank" class="price-btn purple-btn" lang-val="kz">VIP тарифіне жазылу</a>
+                    <a href="https://wa.me/77081595038?text=Здравствуйте! Хочу записаться на тариф VIP (57,990 ₸ — Premium + 4 личных занятия)" target="_blank" class="price-btn purple-btn" lang-val="ru">Записаться на тариф VIP</a>
                 </div>
             </details>
 
@@ -1154,8 +1165,8 @@
                         <div class="plan-title-row">
                             <span class="plan-name" lang-val="kz">ЖЕКЕ САБАҚТАР (1-on-1)</span>
                             <span class="plan-name" lang-val="ru">ИНДИВИДУАЛЬНЫЕ ЗАНЯТИЯ</span>
-                            <span class="mini-badge blue" lang-val="kz">🎁 ПЛАТФОРМА СЫЙЛЫҚҚА</span>
-                            <span class="mini-badge blue" lang-val="ru">🎁 ПЛАТФОРМА В ПОДАРОК</span>
+                            <span class="mini-badge blue" lang-val="kz">ПЛАТФОРМА СЫЙЛЫҚҚА</span>
+                            <span class="mini-badge blue" lang-val="ru">ПЛАТФОРМА В ПОДАРОК</span>
                         </div>
                         <span class="plan-teaser" lang-val="kz">Сіздің мақсатыңызға арналған жеке бағдарлама + барлық материалдар</span>
                         <span class="plan-teaser" lang-val="ru">Персональный план под ваши цели + полный доступ к сайту</span>
@@ -1189,8 +1200,8 @@
                         <li lang-val="ru"><span class="check">✓</span> <strong>100% фокус на практике:</strong> отработка вашей презентации, разбор профильных статей и симуляция приёма пациента</li>
                     </ul>
                     <div class="packages-box">
-                        <div class="pkg-title" lang-val="kz">💎 Сабақ пакеттері:</div>
-                        <div class="pkg-title" lang-val="ru">💎 Стоимость занятий:</div>
+                        <div class="pkg-title" lang-val="kz">Сабақ пакеттері:</div>
+                        <div class="pkg-title" lang-val="ru">Стоимость занятий:</div>
                         <div class="pkg-row">
                             <span lang-val="kz">1 реттік сабақ (60 минут)</span>
                             <span lang-val="ru">Разовое занятие (60 минут)</span>
@@ -1251,8 +1262,8 @@
                         <li lang-val="ru"><span class="check">✓</span> <strong>2 главных навыка на каждой встрече:</strong> практика устных докладов по научным статьям и ролевые симуляции опроса пациентов (Doctor–Patient)</li>
                     </ul>
                     <div class="result-box">
-                        <strong lang-val="kz">🎯 Сіздің нақты нәтижеңіз:</strong>
-                        <strong lang-val="ru">🎯 Ваш ощутимый результат:</strong>
+                        <strong lang-val="kz">Сіздің нақты нәтижеңіз:</strong>
+                        <strong lang-val="ru">Ваш ощутимый результат:</strong>
                         <span lang-val="kz">Әріптестер алдында ағылшынша сөйлеу қорқынышынан арыласыз, медициналық зерттеулерді ауызша қорғауды және науқаспен еркін диалог құруды үйренесіз.</span>
                         <span lang-val="ru">Вы полностью снимете страх публичных выступлений перед коллегами, научитесь уверенно докладывать клинические кейсы и отвечать на вопросы на английском языке.</span>
                     </div>
@@ -1271,15 +1282,7 @@
         </div>
     </main>
 
-    <footer>
-        <a href="https://wa.me/77081595038" target="_blank" class="instagram-link">
-            <span lang-val="kz">💬 Қай тарифті таңдауды білмейсіз бе? WhatsApp-қа жазыңыз</span>
-            <span lang-val="ru">💬 Помочь с выбором тарифа? Напишите нам в WhatsApp</span>
-        </a>
-        <a href="https://instagram.com/doctors.speak" target="_blank" class="instagram-link">
-            <span>📸 Instagram @doctors.speak</span>
-        </a>
-    </footer>
+    <div id="ds-footer"></div>
 
     <!-- Скрипт переключения языков и плавной работы аккордеонов -->
     <script>

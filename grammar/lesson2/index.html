@@ -328,13 +328,13 @@
     }
 
     .grammar-table tr:nth-child(even) td {
-      background: #F8FAFC;
+      background: var(--subtle);
     }
 
     /* Раскрывающийся спойлер для таблицы 12 времен */
     details.tenses-spoiler {
       margin-top: 12px;
-      background: #F8FAFC;
+      background: var(--subtle);
       border: 1px solid var(--border-color);
       border-radius: 12px;
       padding: 10px 14px;
@@ -350,7 +350,7 @@
 
     /* Быстрые микро-упражнения внутри теории (Quick Check) */
     .quick-check {
-      background: #F8FAFC;
+      background: var(--subtle);
       border: 1px dashed var(--kz-blue);
       border-radius: 14px;
       padding: 14px;
@@ -534,13 +534,15 @@
       }
     }
   </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body>
 
   <!-- ШАПКА УРОКА -->
   <header>
     <div class="header-top">
-      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅ К списку уроков</a>
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">← К списку уроков</a>
       <div class="lang-switch">
         <button class="lang-btn active" id="btnRu" onclick="setLang('ru')">RU</button>
         <button class="lang-btn" id="btnKz" onclick="setLang('kz')">KZ</button>
@@ -572,7 +574,7 @@
     <!-- ВКЛАДКА 3: СЛОВАРЬ С ПРИМЕРАМИ -->
     <section class="tab-section" id="tab2">
       <div class="card-block">
-        <h2 id="uiVocabTitle">💊 Клинический словарь урока (13 терминов)</h2>
+        <h2 id="uiVocabTitle">Клинический словарь урока (13 терминов)</h2>
         <p id="uiVocabDesc">Нажмите 🔊, чтобы прослушать произношение. Все примеры взяты из реальной практики и показывают работу Present Simple и Present Continuous.</p>
         <div class="vocab-grid" id="vocabGrid"></div>
       </div>
@@ -582,18 +584,18 @@
     <!-- ВКЛАДКА 4: ПРАКТИКУМ (EXERCISE 1 & 2 ИЗ PDF) -->
     <section class="tab-section" id="tab3">
       <div class="card-block gold">
-        <h2 id="uiEx1Title">✍️ Упражнение 1: Выберите правильную форму глагола</h2>
+        <h2 id="uiEx1Title">Упражнение 1: Выберите правильную форму глагола</h2>
         <p id="uiEx1Desc">Найдите в предложении подсказку (маркер времени) и выберите Present Simple или Present Continuous:</p>
         <div id="ex1Container" style="display:flex; flex-direction:column; gap:10px;"></div>
       </div>
 
       <div class="card-block">
-        <h2 id="uiEx2Title">🩺 Упражнение 2: Раскройте скобки в клинических ситуациях</h2>
+        <h2 id="uiEx2Title">Упражнение 2: Раскройте скобки в клинических ситуациях</h2>
         <p id="uiEx2Desc">Поставьте глагол в скобках в нужную форму настоящего времени:</p>
         <div id="ex2Container" style="display:flex; flex-direction:column; gap:10px;"></div>
       </div>
 
-      <a href="./present/" class="action-btn" id="uiGoTrainerBtn">🎯 Запустить игровой тренажер по Уроку 2 ➔</a>
+      <a href="../present/" class="action-btn" id="uiGoTrainerBtn">Запустить игровой тренажер по Уроку 2 ➔</a>
     </section>
   </main>
 
@@ -623,7 +625,7 @@
     // =========================================================================
     const LESSON2_DATA = {
       ui: {
-        backBtn: { ru: "⬅ К списку уроков", kz: "⬅ Сабақтар тізіміне" },
+        backBtn: { ru: "← К списку уроков", kz: "← Сабақтар тізіміне" },
         title: {
           ru: "Present Simple vs Present Continuous",
           kz: "Present Simple және Present Continuous"
@@ -639,8 +641,8 @@
           { ru: "4. Упражнения", kz: "4. Жаттығулар" }
         ],
         vocabTitle: {
-          ru: "💊 Клинический словарь урока (13 терминов)",
-          kz: "💊 Сабақтың клиникалық сөздігі (13 термин)"
+          ru: "Клинический словарь урока (13 терминов)",
+          kz: "Сабақтың клиникалық сөздігі (13 термин)"
         },
         vocabDesc: {
           ru: "Нажмите 🔊 для прослушивания произношения. Обратите внимание, почему в каждом примере выбрано Simple или Continuous.",
@@ -651,7 +653,7 @@
           kz: "4-қадамға өту: Жылдам жаттығулар ➔"
         },
         ex1Title: {
-          ru: "✍️ Упражнение 1: Выберите правильную форму (Present Simple vs Continuous)",
+          ru: "Упражнение 1: Выберите правильную форму (Present Simple vs Continuous)",
           kz: "✍️ 1-жаттығу: Дұрыс форманы таңдаңыз (Present Simple vs Continuous)"
         },
         ex1Desc: {
@@ -659,7 +661,7 @@
           kz: "Мезгіл маркерлеріне (usually, right now, at the moment, often) назар аударыңыз:"
         },
         ex2Title: {
-          ru: "🩺 Упражнение 2: Раскройте скобки в клинических ситуациях",
+          ru: "Упражнение 2: Раскройте скобки в клинических ситуациях",
           kz: "🩺 2-жаттығу: Клиникалық жағдайларда жақшаны ашыңыз"
         },
         ex2Desc: {
@@ -667,7 +669,7 @@
           kz: "Бос орындарға сәйкес келетін грамматикалық форманы таңдаңыз:"
         },
         goTrainerBtn: {
-          ru: "🎯 Перейти к основному тренажеру Урока 2 ➔",
+          ru: "Перейти к основному тренажеру Урока 2 ➔",
           kz: "🎯 2-сабақтың негізгі тренажеріне өту ➔"
         }
       },
@@ -676,12 +678,12 @@
       tab0Html: {
         ru: `
           <div class="card-block">
-            <h2>🚨 Главная разница за 30 секунд: «Пациенты умирают»</h2>
+            <h2>Главная разница за 30 секунд: «Пациенты умирают»</h2>
             <p>В русском языке одна и та же фраза <b>«Пациенты умирают»</b> может означать две совершенно разные клинические ситуации. В английском для них используются два разных времени:</p>
             <div class="comparison-grid">
               <div class="comp-box simple">
                 <div class="comp-title">
-                  <span>📊 Present Simple</span>
+                  <span>Present Simple</span>
                   <span style="font-size:0.72rem; color:var(--kz-blue-dark);">«ВООБЩЕ / РЕГУЛЯРНО»</span>
                 </div>
                 <span class="comp-formula">Subject + DOES (V / V-s)</span>
@@ -694,7 +696,7 @@
 
               <div class="comp-box continuous">
                 <div class="comp-title">
-                  <span>🚑 Present Continuous</span>
+                  <span>Present Continuous</span>
                   <span style="font-size:0.72rem; color:var(--kz-gold-dark);">«ПРЯМО СЕЙЧАС»</span>
                 </div>
                 <span class="comp-formula">Subject + IS DOING (am/is/are + V-ing)</span>
@@ -707,7 +709,7 @@
             </div>
 
             <div class="quick-check" data-qc="0">
-              <span class="qc-badge">⚡ Быстрая проверка понимания</span>
+              <span class="qc-badge">Быстрая проверка понимания</span>
               <div class="qc-question">Вы читаете в статье: «Клетчатка помогает лечить запор» (Fiber helps treat constipation). Почему автор использовал Present Simple (helps)?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Верно! Это постоянный медицинский факт («вообще»), поэтому нужен Present Simple.')">Это постоянный медицинский факт («вообще»)</button>
@@ -718,7 +720,7 @@
           </div>
 
           <div class="card-block gold">
-            <h2>📐 Формулы построения: как не путать окончания</h2>
+            <h2>Формулы построения: как не путать окончания</h2>
             <p>Разберем оба времени на одной врачебной фразе — <b>prescribe aspirin</b> (назначать аспирин):</p>
             <table class="grammar-table">
               <thead>
@@ -748,7 +750,7 @@
             </table>
 
             <details class="tenses-spoiler">
-              <summary>🗺️ Показать общую карту всех 12 времен (для обзора)</summary>
+              <summary>Показать общую карту всех 12 времен (для обзора)</summary>
               <p style="margin-top:8px; font-size:0.78rem; color:var(--text-muted);">Не пытайтесь заучить всё сразу! В реальной медицине 80% речи строится на базовых временах Simple, Continuous и Perfect:</p>
               <table class="grammar-table" style="margin-top:6px;">
                 <thead>
@@ -763,7 +765,7 @@
             </details>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Быстрое упражнение на формулу</span>
+              <span class="qc-badge">Быстрое упражнение на формулу</span>
               <div class="qc-question">Как правильно сказать: «В данный момент медсестра НЕ дает лекарство»?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Осторожно: doesn\\'t используется в Present Simple (обычно), а у нас процесс «в данный момент» (Continuous).')">The nurse doesn't giving the drug.</button>
@@ -783,7 +785,7 @@
             <div class="comparison-grid">
               <div class="comp-box simple">
                 <div class="comp-title">
-                  <span>📊 Present Simple</span>
+                  <span>Present Simple</span>
                   <span style="font-size:0.72rem; color:var(--kz-blue-dark);">«ЖАЛПЫ / ҮНЕМІ»</span>
                 </div>
                 <span class="comp-formula">Subject + DOES (V / V-s)</span>
@@ -796,7 +798,7 @@
 
               <div class="comp-box continuous">
                 <div class="comp-title">
-                  <span>🚑 Present Continuous</span>
+                  <span>Present Continuous</span>
                   <span style="font-size:0.72rem; color:var(--kz-gold-dark);">«ДӘЛ ҚАЗІР»</span>
                 </div>
                 <span class="comp-formula">Subject + IS DOING (am/is/are + V-ing)</span>
@@ -809,7 +811,7 @@
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Түсінікті жылдам тексеру</span>
+              <span class="qc-badge">Түсінікті жылдам тексеру</span>
               <div class="qc-question">Мақалада: «Жасұнық іш қатуды емдеуге көмектеседі» (Fiber helps treat constipation). Автор неліктен Present Simple (helps) қолданды?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Дұрыс! Бұл тұрақты медициналық факт («жалпы алғанда»), сондықтан Present Simple қолданылады.')">Себебі бұл тұрақты медициналық факт («жалпы»)</button>
@@ -820,7 +822,7 @@
           </div>
 
           <div class="card-block gold">
-            <h2>📐 Құрылым формуласы: жалғауларды қалай шатастырмаймыз</h2>
+            <h2>Құрылым формуласы: жалғауларды қалай шатастырмаймыз</h2>
             <p>Екі шақты да дәрігерлік <b>prescribe aspirin</b> (аспирин тағайындау) тіркесімен салыстырайық:</p>
             <table class="grammar-table">
               <thead>
@@ -850,7 +852,7 @@
             </table>
 
             <details class="tenses-spoiler">
-              <summary>🗺️ Барлық 12 шақтың шолу кестесін көрсету</summary>
+              <summary>Барлық 12 шақтың шолу кестесін көрсету</summary>
               <p style="margin-top:8px; font-size:0.78rem; color:var(--text-muted);">Барлығын бірден жаттаудың қажеті жоқ! Медицинада сөйлемдердің 80%-ы осы негізгі шақтармен құрылады:</p>
               <table class="grammar-table" style="margin-top:6px;">
                 <thead>
@@ -865,7 +867,7 @@
             </details>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Формулаға арналған жылдам жаттығу</span>
+              <span class="qc-badge">Формулаға арналған жылдам жаттығу</span>
               <div class="qc-question">«Қазіргі сәтте медбике дәрі беріп жатқан ЖОҚ» деп қалай дұрыс айтамыз?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Қате: doesn\\'t тек Present Simple-да (әдетте) қолданылады, ал бізде «қазіргі сәтте» (Continuous).')">The nurse doesn't giving the drug.</button>
@@ -884,18 +886,18 @@
       tab1Html: {
         ru: `
           <div class="card-block">
-            <h2>😷 Разбор клинической сцены в операционной (#NewAmsterdam)</h2>
+            <h2>Разбор клинической сцены в операционной (#NewAmsterdam)</h2>
             <p>Посмотрите, как врач описывает одну и ту же фотографию бригады хирургов в операционной, переключаясь между <b>Present Simple</b> (кто они по профессии) и <b>Present Continuous</b> (что происходит на мониторах и в руках прямо сейчас):</p>
             <div class="clinical-quote" style="border-left-color: var(--kz-blue);">
               1. <b>"These people <span style="color:var(--kz-blue-dark);">work</span> as doctors."</b> — <i>Present Simple</i> (они работают врачами вообще по жизни).<br>
-              2. <b>"At the moment they <span style="color:#D97706;">are preparing</span> for surgery."</b> — <i>Present Continuous</i> (в данный момент они готовятся к операции).<br>
-              3. <b>"One of them <span style="color:var(--kz-blue-dark);">wears</span> glasses. The other ones <span style="color:#D97706;">are not wearing</span> glasses."</b> — <i>Контраст:</i> ведущий хирург вообще носит очки (Simple), а остальные сейчас стоят без очков (Continuous).<br>
-              4. <b>"The monitor <span style="color:#D97706;">is showing</span> the vital signs."</b> — <i>Present Continuous</i> (монитор прямо сейчас показывает жизненные показатели).
+              2. <b>"At the moment they <span style="color:var(--sun-ink);">are preparing</span> for surgery."</b> — <i>Present Continuous</i> (в данный момент они готовятся к операции).<br>
+              3. <b>"One of them <span style="color:var(--kz-blue-dark);">wears</span> glasses. The other ones <span style="color:var(--sun-ink);">are not wearing</span> glasses."</b> — <i>Контраст:</i> ведущий хирург вообще носит очки (Simple), а остальные сейчас стоят без очков (Continuous).<br>
+              4. <b>"The monitor <span style="color:var(--sun-ink);">is showing</span> the vital signs."</b> — <i>Present Continuous</i> (монитор прямо сейчас показывает жизненные показатели).
             </div>
           </div>
 
           <div class="card-block gold">
-            <h2>🧭 Слова-маркеры: как за 1 секунду узнать нужное время</h2>
+            <h2>Слова-маркеры: как за 1 секунду узнать нужное время</h2>
             <p>В тестах, при опросе пациента и в научных статьях время всегда выдает слово-спутник (маркер):</p>
 
             <h3 style="font-size:0.84rem; font-weight:800; color:var(--kz-blue-dark); margin-top:10px;">1. Базовые маркеры Present Simple (На приёме пациента):</h3>
@@ -922,7 +924,7 @@
               <span class="marker-chip"><b>inconsistently</b> — непоследовательно</span>
             </div>
 
-            <h3 style="font-size:0.84rem; font-weight:800; color:#B45309; margin-top:14px;">3. Маркеры Present Continuous (Прямо сейчас / В текущий период):</h3>
+            <h3 style="font-size:0.84rem; font-weight:800; color:var(--sun-ink); margin-top:14px;">3. Маркеры Present Continuous (Прямо сейчас / В текущий период):</h3>
             <div class="markers-wrap">
               <span class="marker-chip"><b>right now</b> — прямо сейчас</span>
               <span class="marker-chip"><b>at this moment</b> — в данный момент</span>
@@ -933,7 +935,7 @@
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Быстрый тест по научным маркерам</span>
+              <span class="qc-badge">Быстрый тест по научным маркерам</span>
               <div class="qc-question">В статье написано: "Scientists are <b>currently</b> ___ new methods to treat cancer." Какую форму глагола study нужно поставить после маркера currently?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Маркер currently означает «в настоящее время» (текущий активный процесс), здесь нужен Continuous (studying).')">study (Present Simple)</button>
@@ -947,18 +949,18 @@
         `,
         kz: `
           <div class="card-block">
-            <h2>😷 Операциялық бөлмедегі жағдайды талдау (#NewAmsterdam)</h2>
+            <h2>Операциялық бөлмедегі жағдайды талдау (#NewAmsterdam)</h2>
             <p>Дәрігер операциялық бөлмедегі хирургтар тобын сипаттағанда <b>Present Simple</b> (олардың тұрақты мамандығы) мен <b>Present Continuous</b> (дәл қазір мониторда не болып жатқаны) арасында қалай ауысатынына қараңыз:</p>
             <div class="clinical-quote" style="border-left-color: var(--kz-blue);">
               1. <b>"These people <span style="color:var(--kz-blue-dark);">work</span> as doctors."</b> — <i>Present Simple</i> (олар жалпы өмірде дәрігер болып жұмыс істейді).<br>
-              2. <b>"At the moment they <span style="color:#D97706;">are preparing</span> for surgery."</b> — <i>Present Continuous</i> (дәл қазір олар операцияға дайындалып жатыр).<br>
-              3. <b>"One of them <span style="color:var(--kz-blue-dark);">wears</span> glasses. The other ones <span style="color:#D97706;">are not wearing</span> glasses."</b> — <i>Контраст:</i> олардың бірі жалпы көзілдірік тағады (Simple), ал қалғандары қазір көзілдіріксіз тұр (Continuous).<br>
-              4. <b>"The monitor <span style="color:#D97706;">is showing</span> the vital signs."</b> — <i>Present Continuous</i> (монитор дәл қазір өмірлік көрсеткіштерді көрсетіп тұр).
+              2. <b>"At the moment they <span style="color:var(--sun-ink);">are preparing</span> for surgery."</b> — <i>Present Continuous</i> (дәл қазір олар операцияға дайындалып жатыр).<br>
+              3. <b>"One of them <span style="color:var(--kz-blue-dark);">wears</span> glasses. The other ones <span style="color:var(--sun-ink);">are not wearing</span> glasses."</b> — <i>Контраст:</i> олардың бірі жалпы көзілдірік тағады (Simple), ал қалғандары қазір көзілдіріксіз тұр (Continuous).<br>
+              4. <b>"The monitor <span style="color:var(--sun-ink);">is showing</span> the vital signs."</b> — <i>Present Continuous</i> (монитор дәл қазір өмірлік көрсеткіштерді көрсетіп тұр).
             </div>
           </div>
 
           <div class="card-block gold">
-            <h2>🧭 Мезгіл маркерлері: қажетті шақты 1 секундта қалай табамыз</h2>
+            <h2>Мезгіл маркерлері: қажетті шақты 1 секундта қалай табамыз</h2>
             <p>Тесттерде, науқасты сұрастырғанда және ғылыми мақалаларда қай шақ керек екенін арнайы маркер-сөздер көрсетеді:</p>
 
             <h3 style="font-size:0.84rem; font-weight:800; color:var(--kz-blue-dark); margin-top:10px;">1. Present Simple негізгі маркерлері (Науқасты қабылдауда):</h3>
@@ -984,7 +986,7 @@
               <span class="marker-chip"><b>inconsistently</b> — тұрақсыз</span>
             </div>
 
-            <h3 style="font-size:0.84rem; font-weight:800; color:#B45309; margin-top:14px;">3. Present Continuous маркерлері (Дәл қазір / Осы кезеңде):</h3>
+            <h3 style="font-size:0.84rem; font-weight:800; color:var(--sun-ink); margin-top:14px;">3. Present Continuous маркерлері (Дәл қазір / Осы кезеңде):</h3>
             <div class="markers-wrap">
               <span class="marker-chip"><b>right now</b> — дәл қазір</span>
               <span class="marker-chip"><b>at this moment</b> — осы сәтте</span>
@@ -995,7 +997,7 @@
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Ғылыми маркерлер бойынша жылдам тест</span>
+              <span class="qc-badge">Ғылыми маркерлер бойынша жылдам тест</span>
               <div class="qc-question">Мақалада: "Scientists <b>currently</b> ___ new methods to treat cancer." Currently маркерінен кейін study етістігінің қай формасы қойылады?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, false, 'Currently «қазіргі уақытта» дегенді білдіреді, яғни процесс жүріп жатыр — Continuous (studying) керек.')">study (Present Simple)</button>

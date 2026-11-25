@@ -95,7 +95,7 @@
 
     .free-badge {
       background: rgba(16, 185, 129, 0.25);
-      border: 1px solid #34D399;
+      border: 1px solid var(--ok-mid);
       color: #A7F3D0;
       font-size: 0.68rem;
       font-weight: 800;
@@ -263,7 +263,7 @@
     }
 
     .clinical-quote {
-      background: #F8FAFC;
+      background: var(--subtle);
       border-radius: 12px;
       padding: 12px 14px;
       font-size: 0.82rem;
@@ -274,7 +274,7 @@
 
     /* Интерактивный трансформер чанков */
     .chunk-lab {
-      background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+      background: linear-gradient(145deg, var(--sky-900) 0%, var(--sky-900) 100%);
       color: #FFFFFF;
       border-radius: 16px;
       padding: 16px;
@@ -311,8 +311,8 @@
     }
 
     .chunk-var {
-      color: #7DD3FC;
-      border-bottom: 2px dashed #38BDF8;
+      color: var(--sky-100);
+      border-bottom: 2px dashed var(--sky-500);
       padding-bottom: 1px;
     }
 
@@ -336,7 +336,7 @@
 
     .spec-btn.active, .spec-btn:hover {
       background: var(--kz-blue);
-      border-color: #7DD3FC;
+      border-color: var(--sky-100);
     }
 
     /* 4 шага для выражения мнения (Speaking Chunks) */
@@ -356,9 +356,9 @@
       gap: 8px;
     }
 
-    .step-card.s1 { border-top: 4px solid #0284C7; background: #F0F9FF; }
-    .step-card.s2 { border-top: 4px solid #D97706; background: var(--kz-gold-light); }
-    .step-card.s3 { border-top: 4px solid #16A34A; background: #F0FDF4; }
+    .step-card.s1 { border-top: 4px solid var(--sky-700); background: var(--sky-50); }
+    .step-card.s2 { border-top: 4px solid var(--sun-ink); background: var(--kz-gold-light); }
+    .step-card.s3 { border-top: 4px solid var(--ok-mid); background: #F0FDF4; }
     .step-card.s4 { border-top: 4px solid #7C3AED; background: #F5F3FF; }
 
     .step-head {
@@ -411,14 +411,14 @@
     /* Интерактивный разбор ответа по 4 шагам */
     .sample-box {
       background: #FFFFFF;
-      border: 2px solid #CBD5E1;
+      border: 2px solid var(--line);
       border-radius: 14px;
       overflow: hidden;
       margin-top: 10px;
     }
 
     .sample-header {
-      background: #1E293B;
+      background: var(--sky-900);
       color: #FFFFFF;
       padding: 10px 14px;
       font-size: 0.78rem;
@@ -434,12 +434,12 @@
       padding: 14px;
       font-size: 0.83rem;
       line-height: 1.65;
-      color: #334155;
+      color: var(--ink-2);
     }
 
     .hl-chunk {
       background: #FEF08A;
-      color: #854D0E;
+      color: var(--sun-ink);
       font-weight: 800;
       padding: 1px 6px;
       border-radius: 5px;
@@ -455,7 +455,7 @@
     }
 
     .filter-chip {
-      background: #F1F5F9;
+      background: var(--subtle);
       border: 1px solid var(--border-color);
       color: var(--text-dark);
       padding: 6px 12px;
@@ -527,7 +527,7 @@
 
     .gc-words {
       font-size: 0.71rem;
-      color: #B45309;
+      color: var(--sun-ink);
       background: var(--kz-gold-light);
       padding: 5px 8px;
       border-radius: 6px;
@@ -537,7 +537,7 @@
     .gc-examples {
       font-size: 0.75rem;
       color: var(--text-dark);
-      background: #F8FAFC;
+      background: var(--subtle);
       padding: 8px 10px;
       border-radius: 8px;
       line-height: 1.42;
@@ -546,7 +546,7 @@
 
     /* Микро-тесты и тренажер */
     .quick-check {
-      background: #F8FAFC;
+      background: var(--subtle);
       border: 1px dashed var(--kz-blue);
       border-radius: 14px;
       padding: 14px;
@@ -621,7 +621,7 @@
 
     /* Плашка счетчика баллов в тренажере */
     .score-banner {
-      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      background: linear-gradient(135deg, var(--sky-900) 0%, var(--sky-900) 100%);
       color: #FFFFFF;
       padding: 14px 18px;
       border-radius: 14px;
@@ -680,13 +680,15 @@
       }
     }
   </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body>
 
   <!-- ШАПКА СТРАНИЦЫ (ОТКРЫТА ДЛЯ ТАРИФА FREE) -->
   <header>
     <div class="header-top">
-      <a href="https://kazdoctors.com" class="back-btn" id="uiBackBtn">⬅ На главную</a>
+      <a href="https://kazdoctors.com" class="back-btn" id="uiBackBtn">← На главную</a>
       <div class="header-right">
         <span class="free-badge" id="uiFreeBadge">🔓 FREE ACCESS</span>
         <div class="lang-switch">
@@ -721,7 +723,7 @@
     <!-- ВКЛАДКА 3: ИНТЕРАКТИВНАЯ ШПАРГАЛКА ПО ВСЕМ 15 ТЕМАМ ГРАММАТИКИ -->
     <section class="tab-section" id="tab2">
       <div class="card-block">
-        <h2 id="uiCheatTitle">🗂️ Интерактивная шпаргалка по всей медицинской грамматике</h2>
+        <h2 id="uiCheatTitle">Интерактивная шпаргалка по всей медицинской грамматике</h2>
         <p id="uiCheatDesc">Выберите категорию ниже или изучайте карточки подряд. Нажмите 🔊 на любой карточке, чтобы прослушать примеры из жизни врача:</p>
         <div class="filter-bar" id="grammarFilterBar"></div>
         <div class="grammar-cards-grid" id="grammarCardsGrid"></div>
@@ -733,19 +735,19 @@
     <section class="tab-section" id="tab3">
       <div class="score-banner">
         <div>
-          <div style="font-size:0.75rem; color:#CBD5E1; font-weight:700;" id="uiScoreLabel">ВАШ ПРОГРЕСС В ТРЕНАЖЕРЕ:</div>
+          <div style="font-size:0.75rem; color:var(--line); font-weight:700;" id="uiScoreLabel">ВАШ ПРОГРЕСС В ТРЕНАЖЕРЕ:</div>
           <div class="score-count" id="scoreDisplay">0 / 10</div>
         </div>
-        <button class="reset-quiz-btn" onclick="resetPracticeQuiz()" id="uiResetBtn">🔄 Начать заново</button>
+        <button class="reset-quiz-btn" onclick="resetPracticeQuiz()" id="uiResetBtn">Начать заново</button>
       </div>
 
       <div class="card-block gold">
-        <h2 id="uiQuizTitle">🎯 Практикум: Чанки, Связки и Грамматические формулы</h2>
+        <h2 id="uiQuizTitle">Практикум: Чанки, Связки и Грамматические формулы</h2>
         <p id="uiQuizDesc">Выберите правильный вариант в каждой клинической ситуации и сразу прочитайте разбор:</p>
         <div id="quizContainer" style="display:flex; flex-direction:column; gap:12px;"></div>
       </div>
 
-      <a href="https://kazdoctors.com/tarifs" class="action-btn" id="uiUpgradeBtn">🌟 Открыть полный доступ ко всем тренажерам, конспектам и видеоурокам ➔</a>
+      <a href="https://kazdoctors.com/tarifs" class="action-btn" id="uiUpgradeBtn">Открыть полный доступ ко всем тренажерам, конспектам и видеоурокам ➔</a>
     </section>
   </main>
 
@@ -755,7 +757,7 @@
     // =========================================================================
     const FREE_GUIDE_DATA = {
       ui: {
-        backBtn: { ru: "⬅ На главную", kz: "⬅ Басты бетке" },
+        backBtn: { ru: "← На главную", kz: "← Басты бетке" },
         freeBadge: { ru: "🔓 ДОСТУПНО НА FREE", kz: "🔓 FREE ТАРИФІНДЕ АШЫҚ" },
         title: {
           ru: "Метод «Чанков» и Вся Медицинская Грамматика",
@@ -772,8 +774,8 @@
           { ru: "4. Тренажер (10)", kz: "4. Тренажер (10)" }
         ],
         cheatTitle: {
-          ru: "🗂️ Интерактивная шпаргалка по всей медицинской грамматике (16 карточек)",
-          kz: "🗂️ Бүкіл медициналық грамматика бойынша интерактивті шпаргалка (16 карточка)"
+          ru: "Интерактивная шпаргалка по всей медицинской грамматике (16 карточек)",
+          kz: "Бүкіл медициналық грамматика бойынша интерактивті шпаргалка (16 карточка)"
         },
         cheatDesc: {
           ru: "Все формулы, слова-маркеры и врачебные примеры в одном месте. Нажимайте 🔊 для прослушивания примеров.",
@@ -788,20 +790,20 @@
           kz: "ТРЕНАЖЕРДЕГІ НӘТИЖЕҢІЗ:"
         },
         resetBtn: {
-          ru: "🔄 Пройти заново",
-          kz: "🔄 Қайта бастау"
+          ru: "Пройти заново",
+          kz: "Қайта бастау"
         },
         quizTitle: {
-          ru: "🎯 Практикум: проверьте понимание чанков и формул",
-          kz: "🎯 Практикум: чанктар мен формулаларды тексеріңіз"
+          ru: "Практикум: проверьте понимание чанков и формул",
+          kz: "Практикум: чанктар мен формулаларды тексеріңіз"
         },
         quizDesc: {
           ru: "Нажимайте на правильный вариант ответа — система сразу покажет объяснение:",
           kz: "Дұрыс жауап нұсқасын басыңыз — жүйе бірден түсіндірмесін көрсетеді:"
         },
         upgradeBtn: {
-          ru: "🌟 Понравился формат? Посмотреть тарифы полного доступа (STANDARD / PRO / PREMIUM) ➔",
-          kz: "🌟 Формат ұнады ма? Толық доступ тарифтерін көру (STANDARD / PRO / PREMIUM) ➔"
+          ru: "Понравился формат? Посмотреть тарифы полного доступа (STANDARD / PRO / PREMIUM) ➔",
+          kz: "Формат ұнады ма? Толық доступ тарифтерін көру (STANDARD / PRO / PREMIUM) ➔"
         },
         filters: [
           { id: "all", ru: "Все темы (16)", kz: "Барлығы (16)" },
@@ -814,7 +816,7 @@
       // Примеры для интерактивного трансформера чанков во вкладке 1
       chunkExamples: [
         {
-          spec: { ru: "🫀 Кардиология (Оригинал из гайдлайна)", kz: "🫀 Кардиология (Гайдлайндағы түпнұсқа)" },
+          spec: { ru: "Кардиология (Оригинал из гайдлайна)", kz: "Кардиология (Гайдлайндағы түпнұсқа)" },
           left: "Hypertension",
           core: "is associated with",
           right: "a significant increase in risk of adverse cardiovascular and kidney outcomes.",
@@ -824,7 +826,7 @@
           }
         },
         {
-          spec: { ru: "🦋 Эндокринология (Адаптация)", kz: "🦋 Эндокринология (Бейімделген нұсқа)" },
+          spec: { ru: "Эндокринология (Адаптация)", kz: "Эндокринология (Бейімделген нұсқа)" },
           left: "Hypothyroidism",
           core: "is associated with",
           right: "weight gain and chronic fatigue.",
@@ -834,7 +836,7 @@
           }
         },
         {
-          spec: { ru: "🧠 Неврология (Адаптация)", kz: "🧠 Неврология (Бейімделген нұсқа)" },
+          spec: { ru: "Неврология (Адаптация)", kz: "Неврология (Бейімделген нұсқа)" },
           left: "Untreated atrial fibrillation",
           core: "is associated with",
           right: "a high risk of ischemic stroke.",
@@ -844,7 +846,7 @@
           }
         },
         {
-          spec: { ru: "🦠 Инфекции / Педиатрия (Адаптация)", kz: "🦠 Инфекция / Педиатрия (Бейімделген)" },
+          spec: { ru: "Инфекции / Педиатрия (Адаптация)", kz: "Инфекция / Педиатрия (Бейімделген)" },
           left: "Severe dehydration in infants",
           core: "is associated with",
           right: "electrolyte imbalance and lethargy.",
@@ -859,31 +861,31 @@
       tab0Html: {
         ru: `
           <div class="card-block">
-            <h2>🧩 Что такое «чанк» (chunk) и почему это главный секрет беглой речи?</h2>
+            <h2>Что такое «чанк» (chunk) и почему это главный секрет беглой речи?</h2>
             <p><b>Чанк</b> — это готовый речевой шаблон, когда предложение строится строго определенным образом, чтобы передать конкретную мысль. В английском языке нельзя менять порядок слов наугад — иначе изменится смысл или получится грубая ошибка:</p>
 
             <div class="clinical-quote">
-              🍎 <b>Простой пример на фразе «I love apples» (Я люблю яблоки):</b><br>
+              <b>Простой пример на фразе «I love apples» (Я люблю яблоки):</b><br>
               Порядок слов жестко зафиксирован: сначала <b>I</b> (кто), затем глагол <b>love</b> (что делает), и только потом <b>apples</b> (объект).<br>
               • Нельзя сказать: ❌ <s>I apples love</s> | ❌ <s>Apples love me</s> | ❌ <s>I loves apples</s>.<br>
               • Зато, зная чанк <b>"I love [___]"</b>, вы можете подставлять внутрь любые слова: <i>"I love oranges"</i>, или поменять глагол: <i>"I hate apples"</i>!
             </div>
 
             <div class="clinical-quote" style="border-left-color: var(--kz-gold-dark); background: var(--kz-gold-light);">
-              💡 <b>Главный принцип самообучения врача («Болмасаң да ұқсап бақ» / «Fake it till you make it»):</b><br>
+              <b>Главный принцип самообучения врача («Болмасаң да ұқсап бақ» / «Fake it till you make it»):</b><br>
               Вам не нужно придумывать английские предложения с нуля! Когда вы читаете любой зарубежный гайдлайн (даже по чужой специальности), выцепляйте оттуда <b>готовые каркасы-чанки</b> и подставляйте в них свои диагнозы и симптомы. <b>Копируйте чужие структуры для своих мыслей!</b>
             </div>
 
             <div class="chunk-lab">
-              <div class="chunk-lab-header">🔬 Интерактивный тренажер: как эндокринолог берет чанк у кардиолога</div>
-              <p style="font-size:0.78rem; color:#CBD5E1; margin-bottom:2px;">Нажимайте на кнопки специальностей ниже и смотрите, как работает золотой медицинский чанк <b>[Диагноз] is associated with [Осложнение/Симптом]</b>:</p>
+              <div class="chunk-lab-header">Интерактивный тренажер: как эндокринолог берет чанк у кардиолога</div>
+              <p style="font-size:0.78rem; color:var(--line); margin-bottom:2px;">Нажимайте на кнопки специальностей ниже и смотрите, как работает золотой медицинский чанк <b>[Диагноз] is associated with [Осложнение/Симптом]</b>:</p>
               <div class="spec-buttons" id="chunkSpecBtns"></div>
               <div class="chunk-sentence-box" id="chunkDisplayEn"></div>
-              <div style="font-size:0.78rem; color:#BAE6FD; font-weight:600;" id="chunkDisplayTr"></div>
+              <div style="font-size:0.78rem; color:var(--sky-100); font-weight:600;" id="chunkDisplayTr"></div>
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Быстрая проверка</span>
+              <span class="qc-badge">Быстрая проверка</span>
               <div class="qc-question">Вы — гастроэнтеролог и хотите сказать по модели чанка выше: «Прием НПВС ассоциирован с язвой желудка». Как вы построите фразу?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Блестяще! Вы взяли готовый академический чанк [A] is associated with [B] и получили идеальное предложение уровня B2/C1!')">NSAID use is associated with gastric ulcers.</button>
@@ -897,31 +899,31 @@
         `,
         kz: `
           <div class="card-block">
-            <h2>🧩 «Чанк» (chunk) дегеніміз не және ол еркін сөйлеуге қалай көмектеседі?</h2>
+            <h2>«Чанк» (chunk) дегеніміз не және ол еркін сөйлеуге қалай көмектеседі?</h2>
             <p><b>Чанк</b> — белгілі бір ойды жеткізу үшін сөйлемнің нақты бір қалыппен (шаблонмен) құрылуы. Ағылшын тілінде сөздердің орнын ойымызша ауыстыра алмаймыз — олай етсек, сөйлем мағынасы бұзылады немесе қате болады:</p>
 
             <div class="clinical-quote">
-              🍎 <b>«I love apples» (Мен алма жақсы көремін) фразасы арқылы қарапайым мысал:</b><br>
+              <b>«I love apples» (Мен алма жақсы көремін) фразасы арқылы қарапайым мысал:</b><br>
               Сөз тәртібі қатаң бекітілген: алдымен <b>I</b> (кім), сосын <b>love</b> (етістік), содан кейін ғана <b>apples</b> (нысан).<br>
               • Былай айтуға болмайды: ❌ <s>I apples love</s> | ❌ <s>Apples love me</s> | ❌ <s>I loves apples</s>.<br>
               • Есесіне, <b>"I love [___]"</b> чанкін білген соң, ішіндегі сөзді ғана ауыстыра бересіз: <i>"I love oranges"</i> немесе <i>"I hate apples"</i>!
             </div>
 
             <div class="clinical-quote" style="border-left-color: var(--kz-gold-dark); background: var(--kz-gold-light);">
-              💡 <b>Дәрігердің өз бетінше үйрену қағидасы («Болмасаң да ұқсап бақ» / «Fake it till you make it»):</b><br>
+              <b>Дәрігердің өз бетінше үйрену қағидасы («Болмасаң да ұқсап бақ» / «Fake it till you make it»):</b><br>
               Сөйлемді нөлден бастап ойлап табудың қажеті жоқ! Шетелдік гайдлайндарды оқығанда (тіпті басқа мамандық бойынша болса да), ішінен <b>дайын чанк-құрылымдарды</b> жұлып алып, өз диагнозыңыз бен симптомдарыңызды қойыңыз. <b>Өз ойыңызды жеткізу үшін дайын құрылымдарды көшіріп қолданыңыз!</b>
             </div>
 
             <div class="chunk-lab">
-              <div class="chunk-lab-header">🔬 Интерактивті зертхана: эндокринолог кардиологтың чанкін қалай қолданады</div>
-              <p style="font-size:0.78rem; color:#CBD5E1; margin-bottom:2px;">Төмендегі мамандық батырмаларын басып, <b>[Диагноз] is associated with [Асқыну/Симптом]</b> алтын медициналық чанкінің қалай жұмыс істейтінін көріңіз:</p>
+              <div class="chunk-lab-header">Интерактивті зертхана: эндокринолог кардиологтың чанкін қалай қолданады</div>
+              <p style="font-size:0.78rem; color:var(--line); margin-bottom:2px;">Төмендегі мамандық батырмаларын басып, <b>[Диагноз] is associated with [Асқыну/Симптом]</b> алтын медициналық чанкінің қалай жұмыс істейтінін көріңіз:</p>
               <div class="spec-buttons" id="chunkSpecBtns"></div>
               <div class="chunk-sentence-box" id="chunkDisplayEn"></div>
-              <div style="font-size:0.78rem; color:#BAE6FD; font-weight:600;" id="chunkDisplayTr"></div>
+              <div style="font-size:0.78rem; color:var(--sky-100); font-weight:600;" id="chunkDisplayTr"></div>
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Жылдам тексеру</span>
+              <span class="qc-badge">Жылдам тексеру</span>
               <div class="qc-question">Сіз гастроэнтерологсыз және жоғарыдағы чанк үлгісімен: «ҚҚСП (NSAID) қабылдау асқазан жарасымен байланысты» дегіңіз келеді. Сөйлемді қалай құрайсыз?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Керемет! Сіз дайын [A] is associated with [B] академиялық чанкін қолданып, мінсіз сөйлем құрадыңыз!')">NSAID use is associated with gastric ulcers.</button>
@@ -939,13 +941,13 @@
       tab1Html: {
         ru: `
           <div class="card-block">
-            <h2>🗣️ Фразы-заготовки (чанки): как структурно выразить любое мнение за 4 шага</h2>
+            <h2>Фразы-заготовки (чанки): как структурно выразить любое мнение за 4 шага</h2>
             <p>Когда на конференции, экзамене (IELTS / OET) или утренней планерке у вас спрашивают мнение, не пытайтесь говорить хаотично. Используйте <b>универсальную стратегию из 4 шагов</b> (её можно варьировать и подстраивать под себя):</p>
 
             <div class="steps-grid">
               <div class="step-card s1">
                 <div class="step-head">
-                  <span>1️⃣ Общее утверждение</span>
+                  <span>1. Общее утверждение</span>
                   <span>Мысль + Контекст</span>
                 </div>
                 <div class="chunk-pill-list">
@@ -959,7 +961,7 @@
 
               <div class="step-card s2">
                 <div class="step-head">
-                  <span>2️⃣ Объяснение (Почему?)</span>
+                  <span>2. Объяснение (Почему?)</span>
                   <span>Причина и следствие</span>
                 </div>
                 <div class="chunk-pill-list">
@@ -972,7 +974,7 @@
 
               <div class="step-card s3">
                 <div class="step-head">
-                  <span>3️⃣ Примеры</span>
+                  <span>3. Примеры</span>
                   <span>Личный / Клинический опыт</span>
                 </div>
                 <div class="chunk-pill-list">
@@ -984,7 +986,7 @@
 
               <div class="step-card s4">
                 <div class="step-head">
-                  <span>4️⃣ Вывод (Итог)</span>
+                  <span>4. Вывод (Итог)</span>
                   <span>Красивое завершение</span>
                 </div>
                 <div class="chunk-pill-list">
@@ -998,12 +1000,12 @@
           </div>
 
           <div class="card-block gold">
-            <h2>📝 Разбор готового ответа по 4 шагам (как это звучит целиком)</h2>
+            <h2>Разбор готового ответа по 4 шагам (как это звучит целиком)</h2>
             <p>Вопрос: <b>"Explain the importance of learning a new language. How can it benefit individuals and society?"</b> Посмотрите, как желтые фразы-заготовки (чанки) скрепляют весь монолог в единую логическую цепь:</p>
 
             <div class="sample-box">
               <div class="sample-header">
-                <span>🎙️ Образец ответа по формуле 4 шагов</span>
+                <span>Образец ответа по формуле 4 шагов</span>
                 <button class="hl-btn" style="background:var(--kz-gold); color:var(--text-dark); border:none; padding:5px 12px; border-radius:10px; font-weight:800; font-size:0.72rem; cursor:pointer;" onclick="speakEn('I think that learning new languages is very important in the daily life of every person, especially in the modern world. This is because people can communicate freely. As a result, it can help build network. For example, I have many colleagues from abroad. Therefore, learning a new language is important.')">🔊 Прослушать ответ</button>
               </div>
               <div class="sample-body">
@@ -1023,13 +1025,13 @@
         `,
         kz: `
           <div class="card-block">
-            <h2>🗣️ Дайын фразалар (чанктар): кез келген пікірді 4 қадаммен жүйелі жеткізу</h2>
+            <h2>Дайын фразалар (чанктар): кез келген пікірді 4 қадаммен жүйелі жеткізу</h2>
             <p>Конференцияда, емтиханда (IELTS / OET) немесе таңғы жиналыста сізден пікір сұрағанда, ойыңызды шашыратпай, <b>4 қадамнан тұратын әмбебап стратегияны</b> қолданыңыз:</p>
 
             <div class="steps-grid">
               <div class="step-card s1">
                 <div class="step-head">
-                  <span>1️⃣ Жалпы тұжырым</span>
+                  <span>1. Жалпы тұжырым</span>
                   <span>Ой + Контекст</span>
                 </div>
                 <div class="chunk-pill-list">
@@ -1043,7 +1045,7 @@
 
               <div class="step-card s2">
                 <div class="step-head">
-                  <span>2️⃣ Түсіндірме (Неліктен?)</span>
+                  <span>2. Түсіндірме (Неліктен?)</span>
                   <span>Себеп пен салдар</span>
                 </div>
                 <div class="chunk-pill-list">
@@ -1056,7 +1058,7 @@
 
               <div class="step-card s3">
                 <div class="step-head">
-                  <span>3️⃣ Мысалдар</span>
+                  <span>3. Мысалдар</span>
                   <span>Жеке / Клиникалық тәжірибе</span>
                 </div>
                 <div class="chunk-pill-list">
@@ -1068,7 +1070,7 @@
 
               <div class="step-card s4">
                 <div class="step-head">
-                  <span>4️⃣ Қорытынды</span>
+                  <span>4. Қорытынды</span>
                   <span>Ойды түйіндеу</span>
                 </div>
                 <div class="chunk-pill-list">
@@ -1560,7 +1562,7 @@
             <div class="gc-Meaning" style="margin-top:4px;">${card.meaning[currentLang]}</div>
           </div>
           <div class="gc-formula">${card.formula}</div>
-          <div class="gc-words">🔑 <b>Words:</b> ${card.words}</div>
+          <div class="gc-words"><b>Words:</b> ${card.words}</div>
           <div class="gc-examples">${card.examples}</div>
         `;
         grid.appendChild(div);

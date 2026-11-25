@@ -247,16 +247,16 @@
     }
 
     .option-btn.correct {
-      background-color: #DCFCE7 !important;
-      border-color: #22C55E !important;
-      color: #15803D !important;
+      background-color: var(--ok-bg) !important;
+      border-color: var(--ok-mid) !important;
+      color: var(--ok) !important;
       font-weight: 700;
     }
 
     .option-btn.wrong {
-      background-color: #FEE2E2 !important;
-      border-color: #EF4444 !important;
-      color: #B91C1C !important;
+      background-color: var(--err-bg) !important;
+      border-color: var(--err-mid) !important;
+      color: var(--err) !important;
       font-weight: 700;
     }
 
@@ -277,7 +277,7 @@
     }
 
     .explanation-box.answered {
-      background-color: #E0F2FE;
+      background-color: var(--sky-50);
       border-left-color: var(--kz-blue-dark);
     }
 
@@ -313,6 +313,7 @@
       transform: scale(0.98);
     }
   </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
 </head>
 <body>
 
@@ -321,7 +322,7 @@
   <div class="card">
     <!-- Header -->
     <header class="header">
-      <a href="https://kazdoctors.com/grammar/" class="home-btn">⬅ Go back</a>
+      <a href="https://kazdoctors.com/grammar/" class="home-btn">← Go back</a>
       <div class="brand">@doctors.speak</div>
     </header>
 
@@ -333,13 +334,13 @@
           <option value="1">Level 1 — Recognize the grammar</option>
           <option value="2">Level 2 — Fill in comparative/superlative</option>
           <option value="3">Level 3 — Put the sentence in order</option>
-          <option value="mix">🔥 Mix</option>
+          <option value="mix">Mix</option>
         </select>
 
         <div class="stats">
           <span>Total: <strong id="totalCount">0</strong></span>
-          <span>Correct: <strong id="correctCount" style="color:#16A34A;">0</strong></span>
-          <span>Streak: <strong id="streakCount" style="color:#D9A000;">0 🔥</strong></span>
+          <span>Correct: <strong id="correctCount" style="color:var(--ok-mid);">0</strong></span>
+          <span>Streak: <strong id="streakCount" style="color:var(--sun-600);">0 🔥</strong></span>
         </div>
       </div>
 
@@ -353,7 +354,7 @@
         <div id="optionsGrid" class="options-grid"></div>
         
         <div id="explanationBox" class="explanation-box">
-          <div><strong>💡 Explanation:</strong> <span id="explanationText">Choose the correct answer!</span></div>
+          <div><strong>Explanation:</strong> <span id="explanationText">Choose the correct answer!</span></div>
         </div>
 
         <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next ➔</button>

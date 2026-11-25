@@ -188,7 +188,7 @@
     }
 
     .paywall-card {
-      background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+      background: linear-gradient(145deg, var(--sky-900) 0%, var(--sky-900) 100%);
       color: #FFFFFF;
       border-radius: 22px;
       padding: 28px 22px;
@@ -216,7 +216,7 @@
     .pw-badge {
       background: rgba(0, 161, 222, 0.22);
       border: 1px solid rgba(0, 161, 222, 0.55);
-      color: #7DD3FC;
+      color: var(--sky-100);
       font-size: 0.7rem;
       font-weight: 800;
       padding: 4px 12px;
@@ -235,7 +235,7 @@
     .pw-desc {
       font-size: 0.82rem;
       line-height: 1.55;
-      color: #CBD5E1;
+      color: var(--line);
       font-weight: 500;
     }
 
@@ -414,9 +414,9 @@
       background: var(--bg-main);
     }
 
-    .art-card.a1 { border-top: 4px solid #0284C7; background: #F0F9FF; }
-    .art-card.a2 { border-top: 4px solid #D97706; background: var(--kz-gold-light); }
-    .art-card.a3 { border-top: 4px solid #16A34A; background: #F0FDF4; }
+    .art-card.a1 { border-top: 4px solid var(--sky-700); background: var(--sky-50); }
+    .art-card.a2 { border-top: 4px solid var(--sun-ink); background: var(--kz-gold-light); }
+    .art-card.a3 { border-top: 4px solid var(--ok-mid); background: #F0FDF4; }
 
     .art-title {
       font-size: 0.88rem;
@@ -475,20 +475,20 @@
     }
 
     .grammar-table tr:nth-child(even) td {
-      background: #F8FAFC;
+      background: var(--subtle);
     }
 
     /* Интерактивный разбор статьи Wiley (Necrotizing enterocolitis) */
     .abstract-box {
       background: #FFFFFF;
-      border: 2px solid #CBD5E1;
+      border: 2px solid var(--line);
       border-radius: 14px;
       overflow: hidden;
       margin-top: 10px;
     }
 
     .abstract-header {
-      background: #1E293B;
+      background: var(--sky-900);
       color: #FFFFFF;
       padding: 10px 14px;
       font-size: 0.78rem;
@@ -516,8 +516,8 @@
       transition: all 0.15s ease;
     }
 
-    .hl-btn.indef-type { background: #BAE6FD; color: #0369A1; }
-    .hl-btn.def-type { background: #FDE68A; color: #92400E; }
+    .hl-btn.indef-type { background: var(--sky-100); color: var(--sky-900); }
+    .hl-btn.def-type { background: #FDE68A; color: var(--sun-ink); }
     .hl-btn.zero-type { background: #BBF7D0; color: #166534; }
     .hl-btn.reset { background: rgba(255,255,255,0.2); color: #FFFFFF; }
 
@@ -525,7 +525,7 @@
       padding: 14px;
       font-size: 0.84rem;
       line-height: 1.68;
-      color: #334155;
+      color: var(--ink-2);
     }
 
     .ar-a, .ar-the, .ar-zero {
@@ -535,29 +535,29 @@
     }
 
     .abstract-body.show-a .ar-a {
-      background: #BAE6FD;
-      color: #0369A1;
+      background: var(--sky-100);
+      color: var(--sky-900);
       font-weight: 800;
-      border-bottom: 2px solid #0284C7;
+      border-bottom: 2px solid var(--sky-700);
     }
 
     .abstract-body.show-the .ar-the {
       background: #FDE68A;
-      color: #92400E;
+      color: var(--sun-ink);
       font-weight: 800;
-      border-bottom: 2px solid #D97706;
+      border-bottom: 2px solid var(--sun-ink);
     }
 
     .abstract-body.show-zero .ar-zero {
-      background: #DCFCE7;
+      background: var(--ok-bg);
       color: #166534;
       font-weight: 700;
-      border-bottom: 2px dashed #16A34A;
+      border-bottom: 2px dashed var(--ok-mid);
     }
 
     /* Быстрые микро-упражнения внутри теории (Quick Check) */
     .quick-check {
-      background: #F8FAFC;
+      background: var(--subtle);
       border: 1px dashed var(--kz-blue);
       border-radius: 14px;
       padding: 14px;
@@ -720,13 +720,15 @@
       }
     }
   </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body>
 
   <!-- ШАПКА УРОКА -->
   <header>
     <div class="header-top">
-      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">⬅ К списку уроков</a>
+      <a href="https://kazdoctors.com/grammar/" class="back-btn" id="uiBackBtn">← К списку уроков</a>
       <div class="header-right-controls">
         <span id="userTierBadge" class="tier-badge"></span>
         <div class="lang-switch">
@@ -743,7 +745,7 @@
   </header>
 
   <!-- ИНДИКАТОР ПРОВЕРКИ ПОДПИСКИ -->
-  <div id="authLoader">🔄 Проверка подписки и доступа к конспекту...</div>
+  <div id="authLoader">Проверка подписки и доступа к конспекту...</div>
 
   <!-- БЛОК PAYWALL (ПОКАЗЫВАЕТСЯ, ЕСЛИ НЕТ ТАРИФА ПРО / ПРЕМИУМ / ВИП) -->
   <div id="paywallGate">
@@ -756,13 +758,13 @@
       </p>
       <div class="pw-buttons">
         <a href="https://kazdoctors.com/tarifs" class="pw-btn-primary" id="pwTarifsBtn">
-          🌟 Перейти к тарифам (kazdoctors.com/tarifs)
+          Перейти к тарифам (kazdoctors.com/tarifs)
         </a>
         <a href="https://instagram.com/doctors.speak" target="_blank" class="pw-btn-secondary" id="pwContactBtn">
-          💬 Написать нам (@doctors.speak)
+          Написать нам (@doctors.speak)
         </a>
         <a href="/login.html" class="pw-btn-secondary" id="pwLoginBtn" style="display:none;">
-          🔐 Войти в аккаунт
+          Войти в аккаунт
         </a>
       </div>
     </div>
@@ -789,7 +791,7 @@
       <!-- ВКЛАДКА 3: СЛОВАРЬ С ПРИМЕРАМИ -->
       <section class="tab-section" id="tab2">
         <div class="card-block">
-          <h2 id="uiVocabTitle">💊 Клинический словарь урока (14 терминов)</h2>
+          <h2 id="uiVocabTitle">Клинический словарь урока (14 терминов)</h2>
           <p id="uiVocabDesc">Нажмите 🔊, чтобы прослушать произношение. Обратите внимание, какой артикль (a, an, the или нулевой) стоит перед каждым термином в примерах.</p>
           <div class="vocab-grid" id="vocabGrid"></div>
         </div>
@@ -799,18 +801,18 @@
       <!-- ВКЛАДКА 4: ПРАКТИКУМ (EXERCISE 1 & 2 ИЗ PDF) -->
       <section class="tab-section" id="tab3">
         <div class="card-block gold">
-          <h2 id="uiEx1Title">✍️ Упражнение 1: Выберите правильный артикль (a, an, the или —)</h2>
+          <h2 id="uiEx1Title">Упражнение 1: Выберите правильный артикль (a, an, the или —)</h2>
           <p id="uiEx1Desc">Определите: слово исчисляемое в единственном числе (a/an), уже конкретизировано в контексте (the) или неисчисляемое (—):</p>
           <div id="ex1Container" style="display:flex; flex-direction:column; gap:10px;"></div>
         </div>
 
         <div class="card-block">
-          <h2 id="uiEx2Title">🩺 Упражнение 2: Вставьте подходящий артикль в клинических фразах</h2>
+          <h2 id="uiEx2Title">Упражнение 2: Вставьте подходящий артикль в клинических фразах</h2>
           <p id="uiEx2Desc">Помните про уникальные системы организма и показатели (the immune system, the GFR) vs первое упоминание симптома (a crust):</p>
           <div id="ex2Container" style="display:flex; flex-direction:column; gap:10px;"></div>
         </div>
 
-        <a href="./articles/" class="action-btn" id="uiGoTrainerBtn">🎯 Запустить игровой тренажер по Уроку 13 ➔</a>
+        <a href="../articles/" class="action-btn" id="uiGoTrainerBtn">Запустить игровой тренажер по Уроку 13 ➔</a>
       </section>
     </main>
   </div>
@@ -837,7 +839,7 @@
       standard: { ru: "СТАНДАРТ", kz: "СТАНДАРТ" },
       pro: { ru: "ТАРИФ: ПРО", kz: "ТАРИФ: ПРО" },
       premium: { ru: "ТАРИФ: ПРЕМИУМ", kz: "ТАРИФ: ПРЕМИУМ" },
-      vip: { ru: "ТАРИФ: ВИП 👑", kz: "ТАРИФ: ВИП 👑" }
+      vip: { ru: "ТАРИФ: ВИП", kz: "ТАРИФ: ВИП" }
     };
 
     let currentViewerState = {
@@ -946,12 +948,12 @@
         : "ДОСТУПНО В ТАРИФАХ ПРО / ПРЕМИУМ / ВИП";
 
       tarifsBtn.textContent = isKz
-        ? "🌟 Тарифтер бетіне өту (kazdoctors.com/tarifs)"
-        : "🌟 Перейти к тарифам (kazdoctors.com/tarifs)";
+        ? "Тарифтер бетіне өту (kazdoctors.com/tarifs)"
+        : "Перейти к тарифам (kazdoctors.com/tarifs)";
 
       contactBtn.textContent = isKz
-        ? "💬 Бізге жазу (@doctors.speak)"
-        : "💬 Написать нам (@doctors.speak)";
+        ? "Бізге жазу (@doctors.speak)"
+        : "Написать нам (@doctors.speak)";
 
       if (!isLoggedIn) {
         titleEl.textContent = isKz
@@ -961,7 +963,7 @@
           ? "Бұл интерактивті конспект «Про», «Премиум» және «ВИП» жазылымдары бар дәрігерлерге арналған. Тарифтер бетінде өзіңізге ыңғайлы пакетті таңдай аласыз:"
           : "Этот интерактивный конспект открыт для врачей с подпиской «Про», «Премиум» или «ВИП». Ознакомьтесь с вариантами доступа на странице тарифов:";
         loginBtn.style.display = "inline-flex";
-        loginBtn.textContent = isKz ? "🔐 Аккаунтқа кіру" : "🔐 Уже есть подписка? Войти в аккаунт";
+        loginBtn.textContent = isKz ? "Аккаунтқа кіру" : "Уже есть подписка? Войти в аккаунт";
       } else if (reasonTier === "standard") {
         titleEl.textContent = isKz
           ? "Сізде «Стандарт» тарифі белсенді (тек тренажерлер)"
@@ -986,7 +988,7 @@
     // =========================================================================
     const LESSON13_DATA = {
       ui: {
-        backBtn: { ru: "⬅ К списку уроков", kz: "⬅ Сабақтар тізіміне" },
+        backBtn: { ru: "← К списку уроков", kz: "← Сабақтар тізіміне" },
         title: {
           ru: "Articles: A, An, The & No Article (Артикли в медицине)",
           kz: "Articles: A, An, The & No Article (Медицинадағы артикльдер)"
@@ -1002,8 +1004,8 @@
           { ru: "4. Упражнения", kz: "4. Жаттығулар" }
         ],
         vocabTitle: {
-          ru: "💊 Клинический словарь урока (14 терминов)",
-          kz: "💊 Сабақтың клиникалық сөздігі (14 термин)"
+          ru: "Клинический словарь урока (14 терминов)",
+          kz: "Сабақтың клиникалық сөздігі (14 термин)"
         },
         vocabDesc: {
           ru: "Нажмите 🔊 для прослушивания произношения. Обратите внимание на выбор артикля перед каждым медицинским термином.",
@@ -1014,7 +1016,7 @@
           kz: "4-қадамға өту: Жылдам жаттығулар ➔"
         },
         ex1Title: {
-          ru: "✍️ Упражнение 1: Выберите правильный артикль (a, an, the или —)",
+          ru: "Упражнение 1: Выберите правильный артикль (a, an, the или —)",
           kz: "✍️ 1-жаттығу: Дұрыс артикльді таңдаңыз (a, an, the немесе —)"
         },
         ex1Desc: {
@@ -1022,7 +1024,7 @@
           kz: "Тексеріңіз: біз саналатын бір затты алғаш рет атап тұрмыз ба (a/an), нақты зат па (the), әлде жалпы/саналмайтын ұғым ба (—):"
         },
         ex2Title: {
-          ru: "🩺 Упражнение 2: Вставьте артикль в клинических ситуациях",
+          ru: "Упражнение 2: Вставьте артикль в клинических ситуациях",
           kz: "🩺 2-жаттығу: Клиникалық жағдайларда тиісті артикльді қойыңыз"
         },
         ex2Desc: {
@@ -1030,7 +1032,7 @@
           kz: "Әр бос орынға сәйкес келетін нұсқаны таңдаңыз:"
         },
         goTrainerBtn: {
-          ru: "🎯 Перейти к основному тренажеру Урока 13 ➔",
+          ru: "Перейти к основному тренажеру Урока 13 ➔",
           kz: "🎯 13-сабақтың негізгі тренажеріне өту ➔"
         }
       },
@@ -1039,13 +1041,13 @@
       tab0Html: {
         ru: `
           <div class="card-block">
-            <h2>🧭 Зачем нужны артикли и как их почувствовать врачу?</h2>
+            <h2>Зачем нужны артикли и как их почувствовать врачу?</h2>
             <p>В русском и казахском языках артиклей нет, поэтому мы угадываем смысл по интонации или порядку слов. А в английском языке маленькое слово перед существительным сразу подсказывает коллеге: <b>мы говорим о каком-то новом объекте впервые, об уже известном пациенте/органе или о болезни вообще</b>:</p>
 
             <div class="art-grid">
               <div class="art-card a1">
                 <div class="art-title">
-                  <span>1️⃣ A / AN («Незнакомый объект»)</span>
+                  <span>1. A / AN («Незнакомый объект»)</span>
                   <span>Впервые / Один</span>
                 </div>
                 <span class="comp-formula">A + согласный звук • AN + гласный звук</span>
@@ -1059,7 +1061,7 @@
 
               <div class="art-card a2">
                 <div class="art-title">
-                  <span>2️⃣ THE («Знакомый / Конкретный»)</span>
+                  <span>2. THE («Знакомый / Конкретный»)</span>
                   <span>В контексте</span>
                 </div>
                 <span class="comp-formula">THE + любой конкретный объект (ед. и мн. ч.)</span>
@@ -1072,7 +1074,7 @@
 
               <div class="art-card a3">
                 <div class="art-title">
-                  <span>3️⃣ NO ARTICLE (—) («Общее понятие»)</span>
+                  <span>3. NO ARTICLE (—) («Общее понятие»)</span>
                   <span>Вообще / Имена</span>
                 </div>
                 <span class="comp-formula">Без артикля: неисчисл. / мн. ч. / имена</span>
@@ -1086,7 +1088,7 @@
             </div>
 
             <div class="clinical-quote" style="border-left-color: var(--kz-blue); margin-top: 12px;">
-              💡 <b>Как выбрать между A и AN за 1 секунду:</b><br>
+              <b>Как выбрать между A и AN за 1 секунду:</b><br>
               Смотрите на <b>первый звук</b> слова, стоящего сразу после артикля:<br>
               • Согласный звук $\\rightarrow$ <b>A</b>: <i><b>a</b> contagion, <b>a</b> crust, <b>a</b> flutter, <b>a</b> follow-up, <b>a</b> gasping sound</i>.<br>
               • Гласный звук (a, e, i, o, u) $\\rightarrow$ <b>AN</b>: <i><b>an</b> exacerbation, <b>an</b> allergic reaction, <b>an</b> incorrect result, <b>an</b> acute disease</i>.
@@ -1094,7 +1096,7 @@
           </div>
 
           <div class="card-block gold">
-            <h2>🔄 Классическая цепочка на приеме: как «A» превращается в «THE»</h2>
+            <h2>Классическая цепочка на приеме: как «A» превращается в «THE»</h2>
             <p>Посмотрите, как в одной истории болезни артикль меняется по мере того, как объект становится знакомым врачу:</p>
             <div class="clinical-quote" style="border-left-color: var(--kz-gold-dark);">
               1. <b>Первое упоминание (новый факт):</b> <i>"The patient had <b><u>a</u> detachment</b> of the retina after trauma."</i> (У пациента произошла отслойка сетчатки).<br>
@@ -1102,7 +1104,7 @@
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Быстрая проверка</span>
+              <span class="qc-badge">Быстрая проверка</span>
               <div class="qc-question">У пациента запланирован повторный визит (follow-up) через три дня после выписки: "He had ___ follow-up scheduled three days after discharge." Какой артикль выберем?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Верно! Один запланированный повторный прием (исчисляемое понятие в ед. числе, упоминается впервые, начинается с согласного звука f) -> a follow-up.')">a</button>
@@ -1117,13 +1119,13 @@
         `,
         kz: `
           <div class="card-block">
-            <h2>🧭 Артикльдер не үшін қажет және дәрігер оларды қалай оңай түсінеді?</h2>
+            <h2>Артикльдер не үшін қажет және дәрігер оларды қалай оңай түсінеді?</h2>
             <p>Қазақ және орыс тілдерінде артикль жоқ. Ал ағылшын тілінде зат есімнің алдындағы кішкентай сөз әріптесіңізге бірден бағыт береді: <b>біз белгісіз бір зат туралы алғаш рет айтып тұрмыз ба, әлде бұрыннан таныс нақты науқас/ағза туралы ма, әлде жалпы ауру/процесс туралы ма</b>:</p>
 
             <div class="art-grid">
               <div class="art-card a1">
                 <div class="art-title">
-                  <span>1️⃣ A / AN («Бейтаныс нысан»)</span>
+                  <span>1. A / AN («Бейтаныс нысан»)</span>
                   <span>Алғаш рет / Бір</span>
                 </div>
                 <span class="comp-formula">A + дауыссыз дыбыс • AN + дауысты дыбыс</span>
@@ -1137,7 +1139,7 @@
 
               <div class="art-card a2">
                 <div class="art-title">
-                  <span>2️⃣ THE («Таныс / Нақты нысан»)</span>
+                  <span>2. THE («Таныс / Нақты нысан»)</span>
                   <span>Контексте бар</span>
                 </div>
                 <span class="comp-formula">THE + кез келген нақты зат (жекеше/көпше)</span>
@@ -1150,7 +1152,7 @@
 
               <div class="art-card a3">
                 <div class="art-title">
-                  <span>3️⃣ NO ARTICLE (—) («Жалпы ұғым»)</span>
+                  <span>3. NO ARTICLE (—) («Жалпы ұғым»)</span>
                   <span>Жалпы / Есімдер</span>
                 </div>
                 <span class="comp-formula">Артикльсіз: саналмайтын / көпше / есімдер</span>
@@ -1164,7 +1166,7 @@
             </div>
 
             <div class="clinical-quote" style="border-left-color: var(--kz-blue); margin-top: 12px;">
-              💡 <b>A мен AN артиклін 1 секундта қалай таңдаймыз:</b><br>
+              <b>A мен AN артиклін 1 секундта қалай таңдаймыз:</b><br>
               Артикльден кейін тұрған сөздің <b>бірінші дыбысына</b> қараңыз:<br>
               • Дауыссыз дыбыс $\\rightarrow$ <b>A</b>: <i><b>a</b> contagion, <b>a</b> crust, <b>a</b> flutter, <b>a</b> follow-up, <b>a</b> gasping sound</i>.<br>
               • Дауысты дыбыс (a, e, i, o, u) $\\rightarrow$ <b>AN</b>: <i><b>an</b> exacerbation, <b>an</b> allergic reaction, <b>an</b> incorrect result, <b>an</b> acute disease</i>.
@@ -1172,7 +1174,7 @@
           </div>
 
           <div class="card-block gold">
-            <h2>🔄 Қабылдау кезіндегі классикалық тізбек: «A» қалай «THE»-ге айналады</h2>
+            <h2>Қабылдау кезіндегі классикалық тізбек: «A» қалай «THE»-ге айналады</h2>
             <p>Ауру тарихында нысан дәрігерге таныс болған сайын артикльдің қалай өзгеретініне қараңыз:</p>
             <div class="clinical-quote" style="border-left-color: var(--kz-gold-dark);">
               1. <b>Алғаш рет атау (жаңа дерек):</b> <i>"The patient had <b><u>a</u> detachment</b> of the retina after trauma."</i> (Науқаста жарақаттан кейін торлы қабықтың ажырауы болды).<br>
@@ -1180,7 +1182,7 @@
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Жылдам тексеру</span>
+              <span class="qc-badge">Жылдам тексеру</span>
               <div class="qc-question">Науқасқа ауруханадан шыққаннан кейін үш күннен соң қайта қаралу (follow-up) белгіленді: "He had ___ follow-up scheduled three days after discharge." Қай артикльді таңдаймыз?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Дұрыс! Бір жоспарланған қайта қабылдау (жекеше түрдегі саналатын ұғым, алғаш рет аталып тұр, f дауыссыз дыбысынан басталады) -> a follow-up.')">a</button>
@@ -1199,7 +1201,7 @@
       tab1Html: {
         ru: `
           <div class="card-block gold">
-            <h2>🩺 Главные клинические правила: когда врачу нужен THE, а когда A / AN или —</h2>
+            <h2>Главные клинические правила: когда врачу нужен THE, а когда A / AN или —</h2>
             <p>Лучший способ выучить артикли — подмечать их в реальных медицинских контекстах. Вот 4 ситуации, которые постоянно встречаются в тестах и статьях:</p>
 
             <table class="grammar-table">
@@ -1236,12 +1238,12 @@
           </div>
 
           <div class="card-block">
-            <h2>🔬 Практика чтения Wiley Mini-Review: Necrotizing Enterocolitis (НЭК)</h2>
+            <h2>Практика чтения Wiley Mini-Review: Necrotizing Enterocolitis (НЭК)</h2>
             <p>Прочитайте реальный абстракт неонатологического обзора <b>«Necrotizing enterocolitis»</b> из журнала <i>Neurogastroenterology & Motility</i>. Нажимайте на кнопки подсветки и наблюдайте, почему авторы ставят <b>a/an</b>, <b>the</b> или оставляют слова <b>без артикля</b>:</p>
 
             <div class="abstract-box">
               <div class="abstract-header">
-                <span>📄 Wiley Mini-Review: Necrotizing enterocolitis — Abstract</span>
+                <span>Wiley Mini-Review: Necrotizing enterocolitis — Abstract</span>
                 <div class="abstract-controls">
                   <button class="hl-btn indef-type" onclick="toggleAbstractHighlight('a')">Неопределенный (a / an)</button>
                   <button class="hl-btn def-type" onclick="toggleAbstractHighlight('the')">Определенный (the)</button>
@@ -1256,7 +1258,7 @@
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Вопрос по научному абстракту</span>
+              <span class="qc-badge">Вопрос по научному абстракту</span>
               <div class="qc-question">Посмотрите на первое предложение абстракта: "Necrotizing enterocolitis (NEC) is AN acute inflammatory disease of THE intestine..." Почему перед acute inflammatory disease стоит AN, а перед intestine — THE?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Блестяще! Мы классифицируем НЭК как «одно из острых воспалительных заболеваний» (an acute inflammatory disease), а кишечник (the intestine) — это конкретный орган/система организма!')">AN — потому что это «одно из» острых заболеваний (классификация), а THE — потому что кишечник (the intestine) — конкретная анатомическая система</button>
@@ -1270,7 +1272,7 @@
         `,
         kz: `
           <div class="card-block gold">
-            <h2>🩺 Басты клиникалық ережелер: дәрігерге қашан THE, ал қашан A / AN немесе — қажет?</h2>
+            <h2>Басты клиникалық ережелер: дәрігерге қашан THE, ал қашан A / AN немесе — қажет?</h2>
             <p>Артикльдерді меңгерудің ең жақсы жолы — оларды нақты медициналық контексте байқау. Міне, тесттер мен мақалаларда үнемі кездесетін 4 жағдай:</p>
 
             <table class="grammar-table">
@@ -1307,12 +1309,12 @@
           </div>
 
           <div class="card-block">
-            <h2>🔬 Wiley Mini-Review мақаласын талдау: Necrotizing Enterocolitis (НЭК)</h2>
+            <h2>Wiley Mini-Review мақаласын талдау: Necrotizing Enterocolitis (НЭК)</h2>
             <p><i>Neurogastroenterology & Motility</i> журналындағы <b>«Necrotizing enterocolitis»</b> неонатологиялық шолуының абстрактісін оқыңыз. Авторлардың <b>a/an</b>, <b>the</b> артикльдерін немесе <b>артикльсіз</b> форманы неліктен таңдағанын көру үшін батырмаларды басыңыз:</p>
 
             <div class="abstract-box">
               <div class="abstract-header">
-                <span>📄 Wiley Mini-Review: Necrotizing enterocolitis — Abstract</span>
+                <span>Wiley Mini-Review: Necrotizing enterocolitis — Abstract</span>
                 <div class="abstract-controls">
                   <button class="hl-btn indef-type" onclick="toggleAbstractHighlight('a')">Белгісіздік (a / an)</button>
                   <button class="hl-btn def-type" onclick="toggleAbstractHighlight('the')">Белгілілік (the)</button>
@@ -1327,7 +1329,7 @@
             </div>
 
             <div class="quick-check">
-              <span class="qc-badge">⚡ Ғылыми абстракт бойынша сұрақ</span>
+              <span class="qc-badge">Ғылыми абстракт бойынша сұрақ</span>
               <div class="qc-question">Бірінші сөйлемге қараңыз: "Necrotizing enterocolitis (NEC) is AN acute inflammatory disease of THE intestine..." Неліктен acute inflammatory disease алдында AN, ал intestine алдында THE тұр?</div>
               <div class="qc-options">
                 <button class="qc-btn" onclick="checkInlineQuiz(this, true, 'Керемет! Біз НЭК-ті «жедел қабыну ауруларының бірі» ретінде жіктейміз (an acute inflammatory disease), ал ішек (the intestine) — ағзаның нақты анатомиялық жүйесі!')">AN — себебі бұл жедел аурулардың «бірі» (жіктеу), ал THE — себебі ішек (the intestine) нақты анатомиялық ағза жүйесі</button>

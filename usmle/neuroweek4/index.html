@@ -48,8 +48,8 @@
             position: fixed;
             touch-action: manipulation;
             font-family: 'Montserrat', sans-serif;
-            background-color: #F2F5F8;
-            color: #1E293B;
+            background-color: var(--bg);
+            color: var(--ink);
         }
 
         /* Fluid text sizing for mobile viewports */
@@ -74,13 +74,15 @@
             width: 4px;
         }
         ::-webkit-scrollbar-track {
-            background: #F1F5F9;
+            background: var(--subtle);
         }
         ::-webkit-scrollbar-thumb {
-            background: #00A1DE;
+            background: var(--sky-700);
             border-radius: 4px;
         }
     </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body class="bg-slide-bg text-slide-text flex flex-col justify-between select-none antialiased h-[100dvh] max-h-[100dvh] w-full p-0 m-0 border-box">
 
@@ -89,7 +91,7 @@
         <div class="max-w-md mx-auto flex items-center justify-between gap-2">
             <!-- GO BACK BUTTON -->
             <a href="https://kazdoctors.com/usmle/neurology" target="_self" class="inline-flex items-center gap-1 px-3 py-1 bg-white/20 hover:bg-white/30 text-white text-xs font-bold rounded-full border border-white/35 backdrop-blur-md transition-all active:scale-95 shrink-0">
-                <span>⬅️Go back</span>
+                <span>←Go back</span>
             </a>
 
             <!-- CENTER LECTURE TITLE & BADGE -->
@@ -197,15 +199,7 @@
         </main>
 
         <!-- FOOTER INFO (INDEX-58 STYLE) -->
-        <footer class="shrink-0 flex items-center justify-center gap-2 py-1">
-            <a href="https://instagram.com/doctors.speak" target="_blank" class="inline-flex items-center gap-1 text-slide-darkred bg-white border border-slate-200 font-bold text-[11px] px-3 py-1 rounded-full shadow-sm hover:bg-slate-50 active:scale-95 transition-all">
-                <span>@doctors.speak</span>
-            </a>
-            <a href="https://kazdoctors.com/usmle/neurology" class="inline-flex items-center gap-1 text-slide-darkred bg-white border border-slate-200 font-bold text-[11px] px-3 py-1 rounded-full shadow-sm hover:bg-slate-50 active:scale-95 transition-all">
-                <svg class="w-3.5 h-3.5 fill-slide-red" viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
-                <span>Go back</span>
-            </a>
-        </footer>
+        <div id="ds-footer"></div>
     </div>
 
     <script>

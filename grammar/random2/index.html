@@ -194,7 +194,7 @@
     }
 
     .timer-badge {
-      background: #FEF2F2;
+      background: var(--err-bg);
       color: var(--red);
       border: 1px solid #FECACA;
       padding: 2px 7px;
@@ -249,7 +249,7 @@
 
     /* Состояние карточки при неправильном ответе */
     .term-box.state-wrong {
-      background: #FEF2F2;
+      background: var(--err-bg);
       border-color: #FCA5A5;
       border-left: 6px solid var(--red);
       text-align: left;
@@ -279,7 +279,7 @@
 
     .topic-tag {
       display: inline-block;
-      background: #FFFBEB;
+      background: var(--sun-50);
       color: var(--kz-gold-dark);
       border: 1px solid rgba(217, 160, 0, 0.3);
       font-size: 0.62rem;
@@ -297,9 +297,9 @@
     }
 
     .theme-tag.med {
-      background: #E0F2FE;
-      color: #0369A1;
-      border: 1px solid #BAE6FD;
+      background: var(--sky-50);
+      color: var(--sky-900);
+      border: 1px solid var(--sky-100);
     }
 
     .theme-tag.pop {
@@ -339,11 +339,11 @@
     }
 
     .feedback-status.correct {
-      color: #15803D;
+      color: var(--ok);
     }
 
     .feedback-status.wrong {
-      color: #B91C1C;
+      color: var(--err);
     }
 
     .peek-question-btn {
@@ -377,7 +377,7 @@
     .feedback-explanation {
       font-size: 0.73rem;
       font-weight: 600;
-      color: #1E293B;
+      color: var(--ink);
       line-height: 1.32;
     }
 
@@ -417,15 +417,15 @@
 
     .option-btn.correct {
       background-color: var(--green-bg) !important;
-      border-color: #22C55E !important;
-      color: #15803D !important;
+      border-color: var(--ok-mid) !important;
+      color: var(--ok) !important;
       font-weight: 800;
     }
 
     .option-btn.wrong {
       background-color: var(--red-bg) !important;
-      border-color: #EF4444 !important;
-      color: #B91C1C !important;
+      border-color: var(--err-mid) !important;
+      color: var(--err) !important;
       font-weight: 800;
     }
 
@@ -557,14 +557,14 @@
       height: var(--zoom-zone-height);
       min-height: var(--zoom-zone-height);
       background: #18181B;
-      border-top: 2px dashed #475569;
+      border-top: 2px dashed var(--ink-2);
       margin: 0 10px 10px;
       border-radius: 14px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      color: #94A3B8;
+      color: var(--line-2);
       position: relative;
       flex-shrink: 0;
       user-select: none;
@@ -582,14 +582,14 @@
     .zoom-zone-title {
       font-size: 0.8rem;
       font-weight: 800;
-      color: #E2E8F0;
+      color: var(--line);
       letter-spacing: 0.3px;
       margin-bottom: 3px;
     }
 
     .zoom-zone-sub {
       font-size: 0.65rem;
-      color: #64748B;
+      color: var(--ink-3);
       font-weight: 600;
       text-align: center;
       padding: 0 16px;
@@ -606,7 +606,7 @@
       right: 8px;
       background: rgba(255, 255, 255, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #CBD5E1;
+      color: var(--line);
       font-size: 0.6rem;
       font-weight: 700;
       padding: 2px 7px;
@@ -621,6 +621,7 @@
       color: var(--text-muted);
     }
   </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
 </head>
 <body>
 
@@ -629,7 +630,7 @@
   <div class="card">
     <!-- Шапка -->
     <header class="header">
-      <a href="https://kazdoctors.com/grammar/" class="home-btn">⬅ Go back</a>
+      <a href="https://kazdoctors.com/grammar/" class="home-btn">← Go back</a>
       <div class="brand">@doctors.speak • B1–B2 Grammar</div>
     </header>
 
@@ -638,31 +639,31 @@
       
       <!-- Переключатель режимов -->
       <div class="mode-tabs">
-        <button id="tabPractice" class="tab-btn active" onclick="setGameMode('practice')">🎓 Разбор (Без времени)</button>
-        <button id="tabRush" class="tab-btn" onclick="setGameMode('rush')">⚡ Grammar Rush (1 мин)</button>
+        <button id="tabPractice" class="tab-btn active" onclick="setGameMode('practice')">Разбор (Без времени)</button>
+        <button id="tabRush" class="tab-btn" onclick="setGameMode('rush')">Grammar Rush (1 мин)</button>
       </div>
 
       <!-- Фильтры: Грамматическая тема, Контент (75% Med / 25% Pop), Уровень (B1–B2) -->
       <div class="filters-row">
         <select id="topicSelect" class="mode-select" onchange="resetDeckAndLoad()">
-          <option value="all">🎲 Все темы (All Topics)</option>
-          <option value="conditionals">🔀 Conditionals (1st–3rd, Mixed)</option>
-          <option value="passive">🛡️ Passive & Causative</option>
-          <option value="modals">🔍 Modals & Past Deduction</option>
-          <option value="tenses">⏳ Perfect & Narrative Tenses</option>
-          <option value="clauses">🔗 Relative & Participle Clauses</option>
-          <option value="inversion_subj">⚡ Subjunctive & Inversion</option>
-          <option value="gerund_linkers">🧩 Gerunds & Linkers</option>
+          <option value="all">Все темы (All Topics)</option>
+          <option value="conditionals">Conditionals (1st–3rd, Mixed)</option>
+          <option value="passive">Passive & Causative</option>
+          <option value="modals">Modals & Past Deduction</option>
+          <option value="tenses">Perfect & Narrative Tenses</option>
+          <option value="clauses">Relative & Participle Clauses</option>
+          <option value="inversion_subj">Subjunctive & Inversion</option>
+          <option value="gerund_linkers">Gerunds & Linkers</option>
         </select>
 
         <select id="themeSelect" class="mode-select" onchange="resetDeckAndLoad()">
           <option value="all">🎭 75% Med + 25% Pop</option>
-          <option value="medical">🩺 Medical (38)</option>
-          <option value="pop">🎬 Pop Culture (12)</option>
+          <option value="medical">Medical (38)</option>
+          <option value="pop">Pop Culture (12)</option>
         </select>
 
         <select id="levelSelect" class="mode-select" onchange="resetDeckAndLoad()">
-          <option value="all">🔥 B1–B2 (50)</option>
+          <option value="all">B1–B2 (50)</option>
           <option value="B1">Level B1 (25)</option>
           <option value="B2">Level B2 (25)</option>
         </select>
@@ -670,7 +671,7 @@
 
       <!-- Панель статистики и таймера -->
       <div class="stats">
-        <span id="timerBadge" class="timer-badge">⏱️ <span id="timeLeft">60</span>s</span>
+        <span id="timerBadge" class="timer-badge"><span id="timeLeft">60</span>s</span>
         <span>Вопрос: <strong id="deckProgress">1/50</strong></span>
         <span>Всего: <strong id="totalCount">0</strong></span>
         <span>Верно: <strong id="correctCount" style="color:var(--green);">0</strong></span>
@@ -683,7 +684,7 @@
         <div id="questionView">
           <div class="tags-row">
             <span id="levelTag" class="level-tag">LEVEL B1</span>
-            <span id="themeTag" class="theme-tag med">🩺 Medical</span>
+            <span id="themeTag" class="theme-tag med">Medical</span>
             <span id="topicTag" class="topic-tag">Conditionals</span>
           </div>
           <div id="questionText" class="term-title">Loading grammar question...</div>
@@ -693,7 +694,7 @@
         <div id="feedbackView" class="feedback-view">
           <div class="feedback-header">
             <div id="feedbackStatus" class="feedback-status correct">✅ Верно!</div>
-            <button id="peekQuestionBtn" class="peek-question-btn" onclick="toggleQuestionPeek()">👁 Показать вопрос</button>
+            <button id="peekQuestionBtn" class="peek-question-btn" onclick="toggleQuestionPeek()">Показать вопрос</button>
           </div>
           <div id="completedSentence" class="completed-sentence"></div>
           <div id="feedbackExplanation" class="feedback-explanation"></div>
@@ -711,7 +712,7 @@
     <!-- ЭКРАН ИТОГОВ GRAMMAR RUSH (1 МИНУТА) -->
     <div id="rushResultScreen" class="rush-modal">
       <div style="text-align: center;">
-        <h2 style="font-size: 1.02rem; font-weight: 900;">⚡ Grammar Rush завершён! (1 мин)</h2>
+        <h2 style="font-size: 1.02rem; font-weight: 900;">Grammar Rush завершён! (1 мин)</h2>
         <p style="font-size: 0.7rem; color: var(--text-muted);">Отличная скорость! Вот ваша статистика и разбор ошибок:</p>
       </div>
 
@@ -733,15 +734,15 @@
       <div id="rushMistakesList" class="mistakes-list"></div>
 
       <div class="rush-actions">
-        <button class="rush-btn-primary" onclick="startRushMode()">🔄 Новый Rush (1 мин)</button>
-        <button class="rush-btn-secondary" onclick="setGameMode('practice')">🎓 В режим разбора</button>
+        <button class="rush-btn-primary" onclick="startRushMode()">Новый Rush (1 мин)</button>
+        <button class="rush-btn-secondary" onclick="setGameMode('practice')">В режим разбора</button>
       </div>
     </div>
 
     <!-- НИЖНЯЯ ЗОНА ПОД ОКНО ZOOM (225px) -->
     <div id="zoomSafeZone" class="zoom-safe-zone">
       <button id="zoomToggleBtn" class="zoom-toggle-btn" onclick="toggleZoomZone()">Свернуть зону Zoom ▾</button>
-      <div class="zoom-zone-title">🎥 Место для окна Zoom (Alikhan K)</div>
+      <div class="zoom-zone-title">Место для окна Zoom (Alikhan K)</div>
       <div class="zoom-zone-sub">Перетащите видео-окно Zoom сюда — все вопросы, варианты A–D и разбор находятся выше и не перекрываются</div>
     </div>
   </div>
@@ -1250,7 +1251,7 @@
       const btn = document.getElementById('zoomToggleBtn');
       zone.classList.toggle('collapsed');
       if (zone.classList.contains('collapsed')) {
-        btn.textContent = "🎥 Развернуть зону для окна Zoom (225px) ▴";
+        btn.textContent = "Развернуть зону для окна Zoom (225px) ▴";
       } else {
         btn.textContent = "Свернуть зону Zoom ▾";
       }
@@ -1326,7 +1327,7 @@
       list.innerHTML = '';
 
       if (rushMistakes.length === 0) {
-        list.innerHTML = `<div style="text-align:center; padding: 14px; color: var(--green); font-weight: 800; font-size: 0.78rem;">🎉 Идеально! Ни одной ошибки в Grammar Rush!</div>`;
+        list.innerHTML = `<div style="text-align:center; padding: 14px; color: var(--green); font-weight: 800; font-size: 0.78rem;">Идеально! Ни одной ошибки в Grammar Rush!</div>`;
       } else {
         rushMistakes.forEach(m => {
           const item = document.createElement('div');
@@ -1401,10 +1402,10 @@
       const themeTag = document.getElementById('themeTag');
       if (currentQuestion.theme === 'pop') {
         themeTag.className = 'theme-tag pop';
-        themeTag.textContent = '🎬 Pop Culture';
+        themeTag.textContent = 'Pop Culture';
       } else {
         themeTag.className = 'theme-tag med';
-        themeTag.textContent = '🩺 Medical';
+        themeTag.textContent = 'Medical';
       }
 
       document.getElementById('questionText').textContent = currentQuestion.question;
@@ -1500,8 +1501,8 @@
         `<span class="ans-highlight">${currentQuestion.correctOption}</span>`
       );
       document.getElementById('completedSentence').innerHTML = filledSentence;
-      document.getElementById('feedbackExplanation').innerHTML = `<strong>💡 Разбор:</strong> ${currentQuestion.explanation}`;
-      document.getElementById('peekQuestionBtn').textContent = '👁 Вопрос с пропуском';
+      document.getElementById('feedbackExplanation').innerHTML = `<strong>Разбор:</strong> ${currentQuestion.explanation}`;
+      document.getElementById('peekQuestionBtn').textContent = 'Вопрос с пропуском';
     }
 
     // Позволяет в 1 клик переключиться обратно на исходный текст задания, если нужно во время урока

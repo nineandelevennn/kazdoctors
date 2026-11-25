@@ -137,7 +137,7 @@
         /* High Yield Question Box (адаптировано под стиль index-58) */
         .fact-card {
             background: #FFF8E1;
-            border: 1px solid #FFE082;
+            border: 1px solid var(--sun-500);
             border-left: 5px solid var(--kz-gold);
             border-radius: 16px;
             padding: 14px 16px;
@@ -172,7 +172,7 @@
         .fact-question {
             font-size: 0.8rem;
             font-weight: 700;
-            color: #1E293B;
+            color: var(--ink);
             line-height: 1.35;
             margin-bottom: 8px;
         }
@@ -186,13 +186,13 @@
             border-left: 3px solid var(--kz-gold);
             font-size: 0.76rem;
             font-weight: 600;
-            color: #1E293B;
+            color: var(--ink);
             line-height: 1.35;
         }
 
         .answer-btn {
             background: var(--kz-gold);
-            color: #1E293B;
+            color: var(--ink);
             border: none;
             border-radius: 8px;
             padding: 6px 12px;
@@ -351,13 +351,15 @@
             .card-text p { font-size: 0.7rem; }
         }
     </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body>
 
     <header>
         <!-- Верхняя кнопка "Назад" -->
         <a href="https://kazdoctors.com" class="back-btn">
-            <span>⬅️Go back</span>
+            <span>←Go back</span>
         </a>
 
         <div class="brand-badge">@doctors.speak</div>
@@ -369,7 +371,7 @@
         <!-- Hourly High Yield USMLE Step 1 Q&A Box -->
         <div class="fact-card" id="usmle-fact-box">
             <div class="fact-header">
-                <span class="fact-badge">⚡ Hourly Step 1 Question</span>
+                <span class="fact-badge">Hourly Step 1 Question</span>
                 <span class="fact-field" id="fact-field">Neurology</span>
             </div>
             <div class="fact-question" id="fact-question">Loading question...</div>
@@ -427,17 +429,7 @@
         </a>
     </main>
 
-    <footer>
-        <a href="https://instagram.com/doctors.speak" target="_blank" class="instagram-link">
-            <span>@doctors.speak</span>
-        </a>
-
-        <!-- Нижняя кнопка "Назад" -->
-        <a href="https://kazdoctors.com" class="back-btn">
-            <svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
-            <span>Go back</span>
-        </a>
-    </footer>
+    <div id="ds-footer"></div>
 
     <script>
         const usmleQuestions = [

@@ -274,13 +274,15 @@
             .card-text p { font-size: 0.7rem; }
         }
     </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body>
 
     <header>
         <!-- Верхняя кнопка "Назад" -->
         <a href="https://kazdoctors.com/usmle" class="back-btn">
-            <span>⬅️Go back</span>
+            <span>←Go back</span>
         </a>
 
         <div class="brand-badge">@doctors.speak</div>
@@ -340,7 +342,7 @@
         <!-- Go back -->
         <a href="https://kazdoctors.com/usmle/" class="trainer-card">
             <div class="card-content">
-                <div class="card-icon">⬅️</div>
+                <div class="card-icon">←</div>
                 <div class="card-text">
                     <h2>Go Back</h2>
                     <p>Back Go👍</p>
@@ -350,17 +352,7 @@
         </a>
     </main>
 
-    <footer>
-        <a href="https://instagram.com/doctors.speak" target="_blank" class="instagram-link">
-            <span>@doctors.speak</span>
-        </a>
-
-        <!-- Нижняя кнопка "Назад" -->
-        <a href="https://kazdoctors.com/" class="back-btn">
-            <svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
-            <span>kazdoctors.com</span>
-        </a>
-    </footer>
+    <div id="ds-footer"></div>
 
     <script>
         const usmleQuestions = [

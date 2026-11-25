@@ -164,7 +164,7 @@
     .step-nav {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      background: #F8FAFC;
+      background: var(--subtle);
       border-bottom: 1px solid var(--border-color);
       padding: 6px;
       gap: 6px;
@@ -314,7 +314,7 @@
     }
 
     .skill-card {
-      background: #F8FAFC;
+      background: var(--subtle);
       border: 1px solid var(--border-color);
       border-radius: 14px;
       padding: 12px;
@@ -340,13 +340,13 @@
     /* Интерактивный блок статьи UpToDate */
     .uptodate-box {
       background: #FFFFFF;
-      border: 2px solid #CBD5E1;
+      border: 2px solid var(--line);
       border-radius: 14px;
       overflow: hidden;
     }
 
     .uptodate-header {
-      background: #1E293B;
+      background: var(--sky-900);
       color: #FFFFFF;
       padding: 10px 14px;
       font-size: 0.78rem;
@@ -373,15 +373,15 @@
       transition: all 0.15s ease;
     }
 
-    .hl-btn.be { background: #BAE6FD; color: #0369A1; }
-    .hl-btn.do { background: #FDE68A; color: #92400E; }
+    .hl-btn.be { background: var(--sky-100); color: var(--sky-900); }
+    .hl-btn.do { background: #FDE68A; color: var(--sun-ink); }
     .hl-btn.reset { background: rgba(255,255,255,0.2); color: #FFFFFF; }
 
     .uptodate-body {
       padding: 14px;
       font-size: 0.85rem;
       line-height: 1.65;
-      color: #334155;
+      color: var(--ink-2);
     }
 
     .v-be, .v-do {
@@ -391,17 +391,17 @@
     }
 
     .uptodate-body.show-be .v-be {
-      background: #BAE6FD;
-      color: #0369A1;
+      background: var(--sky-100);
+      color: var(--sky-900);
       font-weight: 800;
-      border-bottom: 2px solid #0284C7;
+      border-bottom: 2px solid var(--sky-700);
     }
 
     .uptodate-body.show-do .v-do {
       background: #FDE68A;
-      color: #92400E;
+      color: var(--sun-ink);
       font-weight: 800;
-      border-bottom: 2px solid #D97706;
+      border-bottom: 2px solid var(--sun-ink);
     }
 
     /* Сетка словаря */
@@ -711,6 +711,8 @@
       }
     }
   </style>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body>
 
@@ -721,7 +723,7 @@
     <!-- ШАПКА САЙТА -->
     <header class="header">
       <div class="header-left">
-        <a href="https://kazdoctors.com/grammar/" class="home-btn" id="uiBackBtn">⬅ Назад</a>
+        <a href="https://kazdoctors.com/grammar/" class="home-btn" id="uiBackBtn">← Назад</a>
         <div class="brand">@doctors.speak</div>
       </div>
       <div class="header-right">
@@ -743,19 +745,19 @@
     <nav class="step-nav">
       <button class="step-tab active" onclick="switchTab(0)" id="tabBtn0">
         <span class="step-badge">1</span>
-        <span id="uiTab0">📚 Теория и Статьи</span>
+        <span id="uiTab0">Теория и Статьи</span>
       </button>
       <button class="step-tab" onclick="switchTab(1)" id="tabBtn1">
         <span class="step-badge">2</span>
-        <span id="uiTab1">💊 Словарь</span>
+        <span id="uiTab1">Словарь</span>
       </button>
       <button class="step-tab" onclick="switchTab(2)" id="tabBtn2">
         <span class="step-badge">3</span>
-        <span id="uiTab2">✍️ Разминка</span>
+        <span id="uiTab2">Разминка</span>
       </button>
       <button class="step-tab" onclick="switchTab(3)" id="tabBtn3">
         <span class="step-badge">4</span>
-        <span id="uiTab3">🎯 Тренажер</span>
+        <span id="uiTab3">Тренажер</span>
       </button>
     </nav>
 
@@ -771,7 +773,7 @@
         <!-- Интерактивный разбор скриншота из UpToDate (COPD) -->
         <div class="uptodate-box">
           <div class="uptodate-header">
-            <span id="uiUptodateTitle">🔬 Разбор реальной статьи UpToDate (COPD / ХОБЛ)</span>
+            <span id="uiUptodateTitle">Разбор реальной статьи UpToDate (COPD / ХОБЛ)</span>
             <div class="uptodate-controls">
               <button class="hl-btn be" onclick="highlightUpToDate('be')" id="uiBtnHlBe">Подсветить TO BE</button>
               <button class="hl-btn do" onclick="highlightUpToDate('do')" id="uiBtnHlDo">Подсветить TO DO</button>
@@ -804,11 +806,11 @@
            ==================================================================== -->
       <section class="tab-pane" id="tabPane2">
         <div class="theory-card gold">
-          <h3 id="uiWarmupHeader">✍️ Легкая разминка перед тренажером</h3>
+          <h3 id="uiWarmupHeader">Легкая разминка перед тренажером</h3>
           <p id="uiWarmupSub">Потренируйтесь строить вопросы врачу и распознавать глаголы в спокойном темпе с подсказками.</p>
         </div>
         <div id="warmupContainer" style="display:flex; flex-direction:column; gap:10px;"></div>
-        <button class="step-action-btn" onclick="switchTab(3)" id="uiNextToTrainer">Перейти к шагу 4: Запустить Тренажер 🔥</button>
+        <button class="step-action-btn" onclick="switchTab(3)" id="uiNextToTrainer">Перейти к шагу 4: Запустить Тренажер</button>
       </section>
 
       <!-- ====================================================================
@@ -820,8 +822,8 @@
 
           <div class="stats">
             <span><span id="uiStatTotal">Всего</span>: <strong id="totalCount">0</strong></span>
-            <span><span id="uiStatCorrect">Верно</span>: <strong id="correctCount" style="color:#16A34A;">0</strong></span>
-            <span><span id="uiStatStreak">Серия</span>: <strong id="streakCount" style="color:#D9A000;">0 🔥</strong></span>
+            <span><span id="uiStatCorrect">Верно</span>: <strong id="correctCount" style="color:var(--ok-mid);">0</strong></span>
+            <span><span id="uiStatStreak">Серия</span>: <strong id="streakCount" style="color:var(--sun-600);">0 🔥</strong></span>
           </div>
 
           <div class="term-box">
@@ -832,7 +834,7 @@
           <div id="optionsGrid" class="options-grid"></div>
           
           <div id="explanationBox" class="explanation-box">
-            <div><strong id="uiExpLabel">💡 Объяснение:</strong> <span id="explanationText">Выберите правильный ответ!</span></div>
+            <div><strong id="uiExpLabel">Объяснение:</strong> <span id="explanationText">Выберите правильный ответ!</span></div>
           </div>
 
           <button id="nextBtn" class="next-btn" onclick="nextQuestion()" id="uiNextQuestionBtn">Дальше ➔</button>
@@ -883,7 +885,7 @@
     // ==========================================================================
     const LESSON_CONFIG = {
       ui: {
-        backBtn: { ru: "⬅ Назад", kz: "⬅ Артқа" },
+        backBtn: { ru: "← Назад", kz: "← Артқа" },
         lessonTitle: {
           ru: "Урок 1: Глаголы TO BE и TO DO в медицине",
           kz: "1-сабақ: Медицинадағы TO BE және TO DO етістіктері"
@@ -893,14 +895,14 @@
           kz: "UpToDate мақалаларын оқу, науқастан анамнез жинау және конференцияда сөйлеу негізі"
         },
         tabs: [
-          { ru: "📚 Теория", kz: "📚 Теория" },
-          { ru: "💊 Словарь", kz: "💊 Сөздік" },
-          { ru: "✍️ Разминка", kz: "✍️ Жаттығу" },
-          { ru: "🎯 Тренажер", kz: "🎯 Тренажер" }
+          { ru: "Теория", kz: "Теория" },
+          { ru: "Словарь", kz: "Сөздік" },
+          { ru: "Разминка", kz: "Жаттығу" },
+          { ru: "Тренажер", kz: "Тренажер" }
         ],
         uptodateTitle: {
-          ru: "🔬 Разбор реальной статьи UpToDate (COPD / ХОБЛ)",
-          kz: "🔬 UpToDate мақаласын талдау (COPD / ӨСОА)"
+          ru: "Разбор реальной статьи UpToDate (COPD / ХОБЛ)",
+          kz: "UpToDate мақаласын талдау (COPD / ӨСОА)"
         },
         btnHlBe: { ru: "Только TO BE", kz: "Тек TO BE" },
         btnHlDo: { ru: "Только TO DO", kz: "Тек TO DO" },
@@ -922,21 +924,21 @@
           kz: "3-қадамға өту: Жеңіл жаттығу ➔"
         },
         warmupHeader: {
-          ru: "✍️ Легкая практика перед тренажером",
-          kz: "✍️ Тренажер алдындағы жеңіл жаттығу"
+          ru: "Легкая практика перед тренажером",
+          kz: "Тренажер алдындағы жеңіл жаттығу"
         },
         warmupSub: {
           ru: "Проверьте, как вы умеете находить глагол и строить вопросы пациенту или коллегам.",
           kz: "Етістікті табу және науқасқа немесе әріптестерге сұрақ қою дағдысын тексеріңіз."
         },
         nextToTrainer: {
-          ru: "Перейти к шагу 4: Запустить Тренажер 🔥",
-          kz: "4-қадамға өту: Тренажерді іске қосу 🔥"
+          ru: "Перейти к шагу 4: Запустить Тренажер",
+          kz: "4-қадамға өту: Тренажерді іске қосу"
         },
         statTotal: { ru: "Всего", kz: "Барлығы" },
         statCorrect: { ru: "Верно", kz: "Дұрыс" },
         statStreak: { ru: "Серия", kz: "Серия" },
-        expLabel: { ru: "💡 Объяснение:", kz: "💡 Түсіндірме:" },
+        expLabel: { ru: "Объяснение:", kz: "Түсіндірме:" },
         expDefault: { ru: "Выберите правильный вариант ответа!", kz: "Дұрыс жауап нұсқасын таңдаңыз!" },
         nextBtn: { ru: "Дальше ➔", kz: "Келесі ➔" },
         levels: [
@@ -944,7 +946,7 @@
           { value: "2", ru: "Уровень 2 — Вставить пропущенный глагол", kz: "2-деңгей — Тиісті етістікті қою" },
           { value: "3", ru: "Уровень 3 — Найти главный глагол в научной статье", kz: "3-деңгей — Ғылыми мақаладан негізгі етістікті табу" },
           { value: "4", ru: "Уровень 4 — Опрос пациента и Конференции", kz: "4-деңгей — Науқасты сұрастыру және Конференция" },
-          { value: "mix", ru: "🔥 МИКС (Все уровни сразу)", kz: "🔥 МИКС (Барлық деңгейлер)" }
+          { value: "mix", ru: "МИКС (Все уровни сразу)", kz: "МИКС (Барлық деңгейлер)" }
         ]
       },
 
@@ -952,7 +954,7 @@
       theoryBlocks: {
         ru: `
           <div class="theory-card">
-            <h3>🎯 Главное правило медицинского английского</h3>
+            <h3>Главное правило медицинского английского</h3>
             <p>В отличие от русского и казахского языков (где можно сказать <em>«Пациент в палате»</em> или <em>«Давление высокое»</em> без глагола), <strong>в английском предложении ВСЕГДА есть глагол</strong>. Когда вы читаете сложную статью в PubMed или UpToDate, <strong>первым делом ищите глагол!</strong> Он делит предложение на две части: КТО/ЧТО (Subject) и ЧТО ПРОИСХОДИТ.</p>
             <div class="formula-grid">
               <div class="formula-box">
@@ -983,7 +985,7 @@
           </div>
 
           <div class="theory-card">
-            <h3>🩺 Как применять это в 3-х главных задачах врача:</h3>
+            <h3>Как применять это в 3-х главных задачах врача:</h3>
             <div class="skills-grid">
               <div class="skill-card">
                 <h4>📄 1. Чтение статей (Articles)</h4>
@@ -1015,7 +1017,7 @@
         `,
         kz: `
           <div class="theory-card">
-            <h3>🎯 Медициналық ағылшын тілінің басты ережесі</h3>
+            <h3>Медициналық ағылшын тілінің басты ережесі</h3>
             <p>Қазақ және орыс тілдерінен айырмашылығы (мысалы, <em>«Науқас палатада»</em> немесе <em>«Қан қысымы жоғары»</em> деп етістіксіз айтуға болады), <strong>ағылшын сөйлемінде ӘРҚАШАН етістік болады</strong>. PubMed немесе UpToDate мақалаларын оқығанда, <strong>ең алдымен етістікті іздеңіз!</strong> Ол сөйлемді КІМ/НЕ (Subject) және НЕ ІСТЕЙДІ/ҚАНДАЙ деген екі бөлікке бөледі.</p>
             <div class="formula-grid">
               <div class="formula-box">
@@ -1046,7 +1048,7 @@
           </div>
 
           <div class="theory-card">
-            <h3>🩺 Дәрігердің 3 негізгі міндетінде қалай қолданамыз:</h3>
+            <h3>Дәрігердің 3 негізгі міндетінде қалай қолданамыз:</h3>
             <div class="skills-grid">
               <div class="skill-card">
                 <h4>📄 1. Мақала оқу (Articles)</h4>

@@ -10,7 +10,7 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Doctors Speak">
     <meta property="og:title" content="Doctors Speak — Medical English">
-    <meta property="og:description" content="Интерактивные тренажеры, видеокурс и конспекты для врачей и резидентов. Проверьте свой уровень бесплатно за 5 минут!">
+    <meta property="og:description" content="Интерактивные тренажеры, видеокурс и конспекты для врачей и резидентов. Проверьте свой уровень бесплатно за 7 минут!">
     <meta property="og:url" content="https://kazdoctors.com/">
     <meta property="og:image" content="https://kazdoctors.com/icon-192.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -20,7 +20,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#0B3555">
+    <meta name="theme-color" content="#0070BF">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="DoctorsSpeak">
@@ -106,7 +106,7 @@
             gap: 6px;
             background: rgba(255, 255, 255, 0.14);
             border: 1px solid rgba(255, 255, 255, 0.28);
-            color: #F8FAFC;
+            color: var(--subtle);
             font-weight: 700;
             font-size: 0.74rem;
             letter-spacing: 0.3px;
@@ -162,7 +162,7 @@
             font-weight: 700;
             letter-spacing: 0.6px;
             text-transform: uppercase;
-            color: #BAE6FD;
+            color: var(--sky-100);
         }
 
         /* Панель входа / приветствия в шапке */
@@ -258,7 +258,7 @@
             gap: 6px;
             background: rgba(0, 0, 0, 0.28);
             border: 1px solid rgba(255, 255, 255, 0.35);
-            color: #E2E8F0;
+            color: var(--line);
             font-size: 0.7rem;
             font-weight: 800;
             letter-spacing: 0.5px;
@@ -293,7 +293,7 @@
            ========================================================================== */
         .announcements-card {
             background: var(--card-bg);
-            border: 1.5px solid #93C5FD;
+            border: 1.5px solid var(--sky-100);
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 3px 12px rgba(11, 53, 85, 0.06);
@@ -301,7 +301,7 @@
 
         .marathon-banner {
             padding: 13px 15px;
-            background: linear-gradient(135deg, #FFFFFF 0%, #F0F9FF 100%);
+            background: linear-gradient(135deg, #FFFFFF 0%, var(--sky-50) 100%);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -323,7 +323,7 @@
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: #92400E;
+            color: var(--sun-ink);
             background: var(--kz-gold-soft);
             border: 1px solid #FDE68A;
             padding: 2px 8px;
@@ -365,7 +365,7 @@
 
         details.changelog-spoiler {
             border-top: 1px solid var(--border-color);
-            background: #F8FAFC;
+            background: var(--subtle);
         }
 
         details.changelog-spoiler summary {
@@ -434,7 +434,7 @@
             font-weight: 800;
             color: var(--kz-blue-dark);
             background: var(--kz-blue-soft);
-            border: 1px solid #BAE6FD;
+            border: 1px solid var(--sky-100);
             padding: 4px 10px;
             border-radius: 8px;
             text-transform: uppercase;
@@ -450,7 +450,7 @@
         .woth-streak, .woth-timer {
             font-size: 0.68rem;
             font-weight: 800;
-            background: #F8FAFC;
+            background: var(--subtle);
             border: 1px solid var(--border-color);
             color: var(--text-secondary);
             padding: 3px 8px;
@@ -476,7 +476,7 @@
             height: 32px;
             border-radius: 8px;
             border: 1.5px solid var(--border-color);
-            background: #F8FAFC;
+            background: var(--subtle);
             color: var(--kz-blue-dark);
             cursor: pointer;
             display: inline-flex;
@@ -499,7 +499,7 @@
 
         .quiz-btn {
             width: 100%;
-            background: #F8FAFC;
+            background: var(--subtle);
             color: var(--text-dark);
             border: 1.5px solid var(--border-color);
             padding: 9px 13px;
@@ -524,9 +524,9 @@
         }
 
         .quiz-btn.incorrect {
-            background: #FEF2F2 !important;
-            color: #B91C1C !important;
-            border-color: #F87171 !important;
+            background: var(--err-bg) !important;
+            color: var(--err) !important;
+            border-color: var(--err-mid) !important;
         }
 
         .quiz-footer-row {
@@ -586,7 +586,7 @@
             font-weight: 700;
             color: var(--kz-blue-dark);
             background: var(--kz-blue-soft);
-            border: 1px solid #BAE6FD;
+            border: 1px solid var(--sky-100);
             padding: 3px 8px;
             border-radius: 6px;
         }
@@ -628,7 +628,7 @@
         }
 
         summary.category-header:hover {
-            background: #F8FAFC;
+            background: var(--subtle);
         }
 
         summary.category-header::-webkit-details-marker {
@@ -636,7 +636,7 @@
         }
 
         details.category-group[open] > summary.category-header {
-            background: #F8FAFC;
+            background: var(--subtle);
             border-bottom: 1.5px solid var(--border-color);
         }
 
@@ -656,7 +656,7 @@
             justify-content: center;
             font-size: 1.2rem;
             flex-shrink: 0;
-            border: 1.5px solid #BAE6FD;
+            border: 1.5px solid var(--sky-100);
         }
 
         .cat-head-text h2 {
@@ -681,7 +681,7 @@
             width: 30px;
             height: 30px;
             border-radius: 8px;
-            background: #F8FAFC;
+            background: var(--subtle);
             border: 1.5px solid var(--border-color);
             display: flex;
             align-items: center;
@@ -740,7 +740,7 @@
         .module-row.standalone-card {
             border-radius: 16px;
             padding: 14px 16px;
-            border-color: #99F6E4;
+            border-color: var(--sky-100);
             box-shadow: 0 3px 10px rgba(13, 148, 136, 0.07);
         }
 
@@ -759,7 +759,7 @@
             width: 38px;
             height: 38px;
             border-radius: 10px;
-            background: #F8FAFC;
+            background: var(--subtle);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -803,7 +803,7 @@
         .badge-pill {
             font-size: 0.64rem;
             font-weight: 800;
-            background: #F1F5F9;
+            background: var(--subtle);
             color: var(--text-secondary);
             border: 1px solid var(--border-color);
             padding: 3px 8px;
@@ -820,7 +820,7 @@
         .badge-pill.blue-pill {
             background: var(--kz-blue-soft);
             color: var(--kz-blue-dark);
-            border-color: #BAE6FD;
+            border-color: var(--sky-100);
         }
 
         /* ==========================================================================
@@ -828,7 +828,7 @@
            ========================================================================== */
         .free-lesson-hub {
             background: var(--card-bg);
-            border: 1.5px solid #7DD3FC;
+            border: 1.5px solid var(--sky-100);
             border-radius: 14px;
             padding: 12px;
             display: flex;
@@ -861,7 +861,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 6px;
-            background: #F1F5F9;
+            background: var(--subtle);
             padding: 4px;
             border-radius: 10px;
             border: 1.5px solid var(--border-color);
@@ -942,7 +942,7 @@
         }
 
         .flh-action-link.notes {
-            background: #F8FAFC;
+            background: var(--subtle);
             color: var(--text-dark);
             border: 1.5px solid var(--border-color);
         }
@@ -955,7 +955,7 @@
         .flh-action-link.trainer {
             background: var(--kz-blue-soft);
             color: var(--kz-blue-dark);
-            border: 1.5px solid #7DD3FC;
+            border: 1.5px solid var(--sky-100);
         }
 
         .flh-action-link.trainer:hover {
@@ -969,7 +969,7 @@
             padding-top: 56.25%;
             border-radius: 10px;
             overflow: hidden;
-            background: #0F172A;
+            background: var(--sky-900);
             margin-top: 6px;
         }
 
@@ -1063,7 +1063,7 @@
             border-radius: 8px;
             border: none;
             background: rgba(255, 255, 255, 0.12);
-            color: #CBD5E1;
+            color: var(--line);
             font-size: 0.9rem;
             cursor: pointer;
             display: flex;
@@ -1139,6 +1139,8 @@
         window.Telegram.WebApp.expand();
       }
     </script>
+    <link rel="stylesheet" href="/assets/ds.css?v=2">
+    <script src="/assets/site.js?v=2" defer></script>
 </head>
 <body class="lang-ru">
 
@@ -1162,8 +1164,8 @@
         <div id="authArea">
             <div id="guestActions">
                 <a href="./test/" class="hero-test-btn">
-                    <span lang-val="ru">🎯 Проверить свой уровень за 10 минут</span>
-                    <span lang-val="kz">🎯 Деңгейіңізді 10 минутта тексеру</span>
+                    <span lang-val="ru">Проверить свой уровень за 7 минут</span>
+                    <span lang-val="kz">Деңгейіңізді 7 минутта тексеру</span>
                 </a>
                 <div class="guest-auth-links">
                     <a href="login.html" id="loginButton" class="auth-btn">
@@ -1196,8 +1198,8 @@
             <div class="marathon-banner">
                 <div class="mb-content">
                     <span class="mb-kicker">
-                        <span lang-val="ru">🔥 Новый набор • Марафон</span>
-                        <span lang-val="kz">🔥 Жаңа ағын • Марафон</span>
+                        <span lang-val="ru">Новый набор • Марафон</span>
+                        <span lang-val="kz">Жаңа ағын • Марафон</span>
                     </span>
                     <div class="mb-title" lang-val="ru">Марафон Medical English для врачей</div>
                     <div class="mb-title" lang-val="kz">Дәрігерлерге арналған Medical English марафоны</div>
@@ -1213,8 +1215,8 @@
             <!-- 2. Сворачиваемая лента последних обновлений платформы -->
             <details class="changelog-spoiler">
                 <summary>
-                    <span lang-val="ru">✨ Что нового на платформе (3 обновления)</span>
-                    <span lang-val="kz">✨ Платформадағы жаңалықтар (3 жаңарту)</span>
+                    <span lang-val="ru">Что нового на платформе (3 обновления)</span>
+                    <span lang-val="kz">Платформадағы жаңалықтар (3 жаңарту)</span>
                     <span>⌄</span>
                 </summary>
                 <div class="changelog-list">
@@ -1240,7 +1242,7 @@
         <!-- Блок «Слово часа» -->
         <div class="woth-card" id="wothSection">
             <div class="woth-header">
-                <span class="woth-title">⚡ Word of the hour</span>
+                <span class="woth-title">Word of the hour</span>
                 <div class="woth-meta-right">
                     <span class="woth-streak" id="wothStreakBadge">🔥 0</span>
                     <span class="woth-timer" id="wothTimer">--:--</span>
@@ -1263,8 +1265,8 @@
         <!-- Компактный видеообзор платформы -->
         <details class="intro-video-card" id="introVideoDetails">
             <summary>
-                <span lang-val="ru">▶️ Здравствуйте! Видеообзор платформы</span>
-                <span lang-val="kz">▶️ Сәлеметсіз бе! Платформаға видео-шолу</span>
+                <span lang-val="ru">Здравствуйте! Видеообзор платформы</span>
+                <span lang-val="kz">Сәлеметсіз бе! Платформаға видео-шолу</span>
                 <span class="intro-pill">YouTube ⌄</span>
             </summary>
             <div class="video-container">
@@ -1286,7 +1288,7 @@
         <!-- TBLT QUICK PRACTICE (FREE) -->
         <a href="./tbltfree/" class="module-row free-row standalone-card">
             <div class="mod-left">
-                <div class="mod-mini-icon">🤩</div>
+                <div class="mod-mini-icon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
                 <div class="mod-info">
                     <div class="mod-title">QUICK PRACTICE</div>
                     <div class="mod-desc" lang-val="ru">Вы уже знаете английский! 3 практические задачи</div>
@@ -1302,7 +1304,7 @@
         <details class="category-group">
             <summary class="category-header">
                 <div class="cat-head-left">
-                    <div class="cat-icon-box">🧠</div>
+                    <div class="cat-icon-box"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg></div>
                     <div class="cat-head-text">
                         <h2>
                             <span>Vocabulary</span>
@@ -1320,7 +1322,7 @@
                 <!-- 1. Listening -->
                 <a href="./listening/" class="module-row free-row">
                     <div class="mod-left">
-                        <div class="mod-mini-icon">🎧</div>
+                        <div class="mod-mini-icon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></svg></div>
                         <div class="mod-info">
                             <div class="mod-title">Listening</div>
                             <div class="mod-desc" lang-val="ru">Услышьте медицинские термины в диалогах</div>
@@ -1335,7 +1337,7 @@
                 <!-- 2. Анатомический тренажер (FREE) -->
                 <a href="./anatomic/" class="module-row free-row">
                     <div class="mod-left">
-                        <div class="mod-mini-icon">🫀</div>
+                        <div class="mod-mini-icon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div>
                         <div class="mod-info">
                             <div class="mod-title">Тренажер Anatomy</div>
                             <div class="mod-desc" lang-val="ru">Органы, кости и структуры тела</div>
@@ -1350,7 +1352,7 @@
                 <!-- 3. Клинический тренажер (STANDARD+) -->
                 <a href="./clinical" class="module-row" id="clinicalRow">
                     <div class="mod-left">
-                        <div class="mod-mini-icon" id="clinicalIcon">🔒</div>
+                        <div class="mod-mini-icon" id="clinicalIcon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
                         <div class="mod-info">
                             <div class="mod-title">Тренажер Clinical</div>
                             <div class="mod-desc" lang-val="ru">Симптомы, жалобы и осмотр пациентов</div>
@@ -1365,7 +1367,7 @@
                 <!-- 4. Академический тренажер (STANDARD+) -->
                 <a href="./academic/" class="module-row" id="academicRow">
                     <div class="mod-left">
-                        <div class="mod-mini-icon" id="academicIcon">🔒</div>
+                        <div class="mod-mini-icon" id="academicIcon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
                         <div class="mod-info">
                             <div class="mod-title">Тренажер Academic</div>
                             <div class="mod-desc" lang-val="ru">Термины для статей PubMed, гайдлайнов и IELTS</div>
@@ -1383,7 +1385,7 @@
         <details class="category-group">
             <summary class="category-header">
                 <div class="cat-head-left">
-                    <div class="cat-icon-box">📚</div>
+                    <div class="cat-icon-box"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/><path d="M22 10v6"/></svg></div>
                     <div class="cat-head-text">
                         <h2>
                             <span>English Lessons</span>
@@ -1402,7 +1404,7 @@
                 <!-- 1. Метод Чанков и шпаргалка (FREE) -->
                 <a href="./grammar/chunks/" class="module-row free-row">
                     <div class="mod-left">
-                        <div class="mod-mini-icon">🧩</div>
+                        <div class="mod-mini-icon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 10 5-10 5L2 7l10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></div>
                         <div class="mod-info">
                             <div class="mod-title" lang-val="ru">Метод «Чанков» и шпаргалка</div>
                             <div class="mod-title" lang-val="kz">«Чанк» әдісі және шпаргалка</div>
@@ -1417,7 +1419,7 @@
                 <div class="free-lesson-hub">
                     <div class="flh-top">
                         <div class="flh-title-group">
-                            <div class="mod-mini-icon" style="background: var(--teal-soft); border-color: var(--teal-border);">🏥</div>
+                            <div class="mod-mini-icon" style="background: var(--teal-soft); border-color: var(--teal-border);"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4Z"/></svg></div>
                             <div>
                                 <div class="flh-title">Lesson 08: There is / There are</div>
                             </div>
@@ -1427,13 +1429,13 @@
 
                     <div class="flh-media-tabs">
                         <button type="button" class="flh-tab-btn" id="l8TabVideo" onclick="switchLesson8Media('video')">
-                            🎬 <span lang-val="ru">Видеоурок</span><span lang-val="kz">Видеосабақ</span>
+                            <span lang-val="ru">Видеоурок</span><span lang-val="kz">Видеосабақ</span>
                         </button>
                         <button type="button" class="flh-tab-btn" id="l8TabRu" onclick="switchLesson8Media('ru')">
-                            🎧 Listening RU
+                            Listening RU
                         </button>
                         <button type="button" class="flh-tab-btn" id="l8TabKz" onclick="switchLesson8Media('kz')">
-                            🎧 Listening KZ
+                            Listening KZ
                         </button>
                     </div>
 
@@ -1474,7 +1476,7 @@
                 <!-- 3. Полный курс грамматики (15 уроков + ДЗ + Экзамен) -->
                 <a href="./grammar/" class="module-row" id="grammarRow">
                     <div class="mod-left">
-                        <div class="mod-mini-icon" id="grammarIcon">📖</div>
+                        <div class="mod-mini-icon" id="grammarIcon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2Z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7Z"/></svg></div>
                         <div class="mod-info">
                             <div class="mod-title">Видеокурс английского</div>
                             <div class="mod-desc" lang-val="ru">Все 15 уроков, видеоразборы, Listening, домашние задания и экзамен</div>
@@ -1492,7 +1494,7 @@
         <details class="category-group">
             <summary class="category-header">
                 <div class="cat-head-left">
-                    <div class="cat-icon-box">🩺</div>
+                    <div class="cat-icon-box"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6 6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/><path d="M8 15v1a6 6 0 0 0 6 6 6 6 0 0 0 6-6v-4"/><circle cx="20" cy="10" r="2"/></svg></div>
                     <div class="cat-head-text">
                         <h2>
                             <span>Medical Skills & USMLE</span>
@@ -1509,7 +1511,7 @@
             <div class="category-body">
                 <a href="./interviews/" class="module-row free-row">
                     <div class="mod-left">
-                        <div class="mod-mini-icon" id="interviewIcon">🗣️</div>
+                        <div class="mod-mini-icon" id="interviewIcon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></div>
                         <div class="mod-info">
                             <div class="mod-title" lang-val="ru">Опрос на английском (ТРЕНАЖЕР)</div>
                             <div class="mod-title" lang-val="kz">Ағылшынша анамнез жинау (ТРЕНАЖЕР)</div>
@@ -1523,7 +1525,7 @@
 
                 <a href="https://kazdoctors.com/cheatsheet/" class="module-row free-row">
                     <div class="mod-left">
-                        <div class="mod-mini-icon" id="cheatsheetIcon">🗣️</div>
+                        <div class="mod-mini-icon" id="cheatsheetIcon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg></div>
                         <div class="mod-info">
                             <div class="mod-title" lang-val="ru">Опрос на английском (ШПАРГАЛКА)</div>
                             <div class="mod-title" lang-val="kz">Ағылшынша анамнез жинау (ШПАРГАЛКА)</div>
@@ -1537,7 +1539,7 @@
 
                 <a href="https://kazdoctors.com/inter/" class="module-row" id="interviewBookRow">
                     <div class="mod-left">
-                        <div class="mod-mini-icon" id="interviewBookIcon">🔒</div>
+                        <div class="mod-mini-icon" id="interviewBookIcon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
                         <div class="mod-info">
                             <div class="mod-title" lang-val="ru">Опрос на английском (УЧЕБНИК)</div>
                             <div class="mod-title" lang-val="kz">Ағылшынша анамнез жинау (ОҚУЛЫҚ)</div>
@@ -1551,7 +1553,7 @@
 
                 <a href="https://kazdoctors.com/interaudio/" class="module-row" id="interviewAudioRow">
                     <div class="mod-left">
-                        <div class="mod-mini-icon" id="interviewAudioIcon">🔒</div>
+                        <div class="mod-mini-icon" id="interviewAudioIcon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
                         <div class="mod-info">
                             <div class="mod-title" lang-val="ru">Опрос на английском (АУДИОУРОКИ)</div>
                             <div class="mod-title" lang-val="kz">Ағылшынша анамнез жинау (АУДИОСАБАҚТАР)</div>
@@ -1565,7 +1567,7 @@
 
                 <a href="https://kazdoctors.com/reading/" class="module-row" id="readingVidRow">
                     <div class="mod-left">
-                        <div class="mod-mini-icon" id="readingVidIcon">🔒</div>
+                        <div class="mod-mini-icon" id="readingVidIcon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
                         <div class="mod-info">
                             <div class="mod-title" lang-val="ru">Статьи и гайдлайны: Видеоуроки</div>
                             <div class="mod-title" lang-val="kz">Мақалалар мен гайдлайндар: Видеосабақтар</div>
@@ -1579,7 +1581,7 @@
 
                 <a href="https://kazdoctors.com/grammar/reading/" class="module-row" id="readingPracRow">
                     <div class="mod-left">
-                        <div class="mod-mini-icon" id="readingPracIcon">🔒</div>
+                        <div class="mod-mini-icon" id="readingPracIcon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
                         <div class="mod-info">
                             <div class="mod-title" lang-val="ru">Статьи и гайдлайны: Практика</div>
                             <div class="mod-title" lang-val="kz">Мақалалар мен гайдлайндар: Практика</div>
@@ -1587,13 +1589,13 @@
                         </div>
                     </div>
                     <div class="mod-right">
-                        <span class="badge-pill" id="proBadge3">Pro+</span>
+                        <span class="badge-pill" id="proBadge3">Standard+</span>
                     </div>
                 </a>
 
                 <a href="https://kazdoctors.com/presentations/" class="module-row" id="presRow">
                     <div class="mod-left">
-                        <div class="mod-mini-icon" id="presIcon">🔒</div>
+                        <div class="mod-mini-icon" id="presIcon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
                         <div class="mod-info">
                             <div class="mod-title" lang-val="ru">Презентации и постеры (ВИДЕОУЧЕБНИК)</div>
                             <div class="mod-title" lang-val="kz">Презентация мен постерлер (ВИДЕООҚУЛЫҚ)</div>
@@ -1604,22 +1606,22 @@
                     </div>
                 </a>
 
-                                <a href="https://kazdoctors.com/presentaudio/" class="module-row" id="presRow">
+                                <a href="https://kazdoctors.com/presentaudio/" class="module-row" id="presAudioRow">
                     <div class="mod-left">
-                        <div class="mod-mini-icon" id="presIcon1">🔒</div>
+                        <div class="mod-mini-icon" id="presIcon1"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
                         <div class="mod-info">
                             <div class="mod-title" lang-val="ru">Презентации и постеры (АУДИОУРОКИ)</div>
                             <div class="mod-title" lang-val="kz">Презентация мен постерлер (АУДИОСАБАҚ)</div>
                         </div>
                     </div>
                     <div class="mod-right">
-                        <span class="badge-pill" id="proBadge4">Pro+</span>
+                        <span class="badge-pill" id="proBadge5">Pro+</span>
                     </div>
                 </a>
 
-                <a href="./usmle/" class="module-row">
+                <a href="./usmle/" class="module-row free-row">
                     <div class="mod-left">
-                        <div class="mod-mini-icon">📚</div>
+                        <div class="mod-mini-icon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg></div>
                         <div class="mod-info">
                             <div class="mod-title">USMLE Preparation</div>
                             <div class="mod-desc" lang-val="ru">Тренажеры и клинические задачи формата USMLE</div>
@@ -1627,7 +1629,7 @@
                         </div>
                     </div>
                     <div class="mod-right">
-                        <span class="badge-pill blue-pill">Кейсы</span>
+                        <span class="badge-pill free-pill">Free</span>
                     </div>
                 </a>
             </div>
@@ -1637,7 +1639,7 @@
         <details class="category-group">
             <summary class="category-header">
                 <div class="cat-head-left">
-                    <div class="cat-icon-box">🎮</div>
+                    <div class="cat-icon-box"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 12h4"/><path d="M8 10v4"/><path d="M15 13h.01"/><path d="M18 11h.01"/><rect width="20" height="12" x="2" y="6" rx="2"/></svg></div>
                     <div class="cat-head-text">
                         <h2>
                             <span>Vocabulary Games</span>
@@ -1655,7 +1657,7 @@
             <div class="category-body">
                 <a href="./game/" class="module-row free-row">
                     <div class="mod-left">
-                        <div class="mod-mini-icon">🏃‍♂️</div>
+                        <div class="mod-mini-icon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg></div>
                         <div class="mod-info">
                             <div class="mod-title">Game: Run Doctor!</div>
                             <div class="mod-desc" lang-val="ru">Проверьте словарный запас на скорости</div>
@@ -1669,7 +1671,7 @@
 
                 <a href="./syringes/" class="module-row free-row">
                     <div class="mod-left">
-                        <div class="mod-mini-icon">💉</div>
+                        <div class="mod-mini-icon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 2 4 4"/><path d="m17 7 3-3"/><path d="M19 9 8.7 19.3c-1 1-2.5 1-3.4 0l-.6-.6c-1-1-1-2.5 0-3.4L15 5"/><path d="m9 11 4 4"/><path d="m5 19-3 3"/><path d="m14 4 6 6"/></svg></div>
                         <div class="mod-info">
                             <div class="mod-title">Game: Syringe Shots</div>
                             <div class="mod-desc" lang-val="ru">Сбивайте верные переводы клинических терминов</div>
@@ -1686,12 +1688,12 @@
         <!-- Карточка перехода к Тарифам -->
         <a href="./tarifs/" class="tarifs-banner-card">
             <div class="cat-head-left">
-                <div class="cat-icon-box" style="background: var(--kz-gold-soft); border-color: #FDE68A;">💎</div>
+                <div class="cat-icon-box" style="background: var(--kz-gold-soft); border-color: #FDE68A;"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2H2v10l9.29 9.29a2.41 2.41 0 0 0 3.42 0l6.58-6.58a2.41 2.41 0 0 0 0-3.42Z"/><path d="M7 7h.01"/></svg></div>
                 <div class="cat-head-text">
                     <h2>
                         <span lang-val="ru">Тарифы и программы обучения</span>
                         <span lang-val="kz">Тарифтер мен оқу бағдарламалары</span>
-                        <span class="badge-pill" style="background: var(--kz-gold-soft); color: #92400E; border-color: #FDE68A;">от 7 990 ₸</span>
+                        <span class="badge-pill" style="background: var(--kz-gold-soft); color: var(--sun-ink); border-color: #FDE68A;">от 7 990 ₸</span>
                     </h2>
                     <p lang-val="ru">Выучите английский с нашим сайтом!</p>
                     <p lang-val="kz">Ағылшынша біздің сайтымызбен үйреніп алыңыз!</p>
@@ -1711,17 +1713,7 @@
         <button type="button" class="sbc-close-btn" onclick="dismissStickyBar()" aria-label="Закрыть">✕</button>
     </div>
 
-    <footer>
-        <a href="https://wa.me/77081595038?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BF%D0%BE%D0%BB%D1%83%D1%87%D0%B8%D1%82%D1%8C%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%20%D0%BD%D0%B0%20kazdoctors.com" target="_blank" rel="noopener noreferrer" class="instagram-link cta-primary" lang-val="ru">
-            Записаться и получить доступ (WhatsApp)
-        </a>
-        <a href="https://wa.me/77081595038?text=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%D0%B5%D1%82%D1%81%D1%96%D0%B7%20%D0%B1%D0%B5!%20kazdoctors.com%20%D1%81%D0%B0%D0%B9%D1%82%D1%8B%D0%BD%D0%B0%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%20%D0%B0%D0%BB%D2%93%D1%8B%D0%BC%20%D0%BA%D0%B5%D0%BB%D0%B5%D0%B4%D1%96" target="_blank" rel="noopener noreferrer" class="instagram-link cta-primary" lang-val="kz">
-            Жазылу және доступ алу (WhatsApp)
-        </a>
-        <a href="https://instagram.com/doctors.speak" target="_blank" rel="noopener noreferrer" class="instagram-link">
-            <span>Instagram @doctors.speak</span>
-        </a>
-    </footer>
+    <div id="ds-footer"></div>
 
 <!-- AUTHENTICATION & SCRIPT -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1733,7 +1725,7 @@
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     // =========================================================================
-    // СПИСОК EMAIL АДМИНИСТРАТОРОВ (КНОПКА ⚙️ ADMIN ВИДНА ТОЛЬКО ЭТИМ ПОЧТАМ)
+    // СПИСОК EMAIL АДМИНИСТРАТОРОВ (КНОПКА ADMIN ВИДНА ТОЛЬКО ЭТИМ ПОЧТАМ)
     // Впишите почту вашего менеджера вместо 'manager@email.com'
     // =========================================================================
     const ADMIN_EMAILS = [
@@ -1747,18 +1739,18 @@
     const LESSON8_MEDIA = {
         video: {
             url: "https://player.vimeo.com/video/1240396124?badge=0&autopause=0&player_id=0&app_id=58479",
-            labelRu: "🎬 Видеоурок 8: There is / There are",
+            labelRu: "Видеоурок 8: There is / There are",
             labelKz: "🎬 8-видеосабақ: There is / There are"
         },
         ru: {
             url: "https://player.vimeo.com/video/1246734510",
-            labelRu: "🎧 Listening (орысша) — Урок 8",
-            labelKz: "🎧 Listening (орысша) — 8-сабақ"
+            labelRu: "Listening (орысша) — Урок 8",
+            labelKz: "Listening (орысша) — 8-сабақ"
         },
         kz: {
             url: "https://player.vimeo.com/video/1246734510",
-            labelRu: "🎧 Listening (қазақша) — Урок 8",
-            labelKz: "🎧 Listening (қазақша) — 8-сабақ"
+            labelRu: "Listening (қазақша) — Урок 8",
+            labelKz: "Listening (қазақша) — 8-сабақ"
         }
     };
 
@@ -1826,7 +1818,7 @@
         standard: "STANDARD",
         pro: "PRO",
         premium: "PREMIUM",
-        vip: "VIP 👑"
+        vip: "VIP"
     };
 
     const TIER_LEVELS = {
@@ -1842,6 +1834,11 @@
     let stickyDismissed = sessionStorage.getItem('ds_sticky_dismissed') === '1';
 
     // Безопасный помощник обновления DOM (не ломает скрипт, если элемент удален из верстки)
+    const DS_ICONS = {bookopen: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2Z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7Z"/>', filetext: '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/>', headphones: '<path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/>', mic: '<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/>', play: '<circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4Z"/>', presentation: '<path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/>', search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>', stethoscope: '<path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6 6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/><path d="M8 15v1a6 6 0 0 0 6 6 6 6 0 0 0 6-6v-4"/><circle cx="20" cy="10" r="2"/>'};
+    function setIcon(id, name) {
+        const el = document.getElementById(id);
+        if (el && DS_ICONS[name]) el.innerHTML = '<svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + DS_ICONS[name] + '</svg>';
+    }
     function safeSet(id, text, className) {
         const el = document.getElementById(id);
         if (!el) return;
@@ -2007,7 +2004,7 @@
             fallbackEmailName
         ).toUpperCase();
 
-        safeSet("welcomeMessage", `HELLO, ${displayName}! 👋`);
+        safeSet("welcomeMessage", `HELLO, ${displayName}!`);
 
         const planBadge = document.getElementById("userPlanBadge");
         const planLabel = PLAN_DISPLAY_NAMES[tier] || (hasActiveSub ? "STANDARD" : "FREE");
@@ -2020,19 +2017,23 @@
 
         // 1. Разблокировка модулей уровня STANDARD+ (1 и выше)
         if (tierLevel >= 1) {
-            safeSet("clinicalIcon", "🩺");
+            setIcon("clinicalIcon", "stethoscope");
             safeSet("clinicalBadge", "Открыто", "badge-pill free-pill");
             safeAddClass("clinicalRow", "unlocked-row");
 
-            safeSet("academicIcon", "📚");
+            setIcon("academicIcon", "filetext");
             safeSet("academicBadge", "Открыто", "badge-pill free-pill");
             safeAddClass("academicRow", "unlocked-row");
 
-            safeSet("grammarIcon", "📖");
+            setIcon("grammarIcon", "bookopen");
             safeSet("grammarBadge", "Тренажеры", "badge-pill free-pill");
             safeAddClass("grammarRow", "unlocked-row");
 
             safeSet("interviewBadge", "Открыто", "badge-pill free-pill");
+
+            setIcon("readingPracIcon", "search");
+            safeSet("proBadge3", "Открыто", "badge-pill free-pill");
+            safeAddClass("readingPracRow", "unlocked-row");
         }
 
         // 2. Разблокировка модулей уровня PRO, PREMIUM, VIP (2 и выше)
@@ -2041,19 +2042,18 @@
             const sticky = document.getElementById("stickyBottomCta");
             if (sticky) sticky.classList.remove("visible");
 
-            safeSet("interviewBookIcon", "🗣️");
-            safeSet("interviewAudioIcon", "🗣️");
-            safeSet("readingVidIcon", "📖");
-            safeSet("readingPracIcon", "📖");
-            safeSet("presIcon", "🎤");
-                        safeSet("presIcon1", "🎤");
+            setIcon("interviewBookIcon", "bookopen");
+            setIcon("interviewAudioIcon", "headphones");
+            setIcon("readingVidIcon", "play");
+            setIcon("presIcon", "presentation");
+            setIcon("presIcon1", "mic");
 
-            ["interviewBookRow", "interviewAudioRow", "readingVidRow", "readingPracRow", "presRow"].forEach(id => {
+            ["interviewBookRow", "interviewAudioRow", "readingVidRow", "presRow", "presAudioRow"].forEach(id => {
                 safeAddClass(id, "unlocked-row");
             });
 
             const proStatus = tierLevel >= 3 ? "Открыто" : "Конспект открыт";
-            ["proBadge1", "proBadgeAudio", "proBadge2", "proBadge3", "proBadge4"].forEach(id => {
+            ["proBadge1", "proBadgeAudio", "proBadge2", "proBadge4", "proBadge5"].forEach(id => {
                 safeSet(id, proStatus, "badge-pill free-pill");
             });
 
@@ -2068,7 +2068,7 @@
             const adminBtn = document.createElement("a");
             adminBtn.id = "adminBtn";
             adminBtn.href = "admin.html";
-            adminBtn.textContent = "⚙️ ADMIN";
+            adminBtn.textContent = "ADMIN";
             adminBtn.style.cssText = "display: inline-block; margin-right: 8px; padding: 6px 14px; border-radius: 12px; border: 1.5px solid rgba(255,255,255,0.45); background: rgba(255,255,255,0.96); color: var(--med-navy); font-size: 0.74rem; font-weight: 800; text-decoration: none;";
             document.getElementById("userArea").insertBefore(adminBtn, document.getElementById("logoutButton"));
         }
