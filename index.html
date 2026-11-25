@@ -556,7 +556,7 @@
             margin-left: auto;
         }
 
-        /* Компактный спойлер для обзорного видео платформы */
+        /* Компактный спойлер для обзорного видео и блока «Об авторе» */
         details.intro-video-card {
             background: var(--card-bg);
             border: 1.5px solid var(--border-color);
@@ -589,6 +589,57 @@
             border: 1px solid var(--sky-100);
             padding: 3px 8px;
             border-radius: 6px;
+        }
+
+        .intro-about-box {
+            margin-top: 11px;
+            margin-bottom: 10px;
+            padding: 12px 13px;
+            background: var(--subtle);
+            border: 1px solid var(--border-color);
+            border-left: 3.5px solid var(--kz-blue);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .intro-about-title {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: var(--med-navy);
+            line-height: 1.3;
+        }
+
+        .intro-about-text {
+            font-size: 0.76rem;
+            color: var(--text-secondary);
+            line-height: 1.48;
+            font-weight: 500;
+        }
+
+        .intro-about-points {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 0.74rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .intro-about-points li {
+            position: relative;
+            padding-left: 13px;
+            line-height: 1.38;
+        }
+
+        .intro-about-points li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--kz-blue);
+            font-weight: 900;
         }
 
         /* КАТЕГОРИИ ОБУЧЕНИЯ */
@@ -1110,8 +1161,11 @@
         body.lang-kz span[lang-val="kz"] { display: inline !important; }
         body.lang-ru span[lang-val="ru"] { display: inline !important; }
 
-        body.lang-kz p[lang-val="kz"], body.lang-kz div[lang-val="kz"] { display: block !important; }
-        body.lang-ru p[lang-val="ru"], body.lang-ru div[lang-val="ru"] { display: block !important; }
+        body.lang-kz p[lang-val="kz"], body.lang-kz div[lang-val="kz"], body.lang-kz ul[lang-val="kz"] { display: block !important; }
+        body.lang-ru p[lang-val="ru"], body.lang-ru div[lang-val="ru"], body.lang-ru ul[lang-val="ru"] { display: block !important; }
+
+        body.lang-kz ul.intro-about-points[lang-val="kz"],
+        body.lang-ru ul.intro-about-points[lang-val="ru"] { display: flex !important; }
 
         body.lang-kz a[lang-val="kz"] { display: inline-flex !important; }
         body.lang-ru a[lang-val="ru"] { display: inline-flex !important; }
@@ -1223,17 +1277,17 @@
                 <div class="changelog-list">
                     <div class="changelog-item">
                         <span class="changelog-date">NEW</span>
-                        <span lang-val="ru">Запустили <b>Quick Practice</b> — 3 бесплатных клинических кейса (TBLT) без зубрежки грамматики.</span>
-                        <span lang-val="kz"><b>Quick Practice</b> іске қосылды — грамматика жаттамай-ақ 3 тегін клиникалық кейс.</span>
+                        <span lang-val="ru">Запустили <b>Quick Practice</b> — 3 Free клинических кейса (TBLT) без зубрежки грамматики.</span>
+                        <span lang-val="kz"><b>Quick Practice</b> іске қосылды — грамматика жаттамай-ақ 3 Free клиникалық кейс.</span>
                     </div>
                     <div class="changelog-item">
                         <span class="changelog-date">NEW</span>
-                        <span lang-val="ru">Добавили <b>Шпаргалку опроса пациента</b> и 6 аудиоуроков с диалогами в раздел Medical Skills.</span>
-                        <span lang-val="kz">Medical Skills бөліміне <b>Науқас қабылдау шпаргалкасы</b> мен 6 аудиосабақ қосылды.</span>
+                        <span lang-val="ru">Добавили <b>Шпаргалку опроса пациента</b> и 6 аудиоуроков с диалогами в раздел Patient Interview.</span>
+                        <span lang-val="kz">Patient Interview бөліміне <b>Науқас қабылдау шпаргалкасы</b> мен 6 аудиосабақ қосылды.</span>
                     </div>
                     <div class="changelog-item">
                         <span class="changelog-date">NEW</span>
-                        <span lang-val="ru">Добавили <b>аудиоуроки презентаций</b> </span>
+                        <span lang-val="ru">Добавили <b>аудиоуроки презентаций</b></span>
                         <span lang-val="kz"><b>Презентация аудиосабақтар</b> қосылды</span>
                     </div>
                 </div>
@@ -1263,13 +1317,41 @@
             </div>
         </div>
 
-        <!-- Компактный видеообзор платформы -->
+        <!-- Компактная вкладка «Здравствуйте!»: текст об авторе + видеообзор -->
         <details class="intro-video-card" id="introVideoDetails">
             <summary>
-                <span lang-val="ru">Здравствуйте! Видеообзор платформы</span>
-                <span lang-val="kz">Сәлеметсіз бе! Платформаға видео-шолу</span>
+                <span lang-val="ru">Здравствуйте! Об авторе и видеообзор платформы</span>
+                <span lang-val="kz">Сәлеметсіз бе! Автор туралы және платформаға видео-шолу</span>
                 <span class="intro-pill">YouTube ⌄</span>
             </summary>
+
+            <!-- ==============================================================
+                 РЕДАКТИРУЙТЕ ТЕКСТ О СЕБЕ ЗДЕСЬ (RU И KZ ВЕРСИИ)
+                 ============================================================== -->
+            <div class="intro-about-box">
+                <div class="intro-about-title" lang-val="ru">Приветствую, коллеги! Я — [Ваше Имя], автор @doctors.speak</div>
+                <div class="intro-about-title" lang-val="kz">Сәлеметсіздер ме, әріптестер! Мен — [Есіміңіз], @doctors.speak авторымын</div>
+
+                <p class="intro-about-text" lang-val="ru">
+                    [Здесь напишите 2–3 предложения о себе: ваша специальность, опыт работы/учебы за рубежом или с международными гайдлайнами, и почему вы создали эту платформу для врачей Казахстана.]
+                </p>
+                <p class="intro-about-text" lang-val="kz">
+                    [Мұнда өзіңіз туралы 2–3 сөйлем жазыңыз: мамандығыңыз, халықаралық тәжірибеңіз және дәрігерлерге арналған осы платформаны не үшін құрғаныңыз.]
+                </p>
+
+                <ul class="intro-about-points" lang-val="ru">
+                    <li>[Факт 1 — например: Практикующий врач / преподаватель медицинского английского]</li>
+                    <li>[Факт 2 — например: Помогаю врачам и резидентам читать UpToDate и PubMed без переводчика]</li>
+                    <li>[Факт 3 — например: Все материалы платформы созданы на реальных клинических кейсах]</li>
+                </ul>
+                <ul class="intro-about-points" lang-val="kz">
+                    <li>[1-факт — мысалы: Тәжірибелі дәрігер / медициналық ағылшын тілі оқытушысы]</li>
+                    <li>[2-факт — мысалы: Дәрігерлер мен резиденттерге UpToDate пен PubMed-ті аудармашысыз оқуға көмектесемін]</li>
+                    <li>[3-факт — мысалы: Платформадағы барлық материалдар нақты клиникалық кейстерге негізделген]</li>
+                </ul>
+            </div>
+            <!-- ==================== КОНЕЦ БЛОКА О СЕБЕ ==================== -->
+
             <div class="video-container">
                 <iframe 
                     data-src="https://www.youtube.com/embed/_rQEPiwss0M" 
@@ -1297,7 +1379,7 @@
                 </div>
             </div>
             <div class="mod-right">
-                <span class="badge-pill free-pill">Бесплатно</span>
+                <span class="badge-pill free-pill">Free</span>
             </div>
         </a>
 
@@ -1389,11 +1471,9 @@
                     <div class="cat-icon-box"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/><path d="M22 10v6"/></svg></div>
                     <div class="cat-head-text">
                         <h2>
-                            <span>English Lessons</span>
-                            <span class="badge-pill free-pill">Урок 8 и Чанки Free</span>
+                            <span lang-val="ru">Выучить английский</span>
+                            <span lang-val="kz">Ағылшын тілін үйрену</span>
                         </h2>
-                        <p lang-val="ru">Видеокурс медицинской грамматики, конспекты, упражнения и аудио</p>
-                        <p lang-val="kz">Медициналық грамматика курсы, конспектілер, жаттығулар және аудио</p>
                     </div>
                 </div>
                 <div class="chevron-box">
@@ -1425,7 +1505,7 @@
                                 <div class="flh-title">Lesson 08: There is / There are</div>
                             </div>
                         </div>
-                        <span class="badge-pill free-pill">Full Free</span>
+                        <span class="badge-pill free-pill">Free</span>
                     </div>
 
                     <div class="flh-media-tabs">
@@ -1479,7 +1559,7 @@
                     <div class="mod-left">
                         <div class="mod-mini-icon" id="grammarIcon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2Z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7Z"/></svg></div>
                         <div class="mod-info">
-                            <div class="mod-title">Видеокурс английского</div>
+                            <div class="mod-title">Видеокурс</div>
                             <div class="mod-desc" lang-val="ru">Все 15 уроков, видеоразборы, Listening, домашние задания и экзамен</div>
                             <div class="mod-desc" lang-val="kz">Барлық 15 сабақ, видео-талдаулар, Listening, үй тапсырмалары мен емтихан</div>
                         </div>
@@ -1491,17 +1571,17 @@
             </div>
         </details>
 
-        <!-- ==================== 3. КАТЕГОРИЯ: MEDICAL SKILLS & USMLE ==================== -->
+        <!-- ==================== 3. КАТЕГОРИЯ: PATIENT INTERVIEW (ОПРОС ПАЦИЕНТА) ==================== -->
         <details class="category-group">
             <summary class="category-header">
                 <div class="cat-head-left">
                     <div class="cat-icon-box"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6 6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/><path d="M8 15v1a6 6 0 0 0 6 6 6 6 0 0 0 6-6v-4"/><circle cx="20" cy="10" r="2"/></svg></div>
                     <div class="cat-head-text">
                         <h2>
-                            <span>Medical Skills & USMLE</span>
+                            <span lang-val="ru">Принимать пациентов на английском</span>
+                            <span lang-val="kz">Науқасты ағылшынша қабылдау</span>
+                            <span class="badge-pill free-pill">Free</span>
                         </h2>
-                        <p lang-val="ru">Все для современного врача</p>
-                        <p lang-val="kz">Заманауи дәрігер үшін бүкіл қабілеттер</p>
                     </div>
                 </div>
                 <div class="chevron-box">
@@ -1514,13 +1594,12 @@
                     <div class="mod-left">
                         <div class="mod-mini-icon" id="interviewIcon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></div>
                         <div class="mod-info">
-                            <div class="mod-title" lang-val="ru">Опрос на английском (ТРЕНАЖЕР)</div>
-                            <div class="mod-title" lang-val="kz">Ағылшынша анамнез жинау (ТРЕНАЖЕР)</div>
-
+                            <div class="mod-title" lang-val="ru">ТРЕНАЖЕР</div>
+                            <div class="mod-title" lang-val="kz">ТРЕНАЖЕР</div>
                         </div>
                     </div>
                     <div class="mod-right">
-                        <span class="badge-pill free-pill" id="interviewBadge">Демо Free</span>
+                        <span class="badge-pill free-pill" id="interviewBadge">Demo Free</span>
                     </div>
                 </a>
 
@@ -1528,9 +1607,8 @@
                     <div class="mod-left">
                         <div class="mod-mini-icon" id="cheatsheetIcon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg></div>
                         <div class="mod-info">
-                            <div class="mod-title" lang-val="ru">Опрос на английском (ШПАРГАЛКА)</div>
-                            <div class="mod-title" lang-val="kz">Ағылшынша анамнез жинау (ШПАРГАЛКА)</div>
-
+                            <div class="mod-title" lang-val="ru">ШПАРГАЛКА</div>
+                            <div class="mod-title" lang-val="kz">ШПАРГАЛКА</div>
                         </div>
                     </div>
                     <div class="mod-right">
@@ -1542,9 +1620,8 @@
                     <div class="mod-left">
                         <div class="mod-mini-icon" id="interviewBookIcon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
                         <div class="mod-info">
-                            <div class="mod-title" lang-val="ru">Опрос на английском (УЧЕБНИК)</div>
-                            <div class="mod-title" lang-val="kz">Ағылшынша анамнез жинау (ОҚУЛЫҚ)</div>
-
+                            <div class="mod-title" lang-val="ru">УЧЕБНИК</div>
+                            <div class="mod-title" lang-val="kz">ОҚУЛЫҚ</div>
                         </div>
                     </div>
                     <div class="mod-right">
@@ -1556,23 +1633,41 @@
                     <div class="mod-left">
                         <div class="mod-mini-icon" id="interviewAudioIcon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
                         <div class="mod-info">
-                            <div class="mod-title" lang-val="ru">Опрос на английском (АУДИОУРОКИ)</div>
-                            <div class="mod-title" lang-val="kz">Ағылшынша анамнез жинау (АУДИОСАБАҚТАР)</div>
-
+                            <div class="mod-title" lang-val="ru">АУДИОУРОКИ</div>
+                            <div class="mod-title" lang-val="kz">АУДИОСАБАҚТАР</div>
                         </div>
                     </div>
                     <div class="mod-right">
                         <span class="badge-pill" id="proBadgeAudio">Pro+</span>
                     </div>
                 </a>
+            </div>
+        </details>
 
+        <!-- ==================== 4. КАТЕГОРИЯ: СТАТЬИ И ГАЙДЛАЙНЫ ==================== -->
+        <details class="category-group">
+            <summary class="category-header">
+                <div class="cat-head-left">
+                    <div class="cat-icon-box"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg></div>
+                    <div class="cat-head-text">
+                        <h2>
+                            <span lang-val="ru">Читать PubMed, UpToDate, гайдлайны</span>
+                            <span lang-val="kz">PubMed, UpToDate, гайдлайн оқу </span>
+                        </h2>
+                    </div>
+                </div>
+                <div class="chevron-box">
+                    <svg class="chevron-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                </div>
+            </summary>
+
+            <div class="category-body">
                 <a href="https://kazdoctors.com/reading/" class="module-row" id="readingVidRow">
                     <div class="mod-left">
                         <div class="mod-mini-icon" id="readingVidIcon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
                         <div class="mod-info">
-                            <div class="mod-title" lang-val="ru">Статьи и гайдлайны: Видеоуроки</div>
-                            <div class="mod-title" lang-val="kz">Мақалалар мен гайдлайндар: Видеосабақтар</div>
-
+                            <div class="mod-title" lang-val="ru">Видеоуроки</div>
+                            <div class="mod-title" lang-val="kz">Видеосабақтар</div>
                         </div>
                     </div>
                     <div class="mod-right">
@@ -1584,22 +1679,41 @@
                     <div class="mod-left">
                         <div class="mod-mini-icon" id="readingPracIcon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
                         <div class="mod-info">
-                            <div class="mod-title" lang-val="ru">Статьи и гайдлайны: Практика</div>
-                            <div class="mod-title" lang-val="kz">Мақалалар мен гайдлайндар: Практика</div>
-
+                            <div class="mod-title" lang-val="ru">Практика</div>
+                            <div class="mod-title" lang-val="kz">Практика</div>
                         </div>
                     </div>
                     <div class="mod-right">
                         <span class="badge-pill" id="proBadge3">Standard+</span>
                     </div>
                 </a>
+            </div>
+        </details>
 
+        <!-- ==================== 5. КАТЕГОРИЯ: ПРЕЗЕНТАЦИИ И ПОСТЕРЫ ==================== -->
+        <details class="category-group">
+            <summary class="category-header">
+                <div class="cat-head-left">
+                    <div class="cat-icon-box"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg></div>
+                    <div class="cat-head-text">
+                        <h2>
+                            <span lang-val="ru">Докладывать на конференциях</span>
+                            <span lang-val="kz">Конференцияда сөйлеу</span>
+                        </h2>
+                    </div>
+                </div>
+                <div class="chevron-box">
+                    <svg class="chevron-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                </div>
+            </summary>
+
+            <div class="category-body">
                 <a href="https://kazdoctors.com/presentations/" class="module-row" id="presRow">
                     <div class="mod-left">
                         <div class="mod-mini-icon" id="presIcon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
                         <div class="mod-info">
-                            <div class="mod-title" lang-val="ru">Презентации и постеры (ВИДЕОУЧЕБНИК)</div>
-                            <div class="mod-title" lang-val="kz">Презентация мен постерлер (ВИДЕООҚУЛЫҚ)</div>
+                            <div class="mod-title" lang-val="ru">ВИДЕОУЧЕБНИК</div>
+                            <div class="mod-title" lang-val="kz">ВИДЕООҚУЛЫҚ</div>
                         </div>
                     </div>
                     <div class="mod-right">
@@ -1607,36 +1721,35 @@
                     </div>
                 </a>
 
-                                <a href="https://kazdoctors.com/presentaudio/" class="module-row" id="presAudioRow">
+                <a href="https://kazdoctors.com/presentaudio/" class="module-row" id="presAudioRow">
                     <div class="mod-left">
                         <div class="mod-mini-icon" id="presIcon1"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
                         <div class="mod-info">
-                            <div class="mod-title" lang-val="ru">Презентации и постеры (АУДИОУРОКИ)</div>
-                            <div class="mod-title" lang-val="kz">Презентация мен постерлер (АУДИОСАБАҚ)</div>
+                            <div class="mod-title" lang-val="ru">АУДИОУРОКИ</div>
+                            <div class="mod-title" lang-val="kz">АУДИОСАБАҚ</div>
                         </div>
                     </div>
                     <div class="mod-right">
                         <span class="badge-pill" id="proBadge5">Pro+</span>
                     </div>
                 </a>
-
-                <a href="./usmle/" class="module-row free-row">
-                    <div class="mod-left">
-                        <div class="mod-mini-icon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg></div>
-                        <div class="mod-info">
-                            <div class="mod-title">USMLE Preparation</div>
-                            <div class="mod-desc" lang-val="ru">Тренажеры и клинические задачи формата USMLE</div>
-                            <div class="mod-desc" lang-val="kz">USMLE форматындағы клиникалық есептер мен тренажерлер</div>
-                        </div>
-                    </div>
-                    <div class="mod-right">
-                        <span class="badge-pill free-pill">Free</span>
-                    </div>
-                </a>
             </div>
         </details>
 
-        <!-- ==================== 4. КАТЕГОРИЯ: MEDICAL GAMES ==================== -->
+        <!-- ==================== 6. САМОСТОЯТЕЛЬНАЯ КАРТОЧКА: USMLE PREPARATION ==================== -->
+        <a href="./usmle/" class="module-row free-row standalone-card">
+            <div class="mod-left">
+                <div class="mod-mini-icon"><svg class="ds-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg></div>
+                <div class="mod-info">
+                    <div class="mod-title">USMLE Preparation</div>
+                </div>
+            </div>
+            <div class="mod-right">
+                <span class="badge-pill free-pill">Free</span>
+            </div>
+        </a>
+
+        <!-- ==================== 7. КАТЕГОРИЯ: VOCABULARY GAMES ==================== -->
         <details class="category-group">
             <summary class="category-header">
                 <div class="cat-head-left">
@@ -1644,7 +1757,7 @@
                     <div class="cat-head-text">
                         <h2>
                             <span>Vocabulary Games</span>
-                            <span class="badge-pill free-pill">Бесплатно</span>
+                            <span class="badge-pill free-pill">Free</span>
                         </h2>
                         <p lang-val="ru">Сколько слов знаете?</p>
                         <p lang-val="kz">Қанша сөз білесіз?</p>
@@ -1727,7 +1840,6 @@
 
     // =========================================================================
     // СПИСОК EMAIL АДМИНИСТРАТОРОВ (КНОПКА ADMIN ВИДНА ТОЛЬКО ЭТИМ ПОЧТАМ)
-    // Впишите почту вашего менеджера вместо 'manager@email.com'
     // =========================================================================
     const ADMIN_EMAILS = [
         "a-yermukhanova@mail.ru",
