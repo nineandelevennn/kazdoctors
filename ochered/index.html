@@ -165,7 +165,7 @@
   .btn.sun{background:var(--sun-500);color:var(--ink)}.btn.danger{background:var(--err);color:#fff}
   .actions{display:flex;gap:8px}
 
-  .toast{position:fixed;left:50%;top:118px;transform:translate(-50%,-10px);opacity:0;z-index:20;width:calc(100% - 24px);max-width:480px;
+  .toast{position:fixed;left:50%;bottom:150px;transform:translate(-50%,10px);opacity:0;z-index:20;width:calc(100% - 24px);max-width:480px;
          background:#fff;border:1px solid var(--line);border-left:5px solid var(--sky-500);border-radius:12px;padding:9px 12px;
          font-size:13.5px;box-shadow:0 12px 30px rgba(11,79,138,.18);transition:all .3s var(--ease);pointer-events:none}
   .toast.show{opacity:1;transform:translate(-50%,0)}
@@ -251,6 +251,27 @@
   details.rules-d{margin-top:12px;text-align:left}
   details.rules-d summary{cursor:pointer;font:700 13px var(--font-ui);color:var(--sky-700);text-align:center;list-style:none}
   details.rules-d .rules{margin-top:10px}
+  /* карточки в очереди */
+  .fc{position:absolute;left:10px;right:10px;top:10px;z-index:6;background:#fff;border:1px solid var(--line);border-radius:16px;
+      padding:9px 12px 12px;box-shadow:0 10px 28px rgba(11,79,138,.16);transform:translateY(-14px);opacity:0;pointer-events:none;
+      transition:opacity .3s,transform .3s var(--ease);cursor:default}
+  .fc.show{opacity:1;transform:none;pointer-events:auto}
+  .fc-top{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--ink-3);font-weight:600}
+  .fc-top b{color:var(--sun-ink);margin-right:6px}
+  .fc-x{background:none;border:0;font-size:22px;line-height:1;color:var(--ink-3);cursor:pointer;padding:0 2px 0 6px;vertical-align:middle}
+  .fc-word{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:4px 0 2px}
+  .fc-word span{font:800 21px/1.2 var(--font-h);color:var(--sky-900)}
+  .fc-word span.phrase{font-size:17px}
+  .fc-say{flex:none;width:34px;height:34px;border-radius:50%;border:0;background:var(--sky-50);color:var(--sky-700);cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .fc-say svg{width:18px;height:18px}
+  .fc-hint{font-size:11.5px;color:var(--ink-3);margin-bottom:7px}
+  .fc-opts{display:grid;gap:6px}
+  .fc-opts button{min-height:40px;border-radius:10px;border:1px solid var(--line);background:var(--subtle);font:600 14px var(--font-ui);
+      color:var(--ink);text-align:left;padding:8px 12px;cursor:pointer;transition:background .2s,border-color .2s}
+  .fc-opts button:active{transform:scale(.98)}
+  .fc-opts button.right{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+  .fc-opts button.wrong{background:var(--err-bg);border-color:var(--err);color:var(--err)}
+  @media (max-height:700px){ .fc-hint{display:none} .fc-opts button{min-height:34px;padding:6px 10px} }
   @media (prefers-reduced-motion:reduce){.pp .body,.pp.walking .legL,.pp.walking .legR{animation:none}}
 </style>
 </head>
@@ -270,7 +291,14 @@
     <div class="stamps" id="stamps"></div>
   </header>
 
-  <div class="scene" id="scene"><div class="world" id="world"></div></div>
+  <div class="scene" id="scene"><div class="world" id="world"></div>
+    <div class="fc" id="fc" aria-live="polite">
+      <div class="fc-top"><span id="fcTopic"></span><span><b id="fcStreak"></b><button class="fc-x" id="fcClose" aria-label="Скрыть карточки">×</button></span></div>
+      <div class="fc-word"><span id="fcWord"></span><button class="fc-say" id="fcSay" aria-label="Послушать"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button></div>
+      <div class="fc-hint">Выберите перевод. Верный ответ: нервы +3</div>
+      <div class="fc-opts" id="fcOpts"></div>
+    </div>
+  </div>
   <nav class="map" id="map"></nav>
   <div class="bottom">
     <div class="log" id="log"><time>08:00</time><span>Поликлиника открывается.</span></div>
@@ -311,12 +339,12 @@
 
   // время в минутах от полуночи; 480 = 08:00. Порядок = порядок дверей в коридоре
   const CABS = [
-    {id:'xray',  name:'Рентген',      short:'Рентген', room:'011', svc:[3,7],  my:5,  arrive:.06,  init:6, open:540, close:780},
-    {id:'ekg',   name:'ЭКГ',          short:'ЭКГ',     room:'105', svc:[4,8],  my:7,  arrive:.055, init:4, open:480, close:1020},
-    {id:'eye',   name:'Окулист',      short:'Окулист', room:'120', svc:[6,12], my:7,  arrive:.05,  init:6, open:480, close:1020, lunch:[720,765]},
-    {id:'surg',  name:'Хирург',       short:'Хирург',  room:'214', svc:[8,15], my:9,  arrive:.045, init:5, open:480, close:1020, lunch:[750,810]},
-    {id:'neuro', name:'Невропатолог', short:'Невро',   room:'217', svc:[9,16], my:10, arrive:.04,  init:4, open:600, close:1020},
-    {id:'ther',  name:'Терапевт',     short:'Терапевт',room:'301', svc:[9,16], my:10, arrive:.05,  init:7, open:480, close:1020, lunch:[780,840], final:true},
+    {id:'xray',  name:'Рентген',      short:'Рентген', room:'011', svc:[3,7],  my:5,  arrive:.065,  init:6, open:540, close:780},
+    {id:'ekg',   name:'ЭКГ',          short:'ЭКГ',     room:'105', svc:[4,8],  my:7,  arrive:.06, init:4, open:480, close:1020},
+    {id:'eye',   name:'Окулист',      short:'Окулист', room:'120', svc:[6,12], my:7,  arrive:.055,  init:6, open:480, close:1020, lunch:[720,765]},
+    {id:'surg',  name:'Хирург',       short:'Хирург',  room:'214', svc:[8,15], my:9,  arrive:.05, init:5, open:480, close:1020, lunch:[750,810]},
+    {id:'neuro', name:'Невропатолог', short:'Невро',   room:'217', svc:[9,16], my:10, arrive:.045,  init:4, open:600, close:1020},
+    {id:'ther',  name:'Терапевт',     short:'Терапевт',room:'301', svc:[9,16], my:10, arrive:.055,  init:7, open:480, close:1020, lunch:[780,840], final:true},
   ];
 
   const DONE_LINES = {
@@ -488,12 +516,13 @@
     check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>',
     cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>',
     globe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></svg>',
+    book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M9 8h6"/></svg>',
     moon:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 8.5 8.5 0 1 0 20 15.5z"/></svg>',
   };
   const ACH = [
     {id:'first',    ic:'star',  name:'Годен!',               desc:'Впервые пройти медкомиссию',            test:r=>r.won},
-    {id:'ninja',    ic:'bolt',  name:'Ниндзя поликлиники',   desc:'Пройти за 3 часа или быстрее',          test:r=>r.won && r.min<=180},
-    {id:'veteran',  ic:'clock', name:'Ветеран очередей',     desc:'Пройти, простояв больше 6 часов',       test:r=>r.won && r.min>360},
+    {id:'ninja',    ic:'bolt',  name:'Ниндзя поликлиники',   desc:'Пройти за 4 часа или быстрее',          test:r=>r.won && r.min<=240},
+    {id:'veteran',  ic:'clock', name:'Ветеран очередей',     desc:'Пройти, простояв больше 7 часов',       test:r=>r.won && r.min>420},
     {id:'grandson', ic:'heart', name:'Внук года',            desc:'Пропустить 3 бабушек за одну игру',     test:r=>r.stat.letThrough>=3},
     {id:'brawler',  ic:'talk',  name:'Скандалист',           desc:'Выиграть 3 спора за одну игру',         test:r=>r.stat.argueWon>=3},
     {id:'zen',      ic:'leaf',  name:'Дзен',                 desc:'Пройти, ни разу не возмутившись',       test:r=>r.won && r.stat.argued===0},
@@ -502,6 +531,7 @@
     {id:'punctual', ic:'check', name:'Пунктуальный',         desc:'Пройти, не потеряв ни одного места',    test:r=>r.won && r.stat.lost===0},
     {id:'daily',    ic:'cal',   name:'Забег дня',            desc:'Пройти забег дня',                      test:r=>r.won && r.mode==='daily'},
     {id:'polyglot', ic:'globe', name:'Полиглот',             desc:'Послушать все 6 фраз врачей на английском', test:()=>heardEN.size>=6},
+    {id:'student',  ic:'book',  name:'Не терял времени',     desc:'Верно ответить на 15 карточек за игру', test:r=>(r.stat.cardsRight||0)>=15},
     {id:'tomorrow', ic:'moon',  name:'Приходите завтра',     desc:'Не успеть до закрытия поликлиники',     test:r=>!r.won && r.why==='time'},
   ];
   const ACH_KEY='ochered_ach_v1';
@@ -594,7 +624,7 @@
     const tw=g.measureText(r.rank).width+90; g.fillStyle='#FEC50C'; roundRect(g,-tw/2,-62,tw,124,28); g.fill();
     g.fillStyle='#13243A'; g.textBaseline='middle'; g.fillText(r.rank,0,4); g.restore(); g.textBaseline='alphabetic';
     // цифры
-    const st=[[`${r.stat.letThrough}`,'бабушек пропущено'],[`${r.stat.argueWon} из ${r.stat.argued}`,'споров выиграно'],[`${r.stat.coffee}`,'стаканов кофе']];
+    const st=[[`${r.stat.letThrough}`,'бабушек пропущено'],[`${r.stat.cardsRight||0}`,'мед. слов в очереди'],[`${r.stat.coffee}`,'стаканов кофе']];
     st.forEach(([v,l],i)=>{ const x=W/2+(i-1)*320; g.fillStyle='#fff'; roundRect(g,x-145,1000,290,160,26); g.fill();
       g.fillStyle='#13243A'; g.font='800 62px Montserrat, sans-serif'; g.fillText(v,x,1080); g.fillStyle='#5A6B80'; g.font='600 30px Inter, sans-serif'; g.fillText(l,x,1128); });
     // толпа
@@ -653,6 +683,107 @@
   $('#coachOk').onclick=()=>{ SND.click(); TUT.ok(); };
   $('#coachSkip').onclick=()=>{ SND.click(); TUT.finish(); };
 
+
+  /* ================= карточки в очереди: медицинский английский ================= */
+  const VOCAB = {
+    ekg:  {t:'Кардиология', items:[
+      ['chest pain','боль в груди'],['shortness of breath','одышка'],['palpitations','сердцебиение'],
+      ['heart rate','частота сердечных сокращений'],['blood pressure','артериальное давление'],['arrhythmia','аритмия'],
+      ['dizziness','головокружение'],['leg swelling','отёки ног'],['to faint','упасть в обморок'],['heart attack','инфаркт'],
+      ['Does the pain spread to your arm?','Боль отдаёт в руку?'],['When did it start?','Когда это началось?']]},
+    xray: {t:'Лёгкие и рентген', items:[
+      ['cough','кашель'],['chest X-ray','рентген грудной клетки'],['fracture','перелом'],['lungs','лёгкие'],
+      ['pneumonia','пневмония'],['wheezing','свистящее дыхание'],['sputum','мокрота'],['rib','ребро'],
+      ['to hold your breath','задержать дыхание'],['to take a deep breath','сделать глубокий вдох'],
+      ['Have you had a fever?','У вас была температура?'],['Breathe in… and out.','Вдох… и выдох.']]},
+    eye:  {t:'Офтальмология', items:[
+      ['blurred vision','нечёткое зрение'],['eye drops','глазные капли'],['itchy eyes','зуд в глазах'],['glasses','очки'],
+      ['contact lenses','контактные линзы'],['eyelid','веко'],['pupil','зрачок'],['double vision','двоение в глазах'],
+      ['watery eyes','слезотечение'],['to squint','щуриться'],
+      ['Can you read this line?','Вы можете прочитать эту строчку?'],['Look straight ahead.','Смотрите прямо перед собой.']]},
+    surg: {t:'Хирургия', items:[
+      ['wound','рана'],['stitches','швы'],['bruise','синяк'],['abdominal pain','боль в животе'],['scar','шрам'],
+      ['to bleed','кровоточить'],['sprain','растяжение'],['swelling','отёк'],['appendix','аппендикс'],['tender','болезненный при нажатии'],
+      ['Does it hurt here?','Здесь больно?'],['Lie on your back.','Лягте на спину.']]},
+    neuro:{t:'Неврология', items:[
+      ['headache','головная боль'],['numbness','онемение'],['tingling','покалывание'],['seizure','судорожный приступ'],
+      ['weakness','слабость'],['reflexes','рефлексы'],['memory loss','потеря памяти'],['back pain','боль в спине'],
+      ['stroke','инсульт'],['tremor','тремор'],
+      ['Squeeze my hands.','Сожмите мои руки.'],['Follow my finger.','Следите за моим пальцем.']]},
+    ther: {t:'Терапия', items:[
+      ['fever','температура'],['sore throat','боль в горле'],['runny nose','насморк'],['fatigue','усталость'],
+      ['nausea','тошнота'],['allergy','аллергия'],['prescription','рецепт'],['complaint','жалоба'],
+      ['medical history','анамнез'],['to take medication','принимать лекарства'],
+      ['Are you allergic to anything?','У вас есть на что-нибудь аллергия?'],['Do you take any medication?','Вы принимаете какие-нибудь лекарства?']]},
+  };
+  const MISSED_KEY='ochered_missed_v1';
+  const SPEAK_I='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>';
+  const FC = {
+    shown:false, busy:false, closedFor:null, used:new Set(), card:null, streak:0,
+    reset(){ this.hide(); this.closedFor=null; this.used=new Set(); this.streak=0; },
+    missed(){ try{ return JSON.parse(localStorage.getItem(MISSED_KEY)||'[]'); }catch(e){ return []; } },
+    want(){
+      if (!S || S.over || S.paused || TUT.on) return false;
+      if (S.inside || S.walkTo || S.coffeeUntil || !S.loc) return false;
+      const c=cab(S.loc), me=myIdx(c);
+      if (me<0 || (me===0 && !c.cur)) return false;
+      return this.closedFor!==S.loc;
+    },
+    update(){
+      if (this.busy) return;
+      const w=this.want();
+      if (w && (!this.shown || this.card.cab!==S.loc)) this.next();
+      else if (!w && this.shown) this.hide();
+    },
+    next(){
+      const id=S.loc, items=VOCAB[id].items, missed=this.missed();
+      let pool=items.filter(it=>!this.used.has(it[0]));
+      if (!pool.length){ items.forEach(it=>this.used.delete(it[0])); pool=items.slice(); }
+      const again=pool.filter(it=>missed.includes(it[0]));
+      const it = (again.length && Math.random()<.6) ? pick(again) : pick(pool);
+      this.used.add(it[0]);
+      // вопрос — в вариантах только вопросы, просьба — только просьбы (из всех кабинетов), слово — только слова этого кабинета
+      const isPhrase = x => /[?.!…]$/.test(x[0]);
+      const pool2 = isPhrase(it)
+        ? Object.values(VOCAB).flatMap(v=>v.items).filter(x=>isPhrase(x) && x!==it && x[0].endsWith('?')===it[0].endsWith('?'))
+        : items.filter(x=>!isPhrase(x) && x!==it);
+      const others=pool2.sort(()=>Math.random()-.5).slice(0,2).map(x=>x[1]);
+      const opts=[it[1],...others].sort(()=>Math.random()-.5);
+      this.card={cab:id, en:it[0], ru:it[1], opts};
+      const phrase=/[?.!…]$/.test(it[0]);
+      $('#fcTopic').textContent=`Пока ждёте · ${VOCAB[id].t}`;
+      $('#fcWord').textContent=it[0]; $('#fcWord').classList.toggle('phrase',phrase);
+      $('#fcStreak').textContent = this.streak>=2 ? `серия ${this.streak}` : '';
+      $('#fcOpts').innerHTML=opts.map((o,i)=>`<button data-i="${i}">${o}</button>`).join('');
+      $('#fc').classList.add('show'); this.shown=true;
+    },
+    answer(i){
+      if (this.busy || !this.card) return;
+      this.busy=true;
+      const ok=this.card.opts[i]===this.card.ru, btns=[...document.querySelectorAll('#fcOpts button')];
+      btns.forEach((b,j)=>{ if (this.card.opts[j]===this.card.ru) b.classList.add('right'); else if (j===i) b.classList.add('wrong'); b.disabled=true; });
+      let missed=this.missed();
+      S.stat.cards=(S.stat.cards||0)+1;
+      if (ok){
+        S.stat.cardsRight=(S.stat.cardsRight||0)+1; this.streak++;
+        S.nerves=Math.min(100,S.nerves+3); missed=missed.filter(x=>x!==this.card.en);
+        if (this.streak%5===0){ S.nerves=Math.min(100,S.nerves+5); SND.sparkle(); toast(`Серия ${this.streak} верных ответов! Нервы +5`,'good'); }
+        else SND.good();
+      } else {
+        this.streak=0; SND.bad();
+        if (!missed.includes(this.card.en)) missed.push(this.card.en);
+        S.stat.wrong=S.stat.wrong||[]; if (!S.stat.wrong.some(w=>w[0]===this.card.en)) S.stat.wrong.push([this.card.en,this.card.ru]);
+      }
+      localStorage.setItem(MISSED_KEY, JSON.stringify(missed.slice(-60)));
+      if (!SND.muted) speakEN(this.card.en);
+      render();
+      setTimeout(()=>{ this.busy=false; if (this.want()) this.next(); else this.hide(); }, ok?900:1700);
+    },
+    hide(){ $('#fc').classList.remove('show'); this.shown=false; this.card=null; },
+  };
+  $('#fcOpts').addEventListener('click',e=>{ const b=e.target.closest('button'); if (b) FC.answer(+b.dataset.i); });
+  $('#fcSay').onclick=()=>{ if (FC.card && !speakEN(FC.card.en)) toast('В этом браузере нет озвучки.'); };
+  $('#fcClose').onclick=()=>{ SND.click(); FC.closedFor=S.loc; FC.hide(); toast('Карточки вернутся, когда встанете в другую очередь.'); };
 
   /* ================= персонажи ================= */
   function fig(p, cls=''){
@@ -761,10 +892,10 @@
       t:480, speed:1, paused:false, over:false, nerves:100, stamps:{},
       loc:null, walkTo:null, walkUntil:0, px:START_X, inside:null, coffeeUntil:0,
       eyeReadyAt:null, eyeStage:0, xrayWarned:false,
-      stat:{queueMin:0, letThrough:0, argued:0, argueWon:0, lost:0, coffee:0},
+      stat:{queueMin:0, letThrough:0, argued:0, argueWon:0, lost:0, coffee:0, cards:0, cardsRight:0, wrong:[]},
       cabs: CABS.map(c => ({...c, q:Array.from({length:c.init},()=>npc()), cur:null, ev:null, evUntil:0, grace:null, warned:false, nextWarned:false}))
     };
-    $('#layer').innerHTML=''; els.clear(); ghosts={};
+    $('#layer').innerHTML=''; els.clear(); ghosts={}; FC.reset();
     P=document.createElement('div'); P.className='pp me';
     P.innerHTML=`<div class="tag">ВЫ</div><div class="steam"><i></i><i></i><i></i></div>`+fig({player:true});
     P.style.left=START_X+'px'; $('#layer').append(P);
@@ -825,6 +956,7 @@
 
       if (!c.cur && canCall(c)){
         if (c.id==='eye' && S.eyeStage===1 && t>=S.eyeReadyAt && present('eye')){
+          if (c.q.length && !S.eyeAsked){ S.eyeAsked=true; if (H('eyeb',t)<.55){ eyeBlock(c); break; } }
           S.eyeStage=2; c.cur={player:true,left:3}; enterDoor(c,true);
           log('Окулист: «Капли подействовали? Заходите». Очередь ворчит.');
           if (c.q[0]) say(c.q[0].id,'А почему без очереди?!');
@@ -839,7 +971,7 @@
                 toast('Терапевт: «Где остальные печати? Без полного листа не приму! Следующий!»','bad'); SND.bad();
                 log('Терапевт выгнал вас без полного обходного листа. Место потеряно.');
               } else {
-                c.cur={player:true,left:c.my}; enterDoor(c,true);
+                c.cur={player:true,left:(c.id==='eye'&&S.eyeStage===3)?3:c.my}; enterDoor(c,true);
                 log(`Вы зашли в кабинет: ${c.name}.`);
               }
             } else {
@@ -853,13 +985,13 @@
               }
             }
           } else {
-            if (H(c.id,t,'ev')<.06 && t<1000){
+            if (H(c.id,t,'ev')<.09 && t<1000){
               const e=pickH(DOC_EVENTS,c.id,t,'evt'); c.ev=e.label; c.evUntil=t+rndH(...e.dur,c.id,t,'evd');
               log(`${c.name}: «${e.label}». Очередь стоит.`);
               if (present(c.id)) say(c.q[0].id, pick(['Ну сколько можно!','Опять…','Мы тут с утра стоим!']));
             } else {
               c.q.shift();
-              const delayed=H(c.id,t,'dl')<.12;
+              const delayed=H(c.id,t,'dl')<.17;
               c.cur={p:front, left:rndH(...(front.svc||c.svc),c.id,t,'svc') + (delayed?rndH(10,22,c.id,t,'dly'):0), delayed};
               enterDoor(c,false);
             }
@@ -871,14 +1003,15 @@
         const k = t>840 ? .5 : t>720 ? .75 : 1;
         if (H(c.id,t,'arr')<c.arrive*k) c.q.push(npc());
       }
-      if (canCall(c) && t<960 && c.q.length>1 && H(c.id,t,'cut')<.007){
+      if (canCall(c) && t<960 && c.q.length>1 && H(c.id,t,'cut')<.013){
         startCut(c); if (S.paused) break;
       }
     }
 
     const here = S.loc && !S.walkTo && cab(S.loc);
     if (here && myIdx(here)>=0){
-      S.stat.queueMin++;
+      S.stat.queueMin++; S.hereMin=(S.hereMin||0)+1;
+      if (!S.firstCut && !TUT.on && S.hereMin>=10 && myIdx(here)>=1 && canCall(here) && !S.paused){ S.firstCut=true; startCut(here); }
       S.nerves -= docState(here).k==='ok' ? .05 : .15;
     }
     if (!S.xrayWarned && t===750 && !S.stamps.xray){ S.xrayWarned=true; toast('Рентген закрывается через 30 минут!','warn'); SND.notify(); }
@@ -887,7 +1020,7 @@
     S.nerves=Math.max(0,Math.min(100,S.nerves));
     if (S.nerves<=0) return lose('Нервы не выдержали. Вы скомкали обходной лист и ушли домой.');
     if (t>=1020) return lose('17:00. «Поликлиника закрывается! Приходите завтра к восьми».','time');
-    render(); schedule();
+    render(); schedule(); FC.update();
   }
 
   function enterDoor(c, me){
@@ -938,7 +1071,7 @@
     if (S.walkTo===id) return;
     const cur=P.offsetLeft, tx=Math.round(targetX(id));
     const min=Math.max(1,Math.round(Math.abs(tx-cur)/PX_PER_MIN));
-    S.loc=null; S.walkTo=id; S.walkUntil=S.t+min; S.px=cur;
+    S.loc=null; S.walkTo=id; S.walkUntil=S.t+min; S.px=cur; S.hereMin=0;
     P.style.left=cur+'px'; void P.offsetLeft;
     P.style.transition=`left ${(min*WALK_MS/S.speed)/1000}s linear, opacity .3s, bottom .3s`;
     P.classList.toggle('flip', tx<cur); P.classList.add('walking'); clearTimeout(P._w);
@@ -983,6 +1116,7 @@
 
   /* ================= наглые ================= */
   function startCut(c){
+    if (present(c.id) && myIdx(c)>=0) S.firstCut=true;
     const me=myIdx(c);
     let type=pickH(CUTTERS,c.id,S.t,'ct');
     if (type.pos==='before' && me<1) type=CUTTERS[0];
@@ -1020,6 +1154,30 @@
       b.onclick=()=>{ c.q.splice(where,0,...people); S.nerves-=4; done(type.fail,'',type.failSay); log(type.fail); };
       box.append(b);
     }
+    $('#cutOv').classList.add('show');
+  }
+
+  /* ================= очередь против «прокапанного» ================= */
+  function eyeBlock(c){
+    const p=c.q.find(x=>!x.player) || npc('granny');
+    S.paused=true; updPause(); SND.murmur(); SND.walk(false);
+    $('#cutAva').innerHTML=fig(p);
+    $('#cutWho').textContent='Очередь · Окулист';
+    $('#cutLine').textContent='«И что, что прокапали? Мы тоже с утра стоим! Становитесь в конец!»';
+    $('#cutNote').textContent='Окулист обещала пустить без очереди, но очередь против.';
+    say(p.id,'Становитесь в конец!',2400);
+    const box=$('#cutActions'); box.innerHTML='';
+    const close=(msg,kind)=>{ $('#cutOv').classList.remove('show'); S.paused=false; updPause(); toast(msg,kind); log(msg); render(); };
+    const toEnd=()=>{ S.eyeStage=3; c.q.push({player:true}); };
+    const b1=document.createElement('button'); b1.className='btn danger'; b1.textContent='Возмутиться';
+    b1.onclick=()=>{ S.stat.argued++; say('player','Мне доктор сказала!',1800);
+      if (H('eyearg',S.t)<.45){ S.stat.argueWon++; S.nerves-=3; SND.good(); S.eyeStage=2; c.cur={player:true,left:3}; enterDoor(c,true);
+        close('Окулист выглянула: «Пациент после капель, пропустите!» Вы зашли.','good'); }
+      else { S.nerves-=10; SND.bad(); toEnd(); close('Очередь стоит стеной. Пришлось встать в конец.','bad'); }
+    };
+    const b2=document.createElement('button'); b2.className='btn sec'; b2.textContent='Встать в конец';
+    b2.onclick=()=>{ S.nerves-=4; toEnd(); close('Вы встали в конец очереди к окулисту. Капли пока действуют.'); };
+    box.append(b1,b2);
     $('#cutOv').classList.add('show');
   }
 
@@ -1165,7 +1323,7 @@
     world.style.transform=`translate3d(${(-cam*SC).toFixed(1)}px,0,0) scale(${SC})`;
     requestAnimationFrame(loop);
   }
-  scene.addEventListener('pointerdown',e=>{ drag={x:e.clientX,cam,moved:false}; });
+  scene.addEventListener('pointerdown',e=>{ if (e.target.closest('#fc')) return; drag={x:e.clientX,cam,moved:false}; });
   window.addEventListener('pointermove',e=>{ if(!drag) return; const dx=e.clientX-drag.x; if(Math.abs(dx)>6) drag.moved=true;
     if(drag.moved){ manual=drag.cam-dx/SC; clearTimeout(manualT); } });
   window.addEventListener('pointerup',()=>{ if(!drag) return; const moved=drag.moved; drag=null;
@@ -1179,10 +1337,10 @@
 
   /* ================= старт / финал ================= */
   function rankFor(m){
-    if (m<=180) return 'Ниндзя поликлиники';
-    if (m<=240) return 'Опытный пациент';
-    if (m<=300) return 'Знаток коридоров';
-    if (m<=380) return 'Терпеливый как камень';
+    if (m<=240) return 'Ниндзя поликлиники';
+    if (m<=300) return 'Опытный пациент';
+    if (m<=360) return 'Знаток коридоров';
+    if (m<=420) return 'Терпеливый как камень';
     return 'Ветеран очередей';
   }
   const crowd = () => [npc('granny'),npc(),npc('ask'),{player:true},npc('claim'),npc(),npc('nurse')]
@@ -1194,12 +1352,16 @@
         <div><span>4</span>Бабушки, «мне только спросить» и доктор на обеде прилагаются. Берегите нервы.</div>
       </div>`;
   const PLAY_I='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>';
-  const enBlock = () => `<div class="card"><h3>Как это звучит по-английски <small>нажмите, чтобы послушать</small></h3>
+  const wordsBlock = () => { const st=S.stat||{}; if (!st.cards) return '';
+    const w=st.wrong||[];
+    return `<div class="card"><h3>Слова из очереди <small>верно ${st.cardsRight} из ${st.cards}</small></h3>${w.length?`<div class="best" style="margin:0 0 8px;text-align:left">Повторите — эти слова попадутся снова:</div><div class="en">${w.map(x=>`<button data-say="${esc(x[0])}"><span class="pl">${PLAY_I}</span><span><b>${esc(x[0])}</b><small>${esc(x[1])}</small></span></button>`).join('')}</div>`:'<div class="best" style="margin:0;text-align:left">Без единой ошибки!</div>'}</div>`; };
+  const enBlock = () => wordsBlock() + `<div class="card"><h3>Как это звучит по-английски <small>нажмите, чтобы послушать</small></h3>
       <div class="en">${EN.map(e=>`<button data-en="${e.id}" class="${heardEN.has(e.id)?'played':''}"><span class="pl">${PLAY_I}</span><span><b>${e.en}</b><small>${e.ru}</small></span></button>`).join('')}</div></div>
     <div class="cta"><b>Врачу — медицинский английский</b>
       <p>Такие фразы нужны на приёме, на собеседовании в клинику за рубежом и на USMLE. Doctors Speak учит говорить с пациентом по-английски — короткими уроками с телефона.</p>
       <a href="/tbltfree/">Попробовать бесплатный урок</a></div>`;
   function bindEN(){
+    document.querySelectorAll('[data-say]').forEach(b=>b.onclick=()=>{ if(!speakEN(b.dataset.say)) toast('В этом браузере нет озвучки.'); b.classList.add('played'); });
     document.querySelectorAll('[data-en]').forEach(b=>b.onclick=()=>{
       const e=EN.find(x=>x.id===b.dataset.en); if(!speakEN(e.en)) toast('В этом браузере нет озвучки. Попробуйте Chrome или Safari.');
       heardEN.add(e.id); b.classList.add('played');
@@ -1244,7 +1406,7 @@
     $('#startOv').classList.remove('show'); newGame(mode); schedule();
     SND.ambient(true); TUT.begin();
   }
-  function stopGame(){ S.over=true; clearInterval(timer); timer=null; curMs=0; SND.walk(false); SND.ambient(false); TUT.step && TUT.finish(); }
+  function stopGame(){ FC.hide(); S.over=true; clearInterval(timer); timer=null; curMs=0; SND.walk(false); SND.ambient(false); TUT.step && TUT.finish(); }
 
   function endButtons(won){
     return `<div class="actions" style="margin-top:14px">${won?'<button class="btn sun" id="share">Карточка для сторис</button>':''}<button class="btn pri" id="again">${won?'Ещё раз':'Попробовать ещё'}</button></div>
